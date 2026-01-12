@@ -36,29 +36,30 @@ export default function Home() {
     setLoading(false);
   };
 
-  const handleOption = async (opt) => {
-    const next = index + 1;
-    if (next >= paragraphs.length) return;
+ const handleOption = async (opt) => {
+  setLoading(true);
 
+  const res = await fetch("/api/rc-mentor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      paragraph: paragraphs[index],   // SAME paragraph
+      index: index + 1,
+      total: paragraphs.length,
+      answer: opt
+    })
+  });
+
+  const data = await res.json();
+  setReply(data.reply);
+  setLoading(false);
+
+  // Move to next paragraph ONLY after mentor responds
+  const next = index + 1;
+  if (next < paragraphs.length) {
     setIndex(next);
-    setLoading(true);
-
-    const res = await fetch("/api/rc-mentor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        paragraph: paragraphs[next],
-        index: next + 1,
-        total: paragraphs.length,
-        answer: opt
-      })
-    });
-
-    const data = await res.json();
-    setReply(data.reply);
-    setLoading(false);
-  };
-
+  }
+};
   return (
     <main style={{ maxWidth: 800, margin: "60px auto", fontFamily: "sans-serif" }}>
       <h1>RC Mentor</h1>
