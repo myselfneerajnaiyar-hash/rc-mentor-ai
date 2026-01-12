@@ -18,7 +18,7 @@ export default function Page() {
 function splitPassage() {
   const raw = text.trim();
 
-  // If user already pasted real paragraphs, respect them
+  // Case 1: User has real paragraph breaks
   if (/\n\s*\n/.test(raw)) {
     const parts = raw
       .split(/\n\s*\n+/)
@@ -31,15 +31,24 @@ function splitPassage() {
     return;
   }
 
-  // CAT-style wall of text → detect paragraph starts
-  const markers = [
-    "Digital platforms",
-    "This shift",
-    "What distinguishes",
-    "A thoughtful response",
-    "Over time",
-  ];
+  // Case 2: Single block → create learning chunks
+  const sentences = raw.split(/(?<=[.!?])\s+/);
+  const parts = [];
+  let buf = "";
 
+  for (const s of sentences) {
+    buf += (buf ? " " : "") + s;
+    if (buf.split(" ").length >= 120) {
+      parts.push(buf.trim());
+      buf = "";
+    }
+  }
+  if (buf.trim()) parts.push(buf.trim());
+
+  setParas(parts);
+  setIndex(0);
+  setResult(null);
+}
   const positions = [];
 
   for (const m of markers) {
