@@ -5,6 +5,7 @@ export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
+  const [result, setResult] = useState(null);
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,13 +19,13 @@ export default function Page() {
 function splitPassage() {
   const raw = text.trim();
 
-  // Step 1: try real paragraph breaks
+  // First: respect real paragraph breaks
   let parts = raw
     .split(/\n\s*\n+/)
     .map(p => p.trim())
     .filter(Boolean);
 
-  // Step 2: if user pasted as ONE block and it's long, chunk it
+  // If everything came as one big block, chunk it
   if (parts.length === 1) {
     const words = parts[0].split(/\s+/);
 
@@ -45,40 +46,6 @@ function splitPassage() {
   }
 
   setParas(parts);
-  setIndex(0);
-  setResult(null);
-}
-  const positions = [];
-
-  for (const m of markers) {
-    const idx = raw.indexOf(m);
-    if (idx > 0) positions.push(idx);
-  }
-
-  // No markers found → treat as single paragraph
-  if (positions.length === 0) {
-    setParas([raw]);
-    setIndex(0);
-    setResult(null);
-    return;
-  }
-
-  // Sort and cut once
-  positions.sort((a, b) => a - b);
-
-  const parts = [];
-  let last = 0;
-
-  for (const p of positions) {
-    parts.push(raw.slice(last, p).trim());
-    last = p;
-  }
-
-  parts.push(raw.slice(last).trim());
-
-  const clean = parts.filter(Boolean);
-
-  setParas(clean);
   setIndex(0);
   setResult(null);
 }
