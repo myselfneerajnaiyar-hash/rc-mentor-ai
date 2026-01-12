@@ -18,32 +18,31 @@ export default function Page() {
 function splitPassage() {
   const raw = text.trim();
 
-  // Case 1: User has real paragraph breaks
-  if (/\n\s*\n/.test(raw)) {
-    const parts = raw
-      .split(/\n\s*\n+/)
-      .map(p => p.trim())
-      .filter(Boolean);
+  // Step 1: try real paragraph breaks
+  let parts = raw
+    .split(/\n\s*\n+/)
+    .map(p => p.trim())
+    .filter(Boolean);
 
-    setParas(parts);
-    setIndex(0);
-    setResult(null);
-    return;
-  }
+  // Step 2: if user pasted as ONE block and it's long, chunk it
+  if (parts.length === 1) {
+    const words = parts[0].split(/\s+/);
 
-  // Case 2: Single block → create learning chunks
-  const sentences = raw.split(/(?<=[.!?])\s+/);
-  const parts = [];
-  let buf = "";
+    if (words.length > 180) {
+      parts = [];
+      let buf = [];
 
-  for (const s of sentences) {
-    buf += (buf ? " " : "") + s;
-    if (buf.split(" ").length >= 120) {
-      parts.push(buf.trim());
-      buf = "";
+      for (const w of words) {
+        buf.push(w);
+        if (buf.length >= 120) {
+          parts.push(buf.join(" "));
+          buf = [];
+        }
+      }
+
+      if (buf.length) parts.push(buf.join(" "));
     }
   }
-  if (buf.trim()) parts.push(buf.trim());
 
   setParas(parts);
   setIndex(0);
