@@ -25,7 +25,7 @@ export async function POST(req) {
 
     const difficultWords = unique.map(w => ({
       word: w,
-      meaning: In this paragraph, "${w}" refers to an important idea that may be unfamiliar or complex for readers.,
+      meaning: `In this paragraph, "${w}" refers to an important idea that may be unfamiliar or complex for readers.`,
     }));
 
     const question =
