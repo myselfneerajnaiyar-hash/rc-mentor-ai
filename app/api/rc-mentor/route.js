@@ -1,73 +1,97 @@
-export const runtime = "nodejs";
-import OpenAI from "openai";
+"use client";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { useState } from "react";
 
-const SYSTEM_PROMPT = `
-You are RC Mentor AI.
+export default function Home() {
+  const [passage, setPassage] = useState("");
+  const [paragraphs, setParagraphs] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [reply, setReply] = useState("");
+  const [loading, setLoading] = useState(false);
 
-You will be given exactly ONE paragraph from a passage.
+  async function startSession() {
+    if (!passage.trim()) return;
 
-CRITICAL RULES:
-- You must use ONLY the words, ideas, and meaning present in THIS paragraph.
-- Do NOT bring ideas from outside.
-- Do NOT imagine what the author might say later.
-- Do NOT generalize beyond this paragraph.
-- Stay anchored strictly to the given text.
+    const parts = passage
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
 
-For this paragraph:
-1. Rewrite it in very simple language.
-2. Pick 1–2 genuinely difficult words FROM THIS PARAGRAPH ONLY.
-   - Give literal meaning.
-   - Give meaning in THIS paragraph.
-3. Ask exactly ONE MCQ about what THIS paragraph is doing.
-   - Options A–D.
-4. Then STOP.
+    if (parts.length === 0) return;
 
-Never explain future paragraphs.
-Never add concepts not present in the paragraph.
-`;
+    setParagraphs(parts);
+    setIndex(0);
+    setReply("");
+    setLoading(true);
 
-export async function POST(req) {
-  try {
-    const body = await req.json();
-
-    const paragraph = body.paragraph;
-
-    if (!paragraph) {
-      return new Response(
-        JSON.stringify({ error: "No paragraph provided." }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
-    console.log("PARAGRAPH RECEIVED:\n", paragraph);
-
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        {
-          role: "user",
-          content: Here is the paragraph:\n\n${paragraph},
-        },
-      ],
-      temperature: 0.4,
+    const res = await fetch("/api/rc-mentor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paragraph: parts[0],
+      }),
     });
 
-    const reply = completion.choices[0].message.content;
-
-    return new Response(
-      JSON.stringify({ reply }),
-      { headers: { "Content-Type": "application/json" } }
-    );
-  } catch (err) {
-    console.error(err);
-    return new Response(
-      JSON.stringify({ error: "Something went wrong." }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    const data = await res.json();
+    setReply(data.reply || data.error || "No response");
+    setLoading(false);
   }
+
+  async function next(option) {
+    const nextIndex = index + 1;
+    if (nextIndex >= paragraphs.length) return;
+
+    setIndex(nextIndex);
+    setLoading(true);
+
+    const res = await fetch("/api/rc-mentor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paragraph: paragraphs[nextIndex],
+      }),
+    });
+
+    const data = await res.json();
+    setReply(data.reply || data.error || "No response");
+    setLoading(false);
+  }
+
+  return (
+    <main style={{ padding: 30, maxWidth: 800, margin: "0 auto", fontFamily: "sans-serif" }}>
+      <h1>RC Mentor</h1>
+
+      <textarea
+        placeholder="Paste full RC passage here..."
+        value={passage}
+        onChange={(e) => setPassage(e.target.value)}
+        rows={10}
+        style={{ width: "100%", padding: 12 }}
+      />
+
+      <br /><br />
+
+      <button onClick={startSession} disabled={loading}>
+        {loading ? "Thinking..." : "Start RC"}
+      </button>
+
+      {reply && (
+        <div style={{ marginTop: 30, whiteSpace: "pre-wrap", lineHeight: 1.6 }}>
+          {reply}
+
+          <div style={{ marginTop: 20 }}>
+            {["A", "B", "C", "D"].map((o) => (
+              <button
+                key={o}
+                onClick={() => next(o)}
+                style={{ display: "block", margin: "6px 0" }}
+              >
+                {o}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </main>
+  );
 }
