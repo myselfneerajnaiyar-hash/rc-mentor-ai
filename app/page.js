@@ -9,19 +9,11 @@ export default function Page() {
   const [explanation, setExplanation] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleDissect() {
-    let parts = text
+  function handleSplit() {
+    const parts = text
       .split(/\n\s*\n/)
       .map(p => p.trim())
       .filter(Boolean);
-
-    // Fallback if user pasted without blank lines
-    if (parts.length === 1) {
-      parts = text
-        .split(/\n/)
-        .map(p => p.trim())
-        .filter(p => p.length > 60);
-    }
 
     setParas(parts);
     setIndex(0);
@@ -29,7 +21,6 @@ export default function Page() {
   }
 
   async function explainCurrent() {
-    if (!current) return;
     setLoading(true);
     setExplanation("");
 
@@ -38,17 +29,17 @@ export default function Page() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          paragraph: current,
-        }),
+          paragraph: paras[index]
+        })
       });
 
       const data = await res.json();
-      setExplanation(data.reply || "No explanation returned.");
+      setExplanation(data.result || "No explanation returned.");
     } catch (e) {
       setExplanation("Error fetching explanation.");
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   }
 
   const current = paras[index] || "";
@@ -73,7 +64,7 @@ export default function Page() {
       />
 
       <button
-        onClick={handleDissect}
+        onClick={handleSplit}
         style={{
           marginTop: 12,
           padding: "10px 16px",
@@ -106,6 +97,7 @@ export default function Page() {
 
           <button
             onClick={explainCurrent}
+            disabled={loading}
             style={{
               marginTop: 12,
               padding: "8px 14px",
@@ -114,20 +106,17 @@ export default function Page() {
               border: "none",
               borderRadius: 6,
               cursor: "pointer",
-              fontWeight: 600,
             }}
           >
-            Explain this paragraph
+            {loading ? "Thinking..." : "Explain this paragraph"}
           </button>
 
-          {loading && <p style={{ marginTop: 10 }}>Thinking...</p>}
-
-          {explanation && (
-            <div style={{ marginTop: 16 }}>
-              <strong>Simple Explanation:</strong>
-              <p style={{ marginTop: 6 }}>{explanation}</p>
+          <div style={{ marginTop: 16 }}>
+            <strong>Simple Explanation:</strong>
+            <div style={{ marginTop: 6, whiteSpace: "pre-wrap" }}>
+              {explanation || "No explanation returned."}
             </div>
-          )}
+          </div>
 
           <div style={{ marginTop: 16 }}>
             <button
@@ -139,6 +128,7 @@ export default function Page() {
             >
               Prev
             </button>
+
             <button
               onClick={() => {
                 setIndex(i => Math.min(paras.length - 1, i + 1));
