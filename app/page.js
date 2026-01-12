@@ -10,7 +10,7 @@ export default function Page() {
 
   function splitPassage() {
     const parts = text
-      .split(/\n\s*\n+/)
+      .split(/\n\s*\n+/)   // robust paragraph splitter
       .map(p => p.trim())
       .filter(Boolean);
 
@@ -19,21 +19,30 @@ export default function Page() {
     setResult(null);
   }
 
-  const current = paras[index];
+  const current = paras[index] || "";
 
   async function explain() {
     setLoading(true);
     setResult(null);
 
-    const res = await fetch("/api/rc-mentor", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ paragraph }),
-});
+    try {
+      const res = await fetch("/api/rc-mentor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paragraph: current }),
+      });
 
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
+      const data = await res.json();
+      setResult(data);
+    } catch (e) {
+      setResult({
+        explanation: "Error getting explanation.",
+        difficultWords: [],
+        question: "",
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -50,7 +59,16 @@ export default function Page() {
           />
           <button
             onClick={splitPassage}
-            style={{ marginTop: 12, padding: "10px 16px", background: "green", color: "#fff" }}
+            style={{
+              marginTop: 12,
+              padding: "10px 16px",
+              background: "green",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
           >
             Split Passage 🌱
           </button>
@@ -78,7 +96,7 @@ export default function Page() {
 
               <h4>Difficult Words</h4>
               <ul>
-                {result.difficultWords.map((d, i) => (
+                {(result.difficultWords || []).map((d, i) => (
                   <li key={i}><b>{d.word}</b>: {d.meaning}</li>
                 ))}
               </ul>
@@ -93,7 +111,10 @@ export default function Page() {
               Prev
             </button>
             <button
-              onClick={() => { setIndex(i => Math.min(paras.length - 1, i + 1)); setResult(null); }}
+              onClick={() => {
+                setIndex(i => Math.min(paras.length - 1, i + 1));
+                setResult(null);
+              }}
               disabled={index === paras.length - 1}
               style={{ marginLeft: 8 }}
             >
