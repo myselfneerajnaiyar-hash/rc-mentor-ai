@@ -5,20 +5,17 @@ import { useState } from "react";
 export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [explainedIndex, setExplainedIndex] = useState(null);
 
-  function handleDissect() {
-    // Split strictly by blank lines
+  function handleSplit() {
     const parts = text
       .split(/\n\s*\n/)
       .map(p => p.trim())
       .filter(Boolean);
 
     setParas(parts);
-    setIndex(0);
+    setExplainedIndex(null);
   }
-
-  const current = paras[index] || "";
 
   return (
     <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
@@ -40,11 +37,11 @@ export default function Page() {
       />
 
       <button
-        onClick={handleDissect}
+        onClick={handleSplit}
         style={{
           marginTop: 12,
-          padding: "10px 16px",
-          background: "#2563eb",
+          padding: "10px 18px",
+          background: "#16a34a", // green
           color: "#fff",
           border: "none",
           borderRadius: 6,
@@ -52,49 +49,58 @@ export default function Page() {
           fontWeight: 600,
         }}
       >
-        Let’s dissect 🚀
+        Split Passage 🌿
       </button>
 
-      {current && (
+      {paras.length > 0 && (
         <div style={{ marginTop: 30 }}>
-          <h3>Paragraph {index + 1}</h3>
-
-          <div
-            style={{
-              background: "#f8fafc",
-              padding: 12,
-              borderRadius: 6,
-              whiteSpace: "pre-wrap",
-              border: "1px solid #e5e7eb",
-            }}
-          >
-            {current}
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <strong>Simple Explanation:</strong>
-            <p style={{ marginTop: 6 }}>
-              This paragraph is saying the same idea in a simpler way. The goal
-              here is to first *see the paragraph exactly as it is*, and only
-              then think about what it means in easier language.
-            </p>
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <button
-              onClick={() => setIndex(i => Math.max(0, i - 1))}
-              disabled={index === 0}
+          {paras.map((p, i) => (
+            <div
+              key={i}
+              style={{
+                marginBottom: 24,
+                padding: 12,
+                border: "1px solid #e5e7eb",
+                borderRadius: 6,
+                background: "#f8fafc",
+              }}
             >
-              Prev
-            </button>
-            <button
-              onClick={() => setIndex(i => Math.min(paras.length - 1, i + 1))}
-              disabled={index >= paras.length - 1}
-              style={{ marginLeft: 8 }}
-            >
-              Next
-            </button>
-          </div>
+              <div
+                style={{
+                  whiteSpace: "pre-wrap",
+                  marginBottom: 10,
+                }}
+              >
+                {p}
+              </div>
+
+              <button
+                onClick={() => setExplainedIndex(i)}
+                style={{
+                  padding: "6px 12px",
+                  background: "#2563eb",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                  fontSize: 13,
+                }}
+              >
+                Explain this paragraph
+              </button>
+
+              {explainedIndex === i && (
+                <div style={{ marginTop: 10 }}>
+                  <strong>Simple Explanation:</strong>
+                  <p style={{ marginTop: 6 }}>
+                    This paragraph is being taken exactly as written above.
+                    The explanation will always be based only on this paragraph,
+                    not on the rest of the passage.
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </main>
