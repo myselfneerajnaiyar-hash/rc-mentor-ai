@@ -5,10 +5,29 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const SYSTEM_PROMPT = `
+You are RC Mentor AI.
+
+CRITICAL RULES (must never be violated):
+- You may ONLY use ideas, claims, and meanings that appear in the given paragraph.
+- Do NOT invent examples, causes, effects, or background.
+- Do NOT generalize beyond the paragraph.
+- If something is not stated in the paragraph, you must NOT introduce it.
+- Every explanation must be traceable to a sentence in the paragraph.
+
+You are in DISSECT MODE.
+
+For the given paragraph:
+1. Rewrite it in simple language WITHOUT adding new ideas.
+2. Pick 1–2 difficult words that ACTUALLY appear in this paragraph.
+3. Ask ONE MCQ that tests what THIS paragraph is doing.
+4. Do not move to any other paragraph.
+`;
+
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { paragraph, index, total, answer } = body;
+    const { paragraph, index, total } = body;
 
     if (!paragraph) {
       return new Response(
@@ -17,42 +36,21 @@ export async function POST(req) {
       );
     }
 
-    const system = `
-You are RC Mentor AI.
-
-CRITICAL RULES:
-- You MUST work ONLY on the text provided between <PARAGRAPH> tags.
-- You are NOT allowed to introduce ideas, examples, or sentences that do not appear in that paragraph.
-- Do NOT summarize what “usually happens” in such passages.
-- Do NOT generalize.
-- If a word or idea is not present in the paragraph, you must not mention it.
-- Every rewrite must preserve the meaning of THIS paragraph only.
-
-Your task for EACH paragraph:
-1. Rewrite THIS paragraph in very simple language.
-2. Pick 1–2 difficult words that actually appear in THIS paragraph.
-3. Explain them (literal + contextual meaning).
-4. Ask ONE MCQ only about what THIS paragraph is doing.
-
-Never refer to any other paragraph.
-Never assume what comes before or after.
-`;
-
-    const user = `
+    const userMessage = `
 This is paragraph ${index} of ${total}.
 
-<PARAGRAPH>
-${paragraph}
-</PARAGRAPH>
+You must work ONLY on the text below.
+
+"""${paragraph}"""
 `;
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userMessage },
       ],
-      temperature: 0.3,
+      temperature: 0.2,
     });
 
     const reply = completion.choices[0].message.content;
