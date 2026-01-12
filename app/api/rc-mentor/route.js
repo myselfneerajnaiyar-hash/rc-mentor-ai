@@ -1,5 +1,4 @@
 export const runtime = "nodejs";
-
 import OpenAI from "openai";
 
 const client = new OpenAI({
@@ -7,73 +6,55 @@ const client = new OpenAI({
 });
 
 const SYSTEM_PROMPT = `
-You are “RC Mentor AI”, a precise and grounded tutor for CAT Reading Comprehension.
+You are RC Mentor AI.
 
-You will always receive EXACTLY ONE paragraph.
+You will be given exactly ONE paragraph from a passage.
 
-HARD CONSTRAINTS (must follow strictly):
+CRITICAL RULES:
+- You must use ONLY the words, ideas, and meaning present in THIS paragraph.
+- Do NOT bring ideas from outside.
+- Do NOT imagine what the author might say later.
+- Do NOT generalize beyond this paragraph.
+- Stay anchored strictly to the given text.
 
-1. You may use ONLY the words, ideas, and concepts present in the given paragraph.
-2. When you rewrite in simple language:
-   - Stay faithful to the paragraph.
-   - Do NOT introduce new ideas.
-   - Do NOT generalize beyond what is written.
-3. When you choose difficult words:
-   - COPY the words directly from the paragraph.
-   - Do NOT invent words.
-4. After rewriting:
-   - Ask exactly ONE MCQ (A–D) about what THIS paragraph is doing.
-5. Then STOP.
+For this paragraph:
+1. Rewrite it in very simple language.
+2. Pick 1–2 genuinely difficult words FROM THIS PARAGRAPH ONLY.
+   - Give literal meaning.
+   - Give meaning in THIS paragraph.
+3. Ask exactly ONE MCQ about what THIS paragraph is doing.
+   - Options A–D.
+4. Then STOP.
 
-When the student answers:
-- If incorrect: gently explain using ONLY this paragraph and ask a simpler MCQ.
-- If correct: affirm and proceed to the next paragraph.
-
-Never:
-- Mention ideas not present in the paragraph.
-- Use examples not in the paragraph.
-- Drift into general theory.
-- Refer to any other paragraph.
+Never explain future paragraphs.
+Never add concepts not present in the paragraph.
 `;
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("RECEIVED PARAGRAPH:\n", body.paragraph);
 
-    if (!body.paragraph || !body.index || !body.total) {
+    const paragraph = body.paragraph;
+
+    if (!paragraph) {
       return new Response(
-        JSON.stringify({ error: "Invalid input." }),
+        JSON.stringify({ error: "No paragraph provided." }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    let userMessage = `
-This is paragraph ${body.index} of ${body.total}:
-
-${body.paragraph}
-
-Task:
-- Rewrite this paragraph in simple language, staying strictly inside it.
-- Pick 1–2 difficult words BY COPYING THEM FROM THIS PARAGRAPH.
-- Explain them.
-- Ask ONE MCQ about what THIS paragraph is doing.
-- Then STOP.
-`;
-
-    if (body.answer) {
-      userMessage += `
-
-The student chose option ${body.answer}. Continue strictly from here.`;
-    }
+    console.log("PARAGRAPH RECEIVED:\n", paragraph);
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userMessage },
+        {
+          role: "user",
+          content: Here is the paragraph:\n\n${paragraph},
+        },
       ],
-      temperature: 0.3,
+      temperature: 0.4,
     });
 
     const reply = completion.choices[0].message.content;
