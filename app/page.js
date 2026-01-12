@@ -38,14 +38,21 @@ export default function Home() {
   };
 
   return (
-    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h1>RC Mentor</h1>
+    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui, sans-serif" }}>
+      <h1 style={{ color: "#0f172a" }}>RC Mentor – NEW UI</h1>
+      <p style={{ color: "#475569" }}>Paste a passage. Let’s read it together.</p>
 
       <textarea
         value={raw}
         onChange={(e) => setRaw(e.target.value)}
         rows={10}
-        style={{ width: "100%", padding: 12, fontSize: 14 }}
+        style={{
+          width: "100%",
+          padding: 14,
+          borderRadius: 8,
+          border: "1px solid #cbd5e1",
+          fontSize: 14
+        }}
         placeholder="Paste full passage here..."
       />
 
@@ -54,13 +61,13 @@ export default function Home() {
       <button
         onClick={prepare}
         style={{
-          background: "#111",
+          background: "#2563eb",
           color: "white",
           padding: "10px 18px",
-          borderRadius: 6,
+          borderRadius: 8,
           border: "none",
           cursor: "pointer",
-          fontWeight: 600
+          fontSize: 14
         }}
       >
         Split into Paragraphs
@@ -75,11 +82,12 @@ export default function Home() {
               key={i}
               onClick={() => setIndex(i)}
               style={{
-                border: i === index ? "2px solid #111" : "1px solid #ccc",
+                border: i === index ? "2px solid #2563eb" : "1px solid #e5e7eb",
                 padding: 12,
                 marginBottom: 10,
                 cursor: "pointer",
-                background: i === index ? "#f0f0f0" : "white"
+                background: i === index ? "#eff6ff" : "white",
+                borderRadius: 6
               }}
             >
               <b>Paragraph {i + 1}</b>
@@ -91,16 +99,14 @@ export default function Home() {
             disabled={loading}
             onClick={() => run(index)}
             style={{
-              marginTop: 20,
-              background: loading ? "#aaa" : "#2563eb",
+              marginTop: 10,
+              background: loading ? "#94a3b8" : "#16a34a",
               color: "white",
-              padding: "12px 22px",
+              padding: "10px 18px",
               borderRadius: 8,
               border: "none",
               cursor: loading ? "not-allowed" : "pointer",
-              fontSize: 16,
-              fontWeight: 600,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+              fontSize: 14
             }}
           >
             {loading ? "Thinking..." : Dissect Paragraph ${index + 1}}
@@ -111,13 +117,13 @@ export default function Home() {
       {reply && (
         <div
           style={{
-            marginTop: 40,
+            marginTop: 30,
             whiteSpace: "pre-wrap",
-            lineHeight: 1.6,
-            padding: 20,
-            borderRadius: 10,
-            background: "#fafafa",
-            border: "1px solid #ddd"
+            lineHeight: 1.7,
+            background: "#f8fafc",
+            padding: 16,
+            borderRadius: 8,
+            border: "1px solid #e5e7eb"
           }}
         >
           {reply}
