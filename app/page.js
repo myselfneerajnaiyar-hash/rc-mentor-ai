@@ -6,25 +6,30 @@ export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [explanation, setExplanation] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleDissect() {
-    const parts = text
+    let parts = text
       .split(/\n\s*\n/)
       .map(p => p.trim())
       .filter(Boolean);
+
+    // Fallback if user pasted without blank lines
+    if (parts.length === 1) {
+      parts = text
+        .split(/\n/)
+        .map(p => p.trim())
+        .filter(p => p.length > 60);
+    }
 
     setParas(parts);
     setIndex(0);
     setExplanation("");
   }
 
-  const current = paras[index] || "";
-
   async function explainCurrent() {
     if (!current) return;
-
     setLoading(true);
     setExplanation("");
 
@@ -32,17 +37,21 @@ export default function Page() {
       const res = await fetch("/api/rc-mentor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paragraph: current }),
+        body: JSON.stringify({
+          paragraph: current,
+        }),
       });
 
       const data = await res.json();
-      setExplanation(data.output || "No explanation returned.");
+      setExplanation(data.reply || "No explanation returned.");
     } catch (e) {
-      setExplanation("Error talking to mentor.");
+      setExplanation("Error fetching explanation.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
+
+  const current = paras[index] || "";
 
   return (
     <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
@@ -68,7 +77,7 @@ export default function Page() {
         style={{
           marginTop: 12,
           padding: "10px 16px",
-          background: "#22c55e",
+          background: "#16a34a",
           color: "#fff",
           border: "none",
           borderRadius: 6,
@@ -105,25 +114,18 @@ export default function Page() {
               border: "none",
               borderRadius: 6,
               cursor: "pointer",
+              fontWeight: 600,
             }}
           >
             Explain this paragraph
           </button>
 
-          {loading && <p style={{ marginTop: 10 }}>Thinking…</p>}
+          {loading && <p style={{ marginTop: 10 }}>Thinking...</p>}
 
           {explanation && (
-            <div
-              style={{
-                marginTop: 14,
-                padding: 12,
-                background: "#fff7ed",
-                border: "1px solid #fed7aa",
-                borderRadius: 6,
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {explanation}
+            <div style={{ marginTop: 16 }}>
+              <strong>Simple Explanation:</strong>
+              <p style={{ marginTop: 6 }}>{explanation}</p>
             </div>
           )}
 
@@ -137,7 +139,6 @@ export default function Page() {
             >
               Prev
             </button>
-
             <button
               onClick={() => {
                 setIndex(i => Math.min(paras.length - 1, i + 1));
