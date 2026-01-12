@@ -15,21 +15,49 @@ export default function Page() {
 
   const [feedback, setFeedback] = useState("");
 
- function splitPassage() {
-  const parts = text
-    .split(/\n\s*\n+/)
-    .map(p => p.trim())
-    .filter(Boolean);
+function splitPassage() {
+  const raw = text.trim();
 
-  // If user pasted without blank lines, keep it as one block
-  const finalParts = parts.length > 0 ? parts : [text.trim()];
+  // Case 1: real paragraphs already present
+  if (/\n\s*\n/.test(raw)) {
+    const parts = raw
+      .split(/\n\s*\n+/)
+      .map(p => p.trim())
+      .filter(Boolean);
 
-  setParas(finalParts);
+    setParas(parts);
+    setIndex(0);
+    setResult(null);
+    return;
+  }
+
+  // Case 2: CAT-style wall of text → split on discourse shifts
+  const markers = [
+    "Digital platforms",
+    "This shift",
+    "What distinguishes",
+    "A thoughtful response",
+    "Over time",
+  ];
+
+  let parts = [raw];
+
+  for (const m of markers) {
+    const next = [];
+    for (const p of parts) {
+      const re = new RegExp(`\\s+(?=${m})`, "g");
+      const split = p.split(re);
+      if (split.length > 1) next.push(...split);
+      else next.push(p);
+    }
+    parts = next;
+  }
+
+  parts = parts.map(p => p.trim()).filter(Boolean);
+
+  setParas(parts);
   setIndex(0);
-  setData(null);
-  setMode("idle");
-  setFeedback("");
-  setError("");
+  setResult(null);
 }
   const current = paras[index] || "";
 
