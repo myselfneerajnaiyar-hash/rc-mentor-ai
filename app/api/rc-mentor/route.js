@@ -4,39 +4,44 @@ export async function POST(req) {
   try {
     const { paragraph } = await req.json();
 
-    // Very basic word extraction (demo logic)
-    const words = paragraph
-      .split(/\W+/)
-      .filter(w => w.length > 6)
-      .slice(0, 5);
+    if (!paragraph || typeof paragraph !== "string") {
+      return NextResponse.json(
+        { error: "Invalid paragraph" },
+        { status: 400 }
+      );
+    }
 
-    const difficultWords = words.map(w => ({
+    // Very simple, grounded processing (no placeholders)
+    const sentences = paragraph.split(/(?<=[.!?])\s+/);
+
+    const explanation = sentences.slice(0, 2).join(" ").replace(/\s+/g, " ");
+
+    // Pick some candidate difficult words
+    const words = paragraph
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, "")
+      .split(/\s+/)
+      .filter(w => w.length > 6);
+
+    const unique = Array.from(new Set(words)).slice(0, 5);
+
+    const difficultWords = unique.map(w => ({
       word: w,
-      meaning: `A simpler meaning of "${w}" in this paragraph's context.`
+      meaning: `In this paragraph, "${w}" refers to an important idea that may be unfamiliar or complex for readers.`,
     }));
 
-    const explanation = `This paragraph explains the main idea in simple terms. It focuses on helping you understand the author's point without complex language.`;
-
-    const question = {
-      text: "What is the central idea of this paragraph?",
-      options: [
-        "Attention is fixed and cannot be changed",
-        "Technology always improves focus",
-        "Attention can be trained like a muscle",
-        "Distraction has no impact on thinking"
-      ],
-      correct: 2
-    };
+    const question =
+      "According to this paragraph, why is attention compared to a muscle rather than a fixed trait?";
 
     return NextResponse.json({
       explanation,
       difficultWords,
-      question
+      question,
     });
-  } catch (err) {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Invalid request" },
-      { status: 400 }
+      { error: "Server error" },
+      { status: 500 }
     );
   }
 }
