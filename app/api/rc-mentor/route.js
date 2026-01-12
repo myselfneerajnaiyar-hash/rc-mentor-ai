@@ -39,6 +39,7 @@ Never:
 export async function POST(req) {
   try {
     const body = await req.json();
+    console.log("RECEIVED PARAGRAPH:\n", body.paragraph);
 
     if (!body.paragraph || !body.index || !body.total) {
       return new Response(
