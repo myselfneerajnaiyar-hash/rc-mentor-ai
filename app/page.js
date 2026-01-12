@@ -6,85 +6,103 @@ export default function Page() {
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
 
-  const [result, setResult] = useState(null);
-  const [stage, setStage] = useState("idle"); // idle | explained | primary | easier | correct
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [mode, setMode] = useState("idle"); 
+  // idle | showingPrimary | showingEasier | solved
+
   const [feedback, setFeedback] = useState("");
 
   function splitPassage() {
+    const hasBlankLines = /\n\s*\n/.test(text);
     let parts = [];
 
-    if (/\n\s*\n/.test(text)) {
+    if (hasBlankLines) {
       parts = text
         .split(/\n\s*\n+/)
         .map(p => p.trim())
         .filter(Boolean);
-    }
-
-    if (parts.length < 2) {
+    } else {
       const sentences = text.split(/(?<=[.!?])\s+/);
-      const size = Math.ceil(sentences.length / 4);
-      parts = [];
-      for (let i = 0; i < sentences.length; i += size) {
-        parts.push(sentences.slice(i, i + size).join(" "));
+      let buf = "";
+      const out = [];
+      for (const s of sentences) {
+        buf += (buf ? " " : "") + s;
+        if (buf.length > 300) {
+          out.push(buf.trim());
+          buf = "";
+        }
       }
+      if (buf.trim()) out.push(buf.trim());
+      parts = out;
     }
 
-    setParas(parts.filter(Boolean));
+    setParas(parts);
     setIndex(0);
-    setResult(null);
-    setStage("idle");
+    setData(null);
+    setMode("idle");
     setFeedback("");
+    setError("");
   }
 
   const current = paras[index] || "";
 
   async function explain() {
     if (!current) return;
+
     setLoading(true);
+    setError("");
+    setData(null);
     setFeedback("");
-    setStage("idle");
+    setMode("idle");
 
-    const res = await fetch("/api/rc-mentor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paragraph: current }),
-    });
+    try {
+      const res = await fetch("/api/rc-mentor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paragraph: current }),
+      });
 
-    const data = await res.json();
-    setResult(data);
-    setStage("explained");
-    setLoading(false);
+      if (!res.ok) throw new Error("API failed");
+
+      const json = await res.json();
+      setData(json);
+      setMode("showingPrimary");
+    } catch (e) {
+      setError("Could not fetch explanation.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function choose(optionIndex) {
-    if (!result) return;
+    if (!data) return;
 
-    if (stage === "primary") {
-      if (optionIndex === result.primaryQuestion.correctIndex) {
-        setFeedback("Correct. You’re reading this paragraph the right way.");
-        setStage("correct");
+    if (mode === "showingPrimary") {
+      if (optionIndex === data.primaryQuestion.correctIndex) {
+        setFeedback("Correct. You're reading this paragraph the right way.");
+        setMode("solved");
       } else {
         setFeedback("Not quite. Let’s try a simpler question on the same idea.");
-        setStage("easier");
+        setMode("showingEasier");
       }
-    } else if (stage === "easier") {
-      if (optionIndex === result.easierQuestion.correctIndex) {
-        setFeedback("Good. That’s the right direction.");
-        setStage("correct");
+    } else if (mode === "showingEasier") {
+      if (optionIndex === data.easierQuestion.correctIndex) {
+        setFeedback("Correct. Good recovery.");
+        setMode("solved");
       } else {
-        setFeedback("Let’s pause here and reread the paragraph slowly.");
+        setFeedback("Still off. Re-read the paragraph once and try again.");
       }
     }
   }
 
-  function nextPara() {
-    if (index < paras.length - 1) {
-      setIndex(i => i + 1);
-      setResult(null);
-      setStage("idle");
-      setFeedback("");
-    }
+  function nextParagraph() {
+    setIndex(i => Math.min(paras.length - 1, i + 1));
+    setData(null);
+    setMode("idle");
+    setFeedback("");
   }
 
   return (
@@ -141,84 +159,66 @@ export default function Page() {
             {current}
           </div>
 
-          {!result && (
-            <button
-              onClick={explain}
-              style={{
-                marginTop: 12,
-                padding: "10px 16px",
-                background: "#2563eb",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                cursor: "pointer",
-                fontWeight: 600,
-              }}
-            >
-              Explain this paragraph
-            </button>
-          )}
+          <button
+            onClick={explain}
+            style={{
+              marginTop: 12,
+              padding: "10px 16px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            Explain this paragraph
+          </button>
 
           {loading && <p>Thinking…</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-          {result && (
+          {data && (
             <div style={{ marginTop: 20 }}>
               <h4>Simple Explanation</h4>
-              <p>{result.explanation}</p>
+              <p>{data.explanation}</p>
 
               <h4>Difficult Words</h4>
               <ul>
-                {result.difficultWords.map((d, i) => (
+                {data.difficultWords.map((d, i) => (
                   <li key={i}>
                     <b>{d.word}</b>: {d.meaning}
                   </li>
                 ))}
               </ul>
 
-              {stage === "explained" && (
+              {mode === "showingPrimary" && (
                 <>
                   <h4>Question</h4>
-                  <p>{result.primaryQuestion.prompt}</p>
-                  {result.primaryQuestion.options.map((op, i) => (
+                  <p>{data.primaryQuestion.prompt}</p>
+                  {data.primaryQuestion.options.map((o, i) => (
                     <button
                       key={i}
                       onClick={() => choose(i)}
                       style={{ display: "block", margin: "6px 0" }}
                     >
-                      {op}
-                    </button>
-                  ))}
-                  {setStage && setStage("primary")}
-                </>
-              )}
-
-              {stage === "primary" && (
-                <>
-                  <h4>Question</h4>
-                  <p>{result.primaryQuestion.prompt}</p>
-                  {result.primaryQuestion.options.map((op, i) => (
-                    <button
-                      key={i}
-                      onClick={() => choose(i)}
-                      style={{ display: "block", margin: "6px 0" }}
-                    >
-                      {op}
+                      {o}
                     </button>
                   ))}
                 </>
               )}
 
-              {stage === "easier" && (
+              {mode === "showingEasier" && (
                 <>
                   <h4>Simpler Question</h4>
-                  <p>{result.easierQuestion.prompt}</p>
-                  {result.easierQuestion.options.map((op, i) => (
+                  <p>{data.easierQuestion.prompt}</p>
+                  {data.easierQuestion.options.map((o, i) => (
                     <button
                       key={i}
                       onClick={() => choose(i)}
                       style={{ display: "block", margin: "6px 0" }}
                     >
-                      {op}
+                      {o}
                     </button>
                   ))}
                 </>
@@ -226,17 +226,18 @@ export default function Page() {
 
               {feedback && <p style={{ marginTop: 10 }}>{feedback}</p>}
 
-              {stage === "correct" && (
+              {mode === "solved" && (
                 <button
-                  onClick={nextPara}
+                  onClick={nextParagraph}
                   style={{
                     marginTop: 12,
-                    padding: "8px 14px",
-                    background: "#16a34a",
+                    padding: "10px 16px",
+                    background: "green",
                     color: "#fff",
                     border: "none",
                     borderRadius: 6,
                     cursor: "pointer",
+                    fontWeight: 600,
                   }}
                 >
                   Next Paragraph →
