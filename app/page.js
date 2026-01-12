@@ -10,9 +10,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
  const parts = passage
-  .split(/\n+/)          // split on ANY line break
+  .split(/\n(?=[A-Z])/)
   .map(p => p.trim())
-  .filter(p => p.length > 0);
+  .filter(Boolean);
 
     if (!parts.length) return;
 
