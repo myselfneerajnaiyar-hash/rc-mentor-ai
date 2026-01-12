@@ -63,11 +63,30 @@ export async function POST(req) {
     }
 
     const userMessage = `
-This is paragraph ${index} of ${total}.
+You are given Paragraph ${index} of ${total}.
 
-You must work ONLY on the text below.
+Step 1 — QUOTE:
+First, reproduce the paragraph EXACTLY as given, word-for-word, inside a block titled:
 
-"""${paragraph}"""
+[ORIGINAL PARAGRAPH]
+
+Do not change a single word. Do not summarize. Do not paraphrase.
+
+Step 2 — ANALYZE:
+Now, and only now, based strictly on the quoted text above:
+
+1. Rewrite it in simple language WITHOUT adding any new idea.
+2. Pick 1–2 difficult words that ACTUALLY appear in the paragraph.
+3. Explain them using only meanings derivable from this paragraph.
+4. Ask ONE MCQ that tests what THIS paragraph is doing.
+
+You are forbidden from:
+- Introducing any concept not present in the quoted paragraph.
+- Referring to any other paragraph.
+- Adding examples not implied by the text.
+
+Paragraph to quote:
+${paragraph}
 `;
 
     const completion = await client.chat.completions.create({
