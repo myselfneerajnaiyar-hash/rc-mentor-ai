@@ -19,35 +19,36 @@ export default function Page() {
 function splitPassage() {
   const raw = text.trim();
 
-  // First: respect real paragraph breaks
+  // Step 1: Try real paragraph breaks
   let parts = raw
-    .split(/\n\s*\n+/)
+    .split(/\n\s*\n/)
     .map(p => p.trim())
     .filter(Boolean);
 
-  // If everything came as one big block, chunk it
+  // Step 2: If still only one block, split by sentences
   if (parts.length === 1) {
-    const words = parts[0].split(/\s+/);
+    const sentences = raw.match(/[^.!?]+[.!?]+/g) || [raw];
 
-    if (words.length > 180) {
-      parts = [];
-      let buf = [];
+    parts = [];
+    let current = "";
 
-      for (const w of words) {
-        buf.push(w);
-        if (buf.length >= 120) {
-          parts.push(buf.join(" "));
-          buf = [];
-        }
+    for (let s of sentences) {
+      if ((current + s).length > 300) {
+        parts.push(current.trim());
+        current = s;
+      } else {
+        current += " " + s;
       }
-
-      if (buf.length) parts.push(buf.join(" "));
     }
+
+    if (current.trim()) parts.push(current.trim());
   }
 
   setParas(parts);
   setIndex(0);
-  setResult(null);
+  setData(null);
+  setMode("idle");
+  setFeedback("");
 }
   const current = paras[index] || "";
 
