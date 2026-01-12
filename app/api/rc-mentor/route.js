@@ -1,74 +1,153 @@
-import OpenAI from "openai";
+"use client";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { useState } from "react";
 
-export async function POST(req) {
-  try {
-    const { paragraph } = await req.json();
+export default function Page() {
+  const [text, setText] = useState("");
+  const [paras, setParas] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    if (!paragraph || !paragraph.trim()) {
-      return new Response(
-        JSON.stringify({ error: "No paragraph provided" }),
-        { status: 400 }
-      );
-    }
+  function splitPassage() {
+    const parts = text
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(p => p.length > 40);
 
-    const prompt = `
-You are an RC mentor for CAT-level students.
-
-You will be given ONE paragraph only.
-
-Rules:
-1. Do NOT rewrite or copy the paragraph again.
-2. Base everything ONLY on the given paragraph.
-3. Do NOT use information from outside this paragraph.
-4. Do NOT mention other parts of the passage.
-5. Output must be in this exact structure:
-
-Simple Explanation:
-(Explain the paragraph in very easy language, in 5–7 short lines.)
-
-Key Ideas:
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Difficult Words:
-word – simple meaning
-word – simple meaning
-
-One RC-style Question:
-A) option
-B) option
-C) option
-D) option
-
-Correct Answer: (letter) – short reason
-
-Paragraph:
-"""${paragraph}"""
-`;
-
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are a precise reading comprehension tutor." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.3,
-    });
-
-    const text = completion.choices[0].message.content;
-
-    return new Response(JSON.stringify({ result: text }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message || "Unknown error" }),
-      { status: 500 }
-    );
+    setParas(parts);
+    setIndex(0);
+    setResult("");
   }
+
+  async function explain() {
+    setLoading(true);
+    setResult("");
+
+    const res = await fetch("/api/rc-mentor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paragraph: paras[index],
+      }),
+    });
+
+    const data = await res.json();
+    setResult(data.result || "No explanation returned.");
+    setLoading(false);
+  }
+
+  const current = paras[index] || "";
+
+  return (
+    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
+      <h1>RC Mentor</h1>
+      <p>Paste a passage. Let’s read it together.</p>
+
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Paste your RC passage here..."
+        style={{
+          width: "100%",
+          minHeight: 180,
+          padding: 12,
+          fontSize: 14,
+          border: "1px solid #ccc",
+          borderRadius: 6,
+        }}
+      />
+
+      <button
+        onClick={splitPassage}
+        style={{
+          marginTop: 12,
+          padding: "10px 16px",
+          background: "#16a34a",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          cursor: "pointer",
+          fontWeight: 600,
+        }}
+      >
+        Split Passage 🌿
+      </button>
+
+      {current && (
+        <div style={{ marginTop: 30 }}>
+          <h3>Paragraph {index + 1}</h3>
+
+          <div
+            style={{
+              background: "#f8fafc",
+              padding: 14,
+              borderRadius: 6,
+              whiteSpace: "pre-wrap",
+              border: "1px solid #e5e7eb",
+              lineHeight: 1.6,
+            }}
+          >
+            {current}
+          </div>
+
+          <button
+            onClick={explain}
+            disabled={loading}
+            style={{
+              marginTop: 12,
+              padding: "8px 14px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            {loading ? "Thinking..." : "Explain this paragraph"}
+          </button>
+
+          {result && (
+            <div
+              style={{
+                marginTop: 20,
+                padding: 14,
+                borderRadius: 6,
+                background: "#fff",
+                border: "1px solid #e5e7eb",
+                whiteSpace: "pre-wrap",
+                lineHeight: 1.6,
+              }}
+            >
+              {result}
+            </div>
+          )}
+
+          <div style={{ marginTop: 16 }}>
+            <button
+              onClick={() => {
+                setIndex(i => Math.max(0, i - 1));
+                setResult("");
+              }}
+              disabled={index === 0}
+            >
+              Prev
+            </button>
+
+            <button
+              onClick={() => {
+                setIndex(i => Math.min(paras.length - 1, i + 1));
+                setResult("");
+              }}
+              disabled={index >= paras.length - 1}
+              style={{ marginLeft: 8 }}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+    </main>
+  );
 }
