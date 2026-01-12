@@ -5,25 +5,45 @@ import { useState } from "react";
 export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
-  const [explainedIndex, setExplainedIndex] = useState(null);
+  const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [explanation, setExplanation] = useState("");
 
-  function handleSplit() {
-  let parts = text
-    .split(/\n\s*\n/)
-    .map(p => p.trim())
-    .filter(Boolean);
-
-  // Fallback: if everything came as one block, split by single lines
-  if (parts.length === 1) {
-    parts = text
-      .split(/\n+/)
+  function handleDissect() {
+    const parts = text
+      .split(/\n\s*\n/)
       .map(p => p.trim())
-      .filter(p => p.length > 60); // ignore tiny fragments
+      .filter(Boolean);
+
+    setParas(parts);
+    setIndex(0);
+    setExplanation("");
   }
 
-  setParas(parts);
-  setExplainedIndex(null);
-}
+  const current = paras[index] || "";
+
+  async function explainCurrent() {
+    if (!current) return;
+
+    setLoading(true);
+    setExplanation("");
+
+    try {
+      const res = await fetch("/api/rc-mentor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paragraph: current }),
+      });
+
+      const data = await res.json();
+      setExplanation(data.output || "No explanation returned.");
+    } catch (e) {
+      setExplanation("Error talking to mentor.");
+    }
+
+    setLoading(false);
+  }
+
   return (
     <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
@@ -44,11 +64,11 @@ export default function Page() {
       />
 
       <button
-        onClick={handleSplit}
+        onClick={handleDissect}
         style={{
           marginTop: 12,
-          padding: "10px 18px",
-          background: "#16a34a", // green
+          padding: "10px 16px",
+          background: "#22c55e",
           color: "#fff",
           border: "none",
           borderRadius: 6,
@@ -59,55 +79,76 @@ export default function Page() {
         Split Passage 🌿
       </button>
 
-      {paras.length > 0 && (
+      {current && (
         <div style={{ marginTop: 30 }}>
-          {paras.map((p, i) => (
+          <h3>Paragraph {index + 1}</h3>
+
+          <div
+            style={{
+              background: "#f8fafc",
+              padding: 12,
+              borderRadius: 6,
+              whiteSpace: "pre-wrap",
+              border: "1px solid #e5e7eb",
+            }}
+          >
+            {current}
+          </div>
+
+          <button
+            onClick={explainCurrent}
+            style={{
+              marginTop: 12,
+              padding: "8px 14px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+            }}
+          >
+            Explain this paragraph
+          </button>
+
+          {loading && <p style={{ marginTop: 10 }}>Thinking…</p>}
+
+          {explanation && (
             <div
-              key={i}
               style={{
-                marginBottom: 24,
+                marginTop: 14,
                 padding: 12,
-                border: "1px solid #e5e7eb",
+                background: "#fff7ed",
+                border: "1px solid #fed7aa",
                 borderRadius: 6,
-                background: "#f8fafc",
+                whiteSpace: "pre-wrap",
               }}
             >
-              <div
-                style={{
-                  whiteSpace: "pre-wrap",
-                  marginBottom: 10,
-                }}
-              >
-                {p}
-              </div>
-
-              <button
-                onClick={() => setExplainedIndex(i)}
-                style={{
-                  padding: "6px 12px",
-                  background: "#2563eb",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 4,
-                  cursor: "pointer",
-                  fontSize: 13,
-                }}
-              >
-                Explain this paragraph
-              </button>
-
-              {explainedIndex === i && (
-                <div style={{ marginTop: 10 }}>
-                  <strong>Simple Explanation:</strong>
-                  <p style={{ marginTop: 6 }}>
-                    This paragraph is being taken exactly as written above.
-                    The explanation will always be based only on this paragraph,
-                    not on the rest of the passage.
-                  </p>
-                </div>
-              )}
+              {explanation}
             </div>
-          ))}
+          )}
+
+          <div style={{ marginTop: 16 }}>
+            <button
+              onClick={() => {
+                setIndex(i => Math.max(0, i - 1));
+                setExplanation("");
+              }}
+              disabled={index === 0}
+            >
+              Prev
+            </button>
+
+            <button
+              onClick={() => {
+                setIndex(i => Math.min(paras.length - 1, i + 1));
+                setExplanation("");
+              }}
+              disabled={index >= paras.length - 1}
+              style={{ marginLeft: 8 }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </main>
