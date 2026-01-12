@@ -5,14 +5,15 @@ export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
+
   const [result, setResult] = useState(null);
+  const [stage, setStage] = useState("idle"); // idle | explained | primary | easier | correct
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState("");
 
   function splitPassage() {
     let parts = [];
 
-    // First try blank-line splitting
     if (/\n\s*\n/.test(text)) {
       parts = text
         .split(/\n\s*\n+/)
@@ -20,14 +21,11 @@ export default function Page() {
         .filter(Boolean);
     }
 
-    // If still not enough, force into ~4 chunks
-    if (parts.length < 4) {
+    if (parts.length < 2) {
       const sentences = text.split(/(?<=[.!?])\s+/);
-      const total = sentences.length;
-      const size = Math.ceil(total / 4);
-
+      const size = Math.ceil(sentences.length / 4);
       parts = [];
-      for (let i = 0; i < total; i += size) {
+      for (let i = 0; i < sentences.length; i += size) {
         parts.push(sentences.slice(i, i + size).join(" "));
       }
     }
@@ -35,7 +33,8 @@ export default function Page() {
     setParas(parts.filter(Boolean));
     setIndex(0);
     setResult(null);
-    setError("");
+    setStage("idle");
+    setFeedback("");
   }
 
   const current = paras[index] || "";
@@ -43,26 +42,48 @@ export default function Page() {
   async function explain() {
     if (!current) return;
     setLoading(true);
-    setResult(null);
-    setError("");
+    setFeedback("");
+    setStage("idle");
 
-    try {
-      const res = await fetch("/api/rc-mentor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paragraph: current }),
-      });
+    const res = await fetch("/api/rc-mentor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paragraph: current }),
+    });
 
-      if (!res.ok) {
-        throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    setResult(data);
+    setStage("explained");
+    setLoading(false);
+  }
+
+  function choose(optionIndex) {
+    if (!result) return;
+
+    if (stage === "primary") {
+      if (optionIndex === result.primaryQuestion.correctIndex) {
+        setFeedback("Correct. You’re reading this paragraph the right way.");
+        setStage("correct");
+      } else {
+        setFeedback("Not quite. Let’s try a simpler question on the same idea.");
+        setStage("easier");
       }
+    } else if (stage === "easier") {
+      if (optionIndex === result.easierQuestion.correctIndex) {
+        setFeedback("Good. That’s the right direction.");
+        setStage("correct");
+      } else {
+        setFeedback("Let’s pause here and reread the paragraph slowly.");
+      }
+    }
+  }
 
-      const data = await res.json();
-      setResult(data);
-    } catch (e) {
-      setError("Could not fetch explanation.");
-    } finally {
-      setLoading(false);
+  function nextPara() {
+    if (index < paras.length - 1) {
+      setIndex(i => i + 1);
+      setResult(null);
+      setStage("idle");
+      setFeedback("");
     }
   }
 
@@ -120,24 +141,25 @@ export default function Page() {
             {current}
           </div>
 
-          <button
-            onClick={explain}
-            style={{
-              marginTop: 12,
-              padding: "10px 16px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              cursor: "pointer",
-              fontWeight: 600,
-            }}
-          >
-            Explain this paragraph
-          </button>
+          {!result && (
+            <button
+              onClick={explain}
+              style={{
+                marginTop: 12,
+                padding: "10px 16px",
+                background: "#2563eb",
+                color: "#fff",
+                border: "none",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontWeight: 600,
+              }}
+            >
+              Explain this paragraph
+            </button>
+          )}
 
           {loading && <p>Thinking…</p>}
-          {error && <p style={{ color: "red" }}>{error}</p>}
 
           {result && (
             <div style={{ marginTop: 20 }}>
@@ -153,34 +175,75 @@ export default function Page() {
                 ))}
               </ul>
 
-              <h4>Question</h4>
-              <p style={{ whiteSpace: "pre-wrap" }}>
-                {result.question}
-              </p>
+              {stage === "explained" && (
+                <>
+                  <h4>Question</h4>
+                  <p>{result.primaryQuestion.prompt}</p>
+                  {result.primaryQuestion.options.map((op, i) => (
+                    <button
+                      key={i}
+                      onClick={() => choose(i)}
+                      style={{ display: "block", margin: "6px 0" }}
+                    >
+                      {op}
+                    </button>
+                  ))}
+                  {setStage && setStage("primary")}
+                </>
+              )}
+
+              {stage === "primary" && (
+                <>
+                  <h4>Question</h4>
+                  <p>{result.primaryQuestion.prompt}</p>
+                  {result.primaryQuestion.options.map((op, i) => (
+                    <button
+                      key={i}
+                      onClick={() => choose(i)}
+                      style={{ display: "block", margin: "6px 0" }}
+                    >
+                      {op}
+                    </button>
+                  ))}
+                </>
+              )}
+
+              {stage === "easier" && (
+                <>
+                  <h4>Simpler Question</h4>
+                  <p>{result.easierQuestion.prompt}</p>
+                  {result.easierQuestion.options.map((op, i) => (
+                    <button
+                      key={i}
+                      onClick={() => choose(i)}
+                      style={{ display: "block", margin: "6px 0" }}
+                    >
+                      {op}
+                    </button>
+                  ))}
+                </>
+              )}
+
+              {feedback && <p style={{ marginTop: 10 }}>{feedback}</p>}
+
+              {stage === "correct" && (
+                <button
+                  onClick={nextPara}
+                  style={{
+                    marginTop: 12,
+                    padding: "8px 14px",
+                    background: "#16a34a",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 6,
+                    cursor: "pointer",
+                  }}
+                >
+                  Next Paragraph →
+                </button>
+              )}
             </div>
           )}
-
-          <div style={{ marginTop: 20 }}>
-            <button
-              onClick={() => {
-                setIndex(i => Math.max(0, i - 1));
-                setResult(null);
-              }}
-              disabled={index === 0}
-            >
-              Prev
-            </button>
-            <button
-              onClick={() => {
-                setIndex(i => Math.min(paras.length - 1, i + 1));
-                setResult(null);
-              }}
-              disabled={index === paras.length - 1}
-              style={{ marginLeft: 8 }}
-            >
-              Next
-            </button>
-          </div>
         </>
       )}
     </main>
