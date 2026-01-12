@@ -9,48 +9,62 @@ export default function Page() {
   const [explanation, setExplanation] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleSplit() {
-    // Stronger paragraph detection:
-    // 1. Normalize Windows/Mac line breaks
-    const cleaned = text.replace(/\r\n/g, "\n");
-
-    // 2. Split on TWO or more line breaks
-    const parts = cleaned
+  function smartSplit(input) {
+    // First try real paragraph breaks
+    let parts = input
+      .trim()
       .split(/\n\s*\n+/)
       .map(p => p.trim())
-      .filter(p => p.length > 40); // ignore junk
+      .filter(Boolean);
 
-    setParas(parts);
+    // If user pasted as one big block, auto-split by length + sentence boundary
+    if (parts.length === 1) {
+      const text = parts[0];
+      const chunks = [];
+      let buf = "";
+
+      text.split(/(?<=[.!?])\s+/).forEach(sentence => {
+        if ((buf + " " + sentence).length > 600) {
+          chunks.push(buf.trim());
+          buf = sentence;
+        } else {
+          buf += " " + sentence;
+        }
+      });
+
+      if (buf.trim()) chunks.push(buf.trim());
+      parts = chunks;
+    }
+
+    return parts;
+  }
+
+  function handleSplit() {
+    const p = smartSplit(text);
+    setParas(p);
     setIndex(0);
     setExplanation("");
   }
 
-  async function explainCurrent() {
+  async function explain() {
     setLoading(true);
     setExplanation("");
 
-    try {
-      const res = await fetch("/api/rc-mentor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paragraph: paras[index],
-        }),
-      });
+    const res = await fetch("/api/rc-mentor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paragraph: paras[index] })
+    });
 
-      const data = await res.json();
-      setExplanation(data.result || "No explanation returned.");
-    } catch (e) {
-      setExplanation("Error fetching explanation.");
-    }
-
+    const data = await res.json();
+    setExplanation(data.result || "No explanation returned.");
     setLoading(false);
   }
 
-  const current = paras[index] || "";
+  const current = paras[index];
 
   return (
-    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
+    <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
       <p>Paste a passage. Let’s read it together.</p>
 
@@ -81,7 +95,7 @@ export default function Page() {
           fontWeight: 600,
         }}
       >
-        Split Passage 🌿
+        Split Passage 🌱
       </button>
 
       {current && (
@@ -101,8 +115,7 @@ export default function Page() {
           </div>
 
           <button
-            onClick={explainCurrent}
-            disabled={loading}
+            onClick={explain}
             style={{
               marginTop: 12,
               padding: "8px 14px",
@@ -112,26 +125,33 @@ export default function Page() {
               borderRadius: 6,
               cursor: "pointer",
             }}
+            disabled={loading}
           >
-            {loading ? "Thinking..." : "Explain this paragraph"}
+            {loading ? "Thinking…" : "Explain this paragraph"}
           </button>
 
-          <div style={{ marginTop: 16 }}>
-            <strong>Simple Explanation:</strong>
-            <div style={{ whiteSpace: "pre-wrap", marginTop: 6 }}>
-              {explanation || "—"}
+          {explanation && (
+            <div style={{ marginTop: 16 }}>
+              <strong>Simple Explanation:</strong>
+              <p style={{ marginTop: 6, lineHeight: 1.6 }}>{explanation}</p>
             </div>
-          </div>
+          )}
 
           <div style={{ marginTop: 16 }}>
             <button
-              onClick={() => setIndex(i => Math.max(0, i - 1))}
+              onClick={() => {
+                setIndex(i => Math.max(0, i - 1));
+                setExplanation("");
+              }}
               disabled={index === 0}
             >
               Prev
             </button>
             <button
-              onClick={() => setIndex(i => Math.min(paras.length - 1, i + 1))}
+              onClick={() => {
+                setIndex(i => Math.min(paras.length - 1, i + 1));
+                setExplanation("");
+              }}
               disabled={index >= paras.length - 1}
               style={{ marginLeft: 8 }}
             >
