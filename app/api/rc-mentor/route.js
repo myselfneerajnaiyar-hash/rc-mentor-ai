@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
+
 export async function POST(req) {
   try {
     const { paragraph } = await req.json();
@@ -11,54 +13,90 @@ export async function POST(req) {
       );
     }
 
-    // Basic deterministic processing (no AI yet)
-    const sentences = paragraph.split(/(?<=[.!?])\s+/).filter(Boolean);
+    const systemPrompt = `
+You are an expert CAT RC mentor.
 
-    const explanation =
-      "In simple terms, this paragraph is saying: " +
-      sentences.slice(0, 2).join(" ").replace(/\s+/g, " ");
+Given ONE paragraph from a passage, you must return:
 
-    const words = paragraph
-      .toLowerCase()
-      .replace(/[^a-z\s]/g, "")
-      .split(/\s+/)
-      .filter(w => w.length > 6);
+1) A clear, student-friendly explanation (2–3 lines).
+2) 4–5 difficult words from the paragraph with contextual meanings.
+3) One CAT-style MCQ based ONLY on this paragraph:
+   - Focus on meaning, inference, implication, or idea.
+   - 4 options.
+   - Provide correctIndex (0–3).
+4) A simpler MCQ on the same idea (for wrong attempts):
+   - 4 options.
+   - Provide correctIndex.
 
-    const unique = Array.from(new Set(words)).slice(0, 4);
+Return STRICT JSON in exactly this shape:
 
-    const difficultWords = unique.map(w => ({
-      word: w,
-      meaning: `Here, "${w}" refers to an idea that may be unfamiliar or abstract for many readers.`,
-    }));
+{
+  "explanation": "...",
+  "difficultWords": [
+    { "word": "...", "meaning": "..." }
+  ],
+  "primaryQuestion": {
+    "prompt": "...",
+    "options": ["...", "...", "...", "..."],
+    "correctIndex": 0
+  },
+  "easierQuestion": {
+    "prompt": "...",
+    "options": ["...", "...", "...", "..."],
+    "correctIndex": 1
+  }
+}
 
-    const primaryQuestion = {
-      prompt: "What is the main role of this paragraph?",
-      options: [
-        "To introduce a new idea or claim",
-        "To give a detailed example",
-        "To contradict an earlier argument",
-        "To summarize the entire passage",
-      ],
-      correctIndex: 0,
-    };
+Do NOT add any extra text outside JSON.
+`;
 
-    const easierQuestion = {
-      prompt: "What is the author mainly doing in this paragraph?",
-      options: [
-        "Presenting an idea",
-        "Telling a story",
-        "Changing the topic",
-        "Ending the discussion",
-      ],
-      correctIndex: 0,
-    };
+    const userPrompt = `Paragraph:\n${paragraph}`;
 
-    return NextResponse.json({
-      explanation,
-      difficultWords,
-      primaryQuestion,
-      easierQuestion,
+    const openaiRes = await fetch(OPENAI_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        temperature: 0.4,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+      }),
     });
+
+    if (!openaiRes.ok) {
+      const t = await openaiRes.text();
+      return NextResponse.json(
+        { error: "OpenAI error", detail: t },
+        { status: 500 }
+      );
+    }
+
+    const json = await openaiRes.json();
+    const content = json.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return NextResponse.json(
+        { error: "Empty OpenAI response" },
+        { status: 500 }
+      );
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(content);
+    } catch (e) {
+      return NextResponse.json(
+        { error: "Invalid JSON from OpenAI", raw: content },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(parsed);
   } catch (e) {
     return NextResponse.json(
       { error: "Server error" },
