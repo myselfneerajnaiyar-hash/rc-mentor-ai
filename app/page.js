@@ -54,7 +54,7 @@ export default function Page() {
       });
 
       if (!res.ok) {
-        throw new Error(API error ${res.status});
+        throw new Error(`API error ${res.status}`);
       }
 
       const data = await res.json();
