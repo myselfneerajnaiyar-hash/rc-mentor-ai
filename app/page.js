@@ -10,7 +10,7 @@ export default function Page() {
 
   function splitPassage() {
     const parts = text
-      .split(/\n\s*\n+/)   // robust paragraph splitter
+      .split(/\n\s*\n+/)
       .map(p => p.trim())
       .filter(Boolean);
 
@@ -33,7 +33,12 @@ export default function Page() {
       });
 
       const data = await res.json();
-      setResult(data);
+
+      setResult({
+        explanation: String(data.explanation || ""),
+        difficultWords: Array.isArray(data.difficultWords) ? data.difficultWords : [],
+        question: String(data.question || ""),
+      });
     } catch (e) {
       setResult({
         explanation: "Error getting explanation.",
@@ -59,16 +64,7 @@ export default function Page() {
           />
           <button
             onClick={splitPassage}
-            style={{
-              marginTop: 12,
-              padding: "10px 16px",
-              background: "green",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              cursor: "pointer",
-              fontWeight: 600,
-            }}
+            style={{ marginTop: 12, padding: "10px 16px", background: "green", color: "#fff" }}
           >
             Split Passage 🌱
           </button>
@@ -96,7 +92,7 @@ export default function Page() {
 
               <h4>Difficult Words</h4>
               <ul>
-                {(result.difficultWords || []).map((d, i) => (
+                {result.difficultWords.map((d, i) => (
                   <li key={i}><b>{d.word}</b>: {d.meaning}</li>
                 ))}
               </ul>
