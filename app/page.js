@@ -18,7 +18,7 @@ export default function Page() {
 function splitPassage() {
   const raw = text.trim();
 
-  // Case 1: real paragraphs already present
+  // If user already pasted real paragraphs, respect them
   if (/\n\s*\n/.test(raw)) {
     const parts = raw
       .split(/\n\s*\n+/)
@@ -31,7 +31,7 @@ function splitPassage() {
     return;
   }
 
-  // Case 2: CAT-style wall of text → split on discourse shifts
+  // CAT-style wall of text → detect paragraph starts
   const markers = [
     "Digital platforms",
     "This shift",
@@ -40,22 +40,37 @@ function splitPassage() {
     "Over time",
   ];
 
-  let parts = [raw];
+  const positions = [];
 
   for (const m of markers) {
-    const next = [];
-    for (const p of parts) {
-      const re = new RegExp(`\\s+(?=${m})`, "g");
-      const split = p.split(re);
-      if (split.length > 1) next.push(...split);
-      else next.push(p);
-    }
-    parts = next;
+    const idx = raw.indexOf(m);
+    if (idx > 0) positions.push(idx);
   }
 
-  parts = parts.map(p => p.trim()).filter(Boolean);
+  // No markers found → treat as single paragraph
+  if (positions.length === 0) {
+    setParas([raw]);
+    setIndex(0);
+    setResult(null);
+    return;
+  }
 
-  setParas(parts);
+  // Sort and cut once
+  positions.sort((a, b) => a - b);
+
+  const parts = [];
+  let last = 0;
+
+  for (const p of positions) {
+    parts.push(raw.slice(last, p).trim());
+    last = p;
+  }
+
+  parts.push(raw.slice(last).trim());
+
+  const clean = parts.filter(Boolean);
+
+  setParas(clean);
   setIndex(0);
   setResult(null);
 }
