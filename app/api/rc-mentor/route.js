@@ -1,49 +1,42 @@
-import OpenAI from "openai";
-
-export const runtime = "edge";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const paragraph = body.paragraph || "";
-
-    if (!paragraph.trim()) {
-      return new Response(
-        JSON.stringify({ result: "No paragraph received." }),
-        { status: 200 }
-      );
-    }
+    const { paragraph } = await req.json();
 
     const prompt = `
-You are an RC mentor for CAT students.
+You are an RC mentor.
 
-Given this paragraph, do NOT copy it again.
-Explain it simply in 3–4 lines in plain language.
+Given this paragraph:
 
-Paragraph:
-${paragraph}
+"${paragraph}"
+
+Return JSON with:
+1. "explanation" – a simple explanation in your own words (do NOT repeat the paragraph).
+2. "difficultWords" – array of { word, meaning } for 4–6 tough words from THIS paragraph.
+3. "question" – one CAT-style RC question based ONLY on this paragraph with 4 options and the correct answer.
+
+Format strictly as JSON.
 `;
 
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.4,
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: Bearer ${process.env.OPENAI_API_KEY},
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.4,
+      }),
     });
 
-    const result = completion.choices[0].message.content;
+    const data = await res.json();
+    const text = data.choices[0].message.content;
 
-    return new Response(JSON.stringify({ result }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ result: "Server error: " + err.message }),
-      { status: 500 }
-    );
+    return NextResponse.json(JSON.parse(text));
+  } catch (e) {
+    return NextResponse.json({ error: "Failed to generate." }, { status: 500 });
   }
 }
