@@ -10,10 +10,15 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
 
   function handleSplit() {
-    const parts = text
-      .split(/\n\s*\n/)
+    // Stronger paragraph detection:
+    // 1. Normalize Windows/Mac line breaks
+    const cleaned = text.replace(/\r\n/g, "\n");
+
+    // 2. Split on TWO or more line breaks
+    const parts = cleaned
+      .split(/\n\s*\n+/)
       .map(p => p.trim())
-      .filter(Boolean);
+      .filter(p => p.length > 40); // ignore junk
 
     setParas(parts);
     setIndex(0);
@@ -29,8 +34,8 @@ export default function Page() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          paragraph: paras[index]
-        })
+          paragraph: paras[index],
+        }),
       });
 
       const data = await res.json();
@@ -45,7 +50,7 @@ export default function Page() {
   const current = paras[index] || "";
 
   return (
-    <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
+    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
       <p>Paste a passage. Let’s read it together.</p>
 
@@ -55,7 +60,7 @@ export default function Page() {
         placeholder="Paste your RC passage here..."
         style={{
           width: "100%",
-          minHeight: 160,
+          minHeight: 180,
           padding: 12,
           fontSize: 14,
           border: "1px solid #ccc",
@@ -113,27 +118,20 @@ export default function Page() {
 
           <div style={{ marginTop: 16 }}>
             <strong>Simple Explanation:</strong>
-            <div style={{ marginTop: 6, whiteSpace: "pre-wrap" }}>
-              {explanation || "No explanation returned."}
+            <div style={{ whiteSpace: "pre-wrap", marginTop: 6 }}>
+              {explanation || "—"}
             </div>
           </div>
 
           <div style={{ marginTop: 16 }}>
             <button
-              onClick={() => {
-                setIndex(i => Math.max(0, i - 1));
-                setExplanation("");
-              }}
+              onClick={() => setIndex(i => Math.max(0, i - 1))}
               disabled={index === 0}
             >
               Prev
             </button>
-
             <button
-              onClick={() => {
-                setIndex(i => Math.min(paras.length - 1, i + 1));
-                setExplanation("");
-              }}
+              onClick={() => setIndex(i => Math.min(paras.length - 1, i + 1))}
               disabled={index >= paras.length - 1}
               style={{ marginLeft: 8 }}
             >
