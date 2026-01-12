@@ -9,35 +9,30 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Smarter splitter:
-  // 1) Prefer blank lines if present
-  // 2) Else, split into paragraph-sized chunks based on sentence density
   function splitPassage() {
-    const hasBlankLines = /\n\s*\n/.test(text);
-
     let parts = [];
-    if (hasBlankLines) {
+
+    // First try blank-line splitting
+    if (/\n\s*\n/.test(text)) {
       parts = text
         .split(/\n\s*\n+/)
         .map(p => p.trim())
         .filter(Boolean);
-    } else {
-      // Fallback: break by long sentence blocks
-      const sentences = text.split(/(?<=[.!?])\s+/);
-      let buf = "";
-      const out = [];
-      for (const s of sentences) {
-        buf += (buf ? " " : "") + s;
-        if (buf.length > 300) {
-          out.push(buf.trim());
-          buf = "";
-        }
-      }
-      if (buf.trim()) out.push(buf.trim());
-      parts = out;
     }
 
-    setParas(parts);
+    // If still not enough, force into ~4 chunks
+    if (parts.length < 4) {
+      const sentences = text.split(/(?<=[.!?])\s+/);
+      const total = sentences.length;
+      const size = Math.ceil(total / 4);
+
+      parts = [];
+      for (let i = 0; i < total; i += size) {
+        parts.push(sentences.slice(i, i + size).join(" "));
+      }
+    }
+
+    setParas(parts.filter(Boolean));
     setIndex(0);
     setResult(null);
     setError("");
@@ -160,9 +155,7 @@ export default function Page() {
 
               <h4>Question</h4>
               <p style={{ whiteSpace: "pre-wrap" }}>
-                {typeof result.question === "string"
-                  ? result.question
-                  : JSON.stringify(result.question, null, 2)}
+                {result.question}
               </p>
             </div>
           )}
