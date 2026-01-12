@@ -8,15 +8,22 @@ export default function Page() {
   const [explainedIndex, setExplainedIndex] = useState(null);
 
   function handleSplit() {
-    const parts = text
-      .split(/\n\s*\n/)
-      .map(p => p.trim())
-      .filter(Boolean);
+  let parts = text
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean);
 
-    setParas(parts);
-    setExplainedIndex(null);
+  // Fallback: if everything came as one block, split by single lines
+  if (parts.length === 1) {
+    parts = text
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length > 60); // ignore tiny fragments
   }
 
+  setParas(parts);
+  setExplainedIndex(null);
+}
   return (
     <main style={{ maxWidth: 800, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
