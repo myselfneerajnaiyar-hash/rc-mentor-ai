@@ -9,16 +9,16 @@ export default function Home() {
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const prepare = () => {
-    const p = raw
-      .split(/\n+/)
-      .map(x => x.trim())
-      .filter(x => x.length > 40); // avoid tiny junk lines
+ const prepare = () => {
+  const p = raw
+    .split(/\n{2,}/)                // split only on real blank lines
+    .map(x => x.replace(/\s+$/g, "")) // preserve internal wrapping
+    .filter(x => x.length > 0);
 
-    setParts(p);
-    setIndex(0);
-    setReply("");
-  };
+  setParts(p);
+  setIndex(0);
+  setReply("");
+};
 
   const run = async (i) => {
     setLoading(true);
