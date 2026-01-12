@@ -63,39 +63,61 @@ export async function POST(req) {
     }
 
     const userMessage = `
+READ CAREFULLY. YOU MUST OBEY ALL RULES.
+
 You are given Paragraph ${index} of ${total}.
 
-Step 1 — QUOTE:
-First, reproduce the paragraph EXACTLY as given, word-for-word, inside a block titled:
+You MUST do this in order:
 
-[ORIGINAL PARAGRAPH]
+1️⃣ First, copy the paragraph BELOW *exactly* as-is.
+- Same words
+- Same punctuation
+- Same line breaks
+- No corrections
+- No paraphrasing
 
-Do not change a single word. Do not summarize. Do not paraphrase.
+Print it under this heading:
 
-Step 2 — ANALYZE:
-Now, and only now, based strictly on the quoted text above:
+📘 ORIGINAL PARAGRAPH
+======================
 
-1. Rewrite it in simple language WITHOUT adding any new idea.
-2. Pick 1–2 difficult words that ACTUALLY appear in the paragraph.
-3. Explain them using only meanings derivable from this paragraph.
-4. Ask ONE MCQ that tests what THIS paragraph is doing.
+2️⃣ Only AFTER that, do the analysis strictly based on what you just printed.
 
-You are forbidden from:
-- Introducing any concept not present in the quoted paragraph.
-- Referring to any other paragraph.
-- Adding examples not implied by the text.
+Use this structure:
 
-Paragraph to quote:
+🧠 Line-by-line Meaning:
+- Break the paragraph into its actual sentences.
+- Explain each sentence in simpler words.
+- Do NOT add anything not present.
+
+🧩 Difficult Words:
+- Choose only words that appear in the paragraph.
+- Give literal meaning.
+- Give meaning in THIS paragraph.
+
+❓ What is this paragraph mainly doing?
+- 4 options
+- Only 1 correct
+- All options must be grounded in the paragraph.
+
+You are FORBIDDEN to:
+- Introduce new ideas
+- Refer to any other paragraph
+- Use background knowledge
+- Invent examples
+- Generalize
+
+--- START PARAGRAPH ---
 ${paragraph}
+--- END PARAGRAPH ---
 `;
-
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userMessage },
       ],
-      temperature: 0.2,
+      temperature: 0,
     });
 
     const reply = completion.choices[0].message.content;
