@@ -9,11 +9,10 @@ export default function Home() {
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const startSession = async () => {
-    const parts = passage
-      .split(/\n\s*\n/)
-      .map(p => p.trim())
-      .filter(Boolean);
+ const parts = passage
+  .split(/\n+/)          // split on ANY line break
+  .map(p => p.trim())
+  .filter(p => p.length > 0);
 
     if (!parts.length) return;
 
