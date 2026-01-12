@@ -15,38 +15,22 @@ export default function Page() {
 
   const [feedback, setFeedback] = useState("");
 
-  function splitPassage() {
-    const hasBlankLines = /\n\s*\n/.test(text);
-    let parts = [];
+ function splitPassage() {
+  const parts = text
+    .split(/\n\s*\n+/)
+    .map(p => p.trim())
+    .filter(Boolean);
 
-    if (hasBlankLines) {
-      parts = text
-        .split(/\n\s*\n+/)
-        .map(p => p.trim())
-        .filter(Boolean);
-    } else {
-      const sentences = text.split(/(?<=[.!?])\s+/);
-      let buf = "";
-      const out = [];
-      for (const s of sentences) {
-        buf += (buf ? " " : "") + s;
-        if (buf.length > 300) {
-          out.push(buf.trim());
-          buf = "";
-        }
-      }
-      if (buf.trim()) out.push(buf.trim());
-      parts = out;
-    }
+  // If user pasted without blank lines, keep it as one block
+  const finalParts = parts.length > 0 ? parts : [text.trim()];
 
-    setParas(parts);
-    setIndex(0);
-    setData(null);
-    setMode("idle");
-    setFeedback("");
-    setError("");
-  }
-
+  setParas(finalParts);
+  setIndex(0);
+  setData(null);
+  setMode("idle");
+  setFeedback("");
+  setError("");
+}
   const current = paras[index] || "";
 
   async function explain() {
