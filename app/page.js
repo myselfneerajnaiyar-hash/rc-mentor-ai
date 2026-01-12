@@ -25,11 +25,11 @@ export default function Page() {
     setLoading(true);
     setResult(null);
 
-    const res = await fetch("/api/explain", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paragraph: current }),
-    });
+    const res = await fetch("/api/rc-mentor", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ paragraph }),
+});
 
     const data = await res.json();
     setResult(data);
