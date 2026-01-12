@@ -58,21 +58,21 @@ export default function Home() {
 
       <br /><br />
 
-      <button
-        onClick={prepare}
-        style={{
-          background: "#2563eb",
-          color: "white",
-          padding: "10px 18px",
-          borderRadius: 8,
-          border: "none",
-          cursor: "pointer",
-          fontSize: 14
-        }}
-      >
-        Split into Paragraphs
-      </button>
-
+    <button
+  onClick={prepare}
+  style={{
+    background: "crimson",
+    color: "white",
+    padding: "12px 24px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    border: "none",
+    fontSize: "16px",
+    cursor: "pointer"
+  }}
+>
+  SPLIT PARAGRAPHS (TEST)
+</button>
       {parts.length > 0 && (
         <>
           <h3 style={{ marginTop: 30 }}>Detected Paragraphs</h3>
