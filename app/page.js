@@ -9,7 +9,6 @@ export default function Home() {
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Start the guided session
   const startSession = async () => {
     if (!passage.trim()) return;
 
@@ -22,8 +21,8 @@ export default function Home() {
 
     setParagraphs(parts);
     setIndex(0);
-    setLoading(true);
     setReply("");
+    setLoading(true);
 
     const res = await fetch("/api/rc-mentor", {
       method: "POST",
@@ -40,7 +39,6 @@ export default function Home() {
     setLoading(false);
   };
 
-  // Handle A/B/C/D click and move to next paragraph
   const handleOption = async (option) => {
     const next = index + 1;
     if (next >= paragraphs.length) return;
@@ -92,4 +90,22 @@ export default function Home() {
           <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.6 }}>{reply}</div>
 
           <div style={{ marginTop: 20 }}>
-            {["A", "B", "C", "D"].
+            {["A", "B", "C", "D"].map((opt) => (
+              <button
+                key={opt}
+                onClick={() => handleOption(opt)}
+                style={{
+                  display: "block",
+                  margin: "6px 0",
+                  padding: "8px 12px",
+                }}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
