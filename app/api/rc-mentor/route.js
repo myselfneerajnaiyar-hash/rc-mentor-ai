@@ -11,12 +11,10 @@ export async function POST(req) {
       );
     }
 
-    // Very simple, grounded processing (no placeholders)
     const sentences = paragraph.split(/(?<=[.!?])\s+/);
 
     const explanation = sentences.slice(0, 2).join(" ").replace(/\s+/g, " ");
 
-    // Pick some candidate difficult words
     const words = paragraph
       .toLowerCase()
       .replace(/[^a-z\s]/g, "")
@@ -27,7 +25,7 @@ export async function POST(req) {
 
     const difficultWords = unique.map(w => ({
       word: w,
-      meaning: `In this paragraph, "${w}" refers to an important idea that may be unfamiliar or complex for readers.`,
+      meaning: In this paragraph, "${w}" refers to an important idea that may be unfamiliar or complex for readers.,
     }));
 
     const question =
