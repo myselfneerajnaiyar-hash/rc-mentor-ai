@@ -14,6 +14,8 @@ export default function Page() {
   // idle | showingPrimary | showingEasier | solved
 
   const [feedback, setFeedback] = useState("");
+  const [flow, setFlow] = useState("original"); 
+// "original" | "generated"
 
  
 
@@ -138,17 +140,22 @@ const [genLoading, setGenLoading] = useState(false);
     }
   }
 
-  function nextParagraph() {
-    if (index === paras.length - 1) {
+ function nextParagraph() {
+  if (index === paras.length - 1) {
+    if (flow === "original") {
       setPhase("ready");
-      return;
+    } else {
+      // Generated RC mentor flow ends quietly
+      setPhase("ready");
     }
-
-    setIndex(i => Math.min(paras.length - 1, i + 1));
-    setData(null);
-    setMode("idle");
-    setFeedback("");
+    return;
   }
+
+  setIndex(i => Math.min(paras.length - 1, i + 1));
+  setData(null);
+  setMode("idle");
+  setFeedback("");
+}
 
   async function startTest() {
     setTestLoading(true);
@@ -602,20 +609,26 @@ async function generateNewRC() {
         Take it as a Test
       </button>
 
-      <button
-        onClick={() => {
-          const parts = generatedRC.passage
-            .split(/\n\s*\n/)
-            .map(p => p.trim())
-            .filter(Boolean);
+     <button
+  onClick={() => {
+    const parts = generatedRC.passage
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(Boolean);
 
-          setParas(parts);
-          setIndex(0);
-          setData(null);
-          setFeedback("");
-          setMode("idle");
-          setPhase("mentor");
-        }}
+    setFlow("generated");      // 👈 important
+    setText("");               // 👈 prevents old passage from leaking
+    setResult(null);
+    setGeneratedRC(null);
+
+    setParas(parts);
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+    setPhase("mentor");
+  }}
+>
         style={{
           padding: "12px 18px",
           background: "#2563eb",
