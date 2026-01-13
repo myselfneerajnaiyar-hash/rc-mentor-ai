@@ -1,11 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
-  const [result, setResult] = useState(null);
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,6 +17,78 @@ export default function Page() {
 
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result
+
+  // ---- TEST STATE ----
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [testAnswers, setTestAnswers] = useState({});
+
+  const testQuestions = [
+    {
+      prompt: "What is the central concern of the passage?",
+      options: [
+        "Technological progress is inevitable",
+        "Attention is becoming fragmented",
+        "Education systems are outdated",
+        "People dislike reading",
+      ],
+      correct: 1,
+    },
+    {
+      prompt: "The author is most critical of:",
+      options: [
+        "Human laziness",
+        "Digital design choices",
+        "Traditional education",
+        "Scientific research",
+      ],
+      correct: 1,
+    },
+    {
+      prompt: "Which best describes the tone of the passage?",
+      options: [
+        "Celebratory",
+        "Neutral",
+        "Reflective and concerned",
+        "Humorous",
+      ],
+      correct: 2,
+    },
+    {
+      prompt: "The passage primarily aims to:",
+      options: [
+        "Entertain",
+        "Warn and explain",
+        "Persuade politically",
+        "Narrate history",
+      ],
+      correct: 1,
+    },
+  ];
+
+  // ---- TIMER EFFECTS ----
+  useEffect(() => {
+    if (phase === "test") {
+      setTimeLeft(6 * 60);
+      setTimerRunning(true);
+    }
+  }, [phase]);
+
+  useEffect(() => {
+    if (!timerRunning) return;
+
+    if (timeLeft <= 0) {
+      setTimerRunning(false);
+      setPhase("result");
+      return;
+    }
+
+    const id = setInterval(() => {
+      setTimeLeft(t => t - 1);
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, [timerRunning, timeLeft]);
 
   function splitPassage() {
     const raw = text.trim();
@@ -115,6 +186,15 @@ export default function Page() {
     setMode("idle");
     setFeedback("");
   }
+
+  function submitTest() {
+    setTimerRunning(false);
+    setPhase("result");
+  }
+
+  const score = testQuestions.reduce((s, q, i) => {
+    return s + (testAnswers[i] === q.correct ? 1 : 0);
+  }, 0);
 
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
@@ -260,49 +340,55 @@ export default function Page() {
       )}
 
       {phase === "ready" && (
-        <div
-          style={{
-            marginTop: 40,
-            padding: 24,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            background: "#fafafa",
-          }}
-        >
-          <p style={{ fontSize: 16, lineHeight: 1.6 }}>
-            You’ve now understood this passage in depth.
-            <br />
-            We broke down every paragraph and clarified the ideas.
-            <br /><br />
+        <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd" }}>
+          <p>
+            You’ve now understood this passage in depth.  
             Let’s see how well this understanding translates into performance.
           </p>
+          <button onClick={() => setPhase("test")}>Take Test</button>
+        </div>
+      )}
 
-          <button
-            onClick={() => setPhase("test")}
-            style={{
-              padding: "10px 16px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              fontWeight: 600,
-            }}
-          >
-            Take Test
-          </button>
+      {phase === "test" && (
+        <div style={{ marginTop: 30 }}>
+          <div style={{ marginBottom: 16, fontWeight: 600 }}>
+            Time Left: {Math.floor(timeLeft / 60)}:
+            {(timeLeft % 60).toString().padStart(2, "0")}
+          </div>
 
-          <button
-            onClick={() => setPhase("mentor")}
-            style={{
-              marginLeft: 12,
-              padding: "10px 16px",
-              background: "#eee",
-              border: "1px solid #ccc",
-              borderRadius: 6,
-            }}
-          >
-            Skip for Now
-          </button>
+          {testQuestions.map((q, qi) => (
+            <div key={qi} style={{ marginBottom: 20 }}>
+              <p>{q.prompt}</p>
+              {q.options.map((o, oi) => (
+                <button
+                  key={oi}
+                  onClick={() =>
+                    setTestAnswers(a => ({ ...a, [qi]: oi }))
+                  }
+                  style={{
+                    display: "block",
+                    margin: "4px 0",
+                    background:
+                      testAnswers[qi] === oi ? "#c7d2fe" : "#eee",
+                  }}
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+          ))}
+
+          <button onClick={submitTest}>Submit Test</button>
+        </div>
+      )}
+
+      {phase === "result" && (
+        <div style={{ marginTop: 40 }}>
+          <h2>Your Score: {score} / {testQuestions.length}</h2>
+          <p>
+            This score reflects how well your understanding converted into
+            exam-style performance.
+          </p>
         </div>
       )}
     </main>
