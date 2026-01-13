@@ -66,7 +66,6 @@ export default function Page() {
     },
   ];
 
-  // ---- TIMER EFFECTS ----
   useEffect(() => {
     if (phase === "test") {
       setTimeLeft(6 * 60);
@@ -340,25 +339,96 @@ export default function Page() {
       )}
 
       {phase === "ready" && (
-        <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd" }}>
+        <div
+          style={{
+            marginTop: 40,
+            padding: 24,
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            background: "#fafafa",
+          }}
+        >
           <p>
             You’ve now understood this passage in depth.  
             Let’s see how well this understanding translates into performance.
           </p>
-          <button onClick={() => setPhase("test")}>Take Test</button>
+
+          <button
+            onClick={() => setPhase("test")}
+            style={{
+              padding: "10px 16px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              fontWeight: 600,
+            }}
+          >
+            Take Test
+          </button>
+
+          <button
+            onClick={() => setPhase("mentor")}
+            style={{
+              marginLeft: 12,
+              padding: "10px 16px",
+              background: "#eee",
+              border: "1px solid #ccc",
+              borderRadius: 6,
+            }}
+          >
+            Skip for Now
+          </button>
         </div>
       )}
 
       {phase === "test" && (
-        <div style={{ marginTop: 30 }}>
-          <div style={{ marginBottom: 16, fontWeight: 600 }}>
-            Time Left: {Math.floor(timeLeft / 60)}:
-            {(timeLeft % 60).toString().padStart(2, "0")}
+        <div
+          style={{
+            marginTop: 30,
+            padding: 24,
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            background: "#fafafa",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 20,
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Mini RC Test</h2>
+            <div
+              style={{
+                padding: "6px 12px",
+                borderRadius: 6,
+                background: "#fee2e2",
+                fontWeight: 600,
+              }}
+            >
+              ⏱ {Math.floor(timeLeft / 60)}:
+              {(timeLeft % 60).toString().padStart(2, "0")}
+            </div>
           </div>
 
           {testQuestions.map((q, qi) => (
-            <div key={qi} style={{ marginBottom: 20 }}>
-              <p>{q.prompt}</p>
+            <div
+              key={qi}
+              style={{
+                marginBottom: 24,
+                padding: 16,
+                border: "1px solid #e5e7eb",
+                borderRadius: 6,
+                background: "#fff",
+              }}
+            >
+              <p style={{ fontWeight: 600 }}>
+                Q{qi + 1}. {q.prompt}
+              </p>
+
               {q.options.map((o, oi) => (
                 <button
                   key={oi}
@@ -367,9 +437,15 @@ export default function Page() {
                   }
                   style={{
                     display: "block",
-                    margin: "4px 0",
+                    width: "100%",
+                    textAlign: "left",
+                    margin: "6px 0",
+                    padding: "8px 10px",
+                    borderRadius: 4,
+                    border: "1px solid #ccc",
                     background:
-                      testAnswers[qi] === oi ? "#c7d2fe" : "#eee",
+                      testAnswers[qi] === oi ? "#c7d2fe" : "#f9fafb",
+                    cursor: "pointer",
                   }}
                 >
                   {o}
@@ -378,7 +454,19 @@ export default function Page() {
             </div>
           ))}
 
-          <button onClick={submitTest}>Submit Test</button>
+          <button
+            onClick={submitTest}
+            style={{
+              padding: "12px 18px",
+              background: "green",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              fontWeight: 600,
+            }}
+          >
+            Submit Test
+          </button>
         </div>
       )}
 
