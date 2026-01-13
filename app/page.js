@@ -486,7 +486,7 @@ setPhase("result");
         </div>
       )}
 
-    {phase === "result" && (
+  {phase === "newRC" && (
   <div
     style={{
       marginTop: 40,
@@ -494,106 +494,43 @@ setPhase("result");
       border: "1px solid #ddd",
       borderRadius: 8,
       background: "#fafafa",
+      textAlign: "center",
     }}
   >
-    <h2>Your Score: {score} / {testQuestions.length}</h2>
+    <h2>How would you like to approach the next passage?</h2>
 
-    {loading && <p>Analyzing your thinking…</p>}
-    {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={{ marginTop: 20 }}>
+      <button
+        onClick={() => alert("test mode")}
+        style={{
+          padding: "12px 18px",
+          background: "#16a34a",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+          marginRight: 12,
+        }}
+      >
+        Take it as a Test
+      </button>
 
-    {result && (
-      <>
-        <h3 style={{ marginTop: 24 }}>Detailed Review</h3>
-
-        {result.perQuestionReview.map((q, i) => (
-          <div
-            key={i}
-            style={{
-              marginTop: 16,
-              padding: 16,
-              border: "1px solid #e5e7eb",
-              borderRadius: 6,
-              background: "#fff",
-            }}
-          >
-            <p style={{ fontWeight: 600 }}>
-              Q{i + 1}. {q.question}
-            </p>
-
-            <p>
-              <b>Status:</b>{" "}
-              <span style={{ color: q.status === "correct" ? "green" : "red" }}>
-                {q.status.toUpperCase()}
-              </span>
-            </p>
-
-            <p>
-              <b>Your Answer:</b> {q.yourAnswer}
-              <br />
-              <b>Correct Answer:</b> {q.correctAnswer}
-            </p>
-
-            <p style={{ marginTop: 8 }}>
-              <b>Why the correct option is right:</b>
-              <br />
-              {q.explanation.correctWhy}
-            </p>
-
-            <p style={{ marginTop: 8 }}>
-              <b>Why other options are wrong:</b>
-            </p>
-            <ul>
-              {Object.entries(q.explanation.othersWhyWrong).map(
-                ([k, v]) => (
-                  <li key={k}>{v}</li>
-                )
-              )}
-            </ul>
-          </div>
-        ))}
-
-        <h3 style={{ marginTop: 32 }}>Mentor’s Diagnosis</h3>
-        <p>{result.summary}</p>
-
-        <h4>Your Strengths</h4>
-        <ul>
-          {result.strengths.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ul>
-
-        <h4>Areas to Improve</h4>
-        <ul>
-          {result.weaknesses.map((w, i) => (
-            <li key={i}>{w}</li>
-          ))}
-        </ul>
-
-        <h4>What You Should Focus On Next</h4>
-        <p>{result.nextFocus}</p>
-
-        <button
-          onClick={() => {
-            setPhase("mentor");
-            setParas([]);
-            setText("");
-            setResult(null);
-          }}
-          style={{
-            marginTop: 20,
-            padding: "12px 18px",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            fontWeight: 600,
-          }}
-        >
-          Generate New RC
-        </button>
-      </>
-    )}
+      <button
+        onClick={() => alert("mentor mode")}
+        style={{
+          padding: "12px 18px",
+          background: "#2563eb",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+        }}
+      >
+        View Detailed Explanation
+      </button>
+    </div>
   </div>
+)}
 )}
     </main>
   );
