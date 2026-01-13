@@ -1,91 +1,73 @@
-export const runtime = "nodejs";
-
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const SYSTEM_PROMPT = `
-You are an expert CAT Reading Comprehension examiner.
+export async function POST(req) {
+  try {
+    const { passage } = await req.json();
 
-You will be given a full RC passage.
+    const prompt = `
+You are a CAT RC question setter.
 
-Your task:
-- Generate 4 CAT-style RC questions based strictly on the passage.
-- Each question must test comprehension, inference, tone, or central idea.
-- Avoid trivial or factual questions.
+From the passage below, create exactly 4 CAT-level MCQs.
+
+Rules:
 - Each question must have:
-  - A clear prompt
-  - 4 options
-  - Only ONE correct option
-  - An explanation for why the correct option is right
+  - "prompt"
+  - "options": an array of EXACTLY 4 meaningful answer choices
+  - "correctIndex": 0–3
+- All options must be complete, plausible, and mutually exclusive.
+- Do NOT leave any option blank.
+- Questions should test:
+  - central idea
+  - inference
+  - tone
+  - author's purpose / implication
 
 Return ONLY valid JSON in this format:
 
 {
   "questions": [
     {
-      "prompt": "Question text",
+      "prompt": "...",
       "options": ["A", "B", "C", "D"],
-      "correctIndex": 0,
-      "explanation": "Why this option is correct."
+      "correctIndex": 2
     }
   ]
 }
 
-Rules:
-- Do not invent facts not in the passage.
-- Base every question strictly on the passage.
-- Match CAT-level difficulty.
-- Do not include any extra text outside JSON.
+PASSAGE:
+${passage}
 `;
-
-export async function POST(req) {
-  try {
-    const body = await req.json();
-    const { passage } = body;
-
-    if (!passage || typeof passage !== "string") {
-      return new Response(
-        JSON.stringify({ error: "No passage provided." }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
-    }
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        {
-          role: "user",
-          content: `Generate RC questions for this passage:\n\n${passage}`,
-        },
+        { role: "system", content: "You are a precise CAT RC question setter." },
+        { role: "user", content: prompt },
       ],
-      temperature: 0.4,
+      temperature: 0.2,
     });
 
     const raw = completion.choices[0].message.content;
 
-    // Safety: ensure we return valid JSON
-    let parsed;
-    try {
-      parsed = JSON.parse(raw);
-    } catch (e) {
-      return new Response(
-        JSON.stringify({ error: "Invalid JSON from model", raw }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
+    const jsonStart = raw.indexOf("{");
+    const parsed = JSON.parse(raw.slice(jsonStart));
 
-    return new Response(JSON.stringify(parsed), {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    console.error(err);
-    return new Response(
-      JSON.stringify({ error: "Something went wrong." }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+    // Hard guard: remove any broken questions
+    const cleaned = (parsed.questions || []).filter(
+      q => q.options && q.options.length === 4
+    );
+
+    return NextResponse.json({ questions: cleaned });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "RC test generation failed" },
+      { status: 500 }
     );
   }
 }
