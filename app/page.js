@@ -486,7 +486,7 @@ setPhase("result");
         </div>
       )}
 
-     {phase === "result" && (
+    {phase === "result" && (
   <div
     style={{
       marginTop: 40,
@@ -503,7 +503,56 @@ setPhase("result");
 
     {result && (
       <>
-        <h3 style={{ marginTop: 20 }}>Mentor’s Diagnosis</h3>
+        <h3 style={{ marginTop: 24 }}>Detailed Review</h3>
+
+        {result.perQuestionReview.map((q, i) => (
+          <div
+            key={i}
+            style={{
+              marginTop: 16,
+              padding: 16,
+              border: "1px solid #e5e7eb",
+              borderRadius: 6,
+              background: "#fff",
+            }}
+          >
+            <p style={{ fontWeight: 600 }}>
+              Q{i + 1}. {q.question}
+            </p>
+
+            <p>
+              <b>Status:</b>{" "}
+              <span style={{ color: q.status === "correct" ? "green" : "red" }}>
+                {q.status.toUpperCase()}
+              </span>
+            </p>
+
+            <p>
+              <b>Your Answer:</b> {q.yourAnswer}
+              <br />
+              <b>Correct Answer:</b> {q.correctAnswer}
+            </p>
+
+            <p style={{ marginTop: 8 }}>
+              <b>Why the correct option is right:</b>
+              <br />
+              {q.explanation.correctWhy}
+            </p>
+
+            <p style={{ marginTop: 8 }}>
+              <b>Why other options are wrong:</b>
+            </p>
+            <ul>
+              {Object.entries(q.explanation.othersWhyWrong).map(
+                ([k, v]) => (
+                  <li key={k}>{v}</li>
+                )
+              )}
+            </ul>
+          </div>
+        ))}
+
+        <h3 style={{ marginTop: 32 }}>Mentor’s Diagnosis</h3>
         <p>{result.summary}</p>
 
         <h4>Your Strengths</h4>
@@ -524,10 +573,15 @@ setPhase("result");
         <p>{result.nextFocus}</p>
 
         <button
-          onClick={() => setPhase("mentor")}
+          onClick={() => {
+            setPhase("mentor");
+            setParas([]);
+            setText("");
+            setResult(null);
+          }}
           style={{
-            marginTop: 16,
-            padding: "10px 16px",
+            marginTop: 20,
+            padding: "12px 18px",
             background: "#2563eb",
             color: "#fff",
             border: "none",
@@ -535,7 +589,7 @@ setPhase("result");
             fontWeight: 600,
           }}
         >
-          Start Next Passage
+          Generate New RC
         </button>
       </>
     )}
