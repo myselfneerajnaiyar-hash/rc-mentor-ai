@@ -22,49 +22,8 @@ export default function Page() {
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [testAnswers, setTestAnswers] = useState({});
-
-  const testQuestions = [
-    {
-      prompt: "What is the central concern of the passage?",
-      options: [
-        "Technological progress is inevitable",
-        "Attention is becoming fragmented",
-        "Education systems are outdated",
-        "People dislike reading",
-      ],
-      correct: 1,
-    },
-    {
-      prompt: "The author is most critical of:",
-      options: [
-        "Human laziness",
-        "Digital design choices",
-        "Traditional education",
-        "Scientific research",
-      ],
-      correct: 1,
-    },
-    {
-      prompt: "Which best describes the tone of the passage?",
-      options: [
-        "Celebratory",
-        "Neutral",
-        "Reflective and concerned",
-        "Humorous",
-      ],
-      correct: 2,
-    },
-    {
-      prompt: "The passage primarily aims to:",
-      options: [
-        "Entertain",
-        "Warn and explain",
-        "Persuade politically",
-        "Narrate history",
-      ],
-      correct: 1,
-    },
-  ];
+  const [testQuestions, setTestQuestions] = useState([]);
+  const [testLoading, setTestLoading] = useState(false);
 
   useEffect(() => {
     if (phase === "test") {
@@ -186,13 +145,39 @@ export default function Page() {
     setFeedback("");
   }
 
+  async function startTest() {
+    setTestLoading(true);
+    setError("");
+    setTestAnswers({});
+
+    try {
+      const fullPassage = paras.join("\n\n");
+
+      const res = await fetch("/api/rc-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passage: fullPassage }),
+      });
+
+      if (!res.ok) throw new Error("Test API failed");
+
+      const json = await res.json();
+      setTestQuestions(json.questions || []);
+      setPhase("test");
+    } catch (e) {
+      setError("Could not generate test.");
+    } finally {
+      setTestLoading(false);
+    }
+  }
+
   function submitTest() {
     setTimerRunning(false);
     setPhase("result");
   }
 
   const score = testQuestions.reduce((s, q, i) => {
-    return s + (testAnswers[i] === q.correct ? 1 : 0);
+    return s + (testAnswers[i] === q.correctIndex ? 1 : 0);
   }, 0);
 
   return (
@@ -354,7 +339,7 @@ export default function Page() {
           </p>
 
           <button
-            onClick={() => setPhase("test")}
+            onClick={startTest}
             style={{
               padding: "10px 16px",
               background: "#2563eb",
@@ -379,6 +364,8 @@ export default function Page() {
           >
             Skip for Now
           </button>
+
+          {testLoading && <p style={{ marginTop: 12 }}>Preparing your test…</p>}
         </div>
       )}
 
@@ -400,7 +387,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Scrollable Passage */}
           <div
             style={{
               marginBottom: 24,
