@@ -7,9 +7,7 @@ const openai = new OpenAI({
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-
-    const { passage, questions, answers } = body;
+    const { passage, questions, answers } = await req.json();
 
     if (!passage || !questions || !answers) {
       return NextResponse.json(
@@ -19,54 +17,79 @@ export async function POST(req) {
     }
 
     const prompt = `
-You are an RC mentor for CAT aspirants.
+You are a CAT Reading Comprehension mentor.
 
-A student read the passage below and answered the MCQs.
+A student attempted a test on the following passage:
 
 PASSAGE:
 ${passage}
 
-QUESTIONS:
-${questions
-  .map(
-    (q, i) =>
-      `Q${i + 1}. ${q.prompt}
-Options: ${q.options.join(" | ")}
-Correct: ${q.options[q.correctIndex]}
-Student chose: ${
-        answers[i] !== undefined ? q.options[answers[i]] : "Not Attempted"
-      }`
-  )
-  .join("\n\n")}
+QUESTIONS (with correctIndex already embedded):
+${JSON.stringify(questions, null, 2)}
 
-Now give:
-1. A brief summary of the student's reading ability.
-2. 3 strengths in bullet form.
-3. 3 weaknesses in bullet form.
-4. One clear next focus area.
+STUDENT ANSWERS (index -> chosen option):
+${JSON.stringify(answers, null, 2)}
 
-Respond strictly in JSON:
+Your task:
+
+1. For EACH question:
+   - Say whether the student was correct or wrong.
+   - Mention:
+     - The student's answer (option text)
+     - The correct answer (option text)
+   - Explain:
+     - Why the correct option is correct.
+     - Why EACH incorrect option is wrong or misleading.
+
+2. After the per-question analysis, give:
+   - A brief overall summary of the student's RC ability.
+   - 3 bullet-point strengths.
+   - 3 bullet-point weaknesses.
+   - One clear "Next Focus" recommendation.
+
+Return STRICT JSON in this format:
 
 {
+  "perQuestionReview": [
+    {
+      "question": "...",
+      "yourAnswer": 1,
+      "correctAnswer": 1,
+      "status": "correct",
+      "explanation": {
+        "correctWhy": "...",
+        "othersWhyWrong": {
+          "0": "...",
+          "2": "...",
+          "3": "..."
+        }
+      }
+    }
+  ],
   "summary": "...",
   "strengths": ["...", "...", "..."],
   "weaknesses": ["...", "...", "..."],
   "nextFocus": "..."
 }
+
+Do NOT include anything outside JSON.
 `;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        { role: "system", content: "You are an expert CAT RC mentor." },
+        { role: "user", content: prompt },
+      ],
       temperature: 0.4,
     });
 
-    const text = completion.choices[0].message.content;
-    const parsed = JSON.parse(text);
+    const raw = completion.choices[0].message.content.trim();
+    const parsed = JSON.parse(raw);
 
     return NextResponse.json(parsed);
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
+    console.error(e);
     return NextResponse.json(
       { error: "Diagnosis failed" },
       { status: 500 }
