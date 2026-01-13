@@ -25,6 +25,8 @@ export default function Page() {
   const [testQuestions, setTestQuestions] = useState([]);
   const [testLoading, setTestLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [phase, setPhase] = useState("mentor");
+// mentor | ready | test | result | newRC
 
   useEffect(() => {
     if (phase === "test") {
@@ -587,7 +589,6 @@ setPhase("result");
   </div>
 )}
 
-)}
     </main>
   );
 }
