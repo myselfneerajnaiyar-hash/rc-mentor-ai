@@ -628,7 +628,7 @@ async function generateNewRC() {
     setMode("idle");
     setPhase("mentor");
   }}
->
+
         style={{
           padding: "12px 18px",
           background: "#2563eb",
