@@ -392,26 +392,30 @@ export default function Page() {
             background: "#fafafa",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 20,
-            }}
-          >
-            <h2 style={{ margin: 0 }}>Mini RC Test</h2>
-            <div
-              style={{
-                padding: "6px 12px",
-                borderRadius: 6,
-                background: "#fee2e2",
-                fontWeight: 600,
-              }}
-            >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h2>Mini RC Test</h2>
+            <div style={{ fontWeight: 600 }}>
               ⏱ {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </div>
+          </div>
+
+          {/* Scrollable Passage */}
+          <div
+            style={{
+              marginBottom: 24,
+              padding: 16,
+              border: "1px solid #e5e7eb",
+              borderRadius: 8,
+              background: "#f8fafc",
+              maxHeight: 220,
+              overflowY: "auto",
+              whiteSpace: "pre-wrap",
+              lineHeight: 1.6,
+              fontSize: 14,
+            }}
+          >
+            {paras.join("\n\n")}
           </div>
 
           {testQuestions.map((q, qi) => (
@@ -445,7 +449,6 @@ export default function Page() {
                     border: "1px solid #ccc",
                     background:
                       testAnswers[qi] === oi ? "#c7d2fe" : "#f9fafb",
-                    cursor: "pointer",
                   }}
                 >
                   {o}
