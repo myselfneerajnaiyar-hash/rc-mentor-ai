@@ -192,9 +192,10 @@ export default function Page() {
 
     if (!res.ok) throw new Error("Diagnosis API failed");
 
-    const json = await res.json();
-    setResult(json);
-    setPhase("result");
+   const json = await res.json();
+setError("");           // <-- clear old error
+setResult(json);
+setPhase("result");
   } catch (e) {
     setError("Could not analyze your test.");
   } finally {
