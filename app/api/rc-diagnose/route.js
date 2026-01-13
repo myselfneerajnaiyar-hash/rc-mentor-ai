@@ -14,39 +14,39 @@ You are an expert CAT Reading Comprehension mentor.
 
 You are given:
 1. A passage
-2. Multiple MCQ questions based on it
-3. The student's selected answers
+2. MCQ questions based on it (each has options and correctIndex)
+3. The student's selected answers (index-wise)
 
 Your job:
 
-A) For EACH question:
-- Determine if the student's answer is correct.
-- Output in this exact format:
+For EACH question:
+- Decide if the student is Correct or Wrong.
+- Explain:
+  - Why the correct option is correct.
+  - Why EACH wrong option is wrong.
+  - If the student was wrong, explain why their chosen option feels tempting but is incorrect.
 
-Q1 – Correct / Wrong  
-Explanation:  
-- Why the correct option is correct.  
-- Why EACH of the other options is wrong.  
-- If the student was wrong, explain why their chosen option is tempting but incorrect.
+After all questions, give:
+- summary (2–3 lines)
+- strengths (3 bullets)
+- weaknesses (3 bullets)
+- nextFocus (1–2 lines)
 
-Do this for all questions.
-
-B) After analyzing all questions, write a mentor-style diagnosis with:
-- summary (2–3 lines on overall performance)
-- strengths (3 bullet points)
-- weaknesses (3 bullet points)
-- nextFocus (1–2 lines on what the student should work on next)
-
-The diagnosis MUST be based on the pattern of mistakes.
-
-Use this JSON structure in your response:
+Return STRICT JSON ONLY in this format (no extra text):
 
 {
-  "solutions": [
+  "questionAnalysis": [
     {
-      "qno": 1,
-      "status": "Correct" | "Wrong",
-      "explanation": "..."
+      "qIndex": 0,
+      "status": "correct" | "wrong",
+      "correctExplanation": "...",
+      "whyWrong": {
+        "0": "...",
+        "1": "...",
+        "2": "...",
+        "3": "..."
+      },
+      "temptation": "Explain why the student's chosen option felt attractive (if wrong, else empty string)"
     }
   ],
   "summary": "...",
@@ -55,12 +55,10 @@ Use this JSON structure in your response:
   "nextFocus": "..."
 }
 
-Here is the data:
-
 PASSAGE:
 ${passage}
 
-QUESTIONS (with correct answers embedded):
+QUESTIONS:
 ${JSON.stringify(questions, null, 2)}
 
 STUDENT ANSWERS:
@@ -70,18 +68,20 @@ ${JSON.stringify(answers, null, 2)}
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are a precise educational diagnostician." },
+        { role: "system", content: "You are a precise educational diagnostician. You output strict JSON only." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.3,
+      temperature: 0.2,
     });
 
-    const raw = completion.choices[0].message.content;
+    const raw = completion.choices[0].message.content.trim();
 
+    // Safety: extract first JSON object if model adds noise
     const jsonStart = raw.indexOf("{");
-    const json = JSON.parse(raw.slice(jsonStart));
+    const jsonEnd = raw.lastIndexOf("}");
+    const parsed = JSON.parse(raw.slice(jsonStart, jsonEnd + 1));
 
-    return NextResponse.json(json);
+    return NextResponse.json(parsed);
   } catch (e) {
     console.error(e);
     return NextResponse.json(
