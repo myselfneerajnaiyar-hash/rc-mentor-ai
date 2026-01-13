@@ -171,10 +171,35 @@ export default function Page() {
     }
   }
 
-  function submitTest() {
-    setTimerRunning(false);
+ async function submitTest() {
+  setTimerRunning(false);
+  setLoading(true);
+  setError("");
+
+  try {
+    const fullPassage = paras.join("\n\n");
+
+    const res = await fetch("/api/rc-diagnose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        passage: fullPassage,
+        questions: testQuestions,
+        answers: testAnswers,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Diagnosis API failed");
+
+    const json = await res.json();
+    setResult(json);
     setPhase("result");
+  } catch (e) {
+    setError("Could not analyze your test.");
+  } finally {
+    setLoading(false);
   }
+}
 
   const score = testQuestions.reduce((s, q, i) => {
     return s + (testAnswers[i] === q.correctIndex ? 1 : 0);
