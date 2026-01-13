@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
+const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -9,61 +9,44 @@ export async function POST(req) {
   try {
     const { passage, questions, answers } = await req.json();
 
-    if (!passage || !questions || !answers) {
-      return NextResponse.json(
-        { error: "Missing data" },
-        { status: 400 }
-      );
-    }
-
     const prompt = `
-You are a CAT Reading Comprehension mentor.
+You are an expert CAT Reading Comprehension mentor.
 
-A student attempted a test on the following passage:
+You are given:
+1. A passage
+2. Multiple MCQ questions based on it
+3. The student's selected answers
 
-PASSAGE:
-${passage}
+Your job:
 
-QUESTIONS (with correctIndex already embedded):
-${JSON.stringify(questions, null, 2)}
+A) For EACH question:
+- Determine if the student's answer is correct.
+- Output in this exact format:
 
-STUDENT ANSWERS (index -> chosen option):
-${JSON.stringify(answers, null, 2)}
+Q1 – Correct / Wrong  
+Explanation:  
+- Why the correct option is correct.  
+- Why EACH of the other options is wrong.  
+- If the student was wrong, explain why their chosen option is tempting but incorrect.
 
-Your task:
+Do this for all questions.
 
-1. For EACH question:
-   - Say whether the student was correct or wrong.
-   - Mention:
-     - The student's answer (option text)
-     - The correct answer (option text)
-   - Explain:
-     - Why the correct option is correct.
-     - Why EACH incorrect option is wrong or misleading.
+B) After analyzing all questions, write a mentor-style diagnosis with:
+- summary (2–3 lines on overall performance)
+- strengths (3 bullet points)
+- weaknesses (3 bullet points)
+- nextFocus (1–2 lines on what the student should work on next)
 
-2. After the per-question analysis, give:
-   - A brief overall summary of the student's RC ability.
-   - 3 bullet-point strengths.
-   - 3 bullet-point weaknesses.
-   - One clear "Next Focus" recommendation.
+The diagnosis MUST be based on the pattern of mistakes.
 
-Return STRICT JSON in this format:
+Use this JSON structure in your response:
 
 {
-  "perQuestionReview": [
+  "solutions": [
     {
-      "question": "...",
-      "yourAnswer": 1,
-      "correctAnswer": 1,
-      "status": "correct",
-      "explanation": {
-        "correctWhy": "...",
-        "othersWhyWrong": {
-          "0": "...",
-          "2": "...",
-          "3": "..."
-        }
-      }
+      "qno": 1,
+      "status": "Correct" | "Wrong",
+      "explanation": "..."
     }
   ],
   "summary": "...",
@@ -72,22 +55,33 @@ Return STRICT JSON in this format:
   "nextFocus": "..."
 }
 
-Do NOT include anything outside JSON.
+Here is the data:
+
+PASSAGE:
+${passage}
+
+QUESTIONS (with correct answers embedded):
+${JSON.stringify(questions, null, 2)}
+
+STUDENT ANSWERS:
+${JSON.stringify(answers, null, 2)}
 `;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are an expert CAT RC mentor." },
+        { role: "system", content: "You are a precise educational diagnostician." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.4,
+      temperature: 0.3,
     });
 
-    const raw = completion.choices[0].message.content.trim();
-    const parsed = JSON.parse(raw);
+    const raw = completion.choices[0].message.content;
 
-    return NextResponse.json(parsed);
+    const jsonStart = raw.indexOf("{");
+    const json = JSON.parse(raw.slice(jsonStart));
+
+    return NextResponse.json(json);
   } catch (e) {
     console.error(e);
     return NextResponse.json(
