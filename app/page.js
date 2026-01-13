@@ -26,6 +26,8 @@ export default function Page() {
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
 // mentor | ready | test | result | newRC
+  const [generatedRC, setGeneratedRC] = useState(null);
+const [genLoading, setGenLoading] = useState(false);
 
   useEffect(() => {
     if (phase === "test") {
@@ -203,7 +205,30 @@ setPhase("result");
     setLoading(false);
   }
 }
+async function generateNewRC() {
+  setGenLoading(true);
+  setError("");
 
+  try {
+    const themeHint = paras.join("\n\n").slice(0, 400);
+
+    const res = await fetch("/api/rc-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ themeHint }),
+    });
+
+    if (!res.ok) throw new Error("Generate API failed");
+
+    const json = await res.json();
+    setGeneratedRC(json);
+    setPhase("newRC");
+  } catch (e) {
+    setError("Could not generate new RC.");
+  } finally {
+    setGenLoading(false);
+  }
+}
   const score = testQuestions.reduce((s, q, i) => {
     return s + (testAnswers[i] === q.correctIndex ? 1 : 0);
   }, 0);
@@ -525,8 +550,9 @@ setPhase("result");
         <p>{result.nextFocus}</p>
 
         <button
-          onClick={() => setPhase("newRC")}
-          style={{
+           onClick={generateNewRC} ...>
+ 
+         style={{
             marginTop: 20,
             padding: "12px 18px",
             background: "#2563eb",
@@ -542,7 +568,7 @@ setPhase("result");
     )}
   </div>
 )}
-{phase === "newRC" && (
+{phase === "newRC" && generatedRC && (
   <div
     style={{
       marginTop: 40,
@@ -557,7 +583,12 @@ setPhase("result");
 
     <div style={{ marginTop: 20 }}>
       <button
-        onClick={() => alert("test mode")}
+        onClick={() => {
+          setParas(generatedRC.passage.split(/\n\s*\n/));
+          setTestQuestions(generatedRC.questions);
+          setTestAnswers({});
+          setPhase("test");
+        }}
         style={{
           padding: "12px 18px",
           background: "#16a34a",
@@ -572,7 +603,19 @@ setPhase("result");
       </button>
 
       <button
-        onClick={() => alert("mentor mode")}
+        onClick={() => {
+          const parts = generatedRC.passage
+            .split(/\n\s*\n/)
+            .map(p => p.trim())
+            .filter(Boolean);
+
+          setParas(parts);
+          setIndex(0);
+          setData(null);
+          setFeedback("");
+          setMode("idle");
+          setPhase("mentor");
+        }}
         style={{
           padding: "12px 18px",
           background: "#2563eb",
