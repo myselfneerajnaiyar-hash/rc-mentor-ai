@@ -10,25 +10,37 @@ export async function POST(req) {
     const { themeHint } = await req.json();
 
     const prompt = `
-Create a new CAT-level Reading Comprehension passage on a theme similar to this:
+You are generating a CAT-level Reading Comprehension passage.
+
+Theme inspiration:
 "${themeHint}"
 
-Requirements:
-- Length: 350–450 words
-- Tone: academic / analytical
-- Difficulty: CAT-level
-- Topic should be conceptually similar, not the same
+STRICT STRUCTURAL RULES:
+- The passage MUST have exactly 4 paragraphs.
+- Each paragraph must be 90–130 words.
+- Each paragraph must play a distinct role:
+  1. Introduce the core concept or debate
+  2. Deepen it with reasoning or example
+  3. Add complexity, counterpoint, or tension
+  4. Conclude with implications or evaluation
+- Separate paragraphs using a blank line.
+- Do NOT merge ideas into one block.
 
-Then generate 4 MCQ questions like CAT RC:
-- Main idea
-- Tone/attitude
-- Inference
-- Application or implication
+After the passage, generate 4–5 CAT-style MCQs based on the FULL passage:
+- At least one main-idea question
+- One tone/attitude question
+- One inference question
+- One application or implication question
 
-Return strictly in JSON like:
+Each question must have:
+- prompt
+- 4 options
+- correctIndex
+
+Return STRICT JSON in this format only:
 
 {
-  "passage": "...",
+  "passage": "Para 1...\\n\\nPara 2...\\n\\nPara 3...\\n\\nPara 4...",
   "questions": [
     {
       "prompt": "...",
@@ -37,19 +49,29 @@ Return strictly in JSON like:
     }
   ]
 }
+
+Do not include any extra commentary outside the JSON.
 `;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
+      messages: [
+        { role: "system", content: "You are an expert CAT RC content creator." },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.6,
     });
 
     const text = completion.choices[0].message.content;
-    const json = JSON.parse(text);
+
+    // Safety: extract JSON even if model adds stray text
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}") + 1;
+    const json = JSON.parse(text.slice(start, end));
 
     return NextResponse.json(json);
   } catch (e) {
+    console.error(e);
     return NextResponse.json(
       { error: "Could not generate RC" },
       { status: 500 }
