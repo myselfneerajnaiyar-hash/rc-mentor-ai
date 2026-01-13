@@ -11,45 +11,48 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [mode, setMode] = useState("idle"); 
+  const [mode, setMode] = useState("idle");
   // idle | showingPrimary | showingEasier | solved
 
   const [feedback, setFeedback] = useState("");
 
-function splitPassage() {
-  const raw = text.trim();
+  const [phase, setPhase] = useState("mentor");
+  // mentor | ready | test | result
 
-  // Step 1: Try real paragraph breaks
-  let parts = raw
-    .split(/\n\s*\n/)
-    .map(p => p.trim())
-    .filter(Boolean);
+  function splitPassage() {
+    const raw = text.trim();
 
-  // Step 2: If still only one block, split by sentences
-  if (parts.length === 1) {
-    const sentences = raw.match(/[^.!?]+[.!?]+/g) || [raw];
+    let parts = raw
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(Boolean);
 
-    parts = [];
-    let current = "";
+    if (parts.length === 1) {
+      const sentences = raw.match(/[^.!?]+[.!?]+/g) || [raw];
 
-    for (let s of sentences) {
-      if ((current + s).length > 300) {
-        parts.push(current.trim());
-        current = s;
-      } else {
-        current += " " + s;
+      parts = [];
+      let current = "";
+
+      for (let s of sentences) {
+        if ((current + s).length > 300) {
+          parts.push(current.trim());
+          current = s;
+        } else {
+          current += " " + s;
+        }
       }
+
+      if (current.trim()) parts.push(current.trim());
     }
 
-    if (current.trim()) parts.push(current.trim());
+    setParas(parts);
+    setIndex(0);
+    setData(null);
+    setMode("idle");
+    setFeedback("");
+    setPhase("mentor");
   }
 
-  setParas(parts);
-  setIndex(0);
-  setData(null);
-  setMode("idle");
-  setFeedback("");
-}
   const current = paras[index] || "";
 
   async function explain() {
@@ -102,6 +105,11 @@ function splitPassage() {
   }
 
   function nextParagraph() {
+    if (index === paras.length - 1) {
+      setPhase("ready");
+      return;
+    }
+
     setIndex(i => Math.min(paras.length - 1, i + 1));
     setData(null);
     setMode("idle");
@@ -144,7 +152,7 @@ function splitPassage() {
         </>
       )}
 
-      {paras.length > 0 && (
+      {paras.length > 0 && phase === "mentor" && (
         <>
           <h3>
             Paragraph {index + 1} of {paras.length}
@@ -243,12 +251,59 @@ function splitPassage() {
                     fontWeight: 600,
                   }}
                 >
-                  Next Paragraph →
+                  Next →
                 </button>
               )}
             </div>
           )}
         </>
+      )}
+
+      {phase === "ready" && (
+        <div
+          style={{
+            marginTop: 40,
+            padding: 24,
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            background: "#fafafa",
+          }}
+        >
+          <p style={{ fontSize: 16, lineHeight: 1.6 }}>
+            You’ve now understood this passage in depth.
+            <br />
+            We broke down every paragraph and clarified the ideas.
+            <br /><br />
+            Let’s see how well this understanding translates into performance.
+          </p>
+
+          <button
+            onClick={() => setPhase("test")}
+            style={{
+              padding: "10px 16px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              fontWeight: 600,
+            }}
+          >
+            Take Test
+          </button>
+
+          <button
+            onClick={() => setPhase("mentor")}
+            style={{
+              marginLeft: 12,
+              padding: "10px 16px",
+              background: "#eee",
+              border: "1px solid #ccc",
+              borderRadius: 6,
+            }}
+          >
+            Skip for Now
+          </button>
+        </div>
       )}
     </main>
   );
