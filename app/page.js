@@ -484,15 +484,61 @@ export default function Page() {
         </div>
       )}
 
-      {phase === "result" && (
-        <div style={{ marginTop: 40 }}>
-          <h2>Your Score: {score} / {testQuestions.length}</h2>
-          <p>
-            This score reflects how well your understanding converted into
-            exam-style performance.
-          </p>
-        </div>
-      )}
+     {phase === "result" && (
+  <div
+    style={{
+      marginTop: 40,
+      padding: 24,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
+    <h2>Your Score: {score} / {testQuestions.length}</h2>
+
+    {loading && <p>Analyzing your thinking…</p>}
+    {error && <p style={{ color: "red" }}>{error}</p>}
+
+    {result && (
+      <>
+        <h3 style={{ marginTop: 20 }}>Mentor’s Diagnosis</h3>
+        <p>{result.summary}</p>
+
+        <h4>Your Strengths</h4>
+        <ul>
+          {result.strengths.map((s, i) => (
+            <li key={i}>{s}</li>
+          ))}
+        </ul>
+
+        <h4>Areas to Improve</h4>
+        <ul>
+          {result.weaknesses.map((w, i) => (
+            <li key={i}>{w}</li>
+          ))}
+        </ul>
+
+        <h4>What You Should Focus On Next</h4>
+        <p>{result.nextFocus}</p>
+
+        <button
+          onClick={() => setPhase("mentor")}
+          style={{
+            marginTop: 16,
+            padding: "10px 16px",
+            background: "#2563eb",
+            color: "#fff",
+            border: "none",
+            borderRadius: 6,
+            fontWeight: 600,
+          }}
+        >
+          Start Next Passage
+        </button>
+      </>
+    )}
+  </div>
+)}
     </main>
   );
 }
