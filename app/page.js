@@ -27,6 +27,7 @@ export default function Page() {
   const [phase, setPhase] = useState("mentor");
 // mentor | ready | test | result | newRC
   const [generatedRC, setGeneratedRC] = useState(null);
+
 const [genLoading, setGenLoading] = useState(false);
 
   useEffect(() => {
@@ -549,21 +550,20 @@ async function generateNewRC() {
         <h4>What You Should Focus On Next</h4>
         <p>{result.nextFocus}</p>
 
-        <button
-           onClick={generateNewRC} ...>
- 
-         style={{
-            marginTop: 20,
-            padding: "12px 18px",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            fontWeight: 600,
-          }}
-        >
-          Generate New RC
-        </button>
+       <button
+  onClick={generateNewRC}
+  style={{
+    marginTop: 20,
+    padding: "12px 18px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Generate New RC
+</button>
       </>
     )}
   </div>
