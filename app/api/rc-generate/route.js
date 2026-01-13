@@ -12,8 +12,16 @@ export async function POST(req) {
     const prompt = `
 You are generating a CAT-level Reading Comprehension passage.
 
-Theme inspiration:
+You are given a reference passage ONLY as a STYLE BENCHMARK:
 "${themeHint}"
+
+IMPORTANT:
+- Use the reference only to understand tone, abstraction level, and argumentative depth.
+- DO NOT reuse the same topic, domain, thinker, or examples.
+- DO NOT write about anthropology, hunter-gatherers, affluence, scarcity, tribes, or Marshall Sahlins.
+- The new passage must be from a COMPLETELY DIFFERENT intellectual domain
+  (e.g., technology, education, psychology, economics, media, urban studies, environment, culture, science, etc.).
+- The goal is: same CAT-RC thinking style, entirely new content.
 
 STRICT STRUCTURAL RULES:
 - The passage MUST have exactly 4 paragraphs.
@@ -59,7 +67,7 @@ Do not include any extra commentary outside the JSON.
         { role: "system", content: "You are an expert CAT RC content creator." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.6,
+      temperature: 0.7,
     });
 
     const text = completion.choices[0].message.content;
