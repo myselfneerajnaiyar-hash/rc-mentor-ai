@@ -15,8 +15,7 @@ export default function Page() {
 
   const [feedback, setFeedback] = useState("");
 
-  const [phase, setPhase] = useState("mentor");
-  // mentor | ready | test | result
+ 
 
   // ---- TEST STATE ----
   const [timeLeft, setTimeLeft] = useState(0);
