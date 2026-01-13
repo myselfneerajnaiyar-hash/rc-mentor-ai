@@ -24,6 +24,7 @@ export default function Page() {
   const [testAnswers, setTestAnswers] = useState({});
   const [testQuestions, setTestQuestions] = useState([]);
   const [testLoading, setTestLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     if (phase === "test") {
