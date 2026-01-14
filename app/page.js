@@ -220,13 +220,15 @@ async function generateNewRC() {
   setError("");
 
   try {
-    const themeHint = paras.join("\n\n").slice(0, 400);
-
     const res = await fetch("/api/rc-generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ themeHint }),
-    });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    genre,
+    difficulty,
+    lengthRange,
+  }),
+});
 
     if (!res.ok) throw new Error("Generate API failed");
 
