@@ -250,6 +250,30 @@ async function generateNewRC() {
       {paras.length === 0 && (
         <>
           <p>Paste a passage. Let’s read it together.</p>
+        <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+  <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+    <option>Psychology</option>
+    <option>Economics</option>
+    <option>Culture</option>
+    <option>Science</option>
+    <option>Technology</option>
+    <option>Environment</option>
+    <option>Mixed</option>
+  </select>
+
+  <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+    <option value="beginner">Beginner (Easy Lang + Easy Q)</option>
+    <option value="moderate">Moderate (Easy Lang + Hard Q)</option>
+    <option value="advanced">Advanced (Hard Lang + Easy Q)</option>
+    <option value="pro">Pro (Hard Lang + Hard Q)</option>
+  </select>
+
+  <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
+    <option value="300-400">300–400 words</option>
+    <option value="400-500">400–500 words</option>
+    <option value="500-600">500–600 words</option>
+  </select>
+</div>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
