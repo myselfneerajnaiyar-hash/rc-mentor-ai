@@ -250,62 +250,119 @@ async function generateNewRC() {
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
 
-      {paras.length === 0 && (
-        <>
-          <p>Paste a passage. Let’s read it together.</p>
-        <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-  <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-    <option>Psychology</option>
-    <option>Economics</option>
-    <option>Culture</option>
-    <option>Science</option>
-    <option>Technology</option>
-    <option>Environment</option>
-    <option>Mixed</option>
-  </select>
+      {paras.length === 0 && !showGenerator && (
+  <>
+    <p>Paste a passage. Let’s read it together.</p>
 
-  <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-    <option value="beginner">Beginner (Easy Lang + Easy Q)</option>
-    <option value="moderate">Moderate (Easy Lang + Hard Q)</option>
-    <option value="advanced">Advanced (Hard Lang + Easy Q)</option>
-    <option value="pro">Pro (Hard Lang + Hard Q)</option>
-  </select>
+    <textarea
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      style={{
+        width: "100%",
+        minHeight: 180,
+        padding: 12,
+        borderRadius: 6,
+        border: "1px solid #ccc",
+      }}
+    />
 
-  <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
-    <option value="300-400">300–400 words</option>
-    <option value="400-500">400–500 words</option>
-    <option value="500-600">500–600 words</option>
-  </select>
-</div>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            style={{
-              width: "100%",
-              minHeight: 180,
-              padding: 12,
-              borderRadius: 6,
-              border: "1px solid #ccc",
-            }}
-          />
-          <button
-            onClick={splitPassage}
-            style={{
-              marginTop: 12,
-              padding: "10px 16px",
-              background: "green",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              cursor: "pointer",
-              fontWeight: 600,
-            }}
-          >
-            Split Passage 🌱
-          </button>
-        </>
-      )}
+    <div style={{ marginTop: 12 }}>
+      <button
+        onClick={splitPassage}
+        style={{
+          padding: "10px 16px",
+          background: "green",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+          marginRight: 12,
+        }}
+      >
+        Split Passage 🌱
+      </button>
 
+      <button
+        onClick={() => setShowGenerator(true)}
+        style={{
+          padding: "10px 16px",
+          background: "#2563eb",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+        }}
+      >
+        Generate New Passage
+      </button>
+    </div>
+  </>
+)}
+{showGenerator && (
+  <div
+    style={{
+      marginTop: 30,
+      padding: 20,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
+    <h3>Generate a New Passage</h3>
+
+    <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+      <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+        <option>Psychology</option>
+        <option>Economics</option>
+        <option>Culture</option>
+        <option>Science</option>
+        <option>Technology</option>
+        <option>Environment</option>
+        <option>Mixed</option>
+      </select>
+
+      <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+        <option value="beginner">Beginner</option>
+        <option value="moderate">Moderate</option>
+        <option value="advanced">Advanced</option>
+        <option value="pro">Pro</option>
+      </select>
+
+      <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
+        <option value="300-400">300–400</option>
+        <option value="400-500">400–500</option>
+        <option value="500-600">500–600</option>
+      </select>
+    </div>
+
+    <button
+      onClick={generateNewRC}
+      style={{
+        padding: "10px 16px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      {genLoading ? "Generating…" : "Generate"}
+    </button>
+
+    <button
+      onClick={() => setShowGenerator(false)}
+      style={{
+        marginLeft: 12,
+        padding: "10px 16px",
+        background: "#eee",
+        border: "1px solid #ccc",
+        borderRadius: 6,
+      }}
+    >
+      Cancel
+    </button>
+  </div>
+)}
       {paras.length > 0 && phase === "mentor" && (
         <>
           <h3>
@@ -454,6 +511,19 @@ async function generateNewRC() {
           >
             Skip for Now
           </button>
+<button
+  onClick={() => setShowGenerator(true)}
+  style={{
+    marginLeft: 12,
+    padding: "10px 16px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+  }}
+>
+  Generate New Passage
+</button>
 
           {testLoading && <p style={{ marginTop: 12 }}>Preparing your test…</p>}
         </div>
