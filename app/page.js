@@ -33,6 +33,7 @@ const [lengthRange, setLengthRange] = useState("400-500");
   const [generatedRC, setGeneratedRC] = useState(null);
 
 const [genLoading, setGenLoading] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
 
   useEffect(() => {
     if (phase === "test") {
