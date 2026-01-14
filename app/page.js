@@ -519,7 +519,7 @@ async function generateNewRC() {
       )}
 
       {phase === "ready" && !showGenerator && (
-        <div>
+        <div
           style={{
             marginTop: 40,
             padding: 24,
