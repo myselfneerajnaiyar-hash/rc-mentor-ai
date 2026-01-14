@@ -249,7 +249,55 @@ async function generateNewRC() {
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
+{showGenerator && (
+  <div
+    style={{
+      marginTop: 30,
+      padding: 20,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
+    <h3>Generate a New Passage</h3>
 
+    <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+      <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+        <option>Psychology</option>
+        <option>Economics</option>
+        <option>Culture</option>
+        <option>Science</option>
+        <option>Technology</option>
+        <option>Environment</option>
+        <option>Mixed</option>
+      </select>
+
+      <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+        <option value="beginner">Beginner</option>
+        <option value="moderate">Moderate</option>
+        <option value="advanced">Advanced</option>
+        <option value="pro">Pro</option>
+      </select>
+
+      <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
+        <option value="300-400">300–400</option>
+        <option value="400-500">400–500</option>
+        <option value="500-600">500–600</option>
+      </select>
+    </div>
+
+    <button onClick={generateNewRC} disabled={genLoading}>
+      {genLoading ? "Generating..." : "Generate"}
+    </button>
+
+    <button
+      onClick={() => setShowGenerator(false)}
+      style={{ marginLeft: 12 }}
+    >
+      Cancel
+    </button>
+  </div>
+)}
       {paras.length === 0 && !showGenerator && (
   <>
     <p>Paste a passage. Let’s read it together.</p>
