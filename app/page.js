@@ -451,7 +451,142 @@ export default function Page() {
           </button>
         </div>
       )}
+{/* Test Phase */}
+{phase === "test" && (
+  <div
+    style={{
+      marginTop: 30,
+      padding: 24,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <h2>Mini RC Test</h2>
+      <div style={{ fontWeight: 600 }}>
+        ⏱ {Math.floor(timeLeft / 60)}:
+        {(timeLeft % 60).toString().padStart(2, "0")}
+      </div>
+    </div>
 
+    <div
+      style={{
+        marginBottom: 24,
+        padding: 16,
+        border: "1px solid #e5e7eb",
+        borderRadius: 8,
+        background: "#f8fafc",
+        maxHeight: 220,
+        overflowY: "auto",
+        whiteSpace: "pre-wrap",
+        lineHeight: 1.6,
+        fontSize: 14,
+      }}
+    >
+      {paras.join("\n\n")}
+    </div>
+
+    {testQuestions.map((q, qi) => (
+      <div
+        key={qi}
+        style={{
+          marginBottom: 24,
+          padding: 16,
+          border: "1px solid #e5e7eb",
+          borderRadius: 6,
+          background: "#fff",
+        }}
+      >
+        <p style={{ fontWeight: 600 }}>
+          Q{qi + 1}. {q.prompt}
+        </p>
+
+        {q.options.map((o, oi) => (
+          <button
+            key={oi}
+            onClick={() =>
+              setTestAnswers(a => ({ ...a, [qi]: oi }))
+            }
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              margin: "6px 0",
+              padding: "8px 10px",
+              borderRadius: 4,
+              border: "1px solid #ccc",
+              background:
+                testAnswers[qi] === oi ? "#c7d2fe" : "#f9fafb",
+            }}
+          >
+            {o}
+          </button>
+        ))}
+      </div>
+    ))}
+
+    <button
+      onClick={submitTest}
+      style={{
+        padding: "12px 18px",
+        background: "green",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Submit Test
+    </button>
+  </div>
+)}
+{/* Result Phase */}
+{phase === "result" && result && (
+  <div
+    style={{
+      marginTop: 40,
+      padding: 24,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
+    <h2>Your Score: {score} / {testQuestions.length}</h2>
+
+    <h3 style={{ marginTop: 20 }}>Mentor’s Diagnosis</h3>
+    <p>{result.summary}</p>
+
+    <h4>Your Strengths</h4>
+    <ul>
+      {result.strengths.map((s, i) => (
+        <li key={i}>{s}</li>
+      ))}
+    </ul>
+
+    <h4>Areas to Improve</h4>
+    <ul>
+      {result.weaknesses.map((w, i) => (
+        <li key={i}>{w}</li>
+      ))}
+    </ul>
+
+    <button
+      onClick={() => setShowGenerator(true)}
+      style={{
+        marginTop: 20,
+        padding: "12px 18px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Generate New Passage
+    </button>
+  </div>
+)}
       {/* New RC Choice */}
       {phase === "newRC" && generatedRC && (
         <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd", borderRadius: 8, textAlign: "center" }}>
