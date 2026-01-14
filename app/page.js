@@ -16,7 +16,9 @@ export default function Page() {
   const [feedback, setFeedback] = useState("");
   const [flow, setFlow] = useState("original"); 
 // "original" | "generated"
-
+const [genre, setGenre] = useState("Psychology");
+const [difficulty, setDifficulty] = useState("moderate");
+const [lengthRange, setLengthRange] = useState("400-500");
  
 
   // ---- TEST STATE ----
