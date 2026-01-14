@@ -218,7 +218,7 @@ export default function Page() {
     0
   );
 
-  const showInitial = paras.length === 0 && !showGenerator;
+ const showInitial = paras.length === 0 && !showGenerator && phase !== "newRC";
   const showGenPanel = showGenerator && (paras.length === 0 || phase === "result");
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
