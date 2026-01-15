@@ -600,10 +600,19 @@ testQuestions.forEach((q, i) => {
     buckets[type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
   }
 
-  if (!correct && t > 0 && t < avgTime * 0.6) buckets[type].fastWrong++;
-  if (!correct && t > avgTime * 1.5) buckets[type].slowWrong++;
-  if (correct && t > avgTime * 1.5) buckets[type].slowCorrect++;
-  if (correct && t > 0 && t < avgTime * 0.6) buckets[type].fastCorrect++;
+  const CAT_TIME = {
+  "main-idea": 35,
+  "tone": 25,
+  "inference": 45,
+  "detail": 15,
+};
+
+const expected = CAT_TIME[type] || avgTime;
+
+if (!correct && t < expected * 0.6) buckets[type].fastWrong++;
+if (!correct && t > expected * 1.4) buckets[type].slowWrong++;
+if (correct && t > expected * 1.4) buckets[type].slowCorrect++;
+if (correct && t < expected * 0.6) buckets[type].fastCorrect++;
 });
 
 return (
