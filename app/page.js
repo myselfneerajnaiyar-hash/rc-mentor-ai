@@ -323,20 +323,15 @@ export default function Page() {
             >
               Split Passage 🌱
             </button>
-
-            <button
-              onClick={() => setShowGenerator(true)}
-              style={{
-                padding: "10px 16px",
-                background: "#2563eb",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                fontWeight: 600,
-              }}
-            >
-              Generate New Passage
-            </button>
+ onClick={() => {
+    setShowGenerator(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+  style={{ marginTop: 20, padding: "12px 18px", background: "#2563eb", color: "#fff", border: "none", borderRadius: 6 }}
+>
+  Generate New Passage
+</button>
+           
           </div>
         </>
       )}
