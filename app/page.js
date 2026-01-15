@@ -157,26 +157,34 @@ setQuestionStartTime(Date.now());
   }
 
   async function startTest() {
-    setTestLoading(true);
-    setError("");
+  setTestLoading(true);
+  setError("");
 
-    try {
-      const full = paras.join("\n\n");
-      const res = await fetch("/api/rc-test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passage: full }),
-      });
-      if (!res.ok) throw new Error();
-      const json = await res.json();
-     setTestQuestions(json.questions || []);
-      setPhase("test");
-    } catch {
-      setError("Could not generate test.");
-    } finally {
-      setTestLoading(false);
-    }
+  // 🔴 CLEAR OLD TEST STATE FIRST
+  setTestQuestions([]);
+  setTestAnswers({});
+  setQuestionTimes({});
+  setResult(null);
+
+  try {
+    const full = paras.join("\n\n");
+    const res = await fetch("/api/rc-test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passage: full }),
+    });
+    if (!res.ok) throw new Error();
+    const json = await res.json();
+
+    // 🟢 LOAD FRESH QUESTIONS
+    setTestQuestions(json.questions || []);
+    setPhase("test");
+  } catch {
+    setError("Could not generate test.");
+  } finally {
+    setTestLoading(false);
   }
+}
 
   async function submitTest() {
     setTimerRunning(false);
