@@ -110,11 +110,10 @@ return NextResponse.json({
   passage: json.passage,
   questions,
 });
-  }catch (e) {
-    console.error(e);
-    return NextResponse.json
-      { error: "Could not generate RC" },
-      { status: 500 }
-    );
-  }
+} catch (e) {
+  console.error(e);
+  return NextResponse.json(
+    { error: "Could not generate RC" },
+    { status: 500 }
+  );
 }
