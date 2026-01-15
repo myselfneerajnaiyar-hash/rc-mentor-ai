@@ -627,31 +627,82 @@ return (
       <div key={type} style={{ marginTop: 12 }}>
         <p style={{ fontWeight: 600, textTransform: "capitalize" }}>{type} Questions</p>
 
-       {d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect === 0 ? (
+     {d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect === 0 ? (
   <p style={{ color: "#555" }}>
     No strong time-based pattern detected for this question type.
   </p>
 ) : (
   <>
     {d.fastWrong > 0 && (
-      <p style={{ color: "#b45309" }}>
-        You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
-      </p>
+      <>
+        <p style={{ color: "#b45309" }}>
+          You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
+        </p>
+        <p style={{ fontSize: 13, color: "#555" }}>
+          {type === "main-idea" &&
+            "You are forming the passage’s purpose too early. In CAT, main-idea questions demand that you first absorb the author’s full arc, not just the opening paragraph."}
+          {type === "inference" &&
+            "This reflects impulsive reading. Inference questions require you to reconstruct the author’s implied logic, not react to surface cues."}
+          {type === "tone" &&
+            "You may be reacting to emotional words instead of judging the author’s overall stance."}
+          {type === "detail" &&
+            "You are guessing without anchoring your choice to a precise line in the passage."}
+        </p>
+      </>
     )}
+
     {d.slowWrong > 0 && (
-      <p style={{ color: "#991b1b" }}>
-        You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
-      </p>
+      <>
+        <p style={{ color: "#991b1b" }}>
+          You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
+        </p>
+        <p style={{ fontSize: 13, color: "#555" }}>
+          {type === "main-idea" &&
+            "You are rereading without restructuring the passage mentally. Main-idea clarity comes from mapping the argument, not repeated scanning."}
+          {type === "inference" &&
+            "This suggests confusion in tracing logical links. You may be reading sentences, not reasoning chains."}
+          {type === "tone" &&
+            "You are overthinking tone instead of stepping back to judge the author’s overall attitude."}
+          {type === "detail" &&
+            "You are searching but not localizing the exact reference point in the text."}
+        </p>
+      </>
     )}
+
     {d.slowCorrect > 0 && (
-      <p style={{ color: "#1d4ed8" }}>
-        You solved {d.slowCorrect} {type} question(s) correctly but slowly.
-      </p>
+      <>
+        <p style={{ color: "#1d4ed8" }}>
+          You solved {d.slowCorrect} {type} question(s) correctly but slowly.
+        </p>
+        <p style={{ fontSize: 13, color: "#555" }}>
+          {type === "main-idea" &&
+            "Your understanding is sound, but you are not yet seeing structure quickly. Practice summarizing each paragraph in one line."}
+          {type === "inference" &&
+            "Your reasoning is accurate but effortful. You need to internalize how CAT hides logic between lines."}
+          {type === "tone" &&
+            "You can detect tone, but you hesitate. Train yourself to read with author-attitude awareness."}
+          {type === "detail" &&
+            "You are thorough but slow. Work on faster scanning and line-location skills."}
+        </p>
+      </>
     )}
+
     {d.fastCorrect > 0 && (
-      <p style={{ color: "green" }}>
-        You solved {d.fastCorrect} {type} question(s) quickly and correctly.
-      </p>
+      <>
+        <p style={{ color: "green" }}>
+          You solved {d.fastCorrect} {type} question(s) quickly and correctly.
+        </p>
+        <p style={{ fontSize: 13, color: "#555" }}>
+          {type === "main-idea" &&
+            "You are grasping the author’s core intent efficiently—this is a CAT-level strength."}
+          {type === "inference" &&
+            "You are reading between the lines naturally. This is a high-value RC skill."}
+          {type === "tone" &&
+            "Your sensitivity to author attitude is strong and reliable."}
+          {type === "detail" &&
+            "You are locating and verifying information efficiently."}
+        </p>
+      </>
     )}
   </>
 )}
