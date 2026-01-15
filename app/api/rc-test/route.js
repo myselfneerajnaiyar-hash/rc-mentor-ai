@@ -22,8 +22,9 @@ Rules:
 - "type": strictly one of:
   "main-idea", "tone", "inference", "detail", "function", "application"
 
-If any question is missing "type", REWRITE it.
-Do NOT return any question without a valid "type"
+Do NOT return any question without a valid "type".
+If any question is missing "type", rewrite it before returning.
+Every object in "questions" must contain "type".
 - All options must be complete, plausible, and mutually exclusive.
 - Do NOT leave any option blank.
 - Questions should test:
