@@ -650,29 +650,7 @@ return (
     )}
   </>
 )}
-        {d.fastWrong > 0 && (
-          <p style={{ color: "#b45309" }}>
-            You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
-          </p>
-        )}
-
-        {d.slowWrong > 0 && (
-          <p style={{ color: "#991b1b" }}>
-            You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
-          </p>
-        )}
-
-        {d.slowCorrect > 0 && (
-          <p style={{ color: "#1d4ed8" }}>
-            You solved {d.slowCorrect} {type} question(s) correctly but slowly.
-          </p>
-        )}
-
-        {d.fastCorrect > 0 && (
-          <p style={{ color: "green" }}>
-            You solved {d.fastCorrect} {type} question(s) quickly and correctly.
-          </p>
-        )}
+       
       </div>
     );
   })}
