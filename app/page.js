@@ -599,7 +599,11 @@ setQuestionStartTime(Date.now());
           {status.toUpperCase()}
         </span>
       </p>
-
+{questionTimes[test-${i}] !== undefined && (
+  <p style={{ fontSize: 13, color: "#555" }}>
+    ⏱ Time taken: {questionTimes[test-${i}]} seconds
+  </p>
+)}
     <p><b>Why the correct option is correct:</b></p>
 <p>{qa?.correctExplanation || "Review the passage carefully to derive the correct inference."}</p>
 
