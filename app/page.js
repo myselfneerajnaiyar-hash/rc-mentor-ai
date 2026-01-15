@@ -10,7 +10,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [mode, setMode] = useState("idle"); 
+  const [mode, setMode] = useState("idle");
   // idle | showingPrimary | showingEasier | solved
 
   const [feedback, setFeedback] = useState("");
