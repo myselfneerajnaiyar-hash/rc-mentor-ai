@@ -576,7 +576,7 @@ const score = testQuestions.reduce(
     : 0;
 
  const insights = testQuestions.map((q, i) => {
-  const t = questionTimes[test-${i}] || 0;
+  const t = questionTimes[`test-${i}`] || 0;
   const correct = testAnswers[i] === q.correctIndex;
   return {
     index: i,
