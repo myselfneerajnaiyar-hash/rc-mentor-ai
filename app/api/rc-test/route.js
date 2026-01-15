@@ -83,23 +83,20 @@ ${passage}
 const questions = (parsed.questions || []).map(q => {
   const raw = (q.type || "").toLowerCase();
 
-  let normalized = raw
-    .replace(/['"]/g, "")
-    .replace(/\s+/g, "-");
+  let type = "inference";
 
-  if (normalized.includes("main")) normalized = "main-idea";
-  if (normalized.includes("tone")) normalized = "tone";
-  if (normalized.includes("detail")) normalized = "detail";
-  if (normalized.includes("infer")) normalized = "inference";
-  if (normalized.includes("function")) normalized = "function";
-  if (normalized.includes("application")) normalized = "application";
+  if (raw.includes("main")) type = "main-idea";
+  else if (raw.includes("tone")) type = "tone";
+  else if (raw.includes("detail")) type = "detail";
+  else if (raw.includes("function")) type = "function";
+  else if (raw.includes("apply") || raw.includes("application")) type = "application";
+  else if (raw.includes("infer")) type = "inference";
 
   return {
     ...q,
-    type: allowedTypes.includes(normalized) ? normalized : "inference",
+    type,
   };
 });
-
 return NextResponse.json({ questions });
   } catch (e) {
     console.error(e);
