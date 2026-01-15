@@ -219,7 +219,7 @@ export default function Page() {
   );
 
  const showInitial = paras.length === 0 && !showGenerator && phase !== "newRC";
-  const showGenPanel = showGenerator && (paras.length === 0 || phase === "result");
+ const showGenPanel = showGenerator;
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
