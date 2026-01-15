@@ -19,6 +19,7 @@ Rules:
   - "prompt"
   - "options": an array of EXACTLY 4 meaningful answer choices
   - "correctIndex": 0–3
+  - "type": one of "main-idea", "tone", "inference", "detail", "function", "application"
 - All options must be complete, plausible, and mutually exclusive.
 - Do NOT leave any option blank.
 - Questions should test:
@@ -34,7 +35,8 @@ Return ONLY valid JSON in this format:
     {
       "prompt": "...",
       "options": ["A", "B", "C", "D"],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "type": "inference"
     }
   ]
 }
