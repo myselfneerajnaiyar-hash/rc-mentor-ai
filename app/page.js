@@ -125,6 +125,7 @@ const [questionTimes, setQuestionTimes] = useState({});
       } else {
         setFeedback("Not quite. Let’s try a simpler question on the same idea.");
         setMode("showingEasier");
+setQuestionStartTime(Date.now());
       }
     } else if (mode === "showingEasier") {
       if (i === data.easierQuestion.correctIndex) {
