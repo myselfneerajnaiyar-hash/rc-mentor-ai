@@ -169,8 +169,7 @@ setQuestionStartTime(Date.now());
       });
       if (!res.ok) throw new Error();
       const json = await res.json();
-     console.log(json.questions);
-setTestQuestions(json.questions || []);
+     setTestQuestions(json.questions || []);
       setPhase("test");
     } catch {
       setError("Could not generate test.");
