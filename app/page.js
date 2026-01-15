@@ -121,8 +121,8 @@ const timeTaken = Math.round((end - questionStartTime) / 1000);
 
 const key =
   mode === "showingPrimary"
-    ? para-${index}-primary
-    : para-${index}-easier;
+    ? `para-${index}-primary`
+    : `para-${index}-easier`;
 
 setQuestionTimes(t => ({ ...t, [key]: timeTaken }));
     if (!data) return;
