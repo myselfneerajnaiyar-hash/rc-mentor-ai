@@ -607,8 +607,9 @@ return (
 
     {Object.entries(buckets).map(([type, d]) => (
       <div key={type} style={{ marginTop: 12 }}>
-        <p style={{ fontWeight: 600, textTransform: "capitalize" }}>{type} Questions</p>
-
+       <p style={{ fontWeight: 600, textTransform: "capitalize" }}>
+  {type.replace("-", " ")} Questions
+</p>
         {d.fastWrong > 0 && (
           <p style={{ color: "#b45309" }}>
             You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
