@@ -178,11 +178,9 @@ setQuestionStartTime(Date.now());
 
 const normalized = (json.questions || []).map(q => ({
   ...q,
-  type: (q.type || "")
-    .toString()
-    .trim()
-    .toLowerCase() || "inference",
-}))
+  type: q.type ? q.type.trim().toLowerCase() : "unknown",
+}));
+
 setTestQuestions(normalized);
 setPhase("test");
   } catch {
