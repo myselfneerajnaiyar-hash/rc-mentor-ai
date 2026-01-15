@@ -213,27 +213,29 @@ setQuestionStartTime(Date.now());
     }
   }
 
-  async function generateNewRC() {
-    setGenLoading(true);
-    setError("");
+ async function generateNewRC() {
+  setGenLoading(true);
+  setError("");
 
-    try {
-      const res = await fetch("/api/rc-generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ genre, difficulty, lengthRange }),
-      });
-      if (!res.ok) throw new Error();
-      const json = await res.json();
-      setGeneratedRC(json);
-      setPhase("newRC");
-      setShowGenerator(false);
-    } catch {
-      setError("Could not generate new RC.");
-    } finally {
-      setGenLoading(false);
-    }
+  try {
+    const res = await fetch("/api/rc-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ genre, difficulty, lengthRange }),
+    });
+
+    if (!res.ok) throw new Error();
+
+    const json = await res.json();
+    setGeneratedRC(json);
+    setPhase("newRC");
+    setShowGenerator(false);
+  } catch {
+    setError("Could not generate new RC.");
+  } finally {
+    setGenLoading(false);
   }
+}
 
 const score = testQuestions.reduce(
   (s, q, i) =>
