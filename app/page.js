@@ -107,6 +107,7 @@ const [questionTimes, setQuestionTimes] = useState({});
       const json = await res.json();
       setData(json);
       setMode("showingPrimary");
+      setQuestionStartTime(Date.now());
     } catch {
       setError("Could not fetch explanation.");
     } finally {
