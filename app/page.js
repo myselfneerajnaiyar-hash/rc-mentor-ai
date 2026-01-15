@@ -227,10 +227,11 @@ setQuestionStartTime(Date.now());
     }
   }
 
-  const score = testQuestions.reduce(
-    (s, q, i) => s + (testAnswers[i] === q.correctIndex ? 1 : 0),
-    0
-  );
+const score = testQuestions.reduce(
+  (s, q, i) =>
+    s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
+  0
+);
 
  const showInitial = paras.length === 0 && !showGenerator && phase !== "newRC";
  const showGenPanel = showGenerator;
