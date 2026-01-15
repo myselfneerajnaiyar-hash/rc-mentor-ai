@@ -550,23 +550,39 @@ export default function Page() {
 
     <h3 style={{ marginTop: 20 }}>Detailed Solutions</h3>
 
-    {result.questionAnalysis.map((qa, i) => {
-      const q = testQuestions[qa.qIndex];
-      const studentChoice = testAnswers[qa.qIndex];
+    {testQuestions.map((q, i) => {
+  const qa = result.questionAnalysis.find(x => x.qIndex === i);
+  const studentChoice = testAnswers[i];
 
-      return (
-        <div key={i} style={{ marginTop: 20, padding: 16, border: "1px solid #e5e7eb", borderRadius: 8 }}>
-          <p style={{ fontWeight: 600 }}>
-            Q{i + 1}. {q.prompt}
-          </p>
+  const status =
+    studentChoice === undefined
+      ? "unattempted"
+      : qa?.status || "wrong";
 
-          <p>
-            <b>Status:</b>{" "}
-            <span style={{ color: qa.status === "correct" ? "green" : "red" }}>
-              {qa.status.toUpperCase()}
-            </span>
-          </p>
+  return (
+    <div key={i} style={{ marginTop: 20, padding: 16, border: "1px solid #e5e7eb", borderRadius: 8 }}>
+      <p style={{ fontWeight: 600 }}>
+        Q{i + 1}. {q.prompt}
+      </p>
 
+      <p>
+        <b>Status:</b>{" "}
+        <span
+          style={{
+            color:
+              status === "correct"
+                ? "green"
+                : status === "unattempted"
+                ? "#555"
+                : "red",
+          }}
+        >
+          {status.toUpperCase()}
+        </span>
+      </p>
+
+      {qa && (
+        <>
           <p><b>Why the correct option is correct:</b></p>
           <p>{qa.correctExplanation}</p>
 
@@ -576,23 +592,30 @@ export default function Page() {
               <li key={oi}>
                 <b>Option {String.fromCharCode(65 + oi)}:</b>{" "}
                 {qa.whyWrong[String(oi)]}
-                {studentChoice === oi && qa.status === "wrong" && (
+                {studentChoice === oi && status === "wrong" && (
                   <span style={{ color: "#b45309" }}> ← You chose this</span>
                 )}
               </li>
             ))}
           </ul>
 
-          {qa.status === "wrong" && qa.temptation && (
+          {status === "wrong" && qa.temptation && (
             <>
               <p><b>Why this option felt tempting:</b></p>
               <p>{qa.temptation}</p>
             </>
           )}
-        </div>
-      );
-    })}
+        </>
+      )}
 
+      {status === "unattempted" && (
+        <p style={{ fontStyle: "italic", color: "#555" }}>
+          You did not attempt this question. The full explanation is still shown so you can learn from it.
+        </p>
+      )}
+    </div>
+  );
+})}
     <h3 style={{ marginTop: 30 }}>Mentor’s Diagnosis</h3>
     <p>{result.summary}</p>
 
