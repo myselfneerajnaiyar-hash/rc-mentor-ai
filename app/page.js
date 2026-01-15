@@ -224,76 +224,74 @@ export default function Page() {
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <h1>RC Mentor</h1>
 
-      {/* Generator Panel – only at start or after RESULT */}
-<div id ="generator-top">
-      {showGenPanel && (
-        <div
-          style={{
-            marginTop: 20,
-            padding: 20,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            background: "#fafafa",
-          }}
-        >
-          <h3>Generate a New Passage</h3>
+     {/* Generator Panel – only at start or after RESULT */}
+      <div id="generator-top">
+        {showGenPanel && (
+          <div
+            style={{
+              marginTop: 20,
+              padding: 20,
+              border: "1px solid #ddd",
+              borderRadius: 8,
+              background: "#fafafa",
+            }}
+          >
+            <h3>Generate a New Passage</h3>
 
-          <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-            <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-              <option>Psychology</option>
-              <option>Economics</option>
-              <option>Culture</option>
-              <option>Science</option>
-              <option>Technology</option>
-              <option>Environment</option>
-              <option>Mixed</option>
-            </select>
+            <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+              <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+                <option>Psychology</option>
+                <option>Economics</option>
+                <option>Culture</option>
+                <option>Science</option>
+                <option>Technology</option>
+                <option>Environment</option>
+                <option>Mixed</option>
+              </select>
 
-            <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-              <option value="beginner">Beginner</option>
-              <option value="moderate">Moderate</option>
-              <option value="advanced">Advanced</option>
-              <option value="pro">Pro</option>
-            </select>
+              <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+                <option value="beginner">Beginner</option>
+                <option value="moderate">Moderate</option>
+                <option value="advanced">Advanced</option>
+                <option value="pro">Pro</option>
+              </select>
 
-            <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
-              <option value="300-400">300–400</option>
-              <option value="400-500">400–500</option>
-              <option value="500-600">500–600</option>
-            </select>
+              <select value={lengthRange} onChange={(e) => setLengthRange(e.target.value)}>
+                <option value="300-400">300–400</option>
+                <option value="400-500">400–500</option>
+                <option value="500-600">500–600</option>
+              </select>
+            </div>
+
+            <button
+              onClick={generateNewRC}
+              style={{
+                padding: "10px 16px",
+                background: "#2563eb",
+                color: "#fff",
+                border: "none",
+                borderRadius: 6,
+                fontWeight: 600,
+              }}
+            >
+              {genLoading ? "Generating…" : "Generate"}
+            </button>
+
+            <button
+              onClick={() => setShowGenerator(false)}
+              style={{
+                marginLeft: 12,
+                padding: "10px 16px",
+                background: "#eee",
+                border: "1px solid #ccc",
+                borderRadius: 6,
+              }}
+            >
+              Cancel
+            </button>
           </div>
-          )}
-            <div>
-
-          <button
-            onClick={generateNewRC}
-            style={{
-              padding: "10px 16px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              fontWeight: 600,
-            }}
-          >
-            {genLoading ? "Generating…" : "Generate"}
-          </button>
-
-          <button
-            onClick={() => setShowGenerator(false)}
-            style={{
-              marginLeft: 12,
-              padding: "10px 16px",
-              background: "#eee",
-              border: "1px solid #ccc",
-              borderRadius: 6,
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-
+        )}
+      </div>
       {/* Initial Paste Screen */}
       {showInitial && (
         <>
