@@ -575,11 +575,16 @@ const score = testQuestions.reduce(
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
 
-  const insights = testQuestions.map((q, i) => {
-    const t = questionTimes[`test-${i}`] || 0;
-    const correct = testAnswers[i] === q.correctIndex;
-    return { index: i, time: t, correct };
-  });
+ const insights = testQuestions.map((q, i) => {
+  const t = questionTimes[test-${i}] || 0;
+  const correct = testAnswers[i] === q.correctIndex;
+  return {
+    index: i,
+    time: t,
+    correct,
+    type: q.type || "unknown",
+  };
+});
 
   const fastWrong = insights.filter(x => !x.correct && x.time > 0 && x.time < avgTime * 0.6);
   const slowWrong = insights.filter(x => !x.correct && x.time > avgTime * 1.5);
