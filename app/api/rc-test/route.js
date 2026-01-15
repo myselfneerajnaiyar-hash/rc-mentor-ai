@@ -15,16 +15,16 @@ You are a CAT RC question setter.
 From the passage below, create exactly 4 CAT-level MCQs.
 
 Rules:
-- Each question MUST have:
+- Each question MUST include:
 - "prompt"
 - "options": exactly 4 options
 - "correctIndex": 0-3
 - "type": strictly one of:
   "main-idea", "tone", "inference", "detail", "function", "application"
 
-Do NOT return any question without a valid "type".
+You are NOT allowed to return any question without "type".
 If any question is missing "type", rewrite it before returning.
-Every object in "questions" must contain "type".
+Every object inside "questions" must contain "type".
 - All options must be complete, plausible, and mutually exclusive.
 - Do NOT leave any option blank.
 - Questions should test:
