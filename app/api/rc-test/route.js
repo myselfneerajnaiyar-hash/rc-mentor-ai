@@ -98,6 +98,7 @@ const questions = (parsed.questions || []).map(q => {
     ...q,
     type: allowedTypes.includes(normalized) ? normalized : "inference",
   };
+});
 
 return NextResponse.json({ questions });
   } catch (e) {
