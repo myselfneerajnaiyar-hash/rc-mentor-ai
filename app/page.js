@@ -819,7 +819,12 @@ return (
           <button
             onClick={() => {
               setParas(generatedRC.passage.split(/\n\s*\n/));
-              setTestQuestions(generatedRC.questions);
+              setTestQuestions(
+  (generatedRC.questions || []).map(q => ({
+    ...q,
+    type: q.type || "inference",
+  }))
+);
               setTestAnswers({});
               setPhase("test");
             }}
