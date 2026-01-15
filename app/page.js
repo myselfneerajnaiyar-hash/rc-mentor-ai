@@ -605,7 +605,47 @@ return (
     <h3>Time-Based RC Diagnosis</h3>
     <p><b>Average time per question:</b> {avgTime} seconds</p>
 
-    {Object.entries(buckets).map(([type, d]) => (
+   {testQuestions
+  .map(q => q.type || "unknown")
+  .filter((v, i, a) => a.indexOf(v) === i)
+  .map(type => {
+    const d = buckets[type] || { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
+    return (
+      <div key={type} style={{ marginTop: 12 }}>
+        <p style={{ fontWeight: 600, textTransform: "capitalize" }}>{type} Questions</p>
+
+        {d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect === 0 && (
+          <p style={{ color: "#555" }}>
+            No strong time-based pattern detected for this question type.
+          </p>
+        )}
+
+        {d.fastWrong > 0 && (
+          <p style={{ color: "#b45309" }}>
+            You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
+          </p>
+        )}
+
+        {d.slowWrong > 0 && (
+          <p style={{ color: "#991b1b" }}>
+            You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
+          </p>
+        )}
+
+        {d.slowCorrect > 0 && (
+          <p style={{ color: "#1d4ed8" }}>
+            You solved {d.slowCorrect} {type} question(s) correctly but slowly.
+          </p>
+        )}
+
+        {d.fastCorrect > 0 && (
+          <p style={{ color: "green" }}>
+            You solved {d.fastCorrect} {type} question(s) quickly and correctly.
+          </p>
+        )}
+      </div>
+    );
+  })}
       <div key={type} style={{ marginTop: 12 }}>
        <p style={{ fontWeight: 600, textTransform: "capitalize" }}>
   {type.replace("-", " ")} Questions
