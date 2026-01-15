@@ -176,9 +176,13 @@ setQuestionStartTime(Date.now());
     if (!res.ok) throw new Error();
     const json = await res.json();
 
-    // 🟢 LOAD FRESH QUESTIONS
-    setTestQuestions(json.questions || []);
-    setPhase("test");
+const normalized = (json.questions || []).map(q => ({
+  ...q,
+  type: q.type || "inference",
+}));
+
+setTestQuestions(normalized);
+setPhase("test");
   } catch {
     setError("Could not generate test.");
   } finally {
