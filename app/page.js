@@ -330,22 +330,15 @@ export default function Page() {
 <p>Split Passage 🌱</p>
 
 <button
-  onClick={() => {
-   setShowGenerator(true);
-setTimeout(() => {
-  document
-    .getElementById("generator-top")
-    ?.scrollIntoView({ behavior: "smooth" });
-}, 100);
-  }}
-  style={{
-    marginTop: 20,
-    padding: "12px 18px",
-    background: "#2563eb",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-  }}
+ onClick={() => {
+  setShowGenerator(true);
+  setTimeout(() => {
+    const el = document.getElementById("generator-top");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, 300);
+}}
 >
   Generate New Passage
 </button>
