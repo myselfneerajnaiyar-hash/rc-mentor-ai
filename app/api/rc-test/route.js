@@ -83,16 +83,14 @@ ${passage}
 const questions = (parsed.questions || []).map(q => {
   const raw = (q.type || "")
     .toLowerCase()
-    .replace(/['"]/g, "")
     .replace(/\s+/g, "-");
 
   let finalType = raw;
 
-  // Map common variants explicitly
-  if (raw.includes("tone")) finalType = "tone";
-  else if (raw.includes("main")) finalType = "main-idea";
+  if (raw.includes("main")) finalType = "main-idea";
+  else if (raw.includes("tone")) finalType = "tone";
   else if (raw.includes("detail")) finalType = "detail";
-  else if (raw.includes("function") || raw.includes("purpose")) finalType = "function";
+  else if (raw.includes("function")) finalType = "function";
   else if (raw.includes("application")) finalType = "application";
   else if (!allowedTypes.includes(raw)) finalType = "inference";
 
