@@ -82,10 +82,16 @@ ${passage}
 // Enforce type at runtime so frontend always gets it
 const allowedTypes = ["main-idea", "tone", "inference", "detail", "function", "application"];
 
-const questions = (parsed.questions || []).map(q => ({
-  ...q,
-  type: allowedTypes.includes(q.type) ? q.type : "inference",
-}));
+const questions = (parsed.questions || []).map(q => {
+  const raw = (q.type || "")
+    .toLowerCase()
+    .replace(/\s+/g, "-"); // "main idea" → "main-idea"
+
+  return {
+    ...q,
+    type: allowedTypes.includes(raw) ? raw : "inference",
+  };
+});
 
 return NextResponse.json({ questions });
   } catch (e) {
