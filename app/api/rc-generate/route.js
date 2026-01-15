@@ -56,11 +56,11 @@ STRUCTURE:
 3. Add tension: counterpoint, paradox, or complication.
 4. Conclude with implications or evaluation.
 
-After the passage, generate 4–5 MCQs:
+After the passage, generate exactly 4 MCQs:
 - One main-idea question
 - One tone/attitude question
 - One inference question
-- One application or implication question
+- One detail/function question
 
 Each question must have:
 - prompt
@@ -86,34 +86,40 @@ Do not include any extra commentary outside the JSON.
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are an expert RC content creator." },
+        { role: "system", content: "You are an expert RC content creator. Output valid JSON only." },
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
     });
 
-    const text = completion.choices[0].message.content;
+    const text = completion.choices[0].message.content || "";
 
-   const start = text.indexOf("{");
-const end = text.lastIndexOf("}") + 1;
-const json = JSON.parse(text.slice(start, end));
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}") + 1;
 
-// Force stable CAT-style types in fixed order
-const orderedTypes = ["main-idea", "tone", "inference", "detail"];
+    if (start === -1 || end === -1) {
+      throw new Error("Model did not return JSON");
+    }
 
-const questions = (json.questions || []).map((q, i) => ({
-  ...q,
-  type: orderedTypes[i] || "inference",
-}));
+    const json = JSON.parse(text.slice(start, end));
 
-return NextResponse.json({
-  passage: json.passage,
-  questions,
-});
-} catch (e) {
-  console.error(e);
-  return NextResponse.json(
-    { error: "Could not generate RC" },
-    { status: 500 }
-  );
+    // Force stable CAT-style types in fixed order
+    const orderedTypes = ["main-idea", "tone", "inference", "detail"];
+
+    const questions = (json.questions || []).map((q, i) => ({
+      ...q,
+      type: orderedTypes[i] || "inference",
+    }));
+
+    return NextResponse.json({
+      passage: json.passage,
+      questions,
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "Could not generate RC" },
+      { status: 500 }
+    );
+  }
 }
