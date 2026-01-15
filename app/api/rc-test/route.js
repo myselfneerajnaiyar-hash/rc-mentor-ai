@@ -65,9 +65,11 @@ ${passage}
     const parsed = JSON.parse(raw.slice(jsonStart));
 
 // Enforce type at runtime so frontend always gets it
+const allowedTypes = ["main-idea", "tone", "inference", "detail", "function", "application"];
+
 const questions = (parsed.questions || []).map(q => ({
   ...q,
-  type: q.type || "unknown",
+  type: allowedTypes.includes(q.type) ? q.type : "inference",
 }));
 
 return NextResponse.json({ questions });
