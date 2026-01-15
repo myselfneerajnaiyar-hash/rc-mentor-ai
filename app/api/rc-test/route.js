@@ -81,24 +81,24 @@ ${passage}
 
 // Enforce type at runtime so frontend always gets it
 const questions = (parsed.questions || []).map(q => {
-  const raw = (q.type || "")
-    .toLowerCase()
+  const raw = (q.type || "").toLowerCase();
+
+  let normalized = raw
+    .replace(/['"]/g, "")
     .replace(/\s+/g, "-");
 
-  let finalType = raw;
-
-  if (raw.includes("main")) finalType = "main-idea";
-  else if (raw.includes("tone")) finalType = "tone";
-  else if (raw.includes("detail")) finalType = "detail";
-  else if (raw.includes("function")) finalType = "function";
-  else if (raw.includes("application")) finalType = "application";
-  else if (!allowedTypes.includes(raw)) finalType = "inference";
+  if (normalized.includes("main")) normalized = "main-idea";
+  if (normalized.includes("tone")) normalized = "tone";
+  if (normalized.includes("detail")) normalized = "detail";
+  if (normalized.includes("infer")) normalized = "inference";
+  if (normalized.includes("function")) normalized = "function";
+  if (normalized.includes("application")) normalized = "application";
 
   return {
     ...q,
-    type: finalType,
+    type: allowedTypes.includes(normalized) ? normalized : "inference",
   };
-});
+
 return NextResponse.json({ questions });
   } catch (e) {
     console.error(e);
