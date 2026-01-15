@@ -37,12 +37,13 @@ export default function Page() {
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
 
-  useEffect(() => {
-    if (phase === "test") {
-      setTimeLeft(6 * 60);
-      setTimerRunning(true);
-    }
-  }, [phase]);
+ useEffect(() => {
+  if (phase === "test") {
+    setTimeLeft(6 * 60);
+    setTimerRunning(true);
+    setQuestionStartTime(Date.now()); // 👈 start timer for Q1
+  }
+}, [phase]);
 
   useEffect(() => {
     if (!timerRunning) return;
