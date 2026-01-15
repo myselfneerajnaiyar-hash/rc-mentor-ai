@@ -321,7 +321,7 @@ export default function Page() {
                 marginRight: 12,
               }}
             >
-              Split Passage 🌱
+              <p>Split Passage 🌱<p>
            <button
   onClick={() => {
     setShowGenerator(true);
