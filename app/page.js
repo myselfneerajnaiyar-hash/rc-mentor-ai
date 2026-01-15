@@ -293,6 +293,7 @@ export default function Page() {
           </button>
         </div>
       )}
+ </div>
 
       {/* Initial Paste Screen */}
       {showInitial && (
