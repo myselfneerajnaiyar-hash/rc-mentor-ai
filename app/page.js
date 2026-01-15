@@ -613,10 +613,8 @@ return (
     <h3>Time-Based RC Diagnosis</h3>
     <p><b>Average time per question:</b> {avgTime} seconds</p>
 
- {testQuestions
-  .map(q => (q.type || "unknown").trim().toLowerCase())
-  .filter((v, i, a) => a.indexOf(v) === i)
-  .map(type => {
+
+ {Array.from(new Set(testQuestions.map(q => (q.type || "inference").trim().toLowerCase()))).map(type => {
     const d = buckets[type] || { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
     return (
       <div key={type} style={{ marginTop: 12 }}>
