@@ -648,38 +648,7 @@ return (
       </div>
     );
   })}
-      <div key={type} style={{ marginTop: 12 }}>
-       <p style={{ fontWeight: 600, textTransform: "capitalize" }}>
-  {type.replace("-", " ")} Questions
-</p>
-        {d.fastWrong > 0 && (
-          <p style={{ color: "#b45309" }}>
-            You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
-            This indicates impulsive reading in this question type.
-          </p>
-        )}
-
-        {d.slowWrong > 0 && (
-          <p style={{ color: "#991b1b" }}>
-            You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
-            This points to conceptual gaps in this area.
-          </p>
-        )}
-
-        {d.slowCorrect > 0 && (
-          <p style={{ color: "#1d4ed8" }}>
-            You solved {d.slowCorrect} {type} question(s) correctly but slowly.
-            You understand them, but overthink.
-          </p>
-        )}
-
-        {d.fastCorrect > 0 && (
-          <p style={{ color: "green" }}>
-            You solved {d.fastCorrect} {type} question(s) quickly and correctly.
-            This is a strength zone.
-          </p>
-        )}
-      </div>
+      
     ))}
   </div>
 );
