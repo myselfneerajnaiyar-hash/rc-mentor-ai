@@ -599,7 +599,7 @@ setQuestionStartTime(Date.now());
           {status.toUpperCase()}
         </span>
       </p>
-{questionTimes[test-${i}] !== undefined && (
+{questionTimes[`test-${i}`] !== undefined && (
   <p style={{ fontSize: 13, color: "#555" }}>
     ⏱ Time taken: {questionTimes[`test-${i}`]} seconds
   </p>
