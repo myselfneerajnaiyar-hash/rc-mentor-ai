@@ -520,12 +520,11 @@ setQuestionStartTime(Date.now());
         {q.options.map((o, oi) => (
           <button
             key={oi}
-            onClick={() =>
-            onClick={() => {
+           onClick={() => {
   const end = Date.now();
   const timeTaken = Math.round((end - questionStartTime) / 1000);
 
-  setQuestionTimes(t => ({ ...t, [test-${qi}]: timeTaken }));
+  setQuestionTimes(t => ({ ...t, [`test-${qi}`]: timeTaken }));
   setQuestionStartTime(Date.now());
 
   setTestAnswers(a => ({ ...a, [qi]: oi }));
