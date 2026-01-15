@@ -64,12 +64,13 @@ ${passage}
     const jsonStart = raw.indexOf("{");
     const parsed = JSON.parse(raw.slice(jsonStart));
 
-    // Hard guard: remove any broken questions
-    const cleaned = (parsed.questions || []).filter(
-      q => q.options && q.options.length === 4
-    );
+// Enforce type at runtime so frontend always gets it
+const questions = (parsed.questions || []).map(q => ({
+  ...q,
+  type: q.type || "unknown",
+}));
 
-    return NextResponse.json({ questions: cleaned });
+return NextResponse.json({ questions });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
