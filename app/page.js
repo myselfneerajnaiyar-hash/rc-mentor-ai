@@ -331,8 +331,12 @@ export default function Page() {
 
 <button
   onClick={() => {
-    setShowGenerator(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+   setShowGenerator(true);
+setTimeout(() => {
+  document
+    .getElementById("generator-top")
+    ?.scrollIntoView({ behavior: "smooth" });
+}, 100);
   }}
   style={{
     marginTop: 20,
