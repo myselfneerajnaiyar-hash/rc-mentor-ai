@@ -225,6 +225,7 @@ export default function Page() {
       <h1>RC Mentor</h1>
 
       {/* Generator Panel – only at start or after RESULT */}
+<div id ="generator-top">
       {showGenPanel && (
         <div
           style={{
@@ -261,6 +262,8 @@ export default function Page() {
               <option value="500-600">500–600</option>
             </select>
           </div>
+          )}
+            <div>
 
           <button
             onClick={generateNewRC}
