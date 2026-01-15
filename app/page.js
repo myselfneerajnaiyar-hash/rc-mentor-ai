@@ -567,7 +567,60 @@ setQuestionStartTime(Date.now());
 {phase === "result" && result && (
   <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
     <h2>Your Score: {score} / {testQuestions.length}</h2>
+{/* ---- TIME DIAGNOSIS START ---- */}
+{(() => {
+  const times = Object.values(questionTimes);
+  const avgTime = times.length
+    ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+    : 0;
 
+  const insights = testQuestions.map((q, i) => {
+    const t = questionTimes[`test-${i}`] || 0;
+    const correct = testAnswers[i] === q.correctIndex;
+    return { index: i, time: t, correct };
+  });
+
+  const fastWrong = insights.filter(x => !x.correct && x.time > 0 && x.time < avgTime * 0.6);
+  const slowWrong = insights.filter(x => !x.correct && x.time > avgTime * 1.5);
+  const slowCorrect = insights.filter(x => x.correct && x.time > avgTime * 1.5);
+  const fastCorrect = insights.filter(x => x.correct && x.time > 0 && x.time < avgTime * 0.6);
+
+  return (
+    <div style={{ marginTop: 16, padding: 16, background: "#f8fafc", border: "1px solid #e5e7eb", borderRadius: 8 }}>
+      <h3>Time-Based Reading Patterns</h3>
+      <p><b>Average time per question:</b> {avgTime} seconds</p>
+
+      {fastWrong.length > 0 && (
+        <p style={{ color: "#b45309" }}>
+          You answered {fastWrong.length} question(s) very quickly and got them wrong.
+          This suggests impulsive reading—slow down and verify with the passage.
+        </p>
+      )}
+
+      {slowWrong.length > 0 && (
+        <p style={{ color: "#991b1b" }}>
+          You spent a long time on {slowWrong.length} question(s) and still got them wrong.
+          This points to comprehension gaps rather than speed issues.
+        </p>
+      )}
+
+      {slowCorrect.length > 0 && (
+        <p style={{ color: "#1d4ed8" }}>
+          You took a long time on {slowCorrect.length} question(s) but answered correctly.
+          You are accurate but may be overthinking.
+        </p>
+      )}
+
+      {fastCorrect.length > 0 && (
+        <p style={{ color: "green" }}>
+          You solved {fastCorrect.length} question(s) quickly and correctly.
+          These are your RC strength zones.
+        </p>
+      )}
+    </div>
+  );
+})()}
+{/* ---- TIME DIAGNOSIS END ---- */}
     <h3 style={{ marginTop: 20 }}>Detailed Solutions</h3>
 
     {testQuestions.map((q, i) => {
