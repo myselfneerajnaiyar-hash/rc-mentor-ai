@@ -81,7 +81,16 @@ ${JSON.stringify(answers, null, 2)}
     const jsonEnd = raw.lastIndexOf("}");
     const parsed = JSON.parse(raw.slice(jsonStart, jsonEnd + 1));
 
-    return NextResponse.json(parsed);
+// 🔧 Inject type from original questions
+const enriched = {
+  ...parsed,
+  questionAnalysis: (parsed.questionAnalysis || []).map(q => ({
+    ...q,
+    type: questions[q.qIndex]?.type || "inference",
+  })),
+};
+
+return NextResponse.json(enriched);
   } catch (e) {
     console.error(e);
     return NextResponse.json(
