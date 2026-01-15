@@ -581,32 +581,28 @@ export default function Page() {
         </span>
       </p>
 
-      {qa && (
-        <>
-          <p><b>Why the correct option is correct:</b></p>
-          <p>{qa.correctExplanation}</p>
+    <p><b>Why the correct option is correct:</b></p>
+<p>{qa?.correctExplanation || "Review the passage carefully to derive the correct inference."}</p>
 
-          <p><b>Why the other options are wrong:</b></p>
-          <ul>
-            {q.options.map((opt, oi) => (
-              <li key={oi}>
-                <b>Option {String.fromCharCode(65 + oi)}:</b>{" "}
-                {qa.whyWrong[String(oi)]}
-                {studentChoice === oi && status === "wrong" && (
-                  <span style={{ color: "#b45309" }}> ← You chose this</span>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          {status === "wrong" && qa.temptation && (
-            <>
-              <p><b>Why this option felt tempting:</b></p>
-              <p>{qa.temptation}</p>
-            </>
-          )}
-        </>
+<p><b>Why the other options are wrong:</b></p>
+<ul>
+  {q.options.map((opt, oi) => (
+    <li key={oi}>
+      <b>Option {String.fromCharCode(65 + oi)}:</b>{" "}
+      {qa?.whyWrong?.[String(oi)] || "This option does not align with the passage’s logic."}
+      {studentChoice === oi && status === "wrong" && (
+        <span style={{ color: "#b45309" }}> ← You chose this</span>
       )}
+    </li>
+  ))}
+</ul>
+
+{status === "wrong" && qa?.temptation && (
+  <>
+    <p><b>Why this option felt tempting:</b></p>
+    <p>{qa.temptation}</p>
+  </>
+)}
 
       {status === "unattempted" && (
         <p style={{ fontStyle: "italic", color: "#555" }}>
