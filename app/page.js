@@ -588,7 +588,7 @@ const buckets = {};
 testQuestions.forEach((q, i) => {
   const t = questionTimes[`test-${i}`] || 0;
   const correct = testAnswers[i] === q.correctIndex;
-  const type = q.type || "unknown";
+  const type = q.type || "inference";
 
   if (!buckets[type]) {
     buckets[type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
