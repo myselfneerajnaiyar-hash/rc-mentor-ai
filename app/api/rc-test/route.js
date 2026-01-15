@@ -13,7 +13,21 @@ export async function POST(req) {
     const prompt = `
 You are a CAT RC question setter.
 
-From the passage below, create exactly 4 CAT-level MCQs.
+From the passage below, create exactly 4 CAT-level MCQs in this exact mix:
+
+1. One "main-idea" question – about the central argument of the passage  
+2. One "tone" question – about the author's attitude or stance  
+3. One "inference" question – requires reading between the lines  
+4. One "detail" or "function" question – based on a specific line or role in the passage  
+
+Each question’s content must match its declared "type".
+For example:
+- A "tone" question must ask about attitude, stance, or mood.
+- A "main-idea" question must ask about the central argument.
+- An "inference" question must require implied meaning.
+- A "detail" or "function" question must refer to a specific part or role.
+
+If any question does not genuinely match its "type", rewrite it before returning.
 
 Rules:
 - Each question MUST include:
