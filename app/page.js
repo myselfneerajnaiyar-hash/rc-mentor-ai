@@ -34,6 +34,8 @@ export default function Page() {
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
+  const [questionStartTime, setQuestionStartTime] = useState(null);
+const [questionTimes, setQuestionTimes] = useState({});
 
   useEffect(() => {
     if (phase === "test") {
