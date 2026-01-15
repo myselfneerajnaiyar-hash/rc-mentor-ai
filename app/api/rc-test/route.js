@@ -80,19 +80,27 @@ ${passage}
     const parsed = JSON.parse(raw.slice(jsonStart));
 
 // Enforce type at runtime so frontend always gets it
-const allowedTypes = ["main-idea", "tone", "inference", "detail", "function", "application"];
-
 const questions = (parsed.questions || []).map(q => {
   const raw = (q.type || "")
     .toLowerCase()
-    .replace(/\s+/g, "-"); // "main idea" → "main-idea"
+    .replace(/['"]/g, "")
+    .replace(/\s+/g, "-");
+
+  let finalType = raw;
+
+  // Map common variants explicitly
+  if (raw.includes("tone")) finalType = "tone";
+  else if (raw.includes("main")) finalType = "main-idea";
+  else if (raw.includes("detail")) finalType = "detail";
+  else if (raw.includes("function") || raw.includes("purpose")) finalType = "function";
+  else if (raw.includes("application")) finalType = "application";
+  else if (!allowedTypes.includes(raw)) finalType = "inference";
 
   return {
     ...q,
-    type: allowedTypes.includes(raw) ? raw : "inference",
+    type: finalType,
   };
 });
-
 return NextResponse.json({ questions });
   } catch (e) {
     console.error(e);
