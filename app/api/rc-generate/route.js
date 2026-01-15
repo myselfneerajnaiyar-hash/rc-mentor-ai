@@ -94,14 +94,22 @@ Do not include any extra commentary outside the JSON.
 
     const text = completion.choices[0].message.content;
 
-    const start = text.indexOf("{");
-    const end = text.lastIndexOf("}") + 1;
-    const json = JSON.parse(text.slice(start, end));
+   const start = text.indexOf("{");
+const end = text.lastIndexOf("}") + 1;
+const json = JSON.parse(text.slice(start, end));
 
-    return NextResponse.json(json);
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json(
+// Force stable CAT-style types in fixed order
+const orderedTypes = ["main-idea", "tone", "inference", "detail"];
+
+const questions = (json.questions || []).map((q, i) => ({
+  ...q,
+  type: orderedTypes[i] || "inference",
+}));
+
+return NextResponse.json({
+  passage: json.passage,
+  questions,
+});
       { error: "Could not generate RC" },
       { status: 500 }
     );
