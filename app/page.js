@@ -309,20 +309,24 @@ export default function Page() {
           />
 
           <div style={{ marginTop: 12 }}>
-            <button
-              onClick={splitPassage}
-              style={{
-                padding: "10px 16px",
-                background: "green",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                fontWeight: 600,
-                marginRight: 12,
-              }}
-            >
-              <p>Split Passage 🌱<p>
-           <button
+          <button
+  onClick={splitPassage}
+  style={{
+    padding: "10px 16px",
+    background: "green",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+    marginRight: 12,
+  }}
+>
+  Split Passage
+</button>
+
+<p>Split Passage 🌱</p>
+
+<button
   onClick={() => {
     setShowGenerator(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
