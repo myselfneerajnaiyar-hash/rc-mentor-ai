@@ -594,7 +594,7 @@ const buckets = {};
 testQuestions.forEach((q, i) => {
   const t = questionTimes[`test-${i}`] || 0;
   const correct = testAnswers[i] === q.correctIndex;
-  const type = q.type || "inference";
+ const type = (q.type || "inference").trim().toLowerCase();
 
   if (!buckets[type]) {
     buckets[type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
@@ -611,7 +611,7 @@ return (
     <h3>Time-Based RC Diagnosis</h3>
     <p><b>Average time per question:</b> {avgTime} seconds</p>
 
-   {testQuestions
+  testQuestions
   .map(q => q.type || "unknown")
   .filter((v, i, a) => a.indexOf(v) === i)
   .map(type => {
