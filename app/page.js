@@ -947,6 +947,24 @@ return (
     >
       Generate New Passage
     </button>
+        <button
+  onClick={() => {
+    setParas([]);
+    setText("");
+    setPhase("mentor");
+    setShowProfile(true);   // directly open RC Profile
+  }}
+  style={{
+    marginLeft: 12,
+    padding: "12px 18px",
+    background: "#111827",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+  }}
+>
+  View RC Profile
+</button>
   </div>
 )}
 
