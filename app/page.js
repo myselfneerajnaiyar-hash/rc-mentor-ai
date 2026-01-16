@@ -443,7 +443,7 @@ const score = testQuestions.reduce(
     </button>
   </div>
 )}
-{showProfile && (() => {
+{phase === "profile" && (() => {
   const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
   const tests = raw.tests || [];
 
@@ -452,7 +452,7 @@ const score = testQuestions.reduce(
       <div style={{ marginTop: 20, padding: 20, border: "1px solid #ddd", borderRadius: 8 }}>
         <h3>RC Profile</h3>
         <p>No test data yet. Take at least one RC test to build your profile.</p>
-        <button onClick={() => setShowProfile(false)}>Close</button>
+        <button onClick={() => setPhase("mentor")}>Back</button>
       </div>
     );
   }
@@ -462,24 +462,6 @@ const score = testQuestions.reduce(
   const correct = all.filter(q => q.correct).length;
   const avgTime = Math.round(all.reduce((a, b) => a + b.time, 0) / totalQ);
 
-  const byType = {};
-  all.forEach(q => {
-    if (!byType[q.type]) {
-      byType[q.type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
-    }
-    const expected = {
-      "main-idea": 35,
-      "tone": 25,
-      "inference": 45,
-      "detail": 15,
-    }[q.type] || avgTime;
-
-    if (!q.correct && q.time < expected * 0.6) byType[q.type].fastWrong++;
-    if (!q.correct && q.time > expected * 1.4) byType[q.type].slowWrong++;
-    if (q.correct && q.time > expected * 1.4) byType[q.type].slowCorrect++;
-    if (q.correct && q.time < expected * 0.6) byType[q.type].fastCorrect++;
-  });
-
   return (
     <div style={{ marginTop: 20, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
       <h2>Your RC Profile</h2>
@@ -488,26 +470,16 @@ const score = testQuestions.reduce(
       <p><b>Accuracy:</b> {Math.round((correct / totalQ) * 100)}%</p>
       <p><b>Avg Time / Q:</b> {avgTime}s</p>
 
-      <h3 style={{ marginTop: 20 }}>Reading Patterns</h3>
-
-      {Object.entries(byType).map(([type, d]) => (
-        <div key={type} style={{ marginTop: 12 }}>
-          <p style={{ fontWeight: 600, textTransform: "capitalize" }}>{type}</p>
-          <p style={{ fontSize: 13, color: "#555" }}>
-            Fast Wrong: {d.fastWrong} | Slow Wrong: {d.slowWrong} | Slow Correct: {d.slowCorrect} | Fast Correct: {d.fastCorrect}
-          </p>
-        </div>
-      ))}
-
       <button
-        onClick={() => setShowProfile(false)}
+        onClick={() => setPhase("mentor")}
         style={{ marginTop: 20, padding: "10px 16px", borderRadius: 6 }}
       >
-        Close
+        Back to Home
       </button>
     </div>
   );
 })()}
+
       {/* Mentor Flow */}
       {paras.length > 0 && phase === "mentor" && (
         <>
