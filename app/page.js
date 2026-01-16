@@ -268,8 +268,52 @@ const score = testQuestions.reduce(
  const showGenPanel = showGenerator;
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
-      <h1>RC Mentor</h1>
+     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+  <h1
+    style={{ cursor: "pointer", margin: 0 }}
+    onClick={() => {
+      // universal home reset
+      setParas([]);
+      setText("");
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setGeneratedRC(null);
+      setTestQuestions([]);
+      setTestAnswers({});
+      setResult(null);
+      setShowGenerator(false);
+      setPhase("mentor");
+    }}
+  >
+    RC Mentor
+  </h1>
 
+  <div style={{ display: "flex", gap: 12 }}>
+    <button
+      onClick={() => {
+        setParas([]);
+        setShowGenerator(false);
+        setPhase("mentor");
+      }}
+      style={{ padding: "6px 12px", borderRadius: 6 }}
+    >
+      Home
+    </button>
+
+    <button
+      onClick={() => {
+        setParas([]);
+        setShowGenerator(false);
+        setPhase("profile");
+      }}
+      style={{ padding: "6px 12px", borderRadius: 6 }}
+    >
+      RC Profile
+    </button>
+  </div>
+</div>
     
       {/* Initial Paste Screen */}
       {showInitial && (
