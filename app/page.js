@@ -36,6 +36,7 @@ export default function Page() {
   const [showGenerator, setShowGenerator] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
+  const [showProfile, setShowProfile] = useState(false);
 
  useEffect(() => {
   if (phase === "test") {
@@ -210,6 +211,22 @@ setPhase("test");
       const json = await res.json();
       setResult(json);
       setPhase("result");
+      // ---- SAVE INTO RC PROFILE ----
+const existing = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+
+const record = {
+  date: Date.now(),
+  questions: testQuestions.map((q, i) => ({
+    type: (q.type || "inference").trim().toLowerCase(),
+    correct: Number(testAnswers[i]) === Number(q.correctIndex),
+    time: questionTimes[`test-${i}`] || 0,
+  })),
+};
+
+existing.tests = existing.tests || [];
+existing.tests.push(record);
+
+localStorage.setItem("rcProfile", JSON.stringify(existing));
     } catch {
       setError("Could not analyze your test.");
     } finally {
