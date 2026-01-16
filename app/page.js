@@ -507,24 +507,135 @@ const score = testQuestions.reduce(
   const totalQ = all.length;
   const correct = all.filter(q => q.correct).length;
   const avgTime = Math.round(all.reduce((a, b) => a + b.time, 0) / totalQ);
+  const accuracy = Math.round((correct / totalQ) * 100);
+
+  const byType = {};
+  all.forEach(q => {
+    if (!byType[q.type]) {
+      byType[q.type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
+    }
+    const expected = {
+      "main-idea": 35,
+      "tone": 25,
+      "inference": 45,
+      "detail": 15,
+    }[q.type] || avgTime;
+
+    if (!q.correct && q.time < expected * 0.6) byType[q.type].fastWrong++;
+    if (!q.correct && q.time > expected * 1.4) byType[q.type].slowWrong++;
+    if (q.correct && q.time > expected * 1.4) byType[q.type].slowCorrect++;
+    if (q.correct && q.time < expected * 0.6) byType[q.type].fastCorrect++;
+  });
 
   return (
-    <div style={{ marginTop: 20, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
-      <h2>Your RC Profile</h2>
-      <p><b>RCs Attempted:</b> {tests.length}</p>
-      <p><b>Questions Solved:</b> {totalQ}</p>
-      <p><b>Accuracy:</b> {Math.round((correct / totalQ) * 100)}%</p>
-      <p><b>Avg Time / Q:</b> {avgTime}s</p>
+    <div style={{ marginTop: 20 }}>
+      <h2>RC Profile</h2>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+        {["overview", "skills", "speed", "plan"].map(t => (
+          <button
+            key={t}
+            onClick={() => setActiveProfileTab(t)}
+            style={{
+              padding: "8px 14px",
+              borderRadius: 6,
+              border: "1px solid #ccc",
+              background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
+              color: activeProfileTab === t ? "#fff" : "#111",
+              fontWeight: 600,
+            }}
+          >
+            {t.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
+      {/* OVERVIEW */}
+      {activeProfileTab === "overview" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          <p><b>RCs Attempted:</b> {tests.length}</p>
+          <p><b>Total Questions:</b> {totalQ}</p>
+          <p><b>Accuracy:</b> {accuracy}%</p>
+          <p><b>Avg Time / Q:</b> {avgTime}s</p>
+
+          <p style={{ marginTop: 12, fontStyle: "italic" }}>
+            You are developing a distinct RC style. This dashboard will evolve with every test you take.
+          </p>
+        </div>
+      )}
+
+      {/* SKILLS */}
+      {activeProfileTab === "skills" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          {Object.entries(byType).map(([type, d]) => (
+            <div key={type} style={{ marginBottom: 12 }}>
+              <b style={{ textTransform: "capitalize" }}>{type}</b>
+              <p style={{ fontSize: 13 }}>
+                Fast Wrong: {d.fastWrong} | Slow Wrong: {d.slowWrong} | Slow Correct: {d.slowCorrect} | Fast Correct: {d.fastCorrect}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* SPEED MAP */}
+      {activeProfileTab === "speed" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          <p>
+            🟢 Fast Correct = Flow State  
+            🔵 Slow Correct = Accurate but Heavy  
+            🔴 Fast Wrong = Impulsive  
+            🟠 Slow Wrong = Confused
+          </p>
+
+          {Object.entries(byType).map(([type, d]) => (
+            <div key={type} style={{ marginTop: 12 }}>
+              <b style={{ textTransform: "capitalize" }}>{type}</b>
+              <p style={{ fontSize: 13 }}>
+                🟢 {d.fastCorrect} | 🔵 {d.slowCorrect} | 🔴 {d.fastWrong} | 🟠 {d.slowWrong}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ACTION PLAN */}
+      {activeProfileTab === "plan" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          <p>
+            Your RC performance shows consistent patterns.  
+            The system will now bias passages and questions toward your weakest zones.
+          </p>
+
+          <button
+            onClick={() => {
+              setPhase("mentor");
+            }}
+            style={{
+              marginTop: 12,
+              padding: "12px 18px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              fontWeight: 600,
+            }}
+          >
+            Start Adaptive RC
+          </button>
+        </div>
+      )}
 
       <button
         onClick={() => setPhase("mentor")}
-        style={{ marginTop: 20, padding: "10px 16px", borderRadius: 6 }}
+        style={{ marginTop: 20, padding: "10px 16px" }}
       >
         Back to Home
       </button>
     </div>
   );
-})()}
+})()
 
       {/* Mentor Flow */}
       {paras.length > 0 && phase === "mentor" && (
