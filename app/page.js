@@ -811,25 +811,80 @@ const score = testQuestions.reduce(
   Review This Test in Detail
 </button>
 
-        <button
-          onClick={() => setShowGenerator(true)}
-          style={{
-            marginTop: 12,
-            padding: "12px 18px",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            fontWeight: 600,
-          }}
-        >
-          Start Next RC With This Focus
-        </button>
+       <button
+  onClick={() => {
+    setShowGenerator(true);
+    setPhase("mentor");
+  }}
+  style={{
+    marginTop: 12,
+    padding: "12px 18px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Start Next RC With This Focus
+</button>
       </div>
     </div>
   );
 })()}
 
+  {showDetailed && (
+  <div style={{ marginTop: 40 }}>
+    <h3>Detailed Review</h3>
+
+    {testQuestions.map((q, i) => {
+      const qa = result.questionAnalysis.find(x => x.qIndex === i);
+      const studentChoice = testAnswers[i];
+      const status =
+        studentChoice === undefined ? "unattempted" : qa?.status || "wrong";
+
+      return (
+        <div key={i} style={{ marginTop: 20, padding: 16, border: "1px solid #e5e7eb", borderRadius: 8 }}>
+          <p style={{ fontWeight: 600 }}>Q{i + 1}. {q.prompt}</p>
+
+          <p>
+            <b>Status:</b>{" "}
+            <span style={{ color: status === "correct" ? "green" : status === "unattempted" ? "#555" : "red" }}>
+              {status.toUpperCase()}
+            </span>
+          </p>
+
+          {questionTimes[`test-${i}`] !== undefined && (
+            <p style={{ fontSize: 13, color: "#555" }}>
+              ⏱ Time taken: {questionTimes[test-${i}]} seconds
+            </p>
+          )}
+
+          <p><b>Why the correct option is correct:</b></p>
+          <p>{qa?.correctExplanation}</p>
+        </div>
+      );
+    })}
+  </div>
+)}
+<button
+  onClick={() => {
+    setParas([]);
+    setText("");
+    setPhase("mentor");
+    setShowProfile(true);
+  }}
+  style={{
+    marginLeft: 12,
+    padding: "12px 18px",
+    background: "#111827",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+  }}
+>
+  View RC Profile
+</button>
    
       {/* New RC Choice */}
       {phase === "newRC" && generatedRC && (
