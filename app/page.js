@@ -833,30 +833,28 @@ const score = testQuestions.reduce(
 
          <p><b>Correct Answer:</b> {q.options[q.correctIndex]}</p>
 
-<p style={{ marginTop: 8 }}>
-  <b>Why this is correct:</b>
-</p>
+<p><b>Why the correct option is correct:</b></p>
 <p>{qa?.correctExplanation}</p>
 
-{studentChoice !== undefined && studentChoice !== q.correctIndex && (
-  <>
-    <p style={{ marginTop: 8, color: "#b91c1c" }}>
-      <b>Why your choice was wrong:</b>
-    </p>
-    <p>{qa?.chosenExplanation}</p>
-  </>
-)}
+<p><b>Why the other options are wrong:</b></p>
+<ul>
+  {q.options.map((opt, oi) => (
+    <li key={oi}>
+      <b>Option {String.fromCharCode(65 + oi)}:</b>{" "}
+      {qa?.whyWrong?.[String(oi)] ||
+        qa?.optionExplanations?.[oi] ||
+        "This option does not align with the passage’s logic."}
+      {studentChoice === oi && status === "wrong" && (
+        <span style={{ color: "#b45309" }}> ← You chose this</span>
+      )}
+    </li>
+  ))}
+</ul>
 
-{qa?.optionExplanations && (
+{status === "wrong" && (qa?.temptation || qa?.chosenExplanation) && (
   <>
-    <p style={{ marginTop: 8 }}><b>Option-wise breakdown:</b></p>
-    <ul style={{ fontSize: 14 }}>
-      {qa.optionExplanations.map((e, idx) => (
-        <li key={idx}>
-          <b>{q.options[idx]}:</b> {e}
-        </li>
-      ))}
-    </ul>
+    <p><b>Why this option felt tempting:</b></p>
+    <p>{qa?.temptation || qa?.chosenExplanation}</p>
   </>
 )}
         </div>
