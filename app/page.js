@@ -769,7 +769,7 @@ const score = testQuestions.reduce(
         <h3>Your Next Focus</h3>
         <p>{result.nextFocus}</p>
         <button
-  onClick={() => setShowDetailed(true)}
+  onClick={() => setPhase("detailed")}
   style={{
     marginTop: 12,
     padding: "10px 16px",
@@ -804,7 +804,7 @@ const score = testQuestions.reduce(
   );
 })()}
 
-  {showDetailed && (
+ {phase === "detailed" && (
   <div style={{ marginTop: 40 }}>
     <h3>Detailed Review</h3>
 
@@ -836,6 +836,13 @@ const score = testQuestions.reduce(
         </div>
       );
     })}
+
+    <button
+      onClick={() => setPhase("result")}
+      style={{ marginTop: 20, padding: "10px 16px" }}
+    >
+      Back to Result
+    </button>
   </div>
 )}
 <button
