@@ -271,39 +271,43 @@ const score = testQuestions.reduce(
             }}
           />
 
-          <div style={{ marginTop: 12 }}>
-          <button
-  onClick={splitPassage}
-  style={{
-    padding: "10px 16px",
-    background: "green",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-    fontWeight: 600,
-    marginRight: 12,
-  }}
->
-  Split Passage
-</button>
+         <div style={{ marginTop: 12, display: "flex", gap: 12, alignItems: "center" }}>
+  <button
+    onClick={splitPassage}
+    style={{
+      padding: "10px 16px",
+      background: "green",
+      color: "#fff",
+      border: "none",
+      borderRadius: 6,
+      fontWeight: 600,
+    }}
+  >
+    Split Passage
+  </button>
 
-<p>Split Passage 🌱</p>
-
-<button
- onClick={() => {
-  setShowGenerator(true);
-  setTimeout(() => {
-    const el = document.getElementById("generator-top");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, 300);
-}}
->
-  Generate New Passage
-</button>
-   {showGenerator && (
-  <div
+  <button
+    onClick={() => {
+      setShowGenerator(true);
+      setTimeout(() => {
+        const el = document.getElementById("generator-top");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 300);
+    }}
+    style={{
+      padding: "10px 16px",
+      background: "#2563eb",
+      color: "#fff",
+      border: "none",
+      borderRadius: 6,
+      fontWeight: 600,
+    }}
+  >
+    Generate New Passage
+  </button>
+</div>
     style={{
       marginTop: 16,
       padding: 20,
