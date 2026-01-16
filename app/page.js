@@ -318,6 +318,7 @@ const score = testQuestions.reduce(
     background: "#fafafa",
   }}
 >
+  </div>
     <h3>Generate a New Passage</h3>
 
     <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
