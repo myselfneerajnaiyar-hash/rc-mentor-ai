@@ -784,9 +784,22 @@ const score = testQuestions.reduce(
 
        <button
   onClick={() => {
-    setShowGenerator(true);
-    setPhase("mentor");
-  }}
+  // wipe old RC session completely
+  setGeneratedRC(null);
+  setTestQuestions([]);
+  setTestAnswers({});
+  setResult(null);
+  setMentorData(null);
+  setCurrentParagraph(0);
+  setShowDetailed(false);
+
+  // store weakness for next RC
+  setNextFocus(result.primaryWeakness);
+
+  // go to fresh RC generation screen
+  setShowGenerator(true);
+  setPhase("newRC");
+}}
   style={{
     marginTop: 12,
     padding: "12px 18px",
