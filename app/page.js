@@ -36,6 +36,8 @@ export default function Page() {
   const [showGenerator, setShowGenerator] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
+  const [activeProfileTab, setActiveProfileTab] = useState("overview");
+// overview | skills | speed | plan
 
 
  useEffect(() => {
