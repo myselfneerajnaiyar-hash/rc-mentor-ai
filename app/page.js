@@ -620,7 +620,7 @@ const score = testQuestions.reduce(
     Submit Test
   </button>
 )}
-)}
+
 {/* Result Phase */}
 {phase === "result" && result && (
   <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
