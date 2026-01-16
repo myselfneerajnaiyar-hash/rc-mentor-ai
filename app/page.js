@@ -308,14 +308,16 @@ const score = testQuestions.reduce(
     Generate New Passage
   </button>
 </div>
-    style={{
-      marginTop: 16,
-      padding: 20,
-      border: "1px solid #ddd",
-      borderRadius: 8,
-      background: "#fafafa",
-    }}
-  >
+
+<div
+  style={{
+    marginTop: 16,
+    padding: 20,
+    border: "1px solid #ddd",
+    borderRadius: 8,
+    background: "#fafafa",
+  }}
+>
     <h3>Generate a New Passage</h3>
 
     <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
