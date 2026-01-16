@@ -724,249 +724,97 @@ const score = testQuestions.reduce(
 )}
 
 {/* Result Phase */}
-{phase === "result" && result && (
-  <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
-    <h2>Your Score: {score} / {testQuestions.length}</h2>
-{/* ---- TIME DIAGNOSIS START ---- */}
-{(() => {
- const times = Object.values(questionTimes);
-const avgTime = times.length
-  ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
-  : 0;
+{phase === "result" && result && (() => {
+  const times = Object.values(questionTimes);
+  const avgTime = times.length
+    ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+    : 0;
 
-const buckets = {};
+  const buckets = {};
 
-testQuestions.forEach((q, i) => {
-  const t = questionTimes[`test-${i}`] || 0;
-  const correct = testAnswers[i] === q.correctIndex;
- const type = (q.type || "inference").trim().toLowerCase();
+  testQuestions.forEach((q, i) => {
+    const t = questionTimes[`test-${i}`] || 0;
+    const correct = testAnswers[i] === q.correctIndex;
+    const type = (q.type || "inference").trim().toLowerCase();
 
-  if (!buckets[type]) {
-    buckets[type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
-  }
+    if (!buckets[type]) {
+      buckets[type] = { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
+    }
 
-  const CAT_TIME = {
-  "main-idea": 35,
-  "tone": 25,
-  "inference": 45,
-  "detail": 15,
-};
+    const CAT_TIME = {
+      "main-idea": 35,
+      "tone": 25,
+      "inference": 45,
+      "detail": 15,
+    };
 
-const expected = CAT_TIME[type] || avgTime;
+    const expected = CAT_TIME[type] || avgTime;
 
-if (!correct && t < expected * 0.6) buckets[type].fastWrong++;
-if (!correct && t > expected * 1.4) buckets[type].slowWrong++;
-if (correct && t > expected * 1.4) buckets[type].slowCorrect++;
-if (correct && t < expected * 0.6) buckets[type].fastCorrect++;
-});
-
-return (
-  <div style={{ marginTop: 16, padding: 16, background: "#f8fafc", border: "1px solid #e5e7eb", borderRadius: 8 }}>
-    <h3>Time-Based RC Diagnosis</h3>
-    <p><b>Average time per question:</b> {avgTime} seconds</p>
-
-
- {Array.from(new Set(testQuestions.map(q => (q.type || "inference").trim().toLowerCase()))).map(type => {
-    const d = buckets[type] || { fastWrong: 0, slowWrong: 0, fastCorrect: 0, slowCorrect: 0 };
-    return (
-      <div key={type} style={{ marginTop: 12 }}>
-        <p style={{ fontWeight: 600, textTransform: "capitalize" }}>{type} Questions</p>
-
-     {d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect === 0 ? (
-  <p style={{ color: "#555" }}>
-    No strong time-based pattern detected for this question type.
-  </p>
-) : (
-  <>
-    {d.fastWrong > 0 && (
-      <>
-        <p style={{ color: "#b45309" }}>
-          You answered {d.fastWrong} {type} question(s) very quickly and got them wrong.
-        </p>
-        <p style={{ fontSize: 13, color: "#555" }}>
-          {type === "main-idea" &&
-            "You are forming the passage’s purpose too early. In CAT, main-idea questions demand that you first absorb the author’s full arc, not just the opening paragraph."}
-          {type === "inference" &&
-            "This reflects impulsive reading. Inference questions require you to reconstruct the author’s implied logic, not react to surface cues."}
-          {type === "tone" &&
-            "You may be reacting to emotional words instead of judging the author’s overall stance."}
-          {type === "detail" &&
-            "You are guessing without anchoring your choice to a precise line in the passage."}
-        </p>
-      </>
-    )}
-
-    {d.slowWrong > 0 && (
-      <>
-        <p style={{ color: "#991b1b" }}>
-          You spent a long time on {d.slowWrong} {type} question(s) and still got them wrong.
-        </p>
-        <p style={{ fontSize: 13, color: "#555" }}>
-          {type === "main-idea" &&
-            "You are rereading without restructuring the passage mentally. Main-idea clarity comes from mapping the argument, not repeated scanning."}
-          {type === "inference" &&
-            "This suggests confusion in tracing logical links. You may be reading sentences, not reasoning chains."}
-          {type === "tone" &&
-            "You are overthinking tone instead of stepping back to judge the author’s overall attitude."}
-          {type === "detail" &&
-            "You are searching but not localizing the exact reference point in the text."}
-        </p>
-      </>
-    )}
-
-    {d.slowCorrect > 0 && (
-      <>
-        <p style={{ color: "#1d4ed8" }}>
-          You solved {d.slowCorrect} {type} question(s) correctly but slowly.
-        </p>
-        <p style={{ fontSize: 13, color: "#555" }}>
-          {type === "main-idea" &&
-            "Your understanding is sound, but you are not yet seeing structure quickly. Practice summarizing each paragraph in one line."}
-          {type === "inference" &&
-            "Your reasoning is accurate but effortful. You need to internalize how CAT hides logic between lines."}
-          {type === "tone" &&
-            "You can detect tone, but you hesitate. Train yourself to read with author-attitude awareness."}
-          {type === "detail" &&
-            "You are thorough but slow. Work on faster scanning and line-location skills."}
-        </p>
-      </>
-    )}
-
-    {d.fastCorrect > 0 && (
-      <>
-        <p style={{ color: "green" }}>
-          You solved {d.fastCorrect} {type} question(s) quickly and correctly.
-        </p>
-        <p style={{ fontSize: 13, color: "#555" }}>
-          {type === "main-idea" &&
-            "You are grasping the author’s core intent efficiently—this is a CAT-level strength."}
-          {type === "inference" &&
-            "You are reading between the lines naturally. This is a high-value RC skill."}
-          {type === "tone" &&
-            "Your sensitivity to author attitude is strong and reliable."}
-          {type === "detail" &&
-            "You are locating and verifying information efficiently."}
-        </p>
-      </>
-    )}
-  </>
-)}
-       
-      </div>
-    );
-  })}
-      
-  
-  </div>
-);
-})()}
-{/* ---- TIME DIAGNOSIS END ---- */}
-    <h3 style={{ marginTop: 20 }}>Detailed Solutions</h3>
-
-    {testQuestions.map((q, i) => {
-  const qa = result.questionAnalysis.find(x => x.qIndex === i);
-  const studentChoice = testAnswers[i];
-
-  const status =
-    studentChoice === undefined
-      ? "unattempted"
-      : qa?.status || "wrong";
+    if (!correct && t < expected * 0.6) buckets[type].fastWrong++;
+    if (!correct && t > expected * 1.4) buckets[type].slowWrong++;
+    if (correct && t > expected * 1.4) buckets[type].slowCorrect++;
+    if (correct && t < expected * 0.6) buckets[type].fastCorrect++;
+  });
 
   return (
-    <div key={i} style={{ marginTop: 20, padding: 16, border: "1px solid #e5e7eb", borderRadius: 8 }}>
-      <p style={{ fontWeight: 600 }}>
-        Q{i + 1}. {q.prompt}
-      </p>
+    <div style={{ marginTop: 40 }}>
+      {/* Snapshot */}
+      <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10, background: "#f8fafc" }}>
+        <h2>Performance Snapshot</h2>
+        <p><b>Score:</b> {score} / {testQuestions.length}</p>
+        <p><b>Accuracy:</b> {Math.round((score / testQuestions.length) * 100)}%</p>
+        <p><b>Avg Time / Question:</b> {avgTime}s</p>
+      </div>
 
-      <p>
-        <b>Status:</b>{" "}
-        <span
+      {/* Strengths */}
+      <div style={{ marginTop: 20, padding: 20, borderRadius: 10, background: "#ecfeff", border: "1px solid #bae6fd" }}>
+        <h3>Your Strengths</h3>
+        <ul>{result.strengths.map((s, i) => <li key={i}>{s}</li>)}</ul>
+      </div>
+
+      {/* Friction Patterns */}
+      <div style={{ marginTop: 20, padding: 20, borderRadius: 10, background: "#fff7ed", border: "1px solid #fed7aa" }}>
+        <h3>Where You Lose Marks</h3>
+
+        {Object.entries(buckets).map(([type, d]) => (
+          <div key={type} style={{ marginTop: 12 }}>
+            <b style={{ textTransform: "capitalize" }}>{type}</b>
+            <p style={{ fontSize: 13, color: "#444" }}>
+              Fast Wrong: {d.fastWrong} | Slow Wrong: {d.slowWrong} | Slow Correct: {d.slowCorrect} | Fast Correct: {d.fastCorrect}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Reading Style */}
+      <div style={{ marginTop: 20, padding: 20, borderRadius: 10, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+        <h3>Your Reading Style</h3>
+        <p>{result.summary}</p>
+      </div>
+
+      {/* Action Plan */}
+      <div style={{ marginTop: 20, padding: 20, borderRadius: 10, background: "#eef2ff", border: "1px solid #c7d2fe" }}>
+        <h3>Your Next Focus</h3>
+        <p>{result.nextFocus}</p>
+
+        <button
+          onClick={() => setShowGenerator(true)}
           style={{
-            color:
-              status === "correct"
-                ? "green"
-                : status === "unattempted"
-                ? "#555"
-                : "red",
+            marginTop: 12,
+            padding: "12px 18px",
+            background: "#2563eb",
+            color: "#fff",
+            border: "none",
+            borderRadius: 6,
+            fontWeight: 600,
           }}
         >
-          {status.toUpperCase()}
-        </span>
-      </p>
-{questionTimes[`test-${i}`] !== undefined && (
-  <p style={{ fontSize: 13, color: "#555" }}>
-    ⏱ Time taken: {questionTimes[`test-${i}`]} seconds
-  </p>
-)}
-    <p><b>Why the correct option is correct:</b></p>
-<p>{qa?.correctExplanation || "Review the passage carefully to derive the correct inference."}</p>
-
-<p><b>Why the other options are wrong:</b></p>
-<ul>
-  {q.options.map((opt, oi) => (
-    <li key={oi}>
-      <b>Option {String.fromCharCode(65 + oi)}:</b>{" "}
-      {qa?.whyWrong?.[String(oi)] || "This option does not align with the passage’s logic."}
-      {studentChoice === oi && status === "wrong" && (
-        <span style={{ color: "#b45309" }}> ← You chose this</span>
-      )}
-    </li>
-  ))}
-</ul>
-
-{status === "wrong" && qa?.temptation && (
-  <>
-    <p><b>Why this option felt tempting:</b></p>
-    <p>{qa.temptation}</p>
-  </>
-)}
-
-      {status === "unattempted" && (
-        <p style={{ fontStyle: "italic", color: "#555" }}>
-          You did not attempt this question. The full explanation is still shown so you can learn from it.
-        </p>
-      )}
+          Start Next RC With This Focus
+        </button>
+      </div>
     </div>
   );
-})}
-    <h3 style={{ marginTop: 30 }}>Mentor’s Diagnosis</h3>
-    <p>{result.summary}</p>
-
-    <h4>Your Strengths</h4>
-    <ul>{result.strengths.map((s, i) => <li key={i}>{s}</li>)}</ul>
-
-    <h4>Areas to Improve</h4>
-    <ul>{result.weaknesses.map((w, i) => <li key={i}>{w}</li>)}</ul>
-
-    <h4>What You Should Focus On Next</h4>
-    <p>{result.nextFocus}</p>
-
-    <button
-      onClick={() => setShowGenerator(true)}
-      style={{ marginTop: 20, padding: "12px 18px", background: "#2563eb", color: "#fff", border: "none", borderRadius: 6 }}
-    >
-      Generate New Passage
-    </button>
-        <button
-  onClick={() => {
-    setParas([]);
-    setText("");
-    setPhase("mentor");
-    setShowProfile(true);   // directly open RC Profile
-  }}
-  style={{
-    marginLeft: 12,
-    padding: "12px 18px",
-    background: "#111827",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-  }}
->
-  View RC Profile
-</button>
-  </div>
-)}
+})()}
 
    
       {/* New RC Choice */}
