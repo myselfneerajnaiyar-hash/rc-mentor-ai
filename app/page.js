@@ -324,6 +324,22 @@ const score = testQuestions.reduce(
   >
     Generate New Passage
   </button>
+      <button
+  onClick={() => {
+    setShowProfile(true);
+    setShowGenerator(false);
+  }}
+  style={{
+    padding: "10px 16px",
+    background: "#111827",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  RC Profile
+</button>
 </div>
 
 <div
