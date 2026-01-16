@@ -318,6 +318,11 @@ const score = testQuestions.reduce(
     background: "#fafafa",
   }}
 >
+
+           
+          </div>
+        </>
+      )}
  {showGenerator && (
   <div
     style={{
@@ -405,11 +410,6 @@ const score = testQuestions.reduce(
     </button>
   </div>
 )}
-           
-          </div>
-        </>
-      )}
-
       {/* Mentor Flow */}
       {paras.length > 0 && phase === "mentor" && (
         <>
