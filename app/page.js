@@ -552,53 +552,101 @@ const score = testQuestions.reduce(
       </div>
 
       {/* OVERVIEW */}
-      {activeProfileTab === "overview" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          <p><b>RCs Attempted:</b> {tests.length}</p>
-          <p><b>Total Questions:</b> {totalQ}</p>
-          <p><b>Accuracy:</b> {accuracy}%</p>
-          <p><b>Avg Time / Q:</b> {avgTime}s</p>
-
-          <p style={{ marginTop: 12, fontStyle: "italic" }}>
-            You are developing a distinct RC style. This dashboard will evolve with every test you take.
-          </p>
+     {activeProfileTab === "overview" && (
+  <div style={{ display: "grid", gap: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+      {[
+        { label: "Accuracy", value: accuracy + "%" },
+        { label: "Avg Time / Q", value: avgTime + "s" },
+        { label: "RCs Attempted", value: tests.length },
+        { label: "Total Questions", value: totalQ },
+      ].map((c, i) => (
+        <div
+          key={i}
+          style={{
+            padding: 16,
+            borderRadius: 10,
+            border: "1px solid #e5e7eb",
+            background: "#f8fafc",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: 22, fontWeight: 700 }}>{c.value}</div>
+          <div style={{ fontSize: 12, color: "#555" }}>{c.label}</div>
         </div>
-      )}
+      ))}
+    </div>
+
+    <div style={{ padding: 16, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+      <p style={{ margin: 0, fontStyle: "italic" }}>
+        Your RC profile is stabilizing into a recognizable pattern.  
+        This dashboard will sharpen with every test you take.
+      </p>
+    </div>
+  </div>
+)}
 
       {/* SKILLS */}
-      {activeProfileTab === "skills" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          {Object.entries(byType).map(([type, d]) => (
-            <div key={type} style={{ marginBottom: 12 }}>
-              <b style={{ textTransform: "capitalize" }}>{type}</b>
-              <p style={{ fontSize: 13 }}>
-                Fast Wrong: {d.fastWrong} | Slow Wrong: {d.slowWrong} | Slow Correct: {d.slowCorrect} | Fast Correct: {d.fastCorrect}
-              </p>
-            </div>
-          ))}
+     {activeProfileTab === "skills" && (
+  <div style={{ display: "grid", gap: 16 }}>
+    {Object.entries(byType).map(([type, d]) => {
+      const total = d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect || 1;
+      const bar = (v, color) => (
+        <div style={{ height: 10, width: `${(v / total) * 100}%`, background: color }} />
+      );
+
+      return (
+        <div key={type}>
+          <div style={{ fontWeight: 600, textTransform: "capitalize", marginBottom: 6 }}>{type}</div>
+          <div style={{ display: "flex", height: 10, borderRadius: 6, overflow: "hidden", background: "#eee" }}>
+            {bar(d.fastCorrect, "#22c55e")}
+            {bar(d.slowCorrect, "#3b82f6")}
+            {bar(d.slowWrong, "#fb923c")}
+            {bar(d.fastWrong, "#ef4444")}
+          </div>
         </div>
-      )}
+      );
+    })}
+  </div>
+)}
 
       {/* SPEED MAP */}
-      {activeProfileTab === "speed" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          <p>
-            🟢 Fast Correct = Flow State  
-            🔵 Slow Correct = Accurate but Heavy  
-            🔴 Fast Wrong = Impulsive  
-            🟠 Slow Wrong = Confused
-          </p>
-
-          {Object.entries(byType).map(([type, d]) => (
-            <div key={type} style={{ marginTop: 12 }}>
-              <b style={{ textTransform: "capitalize" }}>{type}</b>
-              <p style={{ fontSize: 13 }}>
-                🟢 {d.fastCorrect} | 🔵 {d.slowCorrect} | 🔴 {d.fastWrong} | 🟠 {d.slowWrong}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+     {activeProfileTab === "speed" && (
+  <div style={{ overflowX: "auto" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <thead>
+        <tr>
+          <th style={{ textAlign: "left" }}>Type</th>
+          <th>🟢 Flow</th>
+          <th>🔵 Heavy</th>
+          <th>🟠 Confused</th>
+          <th>🔴 Impulsive</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(byType).map(([type, d]) => (
+          <tr key={type}>
+            <td style={{ padding: 6, fontWeight: 600 }}>{type}</td>
+            {[d.fastCorrect, d.slowCorrect, d.slowWrong, d.fastWrong].map((v, i) => (
+              <td
+                key={i}
+                style={{
+                  padding: 6,
+                  textAlign: "center",
+                  background: `rgba(${i === 0 ? "34,197,94" : i === 1 ? "59,130,246" : i === 2 ? "251,146,60" : "239,68,68"}, ${
+                    Math.min(0.15 + v * 0.08, 0.85)
+                  })`,
+                }}
+              >
+                {v}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
 
       {/* ACTION PLAN */}
       {activeProfileTab === "plan" && (
