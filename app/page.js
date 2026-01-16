@@ -318,41 +318,50 @@ const score = testQuestions.reduce(
     background: "#fafafa",
   }}
 >
-  </div>
+ {showGenerator && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: 20,
+      border: "1px solid #ddd",
+      borderRadius: 8,
+      background: "#fafafa",
+    }}
+  >
     <h3>Generate a New Passage</h3>
 
     <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
       <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-  <option>Psychology</option>
-  <option>Economics</option>
-  <option>Sociology / Society</option>
-  <option>Philosophy</option>
-  <option>History</option>
-  <option>Politics / Polity</option>
-  <option>Culture & Anthropology</option>
-  <option>Ethics & Morality</option>
+        <option>Psychology</option>
+        <option>Economics</option>
+        <option>Sociology / Society</option>
+        <option>Philosophy</option>
+        <option>History</option>
+        <option>Politics / Polity</option>
+        <option>Culture & Anthropology</option>
+        <option>Ethics & Morality</option>
 
-  <option>Literature</option>
-  <option>Books & Reading</option>
-  <option>Arts</option>
-  <option>Architecture & Design</option>
-  <option>Linguistics / Language</option>
+        <option>Literature</option>
+        <option>Books & Reading</option>
+        <option>Arts</option>
+        <option>Architecture & Design</option>
+        <option>Linguistics / Language</option>
 
-  <option>Biology</option>
-  <option>Evolution & Ecology</option>
-  <option>Neuroscience / Cognition</option>
-  <option>Physics & Scientific Thought</option>
-  <option>Mathematics & Logic</option>
+        <option>Biology</option>
+        <option>Evolution & Ecology</option>
+        <option>Neuroscience / Cognition</option>
+        <option>Physics & Scientific Thought</option>
+        <option>Mathematics & Logic</option>
 
-  <option>Technology & Society</option>
-  <option>Environment & Sustainability</option>
-  <option>Education & Learning</option>
-  <option>Media & Communication</option>
-  <option>Work, Capital & Labour</option>
-  <option>Urban Studies</option>
+        <option>Technology & Society</option>
+        <option>Environment & Sustainability</option>
+        <option>Education & Learning</option>
+        <option>Media & Communication</option>
+        <option>Work, Capital & Labour</option>
+        <option>Urban Studies</option>
 
-  <option>Mixed</option>
-</select>
+        <option>Mixed</option>
+      </select>
 
       <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
         <option value="beginner">Beginner</option>
