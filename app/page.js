@@ -871,24 +871,7 @@ const score = testQuestions.reduce(
     </button>
   </div>
 )}
-<button
-  onClick={() => {
-    setParas([]);
-    setText("");
-    setPhase("mentor");
-    setShowProfile(true);
-  }}
-  style={{
-    marginLeft: 12,
-    padding: "12px 18px",
-    background: "#111827",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-  }}
->
-  View RC Profile
-</button>
+
    
       {/* New RC Choice */}
       {phase === "newRC" && generatedRC && (
