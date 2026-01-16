@@ -856,7 +856,7 @@ const score = testQuestions.reduce(
 
           {questionTimes[`test-${i}`] !== undefined && (
             <p style={{ fontSize: 13, color: "#555" }}>
-              ⏱ Time taken: {questionTimes[test-${i}]} seconds
+              ⏱ Time taken: {questionTimes[`test-${i}`]} seconds
             </p>
           )}
 
