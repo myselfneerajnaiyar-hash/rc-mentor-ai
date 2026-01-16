@@ -798,7 +798,7 @@ const score = testQuestions.reduce(
 
   // go to fresh RC generation screen
   setShowGenerator(true);
-  setPhase("newRC");
+  setPhase("home");
 }}
   style={{
     marginTop: 12,
