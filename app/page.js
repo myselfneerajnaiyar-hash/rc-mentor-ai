@@ -635,7 +635,7 @@ const score = testQuestions.reduce(
       </button>
     </div>
   );
-})()
+})()}
 
       {/* Mentor Flow */}
       {paras.length > 0 && phase === "mentor" && (
