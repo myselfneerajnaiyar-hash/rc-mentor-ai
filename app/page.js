@@ -37,6 +37,7 @@ export default function Page() {
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
   const [showProfile, setShowProfile] = useState(false);
+  const [showDetailed, setShowDetailed] = useState(false);
 
  useEffect(() => {
   if (phase === "test") {
@@ -796,6 +797,19 @@ const score = testQuestions.reduce(
       <div style={{ marginTop: 20, padding: 20, borderRadius: 10, background: "#eef2ff", border: "1px solid #c7d2fe" }}>
         <h3>Your Next Focus</h3>
         <p>{result.nextFocus}</p>
+        <button
+  onClick={() => setShowDetailed(true)}
+  style={{
+    marginTop: 12,
+    padding: "10px 16px",
+    background: "#e5e7eb",
+    border: "1px solid #d1d5db",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Review This Test in Detail
+</button>
 
         <button
           onClick={() => setShowGenerator(true)}
