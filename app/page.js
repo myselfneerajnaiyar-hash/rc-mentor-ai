@@ -831,8 +831,34 @@ const score = testQuestions.reduce(
             </p>
           )}
 
-          <p><b>Why the correct option is correct:</b></p>
-          <p>{qa?.correctExplanation}</p>
+         <p><b>Correct Answer:</b> {q.options[q.correctIndex]}</p>
+
+<p style={{ marginTop: 8 }}>
+  <b>Why this is correct:</b>
+</p>
+<p>{qa?.correctExplanation}</p>
+
+{studentChoice !== undefined && studentChoice !== q.correctIndex && (
+  <>
+    <p style={{ marginTop: 8, color: "#b91c1c" }}>
+      <b>Why your choice was wrong:</b>
+    </p>
+    <p>{qa?.chosenExplanation}</p>
+  </>
+)}
+
+{qa?.optionExplanations && (
+  <>
+    <p style={{ marginTop: 8 }}><b>Option-wise breakdown:</b></p>
+    <ul style={{ fontSize: 14 }}>
+      {qa.optionExplanations.map((e, idx) => (
+        <li key={idx}>
+          <b>{q.options[idx]}:</b> {e}
+        </li>
+      ))}
+    </ul>
+  </>
+)}
         </div>
       );
     })}
