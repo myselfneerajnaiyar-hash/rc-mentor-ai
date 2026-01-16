@@ -619,7 +619,7 @@ const score = testQuestions.reduce(
   >
     Submit Test
   </button>
-      </div>
+)}
 )}
 {/* Result Phase */}
 {phase === "result" && result && (
