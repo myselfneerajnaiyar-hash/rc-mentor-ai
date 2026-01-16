@@ -29,15 +29,14 @@ export default function Page() {
   const [testLoading, setTestLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
-  // mentor | ready | test | result | newRC
+ // mentor | ready | test | result | newRC | profile | detailed
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
-  const [showProfile, setShowProfile] = useState(false);
-  const [showDetailed, setShowDetailed] = useState(false);
+
 
  useEffect(() => {
   if (phase === "test") {
@@ -327,7 +326,7 @@ const score = testQuestions.reduce(
   </button>
       <button
   onClick={() => {
-    setShowProfile(true);
+    setPhase("profile");
     setShowGenerator(false);
   }}
   style={{
