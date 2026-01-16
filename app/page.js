@@ -601,24 +601,27 @@ const score = testQuestions.reduce(
       </div>
     ))}
 
+ <div style={{ marginTop: 12 }}>
   {loading ? (
-  <p style={{ marginTop: 12, fontWeight: 600, color: "#2563eb" }}>
-    Evaluating your responses and preparing a personalized diagnosis…
-  </p>
-) : (
-  <button
-    onClick={submitTest}
-    style={{
-      padding: "12px 18px",
-      background: "green",
-      color: "#fff",
-      border: "none",
-      borderRadius: 6,
-      fontWeight: 600,
-    }}
-  >
-    Submit Test
-  </button>
+    <p style={{ fontWeight: 600, color: "#2563eb" }}>
+      Evaluating your responses and preparing a personalized diagnosis…
+    </p>
+  ) : (
+    <button
+      onClick={submitTest}
+      style={{
+        padding: "12px 18px",
+        background: "green",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Submit Test
+    </button>
+  )}
+</div>
 )}
 
 {/* Result Phase */}
