@@ -590,20 +590,74 @@ const score = testQuestions.reduce(
      {activeProfileTab === "skills" && (
   <div style={{ display: "grid", gap: 16 }}>
     {Object.entries(byType).map(([type, d]) => {
-      const total = d.fastWrong + d.slowWrong + d.fastCorrect + d.slowCorrect || 1;
-      const bar = (v, color) => (
-        <div style={{ height: 10, width: `${(v / total) * 100}%`, background: color }} />
-      );
+      const total =
+        d.fastCorrect + d.slowCorrect + d.fastWrong + d.slowWrong;
+
+      const dominant =
+        d.fastWrong >= d.slowWrong &&
+        d.fastWrong >= d.fastCorrect &&
+        d.fastWrong >= d.slowCorrect
+          ? "impulsive"
+          : d.slowWrong >= d.fastCorrect && d.slowWrong >= d.slowCorrect
+          ? "confused"
+          : d.slowCorrect >= d.fastCorrect
+          ? "heavy"
+          : "flow";
+
+      const profiles = {
+        impulsive: {
+          title: "Impulsive Reader",
+          color: "#fee2e2",
+          text: "You jump to answers before the passage fully settles in your mind.",
+          habit: "Force a 5-second pause before answering any question of this type.",
+        },
+        confused: {
+          title: "Foggy Reader",
+          color: "#fff7ed",
+          text: "You read, but the structure of the idea remains blurry.",
+          habit: "After each paragraph, summarize it in one clean sentence.",
+        },
+        heavy: {
+          title: "Over-Processor",
+          color: "#eef2ff",
+          text: "You are accurate, but you overthink and slow yourself down.",
+          habit: "Trust your first clear interpretation and move on.",
+        },
+        flow: {
+          title: "Flow Reader",
+          color: "#ecfeff",
+          text: "You naturally sync with the author’s intent in this area.",
+          habit: "Preserve this instinct. Don’t second-guess clarity.",
+        },
+      };
+
+      const p = profiles[dominant];
 
       return (
-        <div key={type}>
-          <div style={{ fontWeight: 600, textTransform: "capitalize", marginBottom: 6 }}>{type}</div>
-          <div style={{ display: "flex", height: 10, borderRadius: 6, overflow: "hidden", background: "#eee" }}>
-            {bar(d.fastCorrect, "#22c55e")}
-            {bar(d.slowCorrect, "#3b82f6")}
-            {bar(d.slowWrong, "#fb923c")}
-            {bar(d.fastWrong, "#ef4444")}
+        <div
+          key={type}
+          style={{
+            padding: 18,
+            borderRadius: 10,
+            border: "1px solid #e5e7eb",
+            background: p.color,
+          }}
+        >
+          <h3 style={{ margin: 0, textTransform: "capitalize" }}>
+            {type.replace("-", " ")}
+          </h3>
+
+          <p style={{ margin: "6px 0", fontWeight: 600 }}>{p.title}</p>
+          <p style={{ margin: "6px 0", fontSize: 14 }}>{p.text}</p>
+
+          <div style={{ fontSize: 13, marginTop: 8 }}>
+            🟢 {d.fastCorrect} &nbsp; 🔵 {d.slowCorrect} &nbsp;
+            🟠 {d.slowWrong} &nbsp; 🔴 {d.fastWrong}
           </div>
+
+          <p style={{ marginTop: 10, fontStyle: "italic" }}>
+            Habit: {p.habit}
+          </p>
         </div>
       );
     })}
