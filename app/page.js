@@ -805,7 +805,8 @@ const score = testQuestions.reduce(
         </div>
       )}
     </div>
-  )}
+  );
+})()}
 
       {/* ACTION PLAN */}
       {activeProfileTab === "plan" && (
