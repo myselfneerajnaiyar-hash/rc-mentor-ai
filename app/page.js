@@ -587,99 +587,112 @@ const score = testQuestions.reduce(
 )}
 
       {/* SKILLS */}
-     {activeProfileTab === "skills" && (
-  <div style={{ display: "grid", gap: 16 }}>
+    {activeProfileTab === "skills" && (
+  <div style={{ display: "grid", gap: 20 }}>
     {Object.entries(byType).map(([type, d]) => {
-      const total =
-        d.fastCorrect + d.slowCorrect + d.fastWrong + d.slowWrong;
+      const correct = d.fastCorrect + d.slowCorrect;
+      const wrong = d.fastWrong + d.slowWrong;
+      const total = correct + wrong || 1;
 
-      const dominant =
-        d.fastWrong >= d.slowWrong &&
-        d.fastWrong >= d.fastCorrect &&
-        d.fastWrong >= d.slowCorrect
-          ? "impulsive"
-          : d.slowWrong >= d.fastCorrect && d.slowWrong >= d.slowCorrect
-          ? "confused"
-          : d.slowCorrect >= d.fastCorrect
-          ? "heavy"
-          : "flow";
+      const pctCorrect = Math.round((correct / total) * 100);
+      const pctWrong = 100 - pctCorrect;
 
-     const profiles = {
-  impulsive: {
-    title: "Impulsive Reader",
-    color: "#fee2e2",
-    textByType: {
-      "main-idea": "You lock onto a surface theme before grasping the author’s real argument.",
-      "tone": "You guess the author’s attitude from a word or two instead of the full passage mood.",
-      "inference": "You leap to conclusions without letting implications mature in your head.",
-      "detail": "You react to familiar phrases instead of verifying what is actually stated.",
-    },
-    habitByType: {
-      "main-idea": "Ask: ‘What is the author really trying to prove?’ before answering.",
-      "tone": "Re-read the last paragraph and feel the author’s stance before choosing.",
-      "inference": "Pause and ask: ‘Is this stated or merely suggested?’",
-      "detail": "Re-locate the exact line in the passage before answering.",
-    },
-  },
-  confused: {
-    title: "Foggy Reader",
-    color: "#fff7ed",
-    text: "You read, but the structure of the idea remains blurry.",
-    habit: "After each paragraph, summarize it in one clean sentence.",
-  },
-  heavy: {
-    title: "Over-Processor",
-    color: "#eef2ff",
-    text: "You are accurate, but you overthink and slow yourself down.",
-    habit: "Trust your first clear interpretation and move on.",
-  },
-  flow: {
-    title: "Flow Reader",
-    color: "#ecfeff",
-    text: "You naturally sync with the author’s intent in this area.",
-    habit: "Preserve this instinct. Don’t second-guess clarity.",
-  },
-};
-
-      const p = profiles[dominant];
+      const diagnosis = {
+        "main-idea": {
+          text: "You often sense the topic but miss the author’s real argument.",
+          habit: "Before answering, ask: “What is the author really trying to prove?”",
+        },
+        tone: {
+          text: "You rely on isolated words instead of the passage’s emotional arc.",
+          habit: "Re-read the final paragraph before choosing.",
+        },
+        inference: {
+          text: "You jump to conclusions before implications fully mature.",
+          habit: "Pause and ask: “Is this stated or merely suggested?”",
+        },
+        detail: {
+          text: "You react to familiar phrases instead of verifying the exact line.",
+          habit: "Re-locate the exact sentence in the passage before answering.",
+        },
+      }[type] || {
+        text: "Pattern emerging in this area.",
+        habit: "Slow down and anchor each answer in the passage.",
+      };
 
       return (
         <div
           key={type}
           style={{
-            padding: 18,
-            borderRadius: 10,
+            padding: 20,
+            borderRadius: 12,
             border: "1px solid #e5e7eb",
-            background: p.color,
+            background: "#fafafa",
+            display: "grid",
+            gridTemplateColumns: "120px 1fr",
+            gap: 20,
+            alignItems: "center",
           }}
         >
-          <h3 style={{ margin: 0, textTransform: "capitalize" }}>
-            {type.replace("-", " ")}
-          </h3>
+          {/* Donut */}
+          <div
+            style={{
+              width: 110,
+              height: 110,
+              borderRadius: "50%",
+              background: `conic-gradient(
+                #22c55e 0deg ${pctCorrect * 3.6}deg,
+                #ef4444 ${pctCorrect * 3.6}deg 360deg
+              )`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 700,
+              fontSize: 18,
+              color: "#111",
+              backgroundColor: "#fff",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                width: 70,
+                height: 70,
+                borderRadius: "50%",
+                background: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            >
+              {pctCorrect}%
+            </div>
+          </div>
 
-          <p style={{ margin: "6px 0", fontWeight: 600 }}>{p.title}</p>
-          
+          {/* Text */}
+          <div>
+            <h3 style={{ margin: 0, textTransform: "capitalize" }}>
+              {type.replace("-", " ")}
+            </h3>
 
-        <div style={{ marginTop: 10, fontSize: 13, lineHeight: 1.6 }}>
-  <div>Flow (Fast + Correct): {d.fastCorrect}</div>
-  <div>Heavy (Slow + Correct): {d.slowCorrect}</div>
-  <div>Confused (Slow + Wrong): {d.slowWrong}</div>
-  <div>Impulsive (Fast + Wrong): {d.fastWrong}</div>
-</div>
+            <p style={{ margin: "6px 0", color: "#444" }}>
+              🟢 {correct} correct &nbsp; | &nbsp; 🔴 {wrong} wrong
+            </p>
 
-         <p style={{ margin: "6px 0", fontSize: 14 }}>
-  {p.textByType?.[type] || p.text}
-</p>
+            <p style={{ margin: "6px 0", fontSize: 14 }}>
+              {diagnosis.text}
+            </p>
 
-<p style={{ marginTop: 10, fontStyle: "italic" }}>
-  Habit: {p.habitByType?.[type] || p.habit}
-</p>
+            <p style={{ marginTop: 8, fontStyle: "italic", fontSize: 13 }}>
+              Habit: {diagnosis.habit}
+            </p>
+          </div>
         </div>
       );
     })}
   </div>
 )}
-
       {/* SPEED MAP */}
      {activeProfileTab === "speed" && (
   <div style={{ overflowX: "auto" }}>
