@@ -907,10 +907,12 @@ const score = testQuestions.reduce(
     </div>
   );
 })()}
+ 
+  </div>
+  );
+})()}
   
-  
-
-      {/* Mentor Flow */}
+    {/* Mentor Flow */}
       {paras.length > 0 && phase === "mentor" && (
         <>
           <h3>
