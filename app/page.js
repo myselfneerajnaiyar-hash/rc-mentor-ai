@@ -388,19 +388,7 @@ const score = testQuestions.reduce(
 </button>
 </div>
 
-<div
-  style={{
-    marginTop: 16,
-    padding: 20,
-    border: "1px solid #ddd",
-    borderRadius: 8,
-    background: "#fafafa",
-  }}
->
-
-           
-          </div>
-        </>
+   </>
       )}
  {showGenerator && (
   <div
