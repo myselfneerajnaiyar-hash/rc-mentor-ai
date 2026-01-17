@@ -658,16 +658,22 @@ const score = testQuestions.reduce(
           </h3>
 
           <p style={{ margin: "6px 0", fontWeight: 600 }}>{p.title}</p>
-          <p style={{ margin: "6px 0", fontSize: 14 }}>{p.text}</p>
+          
 
-          <div style={{ fontSize: 13, marginTop: 8 }}>
-            🟢 {d.fastCorrect} &nbsp; 🔵 {d.slowCorrect} &nbsp;
-            🟠 {d.slowWrong} &nbsp; 🔴 {d.fastWrong}
-          </div>
+        <div style={{ marginTop: 10, fontSize: 13, lineHeight: 1.6 }}>
+  <div>Flow (Fast + Correct): {d.fastCorrect}</div>
+  <div>Heavy (Slow + Correct): {d.slowCorrect}</div>
+  <div>Confused (Slow + Wrong): {d.slowWrong}</div>
+  <div>Impulsive (Fast + Wrong): {d.fastWrong}</div>
+</div>
 
-          <p style={{ marginTop: 10, fontStyle: "italic" }}>
-            Habit: {p.habit}
-          </p>
+         <p style={{ margin: "6px 0", fontSize: 14 }}>
+  {p.textByType?.[type] || p.text}
+</p>
+
+<p style={{ marginTop: 10, fontStyle: "italic" }}>
+  Habit: {p.habitByType?.[type] || p.habit}
+</p>
         </div>
       );
     })}
