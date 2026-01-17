@@ -694,42 +694,118 @@ const score = testQuestions.reduce(
   </div>
 )}
       {/* SPEED MAP */}
-     {activeProfileTab === "speed" && (
-  <div style={{ overflowX: "auto" }}>
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left" }}>Type</th>
-          <th>🟢 Flow</th>
-          <th>🔵 Heavy</th>
-          <th>🟠 Confused</th>
-          <th>🔴 Impulsive</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(byType).map(([type, d]) => (
-          <tr key={type}>
-            <td style={{ padding: 6, fontWeight: 600 }}>{type}</td>
-            {[d.fastCorrect, d.slowCorrect, d.slowWrong, d.fastWrong].map((v, i) => (
-              <td
-                key={i}
-                style={{
-                  padding: 6,
-                  textAlign: "center",
-                  background: `rgba(${i === 0 ? "34,197,94" : i === 1 ? "59,130,246" : i === 2 ? "251,146,60" : "239,68,68"}, ${
-                    Math.min(0.15 + v * 0.08, 0.85)
-                  })`,
-                }}
-              >
-                {v}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+     
+{activeProfileTab === "speed" && (() => {
+  // Build dominant insight
+  let worst = { type: "", mode: "", value: -1 };
+
+  const labels = [
+    { key: "fastCorrect", label: "Fast & Right", color: "34,197,94" },
+    { key: "slowCorrect", label: "Slow & Right", color: "59,130,246" },
+    { key: "slowWrong", label: "Slow & Wrong", color: "251,146,60" },
+    { key: "fastWrong", label: "Fast & Wrong", color: "239,68,68" },
+  ];
+
+  Object.entries(byType).forEach(([type, d]) => {
+    const map = {
+      fastCorrect: d.fastCorrect,
+      slowCorrect: d.slowCorrect,
+      slowWrong: d.slowWrong,
+      fastWrong: d.fastWrong,
+    };
+
+    Object.entries(map).forEach(([k, v]) => {
+      if (v > worst.value) {
+        worst = { type, mode: k, value: v };
+      }
+    });
+  });
+
+  const modeText = {
+    fastCorrect: "answer quickly and correctly",
+    slowCorrect: "get it right but spend too much time",
+    slowWrong: "think long and still get it wrong",
+    fastWrong: "answer too fast and lose marks",
+  };
+
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ fontSize: 13, color: "#444" }}>
+        Each row is a question type.  
+        Each column shows <b>how</b> you behave under time for that type.
+      </div>
+
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: "left", padding: 6 }}>Type</th>
+              {labels.map(l => (
+                <th key={l.key} style={{ padding: 6, fontSize: 13 }}>
+                  {l.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {Object.entries(byType).map(([type, d]) => {
+              const row = {
+                fastCorrect: d.fastCorrect,
+                slowCorrect: d.slowCorrect,
+                slowWrong: d.slowWrong,
+                fastWrong: d.fastWrong,
+              };
+
+              return (
+                <tr key={type}>
+                  <td style={{ padding: 6, fontWeight: 600 }}>
+                    {type.replace("-", " ")}
+                  </td>
+
+                  {labels.map(l => {
+                    const v = row[l.key];
+                    const alpha = Math.min(0.15 + v * 0.08, 0.85);
+                    return (
+                      <td
+                        key={l.key}
+                        style={{
+                          padding: 6,
+                          textAlign: "center",
+                          background: `rgba(${l.color}, ${alpha})`,
+                          borderRadius: 4,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {v}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {worst.value > 0 && (
+        <div
+          style={{
+            marginTop: 8,
+            padding: 12,
+            borderRadius: 8,
+            background: "#f8fafc",
+            border: "1px solid #e5e7eb",
+            fontSize: 14,
+          }}
+        >
+          🔍 You lose most marks in{" "}
+          <b>{worst.type.replace("-", " ")}</b> questions because you{" "}
+          <b>{modeText[worst.mode]}</b>.
+        </div>
+      )}
+    </div>
+  )}
 
       {/* ACTION PLAN */}
       {activeProfileTab === "plan" && (
