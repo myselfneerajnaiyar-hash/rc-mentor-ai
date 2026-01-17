@@ -808,9 +808,8 @@ const score = testQuestions.reduce(
   );
 })()}
 
-      {/* ACTION PLAN */}
+     {/* ACTION PLAN */}
 {activeProfileTab === "plan" && (() => {
-  // Aggregate weakness by type
   const weakness = Object.entries(byType).map(([type, d]) => {
     const wrong = d.fastWrong + d.slowWrong;
     const total = d.fastCorrect + d.slowCorrect + d.fastWrong + d.slowWrong;
@@ -822,7 +821,6 @@ const score = testQuestions.reduce(
   const primary = weakness[0];
   const secondary = weakness[1];
 
-  // Global failure mode
   let modes = { fastWrong: 0, slowWrong: 0 };
   Object.values(byType).forEach(d => {
     modes.fastWrong += d.fastWrong;
@@ -860,14 +858,14 @@ const score = testQuestions.reduce(
         <h3 style={{ marginTop: 0 }}>Your RC Training Plan</h3>
 
         <p>
-          Your data shows that your biggest score leakage happens in{" "}
+          Your biggest leakage is in{" "}
           <b>{primary.type.replace("-", " ")}</b> questions.
         </p>
 
         {secondary && (
           <p>
-            The second weak zone is{" "}
-            <b>{secondary.type.replace("-", " ")}</b>.
+            Secondary weak zone:{" "}
+            <b>{secondary.type.replace("-", " ")}</b>
           </p>
         )}
       </div>
@@ -881,10 +879,10 @@ const score = testQuestions.reduce(
         }}
       >
         <h4 style={{ marginTop: 0 }}>Core Behaviour Pattern</h4>
-        <p style={{ margin: "6px 0" }}>
+        <p>
           <b>{m.label}:</b> {m.text}
         </p>
-        <p style={{ margin: "6px 0", fontStyle: "italic" }}>
+        <p style={{ fontStyle: "italic" }}>
           Daily Habit → {m.habit}
         </p>
       </div>
@@ -898,10 +896,10 @@ const score = testQuestions.reduce(
       >
         <h4 style={{ marginTop: 0 }}>What the System Will Do</h4>
         <ul style={{ paddingLeft: 18, margin: 0, fontSize: 14 }}>
-          <li>Increase frequency of <b>{primary.type}</b> questions</li>
-          {secondary && <li>Inject periodic <b>{secondary.type}</b> drills</li>}
-          <li>Track whether your pause habit is improving accuracy</li>
-          <li>Re-balance once your error rate drops</li>
+          <li>Increase {primary.type} questions</li>
+          {secondary && <li>Inject {secondary.type} drills</li>}
+          <li>Track your habit compliance</li>
+          <li>Re-balance when errors drop</li>
         </ul>
       </div>
 
