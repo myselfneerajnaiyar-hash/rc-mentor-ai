@@ -604,32 +604,42 @@ const score = testQuestions.reduce(
           ? "heavy"
           : "flow";
 
-      const profiles = {
-        impulsive: {
-          title: "Impulsive Reader",
-          color: "#fee2e2",
-          text: "You jump to answers before the passage fully settles in your mind.",
-          habit: "Force a 5-second pause before answering any question of this type.",
-        },
-        confused: {
-          title: "Foggy Reader",
-          color: "#fff7ed",
-          text: "You read, but the structure of the idea remains blurry.",
-          habit: "After each paragraph, summarize it in one clean sentence.",
-        },
-        heavy: {
-          title: "Over-Processor",
-          color: "#eef2ff",
-          text: "You are accurate, but you overthink and slow yourself down.",
-          habit: "Trust your first clear interpretation and move on.",
-        },
-        flow: {
-          title: "Flow Reader",
-          color: "#ecfeff",
-          text: "You naturally sync with the author’s intent in this area.",
-          habit: "Preserve this instinct. Don’t second-guess clarity.",
-        },
-      };
+     const profiles = {
+  impulsive: {
+    title: "Impulsive Reader",
+    color: "#fee2e2",
+    textByType: {
+      "main-idea": "You lock onto a surface theme before grasping the author’s real argument.",
+      "tone": "You guess the author’s attitude from a word or two instead of the full passage mood.",
+      "inference": "You leap to conclusions without letting implications mature in your head.",
+      "detail": "You react to familiar phrases instead of verifying what is actually stated.",
+    },
+    habitByType: {
+      "main-idea": "Ask: ‘What is the author really trying to prove?’ before answering.",
+      "tone": "Re-read the last paragraph and feel the author’s stance before choosing.",
+      "inference": "Pause and ask: ‘Is this stated or merely suggested?’",
+      "detail": "Re-locate the exact line in the passage before answering.",
+    },
+  },
+  confused: {
+    title: "Foggy Reader",
+    color: "#fff7ed",
+    text: "You read, but the structure of the idea remains blurry.",
+    habit: "After each paragraph, summarize it in one clean sentence.",
+  },
+  heavy: {
+    title: "Over-Processor",
+    color: "#eef2ff",
+    text: "You are accurate, but you overthink and slow yourself down.",
+    habit: "Trust your first clear interpretation and move on.",
+  },
+  flow: {
+    title: "Flow Reader",
+    color: "#ecfeff",
+    text: "You naturally sync with the author’s intent in this area.",
+    habit: "Preserve this instinct. Don’t second-guess clarity.",
+  },
+};
 
       const p = profiles[dominant];
 
