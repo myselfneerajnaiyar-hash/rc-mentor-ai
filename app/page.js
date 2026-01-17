@@ -809,37 +809,116 @@ const score = testQuestions.reduce(
 })()}
 
       {/* ACTION PLAN */}
-      {activeProfileTab === "plan" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          <p>
-            Your RC performance shows consistent patterns.  
-            The system will now bias passages and questions toward your weakest zones.
-          </p>
+{activeProfileTab === "plan" && (() => {
+  // Aggregate weakness by type
+  const weakness = Object.entries(byType).map(([type, d]) => {
+    const wrong = d.fastWrong + d.slowWrong;
+    const total = d.fastCorrect + d.slowCorrect + d.fastWrong + d.slowWrong;
+    return { type, wrong, total };
+  });
 
-          <button
-            onClick={() => {
-              setPhase("mentor");
-            }}
-            style={{
-              marginTop: 12,
-              padding: "12px 18px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              fontWeight: 600,
-            }}
-          >
-            Start Adaptive RC
-          </button>
-        </div>
-      )}
+  weakness.sort((a, b) => b.wrong - a.wrong);
+
+  const primary = weakness[0];
+  const secondary = weakness[1];
+
+  // Global failure mode
+  let modes = { fastWrong: 0, slowWrong: 0 };
+  Object.values(byType).forEach(d => {
+    modes.fastWrong += d.fastWrong;
+    modes.slowWrong += d.slowWrong;
+  });
+
+  const dominantMode =
+    modes.fastWrong >= modes.slowWrong ? "impulsive" : "confused";
+
+  const modeAdvice = {
+    impulsive: {
+      label: "Impulsive Answering",
+      text: "You are losing marks by answering too fast before clarity forms.",
+      habit: "Enforce a 3–5 second pause before clicking any option.",
+    },
+    confused: {
+      label: "Overthinking",
+      text: "You spend time but still lose accuracy due to fuzzy comprehension.",
+      habit: "After each paragraph, whisper a one-line summary.",
+    },
+  };
+
+  const m = modeAdvice[dominantMode];
+
+  return (
+    <div style={{ display: "grid", gap: 18 }}>
+      <div
+        style={{
+          padding: 18,
+          borderRadius: 10,
+          border: "1px solid #e5e7eb",
+          background: "#f8fafc",
+        }}
+      >
+        <h3 style={{ marginTop: 0 }}>Your RC Training Plan</h3>
+
+        <p>
+          Your data shows that your biggest score leakage happens in{" "}
+          <b>{primary.type.replace("-", " ")}</b> questions.
+        </p>
+
+        {secondary && (
+          <p>
+            The second weak zone is{" "}
+            <b>{secondary.type.replace("-", " ")}</b>.
+          </p>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: 18,
+          borderRadius: 10,
+          border: "1px solid #e5e7eb",
+          background: "#fff7ed",
+        }}
+      >
+        <h4 style={{ marginTop: 0 }}>Core Behaviour Pattern</h4>
+        <p style={{ margin: "6px 0" }}>
+          <b>{m.label}:</b> {m.text}
+        </p>
+        <p style={{ margin: "6px 0", fontStyle: "italic" }}>
+          Daily Habit → {m.habit}
+        </p>
+      </div>
+
+      <div
+        style={{
+          padding: 18,
+          borderRadius: 10,
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        <h4 style={{ marginTop: 0 }}>What the System Will Do</h4>
+        <ul style={{ paddingLeft: 18, margin: 0, fontSize: 14 }}>
+          <li>Increase frequency of <b>{primary.type}</b> questions</li>
+          {secondary && <li>Inject periodic <b>{secondary.type}</b> drills</li>}
+          <li>Track whether your pause habit is improving accuracy</li>
+          <li>Re-balance once your error rate drops</li>
+        </ul>
+      </div>
 
       <button
         onClick={() => setPhase("mentor")}
-        style={{ marginTop: 20, padding: "10px 16px" }}
+        style={{
+          marginTop: 8,
+          padding: "14px 20px",
+          background: "#2563eb",
+          color: "#fff",
+          border: "none",
+          borderRadius: 8,
+          fontWeight: 700,
+          fontSize: 15,
+        }}
       >
-        Back to Home
+        Start Adaptive RC
       </button>
     </div>
   );
