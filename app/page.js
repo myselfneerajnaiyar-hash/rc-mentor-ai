@@ -37,7 +37,7 @@ export default function Page() {
   const [activeProfileTab, setActiveProfileTab] = useState("overview");
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
-  
+  const [isAdaptive, setIsAdaptive] = useState(false);
 
 
  useEffect(() => {
