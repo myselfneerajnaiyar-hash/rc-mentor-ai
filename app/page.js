@@ -264,12 +264,34 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
 
-    if (!tests.length) {
-      setShowGenerator(true);
-      setPhase("mentor");
-      return;
-    }
+   if (!tests.length) {
+  // bootstrap adaptive mode for first-time user
+  const res = await fetch("/api/rc-generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      genre: "Mixed",
+      difficulty: "moderate",
+      lengthRange: "400-500",
+    }),
+  });
 
+  const json = await res.json();
+
+  const parts = json.passage
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  setParas(parts);
+  setIndex(0);
+  setData(null);
+  setFeedback("");
+  setMode("idle");
+  setShowGenerator(false);
+  setPhase("mentor");
+  return;
+}
     const all = tests.flatMap(t => t.questions);
 
     const byType = {};
