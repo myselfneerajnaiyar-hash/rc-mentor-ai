@@ -259,6 +259,76 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
     setGenLoading(false);
   }
 }
+  async function startAdaptiveRC() {
+  try {
+    const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+    const tests = raw.tests || [];
+
+    if (!tests.length) {
+      setShowGenerator(true);
+      setPhase("mentor");
+      return;
+    }
+
+    const all = tests.flatMap(t => t.questions);
+
+    const byType = {};
+    all.forEach(q => {
+      if (!byType[q.type]) {
+        byType[q.type] = { correct: 0, wrong: 0, fastWrong: 0, slowWrong: 0 };
+      }
+      if (q.correct) byType[q.type].correct++;
+      else byType[q.type].wrong++;
+      if (!q.correct && q.time < 20) byType[q.type].fastWrong++;
+      if (!q.correct && q.time > 45) byType[q.type].slowWrong++;
+    });
+
+    const weakest = Object.entries(byType)
+      .map(([type, d]) => ({ type, wrong: d.wrong }))
+      .sort((a, b) => b.wrong - a.wrong)[0]?.type || "inference";
+
+    let fast = 0, slow = 0;
+    Object.values(byType).forEach(d => {
+      fast += d.fastWrong;
+      slow += d.slowWrong;
+    });
+
+    const style = fast >= slow ? "impulsive" : "overthinking";
+
+    const res = await fetch("/api/rc-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        genre: "Mixed",
+        difficulty: "adaptive",
+        lengthRange: "400-500",
+        bias: { weakest, style },
+      }),
+    });
+
+    if (!res.ok) throw new Error();
+
+    const json = await res.json();
+
+    const parts = json.passage
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(Boolean);
+
+    setGeneratedRC(null);
+    setParas(parts);
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+    setShowGenerator(false);
+    setPhase("mentor");
+  } catch (e) {
+    console.error(e);
+    setShowGenerator(true);
+    setPhase("mentor");
+  }
+}
 
 const score = testQuestions.reduce(
   (s, q, i) =>
