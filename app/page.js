@@ -960,7 +960,7 @@ const score = testQuestions.reduce(
       </div>
 
       <button
-        onClick={() => setPhase("mentor")}
+       onClick={startAdaptiveRC}
         style={{
           marginTop: 8,
           padding: "14px 20px",
