@@ -261,6 +261,8 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
 }
   async function startAdaptiveRC() {
   try {
+    setIsAdaptive(true);
+setShowGenerator(false);
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
 
