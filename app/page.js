@@ -1314,34 +1314,30 @@ const showGenPanel = showGenerator && !isAdaptive;
   Review This Test in Detail
 </button>
 
-       <button
- onClick={() => {
-  // wipe old RC session completely
-  setGeneratedRC(null);
-  setTestQuestions([]);
-  setTestAnswers({});
-  setResult(null);
+      <button
+  onClick={() => {
+    // wipe old RC session completely
+    setGeneratedRC(null);
+    setTestQuestions([]);
+    setTestAnswers({});
+    setResult(null);
 
-  // reset reading state
-  setParas([]);
-  setText("");
-  setIndex(0);
-  setData(null);
-  setFeedback("");
-  setMode("idle");
+    // reset reading state
+    setParas([]);
+    setText("");
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
 
-  // open generator on home screen
-  setShowGenerator(true);
-  setPhase("mentor");
-}}
-  style={{
-    marginTop: 12,
-    padding: "12px 18px",
-    background: "#2563eb",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-    fontWeight: 600,
+    if (isAdaptive) {
+      // 🔁 Continue adaptive loop
+      startAdaptiveRC();
+    } else {
+      // 🧭 Manual mode → open generator
+      setShowGenerator(true);
+      setPhase("mentor");
+    }
   }}
 >
   Start Next RC With This Focus
