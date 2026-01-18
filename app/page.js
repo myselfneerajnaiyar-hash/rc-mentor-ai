@@ -360,8 +360,13 @@ const score = testQuestions.reduce(
   0
 );
 
- const showInitial = paras.length === 0 && !showGenerator && phase !== "newRC";
- const showGenPanel = showGenerator;
+ const showInitial =
+  paras.length === 0 &&
+  !showGenerator &&
+  phase !== "newRC" &&
+  !isAdaptive;
+
+const showGenPanel = showGenerator && !isAdaptive;
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
