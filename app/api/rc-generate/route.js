@@ -26,13 +26,27 @@ const difficultyMap = {
 
 export async function POST(req) {
   try {
-    const { genre, difficulty, lengthRange } = await req.json();
+    const { genre, difficulty, lengthRange, bias } = await req.json();
 
     const { lang, ques } = difficultyMap[difficulty] || difficultyMap.pro;
     const [minWords, maxWords] = (lengthRange || "400-500").split("-");
 
+    let biasText = "";
+if (bias) {
+  biasText = `
+ADAPTIVE TRAINING DIRECTIVE:
+The student has a weakness in "${bias.weakest}" type questions.
+Their dominant error style is "${bias.style}".
+
+Design this passage and its questions to:
+- Include a higher proportion of "${bias.weakest}" questions.
+- Subtly trigger "${bias.style}" mistakes through tempting distractors.
+- Still feel like a realistic CAT RC set.
+`;
+}
     const prompt = `
 You are generating a high-quality Reading Comprehension passage.
+$(biasText}
 
 GENRE: ${genre || "Mixed / General"}
 TARGET LENGTH: ${minWords}-${maxWords} words total.
