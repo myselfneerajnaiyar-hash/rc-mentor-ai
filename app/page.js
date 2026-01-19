@@ -283,6 +283,7 @@ setPhase("loading-adaptive");
   });
 
   const json = await res.json();
+     localStorage.setItem("lastGenre", json.genreHint || "");
 
   const parts = json.passage
     .split(/\n\s*\n/)
@@ -337,6 +338,7 @@ setPhase("loading-adaptive");
     if (!res.ok) throw new Error();
 
     const json = await res.json();
+    localStorage.setItem("lastGenre", json.genreHint || "");
 
     const parts = json.passage
       .split(/\n\s*\n/)
