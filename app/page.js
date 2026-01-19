@@ -326,6 +326,8 @@ setPhase("loading-adaptive");
 
    const last = localStorage.getItem("lastGenre") || "";
 
+const profile = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+
 const res = await fetch("/api/rc-generate", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -333,8 +335,11 @@ const res = await fetch("/api/rc-generate", {
     genre: "Mixed",
     difficulty: "adaptive",
     lengthRange: "400-500",
-    bias: { weakest, style },
-    avoid: last,
+    bias: {
+      weakest,
+      style,
+      avoidTopic: profile.lastTopic || "",
+    },
   }),
 });
 
@@ -348,6 +353,10 @@ const res = await fetch("/api/rc-generate", {
       .map(p => p.trim())
       .filter(Boolean);
 
+    // store last topic so next adaptive RC can avoid it
+const profile = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+profile.lastTopic = json.topic || "education";
+localStorage.setItem("rcProfile", JSON.stringify(profile));
     setGeneratedRC(null);
     setParas(parts);
     setIndex(0);
