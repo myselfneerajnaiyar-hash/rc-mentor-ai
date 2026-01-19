@@ -274,7 +274,7 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
 
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
-    const tests = raw.tests || [];
+
 
    if (!tests.length) {
   // bootstrap adaptive mode for first-time user
