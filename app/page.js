@@ -324,16 +324,19 @@ setPhase("loading-adaptive");
 
     const style = fast >= slow ? "impulsive" : "overthinking";
 
-    const res = await fetch("/api/rc-generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        genre: "Mixed",
-        difficulty: "adaptive",
-        lengthRange: "400-500",
-        bias: { weakest, style },
-      }),
-    });
+   const last = localStorage.getItem("lastGenre") || "";
+
+const res = await fetch("/api/rc-generate", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    genre: "Mixed",
+    difficulty: "adaptive",
+    lengthRange: "400-500",
+    bias: { weakest, style },
+    avoid: last,
+  }),
+});
 
     if (!res.ok) throw new Error();
 
