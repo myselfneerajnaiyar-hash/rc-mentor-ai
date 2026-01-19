@@ -26,7 +26,7 @@ const difficultyMap = {
 
 export async function POST(req) {
   try {
-    const { genre, difficulty, lengthRange, bias } = await req.json();
+    const { genre, difficulty, lengthRange, bias,avoid } = await req.json();
 
     const { lang, ques } = difficultyMap[difficulty] || difficultyMap.pro;
     const [minWords, maxWords] = (lengthRange || "400-500").split("-");
@@ -44,9 +44,18 @@ Design this passage and its questions to:
 - Still feel like a realistic CAT RC set.
 `;
 }
+    let avoidText = "";
+if (avoid) {
+  avoidText = `
+THEME ROTATION RULE:
+Avoid using themes, domains, or argumentative frames similar to: "${avoid}".
+Force a sharp domain shift (e.g., biology, physics, anthropology, linguistics, architecture, AI, ecology, art history).
+`;
+}
     const prompt = `
 You are generating a high-quality Reading Comprehension passage.
-$(biasText}
+${biasText}
+${avoidText}
 
 GENRE: ${genre || "Mixed / General"}
 TARGET LENGTH: ${minWords}-${maxWords} words total.
