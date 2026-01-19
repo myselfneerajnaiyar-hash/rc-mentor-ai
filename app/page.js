@@ -259,11 +259,21 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
     setGenLoading(false);
   }
 }
-  async function startAdaptiveRC() {
+ async function startAdaptiveRC() {
   try {
     setIsAdaptive(true);
-setShowGenerator(false);
+    setShowGenerator(false);
+
+    // 🔥 HARD WIPE CURRENT SESSION IMMEDIATELY
+    setParas([]);
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+    setPhase("mentor");
+
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+    const tests = raw.tests || [];
     const tests = raw.tests || [];
 
    if (!tests.length) {
