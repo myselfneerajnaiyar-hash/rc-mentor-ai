@@ -261,17 +261,11 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
 }
  async function startAdaptiveRC() {
   try {
-    setIsAdaptive(true);
-    setShowGenerator(false);
+   setIsAdaptive(true);
+setShowGenerator(false);
 
-    // 🔥 HARD WIPE CURRENT SESSION IMMEDIATELY
-    setParas([]);
-    setIndex(0);
-    setData(null);
-    setFeedback("");
-    setMode("idle");
-    setPhase("mentor");
-
+// show intentional loading state instead of blank screen
+setPhase("loading-adaptive");
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
 
