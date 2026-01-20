@@ -19,7 +19,14 @@ These must feel like real CAT questions:
 - Non-obvious
 - Elimination-based
 - With tempting but wrong options
-- Each wrong option should reflect a common misreading of the passage
+-For every question:
+- Exactly ONE option must be clearly correct.
+- At least TWO wrong options must be:
+  - Partially true
+  - Aligned with some line in the passage
+  - But incorrect in scope, emphasis, or implication
+- These two must feel equally tempting on a first read.
+- The final wrong option can be obviously wrong.
 - The correct option must be defensible only by careful reading
 
 Create this exact mix:
@@ -58,6 +65,7 @@ Rules:
 - Do NOT make questions obvious.
 - Do NOT restate lines directly.
 - Do NOT make factual recall questions.
+-If a question can be answered without eliminating at least one tempting option, rewrite it.
 
 Return ONLY valid JSON:
 
