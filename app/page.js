@@ -29,7 +29,7 @@ export default function Page() {
   const [testLoading, setTestLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
- // mentor | ready | test | result | newRC | profile | detailed
+ // mentor | ready | test | result | newRC | profile | detailed | vocab
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
