@@ -8,32 +8,32 @@ const openai = new OpenAI({
 const difficultyMap = {
   beginner: {
     lang: "Use simple, clear language with short-to-medium sentences. Avoid heavy abstraction. Keep ideas concrete and familiar.",
-    ques: "Questions should be straightforward and mostly direct. Avoid deep traps or multi-layered inference."
+    ques: "Questions should be straightforward and mostly direct. Avoid deep traps or multi-layered inference.",
   },
   moderate: {
     lang: "Use simple, readable language and familiar concepts. Avoid dense academic phrasing.",
-    ques: "Questions must be tricky and inference-based, with close options and subtle traps."
+    ques: "Questions must be tricky and inference-based, with close options and subtle traps.",
   },
   advanced: {
     lang: "Use dense, academic language with abstraction and layered arguments. Sentences may be long and complex.",
-    ques: "Questions should be relatively direct and based on explicit reasoning in the passage. Avoid extreme traps."
+    ques: "Questions should be relatively direct and based on explicit reasoning in the passage. Avoid extreme traps.",
   },
   pro: {
     lang: "Use dense, adversarial, academic prose with counter-intuitive claims and layered arguments that challenge assumptions.",
-    ques: "Questions must be CAT-grade: inference-heavy, indirect, with deceptive options and fine distinctions."
-  }
+    ques: "Questions must be CAT-grade: inference-heavy, indirect, with deceptive options and fine distinctions.",
+  },
 };
 
 export async function POST(req) {
   try {
-    const { genre, difficulty, lengthRange, bias,avoid } = await req.json();
+    const { genre, difficulty, lengthRange, bias } = await req.json();
 
     const { lang, ques } = difficultyMap[difficulty] || difficultyMap.pro;
     const [minWords, maxWords] = (lengthRange || "400-500").split("-");
 
     let biasText = "";
-if (bias) {
-  biasText = `
+    if (bias) {
+      biasText = `
 ADAPTIVE TRAINING DIRECTIVE:
 The student has a weakness in "${bias.weakest}" type questions.
 Their dominant error style is "${bias.style}".
@@ -43,15 +43,17 @@ Design this passage and its questions to:
 - Subtly trigger "${bias.style}" mistakes through tempting distractors.
 - Still feel like a realistic CAT RC set.
 `;
-}
+    }
+
     let avoidText = "";
-if (avoid) {
-  avoidText = `
+    if (bias?.avoidTopic) {
+      avoidText = `
 THEME ROTATION RULE:
-Avoid using themes, domains, or argumentative frames similar to: "${avoid}".
+Avoid using themes, domains, or argumentative frames similar to: "${bias.avoidTopic}".
 Force a sharp domain shift (e.g., biology, physics, anthropology, linguistics, architecture, AI, ecology, art history).
 `;
-}
+    }
+
     const prompt = `
 You are generating a high-quality Reading Comprehension passage.
 ${biasText}
@@ -126,7 +128,6 @@ Do not include any extra commentary outside the JSON.
 
     const json = JSON.parse(text.slice(start, end));
 
-    // Force stable CAT-style types in fixed order
     const orderedTypes = ["main-idea", "tone", "inference", "detail"];
 
     const questions = (json.questions || []).map((q, i) => ({
@@ -137,12 +138,11 @@ Do not include any extra commentary outside the JSON.
     return NextResponse.json({
       passage: json.passage,
       questions,
+      genreHint: genre || "Mixed",
+      topic: json.topic || "",
     });
   } catch (e) {
     console.error(e);
-    return NextResponse.json(
-      { error: "Could not generate RC" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Could not generate RC" }, { status: 500 });
   }
 }
