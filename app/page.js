@@ -438,6 +438,23 @@ const showGenPanel = showGenerator && !isAdaptive;
     >
       RC Profile
     </button>
+        <button
+  onClick={() => {
+    setParas([]);
+    setShowGenerator(false);
+    setPhase("vocab");
+  }}
+  style={{
+    padding: "6px 12px",
+    borderRadius: 6,
+    background: "#fde68a",
+    border: "1px solid #f59e0b",
+    color: "#92400e",
+    fontWeight: 600,
+  }}
+>
+  Vocabulary
+</button>
   </div>
 </div>
     
