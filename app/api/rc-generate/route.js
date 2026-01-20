@@ -95,6 +95,7 @@ Each question must have:
 Return STRICT JSON only:
 
 {
+  "topic": "a 2–3 word domain label such as 'education policy', 'urban design', 'evolutionary biology', 'linguistics', 'art history', 'AI ethics'",
   "passage": "Para 1...\\n\\nPara 2...\\n\\nPara 3...\\n\\nPara 4...",
   "questions": [
     {
@@ -104,7 +105,6 @@ Return STRICT JSON only:
     }
   ]
 }
-
 Do not include any extra commentary outside the JSON.
 `;
 
