@@ -1052,6 +1052,54 @@ const showGenPanel = showGenerator && !isAdaptive;
   </div>
   );
 })()}
+
+  {phase === "vocab" && (
+  <div style={{ marginTop: 40 }}>
+    <div
+      style={{
+        background: "#fffbeb",
+        border: "1px solid #fde68a",
+        padding: 24,
+        borderRadius: 12,
+      }}
+    >
+      <h2 style={{ color: "#92400e" }}>📘 Vocabulary Builder</h2>
+      <p style={{ color: "#78350f" }}>
+        Build a personal word-bank that grows with your reading.
+      </p>
+
+      <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+        <button
+          style={{
+            background: "#f59e0b",
+            color: "white",
+            padding: "10px 16px",
+            borderRadius: 6,
+            fontWeight: 600,
+          }}
+        >
+          Start Today’s 10-Word Drill
+        </button>
+
+        <button
+          style={{
+            border: "1px solid #f59e0b",
+            color: "#92400e",
+            padding: "10px 16px",
+            borderRadius: 6,
+            background: "transparent",
+          }}
+        >
+          Add Custom Word
+        </button>
+      </div>
+
+      <p style={{ marginTop: 24, color: "#a16207" }}>
+        No words yet. Your saved words will appear here.
+      </p>
+    </div>
+  </div>
+)}
   {phase === "loading-adaptive" && (
   <div style={{ padding: 40, textAlign: "center", fontSize: 18 }}>
     Preparing your next adaptive passage…
