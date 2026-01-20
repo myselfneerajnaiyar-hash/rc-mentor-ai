@@ -459,7 +459,7 @@ const showGenPanel = showGenerator && !isAdaptive;
 </div>
     
       {/* Initial Paste Screen */}
-     {showInitial && (
+     {phase === "mentor" && showInitial && (
   <>
     <p>Paste a passage. Let’s read it together.</p>
 
