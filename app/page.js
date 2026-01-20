@@ -360,8 +360,7 @@ const res = await fetch("/api/rc-generate", {
       .map(p => p.trim())
       .filter(Boolean);
 
-    // store last topic so next adaptive RC can avoid it
-const profile = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+   // store last topic so next adaptive RC can avoid it
 profile.lastTopic = json.topic || "education";
 localStorage.setItem("rcProfile", JSON.stringify(profile));
     setGeneratedRC(null);
