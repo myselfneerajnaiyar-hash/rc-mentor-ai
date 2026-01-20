@@ -260,12 +260,19 @@ localStorage.setItem("rcProfile", JSON.stringify(existing));
   }
 }
  async function startAdaptiveRC() {
-  try {
-   setIsAdaptive(true);
+   try {
+  setIsAdaptive(true);
 setShowGenerator(false);
 
-// show intentional loading state instead of blank screen
-setPhase("loading-adaptive");
+// 🔴 HARD RESET OLD RC VIEW
+setParas([]);
+setIndex(0);
+setData(null);
+setFeedback("");
+setMode("idle");
+
+// show intentional loading screen
+setPhase("loading-adaptive")
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
 
