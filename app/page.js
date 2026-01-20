@@ -1140,7 +1140,7 @@ const showGenPanel = showGenerator && !isAdaptive;
       )}
 
       {/* Ready */}
-      {phase === "ready" && (
+      {phase === "ready" && !testLoading && (
         <div style={{ marginTop: 40, padding: 24, border: "1px solid #ddd", borderRadius: 8 }}>
           <p>You’ve now understood this passage in depth. Let’s test it.</p>
           <button
@@ -1151,6 +1151,11 @@ const showGenPanel = showGenerator && !isAdaptive;
           </button>
         </div>
       )}
+{testLoading && (
+  <div style={{ padding: 40, textAlign: "center", fontSize: 18 }}>
+    Generating your CAT-style RC test…
+  </div>
+)}
 {/* Test Phase */}
 {phase === "test" && (
   <div
