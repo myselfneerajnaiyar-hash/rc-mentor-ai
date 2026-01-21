@@ -1307,26 +1307,42 @@ const showGenPanel = showGenerator && !isAdaptive;
     <>
       <h2>{w.word}</h2>
 
-      {!showMeaning ? (
-       <button
-  onClick={() => {
-    setShowMeaning(true);
-    if (!w.enriched) {
-      enrichWord(w);
-    }
-  }}
->
-  Reveal Meaning
-</button>
-      ) : (
-        <>
-          <p><b>Meaning:</b> {w.meaning}</p>
-{w.usage && <p><b>Usage:</b> {w.usage}</p>}
-{w.synonyms?.length > 0 && <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>}
-{w.antonyms?.length > 0 && <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>}
-{w.root && <p><b>Root:</b> {w.root}</p>}
-        </>
-      )}
+    {!showMeaning && (
+  <button
+    onClick={() => {
+      setShowMeaning(true);
+      if (!w.enriched) enrichWord(w);
+    }}
+  >
+    Reveal Meaning
+  </button>
+)}
+
+{showMeaning && (
+  <div style={{ marginTop: 12 }}>
+    <p><b>Meaning:</b> {w.meaning}</p>
+
+    {w.partOfSpeech && (
+      <p><b>Part of Speech:</b> {w.partOfSpeech}</p>
+    )}
+
+    {w.usage && (
+      <p><b>Usage:</b> {w.usage}</p>
+    )}
+
+    {w.synonyms?.length > 0 && (
+      <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+    )}
+
+    {w.antonyms?.length > 0 && (
+      <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+    )}
+
+    {w.root && (
+      <p><b>Root:</b> {w.root}</p>
+    )}
+  </div>
+)}
     </>
   );
 })()}
