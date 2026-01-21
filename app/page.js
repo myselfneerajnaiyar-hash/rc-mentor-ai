@@ -130,7 +130,7 @@ function computeStatus(w) {
   setVocabRunning(false);
 }
 function startVocabDrill() {
-  const bank = loadVocab();
+  const bank = vocabBank();
 
   // pick 10 least-mastered words first
   const sorted = [...bank].sort((a, b) => {
