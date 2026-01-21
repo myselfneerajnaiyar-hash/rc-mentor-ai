@@ -54,20 +54,21 @@ function saveVocab(words) {
 function addToVocab(d) {
   const bank = loadVocab();
 
+  // prevent duplicates
   if (bank.find(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
 
-  bank.push({
+  const normalized = {
     word: d.word,
     meaning: d.meaning,
     partOfSpeech: d.partOfSpeech || "",
+    usage: d.usage || "",
     synonyms: d.synonyms || [],
     antonyms: d.antonyms || [],
-    usage: d.usage || "",
     root: d.root || "",
     correctCount: 0,
-  });
+  };
 
-  saveVocab(bank);
+  saveVocab([...bank, normalized]);
 }
 function computeStatus(w) {
   if (w.correctCount >= 3) return "mastered";
