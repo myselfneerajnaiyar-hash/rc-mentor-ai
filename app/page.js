@@ -51,7 +51,24 @@ const [vocabRunning, setVocabRunning] = useState(false);
 function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
+function addToVocab(d) {
+  const bank = loadVocab();
 
+  if (bank.find(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
+
+  bank.push({
+    word: d.word,
+    meaning: d.meaning,
+    partOfSpeech: d.partOfSpeech || "",
+    synonyms: d.synonyms || [],
+    antonyms: d.antonyms || [],
+    usage: d.usage || "",
+    root: d.root || "",
+    correctCount: 0,
+  });
+
+  saveVocab(bank);
+}
 function computeStatus(w) {
   if (w.correctCount >= 3) return "mastered";
   if (w.correctCount >= 1) return "learning";
