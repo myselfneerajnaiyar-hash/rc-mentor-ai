@@ -1104,17 +1104,21 @@ const showGenPanel = showGenerator && !isAdaptive;
       </p>
 
       <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-        <button
-          style={{
-            background: "#f59e0b",
-            color: "white",
-            padding: "10px 16px",
-            borderRadius: 6,
-            fontWeight: 600,
-          }}
-        >
-          Start Today’s 10-Word Drill
-        </button>
+       <button
+  onClick={() => {
+    setPhase("vocab");
+    startVocabDrill();
+  }}
+  style={{
+    background: "#f59e0b",
+    color: "white",
+    padding: "10px 16px",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Start Today’s 10-Word Drill
+</button>
 
         <button
           style={{
