@@ -56,7 +56,24 @@ function computeStatus(w) {
   if (w.correctCount >= 1) return "learning";
   return "new";
 }
+function startVocabDrill() {
+  const bank = loadVocab();
 
+  // pick 10 least-mastered words first
+  const sorted = [...bank].sort((a, b) => {
+    const sa = computeStatus(a);
+    const sb = computeStatus(b);
+    const rank = { new: 0, learning: 1, mastered: 2 };
+    return rank[sa] - rank[sb];
+  });
+
+  const drill = sorted.slice(0, 10);
+
+  setVocabDrill(drill);
+  setVocabIndex(0);
+  setVocabTimer(120); // 2 minutes
+  setVocabRunning(true);
+}
 
  useEffect(() => {
   if (phase === "test") {
