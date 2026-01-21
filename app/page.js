@@ -38,6 +38,24 @@ export default function Page() {
   const [questionStartTime, setQuestionStartTime] = useState(null);
 const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
+  const [vocabDrill, setVocabDrill] = useState([]);
+const [vocabIndex, setVocabIndex] = useState(0);
+const [vocabTimer, setVocabTimer] = useState(0);
+const [vocabRunning, setVocabRunning] = useState(false);
+  
+  function loadVocab() {
+  return JSON.parse(localStorage.getItem("vocabBank") || "[]");
+}
+
+function saveVocab(words) {
+  localStorage.setItem("vocabBank", JSON.stringify(words));
+}
+
+function computeStatus(w) {
+  if (w.correctCount >= 3) return "mastered";
+  if (w.correctCount >= 1) return "learning";
+  return "new";
+}
 
 
  useEffect(() => {
