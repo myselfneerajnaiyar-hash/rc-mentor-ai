@@ -51,8 +51,15 @@ const [vocabRunning, setVocabRunning] = useState(false);
 function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
+function refreshFromBank() {
+  const bank = loadVocab();
+  setVocabDrill([]);
+  setVocabIndex(0);
+  setShowMeaning(false);
+  setVocabRunning(false);
+}
 
- async function addToVocab(d) {
+  function addToVocab(d) {
   const bank = loadVocab();
 
   if (bank.some(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
@@ -66,13 +73,13 @@ function saveVocab(words) {
     antonyms: [],
     root: "",
     correctCount: 0,
-    enriched: false
+    enriched: false,
   };
 
   const updated = [...bank, stub];
   saveVocab(updated);
 
-  // fire enrichment
+  refreshFromBank();   // 👈 force UI to re-sync
   enrichWord(stub);
 }
   async function enrichWord(w) {
