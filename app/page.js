@@ -1355,19 +1355,22 @@ const showGenPanel = showGenerator && !isAdaptive;
   <div style={{ marginTop: 24, textAlign: "center" }}>
     <h3>🎉 Drill Complete</h3>
     <p>You’ve revised today’s words.</p>
-    <button
-      onClick={() => startVocabDrill()}
-      style={{
-        marginTop: 12,
-        background: "#f59e0b",
-        color: "white",
-        padding: "8px 14px",
-        borderRadius: 6,
-        fontWeight: 600,
-      }}
-    >
-      Restart Drill
-    </button>
+   <button
+  onClick={() => {
+    refreshFromBank();
+    startVocabDrill();
+  }}
+  style={{
+    marginTop: 12,
+    background: "#f59e0b",
+    color: "white",
+    padding: "8px 14px",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Restart Drill
+</button>
   </div>
 )}
     </div>
