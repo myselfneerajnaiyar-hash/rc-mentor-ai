@@ -1233,6 +1233,20 @@ const showGenPanel = showGenerator && !isAdaptive;
     </>
   );
 })()}
+     <button
+  style={{ marginTop: 16 }}
+  onClick={() => {
+    if (vocabIndex + 1 >= vocabDrill.length) {
+      setVocabRunning(false);
+      setVocabDrill([]);
+    } else {
+      setVocabIndex(i => i + 1);
+      setShowMeaning(false);
+    }
+  }}
+>
+  Next →
+</button>
   </div>
 )}
      {!vocabRunning && vocabDrill.length === 0 && (
