@@ -51,15 +51,16 @@ const [vocabRunning, setVocabRunning] = useState(false);
 function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
-function addToVocab(d) {
+
+  function addToVocab(d) {
   const bank = loadVocab();
 
-  // prevent duplicates
-  if (bank.find(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
+  // avoid duplicates
+  if (bank.some(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
 
   const normalized = {
     word: d.word,
-    meaning: d.meaning,
+    meaning: d.meaning || "",
     partOfSpeech: d.partOfSpeech || "",
     usage: d.usage || "",
     synonyms: d.synonyms || [],
