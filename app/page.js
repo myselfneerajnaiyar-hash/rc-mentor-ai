@@ -105,6 +105,7 @@ enrichWord(normalized);
     );
 
     saveVocab(updated);
+    saveVocab(updated);
   } catch (e) {
     console.error("Enrichment failed", e);
   }
