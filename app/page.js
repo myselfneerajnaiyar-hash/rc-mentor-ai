@@ -1224,10 +1224,10 @@ const showGenPanel = showGenerator && !isAdaptive;
       ) : (
         <>
           <p><b>Meaning:</b> {w.meaning}</p>
-          <p><b>Usage:</b> {w.usage}</p>
-          <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
-          <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
-          <p><b>Root:</b> {w.root}</p>
+<p><b>Usage:</b> {w.usage || "—"}</p>
+<p><b>Synonyms:</b> {(w.synonyms || []).join(", ") || "—"}</p>
+<p><b>Antonyms:</b> {(w.antonyms || []).join(", ") || "—"}</p>
+<p><b>Root:</b> {w.root || "—"}</p>
         </>
       )}
     </>
