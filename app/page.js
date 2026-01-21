@@ -1282,22 +1282,22 @@ const showGenPanel = showGenerator && !isAdaptive;
 <div style={{ marginTop: 24 }}>
   <h3>Your Word Bank</h3>
 
-  {loadVocab().length === 0 ? (
-    <p style={{ color: "#a16207" }}>
-      No saved words yet. Words you save during RC will appear here.
-    </p>
-  ) : (
-    <ul>
-      {loadVocab().map((w, i) => (
-        <li key={i}>
-          <b>{w.word}</b> – {w.meaning}
-          <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
-            ({computeStatus(w)})
-          </span>
-        </li>
-      ))}
-    </ul>
-  )}
+ {vocabBank.length === 0 ? (
+  <p style={{ color: "#a16207" }}>
+    No saved words yet. Words you save during RC will appear here.
+  </p>
+) : (
+  <ul>
+    {vocabBank.map((w, i) => (
+      <li key={i}>
+        <b>{w.word}</b> – {w.meaning}
+        <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
+          ({computeStatus(w)})
+        </span>
+      </li>
+    ))}
+  </ul>
+)}
 </div>
 {vocabRunning && vocabDrill.length > 0 && (
   <div style={{ marginTop: 24 }}>
