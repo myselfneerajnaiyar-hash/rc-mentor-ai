@@ -1337,13 +1337,24 @@ const showGenPanel = showGenerator && !isAdaptive;
               <p>{data.explanation}</p>
 
               <h4>Difficult Words</h4>
-              <ul>
-                {data.difficultWords.map((d, i) => (
-                  <li key={i}>
-                    <b>{d.word}</b>: {d.meaning}
-                  </li>
-                ))}
-              </ul>
+             <ul>
+  {data.difficultWords.map((d, i) => (
+    <li key={i}>
+      <b>{d.word}</b>: {d.meaning}
+      <button
+        onClick={() => addToVocab(d)}
+        style={{
+          marginLeft: 8,
+          fontSize: 12,
+          padding: "2px 6px",
+          borderRadius: 4,
+        }}
+      >
+        + Save
+      </button>
+    </li>
+  ))}
+</ul>
 
               {mode === "showingPrimary" && (
                 <>
