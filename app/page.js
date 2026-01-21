@@ -42,6 +42,7 @@ const [questionTimes, setQuestionTimes] = useState({});
 const [vocabIndex, setVocabIndex] = useState(0);
 const [vocabTimer, setVocabTimer] = useState(0);
 const [vocabRunning, setVocabRunning] = useState(false);
+  const [showMeaning, setShowMeaning] = useState(false);
   
   function loadVocab() {
   return JSON.parse(localStorage.getItem("vocabBank") || "[]");
@@ -1210,23 +1211,15 @@ const showGenPanel = showGenerator && !isAdaptive;
       {(vocabTimer % 60).toString().padStart(2, "0")}
     </div>
 
-    <div style={{ marginTop: 16, padding: 16, border: "1px solid #ddd", borderRadius: 8 }}>
-      <h3>{vocabDrill[vocabIndex].word}</h3>
-      <p>{vocabDrill[vocabIndex].meaning}</p>
+    <h2>{w.word}</h2>
 
-     <button
-  onClick={() => {
-    if (vocabIndex + 1 >= vocabDrill.length) {
-      setVocabRunning(false);
-      setVocabDrill([]);
-    } else {
-      setVocabIndex(i => i + 1);
-    }
-  }}
->
-  Next →
-</button>
-    </div>
+<p><b>Meaning:</b> {w.meaning}</p>
+<p><b>Part of Speech:</b> {w.partOfSpeech}</p>
+<p><b>Usage:</b> {w.usage}</p>
+
+<p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+<p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+<p><b>Root:</b> {w.root}</p>
   </div>
 )}
      {!vocabRunning && vocabDrill.length === 0 && (
