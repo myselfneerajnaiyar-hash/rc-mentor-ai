@@ -6,7 +6,7 @@ export async function POST(req) {
 
     const prompt = `
 You are a vocabulary coach.
-Given a word and its meaning, return a JSON with:
+Given a word and its meaning, return ONLY valid JSON with:
 - partOfSpeech
 - usage (one example sentence)
 - synonyms (array)
@@ -16,26 +16,33 @@ Given a word and its meaning, return a JSON with:
 Word: ${word}
 Meaning: ${meaning}
 
-Return ONLY valid JSON.
+Return ONLY JSON.
 `;
 
-    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+    const openaiRes = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: Bearer ${process.env.OPENAI_API_KEY},
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
+        model: "gpt-4.1-mini",
+        input: prompt,
         temperature: 0.4,
       }),
     });
 
-    const data = await openaiRes.json();
-    const text = data.choices[0].message.content;
+    const raw = await openaiRes.json();
+    const text = raw.output_text || "{}";
 
-    return NextResponse.json(JSON.parse(text));
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      parsed = {};
+    }
+
+    return NextResponse.json(parsed);
   } catch (e) {
     console.error("API enrich error", e);
     return NextResponse.json({ error: "Failed to enrich" }, { status: 500 });
