@@ -52,24 +52,61 @@ function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
 
-  function addToVocab(d) {
+ async function addToVocab(d) {
   const bank = loadVocab();
 
-  // avoid duplicates
   if (bank.some(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
 
-  const normalized = {
+  const stub = {
     word: d.word,
     meaning: d.meaning || "",
-    partOfSpeech: d.partOfSpeech || "",
-    usage: d.usage || "",
-    synonyms: d.synonyms || [],
-    antonyms: d.antonyms || [],
-    root: d.root || "",
+    partOfSpeech: "",
+    usage: "",
+    synonyms: [],
+    antonyms: [],
+    root: "",
     correctCount: 0,
+    enriched: false
   };
 
-  saveVocab([...bank, normalized]);
+  const updated = [...bank, stub];
+  saveVocab(updated);
+
+  // fire enrichment
+  enrichWord(stub);
+}
+  async function enrichWord(w) {
+  try {
+    const res = await fetch("/api/enrich-word", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        word: w.word,
+        meaning: w.meaning
+      })
+    });
+
+    const data = await res.json();
+
+    const bank = loadVocab();
+    const updated = bank.map(x =>
+      x.word.toLowerCase() === w.word.toLowerCase()
+        ? {
+            ...x,
+            partOfSpeech: data.partOfSpeech || "",
+            usage: data.usage || "",
+            synonyms: data.synonyms || [],
+            antonyms: data.antonyms || [],
+            root: data.root || "",
+            enriched: true
+          }
+        : x
+    );
+
+    saveVocab(updated);
+  } catch (e) {
+    console.error("Enrichment failed", e);
+  }
 }
 function computeStatus(w) {
   if (w.correctCount >= 3) return "mastered";
