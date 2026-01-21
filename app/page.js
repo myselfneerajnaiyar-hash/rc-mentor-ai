@@ -1128,10 +1128,36 @@ const showGenPanel = showGenerator && !isAdaptive;
           Add Custom Word
         </button>
       </div>
+{vocabRunning && vocabDrill.length > 0 && (
+  <div style={{ marginTop: 24 }}>
+    <div style={{ fontWeight: 600 }}>
+      ⏱ {Math.floor(vocabTimer / 60)}:
+      {(vocabTimer % 60).toString().padStart(2, "0")}
+    </div>
 
-      <p style={{ marginTop: 24, color: "#a16207" }}>
-        No words yet. Your saved words will appear here.
-      </p>
+    <div style={{ marginTop: 16, padding: 16, border: "1px solid #ddd", borderRadius: 8 }}>
+      <h3>{vocabDrill[vocabIndex].word}</h3>
+      <p>{vocabDrill[vocabIndex].meaning}</p>
+
+     <button
+  onClick={() => {
+    if (vocabIndex < vocabDrill.length - 1) {
+      setVocabIndex(i => i + 1);
+    } else {
+      setVocabRunning(false); // drill ends
+    }
+  }}
+>
+  Next →
+</button>
+    </div>
+  </div>
+)}
+      {!vocabRunning && (
+  <p style={{ marginTop: 24, color: "#a16207" }}>
+    No words yet. Your saved words will appear here.
+  </p>
+)}
     </div>
   </div>
 )}
