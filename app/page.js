@@ -93,6 +93,32 @@ function startVocabDrill() {
     const id = setInterval(() => setTimeLeft(t => t - 1), 1000);
     return () => clearInterval(id);
   }, [timerRunning, timeLeft]);
+  useEffect(() => {
+  if (!vocabRunning) return;
+  if (vocabTimer <= 0) {
+    setVocabRunning(false);
+    return;
+  }
+
+  const id = setInterval(() => {
+    setVocabTimer(t => t - 1);
+  }, 1000);
+
+  return () => clearInterval(id);
+}, [vocabRunning, vocabTimer]);
+  
+  useEffect(() => {
+  const existing = loadVocab();
+  if (!existing.length) {
+    saveVocab([
+      { word: "Obscure", meaning: "Hard to understand", correctCount: 0 },
+      { word: "Pragmatic", meaning: "Practical and realistic", correctCount: 0 },
+      { word: "Ambiguous", meaning: "Open to more than one interpretation", correctCount: 0 },
+      { word: "Conundrum", meaning: "A confusing problem", correctCount: 0 },
+      { word: "Nuance", meaning: "A subtle difference", correctCount: 0 },
+    ]);
+  }
+}, []);
 
   function splitPassage() {
     const raw = text.trim();
