@@ -1171,10 +1171,11 @@ const showGenPanel = showGenerator && !isAdaptive;
 
      <button
   onClick={() => {
-    if (vocabIndex < vocabDrill.length - 1) {
-      setVocabIndex(i => i + 1);
+    if (vocabIndex + 1 >= vocabDrill.length) {
+      setVocabRunning(false);
+      setVocabDrill([]);
     } else {
-      setVocabRunning(false); // drill ends
+      setVocabIndex(i => i + 1);
     }
   }}
 >
@@ -1183,10 +1184,24 @@ const showGenPanel = showGenerator && !isAdaptive;
     </div>
   </div>
 )}
-      {!vocabRunning && (
-  <p style={{ marginTop: 24, color: "#a16207" }}>
-    No words yet. Your saved words will appear here.
-  </p>
+     {!vocabRunning && vocabDrill.length === 0 && (
+  <div style={{ marginTop: 24, textAlign: "center" }}>
+    <h3>🎉 Drill Complete</h3>
+    <p>You’ve revised today’s words.</p>
+    <button
+      onClick={() => startVocabDrill()}
+      style={{
+        marginTop: 12,
+        background: "#f59e0b",
+        color: "white",
+        padding: "8px 14px",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Restart Drill
+    </button>
+  </div>
 )}
     </div>
   </div>
