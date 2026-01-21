@@ -124,7 +124,8 @@ function computeStatus(w) {
   setVocabRunning(false);
 }
 function startVocabDrill() {
-  const bank = vocabBank();
+  const bank = vocabBank;   // ✅ correct
+  if (!bank || bank.length === 0) return;
 
   // pick 10 least-mastered words first
   const sorted = [...bank].sort((a, b) => {
