@@ -52,13 +52,7 @@ const [vocabRunning, setVocabRunning] = useState(false);
 function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
-function refreshFromBank() {
-  const bank = loadVocab();
-  setVocabDrill([]);
-  setVocabIndex(0);
-  setShowMeaning(false);
-  setVocabRunning(false);
-}
+
 
   function addToVocab(d) {
   const bank = loadVocab();
