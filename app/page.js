@@ -43,6 +43,7 @@ const [vocabIndex, setVocabIndex] = useState(0);
 const [vocabTimer, setVocabTimer] = useState(0);
 const [vocabRunning, setVocabRunning] = useState(false);
   const [showMeaning, setShowMeaning] = useState(false);
+  const [vocabBank, setVocabBank] = useState([]);
   
   function loadVocab() {
   return JSON.parse(localStorage.getItem("vocabBank") || "[]");
@@ -76,11 +77,10 @@ function refreshFromBank() {
     enriched: false,
   };
 
-  const updated = [...bank, stub];
-  saveVocab(updated);
-
-  refreshFromBank();   // 👈 force UI to re-sync
-  enrichWord(stub);
+  const updated = [...bank, normalized];
+saveVocab(updated);
+refreshFromBank();
+enrichWord(normalized);
 }
   async function enrichWord(w) {
   try {
@@ -120,6 +120,15 @@ function computeStatus(w) {
   if (w.correctCount >= 1) return "learning";
   return "new";
 }
+  function refreshFromBank() {
+  const bank = loadVocab();
+  setVocabBank(bank);
+
+  setVocabDrill([]);
+  setVocabIndex(0);
+  setShowMeaning(false);
+  setVocabRunning(false);
+}
 function startVocabDrill() {
   const bank = loadVocab();
 
@@ -138,7 +147,10 @@ function startVocabDrill() {
   setVocabTimer(120); // 2 minutes
   setVocabRunning(true);
 }
-
+useEffect(() => {
+  setVocabBank(loadVocab());
+}, []);
+  
  useEffect(() => {
   if (phase === "test") {
     setTimeLeft(6 * 60);
