@@ -1211,15 +1211,28 @@ const showGenPanel = showGenerator && !isAdaptive;
       {(vocabTimer % 60).toString().padStart(2, "0")}
     </div>
 
-    <h2>{w.word}</h2>
+   {(() => {
+  const w = vocabDrill[vocabIndex];
+  return (
+    <>
+      <h2>{w.word}</h2>
 
-<p><b>Meaning:</b> {w.meaning}</p>
-<p><b>Part of Speech:</b> {w.partOfSpeech}</p>
-<p><b>Usage:</b> {w.usage}</p>
-
-<p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
-<p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
-<p><b>Root:</b> {w.root}</p>
+      {!showMeaning ? (
+        <button onClick={() => setShowMeaning(true)}>
+          Reveal Meaning
+        </button>
+      ) : (
+        <>
+          <p><b>Meaning:</b> {w.meaning}</p>
+          <p><b>Usage:</b> {w.usage}</p>
+          <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+          <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+          <p><b>Root:</b> {w.root}</p>
+        </>
+      )}
+    </>
+  );
+})()}
   </div>
 )}
      {!vocabRunning && vocabDrill.length === 0 && (
