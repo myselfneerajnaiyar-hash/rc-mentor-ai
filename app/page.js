@@ -107,15 +107,60 @@ function startVocabDrill() {
   return () => clearInterval(id);
 }, [vocabRunning, vocabTimer]);
   
-  useEffect(() => {
+ useEffect(() => {
   const existing = loadVocab();
   if (!existing.length) {
     saveVocab([
-      { word: "Obscure", meaning: "Hard to understand", correctCount: 0 },
-      { word: "Pragmatic", meaning: "Practical and realistic", correctCount: 0 },
-      { word: "Ambiguous", meaning: "Open to more than one interpretation", correctCount: 0 },
-      { word: "Conundrum", meaning: "A confusing problem", correctCount: 0 },
-      { word: "Nuance", meaning: "A subtle difference", correctCount: 0 },
+      {
+        word: "Obscure",
+        meaning: "Hard to understand",
+        partOfSpeech: "Adjective",
+        synonyms: ["unclear", "vague", "cryptic"],
+        antonyms: ["clear", "obvious"],
+        usage: "The author’s argument was obscure and difficult to follow.",
+        root: "Latin: obscurus (dark, hidden)",
+        correctCount: 0,
+      },
+      {
+        word: "Pragmatic",
+        meaning: "Practical and realistic",
+        partOfSpeech: "Adjective",
+        synonyms: ["practical", "realistic", "down-to-earth"],
+        antonyms: ["idealistic", "impractical"],
+        usage: "She took a pragmatic approach to solving the problem.",
+        root: "Greek: pragma (deed, action)",
+        correctCount: 0,
+      },
+      {
+        word: "Ambiguous",
+        meaning: "Open to more than one interpretation",
+        partOfSpeech: "Adjective",
+        synonyms: ["unclear", "vague"],
+        antonyms: ["definite", "clear"],
+        usage: "His reply was deliberately ambiguous.",
+        root: "Latin: ambiguus (uncertain)",
+        correctCount: 0,
+      },
+      {
+        word: "Conundrum",
+        meaning: "A confusing problem",
+        partOfSpeech: "Noun",
+        synonyms: ["puzzle", "dilemma"],
+        antonyms: ["solution"],
+        usage: "Choosing between the two offers was a real conundrum.",
+        root: "Unknown / playful English origin",
+        correctCount: 0,
+      },
+      {
+        word: "Nuance",
+        meaning: "A subtle difference",
+        partOfSpeech: "Noun",
+        synonyms: ["subtlety", "shade"],
+        antonyms: ["obviousness"],
+        usage: "He missed the nuance in her tone.",
+        root: "French: nuance (shade)",
+        correctCount: 0,
+      },
     ]);
   }
 }, []);
