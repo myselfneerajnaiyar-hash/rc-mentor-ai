@@ -1332,7 +1332,7 @@ export default function Page() {
                 >
                   <div
                     style={{
-                      width: ${(val / total) * 100}%,
+                      width: `${(val / total) * 100}%`,
                       height: "100%",
                       background: color,
                     }}
