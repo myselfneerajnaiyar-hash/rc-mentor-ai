@@ -1195,172 +1195,166 @@ export default function Page() {
         ))}
       </div>
 
-      {activeProfileTab === "overview" && (
-        <div
-          style={{
-            padding: 20,
-            border: "1px solid #e5e7eb",
-            borderRadius: 10,
-            background: "#fafafa",
-          }}
-        >
-          <p>
-            You have attempted <b>{all.length}</b> questions across{" "}
-            <b>{tests.length}</b> RC tests.
-          </p>
+     {activeProfileTab === "overview" && (
+  <div
+    style={{
+      padding: 20,
+      border: "1px solid #e5e7eb",
+      borderRadius: 10,
+      background: "#fafafa",
+    }}
+  >
+    <p>
+      You have attempted <b>{all.length}</b> questions across{" "}
+      <b>{tests.length}</b> RC tests.
+    </p>
 
-          {types.length === 0 && (
-            <p>No diagnostic data yet. Take a test to build your profile.</p>
-          )}
+    {types.length === 0 && (
+      <p>No diagnostic data yet. Take a test to build your profile.</p>
+    )}
 
-          {types.length > 0 && (
-            <ul>
-              {types.map(t => (
-                <li key={t}>
-                  <b>{t.toUpperCase()}</b>:{" "}
-                  {pct(byType[t].correct, byType[t].total)}% accuracy (
-                  {byType[t].correct}/{byType[t].total})
-                </li>
-              ))}
-            </ul>
-          )}
+    {types.length > 0 && (
+      <ul>
+        {types.map(t => (
+          <li key={t}>
+            <b>{t.toUpperCase()}</b>:{" "}
+            {pct(byType[t].correct, byType[t].total)}% accuracy (
+            {byType[t].correct}/{byType[t].total})
+          </li>
+        ))}
+      </ul>
+    )}
 
-          <button
-            onClick={() => setPhase("mentor")}
-            style={{ marginTop: 16, padding: "8px 14px" }}
+    <button
+      onClick={() => setPhase("mentor")}
+      style={{ marginTop: 16, padding: "8px 14px" }}
+    >
+      Back to Home
+    </button>
+  </div>
+)}
+
+{activeProfileTab === "skills" && (
+  <div
+    style={{
+      padding: 20,
+      border: "1px solid #e5e7eb",
+      borderRadius: 10,
+      background: "#ffffff",
+    }}
+  >
+    <h3>Skill Breakdown</h3>
+
+    {types.length === 0 && (
+      <p>No data yet. Take at least one RC test.</p>
+    )}
+
+    {types.map(t => {
+      const acc = pct(byType[t].correct, byType[t].total);
+      return (
+        <div key={t} style={{ marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <b>{t.toUpperCase()}</b>
+            <span>{acc}%</span>
+          </div>
+
+          <div
+            style={{
+              height: 10,
+              background: "#e5e7eb",
+              borderRadius: 6,
+              overflow: "hidden",
+            }}
           >
-            Back to Home
-          </button>
+            <div
+              style={{
+                width: `${acc}%`,
+                height: "100%",
+                background:
+                  acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
+              }}
+            />
+          </div>
         </div>
-      )}
-        {activeProfileTab === "skills" && (
-        <div
-          style={{
-            padding: 20,
-            border: "1px solid #e5e7eb",
-            borderRadius: 10,
-            background: "#ffffff",
-          }}
-        >
-          <h3>Skill Breakdown</h3>
+      );
+    })}
 
-          {types.length === 0 && (
-            <p>No data yet. Take at least one RC test.</p>
-          )}
+    <p style={{ marginTop: 12, color: "#555" }}>
+      These bars show how well you handle each RC question type.
+      Red = Weak, Amber = Developing, Green = Strong.
+    </p>
+  </div>
+)}
 
-          {types.map(t => {
-            const acc = pct(byType[t].correct, byType[t].total);
-            return (
-              <div key={t} style={{ marginBottom: 16 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <b>{t.toUpperCase()}</b>
-                  <span>{acc}%</span>
-                </div>
+{activeProfileTab === "speed" && (
+  <div
+    style={{
+      padding: 20,
+      border: "1px solid #e5e7eb",
+      borderRadius: 10,
+      background: "#ffffff",
+    }}
+  >
+    <h3>Reading Speed & Behaviour</h3>
 
-                <div
-                  style={{
-                    height: 10,
-                    background: "#e5e7eb",
-                    borderRadius: 6,
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${acc}%`,
-                      height: "100%",
-                      background:
-                        acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+    {tests.length === 0 && <p>No data yet. Take at least one RC test.</p>}
 
-          <p style={{ marginTop: 12, color: "#555" }}>
-            These bars show how well you handle each RC question type.  
-            Red = Weak, Amber = Developing, Green = Strong.
-          </p>
-        </div>
-      )}
-        {activeProfileTab === "speed" && (
-        <div
-          style={{
-            padding: 20,
-            border: "1px solid #e5e7eb",
-            borderRadius: 10,
-            background: "#ffffff",
-          }}
-        >
-          <h3>Reading Speed & Behaviour</h3>
+    {tests.length > 0 &&
+      (() => {
+        let fast = 0;
+        let heavy = 0;
+        let impulsive = 0;
+        let confused = 0;
 
-          {tests.length === 0 && (
-            <p>No data yet. Take at least one RC test.</p>
-          )}
+        tests.forEach(t => {
+          t.questions.forEach(q => {
+            if (q.time <= 20 && q.correct) fast++;
+            else if (q.time > 45 && q.correct) heavy++;
+            else if (q.time <= 20 && !q.correct) impulsive++;
+            else if (q.time > 45 && !q.correct) confused++;
+          });
+        });
 
-          {tests.length > 0 && (() => {
-            let fast = 0;
-            let heavy = 0;
-            let impulsive = 0;
-            let confused = 0;
+        const total = fast + heavy + impulsive + confused || 1;
 
-            tests.forEach(t => {
-              t.questions.forEach(q => {
-                if (q.time <= 20 && q.correct) fast++;
-                else if (q.time > 45 && q.correct) heavy++;
-                else if (q.time <= 20 && !q.correct) impulsive++;
-                else if (q.time > 45 && !q.correct) confused++;
-              });
-            });
+        const bar = (label, val, color) => (
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>{label}</span>
+              <span>{Math.round((val / total) * 100)}%</span>
+            </div>
+            <div
+              style={{
+                height: 10,
+                background: "#e5e7eb",
+                borderRadius: 6,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${(val / total) * 100}%`,
+                  height: "100%",
+                  background: color,
+                }}
+              />
+            </div>
+          </div>
+        );
 
-            const total = fast + heavy + impulsive + confused || 1;
+        return (
+          <>
+            {bar("Fast & Accurate", fast, "#16a34a")}
+            {bar("Heavy but Correct", heavy, "#2563eb")}
+            {bar("Impulsive Errors", impulsive, "#dc2626")}
+            {bar("Slow & Confused", confused, "#f59e0b")}
+          </>
+        );
+      })()}
+  </div>
+)}
 
-            const bar = (label, val, color) => (
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>{label}</span>
-                  <span>{Math.round((val / total) * 100)}%</span>
-                </div>
-                <div
-                  style={{
-                    height: 10,
-                    background: "#e5e7eb",
-                    borderRadius: 6,
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${(val / total) * 100}%`,
-                      height: "100%",
-                      background: color,
-                    }}
-                  />
-                </div>
-              </div>
-            );
-
-            return (
-              <>
-                {bar("Fast & Accurate", fast, "#16a34a")}
-                {bar("Heavy but Correct", heavy, "#2563eb")}
-                {bar("Impulsive Errors", impulsive, "#dc2626")}
-                {bar("Slow & Confused", confused, "#f59e0b")}
-
-                <p style={{ marginTop: 12, color: "#555" }}>
-                  This shows how you read:
-                  <br />• <b>Fast & Accurate</b> → Ideal CAT mode  
-                  <br />• <b>Heavy but Correct</b> → Over-processing  
-                  <br />• <b>Impulsive Errors</b> → Guessing too fast  
-                  <br />• <b>Slow & Confused</b> → Losing structure
-                </p>
-              </>
-            );
-          })()}
-        </div>
-      )}
-       {activeProfileTab === "plan" && (
+{activeProfileTab === "plan" && (
   <div
     style={{
       padding: 20,
@@ -1373,8 +1367,8 @@ export default function Page() {
 
     {tests.length === 0 ? (
       <p>
-        Take at least one RC test. Your plan will be auto-generated based on
-        your weaknesses.
+        Take at least one RC test. Your plan will be auto-generated based
+        on your weaknesses.
       </p>
     ) : (() => {
       const typeCount = {};
@@ -1425,9 +1419,7 @@ export default function Page() {
             marginBottom: 10,
           }}
         >
-          <b>
-            Day {day} – {focus}
-          </b>
+          <b>Day {day} – {focus}</b>
           <p style={{ margin: "6px 0", color: "#555" }}>{task}</p>
         </div>
       );
@@ -1475,6 +1467,7 @@ export default function Page() {
         </>
       );
     })()}
+  </div>
 )}
     </main>
   );
