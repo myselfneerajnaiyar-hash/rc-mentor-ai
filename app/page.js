@@ -1434,7 +1434,7 @@ const showGenPanel = showGenerator && !isAdaptive;
    {(() => {
   const w = vocabDrill[vocabIndex];
   return (
-    <>
+    <div>
       <h2>{w.word}</h2>
 
    {!showMeaning && (
@@ -1485,7 +1485,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   Next →
 </button>
   </div>
-)}
+);
      {!vocabRunning && vocabDrill.length === 0 && (
   <div style={{ marginTop: 24, textAlign: "center" }}>
     <h3>🎉 Drill Complete</h3>
