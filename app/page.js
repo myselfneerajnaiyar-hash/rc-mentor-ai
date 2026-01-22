@@ -140,7 +140,7 @@ function computeStatus(w) {
   setVocabRunning(false);
 }
 function startVocabDrill() {
-  const bank = vocabBank;
+  const bank = loadVocab();
   if (!bank || bank.length === 0) return;
 
   const sorted = [...bank].sort((a, b) => {
@@ -152,10 +152,15 @@ function startVocabDrill() {
 
   const drill = sorted.slice(0, 10);
 
+  // 🔴 Enrich all missing words immediately
+  drill.forEach(w => {
+    if (!w.enriched) enrichWord(w);
+  });
+
   setVocabDrill(drill);
   setVocabIndex(0);
   setVocabTimer(120);
-  setShowMeaning(false);   // 🔴 THIS LINE WAS MISSING
+  setShowMeaning(false);
   setVocabRunning(true);
 }
 useEffect(() => {
