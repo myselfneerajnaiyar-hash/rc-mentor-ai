@@ -1340,8 +1340,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   <button
     onClick={() => {
       setShowMeaning(true);
-      if (!w.enriched) enrichWord(w);
-    }}
+       }}
   >
     Reveal Meaning
   </button>
