@@ -1511,7 +1511,7 @@ const showGenPanel = showGenerator && !isAdaptive;
 )}
     </div>
   </div>
-)}
+
   {phase === "loading-adaptive" && (
   <div style={{ padding: 40, textAlign: "center", fontSize: 18 }}>
     Preparing your next adaptive passage…
