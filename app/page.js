@@ -1361,7 +1361,6 @@ const showGenPanel = showGenerator && !isAdaptive;
   </>
 )}
 
-{false && (
   <div
     style={{
       marginTop: 24,
