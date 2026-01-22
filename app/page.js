@@ -1317,7 +1317,11 @@ const showGenPanel = showGenerator && !isAdaptive;
 </p>
   <ul>
   {vocabBank.map((w, i) => (
-    <li key={i} style={{ marginBottom: 8 }}>
+   <li
+  key={i}
+  style={{ marginBottom: 8, cursor: "pointer" }}
+  onClick={() => setLearningWord(w)}
+>
       <b>{w.word}</b> – {w.meaning}
       <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
         ({computeStatus(w)})
@@ -1348,8 +1352,70 @@ const showGenPanel = showGenerator && !isAdaptive;
     </li>
   ))}
 </ul>
+
+{learningWord && (
+  <div
+    style={{
+      marginTop: 24,
+      padding: 16,
+      border: "1px solid #fde68a",
+      borderRadius: 10,
+      background: "#fffbeb",
+    }}
+  >
+    <h2>{learningWord.word}</h2>
+    <p><b>Meaning:</b> {learningWord.meaning}</p>
+
+    {learningWord.partOfSpeech && (
+      <p><b>Part of Speech:</b> {learningWord.partOfSpeech}</p>
+    )}
+
+    {learningWord.usage && (
+      <p><b>Usage:</b> {learningWord.usage}</p>
+    )}
+
+    {learningWord.synonyms?.length > 0 && (
+      <p><b>Synonyms:</b> {learningWord.synonyms.join(", ")}</p>
+    )}
+
+    {learningWord.antonyms?.length > 0 && (
+      <p><b>Antonyms:</b> {learningWord.antonyms.join(", ")}</p>
+    )}
+
+    {learningWord.root && (
+      <p><b>Root:</b> {learningWord.root}</p>
+    )}
+
+    {!learningWord.enriched && (
+      <>
+        <p style={{ fontSize: 12, color: "#92400e" }}>
+          Enriching adds usage, synonyms, antonyms, and roots using AI.
+        </p>
+        <button
+          onClick={() => enrichWord(learningWord)}
+          style={{
+            marginTop: 6,
+            padding: "6px 10px",
+            borderRadius: 6,
+            border: "1px solid #f59e0b",
+            background: "#fff7ed",
+            color: "#92400e",
+            fontWeight: 600,
+          }}
+        >
+          Enrich this word
+        </button>
+      </>
+    )}
+
+    <button
+      onClick={() => setLearningWord(null)}
+      style={{ marginTop: 12, display: "block" }}
+    >
+      Close
+    </button>
+  </div>
 )}
-</div>
 {vocabRunning && vocabDrill.length > 0 && (
   <div style={{ marginTop: 24 }}>
     <div style={{ fontWeight: 600 }}>
