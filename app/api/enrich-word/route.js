@@ -33,7 +33,13 @@ Return ONLY JSON.
     });
 
     const raw = await openaiRes.json();
-    const text = raw.output_text || "{}";
+
+    let text = "{}";
+    try {
+      text =
+        raw.output?.[0]?.content?.find(c => c.type === "output_text")?.text ||
+        "{}";
+    } catch {}
 
     let parsed;
     try {
