@@ -1360,119 +1360,122 @@ export default function Page() {
           })()}
         </div>
       )}
-        {activeProfileTab === "plan" && (
+       {activeProfileTab === "plan" && (
+  <div
+    style={{
+      padding: 20,
+      border: "1px solid #e5e7eb",
+      borderRadius: 10,
+      background: "#ffffff",
+    }}
+  >
+    <h3>Your RC Improvement Plan</h3>
+
+    {tests.length === 0 ? (
+      <p>
+        Take at least one RC test. Your plan will be auto-generated based on
+        your weaknesses.
+      </p>
+    ) : (() => {
+      const typeCount = {};
+      const speedBuckets = {
+        fastAccurate: 0,
+        heavyCorrect: 0,
+        impulsive: 0,
+        confused: 0,
+      };
+
+      tests.forEach(t => {
+        t.questions.forEach(q => {
+          const type = q.type || "inference";
+          typeCount[type] = (typeCount[type] || 0) + (q.correct ? 0 : 1);
+
+          if (q.time <= 20 && q.correct) speedBuckets.fastAccurate++;
+          else if (q.time > 45 && q.correct) speedBuckets.heavyCorrect++;
+          else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
+          else if (q.time > 45 && !q.correct) speedBuckets.confused++;
+        });
+      });
+
+      const weakestType =
+        Object.entries(typeCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+        "inference";
+
+      let speedIssue = "balanced";
+      if (
+        speedBuckets.impulsive >
+        speedBuckets.heavyCorrect + speedBuckets.confused
+      )
+        speedIssue = "impulsive";
+      else if (
+        speedBuckets.confused >
+        speedBuckets.fastAccurate + speedBuckets.impulsive
+      )
+        speedIssue = "confused";
+      else if (speedBuckets.heavyCorrect > speedBuckets.fastAccurate)
+        speedIssue = "heavy";
+
+      const dayBlock = (day, focus, task) => (
         <div
+          key={day}
           style={{
-            padding: 20,
+            padding: 12,
             border: "1px solid #e5e7eb",
-            borderRadius: 10,
-            background: "#ffffff",
+            borderRadius: 8,
+            marginBottom: 10,
           }}
         >
-          <h3>Your RC Improvement Plan</h3>
+          <b>
+            Day {day} – {focus}
+          </b>
+          <p style={{ margin: "6px 0", color: "#555" }}>{task}</p>
+        </div>
+      );
 
-          {tests.length === 0 ? (
-            <p>
-              Take at least one RC test. Your plan will be auto-generated based
-              on your weaknesses.
-            </p>
-          ) : (() => {
-            const typeCount = {};
-            const speedBuckets = {
-              fastAccurate: 0,
-              heavyCorrect: 0,
-              impulsive: 0,
-              confused: 0,
-            };
+      const plan = [];
 
-            tests.forEach(t => {
-              t.questions.forEach(q => {
-                const type = q.type || "inference";
-                typeCount[type] = (typeCount[type] || 0) + (q.correct ? 0 : 1);
-
-                if (q.time <= 20 && q.correct) speedBuckets.fastAccurate++;
-                else if (q.time > 45 && q.correct) speedBuckets.heavyCorrect++;
-                else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
-                else if (q.time > 45 && !q.correct) speedBuckets.confused++;
-              });
-            });
-
-            const weakestType =
-              Object.entries(typeCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
-              "inference";
-
-            let speedIssue = "balanced";
-            if (
-              speedBuckets.impulsive >
-              speedBuckets.heavyCorrect + speedBuckets.confused
+      for (let i = 1; i <= 14; i++) {
+        if (i <= 5) {
+          plan.push(
+            dayBlock(
+              i,
+              `${weakestType.toUpperCase()} Mastery`,
+              `Solve 3 RCs focusing only on ${weakestType} questions. After each RC, analyze every wrong option.`
             )
-              speedIssue = "impulsive";
-            else if (
-              speedBuckets.confused >
-              speedBuckets.fastAccurate + speedBuckets.impulsive
+          );
+        } else if (i <= 10) {
+          plan.push(
+            dayBlock(
+              i,
+              "Speed Calibration",
+              speedIssue === "impulsive"
+                ? "Force 25–30 sec minimum before answering each question."
+                : speedIssue === "confused"
+                ? "Pause after every paragraph and note the core idea in 1 line."
+                : "Cap yourself at 35 sec per question. Move on even if unsure."
             )
-              speedIssue = "confused";
-            else if (speedBuckets.heavyCorrect > speedBuckets.fastAccurate)
-              speedIssue = "heavy";
+          );
+        } else {
+          plan.push(
+            dayBlock(
+              i,
+              "Full CAT Simulation",
+              "Attempt 2 full RC sets under time. Analyze every wrong option."
+            )
+          );
+        }
+      }
 
-            const dayBlock = (day, focus, task) => (
-              <div
-                key={day}
-                style={{
-                  padding: 12,
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 8,
-                  marginBottom: 10,
-                }}
-              >
-                <b>Day {day} – {focus}</b>
-                <p style={{ margin: "6px 0", color: "#555" }}>{task}</p>
-              </div>
-            );
-const plan = [];
-
-for (let i = 1; i <= 14; i++) {
-  if (i <= 5) {
-    plan.push(
-      dayBlock(
-        i,
-        `${weakestType.toUpperCase()} Mastery`,
-        `Solve 3 RCs focusing only on ${weakestType} questions. After each RC, analyze every wrong option.`
-      )
-    );
-  } else if (i <= 10) {
-    plan.push(
-      dayBlock(
-        i,
-        "Speed Calibration",
-        speedIssue === "impulsive"
-          ? "Force 25–30 sec minimum before answering each question."
-          : speedIssue === "confused"
-          ? "Pause after every paragraph and note the core idea in 1 line."
-          : "Cap yourself at 35 sec per question. Move on even if unsure."
-      )
-    );
-  } else {
-    plan.push(
-      dayBlock(
-        i,
-        "Full CAT Simulation",
-        "Attempt 2 full RC sets under time. Analyze every wrong option."
-      )
-    );
-  }
-}
-
-return (
-  <>
-    <div>{plan}</div>
-    <p style={{ marginTop: 12, color: "#555" }}>
-      This plan evolves automatically as you take more tests.
-    </p>
-  </>
-);
-})()}
-  </div>
+      return (
+        <>
+          <div>{plan}</div>
+          <p style={{ marginTop: 12, color: "#555" }}>
+            This plan evolves automatically as you take more tests.
+          </p>
+        </>
+      );
+    })()}
+)}
     </main>
   );
 }
