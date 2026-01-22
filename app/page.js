@@ -44,6 +44,7 @@ const [vocabTimer, setVocabTimer] = useState(0);
 const [vocabRunning, setVocabRunning] = useState(false);
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
+  const [learningWord, setLearningWord] = useState(null);
   
   function loadVocab() {
   return JSON.parse(localStorage.getItem("vocabBank") || "[]");
