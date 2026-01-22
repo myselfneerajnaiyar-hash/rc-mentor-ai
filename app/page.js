@@ -1467,8 +1467,7 @@ const showGenPanel = showGenerator && !isAdaptive;
       <p><b>Root:</b> {w.root}</p>
     )}
   </div>
-     );
-})()}
+)}
      <button
   style={{ marginTop: 16 }}
   onClick={() => {
