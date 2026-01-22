@@ -1438,7 +1438,7 @@ export default function Page() {
                   dayBlock(
                     i,
                     `${weakestType.toUpperCase()} Mastery`,
-                    `Solve 3 RCs focusing only on ${weakestType} questions. After each paragraph, summarize in one line`.
+                    `Solve 3 RCs focusing only on ${weakestType} questions. After each paragraph, summarize in one line.`
                   )
                 );
               } else if (i <= 10) {
