@@ -71,7 +71,7 @@ function saveVocab(words) {
     enriched: false,
   };
 
-  const updated = [...bank, normalized];
+  const updated = [...bank, stub];
 saveVocab(updated);
 refreshFromBank();
 enrichWord(stub);
