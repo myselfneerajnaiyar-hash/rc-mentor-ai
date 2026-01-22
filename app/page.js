@@ -161,7 +161,12 @@ function startVocabDrill() {
 useEffect(() => {
   setVocabBank(loadVocab());
 }, []);
-  
+
+  useEffect(() => {
+  if (phase === "vocab") {
+    setShowMeaning(false);
+  }
+}, [phase]);
  useEffect(() => {
   if (phase === "test") {
     setTimeLeft(6 * 60);
