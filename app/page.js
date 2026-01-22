@@ -1429,8 +1429,7 @@ export default function Page() {
                 <p style={{ margin: "6px 0", color: "#555" }}>{task}</p>
               </div>
             );
-
-          const plan = [];
+const plan = [];
 
 for (let i = 1; i <= 14; i++) {
   if (i <= 5) {
@@ -1463,11 +1462,15 @@ for (let i = 1; i <= 14; i++) {
     );
   }
 }
-        <div>{plan}</div>
 
-<p style={{ marginTop: 12, color: "#555" }}>
-  This plan evolves automatically as you take more tests.
-</p>
+return (
+  <>
+    <div>{plan}</div>
+    <p style={{ marginTop: 12, color: "#555" }}>
+      This plan evolves automatically as you take more tests.
+    </p>
+  </>
+);
         </div>
       )}
     </main>
