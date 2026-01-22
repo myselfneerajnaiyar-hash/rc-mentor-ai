@@ -1750,7 +1750,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   const buckets = {};
 
   testQuestions.forEach((q, i) => {
-    const t = questionTimes[test-${i}] || 0;
+    const t = questionTimes[`test-${i}`] || 0;
     const correct = testAnswers[i] === q.correctIndex;
     const type = (q.type || "inference").trim().toLowerCase();
 
