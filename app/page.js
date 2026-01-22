@@ -1258,7 +1258,6 @@ const showGenPanel = showGenerator && !isAdaptive;
         Start Adaptive RC
       </button>
     </div>
-  );
 })()}
  
   {phase === "vocab" && (
