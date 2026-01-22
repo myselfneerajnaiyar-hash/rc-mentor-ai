@@ -47,9 +47,14 @@ const [vocabRunning, setVocabRunning] = useState(false);
   const [learningWord, setLearningWord] = useState(null);
   
   function loadVocab() {
+  if (typeof window === "undefined") return [];
   return JSON.parse(localStorage.getItem("vocabBank") || "[]");
 }
 
+function saveVocab(words) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem("vocabBank", JSON.stringify(words));
+}
 function saveVocab(words) {
   localStorage.setItem("vocabBank", JSON.stringify(words));
 }
