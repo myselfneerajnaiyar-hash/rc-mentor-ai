@@ -218,6 +218,7 @@ useEffect(() => {
         usage: "The author’s argument was obscure and difficult to follow.",
         root: "Latin: obscurus (dark, hidden)",
         correctCount: 0,
+        enriched: true,
       },
       {
         word: "Pragmatic",
@@ -228,6 +229,7 @@ useEffect(() => {
         usage: "She took a pragmatic approach to solving the problem.",
         root: "Greek: pragma (deed, action)",
         correctCount: 0,
+        enriched: true,
       },
       {
         word: "Ambiguous",
@@ -238,6 +240,7 @@ useEffect(() => {
         usage: "His reply was deliberately ambiguous.",
         root: "Latin: ambiguus (uncertain)",
         correctCount: 0,
+        enriched: true,
       },
       {
         word: "Conundrum",
@@ -248,6 +251,7 @@ useEffect(() => {
         usage: "Choosing between the two offers was a real conundrum.",
         root: "Unknown / playful English origin",
         correctCount: 0,
+        enriched: true,
       },
       {
         word: "Nuance",
@@ -258,6 +262,7 @@ useEffect(() => {
         usage: "He missed the nuance in her tone.",
         root: "French: nuance (shade)",
         correctCount: 0,
+        enriched: true,
       },
     ]);
   }
