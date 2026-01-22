@@ -1312,7 +1312,6 @@ const showGenPanel = showGenerator && !isAdaptive;
         )}
       </div>
     </div>
-  </div>
 )}
  
   {phase === "loading-adaptive" && (
