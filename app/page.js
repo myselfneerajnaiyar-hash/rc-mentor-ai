@@ -428,7 +428,7 @@ const record = {
   questions: testQuestions.map((q, i) => ({
     type: (q.type || "inference").trim().toLowerCase(),
     correct: Number(testAnswers[i]) === Number(q.correctIndex),
-    time: questionTimes[test-${i}] || 0,
+    time: questionTimes[`test-${i}`] || 0,
   })),
 };
 
