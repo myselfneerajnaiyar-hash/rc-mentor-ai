@@ -1468,7 +1468,6 @@ const showGenPanel = showGenerator && !isAdaptive;
     )}
   </div>
 )}
-    </>
   );
 })()}
      <button
