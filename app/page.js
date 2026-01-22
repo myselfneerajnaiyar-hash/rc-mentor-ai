@@ -1329,7 +1329,10 @@ const showGenPanel = showGenerator && !isAdaptive;
 
       {!w.enriched && (
         <button
-          onClick={() => enrichWord(w)}
+         onClick={(e) => {
+  e.stopPropagation();
+  enrichWord(w);
+}}
           style={{
             marginLeft: 10,
             fontSize: 11,
