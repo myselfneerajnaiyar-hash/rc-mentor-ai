@@ -235,8 +235,8 @@ export default function Page() {
 
     const key =
       mode === "showingPrimary"
-        ? para-${index}-primary
-        : para-${index}-easier;
+        ? `para-${index}-primary`
+        : `para-${index}-easier`;
 
     setQuestionTimes(t => ({ ...t, [key]: timeTaken }));
     if (!data) return;
