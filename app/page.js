@@ -74,7 +74,7 @@ function saveVocab(words) {
   const updated = [...bank, normalized];
 saveVocab(updated);
 refreshFromBank();
-enrichWord(normalized);
+enrichWord(stub);
 }
   async function enrichWord(w) {
   try {
