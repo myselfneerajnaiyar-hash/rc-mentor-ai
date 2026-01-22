@@ -1430,47 +1430,44 @@ export default function Page() {
               </div>
             );
 
-          {(() => {
           const plan = [];
 
-            for (let i = 1; i <= 14; i++) {
-              if (i <= 5) {
-                plan.push(
-                  dayBlock(
-                    i,
-                    `${weakestType.toUpperCase()} Mastery`,
-                    `Solve 3 RCs focusing only on ${weakestType} questions. After each paragraph, summarize in one line.`,
-                  )
-                );
-              } else if (i <= 10) {
-                plan.push(
-                  dayBlock(
-                    i,
-                    "Speed Calibration",
-                    speedIssue === "impulsive"
-                      ? "Force 25–30 sec minimum before answering each question."
-                      : speedIssue === "confused"
-                      ? "Pause after every paragraph and note the core idea in 1 line."
-                      : "Cap yourself at 35 sec per question. Move on even if unsure."
-                  )
-                );
-              } else {
-                plan.push(
-                  dayBlock(
-                    i,
-                    "Full CAT Simulation",
-                    "Attempt 2 full RC sets under time. Analyze every wrong option."
-                  )
-                );
-              }
-            }
+for (let i = 1; i <= 14; i++) {
+  if (i <= 5) {
+    plan.push(
+      dayBlock(
+        i,
+        `${weakestType.toUpperCase()} Mastery`,
+        `Solve 3 RCs focusing only on ${weakestType} questions. After each RC, analyze every wrong option.`
+      )
+    );
+  } else if (i <= 10) {
+    plan.push(
+      dayBlock(
+        i,
+        "Speed Calibration",
+        speedIssue === "impulsive"
+          ? "Force 25–30 sec minimum before answering each question."
+          : speedIssue === "confused"
+          ? "Pause after every paragraph and note the core idea in 1 line."
+          : "Cap yourself at 35 sec per question. Move on even if unsure."
+      )
+    );
+  } else {
+    plan.push(
+      dayBlock(
+        i,
+        "Full CAT Simulation",
+        "Attempt 2 full RC sets under time. Analyze every wrong option."
+      )
+    );
+  }
+}
+        <div>{plan}</div>
 
-            return <div>{plan}</div>;
-          })()}
-
-          <p style={{ marginTop: 12, color: "#555" }}>
-            This plan evolves automatically as you take more tests.
-          </p>
+<p style={{ marginTop: 12, color: "#555" }}>
+  This plan evolves automatically as you take more tests.
+</p>
         </div>
       )}
     </main>
