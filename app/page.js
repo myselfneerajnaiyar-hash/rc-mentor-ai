@@ -1261,10 +1261,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   );
 })()}
  
-  </div>
-  );
-})()}
-
+ 
   {phase === "vocab" && (
   <div style={{ marginTop: 40 }}>
     <div
