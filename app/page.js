@@ -218,7 +218,6 @@ useEffect(() => {
         usage: "The author’s argument was obscure and difficult to follow.",
         root: "Latin: obscurus (dark, hidden)",
         correctCount: 0,
-        enriched: true,
       },
       {
         word: "Pragmatic",
@@ -229,7 +228,6 @@ useEffect(() => {
         usage: "She took a pragmatic approach to solving the problem.",
         root: "Greek: pragma (deed, action)",
         correctCount: 0,
-        enriched: true,
       },
       {
         word: "Ambiguous",
@@ -240,7 +238,6 @@ useEffect(() => {
         usage: "His reply was deliberately ambiguous.",
         root: "Latin: ambiguus (uncertain)",
         correctCount: 0,
-        enriched: true,
       },
       {
         word: "Conundrum",
@@ -251,7 +248,6 @@ useEffect(() => {
         usage: "Choosing between the two offers was a real conundrum.",
         root: "Unknown / playful English origin",
         correctCount: 0,
-        enriched: true,
       },
       {
         word: "Nuance",
@@ -262,7 +258,6 @@ useEffect(() => {
         usage: "He missed the nuance in her tone.",
         root: "French: nuance (shade)",
         correctCount: 0,
-        enriched: true,
       },
     ]);
   }
@@ -337,8 +332,8 @@ const timeTaken = Math.round((end - questionStartTime) / 1000);
 
 const key =
   mode === "showingPrimary"
-    ? `para-${index}-primary`
-    : `para-${index}-easier`;
+    ? para-${index}-primary
+    : para-${index}-easier;
 
 setQuestionTimes(t => ({ ...t, [key]: timeTaken }));
     if (!data) return;
@@ -433,7 +428,7 @@ const record = {
   questions: testQuestions.map((q, i) => ({
     type: (q.type || "inference").trim().toLowerCase(),
     correct: Number(testAnswers[i]) === Number(q.correctIndex),
-    time: questionTimes[`test-${i}`] || 0,
+    time: questionTimes[test-${i}] || 0,
   })),
 };
 
@@ -915,8 +910,7 @@ const showGenPanel = showGenerator && !isAdaptive;
         </div>
       ))}
     </div>
-
-    <div style={{ padding: 16, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+<div style={{ padding: 16, border: "1px solid #e5e7eb", borderRadius: 10 }}>
       <p style={{ margin: 0, fontStyle: "italic" }}>
         Your RC profile is stabilizing into a recognizable pattern.  
         This dashboard will sharpen with every test you take.
@@ -1111,7 +1105,7 @@ const showGenPanel = showGenerator && !isAdaptive;
                         style={{
                           padding: 6,
                           textAlign: "center",
-                          background: `rgba(${l.color}, ${alpha})`,
+                          background: rgba(${l.color}, ${alpha}),
                           borderRadius: 4,
                           fontWeight: 600,
                         }}
@@ -1261,6 +1255,254 @@ const showGenPanel = showGenerator && !isAdaptive;
   );
 })()}
  
+  </div>
+  );
+})()}
+
+  {phase === "vocab" && (
+  <div style={{ marginTop: 40 }}>
+    <div
+      style={{
+        background: "#fffbeb",
+        border: "1px solid #fde68a",
+        padding: 24,
+        borderRadius: 12,
+      }}
+    >
+      <h2 style={{ color: "#92400e" }}>📘 Vocabulary Builder</h2>
+      <p style={{ color: "#78350f" }}>
+        Build a personal word-bank that grows with your reading.
+      </p>
+
+      <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+       <button
+  onClick={() => {
+    setPhase("vocab");
+    startVocabDrill();
+  }}
+  style={{
+    background: "#f59e0b",
+    color: "white",
+    padding: "10px 16px",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Start Today’s 10-Word Drill
+</button>
+
+        <button
+          style={{
+            border: "1px solid #f59e0b",
+            color: "#92400e",
+            padding: "10px 16px",
+            borderRadius: 6,
+            background: "transparent",
+          }}
+        >
+          Add Custom Word
+        </button>
+      </div>
+<div style={{ marginTop: 24 }}>
+  <h3>Your Word Bank</h3>
+
+ {vocabBank.length === 0 ? (
+  <p style={{ color: "#a16207" }}>
+    No saved words yet. Words you save during RC will appear here.
+  </p>
+) : (
+ <p style={{ fontSize: 13, color: "#78350f", marginBottom: 8 }}>
+  Enriching a word adds usage, synonyms, antonyms, and roots using AI.
+</p>
+  <ul>
+  {vocabBank.map((w, i) => (
+   <li
+  key={i}
+  style={{ marginBottom: 8, cursor: "pointer" }}
+  onClick={() => setLearningWord(w)}
+>
+      <b>{w.word}</b> – {w.meaning}
+      <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
+        ({computeStatus(w)})
+      </span>
+
+      {!w.enriched && (
+        <button
+          onClick={() => enrichWord(w)}
+          style={{
+            marginLeft: 10,
+            fontSize: 11,
+            padding: "2px 6px",
+            borderRadius: 4,
+            border: "1px solid #f59e0b",
+            background: "#fff7ed",
+            color: "#92400e",
+          }}
+        >
+          Enrich
+        </button>
+      )}
+
+      {w.enriched && (
+        <span style={{ marginLeft: 10, fontSize: 11, color: "green" }}>
+          ✓ Enriched
+        </span>
+      )}
+    </li>
+  ))}
+</ul>
+
+{learningWord && (
+  <div
+    style={{
+      marginTop: 24,
+      padding: 16,
+      border: "1px solid #fde68a",
+      borderRadius: 10,
+      background: "#fffbeb",
+    }}
+  >
+    <h2>{learningWord.word}</h2>
+    <p><b>Meaning:</b> {learningWord.meaning}</p>
+
+    {learningWord.partOfSpeech && (
+      <p><b>Part of Speech:</b> {learningWord.partOfSpeech}</p>
+    )}
+
+    {learningWord.usage && (
+      <p><b>Usage:</b> {learningWord.usage}</p>
+    )}
+
+    {learningWord.synonyms?.length > 0 && (
+      <p><b>Synonyms:</b> {learningWord.synonyms.join(", ")}</p>
+    )}
+
+    {learningWord.antonyms?.length > 0 && (
+      <p><b>Antonyms:</b> {learningWord.antonyms.join(", ")}</p>
+    )}
+
+    {learningWord.root && (
+      <p><b>Root:</b> {learningWord.root}</p>
+    )}
+
+    {!learningWord.enriched && (
+      <>
+        <p style={{ fontSize: 12, color: "#92400e" }}>
+          Enriching adds usage, synonyms, antonyms, and roots using AI.
+        </p>
+        <button
+          onClick={() => enrichWord(learningWord)}
+          style={{
+            marginTop: 6,
+            padding: "6px 10px",
+            borderRadius: 6,
+            border: "1px solid #f59e0b",
+            background: "#fff7ed",
+            color: "#92400e",
+            fontWeight: 600,
+          }}
+        >
+          Enrich this word
+        </button>
+      </>
+    )}
+
+    <button
+      onClick={() => setLearningWord(null)}
+      style={{ marginTop: 12, display: "block" }}
+    >
+      Close
+    </button>
+  </div>
+)}
+{vocabRunning && vocabDrill.length > 0 && (
+  <div style={{ marginTop: 24 }}>
+    <div style={{ fontWeight: 600 }}>
+      ⏱ {Math.floor(vocabTimer / 60)}:
+      {(vocabTimer % 60).toString().padStart(2, "0")}
+    </div>
+
+   {(() => {
+  const w = vocabDrill[vocabIndex];
+  return (
+    <>
+      <h2>{w.word}</h2>
+
+   {!showMeaning && (
+  <button onClick={() => setShowMeaning(true)}>
+    Reveal Meaning
+  </button>
+)}
+
+{showMeaning && (
+  <div style={{ marginTop: 12 }}>
+    <p><b>Meaning:</b> {w.meaning}</p>
+
+    {w.partOfSpeech && (
+      <p><b>Part of Speech:</b> {w.partOfSpeech}</p>
+    )}
+
+    {w.usage && (
+      <p><b>Usage:</b> {w.usage}</p>
+    )}
+
+    {w.synonyms?.length > 0 && (
+      <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+    )}
+
+    {w.antonyms?.length > 0 && (
+      <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+    )}
+
+    {w.root && (
+      <p><b>Root:</b> {w.root}</p>
+    )}
+  </div>
+)}
+    </>
+  );
+})()}
+     <button
+  style={{ marginTop: 16 }}
+  onClick={() => {
+    if (vocabIndex + 1 >= vocabDrill.length) {
+      setVocabRunning(false);
+      setVocabDrill([]);
+    } else {
+      setVocabIndex(i => i + 1);
+      setShowMeaning(false);
+    }
+  }}
+>
+  Next →
+</button>
+  </div>
+)}
+     {!vocabRunning && vocabDrill.length === 0 && (
+  <div style={{ marginTop: 24, textAlign: "center" }}>
+    <h3>🎉 Drill Complete</h3>
+    <p>You’ve revised today’s words.</p>
+   <button
+  onClick={() => {
+    refreshFromBank();
+    startVocabDrill();
+  }}
+  style={{
+    marginTop: 12,
+    background: "#f59e0b",
+    color: "white",
+    padding: "8px 14px",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Restart Drill
+</button>
+  </div>
+)}
+    </div>
+  </div>
+)}
   {phase === "loading-adaptive" && (
   <div style={{ padding: 40, textAlign: "center", fontSize: 18 }}>
     Preparing your next adaptive passage…
@@ -1451,7 +1693,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   const end = Date.now();
   const timeTaken = Math.round((end - questionStartTime) / 1000);
 
-  setQuestionTimes(t => ({ ...t, [`test-${qi}`]: timeTaken }));
+  setQuestionTimes(t => ({ ...t, [test-${qi}]: timeTaken }));
   setQuestionStartTime(Date.now());
 
   setTestAnswers(a => ({ ...a, [qi]: oi }));
@@ -1508,7 +1750,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   const buckets = {};
 
   testQuestions.forEach((q, i) => {
-    const t = questionTimes[`test-${i}`] || 0;
+    const t = questionTimes[test-${i}] || 0;
     const correct = testAnswers[i] === q.correctIndex;
     const type = (q.type || "inference").trim().toLowerCase();
 
@@ -1639,9 +1881,9 @@ const showGenPanel = showGenerator && !isAdaptive;
             </span>
           </p>
 
-          {questionTimes[`test-${i}`] !== undefined && (
+          {questionTimes[test-${i}] !== undefined && (
             <p style={{ fontSize: 13, color: "#555" }}>
-              ⏱ Time taken: {questionTimes[`test-${i}`]} seconds
+              ⏱ Time taken: {questionTimes[test-${i}]} seconds
             </p>
           )}
 
@@ -1729,7 +1971,7 @@ const showGenPanel = showGenerator && !isAdaptive;
           </button>
         </div>
       )}
-        
     </main>
   );
 }
+
