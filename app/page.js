@@ -1431,80 +1431,84 @@ const showGenPanel = showGenerator && !isAdaptive;
       {(vocabTimer % 60).toString().padStart(2, "0")}
     </div>
 
-   {(() => {
-  const w = vocabDrill[vocabIndex];
-  return (
-    <div>
-      <h2>{w.word}</h2>
+    {(() => {
+      const w = vocabDrill[vocabIndex];
+      return (
+        <div>
+          <h2>{w.word}</h2>
 
-   {!showMeaning && (
-  <button onClick={() => setShowMeaning(true)}>
-    Reveal Meaning
-  </button>
+          {!showMeaning && (
+            <button onClick={() => setShowMeaning(true)}>
+              Reveal Meaning
+            </button>
+          )}
+
+          {showMeaning && (
+            <div style={{ marginTop: 12 }}>
+              <p><b>Meaning:</b> {w.meaning}</p>
+
+              {w.partOfSpeech && (
+                <p><b>Part of Speech:</b> {w.partOfSpeech}</p>
+              )}
+
+              {w.usage && (
+                <p><b>Usage:</b> {w.usage}</p>
+              )}
+
+              {w.synonyms?.length > 0 && (
+                <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+              )}
+
+              {w.antonyms?.length > 0 && (
+                <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+              )}
+
+              {w.root && (
+                <p><b>Root:</b> {w.root}</p>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    })()}
+
+    <button
+      style={{ marginTop: 16 }}
+      onClick={() => {
+        if (vocabIndex + 1 >= vocabDrill.length) {
+          setVocabRunning(false);
+          setVocabDrill([]);
+        } else {
+          setVocabIndex(i => i + 1);
+          setShowMeaning(false);
+        }
+      }}
+    >
+      Next →
+    </button>
+  </div>
 )}
 
-{showMeaning && (
-  <div style={{ marginTop: 12 }}>
-    <p><b>Meaning:</b> {w.meaning}</p>
-
-    {w.partOfSpeech && (
-      <p><b>Part of Speech:</b> {w.partOfSpeech}</p>
-    )}
-
-    {w.usage && (
-      <p><b>Usage:</b> {w.usage}</p>
-    )}
-
-    {w.synonyms?.length > 0 && (
-      <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
-    )}
-
-    {w.antonyms?.length > 0 && (
-      <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
-    )}
-
-    {w.root && (
-      <p><b>Root:</b> {w.root}</p>
-    )}
-  </div>
-);
-   })()}
-     <button
-  style={{ marginTop: 16 }}
-  onClick={() => {
-    if (vocabIndex + 1 >= vocabDrill.length) {
-      setVocabRunning(false);
-      setVocabDrill([]);
-    } else {
-      setVocabIndex(i => i + 1);
-      setShowMeaning(false);
-    }
-  }}
->
-  Next →
-</button>
-  </div>
-)}
-     {!vocabRunning && vocabDrill.length === 0 && (
+{!vocabRunning && vocabDrill.length === 0 && (
   <div style={{ marginTop: 24, textAlign: "center" }}>
     <h3>🎉 Drill Complete</h3>
     <p>You’ve revised today’s words.</p>
-   <button
-  onClick={() => {
-    refreshFromBank();
-    startVocabDrill();
-  }}
-  style={{
-    marginTop: 12,
-    background: "#f59e0b",
-    color: "white",
-    padding: "8px 14px",
-    borderRadius: 6,
-    fontWeight: 600,
-  }}
->
-  Restart Drill
-</button>
+    <button
+      onClick={() => {
+        refreshFromBank();
+        startVocabDrill();
+      }}
+      style={{
+        marginTop: 12,
+        background: "#f59e0b",
+        color: "white",
+        padding: "8px 14px",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Restart Drill
+    </button>
   </div>
 )}
   
