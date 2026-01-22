@@ -1311,6 +1311,7 @@ const showGenPanel = showGenerator && !isAdaptive;
     No saved words yet. Words you save during RC will appear here.
   </p>
 ) : (
+  <>
  <p style={{ fontSize: 13, color: "#78350f", marginBottom: 8 }}>
   Enriching a word adds usage, synonyms, antonyms, and roots using AI.
 </p>
@@ -1351,6 +1352,8 @@ const showGenPanel = showGenerator && !isAdaptive;
     </li>
   ))}
 </ul>
+    </>
+)}
 
 {learningWord && (
   <div
