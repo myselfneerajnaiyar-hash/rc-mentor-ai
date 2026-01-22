@@ -484,7 +484,7 @@ setFeedback("");
 setMode("idle");
 
 // show intentional loading screen
-setPhase("loading-adaptive")
+setPhase("loading-adaptive");
     const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
     const tests = raw.tests || [];
 
