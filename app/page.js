@@ -1361,7 +1361,7 @@ const showGenPanel = showGenerator && !isAdaptive;
   </>
 )}
 
-{learningWord && (
+{false && (
   <div
     style={{
       marginTop: 24,
