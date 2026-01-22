@@ -250,6 +250,9 @@ useEffect(() => {
       },
     ]);
   }
+   
+// 🔧 ADD THIS
+  setVocabBank(loadVocab());
 }, []);
 
   function splitPassage() {
