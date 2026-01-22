@@ -1267,7 +1267,7 @@ export default function Page() {
                 >
                   <div
                     style={{
-                      width: ${acc}%,
+                      width: `${acc}%`,
                       height: "100%",
                       background:
                         acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
