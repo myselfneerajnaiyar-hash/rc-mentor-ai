@@ -1304,54 +1304,60 @@ const showGenPanel = showGenerator && !isAdaptive;
 <div style={{ marginTop: 24 }}>
   <h3>Your Word Bank</h3>
 
- {vocabBank.length === 0 ? (
-  <p style={{ color: "#a16207" }}>
-    No saved words yet. Words you save during RC will appear here.
-  </p>
-) : (
-  <>
- <p style={{ fontSize: 13, color: "#78350f", marginBottom: 8 }}>
-  Enriching a word adds usage, synonyms, antonyms, and roots using AI.
-</p>
-  <ul>
-  {vocabBank.map((w, i) => (
-   <li
-  key={i}
-  style={{ marginBottom: 8, cursor: "pointer" }}
-  onClick={() => setLearningWord(w)}
->
-      <b>{w.word}</b> – {w.meaning}
-      <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
-        ({computeStatus(w)})
-      </span>
+  {vocabBank.length === 0 ? (
+    <p style={{ color: "#a16207" }}>
+      No saved words yet. Words you save during RC will appear here.
+    </p>
+  ) : (
+    <>
+      <p style={{ fontSize: 13, color: "#78350f", marginBottom: 8 }}>
+        Enriching a word adds usage, synonyms, antonyms, and roots using AI.
+      </p>
 
-      {!w.enriched && (
-        <button
-          onClick={() => enrichWord(w)}
-          style={{
-            marginLeft: 10,
-            fontSize: 11,
-            padding: "2px 6px",
-            borderRadius: 4,
-            border: "1px solid #f59e0b",
-            background: "#fff7ed",
-            color: "#92400e",
-          }}
-        >
-          Enrich
-        </button>
-      )}
+      <ul>
+        {vocabBank.map((w, i) => (
+          <li
+            key={i}
+            style={{ marginBottom: 8, cursor: "pointer" }}
+            onClick={() => setLearningWord(w)}
+          >
+            <b>{w.word}</b> – {w.meaning}
 
-      {w.enriched && (
-        <span style={{ marginLeft: 10, fontSize: 11, color: "green" }}>
-          ✓ Enriched
-        </span>
-      )}
-    </li>
-  ))}
-</ul>
+            <span style={{ marginLeft: 8, fontSize: 12, color: "#555" }}>
+              ({computeStatus(w)})
+            </span>
+
+            {!w.enriched && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  enrichWord(w);
+                }}
+                style={{
+                  marginLeft: 10,
+                  fontSize: 11,
+                  padding: "2px 6px",
+                  borderRadius: 4,
+                  border: "1px solid #f59e0b",
+                  background: "#fff7ed",
+                  color: "#92400e",
+                }}
+              >
+                Enrich
+              </button>
+            )}
+
+            {w.enriched && (
+              <span style={{ marginLeft: 10, fontSize: 11, color: "green" }}>
+                ✓ Enriched
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
     </>
-)}
+  )}
+</div>
 
 {learningWord && (
   <div
