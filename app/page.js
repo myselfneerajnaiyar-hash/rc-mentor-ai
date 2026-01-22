@@ -1430,7 +1430,8 @@ export default function Page() {
               </div>
             );
 
-            const plan = [];
+          {(() => {
+          const plan = [];
 
             for (let i = 1; i <= 14; i++) {
               if (i <= 5) {
