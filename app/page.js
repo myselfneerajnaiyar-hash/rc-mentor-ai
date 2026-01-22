@@ -105,7 +105,22 @@ enrichWord(normalized);
     );
 
     saveVocab(updated);
-    saveVocab(updated);
+    
+    setVocabDrill(prev =>
+  prev.map(x =>
+    x.word.toLowerCase() === w.word.toLowerCase()
+      ? {
+          ...x,
+          partOfSpeech: data.partOfSpeech || "",
+          usage: data.usage || "",
+          synonyms: data.synonyms || [],
+          antonyms: data.antonyms || [],
+          root: data.root || "",
+          enriched: true
+        }
+      : x
+  )
+);
   } catch (e) {
     console.error("Enrichment failed", e);
   }
