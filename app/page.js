@@ -1105,7 +1105,7 @@ const showGenPanel = showGenerator && !isAdaptive;
                         style={{
                           padding: 6,
                           textAlign: "center",
-                          background: rgba(${l.color}, ${alpha}),
+                          background: `rgba(${l.color}, ${alpha})`,
                           borderRadius: 4,
                           fontWeight: 600,
                         }}
