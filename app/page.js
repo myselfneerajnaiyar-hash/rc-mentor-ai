@@ -140,10 +140,9 @@ function computeStatus(w) {
   setVocabRunning(false);
 }
 function startVocabDrill() {
-  const bank = vocabBank;   // ✅ correct
+  const bank = vocabBank;
   if (!bank || bank.length === 0) return;
 
-  // pick 10 least-mastered words first
   const sorted = [...bank].sort((a, b) => {
     const sa = computeStatus(a);
     const sb = computeStatus(b);
@@ -155,7 +154,8 @@ function startVocabDrill() {
 
   setVocabDrill(drill);
   setVocabIndex(0);
-  setVocabTimer(120); // 2 minutes
+  setVocabTimer(120);
+  setShowMeaning(false);   // 🔴 THIS LINE WAS MISSING
   setVocabRunning(true);
 }
 useEffect(() => {
