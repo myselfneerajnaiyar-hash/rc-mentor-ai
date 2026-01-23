@@ -1153,150 +1153,175 @@ export default function Page() {
           </button>
         </div>
       )}
-    {phase === "profile" && (() => {
-  const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
-  const tests = raw.tests || [];
-  const all = tests.flatMap(t => t.questions || []);
+    {phase === "profile" && (
+  <div style={{ marginTop: 30 }}>
+    {(() => {
+      const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+      const tests = raw.tests || [];
+      const all = tests.flatMap(t => t.questions || []);
 
-  const byType = {};
-  all.forEach(q => {
-    const t = q.type || "inference";
-    byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
-    byType[t].total += 1;
-    if (q.correct) byType[t].correct += 1;
-    byType[t].time += q.time || 0;
-  });
+      const byType = {};
+      all.forEach(q => {
+        const t = q.type || "inference";
+        byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
+        byType[t].total += 1;
+        if (q.correct) byType[t].correct += 1;
+        byType[t].time += q.time || 0;
+      });
 
-  const types = Object.keys(byType);
-  const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
+      const types = Object.keys(byType);
+      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
-  return (
-    <div style={{ marginTop: 30 }}>
-      <h2>RC Profile</h2>
+      const styleNarrative = () => {
+        if (!all.length) return "You haven’t taken a diagnostic test yet.";
+        const tone = pct(byType["tone"]?.correct || 0, byType["tone"]?.total || 1);
+        const infer = pct(byType["inference"]?.correct || 0, byType["inference"]?.total || 1);
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-        {["overview", "skills", "speed", "plan"].map(t => (
-          <button
-            key={t}
-            onClick={() => setActiveProfileTab(t)}
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "1px solid #ccc",
-              background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
-              color: activeProfileTab === t ? "#fff" : "#111",
-              fontWeight: 600,
-            }}
-          >
-            {t.toUpperCase()}
-          </button>
-        ))}
-      </div>
+        if (tone < 40 && infer < 45)
+          return "You read carefully, but often stay at the surface. CAT will reward you when you begin to sense what is implied, not just stated.";
+        if (tone > 60 && infer > 60)
+          return "You naturally read between the lines. Your challenge is consistency under time pressure.";
+        return "You show flashes of deep reading, but your accuracy fluctuates. This suggests a style still stabilizing.";
+      };
 
-      {activeProfileTab === "overview" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          <p>
-            You have attempted <b>{all.length}</b> questions across{" "}
-            <b>{tests.length}</b> RC tests.
-          </p>
+      return (
+        <>
+          <h2>RC Profile</h2>
 
-          {types.length === 0 && <p>No diagnostic data yet.</p>}
+          <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+            {["overview", "skills", "speed", "plan"].map(t => (
+              <button
+                key={t}
+                onClick={() => setActiveProfileTab(t)}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 6,
+                  border: "1px solid #ccc",
+                  background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
+                  color: activeProfileTab === t ? "#fff" : "#111",
+                  fontWeight: 600,
+                }}
+              >
+                {t.toUpperCase()}
+              </button>
+            ))}
+          </div>
 
-          {types.length > 0 && (
-            <ul>
-              {types.map(t => (
-                <li key={t}>
-                  <b>{t.toUpperCase()}</b>:{" "}
-                  {pct(byType[t].correct, byType[t].total)}%
-                </li>
-              ))}
-            </ul>
+          {activeProfileTab === "overview" && (
+            <div
+              style={{
+                padding: 24,
+                borderRadius: 12,
+                background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              <p style={{ fontSize: 16 }}>
+                You have attempted <b>{all.length}</b> questions across{" "}
+                <b>{tests.length}</b> RC tests.
+              </p>
+
+              <p style={{ marginTop: 12, fontStyle: "italic", color: "#334155" }}>
+                {styleNarrative()}
+              </p>
+
+              {types.length > 0 && (
+                <ul style={{ marginTop: 16 }}>
+                  {types.map(t => (
+                    <li key={t}>
+                      <b>{t.toUpperCase()}</b>:{" "}
+                      {pct(byType[t].correct, byType[t].total)}%
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
+                Back
+              </button>
+            </div>
           )}
 
-          <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
-            Back
-          </button>
-        </div>
-      )}
+          {activeProfileTab === "skills" && (
+            <div style={{ padding: 20 }}>
+              {types.map(t => {
+                const v = pct(byType[t].correct, byType[t].total);
+                return (
+                  <div key={t} style={{ marginBottom: 14 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <b>{t.toUpperCase()}</b>
+                      <span>{v}%</span>
+                    </div>
+                    <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
+                      <div
+                        style={{
+                          height: 8,
+                          width: `${v}%`,
+                          background: v >= 60 ? "#16a34a" : v >= 40 ? "#f59e0b" : "#dc2626",
+                          borderRadius: 6,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
-      {activeProfileTab === "skills" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          {types.length === 0 && <p>No data yet.</p>}
-          {types.map(t => {
-            const acc = pct(byType[t].correct, byType[t].total);
-            return (
-              <div key={t} style={{ marginBottom: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <b>{t.toUpperCase()}</b>
-                  <span>{acc}%</span>
-                </div>
-                <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
-                  <div
-                    style={{
-                      width: `${acc}%`,
-                      height: "100%",
-                      background: acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+          {activeProfileTab === "speed" && (() => {
+            const buckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
 
-      {activeProfileTab === "speed" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          {tests.length === 0 && <p>No data yet.</p>}
-          {tests.length > 0 && (() => {
-            let fast = 0, heavy = 0, impulsive = 0, confused = 0;
-            tests.forEach(t =>
-              t.questions.forEach(q => {
-                if (q.time <= 20 && q.correct) fast++;
-                else if (q.time > 45 && q.correct) heavy++;
-                else if (q.time <= 20 && !q.correct) impulsive++;
-                else if (q.time > 45 && !q.correct) confused++;
-              })
-            );
-            const total = fast + heavy + impulsive + confused || 1;
+            all.forEach(q => {
+              if (q.time <= 20 && q.correct) buckets.fast++;
+              else if (q.time > 45 && q.correct) buckets.heavy++;
+              else if (q.time <= 20 && !q.correct) buckets.impulsive++;
+              else if (q.time > 45 && !q.correct) buckets.confused++;
+            });
 
-            const bar = (label, val, color) => (
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>{label}</span>
-                  <span>{Math.round((val / total) * 100)}%</span>
-                </div>
-                <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
-                  <div style={{ width: `${(val / total) * 100}%`, height: "100%", background: color }} />
-                </div>
-              </div>
-            );
+            const total = all.length || 1;
+            const p = k => Math.round((buckets[k] / total) * 100);
 
             return (
-              <>
-                {bar("Fast & Accurate", fast, "#16a34a")}
-                {bar("Heavy but Correct", heavy, "#2563eb")}
-                {bar("Impulsive Errors", impulsive, "#dc2626")}
-                {bar("Slow & Confused", confused, "#f59e0b")}
-              </>
+              <div style={{ padding: 20 }}>
+                {[
+                  ["Fast & Accurate", "fast", "#16a34a"],
+                  ["Heavy but Correct", "heavy", "#2563eb"],
+                  ["Impulsive Errors", "impulsive", "#dc2626"],
+                  ["Slow & Confused", "confused", "#7c3aed"],
+                ].map(([label, k, c]) => (
+                  <div key={k} style={{ marginBottom: 14 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <b>{label}</b>
+                      <span>{p(k)}%</span>
+                    </div>
+                    <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
+                      <div
+                        style={{
+                          height: 8,
+                          width: `${p(k)}%`,
+                          background: c,
+                          borderRadius: 6,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             );
           })()}
-        </div>
-      )}
 
-      {activeProfileTab === "plan" && (
-        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-          {tests.length === 0 ? (
-            <p>Take at least one RC test to generate your plan.</p>
-          ) : (
-            <p>Your adaptive plan will appear here next.</p>
+          {activeProfileTab === "plan" && (
+            <div style={{ padding: 20 }}>
+              <p style={{ color: "#555" }}>
+                Your adaptive plan will evolve automatically as you take more tests.
+              </p>
+            </div>
           )}
-        </div>
-      )}
-    </div>
-  );
-})()}
-  
+        </>
+      );
+    })()}
+  </div>
+)}
     </main>
   );
 }
