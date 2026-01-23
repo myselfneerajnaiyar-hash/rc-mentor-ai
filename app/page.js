@@ -1678,7 +1678,7 @@ const momentumText =
                 }
 
                 return (
-                  <div>
+                  <>
                     <p style={{ marginBottom: 12 }}>
                       <b>Week Plan</b> — Focus Areas:{" "}
                       {plan.weakest.join(", ").toUpperCase()}
@@ -1758,8 +1758,11 @@ const momentumText =
                         Start Adaptive RC Flow
                       </button>
                     </div>
-                          </div>
-      )}
+                          </>
+      );
+})()}
+  </div>
+  )}
         
     </main>
   );
