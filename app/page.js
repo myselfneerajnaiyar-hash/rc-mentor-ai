@@ -645,7 +645,7 @@ function updateTodayRCProgress() {
 )}
  
 {view === "rc" && (
-<>
+<div>
         <h1
           style={{ cursor: "pointer", margin: 0 }}
           onClick={() => {
@@ -1756,15 +1756,11 @@ const momentumText =
                         }}
                       >
                       Start Adaptive RC Flow
-                  </button>
-                </div>
+</button>
+</div>
 
-              
-            )}
-          </div>
-        )}
-      </div>
-    </main>
-</>
-  );
+</div>   {/* closes the <div> that replaced <> */}
+)}
+</main>
+);
 }
