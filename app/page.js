@@ -1150,153 +1150,149 @@ export default function Page() {
           </button>
         </div>
       )}
-     {phase === "profile" && (
-  <div style={{ marginTop: 30 }}>
-    {(() => {
-      const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
-      const tests = raw.tests || [];
-      const all = tests.flatMap(t => t.questions || []);
+    {phase === "profile" && (() => {
+  const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+  const tests = raw.tests || [];
+  const all = tests.flatMap(t => t.questions || []);
 
-      const byType = {};
-      all.forEach(q => {
-        const t = q.type || "inference";
-        byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
-        byType[t].total += 1;
-        if (q.correct) byType[t].correct += 1;
-        byType[t].time += q.time || 0;
-      });
+  const byType = {};
+  all.forEach(q => {
+    const t = q.type || "inference";
+    byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
+    byType[t].total += 1;
+    if (q.correct) byType[t].correct += 1;
+    byType[t].time += q.time || 0;
+  });
 
-      const types = Object.keys(byType);
-      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
+  const types = Object.keys(byType);
+  const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
-      return (
-        <>
-          <h2>RC Profile</h2>
+  return (
+    <div style={{ marginTop: 30 }}>
+      <h2>RC Profile</h2>
 
-          <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-            {["overview", "skills", "speed", "plan"].map(t => (
-              <button
-                key={t}
-                onClick={() => setActiveProfileTab(t)}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: 6,
-                  border: "1px solid #ccc",
-                  background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
-                  color: activeProfileTab === t ? "#fff" : "#111",
-                  fontWeight: 600,
-                }}
-              >
-                {t.toUpperCase()}
-              </button>
-            ))}
-          </div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+        {["overview", "skills", "speed", "plan"].map(t => (
+          <button
+            key={t}
+            onClick={() => setActiveProfileTab(t)}
+            style={{
+              padding: "6px 12px",
+              borderRadius: 6,
+              border: "1px solid #ccc",
+              background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
+              color: activeProfileTab === t ? "#fff" : "#111",
+              fontWeight: 600,
+            }}
+          >
+            {t.toUpperCase()}
+          </button>
+        ))}
+      </div>
 
-          {activeProfileTab === "overview" && (
-            <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-              <p>
-                You have attempted <b>{all.length}</b> questions across{" "}
-                <b>{tests.length}</b> RC tests.
-              </p>
+      {activeProfileTab === "overview" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          <p>
+            You have attempted <b>{all.length}</b> questions across{" "}
+            <b>{tests.length}</b> RC tests.
+          </p>
 
-              {types.length === 0 && <p>No diagnostic data yet.</p>}
+          {types.length === 0 && <p>No diagnostic data yet.</p>}
 
-              {types.length > 0 && (
-                <ul>
-                  {types.map(t => (
-                    <li key={t}>
-                      <b>{t.toUpperCase()}</b>:{" "}
-                      {pct(byType[t].correct, byType[t].total)}%
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
-                Back
-              </button>
-            </div>
+          {types.length > 0 && (
+            <ul>
+              {types.map(t => (
+                <li key={t}>
+                  <b>{t.toUpperCase()}</b>:{" "}
+                  {pct(byType[t].correct, byType[t].total)}%
+                </li>
+              ))}
+            </ul>
           )}
 
-          {activeProfileTab === "plan" && (
-            <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
-              {tests.length === 0 ? (
-                <p>Take at least one RC test to generate your plan.</p>
-              ) : (() => {
-                const typeCount = {};
-                const speedBuckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
+          <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
+            Back
+          </button>
+        </div>
+      )}
 
-                tests.forEach(t => {
-                  t.questions.forEach(q => {
-                    const type = q.type || "inference";
-                    typeCount[type] = (typeCount[type] || 0) + (q.correct ? 0 : 1);
+      {activeProfileTab === "skills" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          {types.length === 0 && <p>No data yet.</p>}
+          {types.map(t => {
+            const acc = pct(byType[t].correct, byType[t].total);
+            return (
+              <div key={t} style={{ marginBottom: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <b>{t.toUpperCase()}</b>
+                  <span>{acc}%</span>
+                </div>
+                <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
+                  <div
+                    style={{
+                      width: ${acc}%,
+                      height: "100%",
+                      background: acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
-                    if (q.time <= 20 && q.correct) speedBuckets.fast++;
-                    else if (q.time > 45 && q.correct) speedBuckets.heavy++;
-                    else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
-                    else if (q.time > 45 && !q.correct) speedBuckets.confused++;
-                  });
-                });
+      {activeProfileTab === "speed" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          {tests.length === 0 && <p>No data yet.</p>}
+          {tests.length > 0 && (() => {
+            let fast = 0, heavy = 0, impulsive = 0, confused = 0;
+            tests.forEach(t =>
+              t.questions.forEach(q => {
+                if (q.time <= 20 && q.correct) fast++;
+                else if (q.time > 45 && q.correct) heavy++;
+                else if (q.time <= 20 && !q.correct) impulsive++;
+                else if (q.time > 45 && !q.correct) confused++;
+              })
+            );
+            const total = fast + heavy + impulsive + confused || 1;
 
-                const weakest =
-                  Object.entries(typeCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
-                  "inference";
+            const bar = (label, val, color) => (
+              <div style={{ marginBottom: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span>{label}</span>
+                  <span>{Math.round((val / total) * 100)}%</span>
+                </div>
+                <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
+                  <div style={{ width: ${(val / total) * 100}%, height: "100%", background: color }} />
+                </div>
+              </div>
+            );
 
-                let speedIssue = "balanced";
-                if (speedBuckets.impulsive > speedBuckets.heavy + speedBuckets.confused)
-                  speedIssue = "impulsive";
-                else if (speedBuckets.confused > speedBuckets.fast + speedBuckets.impulsive)
-                  speedIssue = "confused";
-                else if (speedBuckets.heavy > speedBuckets.fast)
-                  speedIssue = "heavy";
+            return (
+              <>
+                {bar("Fast & Accurate", fast, "#16a34a")}
+                {bar("Heavy but Correct", heavy, "#2563eb")}
+                {bar("Impulsive Errors", impulsive, "#dc2626")}
+                {bar("Slow & Confused", confused, "#f59e0b")}
+              </>
+            );
+          })()}
+        </div>
+      )}
 
-                const dayBlock = (d, f, t) => (
-                  <div key={d} style={{ border: "1px solid #e5e7eb", padding: 12, marginBottom: 8 }}>
-                    <b>Day {d} – {f}</b>
-                    <p style={{ color: "#555" }}>{t}</p>
-                  </div>
-                );
-
-                const plan = [];
-                for (let i = 1; i <= 14; i++) {
-                  if (i <= 5) {
-                    plan.push(
-                      dayBlock(i, `${weakest.toUpperCase()} Mastery`,
-                        `Solve 3 RCs focusing on ${weakest} questions.`)
-                    );
-                  } else if (i <= 10) {
-                    plan.push(
-                      dayBlock(i, "Speed Calibration",
-                        speedIssue === "impulsive"
-                          ? "Force 25–30 sec before answering."
-                          : speedIssue === "confused"
-                          ? "Pause after each paragraph and note the idea."
-                          : "Cap at 35 sec per question.")
-                    );
-                  } else {
-                    plan.push(
-                      dayBlock(i, "Full CAT Simulation",
-                        "Attempt 2 full RC sets under time.")
-                    );
-                  }
-                }
-
-                return (
-                  <>
-                    <div>{plan}</div>
-                    <p style={{ marginTop: 12, color: "#555" }}>
-                      This plan evolves automatically as you take more tests.
-                    </p>
-                  </>
-                );
-              })()}
-            </div>
+      {activeProfileTab === "plan" && (
+        <div style={{ padding: 20, border: "1px solid #e5e7eb", borderRadius: 10 }}>
+          {tests.length === 0 ? (
+            <p>Take at least one RC test to generate your plan.</p>
+          ) : (
+            <p>Your adaptive plan will appear here next.</p>
           )}
-        </>
-      );
-    })()}
-  </div>
-)}  
+        </div>
+      )}
+    </div>
+  );
+})()}
   
     </main>
   );
