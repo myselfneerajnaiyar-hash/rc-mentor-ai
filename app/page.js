@@ -1757,7 +1757,6 @@ const momentumText =
     Start Adaptive RC Flow
   </button>
 </div>
-</div>
 )}
 </div>   {/* closes phase === "profile" container */}
 )}
