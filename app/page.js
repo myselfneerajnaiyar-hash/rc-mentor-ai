@@ -399,6 +399,7 @@ export default function Page() {
       existing.tests = existing.tests || [];
       existing.tests.push(record);
       localStorage.setItem("rcProfile", JSON.stringify(existing));
+      updateTodayRCProgress();
     } catch {
       setError("Could not analyze your test.");
     } finally {
