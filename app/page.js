@@ -549,12 +549,14 @@ function updateTodayRCProgress() {
 }
   
   return (
-  <main style={{ 
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #0f172a, #020617)",
-    color: "#e5e7eb",
-    fontFamily: "system-ui"
-  }}>
+  <main
+    style={{
+      minHeight: "100vh",
+      fontFamily: "system-ui",
+      background: "linear-gradient(180deg, #eef2ff, #f8fafc)",
+      color: "#1f2937",
+    }}
+  >
       {view === "home" && (
   <HomeView
     setView={setView}
