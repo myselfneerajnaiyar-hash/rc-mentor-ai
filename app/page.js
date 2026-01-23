@@ -1760,7 +1760,7 @@ const momentumText =
                     </div>
                   </>
       )}
- 
+        </div>
     </main>
   );
 }
