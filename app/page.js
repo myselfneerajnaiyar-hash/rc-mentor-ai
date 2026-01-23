@@ -1742,25 +1742,28 @@ const momentumText =
 </div>
                       </div>
                     ))}
-
-                    <div style={{ marginTop: 16 }}>
-                      <button
-                        onClick={startAdaptiveRC}
-                        style={{
-                          padding: "10px 16px",
-                          background: "green",
-                          color: "#fff",
-                          borderRadius: 6,
-                          border: "none",
-                          fontWeight: 600,
-                        }}
-                      >
-                      Start Adaptive RC Flow
-</button>
+<div style={{ marginTop: 16 }}>
+  <button
+    onClick={startAdaptiveRC}
+    style={{
+      padding: "10px 16px",
+      background: "green",
+      color: "#fff",
+      borderRadius: 6,
+      border: "none",
+      fontWeight: 600,
+    }}
+  >
+    Start Adaptive RC Flow
+  </button>
 </div>
-
-</div>   {/* closes the <div> that replaced <> */}
+</div>
 )}
+</div>   {/* closes phase === "profile" container */}
+)}
+</div>   {/* closes view === "rc" wrapper */}
+</div>   {/* closes main content wrapper */}
 </main>
 );
 }
+                   
