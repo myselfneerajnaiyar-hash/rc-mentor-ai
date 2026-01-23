@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import HomeView from "../components/HomeView";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -554,7 +555,12 @@ function updateTodayRCProgress() {
     color: "#e5e7eb",
     fontFamily: "system-ui"
   }}>
-      
+      {view === "home" && (
+  <HomeView
+    setView={setView}
+    startAdaptiveRC={startAdaptiveRC}
+  />
+)}
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
   <div style={{
   display: "flex",
