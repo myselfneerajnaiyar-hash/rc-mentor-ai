@@ -484,6 +484,33 @@ export default function Page() {
     0
   );
 
+function updateTodayRCProgress() {
+  const weekKey = "rcWeeklyPlan";
+  const saved = JSON.parse(localStorage.getItem(weekKey) || "{}");
+
+  const now = new Date();
+  const weekId =
+    now.getFullYear() +
+    "-W" +
+    Math.ceil(
+      ((now - new Date(now.getFullYear(), 0, 1)) / 86400000 +
+        new Date(now.getFullYear(), 0, 1).getDay() +
+        1) /
+        7
+    );
+
+  if (!saved[weekId]) return;
+
+  const plan = saved[weekId];
+
+  const dayIndex = (now.getDay() + 6) % 7; // Monday = 0
+
+  plan.days[dayIndex].done += 1; // allow overflow
+
+  saved[weekId] = plan;
+  localStorage.setItem(weekKey, JSON.stringify(saved));
+}
+  
   return (
     <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
       <div
