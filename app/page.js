@@ -1158,74 +1158,73 @@ export default function Page() {
     {(() => {
       const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
       const tests = raw.tests || [];
-
-      if (!tests.length) {
-        return <p>Take at least one RC test to generate your profile.</p>;
-      }
-
       const all = tests.flatMap(t => t.questions || []);
 
-      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
+      const pct = (a, b) => (!b ? 0 : Math.round((a / b) * 100));
 
+      // ---- Aggregates ----
       const byType = {};
       all.forEach(q => {
         const t = (q.type || "inference").toLowerCase();
-        byType[t] = byType[t] || { total: 0, correct: 0 };
+        byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
         byType[t].total++;
         if (q.correct) byType[t].correct++;
+        byType[t].time += q.time || 0;
       });
 
       const totalQ = all.length;
       const totalC = all.filter(q => q.correct).length;
       const overall = pct(totalC, totalQ);
 
-      const weakest = Object.entries(byType)
-        .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))[0]?.[0];
+      const weakest =
+        Object.entries(byType)
+          .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))[0]?.[0] ||
+        "inference";
 
-      // ---- Timeline Data ----
+      // ---- Journey data ----
       const accSeries = tests.map(t =>
-        pct(
-          t.questions.filter(q => q.correct).length,
-          t.questions.length
+        pct(t.questions.filter(q => q.correct).length, t.questions.length)
+      );
+      const timeSeries = tests.map(t =>
+        Math.round(
+          t.questions.reduce((a, b) => a + (b.time || 0), 0) /
+            (t.questions.length || 1)
         )
       );
 
-      const timeSeries = tests.map(t => {
-        const times = t.questions.map(q => q.time || 0);
-        return times.length
-          ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
-          : 0;
+      const firstAcc = accSeries[0] || 0;
+      const lastAcc = accSeries.at(-1) || 0;
+
+      const last5 = accSeries.slice(-5);
+      const last5Avg = last5.length
+        ? Math.round(last5.reduce((a, b) => a + b, 0) / last5.length)
+        : 0;
+
+      // ---- Speed buckets ----
+      const speed = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
+      all.forEach(q => {
+        if (q.time <= 20 && q.correct) speed.fast++;
+        else if (q.time > 45 && q.correct) speed.heavy++;
+        else if (q.time <= 20 && !q.correct) speed.impulsive++;
+        else if (q.time > 45 && !q.correct) speed.confused++;
       });
 
-      const maxAcc = 100;
-      const maxTime = Math.max(...timeSeries, 60);
+      const sTotal = Object.values(speed).reduce((a, b) => a + b, 0) || 1;
+      const sp = k => Math.round((speed[k] / sTotal) * 100);
 
-      const points = (arr, maxY) =>
-        arr
-          .map((v, i) => {
-            const x = 40 + (i / (arr.length - 1 || 1)) * 420;
-            const y = 160 - (v / maxY) * 120;
-            return `${x},${y}`;
-          })
-          .join(" ");
+      const dominant =
+        Object.entries(speed).sort((a, b) => b[1] - a[1])[0]?.[0] || "fast";
 
-      const accLine = points(accSeries, maxAcc);
-      const timeLine = points(timeSeries, maxTime);
+      const speedText =
+        dominant === "impulsive"
+          ? "You react quickly, but sometimes before constructing meaning. CAT punishes reflex without reasoning."
+          : dominant === "confused"
+          ? "You spend time but meaning isn’t crystallising. You need paragraph-level structure."
+          : dominant === "heavy"
+          ? "You are careful and often right, but time pressure will hurt you."
+          : "You balance speed and accuracy well. Preserve this under pressure.";
 
-      const last5 = tests.slice(-5);
-      const last5All = last5.flatMap(t => t.questions || []);
-      const last5Acc = pct(
-        last5All.filter(q => q.correct).length,
-        last5All.length
-      );
-
-      const mentorText =
-        overall < 55
-          ? "You are still decoding more than interpreting. The shift you need is from line-level reading to structure-level thinking."
-          : overall < 70
-          ? "You are building control. The next leap will come from consistency under pressure."
-          : "You are reading with maturity. Now your task is to preserve this clarity when the clock tightens.";
-
+      // ---- Helpers ----
       const bar = (label, v) => (
         <div key={label} style={{ marginBottom: 12 }}>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
@@ -1245,59 +1244,155 @@ export default function Page() {
         </div>
       );
 
+      const lineChart = () => {
+        const w = 520, h = 180, pad = 24;
+        const n = accSeries.length || 1;
+        const maxY = 100;
+
+        const map = (x, y) => [
+          pad + (x / (n - 1 || 1)) * (w - pad * 2),
+          h - pad - (y / maxY) * (h - pad * 2),
+        ];
+
+        const accPath = accSeries
+          .map((v, i) => {
+            const [x, y] = map(i, v);
+            return `${i === 0 ? "M" : "L"}${x},${y}`;
+          })
+          .join(" ");
+
+        const timePath = timeSeries
+          .map((v, i) => {
+            const [x, y] = map(i, Math.min(100, v));
+            return `${i === 0 ? "M" : "L"}${x},${y}`;
+          })
+          .join(" ");
+
+        return (
+          <svg width={w} height={h}>
+            {[0, 25, 50, 75, 100].map(v => {
+              const y = h - pad - (v / 100) * (h - pad * 2);
+              return (
+                <g key={v}>
+                  <line x1={pad} x2={w - pad} y1={y} y2={y} stroke="#e5e7eb" />
+                  <text x={2} y={y + 4} fontSize="10">{v}</text>
+                </g>
+              );
+            })}
+            <path d={accPath} fill="none" stroke="#2563eb" strokeWidth="2" />
+            <path d={timePath} fill="none" stroke="#f59e0b" strokeWidth="2" />
+          </svg>
+        );
+      };
+
+      const makePlan = () => {
+        const focus = weakest.toUpperCase();
+        const speedFix =
+          dominant === "impulsive"
+            ? "slow-reading drill"
+            : dominant === "confused"
+            ? "paragraph-mapping"
+            : dominant === "heavy"
+            ? "timed elimination"
+            : "pressure simulation";
+
+        return Array.from({ length: 14 }).map((_, i) => {
+          const dayType =
+            i % 3 === 0 ? "concept drill" : i % 3 === 1 ? "timed RC" : "review + reflection";
+
+          return (
+            <div key={i} style={{ padding: 10, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
+              <b>Day {i + 1}</b> — {dayType} on <b>{focus}</b> + {speedFix}
+            </div>
+          );
+        });
+      };
+
       return (
         <>
           <h2>RC Profile</h2>
 
-          {/* Journey */}
-          <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
-            <h3>Your RC Journey</h3>
-
-            <svg width="520" height="200">
-              <polyline points={accLine} fill="none" stroke="#2563eb" strokeWidth="2" />
-              <polyline points={timeLine} fill="none" stroke="#f59e0b" strokeWidth="2" />
-              <text x="10" y="20" fontSize="12" fill="#2563eb">Accuracy</text>
-              <text x="10" y="36" fontSize="12" fill="#f59e0b">Avg Time</text>
-            </svg>
-
-            <p style={{ marginTop: 8 }}>
-              From your first RC to now, your accuracy has moved from{" "}
-              <b>{accSeries[0]}%</b> to <b>{accSeries.at(-1)}%</b>.
-            </p>
-            <p style={{ color: "#555" }}>{mentorText}</p>
-          </div>
-
-          {/* Momentum */}
-          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
-            <h3>Momentum</h3>
-            <p>
-              Last 5 RCs Accuracy: <b>{last5Acc}%</b> <br />
-              Lifetime Accuracy: <b>{overall}%</b>
-            </p>
-            <p style={{ color: "#555" }}>
-              {last5Acc > overall
-                ? "You are trending upward. This is real improvement."
-                : "Your recent performance is fluctuating. Focus on process, not score."}
-            </p>
-          </div>
-
-          {/* Skills */}
-          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
-            <h3>Skill Map</h3>
-            {Object.keys(byType).map(t =>
-              bar(t, pct(byType[t].correct, byType[t].total))
-            )}
-          </div>
-
-          {/* Plan */}
-          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
-            <h3>Your 14-Day Plan</h3>
-            {Array.from({ length: 14 }).map((_, i) => (
-              <div key={i} style={{ padding: 8, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
-                <b>Day {i + 1}</b> — Focus on <b>{weakest.toUpperCase()}</b> + one timed RC
-              </div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+            {["overview", "skills", "speed", "plan"].map(t => (
+              <button
+                key={t}
+                onClick={() => setActiveProfileTab(t)}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 8,
+                  border: "1px solid #d1d5db",
+                  background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
+                  color: activeProfileTab === t ? "#fff" : "#111",
+                  fontWeight: 600,
+                }}
+              >
+                {t.toUpperCase()}
+              </button>
             ))}
           </div>
+
+          {activeProfileTab === "overview" && (
+            <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
+              <h3>Your RC Journey</h3>
+              {lineChart()}
+              <p style={{ marginTop: 8 }}>
+                From your first RC to now, your accuracy has moved from <b>{firstAcc}%</b> to{" "}
+                <b>{lastAcc}%</b>.
+              </p>
+              <p style={{ color: "#555" }}>
+                RC is not about understanding every line. It is about tracking intent, structure,
+                and logic. You are moving from decoding toward interpretation — that is real growth.
+              </p>
+
+              <div style={{ marginTop: 16, padding: 16, borderRadius: 10, background: "#ecfeff" }}>
+                <b>Momentum</b>
+                <p>Last 5 RCs Accuracy: {last5Avg}%</p>
+                <p>Lifetime Accuracy: {overall}%</p>
+                <p style={{ color: "#065f46" }}>
+                  {last5Avg >= overall
+                    ? "You are trending upward. This is real improvement."
+                    : "You are building a base. The next leap will come from structure-first reading."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {activeProfileTab === "skills" && (
+            <div style={{ padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
+              {Object.keys(byType).map(t =>
+                bar(t, pct(byType[t].correct, byType[t].total))
+              )}
+              <p style={{ marginTop: 12, color: "#555" }}>
+                Close options defeat students who read linearly. Your weakest zone tells you where
+                your reasoning collapses under pressure.
+              </p>
+            </div>
+          )}
+
+          {activeProfileTab === "speed" && (
+            <div style={{ padding: 20, borderRadius: 12, background: "#fff7ed", border: "1px solid #fed7aa" }}>
+              <p style={{ marginBottom: 12 }}>{speedText}</p>
+              {bar("Fast & Accurate", sp("fast"))}
+              {bar("Heavy but Correct", sp("heavy"))}
+              {bar("Impulsive Errors", sp("impulsive"))}
+              {bar("Slow & Confused", sp("confused"))}
+            </div>
+          )}
+
+          {activeProfileTab === "plan" && (
+            <div style={{ padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
+              {totalQ === 0 ? (
+                <p>Take at least one RC test to generate your plan.</p>
+              ) : (
+                <>
+                  <p style={{ marginBottom: 12 }}>
+                    This plan is built from your weakest skill, your speed pattern, and your momentum.
+                  </p>
+                  {makePlan()}
+                </>
+              )}
+            </div>
+          )}
         </>
       );
     })()}
