@@ -583,17 +583,7 @@ function updateTodayRCProgress() {
     ))}
   </div>
 </div>
-
-{view === "home" && (
-  <div>
-    {/* HOME DASHBOARD WILL GO HERE */}
-  </div>
-)}
-
-{view === "rc" && (
-  <div>
-
-<h1
+        <h1
           style={{ cursor: "pointer", margin: 0 }}
           onClick={() => {
             setIsAdaptive(false);
@@ -652,10 +642,10 @@ function updateTodayRCProgress() {
             Vocabulary
           </button>
         </div>
-              </div>
-              </div>
+      </div>
+
       {phase === "mentor" && showInitial && (
-        <div>
+        <>
           <p>Paste a passage. Let’s read it together.</p>
 
           <textarea
@@ -699,7 +689,7 @@ function updateTodayRCProgress() {
               Generate New Passage
             </button>
           </div>
-                </div>
+        </>
       )}
 
       {showGenPanel && (
@@ -1715,8 +1705,7 @@ const momentumText =
     })()}
   </div>
 )}
- </div>
-)}
+ 
     </main>
   );
 }
