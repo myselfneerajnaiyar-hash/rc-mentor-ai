@@ -1158,19 +1158,22 @@ export default function Page() {
     {(() => {
       const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
       const tests = raw.tests || [];
+
+      if (!tests.length) {
+        return <p>Take at least one RC test to generate your profile.</p>;
+      }
+
       const all = tests.flatMap(t => t.questions || []);
+
+      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
       const byType = {};
       all.forEach(q => {
         const t = (q.type || "inference").toLowerCase();
-        byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
-        byType[t].total += 1;
-        if (q.correct) byType[t].correct += 1;
-        byType[t].time += q.time || 0;
+        byType[t] = byType[t] || { total: 0, correct: 0 };
+        byType[t].total++;
+        if (q.correct) byType[t].correct++;
       });
-
-      const types = Object.keys(byType);
-      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
       const totalQ = all.length;
       const totalC = all.filter(q => q.correct).length;
@@ -1179,32 +1182,49 @@ export default function Page() {
       const weakest = Object.entries(byType)
         .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))[0]?.[0];
 
-      const donut = (value, label) => {
-        const r = 54;
-        const c = 2 * Math.PI * r;
-        const dash = (value / 100) * c;
-        return (
-          <div style={{ textAlign: "center" }}>
-            <svg width="140" height="140">
-              <circle cx="70" cy="70" r={r} stroke="#e5e7eb" strokeWidth="12" fill="none" />
-              <circle
-                cx="70"
-                cy="70"
-                r={r}
-                stroke={value >= 70 ? "#16a34a" : value >= 40 ? "#f59e0b" : "#dc2626"}
-                strokeWidth="12"
-                fill="none"
-                strokeDasharray={`${dash} ${c - dash}`}
-                transform="rotate(-90 70 70)"
-              />
-              <text x="70" y="76" textAnchor="middle" fontSize="20" fontWeight="700">
-                {value}%
-              </text>
-            </svg>
-            <div style={{ fontWeight: 600 }}>{label}</div>
-          </div>
-        );
-      };
+      // ---- Timeline Data ----
+      const accSeries = tests.map(t =>
+        pct(
+          t.questions.filter(q => q.correct).length,
+          t.questions.length
+        )
+      );
+
+      const timeSeries = tests.map(t => {
+        const times = t.questions.map(q => q.time || 0);
+        return times.length
+          ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+          : 0;
+      });
+
+      const maxAcc = 100;
+      const maxTime = Math.max(...timeSeries, 60);
+
+      const points = (arr, maxY) =>
+        arr
+          .map((v, i) => {
+            const x = 40 + (i / (arr.length - 1 || 1)) * 420;
+            const y = 160 - (v / maxY) * 120;
+            return `${x},${y}`;
+          })
+          .join(" ");
+
+      const accLine = points(accSeries, maxAcc);
+      const timeLine = points(timeSeries, maxTime);
+
+      const last5 = tests.slice(-5);
+      const last5All = last5.flatMap(t => t.questions || []);
+      const last5Acc = pct(
+        last5All.filter(q => q.correct).length,
+        last5All.length
+      );
+
+      const mentorText =
+        overall < 55
+          ? "You are still decoding more than interpreting. The shift you need is from line-level reading to structure-level thinking."
+          : overall < 70
+          ? "You are building control. The next leap will come from consistency under pressure."
+          : "You are reading with maturity. Now your task is to preserve this clarity when the clock tightens.";
 
       const bar = (label, v) => (
         <div key={label} style={{ marginBottom: 12 }}>
@@ -1225,116 +1245,65 @@ export default function Page() {
         </div>
       );
 
-      const speedBuckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
-      all.forEach(q => {
-        if (q.time <= 20 && q.correct) speedBuckets.fast++;
-        else if (q.time > 45 && q.correct) speedBuckets.heavy++;
-        else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
-        else if (q.time > 45 && !q.correct) speedBuckets.confused++;
-      });
-
-      const sTotal =
-        speedBuckets.fast +
-        speedBuckets.heavy +
-        speedBuckets.impulsive +
-        speedBuckets.confused || 1;
-
-      const sp = k => Math.round((speedBuckets[k] / sTotal) * 100);
-
-      const dominant =
-        Object.entries(speedBuckets).sort((a, b) => b[1] - a[1])[0]?.[0];
-
-      let speedText =
-        dominant === "impulsive"
-          ? "You are reacting faster than you are thinking. CAT will punish speed without deliberation."
-          : dominant === "confused"
-          ? "You are spending time but not constructing meaning. You need paragraph-level clarity."
-          : dominant === "heavy"
-          ? "You are careful and correct, but time pressure will hurt you."
-          : "You balance speed and accuracy well. Preserve this under pressure.";
-
       return (
         <>
           <h2>RC Profile</h2>
 
-          <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-            {["overview", "skills", "speed", "plan"].map(t => (
-              <button
-                key={t}
-                onClick={() => setActiveProfileTab(t)}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: 8,
-                  border: "1px solid #d1d5db",
-                  background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
-                  color: activeProfileTab === t ? "#fff" : "#111",
-                  fontWeight: 600,
-                }}
-              >
-                {t.toUpperCase()}
-              </button>
-            ))}
+          {/* Journey */}
+          <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
+            <h3>Your RC Journey</h3>
+
+            <svg width="520" height="200">
+              <polyline points={accLine} fill="none" stroke="#2563eb" strokeWidth="2" />
+              <polyline points={timeLine} fill="none" stroke="#f59e0b" strokeWidth="2" />
+              <text x="10" y="20" fontSize="12" fill="#2563eb">Accuracy</text>
+              <text x="10" y="36" fontSize="12" fill="#f59e0b">Avg Time</text>
+            </svg>
+
+            <p style={{ marginTop: 8 }}>
+              From your first RC to now, your accuracy has moved from{" "}
+              <b>{accSeries[0]}%</b> to <b>{accSeries.at(-1)}%</b>.
+            </p>
+            <p style={{ color: "#555" }}>{mentorText}</p>
           </div>
 
-          {activeProfileTab === "overview" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
-              <p>
-                You have attempted <b>{totalQ}</b> questions across{" "}
-                <b>{tests.length}</b> RC tests.
-              </p>
-              <p style={{ color: "#555" }}>
-                {overall >= 65
-                  ? "You are developing control over RC. The next leap is consistency under pressure."
-                  : "You are still decoding more than interpreting. Growth will come from thinking in layers."}
-              </p>
+          {/* Momentum */}
+          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
+            <h3>Momentum</h3>
+            <p>
+              Last 5 RCs Accuracy: <b>{last5Acc}%</b> <br />
+              Lifetime Accuracy: <b>{overall}%</b>
+            </p>
+            <p style={{ color: "#555" }}>
+              {last5Acc > overall
+                ? "You are trending upward. This is real improvement."
+                : "Your recent performance is fluctuating. Focus on process, not score."}
+            </p>
+          </div>
 
-              <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
-                {donut(overall, "Overall Accuracy")}
-                {donut(pct(byType[weakest]?.correct || 0, byType[weakest]?.total || 1), "Weakest Skill")}
+          {/* Skills */}
+          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
+            <h3>Skill Map</h3>
+            {Object.keys(byType).map(t =>
+              bar(t, pct(byType[t].correct, byType[t].total))
+            )}
+          </div>
+
+          {/* Plan */}
+          <div style={{ marginTop: 20, padding: 20, borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+            <h3>Your 14-Day Plan</h3>
+            {Array.from({ length: 14 }).map((_, i) => (
+              <div key={i} style={{ padding: 8, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
+                <b>Day {i + 1}</b> — Focus on <b>{weakest.toUpperCase()}</b> + one timed RC
               </div>
-            </div>
-          )}
-
-          {activeProfileTab === "skills" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
-              {types.map(t => bar(t, pct(byType[t].correct, byType[t].total)))}
-            </div>
-          )}
-
-          {activeProfileTab === "speed" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#fff7ed", border: "1px solid #fed7aa" }}>
-              <p style={{ marginBottom: 12 }}>{speedText}</p>
-              {bar("Fast & Accurate", sp("fast"))}
-              {bar("Heavy but Correct", sp("heavy"))}
-              {bar("Impulsive Errors", sp("impulsive"))}
-              {bar("Slow & Confused", sp("confused"))}
-            </div>
-          )}
-
-          {activeProfileTab === "plan" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
-              {totalQ === 0 ? (
-                <p>Take at least one RC test to generate your plan.</p>
-              ) : (
-                <>
-                  <p style={{ marginBottom: 12 }}>
-                    Your 14-day adaptive plan (updates after every test):
-                  </p>
-                  {Array.from({ length: 14 }).map((_, i) => (
-                    <div key={i} style={{ padding: 10, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
-                      <b>Day {i + 1}</b> — Focus on{" "}
-                      <b>{weakest?.toUpperCase() || "INFERENCE"}</b> + one timed RC
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-          )}
+            ))}
+          </div>
         </>
       );
     })()}
   </div>
 )}
+ 
     </main>
   );
 }
