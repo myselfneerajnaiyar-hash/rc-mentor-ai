@@ -5,6 +5,7 @@ export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
+  
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,8 @@ export default function Page() {
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
+  const [view, setView] = useState("home"); 
+// home | rc | vocab | speed | cat
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
