@@ -88,17 +88,19 @@ function Card({ title, desc, label, color, onClick }) {
 
 const wrap = {
   minHeight: "100vh",
-  background: "linear-gradient(180deg,#dbeafe,#ede9fe)",
-  padding: 40,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "#0f172a",
 };
 
 const panel = {
-  maxWidth: 1000,
-  margin: "0 auto",
-  background: "rgba(255,255,255,0.65)",
+  width: "100%",
+  maxWidth: 1100,
+  padding: 32,
   borderRadius: 24,
-  padding: 40,
-  boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+  background: "#ffffff",
+  boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
 };
 
 const title = { fontSize: 36, marginBottom: 6 };
