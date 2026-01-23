@@ -1590,19 +1590,32 @@ const momentumText =
                           alignItems: "center",
                         }}
                       >
-                        <div>
-                          <b>Day {d.day}</b> — Target: {d.targetRC} RCs  
-                          <div style={{ fontSize: 12, color: "#555" }}>
-                            Done: {d.done} / {d.targetRC}
-                          </div>
-                        </div>
+                        <div style={{ flex: 1 }}>
+  <b>Day {d.day}</b> — Target: {d.targetRC} RCs  
+  <div style={{ fontSize: 12, color: "#555" }}>
+    Completed: {d.done} / {d.targetRC} (
+    {Math.round((d.done / d.targetRC) * 100)}%)
+  </div>
 
-                        <div>
-                          <button onClick={() => updateDay(i, -1)}>-</button>
-                          <button onClick={() => updateDay(i, 1)} style={{ marginLeft: 6 }}>
-                            +
-                          </button>
-                        </div>
+  <div
+    style={{
+      marginTop: 6,
+      height: 8,
+      background: "#e5e7eb",
+      borderRadius: 6,
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        height: "100%",
+        width: `${Math.min(200, (d.done / d.targetRC) * 100)}%`,
+        background:
+          d.done >= d.targetRC ? "#16a34a" : "#2563eb",
+      }}
+    />
+  </div>
+</div>
                       </div>
                     ))}
 
