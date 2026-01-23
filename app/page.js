@@ -705,7 +705,7 @@ function updateTodayRCProgress() {
             Vocabulary
           </button>
         </div>
-      </div>
+      
 
       {phase === "mentor" && showInitial && (
         <>
