@@ -99,7 +99,7 @@ const panel = {
   maxWidth: 1100,
   padding: 32,
   borderRadius: 24,
-  background: "#ffffff",
+  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
   boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
 };
 
