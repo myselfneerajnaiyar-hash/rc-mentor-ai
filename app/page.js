@@ -399,7 +399,39 @@ export default function Page() {
       existing.tests = existing.tests || [];
       existing.tests.push(record);
       localStorage.setItem("rcProfile", JSON.stringify(existing));
-      updateTodayRCProgress();
+      // ---- Auto-update today's plan progress ----
+try {
+  const weekKey = "rcWeeklyPlan";
+  const saved = JSON.parse(localStorage.getItem(weekKey) || "{}");
+
+  const now = new Date();
+  const weekId =
+    now.getFullYear() +
+    "-W" +
+    Math.ceil(
+      ((now - new Date(now.getFullYear(), 0, 1)) / 86400000 +
+        new Date(now.getFullYear(), 0, 1).getDay() +
+        1) /
+        7
+    );
+
+  if (saved[weekId]) {
+    const plan = saved[weekId];
+
+    const dayIndex = Math.min(
+      6,
+      Math.max(0, Math.floor((now - new Date(plan.created)) / 86400000))
+    );
+
+    if (plan.days[dayIndex]) {
+      plan.days[dayIndex].done += 1;
+      saved[weekId] = plan;
+      localStorage.setItem(weekKey, JSON.stringify(saved));
+    }
+  }
+} catch (e) {
+  console.error("Plan auto-update failed", e);
+}
     } catch {
       setError("Could not analyze your test.");
     } finally {
