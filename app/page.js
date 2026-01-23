@@ -1230,7 +1230,7 @@ export default function Page() {
                 <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
                   <div
                     style={{
-                      width: ${acc}%,
+                      width: `${acc}%`,
                       height: "100%",
                       background: acc >= 70 ? "#16a34a" : acc >= 40 ? "#f59e0b" : "#dc2626",
                     }}
@@ -1264,7 +1264,7 @@ export default function Page() {
                   <span>{Math.round((val / total) * 100)}%</span>
                 </div>
                 <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
-                  <div style={{ width: ${(val / total) * 100}%, height: "100%", background: color }} />
+                  <div style={{ width: `${(val / total) * 100}%`, height: "100%", background: color }} />
                 </div>
               </div>
             );
