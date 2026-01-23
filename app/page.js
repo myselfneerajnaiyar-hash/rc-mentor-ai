@@ -1762,6 +1762,7 @@ const momentumText =
       );
 })()}
   </>
+  )}
   </div>
   )}
         
