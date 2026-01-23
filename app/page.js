@@ -1158,73 +1158,57 @@ export default function Page() {
     {(() => {
       const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
       const tests = raw.tests || [];
+
       const all = tests.flatMap(t => t.questions || []);
 
-      const pct = (a, b) => (!b ? 0 : Math.round((a / b) * 100));
-
-      // ---- Aggregates ----
       const byType = {};
       all.forEach(q => {
         const t = (q.type || "inference").toLowerCase();
         byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
-        byType[t].total++;
-        if (q.correct) byType[t].correct++;
+        byType[t].total += 1;
+        if (q.correct) byType[t].correct += 1;
         byType[t].time += q.time || 0;
       });
+
+      const types = Object.keys(byType);
+      const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
       const totalQ = all.length;
       const totalC = all.filter(q => q.correct).length;
       const overall = pct(totalC, totalQ);
 
-      const weakest =
-        Object.entries(byType)
-          .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))[0]?.[0] ||
-        "inference";
+      const weakestTypes = Object.entries(byType)
+        .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))
+        .slice(0, 4)
+        .map(x => x[0]);
 
-      // ---- Journey data ----
-      const accSeries = tests.map(t =>
-        pct(t.questions.filter(q => q.correct).length, t.questions.length)
-      );
-      const timeSeries = tests.map(t =>
-        Math.round(
-          t.questions.reduce((a, b) => a + (b.time || 0), 0) /
-            (t.questions.length || 1)
-        )
-      );
+      const donut = (value, label) => {
+        const r = 48;
+        const c = 2 * Math.PI * r;
+        const dash = (value / 100) * c;
+        return (
+          <div style={{ textAlign: "center" }}>
+            <svg width="120" height="120">
+              <circle cx="60" cy="60" r={r} stroke="#e5e7eb" strokeWidth="10" fill="none" />
+              <circle
+                cx="60"
+                cy="60"
+                r={r}
+                stroke={value >= 70 ? "#16a34a" : value >= 40 ? "#f59e0b" : "#dc2626"}
+                strokeWidth="10"
+                fill="none"
+                strokeDasharray={`${dash} ${c - dash}`}
+                transform="rotate(-90 60 60)"
+              />
+              <text x="60" y="66" textAnchor="middle" fontSize="18" fontWeight="700">
+                {value}%
+              </text>
+            </svg>
+            <div style={{ fontWeight: 600, marginTop: 4 }}>{label}</div>
+          </div>
+        );
+      };
 
-      const firstAcc = accSeries[0] || 0;
-      const lastAcc = accSeries.at(-1) || 0;
-
-      const last5 = accSeries.slice(-5);
-      const last5Avg = last5.length
-        ? Math.round(last5.reduce((a, b) => a + b, 0) / last5.length)
-        : 0;
-
-      // ---- Speed buckets ----
-      const speed = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
-      all.forEach(q => {
-        if (q.time <= 20 && q.correct) speed.fast++;
-        else if (q.time > 45 && q.correct) speed.heavy++;
-        else if (q.time <= 20 && !q.correct) speed.impulsive++;
-        else if (q.time > 45 && !q.correct) speed.confused++;
-      });
-
-      const sTotal = Object.values(speed).reduce((a, b) => a + b, 0) || 1;
-      const sp = k => Math.round((speed[k] / sTotal) * 100);
-
-      const dominant =
-        Object.entries(speed).sort((a, b) => b[1] - a[1])[0]?.[0] || "fast";
-
-      const speedText =
-        dominant === "impulsive"
-          ? "You react quickly, but sometimes before constructing meaning. CAT punishes reflex without reasoning."
-          : dominant === "confused"
-          ? "You spend time but meaning isn’t crystallising. You need paragraph-level structure."
-          : dominant === "heavy"
-          ? "You are careful and often right, but time pressure will hurt you."
-          : "You balance speed and accuracy well. Preserve this under pressure.";
-
-      // ---- Helpers ----
       const bar = (label, v) => (
         <div key={label} style={{ marginBottom: 12 }}>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
@@ -1244,76 +1228,45 @@ export default function Page() {
         </div>
       );
 
-      const lineChart = () => {
-        const w = 520, h = 180, pad = 24;
-        const n = accSeries.length || 1;
-        const maxY = 100;
+      const speedBuckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
+      all.forEach(q => {
+        if (q.time <= 20 && q.correct) speedBuckets.fast++;
+        else if (q.time > 45 && q.correct) speedBuckets.heavy++;
+        else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
+        else if (q.time > 45 && !q.correct) speedBuckets.confused++;
+      });
 
-        const map = (x, y) => [
-          pad + (x / (n - 1 || 1)) * (w - pad * 2),
-          h - pad - (y / maxY) * (h - pad * 2),
-        ];
+      const sTotal =
+        speedBuckets.fast +
+        speedBuckets.heavy +
+        speedBuckets.impulsive +
+        speedBuckets.confused || 1;
 
-        const accPath = accSeries
-          .map((v, i) => {
-            const [x, y] = map(i, v);
-            return `${i === 0 ? "M" : "L"}${x},${y}`;
-          })
-          .join(" ");
+      const sp = k => Math.round((speedBuckets[k] / sTotal) * 100);
 
-        const timePath = timeSeries
-          .map((v, i) => {
-            const [x, y] = map(i, Math.min(100, v));
-            return `${i === 0 ? "M" : "L"}${x},${y}`;
-          })
-          .join(" ");
+      const dominant =
+        Object.entries(speedBuckets).sort((a, b) => b[1] - a[1])[0]?.[0];
 
-        return (
-          <svg width={w} height={h}>
-            {[0, 25, 50, 75, 100].map(v => {
-              const y = h - pad - (v / 100) * (h - pad * 2);
-              return (
-                <g key={v}>
-                  <line x1={pad} x2={w - pad} y1={y} y2={y} stroke="#e5e7eb" />
-                  <text x={2} y={y + 4} fontSize="10">{v}</text>
-                </g>
-              );
-            })}
-            <path d={accPath} fill="none" stroke="#2563eb" strokeWidth="2" />
-            <path d={timePath} fill="none" stroke="#f59e0b" strokeWidth="2" />
-          </svg>
-        );
-      };
+      let speedText =
+        dominant === "impulsive"
+          ? "You react faster than you reason. CAT punishes speed without structure."
+          : dominant === "confused"
+          ? "You spend time but miss structure. Paragraph-level thinking is your lever."
+          : dominant === "heavy"
+          ? "You are accurate but slow. Time pressure will hurt unless you trim."
+          : "You balance speed and accuracy well. Preserve this under pressure.";
 
-      const makePlan = () => {
-        const focus = weakest.toUpperCase();
-        const speedFix =
-          dominant === "impulsive"
-            ? "slow-reading drill"
-            : dominant === "confused"
-            ? "paragraph-mapping"
-            : dominant === "heavy"
-            ? "timed elimination"
-            : "pressure simulation";
-
-        return Array.from({ length: 14 }).map((_, i) => {
-          const dayType =
-            i % 3 === 0 ? "concept drill" : i % 3 === 1 ? "timed RC" : "review + reflection";
-
-          return (
-            <div key={i} style={{ padding: 10, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
-              <b>Day {i + 1}</b> — {dayType} on <b>{focus}</b> + {speedFix}
-            </div>
-          );
-        });
-      };
+      const today = new Date().toDateString();
+      const todayTests = tests.filter(t => new Date(t.date).toDateString() === today);
+      const todayQs = todayTests.flatMap(t => t.questions || []);
+      const todayAcc = pct(todayQs.filter(q => q.correct).length, todayQs.length);
 
       return (
         <>
           <h2>RC Profile</h2>
 
           <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-            {["overview", "skills", "speed", "plan"].map(t => (
+            {["overview", "skills", "speed", "today", "plan"].map(t => (
               <button
                 key={t}
                 onClick={() => setActiveProfileTab(t)}
@@ -1333,39 +1286,30 @@ export default function Page() {
 
           {activeProfileTab === "overview" && (
             <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
-              <h3>Your RC Journey</h3>
-              {lineChart()}
-              <p style={{ marginTop: 8 }}>
-                From your first RC to now, your accuracy has moved from <b>{firstAcc}%</b> to{" "}
-                <b>{lastAcc}%</b>.
+              <p>
+                You have attempted <b>{totalQ}</b> questions across{" "}
+                <b>{tests.length}</b> RC tests.
               </p>
               <p style={{ color: "#555" }}>
-                RC is not about understanding every line. It is about tracking intent, structure,
-                and logic. You are moving from decoding toward interpretation — that is real growth.
+                RC is not about understanding every line. It is about tracking the author’s logic,
+                resisting traps, and eliminating precision errors.  
+                Your journey is moving in that direction.
               </p>
 
-              <div style={{ marginTop: 16, padding: 16, borderRadius: 10, background: "#ecfeff" }}>
-                <b>Momentum</b>
-                <p>Last 5 RCs Accuracy: {last5Avg}%</p>
-                <p>Lifetime Accuracy: {overall}%</p>
-                <p style={{ color: "#065f46" }}>
-                  {last5Avg >= overall
-                    ? "You are trending upward. This is real improvement."
-                    : "You are building a base. The next leap will come from structure-first reading."}
-                </p>
+              <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
+                {donut(overall, "Overall Accuracy")}
+                {donut(pct(byType[weakestTypes[0]]?.correct || 0, byType[weakestTypes[0]]?.total || 1), "Weakest Skill")}
               </div>
             </div>
           )}
 
           {activeProfileTab === "skills" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
-              {Object.keys(byType).map(t =>
-                bar(t, pct(byType[t].correct, byType[t].total))
-              )}
-              <p style={{ marginTop: 12, color: "#555" }}>
-                Close options defeat students who read linearly. Your weakest zone tells you where
-                your reasoning collapses under pressure.
+            <div style={{ padding: 20, borderRadius: 12, background: "#ffffff", border: "1px solid #e5e7eb" }}>
+              <p style={{ marginBottom: 12, color: "#555" }}>
+                These bars show how well you handle each CAT RC thinking skill.
+                Weakness here is not a flaw—it is a training signal.
               </p>
+              {types.map(t => bar(t, pct(byType[t].correct, byType[t].total)))}
             </div>
           )}
 
@@ -1379,25 +1323,164 @@ export default function Page() {
             </div>
           )}
 
-          {activeProfileTab === "plan" && (
+          {activeProfileTab === "today" && (
             <div style={{ padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
-              {totalQ === 0 ? (
-                <p>Take at least one RC test to generate your plan.</p>
+              <p>
+                <b>Today’s RC Work</b>
+              </p>
+              {todayQs.length === 0 ? (
+                <p style={{ color: "#555" }}>
+                  You haven’t practiced RC today. Even one passage builds momentum.
+                </p>
               ) : (
                 <>
-                  <p style={{ marginBottom: 12 }}>
-                    This plan is built from your weakest skill, your speed pattern, and your momentum.
+                  <p>
+                    Attempts: <b>{todayQs.length}</b> questions  
+                    <br />
+                    Accuracy: <b>{todayAcc}%</b>
                   </p>
-                  {makePlan()}
+                  <p style={{ color: "#555" }}>
+                    Consistency beats intensity. One focused RC every day compounds.
+                  </p>
                 </>
               )}
+            </div>
+          )}
+            {activeProfileTab === "plan" && (
+            <div style={{ padding: 20, borderRadius: 12, background: "#eef2ff", border: "1px solid #c7d2fe" }}>
+              {totalQ === 0 ? (
+                <p>
+                  Take at least one RC test. Your adaptive plan will unlock after that.
+                </p>
+              ) : (() => {
+                const weekKey = "rcWeeklyPlan";
+                const saved = JSON.parse(localStorage.getItem(weekKey) || "{}");
+
+                const now = new Date();
+                const weekId =
+                  now.getFullYear() +
+                  "-W" +
+                  Math.ceil(
+                    ((now - new Date(now.getFullYear(), 0, 1)) / 86400000 +
+                      new Date(now.getFullYear(), 0, 1).getDay() +
+                      1) /
+                      7
+                  );
+
+                if (!saved[weekId]) {
+                  const days = Array.from({ length: 7 }).map((_, i) => ({
+                    day: i + 1,
+                    targetRC: 3 + (i % 2),
+                    done: 0,
+                  }));
+
+                  saved[weekId] = {
+                    created: Date.now(),
+                    weakest: weakestTypes,
+                    days,
+                    committed: false,
+                  };
+
+                  localStorage.setItem(weekKey, JSON.stringify(saved));
+                }
+
+                const plan = saved[weekId];
+
+                function updateDay(i, delta) {
+                  plan.days[i].done = Math.max(
+                    0,
+                    Math.min(plan.days[i].targetRC, plan.days[i].done + delta)
+                  );
+                  saved[weekId] = plan;
+                  localStorage.setItem(weekKey, JSON.stringify(saved));
+                  location.reload();
+                }
+
+                function commit() {
+                  plan.committed = true;
+                  saved[weekId] = plan;
+                  localStorage.setItem(weekKey, JSON.stringify(saved));
+                  location.reload();
+                }
+
+                return (
+                  <>
+                    <p style={{ marginBottom: 12 }}>
+                      <b>Week Plan</b> — Focus Areas:{" "}
+                      {plan.weakest.join(", ").toUpperCase()}
+                    </p>
+
+                    {!plan.committed && (
+                      <button
+                        onClick={commit}
+                        style={{
+                          marginBottom: 16,
+                          padding: "8px 14px",
+                          background: "#2563eb",
+                          color: "#fff",
+                          borderRadius: 6,
+                          border: "none",
+                          fontWeight: 600,
+                        }}
+                      >
+                        I Commit to This Plan
+                      </button>
+                    )}
+
+                    {plan.days.map((d, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          padding: 10,
+                          marginBottom: 8,
+                          background: "#ffffff",
+                          borderRadius: 8,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          <b>Day {d.day}</b> — Target: {d.targetRC} RCs  
+                          <div style={{ fontSize: 12, color: "#555" }}>
+                            Done: {d.done} / {d.targetRC}
+                          </div>
+                        </div>
+
+                        <div>
+                          <button onClick={() => updateDay(i, -1)}>-</button>
+                          <button onClick={() => updateDay(i, 1)} style={{ marginLeft: 6 }}>
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <div style={{ marginTop: 16 }}>
+                      <button
+                        onClick={startAdaptiveRC}
+                        style={{
+                          padding: "10px 16px",
+                          background: "green",
+                          color: "#fff",
+                          borderRadius: 6,
+                          border: "none",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Start Adaptive RC Flow
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           )}
         </>
       );
     })()}
   </div>
-)}
+)
  
     </main>
   );
