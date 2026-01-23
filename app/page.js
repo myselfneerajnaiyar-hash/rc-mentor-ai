@@ -583,69 +583,6 @@ function updateTodayRCProgress() {
     ))}
   </div>
 </div>
-    {view === "home" && (
-  <div style={{ maxWidth: 900, margin: "40px auto", color: "#e5e7eb" }}>
-    <h1 style={{ fontSize: 36, marginBottom: 8 }}>RC Mentor</h1>
-    <p style={{ color: "#cbd5f5", marginBottom: 32 }}>
-      Today, build clarity. One RC at a time.
-    </p>
-
-    <div style={{
-      background: "rgba(255,255,255,0.08)",
-      borderRadius: 16,
-      padding: 20,
-      marginBottom: 24
-    }}>
-      <p><b>Today’s Progress</b></p>
-      <div style={{ height: 8, background: "#1e293b", borderRadius: 6 }}>
-        <div style={{
-          height: "100%",
-          width: "33%",
-          background: "#f59e0b",
-          borderRadius: 6
-        }} />
-      </div>
-      <p style={{ marginTop: 8, fontSize: 13 }}>1 / 3 RCs done</p>
-    </div>
-
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-      <div style={cardStyle}>
-        <h3>Adaptive RC Flow</h3>
-        <p>Train your weakest RC skills.</p>
-        <button onClick={() => { setView("rc"); startAdaptiveRC(); }}>
-          Start Adaptive RC →
-        </button>
-      </div>
-
-      <div style={cardStyle}>
-        <h3>Vocabulary Lab</h3>
-        <p>Improve CAT vocabulary.</p>
-        <button onClick={() => setView("vocab")}>
-          Practice Vocabulary →
-        </button>
-      </div>
-
-      <div style={cardStyle}>
-        <h3>Speed Reading Gym</h3>
-        <p>Boost reading speed.</p>
-        <button onClick={() => setView("speed")}>
-          Start Speed Drill →
-        </button>
-      </div>
-
-      <div style={cardStyle}>
-        <h3>CAT RC Arena</h3>
-        <p>4-passage CAT-style test.</p>
-        <button onClick={() => setView("cat")}>
-          Start CAT Test →
-        </button>
-      </div>
-    </div>
-  </div>
-)}
- 
-{view === "rc" && (
-<div>
         <h1
           style={{ cursor: "pointer", margin: 0 }}
           onClick={() => {
@@ -705,7 +642,7 @@ function updateTodayRCProgress() {
             Vocabulary
           </button>
         </div>
-      
+      </div>
 
       {phase === "mentor" && showInitial && (
         <>
@@ -1742,26 +1679,33 @@ const momentumText =
 </div>
                       </div>
                     ))}
-<div style={{ marginTop: 16 }}>
-  <button
-    onClick={startAdaptiveRC}
-    style={{
-      padding: "10px 16px",
-      background: "green",
-      color: "#fff",
-      borderRadius: 6,
-      border: "none",
-      fontWeight: 600,
-    }}
-  >
-    Start Adaptive RC Flow
-  </button>
-</div>
-</div>   {/* closes return(<div> */}
+
+                    <div style={{ marginTop: 16 }}>
+                      <button
+                        onClick={startAdaptiveRC}
+                        style={{
+                          padding: "10px 16px",
+                          background: "green",
+                          color: "#fff",
+                          borderRadius: 6,
+                          border: "none",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Start Adaptive RC Flow
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          )}
+        </>
+      );
+    })()}
+  </div>
 )}
-</div>   {/* closes activeProfileTab === "plan" */}
-)}
-</div>   {/* closes view === "rc" */}
-</main>
-);
+ 
+    </main>
+  );
 }
