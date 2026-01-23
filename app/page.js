@@ -1755,17 +1755,15 @@ const momentumText =
                           fontWeight: 600,
                         }}
                       >
-                        Start Adaptive RC Flow
-                      </button>
-                    </div>
-                          </>
-      );
-})()}
-  </>
-  )}
-  </div>
-  )}
-        
+                      Start Adaptive RC Flow
+                  </button>
+                </div>
+
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </main>
   );
 }
