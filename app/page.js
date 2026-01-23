@@ -1759,16 +1759,7 @@ const momentumText =
                       </button>
                     </div>
                   </>
-                 )}
-                );
-              })()}
-            </div>
-          )}
-        </>
-      );
-    })()}
-  </div>
-)}
+      )}
  
     </main>
   );
