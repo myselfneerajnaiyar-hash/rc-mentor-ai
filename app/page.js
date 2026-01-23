@@ -1300,6 +1300,73 @@ export default function Page() {
                 {donut(overall, "Overall Accuracy")}
                 {donut(pct(byType[weakestTypes[0]]?.correct || 0, byType[weakestTypes[0]]?.total || 1), "Weakest Skill")}
               </div>
+                // ---- Build timeline data ----
+const timeline = tests.map((t, i) => {
+  const total = t.questions.length;
+  const correct = t.questions.filter(q => q.correct).length;
+  const avgTime = Math.round(
+    t.questions.reduce((a, b) => a + (b.time || 0), 0) / total
+  );
+  return {
+    index: i + 1,
+    acc: Math.round((correct / total) * 100),
+    time: avgTime,
+  };
+});
+
+const firstAcc = timeline[0]?.acc || 0;
+const lastAcc = timeline.at(-1)?.acc || 0;
+
+const last5 = timeline.slice(-5);
+const last5Acc = last5.length
+  ? Math.round(last5.reduce((a, b) => a + b.acc, 0) / last5.length)
+  : 0;
+
+const lifetimeAcc = overall;
+
+const momentumText =
+  last5Acc > lifetimeAcc
+    ? "You are trending upward. This is real improvement."
+    : "Your performance is uneven. Consistency is your next breakthrough.";
+
+<div style={{ marginTop: 24 }}>
+  <h3>Your RC Journey</h3>
+
+  <svg width="100%" height="160">
+    {timeline.map((p, i) => {
+      const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
+      const yAcc = 140 - p.acc;
+      const yTime = 140 - p.time;
+
+      return (
+        <g key={i}>
+          <circle cx={x} cy={yAcc} r="2" fill="#2563eb" />
+          <circle cx={x} cy={yTime} r="2" fill="#f59e0b" />
+        </g>
+      );
+    })}
+  </svg>
+
+  <p style={{ marginTop: 6 }}>
+    From your first RC to now, your accuracy has moved from{" "}
+    <b>{firstAcc}%</b> to <b>{lastAcc}%</b>.
+  </p>
+</div>
+
+<div
+  style={{
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
+    background: "#ecfeff",
+    border: "1px solid #bae6fd",
+  }}
+>
+  <h3>Momentum</h3>
+  <p>Last 5 RCs Accuracy: <b>{last5Acc}%</b></p>
+  <p>Lifetime Accuracy: <b>{lifetimeAcc}%</b></p>
+  <p style={{ marginTop: 6 }}>{momentumText}</p>
+</div>
             </div>
           )}
 
