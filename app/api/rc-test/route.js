@@ -6,9 +6,68 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const ALL_TYPES = [
+  "main-idea",
+  "tone",
+  "inference",
+  "detail",
+  "function",
+  "assumption",
+  "strengthen",
+  "weaken",
+  "application",
+  "analogy",
+  "author-agreement",
+  "logical-continuation",
+];
+
+function normalizeType(raw) {
+  const t = (raw || "").toLowerCase();
+
+  if (t.includes("main")) return "main-idea";
+  if (t.includes("tone") || t.includes("attitude")) return "tone";
+  if (t.includes("infer")) return "inference";
+  if (t.includes("detail")) return "detail";
+  if (t.includes("function") || t.includes("role")) return "function";
+  if (t.includes("assump")) return "assumption";
+  if (t.includes("strength")) return "strengthen";
+  if (t.includes("weaken")) return "weaken";
+  if (t.includes("apply") || t.includes("application")) return "application";
+  if (t.includes("analogy") || t.includes("parallel")) return "analogy";
+  if (t.includes("agree") || t.includes("disagree")) return "author-agreement";
+  if (t.includes("next") || t.includes("continue")) return "logical-continuation";
+
+  return "inference";
+}
+
 export async function POST(req) {
   try {
-    const { passage } = await req.json();
+    const { passage, mode = "normal", bias = {} } = await req.json();
+
+    let mixInstruction = `
+Choose 4 question types based on the DNA of this passage.
+Ensure variety. Do not repeat a type.
+Pick from this universe:
+
+${ALL_TYPES.join(", ")}
+`;
+
+    if (mode === "adaptive" && bias?.weakestTypes?.length) {
+      mixInstruction = `
+You are in ADAPTIVE mode.
+
+The student is weak in:
+${bias.weakestTypes.join(", ")}
+
+You MUST:
+- Include at least 2 questions from weakestTypes
+- Include 1 adjacent cognitive type
+- Include 1 neutral CAT type
+
+Still generate EXACTLY 4 questions.
+Do not repeat a type.
+`;
+    }
 
     const prompt = `
 You are a CAT (IIM) Reading Comprehension question setter.
@@ -19,7 +78,8 @@ These must feel like real CAT questions:
 - Non-obvious
 - Elimination-based
 - With tempting but wrong options
--For every question:
+
+For every question:
 - Exactly ONE option must be clearly correct.
 - At least TWO wrong options must be:
   - Partially true
@@ -27,22 +87,9 @@ These must feel like real CAT questions:
   - But incorrect in scope, emphasis, or implication
 - These two must feel equally tempting on a first read.
 - The final wrong option can be obviously wrong.
-- The correct option must be defensible only by careful reading
+- The correct option must be defensible only by careful reading.
 
-Create this exact mix:
-
-1. One MAIN-IDEA question  
-   → About the author’s central argument (not topic)
-
-2. One TONE / ATTITUDE question  
-   → About the author’s stance, posture, or evaluative attitude
-
-3. One INFERENCE question  
-   → Must require reading between the lines  
-   → Answer should NOT be directly stated
-
-4. One DETAIL or FUNCTION question  
-   → About the role of a specific line, paragraph, or example
+${mixInstruction}
 
 Rules:
 
@@ -50,22 +97,17 @@ Rules:
   - "prompt"
   - "options": exactly 4 complete options
   - "correctIndex": 0–3
-  - "type": strictly one of:
-    "main-idea", "tone", "inference", "detail", "function"
+  - "type": one of:
+    ${ALL_TYPES.join(", ")}
 
 - Every option must be:
   - Grammatically complete
   - Plausible
   - Mutually exclusive
 
-- At least TWO wrong options per question must be:
-  - Subtly attractive
-  - Based on partial truth or surface reading
-
-- Do NOT make questions obvious.
-- Do NOT restate lines directly.
+- Do NOT restate lines.
 - Do NOT make factual recall questions.
--If a question can be answered without eliminating at least one tempting option, rewrite it.
+- If a question can be answered without eliminating at least one tempting option, rewrite it.
 
 Return ONLY valid JSON:
 
@@ -87,7 +129,10 @@ ${passage}
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are an expert CAT RC question setter. Output valid JSON only." },
+        {
+          role: "system",
+          content: "You are an expert CAT RC question setter. Output valid JSON only.",
+        },
         { role: "user", content: prompt },
       ],
       temperature: 0.35,
@@ -104,16 +149,8 @@ ${passage}
 
     const parsed = JSON.parse(raw.slice(start, end));
 
-    // Normalize and enforce types at runtime
-    const questions = (parsed.questions || []).map(q => {
-      const rawType = (q.type || "").toLowerCase();
-
-      let type = "inference";
-      if (rawType.includes("main")) type = "main-idea";
-      else if (rawType.includes("tone")) type = "tone";
-      else if (rawType.includes("detail")) type = "detail";
-      else if (rawType.includes("function")) type = "function";
-      else if (rawType.includes("infer")) type = "inference";
+    const questions = (parsed.questions || []).slice(0, 4).map(q => {
+      const type = normalizeType(q.type);
 
       return {
         prompt: q.prompt,
