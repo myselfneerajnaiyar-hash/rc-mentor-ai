@@ -591,7 +591,7 @@ function updateTodayRCProgress() {
 )}
 
 {view === "rc" && (
-  <>
+  <div>
 
 <h1
           style={{ cursor: "pointer", margin: 0 }}
@@ -1715,7 +1715,7 @@ const momentumText =
     })()}
   </div>
 )}
- </>
+ </div>
 )}
     </main>
   );
