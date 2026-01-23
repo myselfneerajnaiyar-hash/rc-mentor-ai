@@ -583,7 +583,17 @@ function updateTodayRCProgress() {
     ))}
   </div>
 </div>
-        <h1
+
+{view === "home" && (
+  <div>
+    {/* HOME DASHBOARD WILL GO HERE */}
+  </div>
+)}
+
+{view === "rc" && (
+  <>
+
+<h1
           style={{ cursor: "pointer", margin: 0 }}
           onClick={() => {
             setIsAdaptive(false);
@@ -1705,7 +1715,8 @@ const momentumText =
     })()}
   </div>
 )}
- 
+ </>
+)}
     </main>
   );
 }
