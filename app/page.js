@@ -1757,13 +1757,11 @@ const momentumText =
     Start Adaptive RC Flow
   </button>
 </div>
-      </div>
+</div>   {/* closes return(<div> */}
 )}
-</div>   {/* closes phase === "profile" container */}
+</div>   {/* closes activeProfileTab === "plan" */}
 )}
-</div>   {/* closes view === "rc" wrapper */}
-</div>   {/* closes main content wrapper */}
+</div>   {/* closes view === "rc" */}
 </main>
 );
 }
-                   
