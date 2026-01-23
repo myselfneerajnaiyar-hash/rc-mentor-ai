@@ -554,14 +554,35 @@ function updateTodayRCProgress() {
     color: "#e5e7eb",
     fontFamily: "system-ui"
   }}>
-      <div
+      
+  <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
+  <div style={{
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 20
+}}>
+  <h2 style={{ margin: 0, color: "#fff" }}>RC Mentor</h2>
+
+  <div style={{ display: "flex", gap: 8 }}>
+    {["home", "rc", "vocab", "speed", "cat"].map(v => (
+      <button
+        key={v}
+        onClick={() => setView(v)}
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 20,
+          padding: "6px 12px",
+          borderRadius: 8,
+          border: "none",
+          cursor: "pointer",
+          background: view === v ? "#38bdf8" : "#1e293b",
+          color: view === v ? "#020617" : "#e5e7eb"
         }}
       >
+        {v.toUpperCase()}
+      </button>
+    ))}
+  </div>
+</div>
         <h1
           style={{ cursor: "pointer", margin: 0 }}
           onClick={() => {
