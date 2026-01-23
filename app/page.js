@@ -653,6 +653,7 @@ function updateTodayRCProgress() {
           </button>
         </div>
               </div>
+              </div>
       {phase === "mentor" && showInitial && (
         <div>
           <p>Paste a passage. Let’s read it together.</p>
