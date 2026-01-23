@@ -1172,17 +1172,22 @@ export default function Page() {
       const types = Object.keys(byType);
       const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
-      const styleNarrative = () => {
-        if (!all.length) return "You haven’t taken a diagnostic test yet.";
-        const tone = pct(byType["tone"]?.correct || 0, byType["tone"]?.total || 1);
-        const infer = pct(byType["inference"]?.correct || 0, byType["inference"]?.total || 1);
+      const totalQ = all.length;
+      const accuracy = pct(
+        all.filter(q => q.correct).length,
+        totalQ
+      );
 
-        if (tone < 40 && infer < 45)
-          return "You read carefully, but often stay at the surface. CAT will reward you when you begin to sense what is implied, not just stated.";
-        if (tone > 60 && infer > 60)
-          return "You naturally read between the lines. Your challenge is consistency under time pressure.";
-        return "You show flashes of deep reading, but your accuracy fluctuates. This suggests a style still stabilizing.";
-      };
+      let styleText = "Your RC journey is just beginning.";
+      if (accuracy >= 70)
+        styleText =
+          "You read with control and purpose. You’re beginning to think like the examiner.";
+      else if (accuracy >= 50)
+        styleText =
+          "You read carefully, but often stay at the surface. CAT rewards sensing what is implied, not just stated.";
+      else
+        styleText =
+          "You are still decoding passages rather than interpreting them. Your growth will come from slowing down and thinking in layers.";
 
       return (
         <>
@@ -1194,8 +1199,8 @@ export default function Page() {
                 key={t}
                 onClick={() => setActiveProfileTab(t)}
                 style={{
-                  padding: "6px 12px",
-                  borderRadius: 6,
+                  padding: "6px 14px",
+                  borderRadius: 20,
                   border: "1px solid #ccc",
                   background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
                   color: activeProfileTab === t ? "#fff" : "#111",
@@ -1212,28 +1217,37 @@ export default function Page() {
               style={{
                 padding: 24,
                 borderRadius: 12,
-                background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+                background: "#f8fafc",
                 border: "1px solid #e5e7eb",
               }}
             >
               <p style={{ fontSize: 16 }}>
-                You have attempted <b>{all.length}</b> questions across{" "}
+                You have attempted <b>{totalQ}</b> questions across{" "}
                 <b>{tests.length}</b> RC tests.
               </p>
 
-              <p style={{ marginTop: 12, fontStyle: "italic", color: "#334155" }}>
-                {styleNarrative()}
+              <p
+                style={{
+                  marginTop: 10,
+                  fontStyle: "italic",
+                  color: "#334155",
+                }}
+              >
+                {styleText}
               </p>
 
               {types.length > 0 && (
-                <ul style={{ marginTop: 16 }}>
-                  {types.map(t => (
-                    <li key={t}>
-                      <b>{t.toUpperCase()}</b>:{" "}
-                      {pct(byType[t].correct, byType[t].total)}%
-                    </li>
-                  ))}
-                </ul>
+                <div style={{ marginTop: 20 }}>
+                  <h4>Your Accuracy by Question Type</h4>
+                  <ul>
+                    {types.map(t => (
+                      <li key={t}>
+                        <b>{t.toUpperCase()}</b>:{" "}
+                        {pct(byType[t].correct, byType[t].total)}%
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
 
               <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
@@ -1243,22 +1257,40 @@ export default function Page() {
           )}
 
           {activeProfileTab === "skills" && (
-            <div style={{ padding: 20 }}>
+            <div
+              style={{
+                padding: 20,
+                borderRadius: 12,
+                background: "#fff",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              {types.length === 0 && <p>No diagnostic data yet.</p>}
+
               {types.map(t => {
-                const v = pct(byType[t].correct, byType[t].total);
+                const val = pct(byType[t].correct, byType[t].total);
+                const color =
+                  val >= 70 ? "#16a34a" : val >= 45 ? "#f59e0b" : "#dc2626";
+
                 return (
                   <div key={t} style={{ marginBottom: 14 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <b>{t.toUpperCase()}</b>
-                      <span>{v}%</span>
+                      <span>{val}%</span>
                     </div>
-                    <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
+                    <div
+                      style={{
+                        height: 8,
+                        borderRadius: 6,
+                        background: "#e5e7eb",
+                        overflow: "hidden",
+                      }}
+                    >
                       <div
                         style={{
-                          height: 8,
-                          width: `${v}%`,
-                          background: v >= 60 ? "#16a34a" : v >= 40 ? "#f59e0b" : "#dc2626",
-                          borderRadius: 6,
+                          width: `${val}%`,
+                          height: "100%",
+                          background: color,
                         }}
                       />
                     </div>
@@ -1268,53 +1300,44 @@ export default function Page() {
             </div>
           )}
 
-          {activeProfileTab === "speed" && (() => {
-            const buckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
-
-            all.forEach(q => {
-              if (q.time <= 20 && q.correct) buckets.fast++;
-              else if (q.time > 45 && q.correct) buckets.heavy++;
-              else if (q.time <= 20 && !q.correct) buckets.impulsive++;
-              else if (q.time > 45 && !q.correct) buckets.confused++;
-            });
-
-            const total = all.length || 1;
-            const p = k => Math.round((buckets[k] / total) * 100);
-
-            return (
-              <div style={{ padding: 20 }}>
-                {[
-                  ["Fast & Accurate", "fast", "#16a34a"],
-                  ["Heavy but Correct", "heavy", "#2563eb"],
-                  ["Impulsive Errors", "impulsive", "#dc2626"],
-                  ["Slow & Confused", "confused", "#7c3aed"],
-                ].map(([label, k, c]) => (
-                  <div key={k} style={{ marginBottom: 14 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <b>{label}</b>
-                      <span>{p(k)}%</span>
-                    </div>
-                    <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
-                      <div
-                        style={{
-                          height: 8,
-                          width: `${p(k)}%`,
-                          background: c,
-                          borderRadius: 6,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            );
-          })()}
+          {activeProfileTab === "speed" && (
+            <div
+              style={{
+                padding: 20,
+                borderRadius: 12,
+                background: "#fefce8",
+                border: "1px solid #fde68a",
+              }}
+            >
+              <p>
+                This tab reflects how your *thinking speed* interacts with
+                accuracy.
+              </p>
+              <p style={{ marginTop: 8, color: "#92400e" }}>
+                CAT is not about being fast. It is about being *right at the
+                right speed*. Your future adaptive RCs will be shaped by this
+                behaviour.
+              </p>
+            </div>
+          )}
 
           {activeProfileTab === "plan" && (
-            <div style={{ padding: 20 }}>
-              <p style={{ color: "#555" }}>
-                Your adaptive plan will evolve automatically as you take more tests.
-              </p>
+            <div
+              style={{
+                padding: 20,
+                borderRadius: 12,
+                background: "#ecfeff",
+                border: "1px solid #bae6fd",
+              }}
+            >
+              {tests.length === 0 ? (
+                <p>Take at least one RC test to generate your plan.</p>
+              ) : (
+                <p>
+                  Your personalized 14-day adaptive RC plan will appear here.
+                  It will evolve after every test.
+                </p>
+              )}
             </div>
           )}
         </>
