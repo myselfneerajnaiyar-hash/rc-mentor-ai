@@ -548,7 +548,12 @@ function updateTodayRCProgress() {
 }
   
   return (
-    <main style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
+  <main style={{ 
+    minHeight: "100vh",
+    background: "linear-gradient(180deg, #0f172a, #020617)",
+    color: "#e5e7eb",
+    fontFamily: "system-ui"
+  }}>
       <div
         style={{
           display: "flex",
