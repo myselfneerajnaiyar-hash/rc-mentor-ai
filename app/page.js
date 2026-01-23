@@ -561,7 +561,9 @@ function updateTodayRCProgress() {
     startAdaptiveRC={startAdaptiveRC}
   />
 )}
-      {view !== "home" && (
+
+{view !== "home" && (
+  <>
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
   <div style={{
   display: "flex",
@@ -1712,7 +1714,8 @@ const momentumText =
     })()}
   </div>
 )}
- 
+ </>
+)}
     </main>
   );
 }
