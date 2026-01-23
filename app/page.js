@@ -1181,6 +1181,34 @@ export default function Page() {
         .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))
         .slice(0, 4)
         .map(x => x[0]);
+      // ---- Build timeline data ----
+const timeline = tests.map((t, i) => {
+  const total = t.questions.length;
+  const correct = t.questions.filter(q => q.correct).length;
+  const avgTime = Math.round(
+    t.questions.reduce((a, b) => a + (b.time || 0), 0) / total
+  );
+  return {
+    index: i + 1,
+    acc: Math.round((correct / total) * 100),
+    time: avgTime,
+  };
+});
+
+const firstAcc = timeline[0]?.acc || 0;
+const lastAcc = timeline.at(-1)?.acc || 0;
+
+const last5 = timeline.slice(-5);
+const last5Acc = last5.length
+  ? Math.round(last5.reduce((a, b) => a + b.acc, 0) / last5.length)
+  : 0;
+
+const lifetimeAcc = overall;
+
+const momentumText =
+  last5Acc > lifetimeAcc
+    ? "You are trending upward. This is real improvement."
+    : "Your performance is uneven. Consistency is your next breakthrough.";
 
       const donut = (value, label) => {
         const r = 48;
@@ -1300,35 +1328,7 @@ export default function Page() {
                 {donut(overall, "Overall Accuracy")}
                 {donut(pct(byType[weakestTypes[0]]?.correct || 0, byType[weakestTypes[0]]?.total || 1), "Weakest Skill")}
               </div>
-                // ---- Build timeline data ----
-const timeline = tests.map((t, i) => {
-  const total = t.questions.length;
-  const correct = t.questions.filter(q => q.correct).length;
-  const avgTime = Math.round(
-    t.questions.reduce((a, b) => a + (b.time || 0), 0) / total
-  );
-  return {
-    index: i + 1,
-    acc: Math.round((correct / total) * 100),
-    time: avgTime,
-  };
-});
-
-const firstAcc = timeline[0]?.acc || 0;
-const lastAcc = timeline.at(-1)?.acc || 0;
-
-const last5 = timeline.slice(-5);
-const last5Acc = last5.length
-  ? Math.round(last5.reduce((a, b) => a + b.acc, 0) / last5.length)
-  : 0;
-
-const lifetimeAcc = overall;
-
-const momentumText =
-  last5Acc > lifetimeAcc
-    ? "You are trending upward. This is real improvement."
-    : "Your performance is uneven. Consistency is your next breakthrough.";
-
+              
 <div style={{ marginTop: 24 }}>
   <h3>Your RC Journey</h3>
 
