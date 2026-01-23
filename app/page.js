@@ -1162,7 +1162,7 @@ export default function Page() {
 
       const byType = {};
       all.forEach(q => {
-        const t = q.type || "inference";
+        const t = (q.type || "inference").toLowerCase();
         byType[t] = byType[t] || { total: 0, correct: 0, time: 0 };
         byType[t].total += 1;
         if (q.correct) byType[t].correct += 1;
@@ -1173,21 +1173,85 @@ export default function Page() {
       const pct = (x, y) => (!y ? 0 : Math.round((x / y) * 100));
 
       const totalQ = all.length;
-      const accuracy = pct(
-        all.filter(q => q.correct).length,
-        totalQ
+      const totalC = all.filter(q => q.correct).length;
+      const overall = pct(totalC, totalQ);
+
+      const weakest = Object.entries(byType)
+        .sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))[0]?.[0];
+
+      const donut = (value, label) => {
+        const r = 54;
+        const c = 2 * Math.PI * r;
+        const dash = (value / 100) * c;
+        return (
+          <div style={{ textAlign: "center" }}>
+            <svg width="140" height="140">
+              <circle cx="70" cy="70" r={r} stroke="#e5e7eb" strokeWidth="12" fill="none" />
+              <circle
+                cx="70"
+                cy="70"
+                r={r}
+                stroke={value >= 70 ? "#16a34a" : value >= 40 ? "#f59e0b" : "#dc2626"}
+                strokeWidth="12"
+                fill="none"
+                strokeDasharray={`${dash} ${c - dash}`}
+                transform="rotate(-90 70 70)"
+              />
+              <text x="70" y="76" textAnchor="middle" fontSize="20" fontWeight="700">
+                {value}%
+              </text>
+            </svg>
+            <div style={{ fontWeight: 600 }}>{label}</div>
+          </div>
+        );
+      };
+
+      const bar = (label, v) => (
+        <div key={label} style={{ marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+            <b>{label.toUpperCase()}</b>
+            <span>{v}%</span>
+          </div>
+          <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
+            <div
+              style={{
+                height: "100%",
+                width: `${v}%`,
+                borderRadius: 6,
+                background: v >= 70 ? "#16a34a" : v >= 40 ? "#f59e0b" : "#dc2626",
+              }}
+            />
+          </div>
+        </div>
       );
 
-      let styleText = "Your RC journey is just beginning.";
-      if (accuracy >= 70)
-        styleText =
-          "You read with control and purpose. You’re beginning to think like the examiner.";
-      else if (accuracy >= 50)
-        styleText =
-          "You read carefully, but often stay at the surface. CAT rewards sensing what is implied, not just stated.";
-      else
-        styleText =
-          "You are still decoding passages rather than interpreting them. Your growth will come from slowing down and thinking in layers.";
+      const speedBuckets = { fast: 0, heavy: 0, impulsive: 0, confused: 0 };
+      all.forEach(q => {
+        if (q.time <= 20 && q.correct) speedBuckets.fast++;
+        else if (q.time > 45 && q.correct) speedBuckets.heavy++;
+        else if (q.time <= 20 && !q.correct) speedBuckets.impulsive++;
+        else if (q.time > 45 && !q.correct) speedBuckets.confused++;
+      });
+
+      const sTotal =
+        speedBuckets.fast +
+        speedBuckets.heavy +
+        speedBuckets.impulsive +
+        speedBuckets.confused || 1;
+
+      const sp = k => Math.round((speedBuckets[k] / sTotal) * 100);
+
+      const dominant =
+        Object.entries(speedBuckets).sort((a, b) => b[1] - a[1])[0]?.[0];
+
+      let speedText =
+        dominant === "impulsive"
+          ? "You are reacting faster than you are thinking. CAT will punish speed without deliberation."
+          : dominant === "confused"
+          ? "You are spending time but not constructing meaning. You need paragraph-level clarity."
+          : dominant === "heavy"
+          ? "You are careful and correct, but time pressure will hurt you."
+          : "You balance speed and accuracy well. Preserve this under pressure.";
 
       return (
         <>
@@ -1199,9 +1263,9 @@ export default function Page() {
                 key={t}
                 onClick={() => setActiveProfileTab(t)}
                 style={{
-                  padding: "6px 14px",
-                  borderRadius: 20,
-                  border: "1px solid #ccc",
+                  padding: "6px 12px",
+                  borderRadius: 8,
+                  border: "1px solid #d1d5db",
                   background: activeProfileTab === t ? "#2563eb" : "#f3f4f6",
                   color: activeProfileTab === t ? "#fff" : "#111",
                   fontWeight: 600,
@@ -1213,130 +1277,56 @@ export default function Page() {
           </div>
 
           {activeProfileTab === "overview" && (
-            <div
-              style={{
-                padding: 24,
-                borderRadius: 12,
-                background: "#f8fafc",
-                border: "1px solid #e5e7eb",
-              }}
-            >
-              <p style={{ fontSize: 16 }}>
+            <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
+              <p>
                 You have attempted <b>{totalQ}</b> questions across{" "}
                 <b>{tests.length}</b> RC tests.
               </p>
-
-              <p
-                style={{
-                  marginTop: 10,
-                  fontStyle: "italic",
-                  color: "#334155",
-                }}
-              >
-                {styleText}
+              <p style={{ color: "#555" }}>
+                {overall >= 65
+                  ? "You are developing control over RC. The next leap is consistency under pressure."
+                  : "You are still decoding more than interpreting. Growth will come from thinking in layers."}
               </p>
 
-              {types.length > 0 && (
-                <div style={{ marginTop: 20 }}>
-                  <h4>Your Accuracy by Question Type</h4>
-                  <ul>
-                    {types.map(t => (
-                      <li key={t}>
-                        <b>{t.toUpperCase()}</b>:{" "}
-                        {pct(byType[t].correct, byType[t].total)}%
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <button onClick={() => setPhase("mentor")} style={{ marginTop: 16 }}>
-                Back
-              </button>
+              <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
+                {donut(overall, "Overall Accuracy")}
+                {donut(pct(byType[weakest]?.correct || 0, byType[weakest]?.total || 1), "Weakest Skill")}
+              </div>
             </div>
           )}
 
           {activeProfileTab === "skills" && (
-            <div
-              style={{
-                padding: 20,
-                borderRadius: 12,
-                background: "#fff",
-                border: "1px solid #e5e7eb",
-              }}
-            >
-              {types.length === 0 && <p>No diagnostic data yet.</p>}
-
-              {types.map(t => {
-                const val = pct(byType[t].correct, byType[t].total);
-                const color =
-                  val >= 70 ? "#16a34a" : val >= 45 ? "#f59e0b" : "#dc2626";
-
-                return (
-                  <div key={t} style={{ marginBottom: 14 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <b>{t.toUpperCase()}</b>
-                      <span>{val}%</span>
-                    </div>
-                    <div
-                      style={{
-                        height: 8,
-                        borderRadius: 6,
-                        background: "#e5e7eb",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: `${val}%`,
-                          height: "100%",
-                          background: color,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+            <div style={{ padding: 20, borderRadius: 12, background: "#fff", border: "1px solid #e5e7eb" }}>
+              {types.map(t => bar(t, pct(byType[t].correct, byType[t].total)))}
             </div>
           )}
 
           {activeProfileTab === "speed" && (
-            <div
-              style={{
-                padding: 20,
-                borderRadius: 12,
-                background: "#fefce8",
-                border: "1px solid #fde68a",
-              }}
-            >
-              <p>
-                This tab reflects how your *thinking speed* interacts with
-                accuracy.
-              </p>
-              <p style={{ marginTop: 8, color: "#92400e" }}>
-                CAT is not about being fast. It is about being *right at the
-                right speed*. Your future adaptive RCs will be shaped by this
-                behaviour.
-              </p>
+            <div style={{ padding: 20, borderRadius: 12, background: "#fff7ed", border: "1px solid #fed7aa" }}>
+              <p style={{ marginBottom: 12 }}>{speedText}</p>
+              {bar("Fast & Accurate", sp("fast"))}
+              {bar("Heavy but Correct", sp("heavy"))}
+              {bar("Impulsive Errors", sp("impulsive"))}
+              {bar("Slow & Confused", sp("confused"))}
             </div>
           )}
 
           {activeProfileTab === "plan" && (
-            <div
-              style={{
-                padding: 20,
-                borderRadius: 12,
-                background: "#ecfeff",
-                border: "1px solid #bae6fd",
-              }}
-            >
-              {tests.length === 0 ? (
+            <div style={{ padding: 20, borderRadius: 12, background: "#ecfeff", border: "1px solid #bae6fd" }}>
+              {totalQ === 0 ? (
                 <p>Take at least one RC test to generate your plan.</p>
               ) : (
-                <p>
-                  Your personalized 14-day adaptive RC plan will appear here.
-                  It will evolve after every test.
-                </p>
+                <>
+                  <p style={{ marginBottom: 12 }}>
+                    Your 14-day adaptive plan (updates after every test):
+                  </p>
+                  {Array.from({ length: 14 }).map((_, i) => (
+                    <div key={i} style={{ padding: 10, marginBottom: 6, background: "#fff", borderRadius: 8 }}>
+                      <b>Day {i + 1}</b> — Focus on{" "}
+                      <b>{weakest?.toUpperCase() || "INFERENCE"}</b> + one timed RC
+                    </div>
+                  ))}
+                </>
               )}
             </div>
           )}
