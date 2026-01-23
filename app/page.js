@@ -1332,20 +1332,48 @@ const momentumText =
 <div style={{ marginTop: 24 }}>
   <h3>Your RC Journey</h3>
 
-  <svg width="100%" height="160">
-    {timeline.map((p, i) => {
-      const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
-      const yAcc = 140 - p.acc;
-      const yTime = 140 - p.time;
+ <svg width="100%" height="160">
+  {/* Accuracy line */}
+  <polyline
+    fill="none"
+    stroke="#2563eb"
+    strokeWidth="1.5"
+    points={timeline
+      .map((p, i) => {
+        const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
+        const y = 140 - p.acc;
+        return `${x},${y}`;
+      })
+      .join(" ")}
+  />
 
-      return (
-        <g key={i}>
-          <circle cx={x} cy={yAcc} r="2" fill="#2563eb" />
-          <circle cx={x} cy={yTime} r="2" fill="#f59e0b" />
-        </g>
-      );
-    })}
-  </svg>
+  {/* Time line */}
+  <polyline
+    fill="none"
+    stroke="#f59e0b"
+    strokeWidth="1.5"
+    points={timeline
+      .map((p, i) => {
+        const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
+        const y = 140 - p.time;
+        return `${x},${y}`;
+      })
+      .join(" ")}
+  />
+
+  {timeline.map((p, i) => {
+    const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
+    const yAcc = 140 - p.acc;
+    const yTime = 140 - p.time;
+
+    return (
+      <g key={i}>
+        <circle cx={x} cy={yAcc} r="2" fill="#2563eb" />
+        <circle cx={x} cy={yTime} r="2" fill="#f59e0b" />
+      </g>
+    );
+  })}
+</svg>
 
   <p style={{ marginTop: 6 }}>
     From your first RC to now, your accuracy has moved from{" "}
