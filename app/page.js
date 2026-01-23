@@ -342,7 +342,10 @@ export default function Page() {
       const res = await fetch("/api/rc-test", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passage: full }),
+        body: JSON.stringify({
+  passage: full,
+  mode: "normal",
+}),
       });
       if (!res.ok) throw new Error();
       const json = await res.json();
