@@ -1332,7 +1332,33 @@ const momentumText =
 <div style={{ marginTop: 24 }}>
   <h3>Your RC Journey</h3>
 
- <svg width="100%" height="160">
+<svg width="100%" height="180">
+  {/* Y-axis grid & labels */}
+  {[0, 25, 50, 75, 100].map(v => {
+    const y = 140 - v;
+    return (
+      <g key={v}>
+        <line x1="30" y1={y} x2="760" y2={y} stroke="#e5e7eb" strokeDasharray="2 2" />
+        <text x="4" y={y + 4} fontSize="10" fill="#6b7280">
+          {v}%
+        </text>
+      </g>
+    );
+  })}
+
+  {/* X-axis labels */}
+  {timeline.map((_, i) => {
+    if (i === 0 || i === timeline.length - 1 || i % 5 === 0) {
+      const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
+      return (
+        <text key={i} x={x - 6} y="160" fontSize="10" fill="#6b7280">
+          {i + 1}
+        </text>
+      );
+    }
+    return null;
+  })}
+
   {/* Accuracy line */}
   <polyline
     fill="none"
@@ -1361,6 +1387,7 @@ const momentumText =
       .join(" ")}
   />
 
+  {/* Points */}
   {timeline.map((p, i) => {
     const x = 40 + i * (700 / Math.max(1, timeline.length - 1));
     const yAcc = 140 - p.acc;
