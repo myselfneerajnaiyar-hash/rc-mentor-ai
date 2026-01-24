@@ -558,114 +558,56 @@ function updateTodayRCProgress() {
       color: "#1f2937",
     }}
   >
-      {view === "home" && (
+     {view === "home" && (
   <HomeView
     setView={setView}
     startAdaptiveRC={startAdaptiveRC}
   />
 )}
 
-
-      {view !== "home" &&  (
+{view !== "home" && (
   <>
- 
-  <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
-  <div style={{
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 20
-}}>
-  <h2 style={{ margin: 0, color: "#111" }}>RC Mentor</h2>
-
-  <div style={{ display: "flex", gap: 8 }}>
-    {["home", "rc", "vocab", "speed", "cat"].map(v => (
-      <button
-        key={v}
-        onClick={() => setView(v)}
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
+      <div
         style={{
-          padding: "6px 12px",
-          borderRadius: 8,
-          border: "none",
-          cursor: "pointer",
-         background: view === v ? "#2563eb" : "#f3f4f6",
-color: view === v ? "#fff" : "#111",
-border: "1px solid #e5e7eb"
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20,
         }}
       >
-        {v.toUpperCase()}
-      </button>
-    ))}
-  </div>
-</div>
-        <h1
-          style={{ cursor: "pointer", margin: 0 }}
-          onClick={() => {
-            setIsAdaptive(false);
-            setParas([]);
-            setText("");
-            setIndex(0);
-            setData(null);
-            setFeedback("");
-            setMode("idle");
-            setGeneratedRC(null);
-            setTestQuestions([]);
-            setTestAnswers({});
-            setResult(null);
-            setShowGenerator(false);
-            setPhase("mentor");
-          }}
-        >
-          RC Mentor
-        </h1>
+        <h2 style={{ margin: 0, color: "#111" }}>RC Mentor</h2>
 
-        <div style={{ display: "flex", gap: 12 }}>
-          <button
-            onClick={() => {
-              setIsAdaptive(false);
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("mentor");
-            }}
-          >
-            Home
-          </button>
-
-          <button
-            onClick={() => {
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("profile");
-            }}
-          >
-            RC Profile
-          </button>
-
-          <button
-            onClick={() => {
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("vocab");
-            }}
-            style={{
-              background: "#fde68a",
-              border: "1px solid #f59e0b",
-              color: "#92400e",
-              fontWeight: 600,
-            }}
-          >
-            Vocabulary
-          </button>
+        <div style={{ display: "flex", gap: 8 }}>
+          {["home", "rc", "vocab", "speed", "cat"].map(v => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              style={{
+                padding: "6px 12px",
+                borderRadius: 8,
+                cursor: "pointer",
+                background: view === v ? "#2563eb" : "#f3f4f6",
+                color: view === v ? "#fff" : "#111",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              {v.toUpperCase()}
+            </button>
+          ))}
         </div>
       </div>
 
-    {view === "rc" && (
-  <MentorView
-    text={text}
-    setText={setText}
-    splitPassage={splitPassage}
-    setShowGenerator={setShowGenerator}
-  />
+      {view === "rc" && (
+        <MentorView
+          text={text}
+          setText={setText}
+          splitPassage={splitPassage}
+          setShowGenerator={setShowGenerator}
+        />
+      )}
+    </div>
+  </>
 )}
       {showGenPanel && (
         <div
