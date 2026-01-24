@@ -77,8 +77,9 @@ export default function RCView({view,setView }) {
 
     const data = await res.json();
 
-    setText(data.passage);   // puts generated passage in textarea
-    setShowGenerator(false); // hides generator panel
+    setGeneratedRC(data);     // store full RC package
+    setShowGenerator(false);  // hide panel
+    setPhase("newRC");        // show choice screen
   } catch (e) {
     alert("Failed to generate RC");
   } finally {
