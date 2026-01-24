@@ -359,15 +359,18 @@ export default function RCView({view,setView }) {
 
   {view === "rc" && (
   <>
-    <MentorView
-      text={text}
-      setText={setText}
-      splitPassage={splitPassage}
-      setShowGenerator={setShowGenerator}
-    />
+   {paras.length === 0 && phase === "mentor" && (
+  <MentorView
+    text={text}
+    setText={setText}
+    splitPassage={splitPassage}
+    setShowGenerator={setShowGenerator}
+  />
+)}
 
-   {paras.length > 0 && phase === "mentor" && (
-  <div style={{ marginTop: 20 }}>
+  {paras.length > 0 && phase === "mentor" && (
+  <div style={{ marginTop: 20, background: "#fff", padding: 20, borderRadius: 12 }}>
+
     <h3>Paragraph {index + 1}</h3>
     <div style={{ marginBottom: 12 }}>{paras[index]}</div>
 
@@ -377,25 +380,61 @@ export default function RCView({view,setView }) {
       </button>
     )}
 
-    {data && (
-      <div style={{ marginTop: 16 }}>
-        <p><b>Idea:</b> {data.summary}</p>
+   {data && (
+  <div style={{ marginTop: 16 }}>
+    <h4>In simple words</h4>
+    <p style={{ color: "#374151" }}>
+      {data.simpleExplanation || data.summary}
+    </p>
+
+    <h4>Main Idea</h4>
+    <p><b>{data.summary}</b></p>
 
         {mode === "showingPrimary" && (
           <>
             <p>{data.primaryQuestion.question}</p>
-            {data.primaryQuestion.options.map((o, i) => (
-              <button key={i} onClick={() => choose(i)}>{o}</button>
-            ))}
+           {data.primaryQuestion.options.map((o, i) => (
+  <button
+    key={i}
+    onClick={() => choose(i)}
+    style={{
+      display: "block",
+      width: "100%",
+      textAlign: "left",
+      marginBottom: 8,
+      padding: "10px 12px",
+      borderRadius: 6,
+      border: "1px solid #d1d5db",
+      background: "#f9fafb",
+    }}
+  >
+    {o}
+  </button>
+))}
           </>
         )}
 
         {mode === "showingEasier" && (
           <>
             <p>{data.easierQuestion.question}</p>
-            {data.easierQuestion.options.map((o, i) => (
-              <button key={i} onClick={() => choose(i)}>{o}</button>
-            ))}
+           {data.easierQuestion.options.map((o, i) => (
+  <button
+    key={i}
+    onClick={() => choose(i)}
+    style={{
+      display: "block",
+      width: "100%",
+      textAlign: "left",
+      marginBottom: 8,
+      padding: "10px 12px",
+      borderRadius: 6,
+      border: "1px solid #d1d5db",
+      background: "#f9fafb",
+    }}
+  >
+    {o}
+  </button>
+))}
           </>
         )}
 
