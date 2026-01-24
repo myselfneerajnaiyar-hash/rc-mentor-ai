@@ -3,6 +3,23 @@ import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
 
 export default function RCView({ setView }) {
+  const [text, setText] = useState("");
+const [paras, setParas] = useState([]);
+const [index, setIndex] = useState(0);
+const [showGenerator, setShowGenerator] = useState(false);
+
+  function splitPassage() {
+  const raw = text.trim();
+  if (!raw) return;
+
+  const parts = raw
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  setParas(parts);
+  setIndex(0);
+
   return (
     <div
     style={{
