@@ -560,7 +560,7 @@ function updateTodayRCProgress() {
       />
     )}
 
-    {view === "rc" && <RCView setView={setView} />}
+    {view === "rc" && <RCView view={view} setView={setView} />}
   </main>
 );
 }
