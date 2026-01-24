@@ -456,6 +456,70 @@ export default function RCView({view,setView }) {
     </button>
   </div>
 )}
+    {phase === "newRC" && generatedRC && (
+  <div
+    style={{
+      marginTop: 24,
+      padding: 24,
+      borderRadius: 12,
+      background: "#f8fafc",
+      border: "1px solid #e5e7eb",
+      textAlign: "center",
+    }}
+  >
+    <h2>Your passage is ready.</h2>
+    <p style={{ color: "#555" }}>
+      How would you like to approach it?
+    </p>
+
+    <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 16 }}>
+      <button
+        onClick={() => {
+          const parts = generatedRC.passage
+            .split(/\n\s*\n/)
+            .map(p => p.trim())
+            .filter(Boolean);
+
+          setParas(parts);
+          setIndex(0);
+          setData(null);
+          setFeedback("");
+          setMode("idle");
+          setPhase("mentor");
+        }}
+        style={{
+          padding: "12px 18px",
+          background: "#2563eb",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+        }}
+      >
+        Guided Explanation Mode
+      </button>
+
+      <button
+        onClick={() => {
+          setParas(generatedRC.passage.split(/\n\s*\n/));
+          setTestQuestions([]);
+          setTestAnswers({});
+          setPhase("ready");
+        }}
+        style={{
+          padding: "12px 18px",
+          background: "green",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+        }}
+      >
+        Take it as a Test
+      </button>
+    </div>
+  </div>
+)}
 
     {phase === "ready" && (
       <div>
