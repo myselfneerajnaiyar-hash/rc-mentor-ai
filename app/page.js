@@ -566,7 +566,12 @@ function updateTodayRCProgress() {
 )}
 
 {view === "rc" && (
-  <MentorView />
+  <MentorView
+    text={text}
+    setText={setText}
+    splitPassage={splitPassage}
+    setShowGenerator={setShowGenerator}
+  />
 )}
       {view !== "home" && view !== "rc" && (
   <>
