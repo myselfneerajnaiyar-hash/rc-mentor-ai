@@ -86,6 +86,203 @@ export default function RCView({view,setView }) {
     setGenLoading(false);
   }
 }
+  const current = paras[index] || "";
+
+  async function explain() {
+    if (!current) return;
+    setLoading(true);
+    setError("");
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+
+    try {
+      const res = await fetch("/api/rc-mentor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paragraph: current }),
+      });
+      if (!res.ok) throw new Error("API failed");
+      const json = await res.json();
+      setData(json);
+      setMode("showingPrimary");
+      setQuestionStartTime(Date.now());
+    } catch {
+      setError("Could not fetch explanation.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function choose(i) {
+    const end = Date.now();
+    const timeTaken = Math.round((end - questionStartTime) / 1000);
+
+    const key =
+      mode === "showingPrimary"
+        ? `para-${index}-primary`
+        : `para-${index}-easier`;
+
+    setQuestionTimes(t => ({ ...t, [key]: timeTaken }));
+
+    if (!data) return;
+
+    if (mode === "showingPrimary") {
+      if (i === data.primaryQuestion.correctIndex) {
+        setFeedback("Correct. You're reading this paragraph the right way.");
+        setMode("solved");
+      } else {
+        setFeedback("Not quite. Let’s try a simpler question on the same idea.");
+        setMode("showingEasier");
+        setQuestionStartTime(Date.now());
+      }
+    } else if (mode === "showingEasier") {
+      if (i === data.easierQuestion.correctIndex) {
+        setFeedback("Correct. Good recovery.");
+        setMode("solved");
+      }
+    }
+  }
+
+  function nextParagraph() {
+    if (index === paras.length - 1) {
+      setPhase("ready");
+      return;
+    }
+    setIndex(i => i + 1);
+    setData(null);
+    setMode("idle");
+    setFeedback("");
+  }
+
+  async function startTest() {
+    setTestLoading(true);
+    setError("");
+
+    setTestQuestions([]);
+    setTestAnswers({});
+    setQuestionTimes({});
+    setResult(null);
+
+    try {
+      const full = paras.join("\n\n");
+      const res = await fetch("/api/rc-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passage: full, mode: "normal" }),
+      });
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+
+      const normalized = (json.questions || []).map(q => ({
+        ...q,
+        type: q.type ? q.type.trim().toLowerCase() : "unknown",
+      }));
+
+      setTestQuestions(normalized);
+      setPhase("test");
+    } catch {
+      setError("Could not generate test.");
+    } finally {
+      setTestLoading(false);
+    }
+  }
+
+  async function submitTest() {
+    setTimerRunning(false);
+    setLoading(true);
+    setError("");
+
+    try {
+      const full = paras.join("\n\n");
+      const res = await fetch("/api/rc-diagnose", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          passage: full,
+          questions: testQuestions,
+          answers: testAnswers,
+        }),
+      });
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      setResult(json);
+      setPhase("result");
+    } catch {
+      setError("Could not analyze your test.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function generateNewRC() {
+    setGenLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/rc-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ genre, difficulty, lengthRange }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const json = await res.json();
+      setGeneratedRC(json);
+      setPhase("newRC");
+      setShowGenerator(false);
+    } catch {
+      setError("Could not generate new RC.");
+    } finally {
+      setGenLoading(false);
+    }
+  }
+
+  async function startAdaptiveRC() {
+    try {
+      setIsAdaptive(true);
+      setShowGenerator(false);
+
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+
+      setPhase("loading-adaptive");
+
+      const res = await fetch("/api/rc-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          genre: "Mixed",
+          difficulty: "moderate",
+          lengthRange: "400-500",
+        }),
+      });
+
+      const json = await res.json();
+
+      const parts = json.passage
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(Boolean);
+
+      setParas(parts);
+      setIndex(0);
+      setPhase("mentor");
+    } catch (e) {
+      setShowGenerator(true);
+      setPhase("mentor");
+    }
+  }
+
+  const score = testQuestions.reduce(
+    (s, q, i) =>
+      s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
+    0
+  );
   return (
     <div
     style={{
