@@ -4,7 +4,7 @@ import MentorView from "./MentorView";
 
 export default function RCView({ setView }) {
   return (
-    <>
+    <div
     style={{
       minHeight: "100vh",
       fontFamily: "system-ui",
@@ -12,16 +12,7 @@ export default function RCView({ setView }) {
       color: "#1f2937",
     }}
   >
-      {view === "home" && (
-  <HomeView
-    setView={setView}
-    startAdaptiveRC={startAdaptiveRC}
-  />
-)}
-
-
-      {view !== "home" &&  (
-  <>
+     
  
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
   <Navbar view={view} setView={setView} />
@@ -141,8 +132,7 @@ export default function RCView({ setView }) {
         <div>{current}</div>
       </div>
     )}
-  </>
-)}
+  
       {showGenPanel && (
         <div
           style={{
@@ -1161,6 +1151,6 @@ const momentumText =
 )}
  </>
 )}
-    </>
+    </div>
   );
 }
