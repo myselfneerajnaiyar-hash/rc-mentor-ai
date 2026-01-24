@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
 import Navbar from "./Navbar";
 
-export default function RCView({ setView }) {
+export default function RCView({view,setView }) {
   const [text, setText] = useState("");
 const [paras, setParas] = useState([]);
 const [index, setIndex] = useState(0);
