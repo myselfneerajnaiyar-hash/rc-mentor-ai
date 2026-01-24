@@ -33,7 +33,7 @@ export default function Page() {
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
-  const [view, setView] = useState("home"); 
+  const [view, setView] = useState("rc"); 
 // home | rc | vocab | speed | cat
 
   const [generatedRC, setGeneratedRC] = useState(null);
