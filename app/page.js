@@ -573,7 +573,7 @@ function updateTodayRCProgress() {
   alignItems: "center",
   marginBottom: 20
 }}>
-  <h2 style={{ margin: 0, color: "#fff" }}>RC Mentor</h2>
+  <h2 style={{ margin: 0, color: "#111" }}>RC Mentor</h2>
 
   <div style={{ display: "flex", gap: 8 }}>
     {["home", "rc", "vocab", "speed", "cat"].map(v => (
