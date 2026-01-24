@@ -19,7 +19,7 @@ const [showGenerator, setShowGenerator] = useState(false);
 
   setParas(parts);
   setIndex(0);
-
+  }
   return (
     <div
     style={{
