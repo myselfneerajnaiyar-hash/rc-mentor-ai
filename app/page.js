@@ -565,6 +565,9 @@ function updateTodayRCProgress() {
   />
 )}
 
+{view === "rc" && (
+  <MentorView />
+)}
       {view !== "home" && view !== "rc" && (
   <>
   {view === "rc" && <MentorView />}
