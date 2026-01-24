@@ -585,7 +585,7 @@ function updateTodayRCProgress() {
           borderRadius: 8,
           border: "none",
           cursor: "pointer",
-          background: view === v ? "#38bdf8" : "#1e293b",
+          background: view === v ? "#38bdf8" : "#ffffff",
           color: view === v ? "#020617" : "#e5e7eb"
         }}
       >
