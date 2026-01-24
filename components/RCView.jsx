@@ -60,6 +60,20 @@ export default function RCView({view,setView }) {
   setParas(parts);
   setIndex(0);
   }
+
+  async function generateNewRC() {
+  setGenLoading(true);
+
+  // TEMP: proof that wiring works
+  setTimeout(() => {
+    const demo =
+      "This is a generated RC passage.\n\nIt exists only to prove that the Generate button is now wired correctly.\n\nReplace this later with your real AI call.";
+
+    setText(demo);
+    setShowGenerator(false);
+    setGenLoading(false);
+  }, 800);
+}
   return (
     <div
     style={{
@@ -186,19 +200,19 @@ export default function RCView({view,setView }) {
             </select>
           </div>
 
-          <button
-            onClick={() => setShowGenerator(true)}
-            style={{
-              padding: "10px 16px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              fontWeight: 600,
-            }}
-          >
-            {genLoading ? "Generating…" : "Generate"}
-          </button>
+         <button
+  onClick={generateNewRC}
+  style={{
+    padding: "10px 16px",
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  {genLoading ? "Generating…" : "Generate"}
+</button>
         </div>
       )}
 {phase === "loading-adaptive" && (
