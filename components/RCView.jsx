@@ -226,7 +226,7 @@ export default function RCView({view,setView }) {
           </div>
 
           <button
-            onClick={generateNewRC}
+            onClick={() => setShowGenerator(true)}
             style={{
               padding: "10px 16px",
               background: "#2563eb",
