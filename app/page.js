@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import HomeView from "../components/HomeView";
+import MentorView from "../components/MentorView";
 
 export default function Page() {
   const [text, setText] = useState("");
