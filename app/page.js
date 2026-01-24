@@ -708,9 +708,10 @@ function updateTodayRCProgress() {
           style={{
             marginTop: 16,
             padding: 20,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            background: "#fafafa",
+           background: "#ffffff",
+          border: "1px solid #e5e7eb",
+          borderRadius: 12,
+          boxShadow: "0 8px 20px rgba(0,0,0,0.04)",
           }}
         >
           <h3>Generate a New Passage</h3>
