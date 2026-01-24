@@ -659,7 +659,7 @@ border: "1px solid #e5e7eb"
         </div>
       </div>
 
-     {phase === "mentor" && showInitial && (
+    {view === "rc" && (
   <MentorView
     text={text}
     setText={setText}
