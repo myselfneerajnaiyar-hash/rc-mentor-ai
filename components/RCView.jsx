@@ -104,7 +104,7 @@ const [showGenerator, setShowGenerator] = useState(false);
       setShowGenerator={setShowGenerator}
     />
 
-    {showGenPanel && (
+    {showGenerator && (
       <div
         style={{
           marginTop: 16,
@@ -151,7 +151,7 @@ const [showGenerator, setShowGenerator] = useState(false);
       </div>
     )}
   
-      {showGenPanel && (
+      {showGenerator && (
         <div
           style={{
             marginTop: 16,
