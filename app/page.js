@@ -1416,7 +1416,7 @@ const momentumText =
           </div>
 
           {activeProfileTab === "overview" && (
-            <div style={{ padding: 20, borderRadius: 12, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
+            <div style={{ padding: 20, borderRadius: 12, background: "#ffffff", border: "1px solid #e5e7eb" }}>
               <p>
                 You have attempted <b>{totalQ}</b> questions across{" "}
                 <b>{tests.length}</b> RC tests.
