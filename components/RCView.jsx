@@ -143,46 +143,7 @@ export default function RCView({view,setView }) {
       setShowGenerator={setShowGenerator}
     />
 
-    {showGenerator && (
-      <div
-        style={{
-          marginTop: 16,
-          padding: 20,
-          background: "#ffffff",
-          border: "1px solid #e5e7eb",
-          borderRadius: 12,
-        }}
-      >
-        <h3>Generate a New Passage</h3>
-
-        <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-          <select value={genre} onChange={e => setGenre(e.target.value)}>
-            <option>Psychology</option>
-            <option>Economics</option>
-            <option>Philosophy</option>
-            <option>History</option>
-            <option>Mixed</option>
-          </select>
-
-          <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
-            <option value="beginner">Beginner</option>
-            <option value="moderate">Moderate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-
-          <select value={lengthRange} onChange={e => setLengthRange(e.target.value)}>
-            <option value="300-400">300–400</option>
-            <option value="400-500">400–500</option>
-            <option value="500-600">500–600</option>
-          </select>
-        </div>
-
-        <button onClick={() => setShowGenerator(true)}>
-          {genLoading ? "Generating…" : "Generate"}
-        </button>
-      </div>
-    )}
-
+   
     {paras.length > 0 && phase === "mentor" && (
       <div style={{ marginTop: 20 }}>
         <h3>Paragraph {index + 1}</h3>
