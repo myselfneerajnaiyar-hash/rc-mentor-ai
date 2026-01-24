@@ -5,10 +5,49 @@ import Navbar from "./Navbar";
 
 export default function RCView({view,setView }) {
   const [text, setText] = useState("");
-const [paras, setParas] = useState([]);
-const [index, setIndex] = useState(0);
-const [showGenerator, setShowGenerator] = useState(false);
+  const [paras, setParas] = useState([]);
+  const [index, setIndex] = useState(0);
+   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+ const [mode, setMode] = useState("idle");
+  // idle | showingPrimary | showingEasier | solved
+ const [feedback, setFeedback] = useState("");
+  const [flow, setFlow] = useState("original");
+  // original | generated
+ const [genre, setGenre] = useState("Psychology");
+  const [difficulty, setDifficulty] = useState("moderate");
+  const [lengthRange, setLengthRange] = useState("400-500");
 
+  // ---- TEST STATE ----
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [testAnswers, setTestAnswers] = useState({});
+  const [testQuestions, setTestQuestions] = useState([]);
+  const [testLoading, setTestLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [phase, setPhase] = useState("mentor");
+  // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
+  
+// home | rc | vocab | speed | cat
+
+  const [generatedRC, setGeneratedRC] = useState(null);
+  const [genLoading, setGenLoading] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
+  const [activeProfileTab, setActiveProfileTab] = useState("overview");
+  const [questionStartTime, setQuestionStartTime] = useState(null);
+  const [questionTimes, setQuestionTimes] = useState({});
+  const [isAdaptive, setIsAdaptive] = useState(false);
+
+  // ---- VOCAB STATE ----
+  const [vocabDrill, setVocabDrill] = useState([]);
+  const [vocabIndex, setVocabIndex] = useState(0);
+  const [vocabTimer, setVocabTimer] = useState(0);
+  const [vocabRunning, setVocabRunning] = useState(false);
+  const [showMeaning, setShowMeaning] = useState(false);
+  const [vocabBank, setVocabBank] = useState([]);
+  const [learningWord, setLearningWord] = useState(null);
+  
   function splitPassage() {
   const raw = text.trim();
   if (!raw) return;
