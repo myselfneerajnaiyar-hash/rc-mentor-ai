@@ -177,7 +177,7 @@ export default function RCView({view,setView }) {
           </select>
         </div>
 
-        <button onClick={generateNewRC}>
+        <button onClick={() => setShowGenerator(true)}>
           {genLoading ? "Generating…" : "Generate"}
         </button>
       </div>
