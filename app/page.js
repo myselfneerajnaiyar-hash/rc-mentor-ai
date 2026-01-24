@@ -565,7 +565,7 @@ function updateTodayRCProgress() {
   />
 )}
 
-{view !== "home" && (
+      {view !== "home" && view !== "rc" && (
   <>
   {view === "rc" && <MentorView />}
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
