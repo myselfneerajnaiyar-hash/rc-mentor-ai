@@ -64,15 +64,26 @@ export default function RCView({view,setView }) {
   async function generateNewRC() {
   setGenLoading(true);
 
-  // TEMP: proof that wiring works
-  setTimeout(() => {
-    const demo =
-      "This is a generated RC passage.\n\nIt exists only to prove that the Generate button is now wired correctly.\n\nReplace this later with your real AI call.";
+  try {
+    const res = await fetch("/api/rc-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        genre,
+        difficulty,
+        lengthRange,
+      }),
+    });
 
-    setText(demo);
-    setShowGenerator(false);
+    const data = await res.json();
+
+    setText(data.passage);   // puts generated passage in textarea
+    setShowGenerator(false); // hides generator panel
+  } catch (e) {
+    alert("Failed to generate RC");
+  } finally {
     setGenLoading(false);
-  }, 800);
+  }
 }
   return (
     <div
