@@ -388,14 +388,74 @@ export default function RCView({view,setView }) {
       </>
     )}
 
-    {showGenerator && (
-      <div>
-        <h3>Generate a New Passage</h3>
-        <button onClick={generateNewRC}>
-          {genLoading ? "Generating…" : "Generate"}
-        </button>
-      </div>
-    )}
+   {showGenerator && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: 20,
+      background: "#ffffff",
+      border: "1px solid #e5e7eb",
+      borderRadius: 12,
+      boxShadow: "0 8px 20px rgba(0,0,0,0.04)",
+    }}
+  >
+    <h3>Generate a CAT-style RC Passage</h3>
+
+    <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
+      <select value={genre} onChange={e => setGenre(e.target.value)}>
+        <option>Philosophy</option>
+        <option>Psychology</option>
+        <option>Economics</option>
+        <option>Sociology</option>
+        <option>History</option>
+        <option>Political Theory</option>
+        <option>Environmental Studies</option>
+        <option>Technology & Society</option>
+        <option>Ethics</option>
+        <option>Literary Criticism</option>
+        <option>Education</option>
+        <option>Anthropology</option>
+        <option>Behavioral Science</option>
+        <option>Neuroscience</option>
+        <option>Public Policy</option>
+        <option>Culture Studies</option>
+        <option>Media Studies</option>
+        <option>Gender Studies</option>
+        <option>Urban Studies</option>
+        <option>Globalization</option>
+        <option>Mixed (CAT-style)</option>
+      </select>
+
+      <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+        <option value="beginner">Beginner</option>
+        <option value="moderate">Moderate</option>
+        <option value="advanced">Advanced</option>
+        <option value="pro">Pro (CAT Killer)</option>
+      </select>
+
+      <select value={lengthRange} onChange={e => setLengthRange(e.target.value)}>
+        <option value="300-400">300–400</option>
+        <option value="400-500">400–500</option>
+        <option value="500-600">500–600</option>
+        <option value="600-700">600–700</option>
+      </select>
+    </div>
+
+    <button
+      onClick={generateNewRC}
+      style={{
+        padding: "10px 16px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      {genLoading ? "Generating…" : "Generate Passage"}
+    </button>
+  </div>
+)}
 
     {phase === "ready" && (
       <div>
