@@ -14,7 +14,7 @@ export default function MentorView({
 
       <textarea
         value={text}
-        onChange={e => setText(e.target.value)}
+        onChange={(e) => setText(e.target.value)}
         placeholder="Paste your RC passage here…"
         style={{
           width: "100%",
