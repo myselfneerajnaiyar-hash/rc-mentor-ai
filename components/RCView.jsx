@@ -366,28 +366,49 @@ export default function RCView({view,setView }) {
       setShowGenerator={setShowGenerator}
     />
 
-    {paras.length > 0 && phase === "mentor" && (
-      <>
-        <h3>
-          Paragraph {index + 1} of {paras.length}
-        </h3>
+   {paras.length > 0 && phase === "mentor" && (
+  <div style={{ marginTop: 20 }}>
+    <h3>Paragraph {index + 1}</h3>
+    <div style={{ marginBottom: 12 }}>{paras[index]}</div>
 
-        <div
-          style={{
-            background: "#f5f5f5",
-            padding: 14,
-            borderRadius: 6,
-            border: "1px solid #e5e7eb",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {current}
-        </div>
-
-        <button onClick={explain}>Explain this paragraph</button>
-      </>
+    {!data && (
+      <button onClick={explain} disabled={loading}>
+        {loading ? "Thinking..." : "Explain this paragraph"}
+      </button>
     )}
 
+    {data && (
+      <div style={{ marginTop: 16 }}>
+        <p><b>Idea:</b> {data.summary}</p>
+
+        {mode === "showingPrimary" && (
+          <>
+            <p>{data.primaryQuestion.question}</p>
+            {data.primaryQuestion.options.map((o, i) => (
+              <button key={i} onClick={() => choose(i)}>{o}</button>
+            ))}
+          </>
+        )}
+
+        {mode === "showingEasier" && (
+          <>
+            <p>{data.easierQuestion.question}</p>
+            {data.easierQuestion.options.map((o, i) => (
+              <button key={i} onClick={() => choose(i)}>{o}</button>
+            ))}
+          </>
+        )}
+
+        {mode === "solved" && (
+          <>
+            <p>{feedback}</p>
+            <button onClick={nextParagraph}>Next Paragraph</button>
+          </>
+        )}
+      </div>
+    )}
+  </div>
+)}
    {showGenerator && (
   <div
     style={{
