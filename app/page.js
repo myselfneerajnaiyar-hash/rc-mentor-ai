@@ -1026,9 +1026,10 @@ function updateTodayRCProgress() {
             <div
               style={{
                 padding: 20,
-                border: "1px solid #e5e7eb",
-                borderRadius: 10,
-                background: "#f8fafc",
+               background: "#ffffff",
+               border: "1px solid #e5e7eb",
+               borderRadius: 12,
+               boxShadow: "0 8px 20px rgba(0,0,0,0.04)",
               }}
             >
               <h2>Performance Snapshot</h2>
