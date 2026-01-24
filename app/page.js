@@ -666,54 +666,14 @@ border: "1px solid #e5e7eb"
         </div>
       </div>
 
-      {phase === "mentor" && showInitial && (
-        <>
-          <p>Paste a passage. Let’s read it together.</p>
-
-          <textarea
-            value={text}
-            onChange={e => setText(e.target.value)}
-            style={{
-              width: "100%",
-              minHeight: 180,
-              padding: 12,
-              borderRadius: 6,
-              border: "1px solid #ccc",
-            }}
-          />
-
-          <div style={{ marginTop: 12, display: "flex", gap: 12 }}>
-            <button
-              onClick={splitPassage}
-              style={{
-                padding: "10px 16px",
-                background: "green",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                fontWeight: 600,
-              }}
-            >
-              Split Passage
-            </button>
-
-            <button
-              onClick={() => setShowGenerator(true)}
-              style={{
-                padding: "10px 16px",
-                background: "#2563eb",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                fontWeight: 600,
-              }}
-            >
-              Generate New Passage
-            </button>
-          </div>
-        </>
-      )}
-
+     {phase === "mentor" && showInitial && (
+  <MentorView
+    text={text}
+    setText={setText}
+    splitPassage={splitPassage}
+    setShowGenerator={setShowGenerator}
+  />
+)}
       {showGenPanel && (
         <div
           style={{
