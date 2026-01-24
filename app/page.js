@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import HomeView from "../components/HomeView";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
+import RCView from "../components/RCView";
 
 export default function Page() {
   const [text, setText] = useState("");
