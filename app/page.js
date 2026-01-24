@@ -586,7 +586,7 @@ function updateTodayRCProgress() {
           border: "none",
           cursor: "pointer",
           background: view === v ? "#38bdf8" : "#ffffff",
-          color: view === v ? "#020617" : "#e5e7eb"
+          color: view === v ? "#111" : "#e5e7eb"
         }}
       >
         {v.toUpperCase()}
