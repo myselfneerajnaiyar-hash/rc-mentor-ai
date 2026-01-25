@@ -211,7 +211,7 @@ if (normalized.primaryQuestion) {
       }));
 
       setTestQuestions(normalized);
-      setTimeLeft(20 * 60); // 20 minutes
+      setTimeLeft(6 * 60); // 6 minutes
 setTimerRunning(true);
       setPhase("test");
     } catch {
