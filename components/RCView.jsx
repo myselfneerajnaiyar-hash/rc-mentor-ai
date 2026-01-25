@@ -606,12 +606,25 @@ if (normalized.primaryQuestion) {
       </button>
 
       <button
-        onClick={() => {
-          setParas(generatedRC.passage.split(/\n\s*\n/));
-          setTestQuestions([]);
-          setTestAnswers({});
-          setPhase("ready");
-        }}
+        <button
+  onClick={() => {
+    setFullPassage(generatedRC.passage);
+    setParas([]);
+    setTestQuestions([]);
+    setTestAnswers({});
+    setPhase("ready");
+  }}
+  style={{
+    padding: "12px 18px",
+    background: "green",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontWeight: 600,
+  }}
+>
+  Take it as a Test
+</button>
         style={{
           padding: "12px 18px",
           background: "green",
