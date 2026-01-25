@@ -399,13 +399,29 @@ if (normalized.primaryQuestion) {
     <p style={{ color: "#374151" }}>
       {data.simpleExplanation || data.summary}
     </p>
+    {data.difficultWords && data.difficultWords.length > 0 && (
+  <>
+    <h4>Difficult Words</h4>
+    <ul style={{ paddingLeft: 20, color: "#374151" }}>
+      {data.difficultWords.map((w, i) => (
+        <li key={i}>
+          <b>{w.word}</b>: {w.meaning}
+        </li>
+      ))}
+    </ul>
+  </>
+)}
 
     <h4>Main Idea</h4>
     <p><b>{data.summary}</b></p>
 
         {mode === "showingPrimary" && (
           <>
-            <p>{data.primaryQuestion.question}</p>
+           <p style={{ fontWeight: 600 }}>
+  {data.primaryQuestion.question ||
+   data.primaryQuestion.prompt ||
+   "Choose the correct option:"}
+</p>
            {data.primaryQuestion.options.map((o, i) => (
   <button
     key={i}
@@ -429,7 +445,11 @@ if (normalized.primaryQuestion) {
 
         {mode === "showingEasier" && (
           <>
-            <p>{data.easierQuestion.question}</p>
+          <p style={{ fontWeight: 600 }}>
+  {data.easierQuestion.question ||
+   data.easierQuestion.prompt ||
+   "Choose the correct option:"}
+</p>
            {data.easierQuestion.options.map((o, i) => (
   <button
     key={i}
