@@ -104,8 +104,21 @@ export default function RCView({view,setView }) {
       });
       if (!res.ok) throw new Error("API failed");
       const json = await res.json();
-      setData(json);
-      setMode("showingPrimary");
+
+// Normalize API response into what RCView expects
+const normalized = {
+  summary: json.summary || json.idea || "",
+  simpleExplanation: json.simpleExplanation || json.simple || json.explanation || "",
+  primaryQuestion: json.primaryQuestion || json.questions?.[0],
+  easierQuestion: json.easierQuestion || json.questions?.[1],
+};
+
+setData(normalized);
+
+// Only enter question mode if a question exists
+if (normalized.primaryQuestion) {
+  setMode("showingPrimary");
+}
       setQuestionStartTime(Date.now());
     } catch {
       setError("Could not fetch explanation.");
