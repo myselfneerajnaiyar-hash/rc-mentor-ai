@@ -625,18 +625,6 @@ if (normalized.primaryQuestion) {
 >
   Take it as a Test
 </button>
-        style={{
-          padding: "12px 18px",
-          background: "green",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-          fontWeight: 600,
-        }}
-      >
-        Take it as a Test
-      </button>
-    </div>
   </div>
 )}
 
