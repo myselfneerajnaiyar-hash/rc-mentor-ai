@@ -626,6 +626,7 @@ if (normalized.primaryQuestion) {
   Take it as a Test
 </button>
   </div>
+  </div>
 )}
 
     {phase === "ready" && (
