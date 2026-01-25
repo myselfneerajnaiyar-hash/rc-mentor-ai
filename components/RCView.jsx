@@ -107,12 +107,18 @@ export default function RCView({view,setView }) {
 
 // Normalize API response into what RCView expects
 const normalized = {
-  summary: json.summary || json.idea || "",
-  simpleExplanation: json.simpleExplanation || json.simple || json.explanation || "",
-  primaryQuestion: json.primaryQuestion || json.questions?.[0],
-  easierQuestion: json.easierQuestion || json.questions?.[1],
+  summary: json.explanation || "",
+  simpleExplanation: json.explanation || "",
+  difficultWords: json.difficultWords || [],
+  primaryQuestion: json.primaryQuestion || null,
+  easierQuestion: json.easierQuestion || null,
 };
 
+setData(normalized);
+
+if (normalized.primaryQuestion) {
+  setMode("showingPrimary");
+}
 setData(normalized);
 
 // Only enter question mode if a question exists
