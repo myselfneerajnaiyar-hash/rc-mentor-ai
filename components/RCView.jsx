@@ -49,6 +49,16 @@ export default function RCView({view,setView }) {
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
+
+  useEffect(() => {
+  if (!timerRunning || timeLeft <= 0) return;
+
+  const id = setInterval(() => {
+    setTimeLeft(t => t - 1);
+  }, 1000);
+
+  return () => clearInterval(id);
+}, [timerRunning, timeLeft]);
   
   function splitPassage() {
   const raw = text.trim();
@@ -201,6 +211,8 @@ if (normalized.primaryQuestion) {
       }));
 
       setTestQuestions(normalized);
+      setTimeLeft(20 * 60); // 20 minutes
+setTimerRunning(true);
       setPhase("test");
     } catch {
       setError("Could not generate test.");
@@ -636,28 +648,89 @@ if (normalized.primaryQuestion) {
       </div>
     )}
 
-    {phase === "test" && (
-      <div>
-        <h2>Mini RC Test</h2>
-        {testQuestions.map((q, qi) => (
-          <div key={qi}>
-            <p>{q.prompt}</p>
-            {q.options.map((o, oi) => (
-              <button
-                key={oi}
-                onClick={() =>
-                  setTestAnswers(a => ({ ...a, [qi]: oi }))
-                }
-              >
-                {o}
-              </button>
-            ))}
-          </div>
-        ))}
-        <button onClick={submitTest}>Submit</button>
+   {phase === "test" && (
+  <div style={{ marginTop: 20 }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 16,
+      }}
+    >
+      <h2>Mini RC Test</h2>
+      <div style={{ fontWeight: 600 }}>
+        Time Left: {Math.floor(timeLeft / 60)}:
+        {String(timeLeft % 60).padStart(2, "0")}
       </div>
-    )}
+    </div>
 
+    <div
+      style={{
+        background: "#fff",
+        padding: 16,
+        borderRadius: 10,
+        marginBottom: 20,
+        lineHeight: 1.6,
+      }}
+    >
+      <h4>Passage</h4>
+      <p style={{ whiteSpace: "pre-wrap" }}>{fullPassage}</p>
+    </div>
+
+    {testQuestions.map((q, qi) => (
+      <div
+        key={qi}
+        style={{
+          background: "#fff",
+          padding: 16,
+          borderRadius: 10,
+          marginBottom: 16,
+        }}
+      >
+        <p style={{ fontWeight: 600 }}>
+          Q{qi + 1}. {q.prompt}
+        </p>
+
+        {q.options.map((o, oi) => (
+          <button
+            key={oi}
+            onClick={() =>
+              setTestAnswers(a => ({ ...a, [qi]: oi }))
+            }
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              marginBottom: 8,
+              padding: "10px 12px",
+              borderRadius: 6,
+              border: "1px solid #d1d5db",
+              background:
+                testAnswers[qi] === oi ? "#dbeafe" : "#f9fafb",
+            }}
+          >
+            {o}
+          </button>
+        ))}
+      </div>
+    ))}
+
+    <button
+      onClick={submitTest}
+      style={{
+        padding: "12px 20px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 8,
+        fontWeight: 600,
+      }}
+    >
+      Submit Test
+    </button>
+  </div>
+)}
     {phase === "result" && result && (
       <div>
         <h2>Result</h2>
