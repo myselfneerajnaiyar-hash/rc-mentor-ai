@@ -606,8 +606,7 @@ if (normalized.primaryQuestion) {
         Guided Explanation Mode
       </button>
 
-      <button
-        <button
+    <button
   onClick={() => {
     setFullPassage(generatedRC.passage);
     setParas([]);
