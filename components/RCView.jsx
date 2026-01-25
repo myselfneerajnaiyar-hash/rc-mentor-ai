@@ -20,7 +20,7 @@ export default function RCView({view,setView }) {
   const [lengthRange, setLengthRange] = useState("400-500");
 
   // ---- TEST STATE ----
-  const [fullPassage, setFullPassage] = useState("");
+ 
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [testAnswers, setTestAnswers] = useState({});
@@ -35,6 +35,7 @@ export default function RCView({view,setView }) {
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
+   const [fullPassage, setFullPassage] = useState("");
   const [activeProfileTab, setActiveProfileTab] = useState("overview");
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [questionTimes, setQuestionTimes] = useState({});
