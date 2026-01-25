@@ -20,6 +20,7 @@ export default function RCView({view,setView }) {
   const [lengthRange, setLengthRange] = useState("400-500");
 
   // ---- TEST STATE ----
+  const [fullPassage, setFullPassage] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [testAnswers, setTestAnswers] = useState({});
