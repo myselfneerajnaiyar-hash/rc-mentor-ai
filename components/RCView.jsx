@@ -399,13 +399,19 @@ if (normalized.primaryQuestion) {
     <p style={{ color: "#374151" }}>
       {data.simpleExplanation || data.summary}
     </p>
-    {data.difficultWords && data.difficultWords.length > 0 && (
+  {(data.difficultWords || data.vocab) && (data.difficultWords || data.vocab).length > 0 && (
   <>
     <h4>Difficult Words</h4>
     <ul style={{ paddingLeft: 20, color: "#374151" }}>
-      {data.difficultWords.map((w, i) => (
+      {(data.difficultWords || data.vocab).map((w, i) => (
         <li key={i}>
-          <b>{w.word}</b>: {w.meaning}
+          {typeof w === "string" ? (
+            <b>{w}</b>
+          ) : (
+            <>
+              <b>{w.word || w.term}</b>: {w.meaning || w.definition}
+            </>
+          )}
         </li>
       ))}
     </ul>
