@@ -185,7 +185,7 @@ if (normalized.primaryQuestion) {
     setResult(null);
 
     try {
-      const full = paras.join("\n\n");
+      const full = fullPassage;
       const res = await fetch("/api/rc-test", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
