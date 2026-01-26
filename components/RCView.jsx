@@ -346,6 +346,41 @@ if (normalized.primaryQuestion) {
       s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
     0
   );
+  const score = testQuestions.reduce(
+  (s, q, i) =>
+    s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
+  0
+);
+
+// ---- TIME ANALYSIS ----
+const timeStats = result?.questionAnalysis?.map(q => q.timeSpent || 0) || [];
+
+const totalTime = timeStats.reduce((a, b) => a + b, 0);
+const avgTime = timeStats.length
+  ? Math.round(totalTime / timeStats.length)
+  : 0;
+
+function timeBand(t) {
+  if (t < 15) return "rushed";
+  if (t <= 45) return "optimal";
+  return "slow";
+}
+
+const bandCounts = {
+  rushed: timeStats.filter(t => timeBand(t) === "rushed").length,
+  optimal: timeStats.filter(t => timeBand(t) === "optimal").length,
+  slow: timeStats.filter(t => timeBand(t) === "slow").length,
+};
+
+return (
+  <div
+    style={{
+      minHeight: "100vh",
+      fontFamily: "system-ui",
+      background: "linear-gradient(180deg, #eef2ff, #f8fafc)",
+      color: "#1f2937",
+    }}
+  >
   return (
     <div
     style={{
