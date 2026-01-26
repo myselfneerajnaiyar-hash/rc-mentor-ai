@@ -888,6 +888,10 @@ return (
   <div style={{ marginTop: 16 }}>
     <h4>Mentor’s Diagnosis</h4>
     <p>{result.summary}</p>
+    <p style={{ marginTop: 10 }}>
+  <b>Mentor’s Time Diagnosis:</b><br />
+  {generateTimeDiagnosis(result.questionAnalysis)}
+</p>
 
     {result.strengths && (
       <>
