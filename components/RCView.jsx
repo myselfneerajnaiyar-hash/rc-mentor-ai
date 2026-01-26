@@ -672,20 +672,22 @@ return (
 
     <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 16 }}>
       <button
-        onClick={() => {
-          const parts = generatedRC.passage
-            .split(/\n\s*\n/)
-            .map(p => p.trim())
-            .filter(Boolean);
-          setDirectTestMode(false);
+       onClick={() => {
+  const parts = generatedRC.passage
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean);
 
-          setParas(parts);
-          setIndex(0);
-          setData(null);
-          setFeedback("");
-          setMode("idle");
-          setPhase("mentor");
-        }}
+  setFullPassage(generatedRC.passage); // 🔧 CRITICAL
+  setDirectTestMode(false);
+
+  setParas(parts);
+  setIndex(0);
+  setData(null);
+  setFeedback("");
+  setMode("idle");
+  setPhase("mentor");
+}}
         style={{
           padding: "12px 18px",
           background: "#2563eb",
