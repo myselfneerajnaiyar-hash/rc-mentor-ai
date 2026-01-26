@@ -250,8 +250,10 @@ if (normalized.primaryQuestion) {
   setCurrentQStart(Date.now());
 
   try {
-    const full = fullPassage || paras.join("\n\n");
-
+    const full =
+  fullPassage && fullPassage.trim().length > 0
+    ? fullPassage
+    : paras.join("\n\n");
     const res = await fetch("/api/rc-test", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
