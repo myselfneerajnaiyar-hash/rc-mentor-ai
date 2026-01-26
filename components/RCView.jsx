@@ -62,6 +62,11 @@ const [currentQStart, setCurrentQStart] = useState(null);
     submitTest();
     return;
   }
+   useEffect(() => {
+  if (phase === "test" && testQuestions.length > 0) {
+    setCurrentQStart(Date.now());
+  }
+}, [phase, testQuestions]);
 
   const t = setInterval(() => {
     setTimeLeft(t => t - 1);
