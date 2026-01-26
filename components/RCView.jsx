@@ -325,6 +325,27 @@ async function startTest(passageOverride = null) {
     const json = await res.json();
     setResult(json);
     setPhase("result");
+    // ---- Save RC Profile ----
+const existing = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+
+const record = {
+  date: Date.now(),
+  questions: testQuestions.map((q, i) => ({
+    type: (q.type || "inference").trim().toLowerCase(),
+    correct: Number(testAnswers[i]) === Number(q.correctIndex),
+    time: questionTimes[i] || 0,
+  })),
+};
+
+existing.tests = existing.tests || [];
+existing.tests.push(record);
+localStorage.setItem("rcProfile", JSON.stringify(existing));
+
+// ---- Update Today's RC Progress ----
+const todayKey = new Date().toISOString().slice(0, 10);
+const map = JSON.parse(localStorage.getItem("rcDailyProgress") || "{}");
+map[todayKey] = (map[todayKey] || 0) + 1;
+localStorage.setItem("rcDailyProgress", JSON.stringify(map));
   } catch {
     setError("Could not analyze your test.");
     setPhase("test");
