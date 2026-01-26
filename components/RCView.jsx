@@ -634,7 +634,7 @@ setTimerRunning(true);
   setParas([]);
   setTestQuestions([]);
   setTestAnswers({});
-  setPhase("test-loading");
+  setPhase("ready");
   startTest();
 }}
   style={{
