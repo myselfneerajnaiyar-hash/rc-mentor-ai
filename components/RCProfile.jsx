@@ -533,11 +533,136 @@ export default function RCProfile() {
   );
 })()}
 
-{active === "today" && (
-  <div style={{ marginTop: 20 }}>
-    <h3>Today’s Action</h3>
-  </div>
-)}
+{active === "today" && (() => {
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const progressMap = JSON.parse(localStorage.getItem("rcDailyProgress") || "{}");
+  const done = progressMap[todayKey] || 0;
+  const target = 2;
+
+  const rushed = all.filter(q => q.time < 15).length;
+  const slow = all.filter(q => q.time > 45).length;
+
+  let focus = "";
+  let drill = "";
+  let why = "";
+
+  if (avgTime < 25 && accuracy < 70) {
+    focus = "Impulsive Reading";
+    why =
+      "You are making choices before the passage structure settles. Speed is replacing comprehension.";
+    drill = `
+1 RC passage in Guided Mode.
+For every paragraph:
+* Pause 3 seconds before seeing options.
+* Say the core idea in your own words.
+* Only then attempt the question.
+
+Goal: Teach the brain to wait for structure.
+`;
+  } else if (avgTime > 45 && accuracy < 70) {
+    focus = "Unanchored Thinking";
+    why =
+      "You are spending time but not locking onto the author’s intent. Effort isn’t converting into clarity.";
+    drill = `
+1 RC passage in Test Mode.
+After each question:
+* Point to one line in the passage that justifies your choice.
+* If you can’t, mark it as ‘guess’.
+
+Goal: Build line-to-answer discipline.
+`;
+  } else {
+    focus = "Consistency Building";
+    why =
+      "Your speed and accuracy are aligning. The task now is rhythm and endurance.";
+    drill = `
+2 RC passages back-to-back.
+Target:
+* 35–40s per question
+* No question beyond 50s
+
+Goal: Stabilize CAT rhythm under mild fatigue.
+`;
+  }
+
+  const pct = Math.min(100, Math.round((done / target) * 100));
+
+  return (
+    <div style={{ marginTop: 20 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 16,
+        }}
+      >
+        <div style={{ fontSize: 42 }}>🎯</div>
+        <div>
+          <h3 style={{ margin: 0 }}>Today’s RC Mission</h3>
+          <div style={{ fontSize: 13, color: "#555" }}>
+            {done}/{target} RCs completed today
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Bar */}
+      <div
+        style={{
+          height: 10,
+          width: "100%",
+          background: "#e5e7eb",
+          borderRadius: 999,
+          overflow: "hidden",
+          marginBottom: 20,
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: pct + "%",
+            background: pct >= 100 ? "#22c55e" : "#2563eb",
+            transition: "width 0.4s ease",
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          padding: 20,
+          borderRadius: 12,
+          background: "#f8fafc",
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        <h4>Primary Focus</h4>
+        <p style={{ fontWeight: 600 }}>{focus}</p>
+
+        <h4>Why this matters</h4>
+        <p>{why}</p>
+
+        <h4>Today’s Drill (20–30 minutes)</h4>
+        <pre
+          style={{
+            background: "#ffffff",
+            padding: 12,
+            borderRadius: 8,
+            border: "1px solid #e5e7eb",
+            whiteSpace: "pre-wrap",
+            fontSize: 13,
+          }}
+        >
+          {drill}
+        </pre>
+
+        <p style={{ marginTop: 12, color: "#555" }}>
+          CAT improvement is not volume. It is precision under pressure.  
+          Today, train one behaviour ruthlessly.
+        </p>
+      </div>
+    </div>
+  );
+})()}
 
 {active === "plan" && (
   <div style={{ marginTop: 20 }}>
