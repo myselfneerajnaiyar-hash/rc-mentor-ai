@@ -189,7 +189,8 @@ if (normalized.primaryQuestion) {
   async function startTest() {
     setTestLoading(true);
     setError("");
-
+setTimeLeft(6 * 60); // 6 minutes
+setTimerRunning(true);
     setTestQuestions([]);
     setTestAnswers({});
     setQuestionTimes({});
