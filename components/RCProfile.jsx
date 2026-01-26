@@ -263,13 +263,105 @@ export default function RCProfile() {
         </>
       )}
       
-      {active === "skills" && (
-  <div style={{ marginTop: 20 }}>
-    <h3>Skills</h3>
-    <p>Coming next…</p>
-  </div>
-)}
+      {active === "skills" && (() => {
+  const CAT_TYPES = [
+    "main-idea",
+    "tone",
+    "inference",
+    "detail",
+    "function",
+    "author-agreement",
+    "purpose",
+    "assumption",
+    "strengthen",
+    "weaken",
+    "application",
+    "next-paragraph",
+  ];
 
+  const byType = {};
+  CAT_TYPES.forEach(t => {
+    byType[t] = { total: 0, correct: 0, time: 0, fastWrong: 0, slowWrong: 0 };
+  });
+
+  all.forEach(q => {
+    if (!byType[q.type]) return;
+    const t = byType[q.type];
+    t.total++;
+    t.time += q.time;
+    if (q.correct) t.correct++;
+    if (!q.correct && q.time < 20) t.fastWrong++;
+    if (!q.correct && q.time > 45) t.slowWrong++;
+  });
+
+  function diagnosis(type, acc, fw, sw) {
+    if (fw > sw && acc < 60)
+      return {
+        text: "You answer before the passage has settled in your mind.",
+        habit: "Pause for 3 seconds and restate the question in your own words.",
+      };
+    if (sw > fw && acc < 60)
+      return {
+        text: "You think, but without anchoring in the passage.",
+        habit: "Force yourself to re-locate the exact line before choosing.",
+      };
+    if (acc > 75)
+      return {
+        text: "This is becoming a reliable strength.",
+        habit: "Maintain rhythm. Do not overthink.",
+      };
+
+    return {
+      text: "Pattern still forming in this zone.",
+      habit: "Slow down and verify every option against the author’s intent.",
+    };
+  }
+
+  return (
+    <div style={{ display: "grid", gap: 18 }}>
+      {CAT_TYPES.map(type => {
+        const d = byType[type];
+        if (!d.total) return null;
+
+        const acc = Math.round((d.correct / d.total) * 100);
+        const avg = Math.round(d.time / d.total);
+        const diag = diagnosis(type, acc, d.fastWrong, d.slowWrong);
+
+        return (
+          <div
+            key={type}
+            style={{
+              padding: 20,
+              borderRadius: 12,
+              border: "1px solid #e5e7eb",
+              background: "#fafafa",
+              display: "grid",
+              gridTemplateColumns: "140px 1fr",
+              gap: 20,
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 22, fontWeight: 700 }}>{acc}%</div>
+              <div style={{ fontSize: 12, color: "#666" }}>
+                {type.replace("-", " ")}
+              </div>
+              <div style={{ fontSize: 11, marginTop: 6 }}>
+                Avg: {avg}s
+              </div>
+            </div>
+
+            <div>
+              <p style={{ margin: 0, fontSize: 14 }}>{diag.text}</p>
+              <p style={{ marginTop: 6, fontStyle: "italic", fontSize: 13 }}>
+                Habit → {diag.habit}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+})()}
 {active === "speed" && (
   <div style={{ marginTop: 20 }}>
     <h3>Speed</h3>
