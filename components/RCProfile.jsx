@@ -262,6 +262,31 @@ export default function RCProfile() {
           </div>
         </>
       )}
+      
+      {active === "skills" && (
+  <div style={{ marginTop: 20 }}>
+    <h3>Skills</h3>
+    <p>Coming next…</p>
+  </div>
+)}
+
+{active === "speed" && (
+  <div style={{ marginTop: 20 }}>
+    <h3>Speed</h3>
+  </div>
+)}
+
+{active === "today" && (
+  <div style={{ marginTop: 20 }}>
+    <h3>Today’s Action</h3>
+  </div>
+)}
+
+{active === "plan" && (
+  <div style={{ marginTop: 20 }}>
+    <h3>Action Plan</h3>
+  </div>
+)}
     </div>
   );
 }
