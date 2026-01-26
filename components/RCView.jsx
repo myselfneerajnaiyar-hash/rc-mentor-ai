@@ -252,6 +252,18 @@ if (normalized.primaryQuestion) {
   }
 }
 
+  function moveToQuestion(nextIndex) {
+  const spent = Math.round((Date.now() - currentQStart) / 1000);
+
+  setQuestionTimes(t => ({
+    ...t,
+    [currentQIndex]: (t[currentQIndex] || 0) + spent,
+  }));
+
+  setCurrentQIndex(nextIndex);
+  setCurrentQStart(Date.now());
+}
+  
   async function submitTest() {
   setTimerRunning(false);
   setPhase("test-loading");   // 👈 THIS is the key line
