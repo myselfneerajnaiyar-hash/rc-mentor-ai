@@ -26,6 +26,7 @@ export default function RCView({view,setView }) {
   const [testAnswers, setTestAnswers] = useState({});
   const [testQuestions, setTestQuestions] = useState([]);
   const [testLoading, setTestLoading] = useState(false);
+  const [testStartTime, setTestStartTime] = useState(null);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
    const [directTestMode, setDirectTestMode] = useState(false)
@@ -205,6 +206,7 @@ if (normalized.primaryQuestion) {
   setTestAnswers({});
   setQuestionTimes({});
   setResult(null);
+   setTestStartTime(Date.now());
 
   try {
     const full = fullPassage;
@@ -734,9 +736,16 @@ if (normalized.primaryQuestion) {
         {q.options.map((o, oi) => (
           <button
             key={oi}
-            onClick={() =>
-              setTestAnswers(a => ({ ...a, [qi]: oi }))
-            }
+            onClick={() => {
+  const now = Date.now();
+
+  setQuestionTimes(t => {
+    if (t[qi]) return t; // already recorded
+    return { ...t, [qi]: Math.round((now - testStartTime) / 1000) };
+  });
+
+  setTestAnswers(a => ({ ...a, [qi]: oi }));
+}}
             style={{
               display: "block",
               width: "100%",
