@@ -745,7 +745,9 @@ return (
     {phase === "ready" && !directTestMode && (
   <div>
     <p>You’ve now understood this passage. Let’s test it.</p>
-    <button onClick={startTest}>Take Test</button>
+    <button onClick={() => startTest(fullPassage)}>
+  Take Test
+</button>
   </div>
 )}
 
