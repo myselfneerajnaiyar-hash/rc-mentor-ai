@@ -630,14 +630,18 @@ setTimerRunning(true);
 
     <button
   onClick={() => {
-  setDirectTestMode(true);
-  setFullPassage(generatedRC.passage);
-  setParas([]);
-  setTestQuestions([]);
-  setTestAnswers({});
-  setPhase("ready");
+    setDirectTestMode(true);
+    setFullPassage(generatedRC.passage);
+    setParas([]);
+    setTestQuestions([]);
+    setTestAnswers({});
 
-}}
+    // Go straight to loading screen
+    setPhase("test-loading");
+
+    // Then actually start test generation
+    startTest();
+  }}
   style={{
     padding: "12px 18px",
     background: "green",
