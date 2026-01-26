@@ -710,7 +710,7 @@ return (
     setTestAnswers({});
 
     // DO NOT setPhase here
-    startTest();   // startTest will handle test-loading → test
+    startTest(generatedRC.passage);   // pass directly
   }}
   style={{
     padding: "12px 18px",
