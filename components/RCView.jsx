@@ -745,17 +745,15 @@ if (normalized.primaryQuestion) {
         {q.options.map((o, oi) => (
           <button
             key={oi}
-           onClick={() => {
-  const spent = Math.round((Date.now() - currentQStart) / 1000);
+         onClick={() => {
+  setQuestionTimes(t => {
+    if (t[qi] != null) return t; // already recorded once
 
-  setQuestionTimes(t => ({
-    ...t,
-    [qi]: spent,
-  }));
+    const spent = Math.round((Date.now() - currentQStart) / 1000);
+    return { ...t, [qi]: spent };
+  });
 
   setTestAnswers(a => ({ ...a, [qi]: oi }));
-
-  setCurrentQStart(Date.now()); // start timer for next question
 }}
             style={{
               display: "block",
