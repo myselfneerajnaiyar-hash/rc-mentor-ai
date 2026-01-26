@@ -281,30 +281,6 @@ if (normalized.primaryQuestion) {
   }
 }
 
-  async function generateNewRC() {
-    setGenLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch("/api/rc-generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ genre, difficulty, lengthRange }),
-      });
-
-      if (!res.ok) throw new Error();
-
-      const json = await res.json();
-      setGeneratedRC(json);
-      setPhase("newRC");
-      setShowGenerator(false);
-    } catch {
-      setError("Could not generate new RC.");
-    } finally {
-      setGenLoading(false);
-    }
-  }
-
   async function startAdaptiveRC() {
     try {
       setIsAdaptive(true);
