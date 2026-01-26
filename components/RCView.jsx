@@ -377,17 +377,8 @@ return (
       color: "#1f2937",
     }}
   >
-  return (
-    <div
-    style={{
-      minHeight: "100vh",
-      fontFamily: "system-ui",
-      background: "linear-gradient(180deg, #eef2ff, #f8fafc)",
-      color: "#1f2937",
-    }}
-  >
-     
  
+     
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
   <Navbar view={view} setView={setView} />
         <h1
