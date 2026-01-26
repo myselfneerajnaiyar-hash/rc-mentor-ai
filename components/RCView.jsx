@@ -782,13 +782,37 @@ if (normalized.primaryQuestion) {
       {Math.round((score / testQuestions.length) * 100)}%
     </p>
 
-    {result.summary && (
-      <div style={{ marginTop: 12 }}>
-        <h4>Mentor’s Diagnosis</h4>
-        <p>{result.summary}</p>
-      </div>
+   {result && (
+  <div style={{ marginTop: 16 }}>
+    <h4>Mentor’s Diagnosis</h4>
+    <p>{result.summary}</p>
+
+    {result.strengths && (
+      <>
+        <h4>Strengths</h4>
+        <ul>
+          {result.strengths.map((s, i) => <li key={i}>{s}</li>)}
+        </ul>
+      </>
     )}
 
+    {result.weaknesses && (
+      <>
+        <h4>Weaknesses</h4>
+        <ul>
+          {result.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+        </ul>
+      </>
+    )}
+
+    {result.nextFocus && (
+      <>
+        <h4>What to work on next</h4>
+        <p>{result.nextFocus}</p>
+      </>
+    )}
+  </div>
+)}
     <button
       onClick={() => setPhase("detailed")}
       style={{
