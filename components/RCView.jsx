@@ -308,7 +308,10 @@ if (normalized.primaryQuestion) {
   setError("");
 
   try {
-    const full = paras.join("\n\n");
+    const full =
+  fullPassage && fullPassage.trim().length > 0
+    ? fullPassage
+    : paras.join("\n\n");
     const res = await fetch("/api/rc-diagnose", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
