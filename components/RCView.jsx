@@ -264,9 +264,18 @@ if (normalized.primaryQuestion) {
   setCurrentQStart(Date.now());
 }
   
-  async function submitTest() {
+ async function submitTest() {
+  // ⬇️ Capture time for the current active question
+  if (currentQStart != null) {
+    const spent = Math.round((Date.now() - currentQStart) / 1000);
+    setQuestionTimes(t => ({
+      ...t,
+      [currentQIndex]: (t[currentQIndex] || 0) + spent,
+    }));
+  }
+
   setTimerRunning(false);
-  setPhase("test-loading");   // 👈 THIS is the key line
+  setPhase("test-loading");
   setError("");
 
   try {
