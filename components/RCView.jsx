@@ -20,7 +20,7 @@ export default function RCView({view,setView }) {
   const [lengthRange, setLengthRange] = useState("400-500");
 
   // ---- TEST STATE ----
- 
+ const [directTestMode, setDirectTestMode] = useState(false)
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [testAnswers, setTestAnswers] = useState({});
@@ -598,6 +598,7 @@ setTimerRunning(true);
             .split(/\n\s*\n/)
             .map(p => p.trim())
             .filter(Boolean);
+          setDirectTestMode(false);
 
           setParas(parts);
           setIndex(0);
@@ -620,6 +621,7 @@ setTimerRunning(true);
 
     <button
   onClick={() => {
+    setDirectTestMode(true);
     setFullPassage(generatedRC.passage);
     setParas([]);
     setTestQuestions([]);
@@ -641,13 +643,18 @@ setTimerRunning(true);
   </div>
 )}
 
-    {phase === "ready" && (
-      <div>
-        <p>You’ve now understood this passage. Let’s test it.</p>
-        <button onClick={startTest}>Take Test</button>
-      </div>
-    )}
+    {phase === "ready" && !directTestMode && (
+  <div>
+    <p>You’ve now understood this passage. Let’s test it.</p>
+    <button onClick={startTest}>Take Test</button>
+  </div>
+)}
 
+{phase === "ready" && directTestMode && (
+  <div style={{ marginTop: 20 }}>
+    <button onClick={startTest}>Start Test</button>
+  </div>
+)}
    {phase === "test" && (
   <div style={{ marginTop: 20 }}>
     <div
