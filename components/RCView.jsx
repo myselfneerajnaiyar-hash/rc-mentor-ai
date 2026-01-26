@@ -844,6 +844,19 @@ return (
       <b>Accuracy:</b>{" "}
       {Math.round((score / testQuestions.length) * 100)}%
     </p>
+    <div style={{ marginTop: 16, padding: 12, background: "#f1f5f9", borderRadius: 8 }}>
+  <h4>⏱ Time Analysis</h4>
+
+  <p><b>Average time / question:</b> {avgTime}s</p>
+  <p><b>Total time:</b> {totalTime}s</p>
+  <p style={{ color: "#555" }}>CAT benchmark: 40–45s per RC question</p>
+
+  <ul>
+    <li>⚡ Rushed (&lt;15s): {bandCounts.rushed}</li>
+    <li>🎯 Optimal (15–45s): {bandCounts.optimal}</li>
+    <li>🐢 Overthinking (&gt;45s): {bandCounts.slow}</li>
+  </ul>
+</div>
 
    {result && (
   <div style={{ marginTop: 16 }}>
