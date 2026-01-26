@@ -116,6 +116,32 @@ const [currentQStart, setCurrentQStart] = useState(null);
 }
   const current = paras[index] || "";
 
+  function generateTimeDiagnosis(qs) {
+  const rushedWrong = qs.filter(q => q.timeSpent < 15 && q.status === "wrong");
+  const slowWrong = qs.filter(q => q.timeSpent > 45 && q.status === "wrong");
+  const slowCorrect = qs.filter(q => q.timeSpent > 45 && q.status === "correct");
+  const fastCorrect = qs.filter(q => q.timeSpent <= 25 && q.status === "correct");
+
+  let lines = [];
+
+  if (rushedWrong.length)
+    lines.push("You rushed through some questions and paid for it with accuracy.");
+
+  if (slowWrong.length)
+    lines.push("On a few questions, you spent a lot of time and still went wrong—this signals clarity gaps, not speed issues.");
+
+  if (slowCorrect.length)
+    lines.push("Even when correct, some answers took too long, indicating inefficient processing.");
+
+  if (fastCorrect.length)
+    lines.push("Your best answers came quickly, showing strong instinct when comprehension is clear.");
+
+  if (!lines.length)
+    lines.push("Your time distribution is balanced, but consistency will raise your ceiling.");
+
+  return lines.join(" ");
+}
+
   async function explain() {
     if (!current) return;
     setLoading(true);
