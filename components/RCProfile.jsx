@@ -263,7 +263,7 @@ export default function RCProfile() {
         </>
       )}
       
-      {active === "skills" && (() => {
+     {active === "skills" && (() => {
   const CAT_TYPES = [
     "main-idea",
     "tone",
@@ -325,6 +325,10 @@ export default function RCProfile() {
 
         const acc = Math.round((d.correct / d.total) * 100);
         const avg = Math.round(d.time / d.total);
+        const wrong = d.total - d.correct;
+        const fwPct = wrong ? Math.round((d.fastWrong / wrong) * 100) : 0;
+        const swPct = 100 - fwPct;
+
         const diag = diagnosis(type, acc, d.fastWrong, d.slowWrong);
 
         return (
@@ -334,12 +338,14 @@ export default function RCProfile() {
               padding: 20,
               borderRadius: 12,
               border: "1px solid #e5e7eb",
-              background: "#fafafa",
+              background: "#ffffff",
+              boxShadow: "0 6px 16px rgba(0,0,0,0.06)",
               display: "grid",
-              gridTemplateColumns: "140px 1fr",
+              gridTemplateColumns: "160px 1fr",
               gap: 20,
             }}
           >
+            {/* Left Stats */}
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 22, fontWeight: 700 }}>{acc}%</div>
               <div style={{ fontSize: 12, color: "#666" }}>
@@ -348,13 +354,69 @@ export default function RCProfile() {
               <div style={{ fontSize: 11, marginTop: 6 }}>
                 Avg: {avg}s
               </div>
+
+              {/* Accuracy Bar */}
+              <div
+                style={{
+                  marginTop: 10,
+                  height: 8,
+                  borderRadius: 6,
+                  background: "#e5e7eb",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: acc + "%",
+                    height: "100%",
+                    background: acc > 70 ? "#22c55e" : acc > 50 ? "#f59e0b" : "#ef4444",
+                  }}
+                />
+              </div>
             </div>
 
+            {/* Right Content */}
             <div>
               <p style={{ margin: 0, fontSize: 14 }}>{diag.text}</p>
               <p style={{ marginTop: 6, fontStyle: "italic", fontSize: 13 }}>
                 Habit → {diag.habit}
               </p>
+
+              {/* Behaviour Bar */}
+              {wrong > 0 && (
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ fontSize: 11, color: "#555", marginBottom: 4 }}>
+                    Error Pattern
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      height: 8,
+                      borderRadius: 6,
+                      overflow: "hidden",
+                      background: "#e5e7eb",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: fwPct + "%",
+                        background: "#f59e0b",
+                      }}
+                      title="Fast & Wrong"
+                    />
+                    <div
+                      style={{
+                        width: swPct + "%",
+                        background: "#3b82f6",
+                      }}
+                      title="Slow & Wrong"
+                    />
+                  </div>
+                  <div style={{ fontSize: 10, marginTop: 4, color: "#666" }}>
+                    🟡 Impulsive {fwPct}% &nbsp; | &nbsp; 🔵 Confused {swPct}%
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );
@@ -362,6 +424,7 @@ export default function RCProfile() {
     </div>
   );
 })()}
+      
 {active === "speed" && (
   <div style={{ marginTop: 20 }}>
     <h3>Speed</h3>
