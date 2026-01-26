@@ -943,22 +943,22 @@ return (
   </button>
 
   <button
-    onClick={() => {
-      // reset everything for a fresh cycle
-      setParas([]);
-      setIndex(0);
-      setData(null);
-      setFeedback("");
-      setMode("idle");
-      setGeneratedRC(null);
-      setTestQuestions([]);
-      setTestAnswers({});
-      setResult(null);
-      setDirectTestMode(false);
+   onClick={() => {
+  setParas([]);
+  setIndex(0);
+  setData(null);
+  setFeedback("");
+  setMode("idle");
+  setGeneratedRC(null);
+  setTestQuestions([]);
+  setTestAnswers({});
+  setResult(null);
+  setDirectTestMode(false);
 
-      setShowGenerator(true);
-      setPhase("mentor");
-    }}
+  setFullPassage("");   // 🔧 ADD THIS
+  setShowGenerator(true);
+  setPhase("mentor");
+}}
     style={{
       padding: "10px 16px",
       borderRadius: 6,
