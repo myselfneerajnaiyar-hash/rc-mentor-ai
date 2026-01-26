@@ -50,14 +50,20 @@ export default function RCView({view,setView }) {
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
 
-  useEffect(() => {
-  if (!timerRunning || timeLeft <= 0) return;
+ useEffect(() => {
+  if (!timerRunning) return;
 
-  const id = setInterval(() => {
+  if (timeLeft <= 0) {
+    setTimerRunning(false);
+    submitTest();
+    return;
+  }
+
+  const t = setInterval(() => {
     setTimeLeft(t => t - 1);
   }, 1000);
 
-  return () => clearInterval(id);
+  return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
   
   function splitPassage() {
