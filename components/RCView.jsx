@@ -84,7 +84,8 @@ const [currentQStart, setCurrentQStart] = useState(null);
     .split(/\n\s*\n/)
     .map(p => p.trim())
     .filter(Boolean);
-
+    
+  setFullPassage(raw);
   setParas(parts);
   setIndex(0);
   }
