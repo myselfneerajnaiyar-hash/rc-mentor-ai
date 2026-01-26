@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 
 function LineChart({ data, color, label, unit }) {
-  const w = 260;
-  const h = 90;
-  const pad = 12;
+  const w = 420;
+  const h = 120;
+  const pad = 16;
 
   if (!data.length) return null;
 
@@ -23,8 +23,8 @@ function LineChart({ data, color, label, unit }) {
     .join(" ");
 
   return (
-    <div style={{ width: w }}>
-      <div style={{ fontSize: 13, marginBottom: 6 }}>{label}</div>
+    <div style={{ marginBottom: 28 }}>
+      <div style={{ fontSize: 14, marginBottom: 6, fontWeight: 600 }}>{label}</div>
       <svg width={w} height={h}>
         <path d={path} fill="none" stroke={color} strokeWidth="2" />
         {points.map((p, i) => (
@@ -43,7 +43,29 @@ function LineChart({ data, color, label, unit }) {
         ))}
       </svg>
       <div style={{ fontSize: 11, color: "#6b7280" }}>
-        Test 1 → Test {data.length}
+        Last {data.length} tests
+      </div>
+    </div>
+  );
+}
+
+function Pie({ a, b, labelA, labelB, colorA, colorB }) {
+  const total = a + b || 1;
+  const angle = (a / total) * 360;
+
+  return (
+    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <div
+        style={{
+          width: 90,
+          height: 90,
+          borderRadius: "50%",
+          background: `conic-gradient(${colorA} 0deg ${angle}deg, ${colorB} ${angle}deg 360deg)`,
+        }}
+      />
+      <div style={{ fontSize: 13 }}>
+        <div>🟢 {labelA}: {a}</div>
+        <div>🔴 {labelB}: {b}</div>
       </div>
     </div>
   );
@@ -70,45 +92,46 @@ export default function RCProfile() {
   const all = tests.flatMap(t => t.questions);
   const totalQ = all.length;
   const correct = all.filter(q => q.correct).length;
+  const wrong = totalQ - correct;
 
   const accuracy = Math.round((correct / totalQ) * 100);
   const avgTime = Math.round(all.reduce((a, b) => a + b.time, 0) / totalQ);
 
-  const accuracyTimeline = tests.map(t => {
+  const recent = tests.slice(-15);
+
+  const accuracyTimeline = recent.map(t => {
     const total = t.questions.length;
-    const correct = t.questions.filter(q => q.correct).length;
-    return Math.round((correct / total) * 100);
+    const c = t.questions.filter(q => q.correct).length;
+    return Math.round((c / total) * 100);
   });
 
-  const timeTimeline = tests.map(t => {
+  const timeTimeline = recent.map(t => {
     const total = t.questions.length;
     const sum = t.questions.reduce((a, b) => a + b.time, 0);
     return Math.round(sum / total);
   });
+
+  const rushed = all.filter(q => q.time < 15).length;
+  const slow = all.filter(q => q.time > 45).length;
+
+  const readingStyle =
+    avgTime < 25 && accuracy < 70
+      ? "You are moving faster than your comprehension is stabilizing. Decisions are being made before structure forms."
+      : avgTime > 45 && accuracy < 70
+      ? "You invest time but without clarity. The mind is working, but the passage is not being internalized cleanly."
+      : "You are learning to synchronize speed with understanding. This is the CAT-ready direction.";
 
   const accDelta =
     accuracyTimeline.length > 1
       ? accuracyTimeline.at(-1) - accuracyTimeline[0]
       : 0;
 
-  const timeDelta =
-    timeTimeline.length > 1
-      ? timeTimeline.at(-1) - timeTimeline[0]
-      : 0;
-
-  const readingStyle =
-    avgTime < 25 && accuracy < 70
-      ? "You rush before clarity forms. Speed is replacing structure."
-      : avgTime > 45 && accuracy < 70
-      ? "You over-process without full clarity."
-      : "You balance speed with comprehension.";
-
   const momentum =
     accDelta > 5
-      ? "Strong upward momentum. Your comprehension engine is stabilizing."
+      ? "Upward trajectory. Your RC engine is stabilizing and compounding."
       : accDelta < -5
-      ? "Momentum is slipping. Fatigue or guessing may be creeping in."
-      : "Momentum is steady. Consistency will unlock growth.";
+      ? "Form is dipping. Fatigue or guessing patterns may be emerging."
+      : "Flat but stable. Consistency will convert this into growth.";
 
   return (
     <div style={{ marginTop: 20 }}>
@@ -165,18 +188,37 @@ export default function RCProfile() {
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-            <LineChart
-              data={accuracyTimeline}
-              color="#22c55e"
-              label="Accuracy Trend"
-              unit="%"
+          <LineChart
+            data={accuracyTimeline}
+            color="#22c55e"
+            label="Accuracy Trend"
+            unit="%"
+          />
+
+          <LineChart
+            data={timeTimeline}
+            color="#3b82f6"
+            label="Average Time Trend"
+            unit="s"
+          />
+
+          <div style={{ display: "flex", gap: 40, marginTop: 16 }}>
+            <Pie
+              a={correct}
+              b={wrong}
+              labelA="Correct"
+              labelB="Wrong"
+              colorA="#22c55e"
+              colorB="#ef4444"
             />
-            <LineChart
-              data={timeTimeline}
-              color="#3b82f6"
-              label="Avg Time Trend"
-              unit="s"
+
+            <Pie
+              a={rushed}
+              b={slow}
+              labelA="Rushed"
+              labelB="Overthinking"
+              colorA="#f59e0b"
+              colorB="#3b82f6"
             />
           </div>
 
