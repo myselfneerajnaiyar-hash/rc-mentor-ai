@@ -880,9 +880,12 @@ if (normalized.primaryQuestion) {
             marginBottom: 16,
           }}
         >
-          <p style={{ fontWeight: 600 }}>
-            Q{i + 1}. {q.prompt}
-          </p>
+         <p style={{ fontWeight: 600 }}>
+  Q{i + 1}. {q.prompt}
+</p>
+<p style={{ fontSize: 12, color: "#6b7280" }}>
+  Type: {q.type || "inference"}
+</p>
 
           {q.options.map((o, oi) => {
             const isCorrect = oi === q.correctIndex;
