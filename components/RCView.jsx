@@ -635,7 +635,7 @@ setTimerRunning(true);
   setTestQuestions([]);
   setTestAnswers({});
   setPhase("ready");
-  startTest();
+
 }}
   style={{
     padding: "12px 18px",
