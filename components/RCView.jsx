@@ -62,18 +62,19 @@ const [currentQStart, setCurrentQStart] = useState(null);
     submitTest();
     return;
   }
-   useEffect(() => {
-  if (phase === "test" && testQuestions.length > 0) {
-    setCurrentQStart(Date.now());
-  }
-}, [phase, testQuestions]);
-
+   
   const t = setInterval(() => {
     setTimeLeft(t => t - 1);
   }, 1000);
 
   return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
+  0
+  useEffect(() => {
+  if (phase === "test" && testQuestions.length > 0) {
+    setCurrentQStart(Date.now());
+  }
+}, [phase, testQuestions]);
   
   function splitPassage() {
   const raw = text.trim();
