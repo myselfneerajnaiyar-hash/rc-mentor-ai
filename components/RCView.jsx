@@ -27,6 +27,8 @@ export default function RCView({view,setView }) {
   const [testQuestions, setTestQuestions] = useState([]);
   const [testLoading, setTestLoading] = useState(false);
   const [testStartTime, setTestStartTime] = useState(null);
+  const [currentQIndex, setCurrentQIndex] = useState(0);
+const [currentQStart, setCurrentQStart] = useState(null);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
    const [directTestMode, setDirectTestMode] = useState(false)
@@ -195,10 +197,12 @@ if (normalized.primaryQuestion) {
   }
 
  async function startTest() {
-  setPhase("test-loading");   // 👈 show “Preparing your CAT RC Test…”
+  // 1. Move UI into loading mode immediately
+  setPhase("test-loading");
   setTestLoading(true);
   setError("");
 
+  // 2. Reset all test state
   setTimeLeft(6 * 60); // 6 minutes
   setTimerRunning(true);
 
@@ -206,10 +210,15 @@ if (normalized.primaryQuestion) {
   setTestAnswers({});
   setQuestionTimes({});
   setResult(null);
-   setTestStartTime(Date.now());
+
+  // 3. Initialize timing anchors
+  setTestStartTime(Date.now());
+  setCurrentQIndex(0);
+  setCurrentQStart(Date.now());
 
   try {
     const full = fullPassage;
+
     const res = await fetch("/api/rc-test", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -227,11 +236,11 @@ if (normalized.primaryQuestion) {
 
     setTestQuestions(normalized);
 
-    // When questions are ready, move to test UI
-    setPhase("test");          // 👈 show actual test
+    // 4. Enter test screen
+    setPhase("test");
   } catch {
     setError("Could not generate test.");
-    setPhase("mentor");
+    setPhase("ready");
   } finally {
     setTestLoading(false);
   }
