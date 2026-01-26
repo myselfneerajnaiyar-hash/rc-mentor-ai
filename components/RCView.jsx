@@ -693,7 +693,7 @@ if (normalized.primaryQuestion) {
     <button onClick={startTest}>Start Test</button>
   </div>
 )}
-   {phase === "test" && (
+  {phase === "test" && testQuestions.length > 0 && (
   <div style={{ marginTop: 20 }}>
     <div
       style={{
@@ -723,50 +723,71 @@ if (normalized.primaryQuestion) {
       <p style={{ whiteSpace: "pre-wrap" }}>{fullPassage}</p>
     </div>
 
-    {testQuestions.map((q, qi) => (
-      <div
-        key={qi}
-        style={{
-          background: "#fff",
-          padding: 16,
-          borderRadius: 10,
-          marginBottom: 16,
-        }}
-      >
-        <p style={{ fontWeight: 600 }}>
-          Q{qi + 1}. {q.prompt}
-        </p>
+    {(() => {
+      const q = testQuestions[currentQIndex];
+      if (!q) return null;
 
-        {q.options.map((o, oi) => (
-          <button
-            key={oi}
-         onClick={() => {
-  setQuestionTimes(t => {
-    if (t[qi] != null) return t; // already recorded once
+      return (
+        <div
+          style={{
+            background: "#fff",
+            padding: 16,
+            borderRadius: 10,
+            marginBottom: 16,
+          }}
+        >
+          <p style={{ fontWeight: 600 }}>
+            Q{currentQIndex + 1}. {q.prompt}
+          </p>
 
-    const spent = Math.round((Date.now() - currentQStart) / 1000);
-    return { ...t, [qi]: spent };
-  });
+          {q.options.map((o, oi) => (
+            <button
+              key={oi}
+              onClick={() =>
+                setTestAnswers(a => ({ ...a, [currentQIndex]: oi }))
+              }
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                marginBottom: 8,
+                padding: "10px 12px",
+                borderRadius: 6,
+                border: "1px solid #d1d5db",
+                background:
+                  testAnswers[currentQIndex] === oi ? "#dbeafe" : "#f9fafb",
+              }}
+            >
+              {o}
+            </button>
+          ))}
 
-  setTestAnswers(a => ({ ...a, [qi]: oi }));
-}}
+          <div
             style={{
-              display: "block",
-              width: "100%",
-              textAlign: "left",
-              marginBottom: 8,
-              padding: "10px 12px",
-              borderRadius: 6,
-              border: "1px solid #d1d5db",
-              background:
-                testAnswers[qi] === oi ? "#dbeafe" : "#f9fafb",
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 12,
             }}
           >
-            {o}
-          </button>
-        ))}
-      </div>
-    ))}
+            {currentQIndex > 0 ? (
+              <button onClick={() => moveToQuestion(currentQIndex - 1)}>
+                Back
+              </button>
+            ) : (
+              <div />
+            )}
+
+            {currentQIndex < testQuestions.length - 1 ? (
+              <button onClick={() => moveToQuestion(currentQIndex + 1)}>
+                Next
+              </button>
+            ) : (
+              <div />
+            )}
+          </div>
+        </div>
+      );
+    })()}
 
     <button
       onClick={submitTest}
@@ -781,7 +802,6 @@ if (normalized.primaryQuestion) {
     >
       Submit Test
     </button>
-   
   </div>
 )}
    {phase === "result" && result && (
