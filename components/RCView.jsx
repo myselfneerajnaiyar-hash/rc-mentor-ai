@@ -20,7 +20,7 @@ export default function RCView({view,setView }) {
   const [lengthRange, setLengthRange] = useState("400-500");
 
   // ---- TEST STATE ----
- const [directTestMode, setDirectTestMode] = useState(false)
+
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [testAnswers, setTestAnswers] = useState({});
@@ -28,6 +28,7 @@ export default function RCView({view,setView }) {
   const [testLoading, setTestLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
+   const [directTestMode, setDirectTestMode] = useState(false)
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   
 // home | rc | vocab | speed | cat
