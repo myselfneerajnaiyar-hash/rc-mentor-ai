@@ -811,7 +811,7 @@ if (normalized.primaryQuestion) {
     <h3>Detailed Review</h3>
 
     {testQuestions.map((q, i) => {
-      const qa = result.questionAnalysis.find(x => x.qIndex === i);
+     const qa = result.questionAnalysis?.find(x => x.qIndex === i);
       const userAns = testAnswers[i];
 
       return (
