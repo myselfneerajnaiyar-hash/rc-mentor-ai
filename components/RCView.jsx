@@ -249,7 +249,7 @@ if (normalized.primaryQuestion) {
   setCurrentQStart(Date.now());
 
   try {
-    const full = fullPassage;
+    const full = fullPassage || paras.join("\n\n");
 
     const res = await fetch("/api/rc-test", {
       method: "POST",
