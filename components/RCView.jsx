@@ -262,10 +262,11 @@ if (normalized.primaryQuestion) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        passage: full,
-        questions: testQuestions,
-        answers: testAnswers,
-      }),
+  passage: full,
+  questions: testQuestions,
+  answers: testAnswers,
+  times: questionTimes,
+}),
     });
 
     if (!res.ok) throw new Error();
