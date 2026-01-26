@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 
 function LineChart({ data, color, label, unit }) {
-  const w = 420;
-  const h = 120;
-  const pad = 16;
+  const w = 720;   // wider
+  const h = 220;   // taller
+  const pad = 28;
 
   if (!data.length) return null;
 
@@ -23,27 +23,41 @@ function LineChart({ data, color, label, unit }) {
     .join(" ");
 
   return (
-    <div style={{ marginBottom: 28 }}>
-      <div style={{ fontSize: 14, marginBottom: 6, fontWeight: 600 }}>{label}</div>
-      <svg width={w} height={h}>
-        <path d={path} fill="none" stroke={color} strokeWidth="2" />
-        {points.map((p, i) => (
-          <g key={i}>
-            <circle cx={p.x} cy={p.y} r="3" fill={color} />
-            <text
-              x={p.x}
-              y={p.y - 6}
-              fontSize="10"
-              textAnchor="middle"
-              fill="#374151"
-            >
-              {p.v}{unit}
-            </text>
-          </g>
-        ))}
-      </svg>
-      <div style={{ fontSize: 11, color: "#6b7280" }}>
-        Last {data.length} tests
+    <div style={{ marginBottom: 36 }}>
+      <div style={{ fontSize: 16, marginBottom: 10, fontWeight: 700 }}>
+        {label}
+      </div>
+
+      <div
+        style={{
+          background: "#ffffff",
+          padding: 16,
+          borderRadius: 12,
+          border: "1px solid #e5e7eb",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
+        }}
+      >
+        <svg width={w} height={h}>
+          <path d={path} fill="none" stroke={color} strokeWidth="3" />
+          {points.map((p, i) => (
+            <g key={i}>
+              <circle cx={p.x} cy={p.y} r="4" fill={color} />
+              <text
+                x={p.x}
+                y={p.y - 10}
+                fontSize="11"
+                textAnchor="middle"
+                fill="#374151"
+              >
+                {p.v}{unit}
+              </text>
+            </g>
+          ))}
+        </svg>
+
+        <div style={{ fontSize: 12, color: "#6b7280", marginTop: 6 }}>
+          Last {data.length} tests
+        </div>
       </div>
     </div>
   );
@@ -54,18 +68,35 @@ function Pie({ a, b, labelA, labelB, colorA, colorB }) {
   const angle = (a / total) * 360;
 
   return (
-    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: 16,
+        alignItems: "center",
+        padding: 16,
+        borderRadius: 12,
+        border: "1px solid #e5e7eb",
+        background: "#ffffff",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
+      }}
+    >
       <div
         style={{
-          width: 90,
-          height: 90,
+          width: 120,
+          height: 120,
           borderRadius: "50%",
           background: `conic-gradient(${colorA} 0deg ${angle}deg, ${colorB} ${angle}deg 360deg)`,
+          boxShadow:
+            "inset 0 0 12px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.15)",
         }}
       />
-      <div style={{ fontSize: 13 }}>
-        <div>🟢 {labelA}: {a}</div>
-        <div>🔴 {labelB}: {b}</div>
+
+      <div style={{ fontSize: 14, lineHeight: 1.6 }}>
+        <div style={{ fontWeight: 600 }}>{labelA}</div>
+        <div style={{ color: colorA }}>{a}</div>
+
+        <div style={{ marginTop: 8, fontWeight: 600 }}>{labelB}</div>
+        <div style={{ color: colorB }}>{b}</div>
       </div>
     </div>
   );
