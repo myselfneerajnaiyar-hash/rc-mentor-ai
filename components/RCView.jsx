@@ -861,12 +861,32 @@ if (normalized.primaryQuestion) {
             <b>Correct Answer:</b> {q.options[q.correctIndex]}
           </p>
 
-          {qa?.correctExplanation && (
-            <div style={{ marginTop: 8 }}>
-              <b>Mentor’s Explanation:</b>
-              <p>{qa.correctExplanation}</p>
-            </div>
-          )}
+         {qa && (
+  <div style={{ marginTop: 10 }}>
+    <b>Mentor’s Explanation:</b>
+    <p>{qa.correctExplanation}</p>
+
+    {qa.temptation && qa.temptation.trim() !== "" && (
+      <>
+        <b>Why your choice felt right:</b>
+        <p style={{ color: "#7c2d12" }}>{qa.temptation}</p>
+      </>
+    )}
+
+    {qa.whyWrong && (
+      <>
+        <b>Why the other options fail:</b>
+        <ul>
+          {Object.entries(qa.whyWrong).map(([k, v]) => (
+            <li key={k}>
+              <b>Option {String.fromCharCode(65 + Number(k))}:</b> {v}
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </div>
+)}
         </div>
       );
     })}
