@@ -346,11 +346,7 @@ if (normalized.primaryQuestion) {
       s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
     0
   );
-  const score = testQuestions.reduce(
-  (s, q, i) =>
-    s + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
-  0
-);
+ 
 
 // ---- TIME ANALYSIS ----
 const timeStats = result?.questionAnalysis?.map(q => q.timeSpent || 0) || [];
