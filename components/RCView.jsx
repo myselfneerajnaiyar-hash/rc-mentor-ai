@@ -919,20 +919,50 @@ return (
     )}
   </div>
 )}
-    <button
-      onClick={() => setPhase("detailed")}
-      style={{
-        marginTop: 12,
-        padding: "10px 16px",
-        borderRadius: 6,
-        border: "1px solid #2563eb",
-        background: "#2563eb",
-        color: "#fff",
-        fontWeight: 600,
-      }}
-    >
-      View Detailed Review
-    </button>
+<div style={{ display: "flex", gap: 12, marginTop: 12 }}>
+  <button
+    onClick={() => setPhase("detailed")}
+    style={{
+      padding: "10px 16px",
+      borderRadius: 6,
+      border: "1px solid #2563eb",
+      background: "#2563eb",
+      color: "#fff",
+      fontWeight: 600,
+    }}
+  >
+    View Detailed Review
+  </button>
+
+  <button
+    onClick={() => {
+      // reset everything for a fresh cycle
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setGeneratedRC(null);
+      setTestQuestions([]);
+      setTestAnswers({});
+      setResult(null);
+      setDirectTestMode(false);
+
+      setShowGenerator(true);
+      setPhase("mentor");
+    }}
+    style={{
+      padding: "10px 16px",
+      borderRadius: 6,
+      border: "1px solid #16a34a",
+      background: "#16a34a",
+      color: "#fff",
+      fontWeight: 600,
+    }}
+  >
+    Generate New Passage
+  </button>
+</div>
   </div>
 )}
 
