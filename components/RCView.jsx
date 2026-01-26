@@ -652,13 +652,12 @@ setTimerRunning(true);
   </div>
 )}
 
-  {phase === "test-loading" && (
+ {phase === "test-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
     <h3>Preparing your CAT RC Test…</h3>
     <p>Generating passage-based questions.</p>
   </div>
 )}
-    
     {phase === "ready" && !directTestMode && (
   <div>
     <p>You’ve now understood this passage. Let’s test it.</p>
