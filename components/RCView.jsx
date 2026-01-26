@@ -230,31 +230,32 @@ setTimerRunning(true);
   }
 
   async function submitTest() {
-    setTimerRunning(false);
-    setLoading(true);
-    setError("");
+  setTimerRunning(false);
+  setPhase("test-loading");   // 👈 THIS is the key line
+  setError("");
 
-    try {
-      const full = paras.join("\n\n");
-      const res = await fetch("/api/rc-diagnose", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          passage: full,
-          questions: testQuestions,
-          answers: testAnswers,
-        }),
-      });
-      if (!res.ok) throw new Error();
-      const json = await res.json();
-      setResult(json);
-      setPhase("result");
-    } catch {
-      setError("Could not analyze your test.");
-    } finally {
-      setLoading(false);
-    }
+  try {
+    const full = paras.join("\n\n");
+    const res = await fetch("/api/rc-diagnose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        passage: full,
+        questions: testQuestions,
+        answers: testAnswers,
+      }),
+    });
+
+    if (!res.ok) throw new Error();
+
+    const json = await res.json();
+    setResult(json);
+    setPhase("result");
+  } catch {
+    setError("Could not analyze your test.");
+    setPhase("test");
   }
+}
 
   async function generateNewRC() {
     setGenLoading(true);
@@ -654,8 +655,17 @@ setTimerRunning(true);
 
  {phase === "test-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
-    <h3>Preparing your CAT RC Test…</h3>
-    <p>Generating passage-based questions.</p>
+    {testQuestions.length === 0 ? (
+      <>
+        <h3>Preparing your CAT RC Test…</h3>
+        <p>Generating passage-based questions.</p>
+      </>
+    ) : (
+      <>
+        <h3>Evaluating your responses…</h3>
+        <p>Preparing your diagnosis report.</p>
+      </>
+    )}
   </div>
 )}
     {phase === "ready" && !directTestMode && (
@@ -751,11 +761,7 @@ setTimerRunning(true);
     >
       Submit Test
     </button>
-    {loading && (
-  <p style={{ marginTop: 12, color: "#555" }}>
-    Evaluating your responses and preparing your diagnosis report…
-  </p>
-)}
+   
   </div>
 )}
     {phase === "result" && result && (
