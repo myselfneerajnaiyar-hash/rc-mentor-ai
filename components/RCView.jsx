@@ -771,40 +771,110 @@ if (normalized.primaryQuestion) {
    
   </div>
 )}
-    {phase === "result" && result && (
-      <div>
-        <h2>Result</h2>
-        <p>
-          Score: {score}/{testQuestions.length}
-        </p>
-        <button onClick={() => setPhase("detailed")}>
-          Detailed Review
-        </button>
+   {phase === "result" && result && (
+  <div style={{ marginTop: 24 }}>
+    <h2>Test Summary</h2>
+
+    <p><b>Score:</b> {score}/{testQuestions.length}</p>
+    <p>
+      <b>Accuracy:</b>{" "}
+      {Math.round((score / testQuestions.length) * 100)}%
+    </p>
+
+    {result.summary && (
+      <div style={{ marginTop: 12 }}>
+        <h4>Mentor’s Diagnosis</h4>
+        <p>{result.summary}</p>
       </div>
     )}
 
-    {phase === "detailed" && (
-      <div>
-        <h3>Detailed Review</h3>
-        {testQuestions.map((q, i) => {
-          const qa = result.questionAnalysis.find(
-            x => x.qIndex === i
-          );
-          return (
-            <div key={i}>
-              <p>{q.prompt}</p>
-              <p>
-                Correct: {q.options[q.correctIndex]}
-              </p>
-              <p>{qa?.correctExplanation}</p>
+    <button
+      onClick={() => setPhase("detailed")}
+      style={{
+        marginTop: 12,
+        padding: "10px 16px",
+        borderRadius: 6,
+        border: "1px solid #2563eb",
+        background: "#2563eb",
+        color: "#fff",
+        fontWeight: 600,
+      }}
+    >
+      View Detailed Review
+    </button>
+  </div>
+)}
+
+   {phase === "detailed" && result && (
+  <div style={{ marginTop: 24 }}>
+    <h3>Detailed Review</h3>
+
+    {testQuestions.map((q, i) => {
+      const qa = result.questionAnalysis.find(x => x.qIndex === i);
+      const userAns = testAnswers[i];
+
+      return (
+        <div
+          key={i}
+          style={{
+            background: "#fff",
+            padding: 16,
+            borderRadius: 10,
+            marginBottom: 16,
+          }}
+        >
+          <p style={{ fontWeight: 600 }}>
+            Q{i + 1}. {q.prompt}
+          </p>
+
+          {q.options.map((o, oi) => {
+            const isCorrect = oi === q.correctIndex;
+            const isUser = oi === userAns;
+
+            let bg = "#f9fafb";
+            if (isCorrect) bg = "#dcfce7";
+            if (isUser && !isCorrect) bg = "#fee2e2";
+
+            return (
+              <div
+                key={oi}
+                style={{
+                  padding: "8px 10px",
+                  borderRadius: 6,
+                  marginBottom: 6,
+                  background: bg,
+                  border: "1px solid #e5e7eb",
+                }}
+              >
+                {o}
+              </div>
+            );
+          })}
+
+          <p style={{ marginTop: 8 }}>
+            <b>Your Answer:</b>{" "}
+            {userAns != null ? q.options[userAns] : "Not Attempted"}
+          </p>
+
+          <p>
+            <b>Correct Answer:</b> {q.options[q.correctIndex]}
+          </p>
+
+          {qa?.correctExplanation && (
+            <div style={{ marginTop: 8 }}>
+              <b>Mentor’s Explanation:</b>
+              <p>{qa.correctExplanation}</p>
             </div>
-          );
-        })}
-        <button onClick={() => setPhase("result")}>
-          Back
-        </button>
-      </div>
-    )}
+          )}
+        </div>
+      );
+    })}
+
+    <button onClick={() => setPhase("result")}>
+      Back to Summary
+    </button>
+  </div>
+)}
   </>
 )}
     </div>
