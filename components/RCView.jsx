@@ -744,6 +744,11 @@ setTimerRunning(true);
     >
       Submit Test
     </button>
+    {loading && (
+  <p style={{ marginTop: 12, color: "#555" }}>
+    Evaluating your responses and preparing your diagnosis report…
+  </p>
+)
   </div>
 )}
     {phase === "result" && result && (
