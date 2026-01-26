@@ -621,13 +621,14 @@ setTimerRunning(true);
 
     <button
   onClick={() => {
-    setDirectTestMode(true);
-    setFullPassage(generatedRC.passage);
-    setParas([]);
-    setTestQuestions([]);
-    setTestAnswers({});
-    setPhase("ready");
-  }}
+  setDirectTestMode(true);
+  setFullPassage(generatedRC.passage);
+  setParas([]);
+  setTestQuestions([]);
+  setTestAnswers({});
+  setPhase("test-loading");
+  startTest();
+}}
   style={{
     padding: "12px 18px",
     background: "green",
@@ -643,6 +644,13 @@ setTimerRunning(true);
   </div>
 )}
 
+  {phase === "test-loading" && (
+  <div style={{ marginTop: 40, textAlign: "center" }}>
+    <h3>Preparing your CAT RC Test…</h3>
+    <p>Generating passage-based questions.</p>
+  </div>
+)
+    
     {phase === "ready" && !directTestMode && (
   <div>
     <p>You’ve now understood this passage. Let’s test it.</p>
