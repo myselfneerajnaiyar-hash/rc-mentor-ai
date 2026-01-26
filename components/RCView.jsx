@@ -193,41 +193,47 @@ if (normalized.primaryQuestion) {
     setFeedback("");
   }
 
-  async function startTest() {
-    setTestLoading(true);
-    setError("");
-setTimeLeft(6 * 60); // 6 minutes
-setTimerRunning(true);
-    setTestQuestions([]);
-    setTestAnswers({});
-    setQuestionTimes({});
-    setResult(null);
+ async function startTest() {
+  setPhase("test-loading");   // 👈 show “Preparing your CAT RC Test…”
+  setTestLoading(true);
+  setError("");
 
-    try {
-      const full = fullPassage;
-      const res = await fetch("/api/rc-test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passage: full, mode: "normal" }),
-      });
-      if (!res.ok) throw new Error();
-      const json = await res.json();
+  setTimeLeft(6 * 60); // 6 minutes
+  setTimerRunning(true);
 
-      const normalized = (json.questions || []).map(q => ({
-        ...q,
-        type: q.type ? q.type.trim().toLowerCase() : "unknown",
-      }));
+  setTestQuestions([]);
+  setTestAnswers({});
+  setQuestionTimes({});
+  setResult(null);
 
-      setTestQuestions(normalized);
-      setTimeLeft(6 * 60); // 6 minutes
-setTimerRunning(true);
-      setPhase("test");
-    } catch {
-      setError("Could not generate test.");
-    } finally {
-      setTestLoading(false);
-    }
+  try {
+    const full = fullPassage;
+    const res = await fetch("/api/rc-test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passage: full, mode: "normal" }),
+    });
+
+    if (!res.ok) throw new Error();
+
+    const json = await res.json();
+
+    const normalized = (json.questions || []).map(q => ({
+      ...q,
+      type: q.type ? q.type.trim().toLowerCase() : "unknown",
+    }));
+
+    setTestQuestions(normalized);
+
+    // When questions are ready, move to test UI
+    setPhase("test");          // 👈 show actual test
+  } catch {
+    setError("Could not generate test.");
+    setPhase("mentor");
+  } finally {
+    setTestLoading(false);
   }
+}
 
   async function submitTest() {
   setTimerRunning(false);
