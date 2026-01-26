@@ -425,11 +425,113 @@ export default function RCProfile() {
   );
 })()}
       
-{active === "speed" && (
-  <div style={{ marginTop: 20 }}>
-    <h3>Speed</h3>
-  </div>
-)}
+{active === "speed" && (() => {
+  const bands = {
+    rushed: { label: "< 15s", min: 0, max: 14, color: "#f59e0b", total: 0, wrong: 0 },
+    optimal: { label: "15–45s", min: 15, max: 45, color: "#22c55e", total: 0, wrong: 0 },
+    slow: { label: "> 45s", min: 46, max: 999, color: "#3b82f6", total: 0, wrong: 0 },
+  };
+
+  all.forEach(q => {
+    for (let k in bands) {
+      const b = bands[k];
+      if (q.time >= b.min && q.time <= b.max) {
+        b.total++;
+        if (!q.correct) b.wrong++;
+      }
+    }
+  });
+
+  const maxCount = Math.max(...Object.values(bands).map(b => b.total));
+
+  const rushedWrong = bands.rushed.wrong;
+  const slowWrong = bands.slow.wrong;
+
+  let diagnosis = "";
+  let prescription = "";
+
+  if (rushedWrong > slowWrong) {
+    diagnosis =
+      "Most of your errors happen in the first few seconds. You are reacting, not reading.";
+    prescription =
+      "Adopt a 3-second rule: restate the question mentally before seeing options.";
+  } else if (slowWrong > rushedWrong) {
+    diagnosis =
+      "You are investing time but not anchoring in the passage. Effort is not converting into clarity.";
+    prescription =
+      "Force line-mapping: every answer must point to a sentence in the passage.";
+  } else {
+    diagnosis =
+      "Your timing errors are balanced. This is a control issue, not a panic issue.";
+    prescription =
+      "Maintain 35–40s rhythm and exit any question crossing 50s.";
+  }
+
+  return (
+    <div style={{ marginTop: 20 }}>
+      <h3>Speed Profile</h3>
+
+      <div style={{ display: "grid", gap: 20, marginTop: 12 }}>
+        {Object.entries(bands).map(([k, b]) => {
+          const height = Math.round((b.total / maxCount) * 180);
+
+          return (
+            <div
+              key={k}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "120px 1fr",
+                gap: 16,
+                alignItems: "center",
+              }}
+            >
+              <div style={{ fontSize: 14, fontWeight: 600 }}>
+                {b.label}
+              </div>
+
+              <div
+                style={{
+                  height: 12,
+                  background: "#e5e7eb",
+                  borderRadius: 6,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: (b.total / maxCount) * 100 + "%",
+                    height: "100%",
+                    background: b.color,
+                  }}
+                />
+              </div>
+
+              <div style={{ gridColumn: "1 / -1", fontSize: 12, color: "#555" }}>
+                Attempts: {b.total} &nbsp; | &nbsp; Wrong: {b.wrong}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        style={{
+          marginTop: 24,
+          padding: 16,
+          borderRadius: 12,
+          border: "1px solid #e5e7eb",
+          background: "#f8fafc",
+        }}
+      >
+        <h4>Mentor Diagnosis</h4>
+        <p>{diagnosis}</p>
+
+        <h4>Speed Prescription</h4>
+        <p>{prescription}</p>
+      </div>
+    </div>
+  );
+})()}
 
 {active === "today" && (
   <div style={{ marginTop: 20 }}>
