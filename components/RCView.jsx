@@ -954,9 +954,15 @@ return (
             marginBottom: 16,
           }}
         >
-         <p style={{ fontWeight: 600 }}>
+        <p style={{ fontWeight: 600 }}>
   Q{i + 1}. {q.prompt}
 </p>
+
+{qa?.timeSpent != null && (
+  <p style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>
+    ⏱ Time taken: {qa.timeSpent}s
+  </p>
+)}
 <p style={{ fontSize: 12, color: "#6b7280" }}>
   Type: {q.type || "inference"}
 </p>
