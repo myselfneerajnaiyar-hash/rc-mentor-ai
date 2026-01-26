@@ -657,7 +657,7 @@ setTimerRunning(true);
     <h3>Preparing your CAT RC Test…</h3>
     <p>Generating passage-based questions.</p>
   </div>
-)
+)}
     
     {phase === "ready" && !directTestMode && (
   <div>
