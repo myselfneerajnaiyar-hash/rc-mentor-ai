@@ -229,14 +229,12 @@ if (normalized.primaryQuestion) {
     setFeedback("");
   }
 
- async function startTest() {
-  // 1. Move UI into loading mode immediately
+async function startTest(passageOverride = null) {
   setPhase("test-loading");
   setTestLoading(true);
   setError("");
 
-  // 2. Reset all test state
-  setTimeLeft(6 * 60); // 6 minutes
+  setTimeLeft(6 * 60);
   setTimerRunning(true);
 
   setTestQuestions([]);
@@ -244,16 +242,17 @@ if (normalized.primaryQuestion) {
   setQuestionTimes({});
   setResult(null);
 
-  // 3. Initialize timing anchors
   setTestStartTime(Date.now());
   setCurrentQIndex(0);
   setCurrentQStart(Date.now());
 
   try {
-    const full =
-  fullPassage && fullPassage.trim().length > 0
-    ? fullPassage
-    : paras.join("\n\n");
+    const full = passageOverride
+      ? passageOverride
+      : (fullPassage && fullPassage.trim().length > 0
+          ? fullPassage
+          : paras.join("\n\n"));
+
     const res = await fetch("/api/rc-test", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -270,8 +269,6 @@ if (normalized.primaryQuestion) {
     }));
 
     setTestQuestions(normalized);
-
-    // 4. Enter test screen
     setPhase("test");
   } catch {
     setError("Could not generate test.");
@@ -280,7 +277,6 @@ if (normalized.primaryQuestion) {
     setTestLoading(false);
   }
 }
-
   function moveToQuestion(nextIndex) {
   const spent = Math.round((Date.now() - currentQStart) / 1000);
 
