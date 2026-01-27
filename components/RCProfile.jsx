@@ -804,6 +804,22 @@ Goal: Stabilize CAT rhythm under mild fatigue.
               />
             </div>
 
+            <button
+  onClick={() => {
+    window.dispatchEvent(new CustomEvent("start-plan-drill"));
+  }}
+  style={{
+    marginTop: 16,
+    padding: "12px 18px",
+    borderRadius: 10,
+    background: "#2563eb",
+    color: "#fff",
+    border: "none",
+    fontWeight: 700,
+  }}
+>
+  Start Today’s Drill
+</button>
             <div>
               {current.skills.join(" + ")} Questions:{" "}
               {todayData.skillQs}/{skillTarget}
