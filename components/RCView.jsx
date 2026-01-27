@@ -399,17 +399,26 @@ if (rcMode === "plan") {
     localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
   }
 }
-   if (rcMode === "plan") {
+  if (rcMode === "plan") {
   setPlanRCCount(c => c + 1);
-  // Do nothing else here.
-  // Let the result screen stay visible.
-}
-  } catch {
-    setError("Could not analyze your test.");
-    setPhase("test");
+
+  if (planRCCount + 1 < 3) {
+    setTimeout(() => {
+      setGeneratedRC(null);
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setShowGenerator(true);
+      setPhase("mentor");
+    }, 600);
+  } else {
+    setTimeout(() => {
+      setPhase("plan-skill"); // future phase
+    }, 600);
   }
 }
-
  
   async function startAdaptiveRC() {
     try {
@@ -807,6 +816,7 @@ return (
   </div>
   </div>
 )}
+    
 
     {phase === "plan-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
@@ -830,6 +840,37 @@ return (
     )}
   </div>
 )}
+   {phase === "plan-complete" && (
+  <div style={{ marginTop: 40, textAlign: "center" }}>
+    <h2>🎉 Bravo!</h2>
+    <p>You’ve completed today’s RC target.</p>
+    <p><b>RCs:</b> 3 / 3</p>
+    <p>
+      You can return tomorrow for the next drill or continue in free mode.
+    </p>
+
+    <button
+      onClick={() => {
+        setRcMode("free");
+        setPlanRCCount(0);
+        setPhase("mentor");
+        setShowGenerator(false);
+      }}
+      style={{
+        marginTop: 12,
+        padding: "12px 18px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 6,
+        fontWeight: 600,
+      }}
+    >
+      Continue in Free Mode
+    </button>
+  </div>
+)}
+    
     {phase === "ready" && !directTestMode && (
   <div>
     <p>You’ve now understood this passage. Let’s test it.</p>
