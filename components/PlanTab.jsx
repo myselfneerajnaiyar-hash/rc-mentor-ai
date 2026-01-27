@@ -64,72 +64,166 @@ export default function PlanTab() {
     todayData.rcDone >= rcTarget && todayData.skillQs >= skillTarget;
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <h2>This Week’s Plan</h2>
+    <div style={{ marginTop: 24, maxWidth: 1000 }}>
+      <h2 style={{ marginBottom: 12 }}>This Week’s Plan</h2>
 
-      <div style={{ marginTop: 12, padding: 20, borderRadius: 14, background: "#f8fafc", border: "1px solid #e5e7eb" }}>
-        <div style={{ fontSize: 14, color: "#555" }}>Focus Skills</div>
-        <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
-          {current.skills[0].toUpperCase()} + {current.skills[1].toUpperCase()}
+      <div
+        style={{
+          background: "#ffffff",
+          borderRadius: 20,
+          padding: 28,
+          boxShadow: "0 12px 30px rgba(0,0,0,0.06)",
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        {/* Focus Skills */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ fontSize: 13, color: "#6b7280" }}>Focus Skills</div>
+          <div style={{ fontSize: 24, fontWeight: 800 }}>
+            {current.skills[0].toUpperCase()}{" "}
+            <span style={{ color: "#94a3b8" }}>+</span>{" "}
+            {current.skills[1].toUpperCase()}
+          </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8 }}>
+        {/* Week Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: 10,
+            marginBottom: 28,
+          }}
+        >
           {current.days.map((d, i) => {
             const done = d.rcDone >= rcTarget && d.skillQs >= skillTarget;
+            const isToday = i === dayIndex;
+
             return (
-              <div key={i} style={{ padding: 10, borderRadius: 10, textAlign: "center", background: done ? "#dcfce7" : "#ffffff", border: "1px solid #e5e7eb", opacity: i > dayIndex ? 0.4 : 1 }}>
-                <div style={{ fontSize: 12, color: "#666" }}>Day {i + 1}</div>
-                <div style={{ fontSize: 12 }}>{d.rcDone}/{rcTarget} RC</div>
-                <div style={{ fontSize: 12 }}>{d.skillQs}/{skillTarget} Q</div>
+              <div
+                key={i}
+                style={{
+                  padding: 12,
+                  borderRadius: 12,
+                  textAlign: "center",
+                  background: done ? "#dcfce7" : "#f8fafc",
+                  border: isToday
+                    ? "2px solid #2563eb"
+                    : "1px solid #e5e7eb",
+                  opacity: i > dayIndex ? 0.4 : 1,
+                }}
+              >
+                <div style={{ fontSize: 12, color: "#6b7280" }}>
+                  Day {i + 1}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 600 }}>
+                  {d.rcDone}/{rcTarget} RC
+                </div>
+                <div style={{ fontSize: 12 }}>
+                  {d.skillQs}/{skillTarget} Q
+                </div>
               </div>
             );
           })}
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <h4>Today’s Target 🎯</h4>
+        {/* Today’s Mission */}
+        <div
+          style={{
+            padding: 20,
+            borderRadius: 16,
+            background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <h3 style={{ marginTop: 0 }}>🎯 Today’s Mission</h3>
 
-          <div>RCs: {todayData.rcDone}/{rcTarget}</div>
-          <div style={{ height: 6, background: "#e5e7eb", borderRadius: 6, overflow: "hidden", marginBottom: 8 }}>
-            <div style={{ width: rcPct + "%", height: "100%", background: "#22c55e" }} />
+          <div style={{ fontWeight: 600, marginBottom: 6 }}>
+            RCs: {todayData.rcDone}/{rcTarget}
           </div>
 
-         <button
-  onClick={() => {
-    const todayKey = new Date().toISOString().slice(0, 10);
-    const done = localStorage.getItem("rcPlanDone-" + todayKey);
-
-    if (done) {
-      alert("You have already completed today’s drill. Come back tomorrow.");
-      return;
-    }
-
-    window.dispatchEvent(new CustomEvent("start-plan-drill"));
-  }}
-  style={{
-    marginTop: 16,
-    padding: "12px 18px",
-    borderRadius: 10,
-    background: "#2563eb",
-    color: "#fff",
-    fontWeight: 600,
-    border: "none",
-    cursor: "pointer",
-  }}
->
-  Start Today’s Drill
-</button>
-
-          <div style={{ marginTop: 8 }}>
-            {current.skills.join(" + ")} Questions: {todayData.skillQs}/{skillTarget}
+          <div
+            style={{
+              height: 10,
+              background: "#e5e7eb",
+              borderRadius: 999,
+              overflow: "hidden",
+              marginBottom: 14,
+            }}
+          >
+            <div
+              style={{
+                width: rcPct + "%",
+                height: "100%",
+                background: "linear-gradient(90deg, #22c55e, #16a34a)",
+              }}
+            />
           </div>
-          <div style={{ height: 6, background: "#e5e7eb", borderRadius: 6, overflow: "hidden" }}>
-            <div style={{ width: skillPct + "%", height: "100%", background: "#3b82f6" }} />
+
+          <button
+            onClick={() => {
+              const todayKey = new Date().toISOString().slice(0, 10);
+              const done = localStorage.getItem("rcPlanDone-" + todayKey);
+
+              if (done) {
+                alert(
+                  "You have already completed today’s drill. Come back tomorrow."
+                );
+                return;
+              }
+
+              window.dispatchEvent(new CustomEvent("start-plan-drill"));
+            }}
+            style={{
+              padding: "14px 22px",
+              borderRadius: 12,
+              background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+              color: "#fff",
+              border: "none",
+              fontWeight: 700,
+              fontSize: 15,
+              boxShadow: "0 8px 20px rgba(37,99,235,0.35)",
+              cursor: "pointer",
+            }}
+          >
+            Start Today’s Drill
+          </button>
+
+          <div style={{ marginTop: 14, fontWeight: 600 }}>
+            {current.skills.join(" + ")} Questions:{" "}
+            {todayData.skillQs}/{skillTarget}
+          </div>
+
+          <div
+            style={{
+              height: 10,
+              background: "#e5e7eb",
+              borderRadius: 999,
+              overflow: "hidden",
+              marginTop: 6,
+            }}
+          >
+            <div
+              style={{
+                width: skillPct + "%",
+                height: "100%",
+                background: "linear-gradient(90deg, #3b82f6, #1d4ed8)",
+              }}
+            />
           </div>
 
           {completed && (
-            <div style={{ marginTop: 16, padding: 12, borderRadius: 10, background: "#ecfeff", border: "1px solid #67e8f9" }}>
-              🎉 <b>Bravo!</b> You’ve completed today’s plan.
+            <div
+              style={{
+                marginTop: 18,
+                padding: 14,
+                borderRadius: 12,
+                background: "#ecfeff",
+                border: "1px solid #67e8f9",
+                fontWeight: 600,
+              }}
+            >
+              🎉 Bravo! You’ve completed today’s plan.
             </div>
           )}
         </div>
