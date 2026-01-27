@@ -45,6 +45,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
+  const [planRCCount, setPlanRCCount] = useState(0);
   const [rcMode, setRcMode] = useState("free"); 
 // "free" | "plan"
 
@@ -56,7 +57,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
-  const [planRCCount, setPlanRCCount] = useState(0);
+  
 
  useEffect(() => {
   if (!timerRunning) return;
@@ -399,6 +400,29 @@ if (rcMode === "plan") {
   }
 }
 
+  if (rcMode === "plan") {
+  setPlanRCCount(c => c + 1);
+
+  // If we still have RCs left today, auto-start next one
+  if (planRCCount + 1 < 3) {
+    setTimeout(() => {
+      setGeneratedRC(null);
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+
+      setShowGenerator(true);
+      setPhase("mentor");
+    }, 600);
+  } else {
+    // RC quota done → move to next phase (skill drill later)
+    setTimeout(() => {
+      setPhase("plan-skill");
+    }, 600);
+  }
+}
   async function startAdaptiveRC() {
     try {
       setIsAdaptive(true);
