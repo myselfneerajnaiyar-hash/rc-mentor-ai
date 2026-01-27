@@ -81,7 +81,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
 
   return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
-  0
+  
  useEffect(() => {
   function handler() {
     const g = planGenres[Math.floor(Math.random() * planGenres.length)];
@@ -436,7 +436,7 @@ if (rcMode === "plan") {
     }, 600);
   }
 }
- 
+  }
   async function startAdaptiveRC() {
     try {
       setIsAdaptive(true);
