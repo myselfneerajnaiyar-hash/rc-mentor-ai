@@ -342,41 +342,42 @@ const record = {
 existing.tests = existing.tests || [];
 existing.tests.push(record);
 localStorage.setItem("rcProfile", JSON.stringify(existing));
-    // ---- UPDATE DAILY & WEEKLY PLAN ----
-const today = new Date();
-const todayKey = today.toISOString().slice(0, 10);
+    // ---- UPDATE DAILY & WEEKLY PLAN (ONLY IN PLAN MODE) ----
+if (rcMode === "plan") {
+  const today = new Date();
+  const todayKey = today.toISOString().slice(0, 10);
 
-// DAILY RC COUNT
-const daily = JSON.parse(localStorage.getItem("rcDailyProgress") || "{}");
-daily[todayKey] = (daily[todayKey] || 0) + 1;
-localStorage.setItem("rcDailyProgress", JSON.stringify(daily));
+  // DAILY RC COUNT
+  const daily = JSON.parse(localStorage.getItem("rcDailyProgress") || "{}");
+  daily[todayKey] = Math.min(3, (daily[todayKey] || 0) + 1); // cap at 3
+  localStorage.setItem("rcDailyProgress", JSON.stringify(daily));
 
-// WEEKLY PLAN UPDATE
-function getWeekId(d) {
-  const start = new Date(d.getFullYear(), 0, 1);
-  const diff = (d - start) / 86400000;
-  return d.getFullYear() + "-W" + Math.ceil((diff + start.getDay() + 1) / 7);
+  // WEEKLY PLAN UPDATE
+  function getWeekId(d) {
+    const start = new Date(d.getFullYear(), 0, 1);
+    const diff = (d - start) / 86400000;
+    return d.getFullYear() + "-W" + Math.ceil((diff + start.getDay() + 1) / 7);
+  }
+
+  const weekId = getWeekId(today);
+  const plans = JSON.parse(localStorage.getItem("rcWeeklyPlan") || "{}");
+
+  if (plans[weekId]) {
+    const dayIndex = (today.getDay() + 6) % 7;
+    const day = plans[weekId].days[dayIndex];
+
+    day.rcDone = Math.min(3, day.rcDone + 1);
+
+    const focus = plans[weekId].skills;
+    record.questions.forEach(q => {
+      if (focus.includes(q.type)) {
+        day.skillQs = Math.min(10, day.skillQs + 1);
+      }
+    });
+
+    localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
+  }
 }
-
-const weekId = getWeekId(today);
-const plans = JSON.parse(localStorage.getItem("rcWeeklyPlan") || "{}");
-
-if (plans[weekId]) {
-  const dayIndex = (today.getDay() + 6) % 7;
-  const day = plans[weekId].days[dayIndex];
-
-  day.rcDone += 1;
-
-  const focus = plans[weekId].skills;
-  record.questions.forEach(q => {
-    if (focus.includes(q.type)) {
-      day.skillQs += 1;
-    }
-  });
-
-  localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
-}
-
 
   } catch {
     setError("Could not analyze your test.");
