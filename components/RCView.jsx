@@ -434,8 +434,8 @@ if (rcMode === "plan") {
     setTimeout(() => {
       setPhase("plan-skill"); // future phase
     }, 600);
-  }
-}
+  
+
   }
   async function startAdaptiveRC() {
     try {
