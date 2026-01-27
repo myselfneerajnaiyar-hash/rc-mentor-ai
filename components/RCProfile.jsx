@@ -665,7 +665,11 @@ Goal: Stabilize CAT rhythm under mild fatigue.
 })()}
 
 {active === "plan" && <PlanTab />}
-      function PlanTab() {
+     
+    </div>
+  );
+}
+ function PlanTab() {
   const WEEKLY_SKILLS = [
     ["main-idea", "detail"],
     ["inference", "function"],
@@ -837,9 +841,6 @@ Goal: Stabilize CAT rhythm under mild fatigue.
           )}
         </div>
       </div>
-    </div>
-  );
-}
     </div>
   );
 }
