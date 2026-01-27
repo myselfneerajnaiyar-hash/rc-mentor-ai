@@ -1081,9 +1081,11 @@ return (
   </button>
 
  <button
-  onClick={() => {
-    if (rcMode === "plan" && planRCCount < 3) {
-      // Start next RC in today's plan
+ onClick={() => {
+  if (rcMode === "plan") {
+    if (planRCCount + 1 < 3) {
+      setPlanRCCount(c => c + 1);
+
       setGeneratedRC(null);
       setParas([]);
       setIndex(0);
@@ -1093,22 +1095,26 @@ return (
       setShowGenerator(true);
       setPhase("mentor");
     } else {
-      // Normal free-mode reset
-      setParas([]);
-      setIndex(0);
-      setData(null);
-      setFeedback("");
-      setMode("idle");
-      setGeneratedRC(null);
-      setTestQuestions([]);
-      setTestAnswers({});
-      setResult(null);
-      setDirectTestMode(false);
-      setFullPassage("");
-      setShowGenerator(true);
-      setPhase("mentor");
+      setPlanRCCount(3);
+      setPhase("plan-complete");
     }
-  }}
+  } else {
+    // Free mode behaviour
+    setParas([]);
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+    setGeneratedRC(null);
+    setTestQuestions([]);
+    setTestAnswers({});
+    setResult(null);
+    setDirectTestMode(false);
+    setFullPassage("");
+    setShowGenerator(true);
+    setPhase("mentor");
+  }
+}}
 >
   {rcMode === "plan" ? "Start Next RC" : "Generate New Passage"}
 </button>
