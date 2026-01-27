@@ -45,6 +45,8 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
+  const [rcMode, setRcMode] = useState("free"); 
+// "free" | "plan"
 
   // ---- VOCAB STATE ----
   const [vocabDrill, setVocabDrill] = useState([]);
