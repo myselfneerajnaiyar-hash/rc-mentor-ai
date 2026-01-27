@@ -1093,7 +1093,7 @@ return (
       setFeedback("");
       setMode("idle");
       setShowGenerator(true);
-      setPhase("mentor");
+      setPhase("plan-loading");
     } else {
       setPlanRCCount(3);
       setPhase("plan-complete");
