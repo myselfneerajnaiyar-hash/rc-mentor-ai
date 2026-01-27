@@ -434,9 +434,15 @@ if (rcMode === "plan") {
     setTimeout(() => {
       setPhase("plan-skill"); // future phase
     }, 600);
-  
-
   }
+}
+    } catch (e) {
+  setError("Could not submit test.");
+} finally {
+  setTestLoading(false);
+}
+
+} // <-- closes submitTest
   async function startAdaptiveRC() {
     try {
       setIsAdaptive(true);
