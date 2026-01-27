@@ -1094,10 +1094,13 @@ return (
       setMode("idle");
       setShowGenerator(true);
       setPhase("plan-loading");
-    } else {
-      setPlanRCCount(3);
-      setPhase("plan-complete");
-    }
+   } else {
+  setPlanRCCount(3);
+  setPhase("plan-complete");
+
+  const todayKey = new Date().toISOString().slice(0, 10);
+  localStorage.setItem("rcPlanDone-" + todayKey, "true");
+}
   } else {
     // Free mode behaviour
     setParas([]);
