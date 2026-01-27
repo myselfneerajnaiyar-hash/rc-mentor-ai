@@ -56,6 +56,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
+  const [planRCCount, setPlanRCCount] = useState(0);
 
  useEffect(() => {
   if (!timerRunning) return;
