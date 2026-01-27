@@ -400,29 +400,7 @@ if (rcMode === "plan") {
   }
 }
 
-  if (rcMode === "plan") {
-  setPlanRCCount(c => c + 1);
-
-  // If we still have RCs left today, auto-start next one
-  if (planRCCount + 1 < 3) {
-    setTimeout(() => {
-      setGeneratedRC(null);
-      setParas([]);
-      setIndex(0);
-      setData(null);
-      setFeedback("");
-      setMode("idle");
-
-      setShowGenerator(true);
-      setPhase("mentor");
-    }, 600);
-  } else {
-    // RC quota done → move to next phase (skill drill later)
-    setTimeout(() => {
-      setPhase("plan-skill");
-    }, 600);
-  }
-}
+ 
   async function startAdaptiveRC() {
     try {
       setIsAdaptive(true);
