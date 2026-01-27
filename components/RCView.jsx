@@ -74,6 +74,19 @@ const [currentQStart, setCurrentQStart] = useState(null);
 }, [timerRunning, timeLeft]);
   0
   useEffect(() => {
+  function handler() {
+    setRcMode("plan");
+    setDifficulty("pro");
+    setLengthRange("500-600");
+    setShowGenerator(true);
+    setPhase("mentor");
+  }
+
+  window.addEventListener("start-plan-drill", handler);
+  return () => window.removeEventListener("start-plan-drill", handler);
+}, []);
+  
+  useEffect(() => {
   if (phase === "test" && testQuestions.length > 0) {
     setCurrentQStart(Date.now());
   }
