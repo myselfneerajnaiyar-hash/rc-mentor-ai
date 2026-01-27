@@ -416,26 +416,7 @@ if (rcMode === "plan") {
     localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
   }
 }
-  if (rcMode === "plan") {
-  setPlanRCCount(c => c + 1);
-
-  if (planRCCount + 1 < 3) {
-    setTimeout(() => {
-      setGeneratedRC(null);
-      setParas([]);
-      setIndex(0);
-      setData(null);
-      setFeedback("");
-      setMode("idle");
-      setShowGenerator(true);
-      setPhase("mentor");
-    }, 600);
-  } else {
-    setTimeout(() => {
-      setPhase("plan-skill"); // future phase
-    }, 600);
-  }
-}
+ 
     } catch (e) {
   setError("Could not submit test.");
 } finally {
