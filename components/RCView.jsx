@@ -87,6 +87,12 @@ const [currentQStart, setCurrentQStart] = useState(null);
   window.addEventListener("start-plan-drill", handler);
   return () => window.removeEventListener("start-plan-drill", handler);
 }, []);
+
+  useEffect(() => {
+  if (rcMode === "plan" && showGenerator) {
+    generateNewRC(); // auto-generate without showing UI
+  }
+}, [rcMode, showGenerator]);
   
   useEffect(() => {
   if (phase === "test" && testQuestions.length > 0) {
