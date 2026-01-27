@@ -47,6 +47,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [planRCCount, setPlanRCCount] = useState(0);
   const [rcMode, setRcMode] = useState("free"); 
+  const [planGenreIndex, setPlanGenreIndex] = useState(0);
 // "free" | "plan"
 
   // ---- VOCAB STATE ----
@@ -82,23 +83,24 @@ const [currentQStart, setCurrentQStart] = useState(null);
   return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
   
- useEffect(() => {
+useEffect(() => {
   function handler() {
-    const g = planGenres[Math.floor(Math.random() * planGenres.length)];
+    const g = planGenres[planGenreIndex % planGenres.length];
 
     setRcMode("plan");
-    setGenre(g);              // 👈 override genre every time
+    setGenre(g);
     setDifficulty("pro");
     setLengthRange("500-600");
 
+    setPlanGenreIndex(i => i + 1); // move to next genre for next RC
     setShowGenerator(true);
-    setPhase("plan-loading"); // 👈 show loader
+    setPhase("plan-loading");
   }
 
   window.addEventListener("start-plan-drill", handler);
   return () => window.removeEventListener("start-plan-drill", handler);
-}, []);
-
+}, [planGenreIndex]);
+  
   useEffect(() => {
   if (rcMode === "plan" && showGenerator && phase === "mentor") {
     generateNewRC();
