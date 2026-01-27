@@ -570,7 +570,7 @@ return (
     splitPassage={splitPassage}
     setShowGenerator={setShowGenerator}
   />
-)
+)}
 
   {paras.length > 0 && phase === "mentor" && (
   <div style={{ marginTop: 20, background: "#fff", padding: 20, borderRadius: 12 }}>
