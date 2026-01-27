@@ -678,7 +678,7 @@ return (
     )}
   </div>
 )}
-   {showGenerator && (
+   {showGenerator && rcMode !=="plan" && (
   <div
     style={{
       marginTop: 16,
