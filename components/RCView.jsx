@@ -375,11 +375,7 @@ if (plans[weekId]) {
   localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
 }
 
-// ---- Update Today's RC Progress ----
-const todayKey = new Date().toISOString().slice(0, 10);
-const map = JSON.parse(localStorage.getItem("rcDailyProgress") || "{}");
-map[todayKey] = (map[todayKey] || 0) + 1;
-localStorage.setItem("rcDailyProgress", JSON.stringify(map));
+
   } catch {
     setError("Could not analyze your test.");
     setPhase("test");
