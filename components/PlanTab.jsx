@@ -94,12 +94,31 @@ export default function PlanTab() {
             <div style={{ width: rcPct + "%", height: "100%", background: "#22c55e" }} />
           </div>
 
-          <button
-            onClick={() => window.dispatchEvent(new CustomEvent("start-plan-drill"))}
-            style={{ marginTop: 16, padding: "12px 18px", borderRadius: 10, background: "#2563eb", color: "#fff", border: "none", fontWeight: 700 }}
-          >
-            Start Today’s Drill
-          </button>
+         <button
+  onClick={() => {
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const done = localStorage.getItem("rcPlanDone-" + todayKey);
+
+    if (done) {
+      alert("You have already completed today’s drill. Come back tomorrow.");
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent("start-plan-drill"));
+  }}
+  style={{
+    marginTop: 16,
+    padding: "12px 18px",
+    borderRadius: 10,
+    background: "#2563eb",
+    color: "#fff",
+    fontWeight: 600,
+    border: "none",
+    cursor: "pointer",
+  }}
+>
+  Start Today’s Drill
+</button>
 
           <div style={{ marginTop: 8 }}>
             {current.skills.join(" + ")} Questions: {todayData.skillQs}/{skillTarget}
