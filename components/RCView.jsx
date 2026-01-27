@@ -89,10 +89,10 @@ const [currentQStart, setCurrentQStart] = useState(null);
 }, []);
 
   useEffect(() => {
-  if (rcMode === "plan" && showGenerator) {
-    generateNewRC(); // auto-generate without showing UI
+  if (rcMode === "plan" && showGenerator && phase === "mentor") {
+    generateNewRC();
   }
-}, [rcMode, showGenerator]);
+}, [rcMode, showGenerator, phase]);
   
   useEffect(() => {
   if (phase === "test" && testQuestions.length > 0) {
