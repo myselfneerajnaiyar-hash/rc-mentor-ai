@@ -808,6 +808,13 @@ return (
   </div>
 )}
 
+    {phase === "plan-loading" && (
+  <div style={{ marginTop: 40, textAlign: "center" }}>
+    <h3>Preparing your CAT-style RC…</h3>
+    <p>Setting up today’s drill.</p>
+  </div>
+)}
+    
  {phase === "test-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
     {testQuestions.length === 0 ? (
