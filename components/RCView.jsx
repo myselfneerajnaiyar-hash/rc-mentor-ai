@@ -399,27 +399,11 @@ if (rcMode === "plan") {
     localStorage.setItem("rcWeeklyPlan", JSON.stringify(plans));
   }
 }
-    if (rcMode === "plan") {
+   if (rcMode === "plan") {
   setPlanRCCount(c => c + 1);
-
-  if (planRCCount + 1 < 3) {
-    setTimeout(() => {
-      setGeneratedRC(null);
-      setParas([]);
-      setIndex(0);
-      setData(null);
-      setFeedback("");
-      setMode("idle");
-      setShowGenerator(true);
-      setPhase("mentor");
-    }, 600);
-  } else {
-    setTimeout(() => {
-      setPhase("plan-skill"); // future phase
-    }, 600);
-  }
+  // Do nothing else here.
+  // Let the result screen stay visible.
 }
-
   } catch {
     setError("Could not analyze your test.");
     setPhase("test");
@@ -1044,34 +1028,38 @@ return (
     View Detailed Review
   </button>
 
-  <button
-   onClick={() => {
-  setParas([]);
-  setIndex(0);
-  setData(null);
-  setFeedback("");
-  setMode("idle");
-  setGeneratedRC(null);
-  setTestQuestions([]);
-  setTestAnswers({});
-  setResult(null);
-  setDirectTestMode(false);
-
-  setFullPassage("");   // 🔧 ADD THIS
-  setShowGenerator(true);
-  setPhase("mentor");
-}}
-    style={{
-      padding: "10px 16px",
-      borderRadius: 6,
-      border: "1px solid #16a34a",
-      background: "#16a34a",
-      color: "#fff",
-      fontWeight: 600,
-    }}
-  >
-    Generate New Passage
-  </button>
+ <button
+  onClick={() => {
+    if (rcMode === "plan" && planRCCount < 3) {
+      // Start next RC in today's plan
+      setGeneratedRC(null);
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setShowGenerator(true);
+      setPhase("mentor");
+    } else {
+      // Normal free-mode reset
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setGeneratedRC(null);
+      setTestQuestions([]);
+      setTestAnswers({});
+      setResult(null);
+      setDirectTestMode(false);
+      setFullPassage("");
+      setShowGenerator(true);
+      setPhase("mentor");
+    }
+  }}
+>
+  {rcMode === "plan" ? "Start Next RC" : "Generate New Passage"}
+</button>
 </div>
   </div>
 )}
