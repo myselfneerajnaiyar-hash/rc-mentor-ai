@@ -33,7 +33,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
    const [directTestMode, setDirectTestMode] = useState(false)
-  // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
+  // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive | plan-complete
   
 // home | rc | vocab | speed | cat
 
