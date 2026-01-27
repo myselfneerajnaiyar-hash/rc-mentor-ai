@@ -57,7 +57,14 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
-  
+  const planGenres = [
+  "Philosophy",
+  "Economics",
+  "Sociology",
+  "Technology & Society",
+  "Culture Studies",
+  "Political Theory",
+];
 
  useEffect(() => {
   if (!timerRunning) return;
@@ -75,13 +82,17 @@ const [currentQStart, setCurrentQStart] = useState(null);
   return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
   0
-  useEffect(() => {
+ useEffect(() => {
   function handler() {
+    const g = planGenres[Math.floor(Math.random() * planGenres.length)];
+
     setRcMode("plan");
+    setGenre(g);              // 👈 override genre every time
     setDifficulty("pro");
     setLengthRange("500-600");
+
     setShowGenerator(true);
-    setPhase("mentor");
+    setPhase("plan-loading"); // 👈 show loader
   }
 
   window.addEventListener("start-plan-drill", handler);
@@ -99,6 +110,12 @@ const [currentQStart, setCurrentQStart] = useState(null);
     setCurrentQStart(Date.now());
   }
 }, [phase, testQuestions]);
+
+  useEffect(() => {
+  if (rcMode === "plan" && showGenerator && phase === "plan-loading") {
+    generateNewRC(); // auto-generate without showing UI
+  }
+}, [rcMode, showGenerator, phase]);
   
   function splitPassage() {
   const raw = text.trim();
@@ -1109,6 +1126,12 @@ return (
   {rcMode === "plan" ? "Start Next RC" : "Generate New Passage"}
 </button>
 </div>
+  </div>
+)}
+    {phase === "plan-loading" && (
+  <div style={{ marginTop: 40, textAlign: "center" }}>
+    <h3>Preparing your CAT-style RC…</h3>
+    <p>Generating a high-difficulty passage.</p>
   </div>
 )}
 
