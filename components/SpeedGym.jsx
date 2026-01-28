@@ -43,8 +43,11 @@ export default function SpeedGym({ onBack }) {
       });
 
       const data = await res.json();
-      if (!data.paragraphs) throw new Error();
 
+if (!data.text) {
+  console.error("API error:", data);
+  throw new Error("No text from API");
+}
       setParas(data.paragraphs);
       setIndex(0);
       setAnswers({});
