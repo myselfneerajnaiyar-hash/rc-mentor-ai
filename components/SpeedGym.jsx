@@ -1,37 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SpeedGym({ onBack }) {
   const [phase, setPhase] = useState("intro");
-  const [passage, setPassage] = useState("");
+  const [chunks, setChunks] = useState([]);
+  const [current, setCurrent] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(0);
-  const [result, setResult] = useState(null);
   const [meta, setMeta] = useState(null);
+  const [result, setResult] = useState(null);
 
   function computeTarget() {
     const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
-    if (!history.length) {
-      return { wpm: 180, words: 90, level: "easy" };
-    }
+    if (!history.length) return { wpm: 180, words: 120, level: "easy" };
 
     const recent = history.slice(-5);
-    const avgWPM = Math.round(
-      recent.reduce((a, b) => a + b.wpm, 0) / recent.length
-    );
-    const avgAcc = Math.round(
-      recent.reduce((a, b) => a + b.accuracy, 0) / recent.length
-    );
+    const avg = recent.reduce((a, b) => a + b.effectiveWPM, 0) / recent.length;
 
-    if (avgWPM < 200 || avgAcc < 60)
-      return { wpm: 180, words: 90, level: "easy" };
-    if (avgWPM < 240 || avgAcc < 70)
-      return { wpm: 220, words: 120, level: "moderate" };
-    if (avgWPM < 280 || avgAcc < 80)
-      return { wpm: 260, words: 150, level: "hard" };
-
-    return { wpm: 300, words: 180, level: "elite" };
+    if (avg < 160) return { wpm: 180, words: 120, level: "easy" };
+    if (avg < 210) return { wpm: 220, words: 150, level: "moderate" };
+    if (avg < 260) return { wpm: 260, words: 180, level: "hard" };
+    return { wpm: 300, words: 210, level: "elite" };
   }
 
   async function start() {
@@ -47,44 +37,50 @@ export default function SpeedGym({ onBack }) {
 
     const data = await res.json();
 
-    const text = data.text || data.passage || "";
-    const qs = Array.isArray(data.questions) ? data.questions : [];
-
-    setPassage(text);
-    setQuestions(qs);
+    const parts = data.text.match(/(.{1,260})(\s|$)/g) || [];
+    setChunks(parts);
+    setQuestions(data.questions || []);
     setAnswers({});
-    setResult(null);
-    setTimeLeft(25);
-    setPhase("reading");
+    setCurrent(0);
 
-    const id = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          clearInterval(id);
-          setPhase("questions");
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
+    const totalSeconds = Math.ceil((data.text.split(/\s+/).length / target.wpm) * 60);
+    setTimeLeft(totalSeconds);
+    setPhase("reading");
   }
 
-  function submit() {
-    if (!questions.length) return;
+  useEffect(() => {
+    if (phase !== "reading") return;
+    if (timeLeft <= 0) {
+      setPhase("questions");
+      return;
+    }
 
+    const id = setInterval(() => {
+      setTimeLeft(t => t - 1);
+      setCurrent(c => Math.min(c + 1, chunks.length - 1));
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, [phase, timeLeft, chunks.length]);
+
+  function submit() {
     const correct = questions.reduce(
       (s, q, i) => s + (answers[i] === q.correct ? 1 : 0),
       0
     );
 
-    const words = passage.split(/\s+/).length;
-    const wpm = Math.round((words / 25) * 60);
+    const seenText = chunks.slice(0, current + 1).join(" ");
+    const words = seenText.split(/\s+/).length;
+
+    const rawWPM = Math.round((words / (meta.words / meta.wpm)) * meta.wpm);
     const accuracy = Math.round((correct / questions.length) * 100);
+    const effectiveWPM = Math.round(rawWPM * (accuracy / 100));
 
     const record = {
       date: Date.now(),
-      wpm,
+      rawWPM,
       accuracy,
+      effectiveWPM,
       level: meta.level,
     };
 
@@ -92,7 +88,7 @@ export default function SpeedGym({ onBack }) {
     history.push(record);
     localStorage.setItem("speedProfile", JSON.stringify(history));
 
-    setResult({ wpm, accuracy, correct, total: questions.length });
+    setResult({ rawWPM, accuracy, effectiveWPM });
     setPhase("result");
   }
 
@@ -102,11 +98,8 @@ export default function SpeedGym({ onBack }) {
         <div style={panel}>
           <h2>Speed Reading Gym</h2>
           <p>Train how fast you read without losing meaning.</p>
-
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-            <button style={btn} onClick={start}>Start Drill</button>
-            <button onClick={onBack} style={ghost}>← Back</button>
-          </div>
+          <button style={btn} onClick={start}>Start Drill</button>
+          <button onClick={onBack} style={{ marginTop: 12 }}>← Back</button>
         </div>
       )}
 
@@ -123,28 +116,23 @@ export default function SpeedGym({ onBack }) {
             <b>Read Fast</b>
             <b>{timeLeft}s</b>
           </div>
-          <p style={text}>{passage || "Loading passage…"}</p>
+          <p style={text}>{chunks[current]}</p>
         </div>
       )}
 
       {phase === "questions" && (
         <div style={panel}>
           <h3>Check Your Understanding</h3>
-
           {questions.map((q, i) => (
-            <div key={i} style={{ marginBottom: 18 }}>
-              <b>{q.q || q.prompt || `Question ${i + 1}`}</b>
-
-              {(q.options || []).map((o, oi) => (
-                <div key={oi} style={{ marginTop: 6 }}>
+            <div key={i} style={{ marginBottom: 14 }}>
+              <b>{q.q}</b>
+              {q.options.map((o, oi) => (
+                <div key={oi}>
                   <label>
                     <input
                       type="radio"
                       name={"q" + i}
-                      checked={answers[i] === oi}
-                      onChange={() =>
-                        setAnswers(a => ({ ...a, [i]: oi }))
-                      }
+                      onChange={() => setAnswers(a => ({ ...a, [i]: oi }))}
                     />{" "}
                     {o}
                   </label>
@@ -152,20 +140,17 @@ export default function SpeedGym({ onBack }) {
               ))}
             </div>
           ))}
-
-          <button style={{ ...btn, marginTop: 10 }} onClick={submit}>
-            Submit
-          </button>
+          <button style={btn} onClick={submit}>Submit</button>
         </div>
       )}
 
       {phase === "result" && (
         <div style={panel}>
           <h2>Drill Result</h2>
-          <p><b>Speed:</b> {result.wpm} WPM</p>
+          <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
-
-          <button style={{ ...btn, marginTop: 12 }} onClick={() => setPhase("intro")}>
+          <p><b>Effective Speed:</b> {result.effectiveWPM} WPM</p>
+          <button style={btn} onClick={() => setPhase("intro")}>
             Next Drill
           </button>
         </div>
@@ -197,14 +182,6 @@ const btn = {
   color: "#fff",
   border: "none",
   fontWeight: 600,
-  cursor: "pointer",
-};
-
-const ghost = {
-  padding: "12px 18px",
-  borderRadius: 10,
-  background: "transparent",
-  border: "1px solid #94a3b8",
   cursor: "pointer",
 };
 
