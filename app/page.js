@@ -553,8 +553,10 @@ function updateTodayRCProgress() {
   localStorage.setItem(weekKey, JSON.stringify(saved));
 }
   
- return (
+return (
   <main>
+    <Navbar view={view} setView={setView} />
+
     {view === "home" && (
       <HomeView
         setView={setView}
@@ -563,8 +565,12 @@ function updateTodayRCProgress() {
     )}
 
     {view === "rc" && <RCView view={view} setView={setView} />}
-    {view === "speed" && <SpeedDashboard setView={setView} />}
-      {view === "speed-gym" && <SpeedGym onBack={() => setView("speed")} />}
+
+    {view === "speed" && <SpeedContainer />}
+
+    {view === "vocab" && <div style={{ padding: 40 }}>Vocabulary Lab (next)</div>}
+
+    {view === "cat" && <div style={{ padding: 40 }}>CAT Arena (soon)</div>}
   </main>
 );
 }
