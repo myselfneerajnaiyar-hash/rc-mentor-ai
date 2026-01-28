@@ -101,7 +101,7 @@ function Pie({ a, b, labelA, labelB, colorA, colorB }) {
   );
 }
 
-export default function SpeedProfile() {
+export default function SpeedDashboard() {
   const [active, setActive] = useState("overview");
   const [history, setHistory] = useState([]);
 
