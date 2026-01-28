@@ -11,19 +11,25 @@ export default function SpeedGym({ onBack }) {
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
 
-  function computeTarget() {
-    const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
-    if (!history.length) return { wpm: 180, level: "easy" };
+ function computeTarget() {
+  const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
 
-    const recent = history.slice(-5);
-    const avg = recent.reduce((a, b) => a + b.effectiveWPM, 0) / recent.length;
-
-    if (avg < 200) return { wpm: 180, level: "easy" };
-    if (avg < 240) return { wpm: 220, level: "moderate" };
-    if (avg < 280) return { wpm: 260, level: "hard" };
-    return { wpm: 300, level: "elite" };
+  if (!history.length) {
+    return { wpm: 180, level: "easy" };
   }
 
+  const last = history[history.length - 1];
+
+  // Use effective speed (raw * accuracy)
+  const eff = last.effective;
+
+  if (eff < 170) return { wpm: 160, level: "easy" };
+  if (eff < 210) return { wpm: 190, level: "easy+" };
+  if (eff < 240) return { wpm: 220, level: "moderate" };
+  if (eff < 270) return { wpm: 250, level: "moderate+" };
+  if (eff < 300) return { wpm: 280, level: "hard" };
+  return { wpm: 320, level: "elite" };
+}
   async function start() {
     try {
       const target = computeTarget();
