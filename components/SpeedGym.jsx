@@ -122,8 +122,24 @@ export default function SpeedGym({ onBack }) {
         <div style={panel}>
           <h2>Speed Reading Gym</h2>
           <p>Train how fast you read without losing meaning.</p>
-          <button style={btn} onClick={start}>Start Drill</button>
-          <button onClick={onBack} style={{ marginTop: 12 }}>← Back</button>
+         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+  <button style={btn} onClick={start}>Start Drill</button>
+
+  <button
+    onClick={onBack}
+    style={{
+      background: "transparent",
+      border: "none",
+      color: "#0f766e",
+      fontWeight: 500,
+      cursor: "pointer",
+      padding: 0,
+      textDecoration: "underline",
+    }}
+  >
+    ← Back
+  </button>
+</div>
         </div>
       )}
 
