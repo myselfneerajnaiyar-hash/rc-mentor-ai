@@ -45,10 +45,46 @@ Return ONLY valid JSON in this format:
 {
   "paragraphs": ["p1", "p2", "p3", "p4"],
   "questions": [
-    { "q": "Question on para 1", "options": ["A","B","C","D"], "correct": 0 },
-    { "q": "Question on para 2", "options": ["A","B","C","D"], "correct": 1 },
-    { "q": "Question on para 3", "options": ["A","B","C","D"], "correct": 2 },
-    { "q": "Question on para 4", "options": ["A","B","C","D"], "correct": 3 }
+    {
+      "q": "Question on para 1",
+      "options": [
+        "Meaningful option text 1",
+        "Meaningful option text 2",
+        "Meaningful option text 3",
+        "Meaningful option text 4"
+      ],
+      "correct": 0
+    },
+    {
+      "q": "Question on para 2",
+      "options": [
+        "Meaningful option text 1",
+        "Meaningful option text 2",
+        "Meaningful option text 3",
+        "Meaningful option text 4"
+      ],
+      "correct": 1
+    },
+    {
+      "q": "Question on para 3",
+      "options": [
+        "Meaningful option text 1",
+        "Meaningful option text 2",
+        "Meaningful option text 3",
+        "Meaningful option text 4"
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Question on para 4",
+      "options": [
+        "Meaningful option text 1",
+        "Meaningful option text 2",
+        "Meaningful option text 3",
+        "Meaningful option text 4"
+      ],
+      "correct": 3
+    }
   ]
 }
 `;
