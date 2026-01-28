@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import RCView from "../components/RCView";
 import SpeedGym from "../components/SpeedGym";
 import SpeedDashboard from "../components/SpeedDashboard";
+import SpeedContainer from "../components/SpeedContainer";
 
 export default function Page() {
   const [text, setText] = useState("");
