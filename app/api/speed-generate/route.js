@@ -66,3 +66,4 @@ Return ONLY valid JSON in this format:
       { status: 500 }
     );
   }
+}
