@@ -7,7 +7,6 @@ export default function SpeedGym({ onBack }) {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(0);
-  const [running, setRunning] = useState(false);
   const [result, setResult] = useState(null);
   const [meta, setMeta] = useState(null);
 
@@ -27,10 +26,8 @@ export default function SpeedGym({ onBack }) {
 
     if (avgWPM < 200 || avgAcc < 60)
       return { wpm: 180, words: 90, level: "easy" };
-
     if (avgWPM < 240 || avgAcc < 70)
       return { wpm: 220, words: 120, level: "moderate" };
-
     if (avgWPM < 280 || avgAcc < 80)
       return { wpm: 260, words: 150, level: "hard" };
 
@@ -50,19 +47,20 @@ export default function SpeedGym({ onBack }) {
 
     const data = await res.json();
 
-    setPassage(data.text);
-    setQuestions(data.questions || []);
+    const text = data.text || data.passage || "";
+    const qs = Array.isArray(data.questions) ? data.questions : [];
+
+    setPassage(text);
+    setQuestions(qs);
     setAnswers({});
     setResult(null);
     setTimeLeft(25);
-    setRunning(true);
     setPhase("reading");
 
     const id = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(id);
-          setRunning(false);
           setPhase("questions");
           return 0;
         }
@@ -72,6 +70,8 @@ export default function SpeedGym({ onBack }) {
   }
 
   function submit() {
+    if (!questions.length) return;
+
     const correct = questions.reduce(
       (s, q, i) => s + (answers[i] === q.correct ? 1 : 0),
       0
@@ -102,8 +102,11 @@ export default function SpeedGym({ onBack }) {
         <div style={panel}>
           <h2>Speed Reading Gym</h2>
           <p>Train how fast you read without losing meaning.</p>
-          <button style={btn} onClick={start}>Start Drill</button>
-          <button onClick={onBack} style={{ marginTop: 12 }}>← Back</button>
+
+          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
+            <button style={btn} onClick={start}>Start Drill</button>
+            <button onClick={onBack} style={ghost}>← Back</button>
+          </div>
         </div>
       )}
 
@@ -120,22 +123,25 @@ export default function SpeedGym({ onBack }) {
             <b>Read Fast</b>
             <b>{timeLeft}s</b>
           </div>
-          <p style={text}>{passage}</p>
+          <p style={text}>{passage || "Loading passage…"}</p>
         </div>
       )}
 
       {phase === "questions" && (
         <div style={panel}>
           <h3>Check Your Understanding</h3>
+
           {questions.map((q, i) => (
-            <div key={i} style={{ marginBottom: 14 }}>
-              <b>{q.q}</b>
-              {q.options.map((o, oi) => (
-                <div key={oi}>
+            <div key={i} style={{ marginBottom: 18 }}>
+              <b>{q.q || q.prompt || `Question ${i + 1}`}</b>
+
+              {(q.options || []).map((o, oi) => (
+                <div key={oi} style={{ marginTop: 6 }}>
                   <label>
                     <input
                       type="radio"
                       name={"q" + i}
+                      checked={answers[i] === oi}
                       onChange={() =>
                         setAnswers(a => ({ ...a, [i]: oi }))
                       }
@@ -146,7 +152,10 @@ export default function SpeedGym({ onBack }) {
               ))}
             </div>
           ))}
-          <button style={btn} onClick={submit}>Submit</button>
+
+          <button style={{ ...btn, marginTop: 10 }} onClick={submit}>
+            Submit
+          </button>
         </div>
       )}
 
@@ -155,7 +164,8 @@ export default function SpeedGym({ onBack }) {
           <h2>Drill Result</h2>
           <p><b>Speed:</b> {result.wpm} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
-          <button style={btn} onClick={() => setPhase("intro")}>
+
+          <button style={{ ...btn, marginTop: 12 }} onClick={() => setPhase("intro")}>
             Next Drill
           </button>
         </div>
@@ -187,6 +197,14 @@ const btn = {
   color: "#fff",
   border: "none",
   fontWeight: 600,
+  cursor: "pointer",
+};
+
+const ghost = {
+  padding: "12px 18px",
+  borderRadius: 10,
+  background: "transparent",
+  border: "1px solid #94a3b8",
   cursor: "pointer",
 };
 
