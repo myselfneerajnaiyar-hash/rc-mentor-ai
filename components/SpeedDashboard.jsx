@@ -148,7 +148,14 @@ export default function SpeedDashboard() {
       : "Speed and comprehension are aligning.";
 
   return (
-    <div style={{ marginTop: 20 }}>
+  <div
+    style={{
+      marginTop: 20,
+      background: "#f1f5fb",
+      padding: 20,
+      borderRadius: 16,
+    }}
+  >
       <h2>Speed Profile</h2>
 
       <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
