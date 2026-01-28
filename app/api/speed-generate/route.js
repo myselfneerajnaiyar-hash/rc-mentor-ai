@@ -45,15 +45,24 @@ Return ONLY valid JSON in this format:
   });
 
   const data = await r.json();
-  const text = data.choices[0].message.content;
+  const raw = data.choices?.[0]?.message?.content || "";
 
-  try {
-    const parsed = JSON.parse(text);
-    return NextResponse.json(parsed);
-  } catch {
+  // Try to extract the first JSON block from the response
+  const match = raw.match(/\{[\s\S]*\}/);
+
+  if (!match) {
     return NextResponse.json(
-      { error: "AI response invalid" },
+      { error: "No JSON found in AI response", raw },
       { status: 500 }
     );
   }
-}
+
+  try {
+    const parsed = JSON.parse(match[0]);
+    return NextResponse.json(parsed);
+  } catch (e) {
+    return NextResponse.json(
+      { error: "JSON parse failed", raw: match[0] },
+      { status: 500 }
+    );
+  }
