@@ -1,17 +1,15 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SpeedGym({ onBack }) {
   const [phase, setPhase] = useState("intro");
   const [chunks, setChunks] = useState([]);
+  const [current, setCurrent] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
-  const [current, setCurrent] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
-
-  const startTimeRef = useRef(null);
-  const intervalRef = useRef(null);
 
   function computeTarget() {
     const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
@@ -19,22 +17,29 @@ export default function SpeedGym({ onBack }) {
 
     const recent = history.slice(-5);
     const avgWPM =
-      recent.reduce((a, b) => a + b.rawWpm, 0) / recent.length;
-    const avgAcc =
-      recent.reduce((a, b) => a + b.accuracy, 0) / recent.length;
+      recent.reduce((a, b) => a + b.effective, 0) / recent.length;
 
-    if (avgWPM < 200 || avgAcc < 60) return { wpm: 180, level: "easy" };
-    if (avgWPM < 240 || avgAcc < 70) return { wpm: 220, level: "moderate" };
-    if (avgWPM < 280 || avgAcc < 80) return { wpm: 260, level: "hard" };
+    if (avgWPM < 200) return { wpm: 180, level: "easy" };
+    if (avgWPM < 240) return { wpm: 220, level: "moderate" };
+    if (avgWPM < 280) return { wpm: 260, level: "hard" };
     return { wpm: 300, level: "elite" };
   }
 
-  async function start() {
-    const target = computeTarget();
-    setMeta(target);
-    setPhase("loading");
+  function splitIntoChunks(text, wordsPerChunk = 100) {
+    const words = text.split(/\s+/);
+    const out = [];
+    for (let i = 0; i < words.length; i += wordsPerChunk) {
+      out.push(words.slice(i, i + wordsPerChunk).join(" "));
+    }
+    return out;
+  }
 
+  async function start() {
     try {
+      const target = computeTarget();
+      setMeta(target);
+      setPhase("loading");
+
       const res = await fetch("/api/speed-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,34 +47,40 @@ export default function SpeedGym({ onBack }) {
       });
 
       const data = await res.json();
+      if (!data.text) throw new Error("No text");
 
-      const parts =
-        data.text.match(/(.{1,220})(\s|$)/g) || [];
+      const parts = splitIntoChunks(data.text, 100);
 
       setChunks(parts);
       setQuestions(data.questions || []);
       setAnswers({});
       setCurrent(0);
-      setResult(null);
 
+      const words = parts[0].split(/\s+/).length;
+      const seconds = Math.ceil((words / target.wpm) * 60);
+
+      setTimeLeft(seconds);
       setPhase("reading");
-      startTimeRef.current = Date.now();
-
-      intervalRef.current = setInterval(() => {
-        setCurrent(c => {
-          if (c + 1 >= parts.length) {
-            clearInterval(intervalRef.current);
-            setPhase("questions");
-            return c;
-          }
-          return c + 1;
-        });
-      }, 800);
     } catch (e) {
       alert("Speed drill could not load. Check API / console.");
       setPhase("intro");
     }
   }
+
+  useEffect(() => {
+    if (phase !== "reading") return;
+
+    if (timeLeft <= 0) {
+      setPhase("questions");
+      return;
+    }
+
+    const id = setInterval(() => {
+      setTimeLeft(t => t - 1);
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, [phase, timeLeft]);
 
   function submit() {
     const correct = questions.reduce(
@@ -77,19 +88,16 @@ export default function SpeedGym({ onBack }) {
       0
     );
 
-    const shown = chunks.slice(0, current + 1).join(" ");
-    const words = shown.split(/\s+/).length;
-
-    const seconds = (Date.now() - startTimeRef.current) / 1000;
-    const rawWpm = Math.round((words / seconds) * 60);
+    const words = chunks[0].split(/\s+/).length;
+    const raw = Math.round((words / (timeLeftStart)) * 60);
     const accuracy = Math.round((correct / questions.length) * 100);
-    const effectiveWpm = Math.round(rawWpm * (accuracy / 100));
+    const effective = Math.round(raw * (accuracy / 100));
 
     const record = {
       date: Date.now(),
-      rawWpm,
+      raw,
       accuracy,
-      effectiveWpm,
+      effective,
       level: meta.level,
     };
 
@@ -100,6 +108,10 @@ export default function SpeedGym({ onBack }) {
     setResult(record);
     setPhase("result");
   }
+
+  const timeLeftStart = meta
+    ? Math.ceil((chunks[0]?.split(/\s+/).length / meta.wpm) * 60)
+    : 0;
 
   return (
     <div style={wrap}>
@@ -121,8 +133,11 @@ export default function SpeedGym({ onBack }) {
 
       {phase === "reading" && (
         <div style={panel}>
-          <h3>Read Fast</h3>
-          <p style={text}>{chunks[current]}</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <b>Read Fast</b>
+            <b>{timeLeft}s</b>
+          </div>
+          <p style={text}>{chunks[0]}</p>
         </div>
       )}
 
@@ -155,9 +170,9 @@ export default function SpeedGym({ onBack }) {
       {phase === "result" && (
         <div style={panel}>
           <h2>Drill Result</h2>
-          <p><b>Raw Speed:</b> {result.rawWpm} WPM</p>
+          <p><b>Raw Speed:</b> {result.raw} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
-          <p><b>Effective Speed:</b> {result.effectiveWpm} WPM</p>
+          <p><b>Effective Speed:</b> {result.effective} WPM</p>
           <button style={btn} onClick={() => setPhase("intro")}>
             Next Drill
           </button>
