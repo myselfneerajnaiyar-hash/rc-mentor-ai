@@ -50,12 +50,23 @@ Return ONLY valid JSON in this format:
   // Try to extract the first JSON block from the response
   const match = raw.match(/\{[\s\S]*\}/);
 
-  if (!match) {
-    return NextResponse.json(
-      { error: "No JSON found in AI response", raw },
-      { status: 500 }
-    );
-  }
+ if (!match) {
+  return NextResponse.json({
+    text: "Reading speed improves when the brain learns to process meaning in clusters rather than word by word. Skilled readers do not rush blindly; they anticipate structure, skim strategically, and confirm understanding quickly. With practice, comprehension becomes faster, not weaker. The goal of speed reading is not haste, but efficiency—absorbing ideas with clarity while reducing unnecessary pauses.",
+    questions: [
+      {
+        q: "What is the main idea of the paragraph?",
+        options: [
+          "Speed reading sacrifices understanding",
+          "Good readers rush through text",
+          "Speed reading focuses on efficient comprehension",
+          "Fast reading ignores structure"
+        ],
+        correct: 2
+      }
+    ]
+  });
+}
 
   try {
     const parsed = JSON.parse(match[0]);
