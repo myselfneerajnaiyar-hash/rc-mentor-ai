@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 export default function SpeedGym({ onBack }) {
   const [phase, setPhase] = useState("intro");
-  const [chunks, setChunks] = useState([]);
-  const [current, setCurrent] = useState(0);
-  const [questions, setQuestions] = useState([]);
+  const [paras, setParas] = useState([]);
+  const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(0);
+  const [readSeconds, setReadSeconds] = useState(0);
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
 
@@ -16,22 +16,12 @@ export default function SpeedGym({ onBack }) {
     if (!history.length) return { wpm: 180, level: "easy" };
 
     const recent = history.slice(-5);
-    const avgWPM =
-      recent.reduce((a, b) => a + b.effective, 0) / recent.length;
+    const avg = recent.reduce((a, b) => a + b.effectiveWPM, 0) / recent.length;
 
-    if (avgWPM < 200) return { wpm: 180, level: "easy" };
-    if (avgWPM < 240) return { wpm: 220, level: "moderate" };
-    if (avgWPM < 280) return { wpm: 260, level: "hard" };
+    if (avg < 200) return { wpm: 180, level: "easy" };
+    if (avg < 240) return { wpm: 220, level: "moderate" };
+    if (avg < 280) return { wpm: 260, level: "hard" };
     return { wpm: 300, level: "elite" };
-  }
-
-  function splitIntoChunks(text, wordsPerChunk = 100) {
-    const words = text.split(/\s+/);
-    const out = [];
-    for (let i = 0; i < words.length; i += wordsPerChunk) {
-      out.push(words.slice(i, i + wordsPerChunk).join(" "));
-    }
-    return out;
   }
 
   async function start() {
@@ -47,22 +37,19 @@ export default function SpeedGym({ onBack }) {
       });
 
       const data = await res.json();
-      if (!data.text) throw new Error("No text");
+      if (!data.paragraphs) throw new Error();
 
-      const parts = splitIntoChunks(data.text, 100);
-
-      setChunks(parts);
-      setQuestions(data.questions || []);
+      setParas(data.paragraphs);
+      setIndex(0);
       setAnswers({});
-      setCurrent(0);
+      setReadSeconds(0);
 
-      const words = parts[0].split(/\s+/).length;
-      const seconds = Math.ceil((words / target.wpm) * 60);
-
-      setTimeLeft(seconds);
+      const words = data.paragraphs[0].text.split(/\s+/).length;
+      const sec = Math.ceil((words / target.wpm) * 60);
+      setTimeLeft(sec);
       setPhase("reading");
-    } catch (e) {
-      alert("Speed drill could not load. Check API / console.");
+    } catch {
+      alert("Speed drill could not load.");
       setPhase("intro");
     }
   }
@@ -71,33 +58,53 @@ export default function SpeedGym({ onBack }) {
     if (phase !== "reading") return;
 
     if (timeLeft <= 0) {
-      setPhase("questions");
+      setPhase("question");
       return;
     }
 
     const id = setInterval(() => {
       setTimeLeft(t => t - 1);
+      setReadSeconds(s => s + 1);
     }, 1000);
 
     return () => clearInterval(id);
   }, [phase, timeLeft]);
 
-  function submit() {
-    const correct = questions.reduce(
-      (s, q, i) => s + (answers[i] === q.correct ? 1 : 0),
+  function nextPara() {
+    const next = index + 1;
+    if (next >= paras.length) {
+      finish();
+      return;
+    }
+
+    setIndex(next);
+    const words = paras[next].text.split(/\s+/).length;
+    const sec = Math.ceil((words / meta.wpm) * 60);
+    setTimeLeft(sec);
+    setPhase("reading");
+  }
+
+  function finish() {
+    const totalWords = paras.reduce(
+      (s, p) => s + p.text.split(/\s+/).length,
       0
     );
 
-    const words = chunks[0].split(/\s+/).length;
-    const raw = Math.round((words / (timeLeftStart)) * 60);
-    const accuracy = Math.round((correct / questions.length) * 100);
-    const effective = Math.round(raw * (accuracy / 100));
+    const rawWPM = Math.round((totalWords / readSeconds) * 60);
+
+    const correct = paras.reduce(
+      (s, p, i) => s + (answers[i] === p.question.correct ? 1 : 0),
+      0
+    );
+
+    const accuracy = Math.round((correct / paras.length) * 100);
+    const effectiveWPM = Math.round(rawWPM * (accuracy / 100));
 
     const record = {
       date: Date.now(),
-      raw,
+      rawWPM,
       accuracy,
-      effective,
+      effectiveWPM,
       level: meta.level,
     };
 
@@ -108,10 +115,6 @@ export default function SpeedGym({ onBack }) {
     setResult(record);
     setPhase("result");
   }
-
-  const timeLeftStart = meta
-    ? Math.ceil((chunks[0]?.split(/\s+/).length / meta.wpm) * 60)
-    : 0;
 
   return (
     <div style={wrap}>
@@ -134,45 +137,42 @@ export default function SpeedGym({ onBack }) {
       {phase === "reading" && (
         <div style={panel}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <b>Read Fast</b>
+            <b>Paragraph {index + 1}/4</b>
             <b>{timeLeft}s</b>
           </div>
-          <p style={text}>{chunks[0]}</p>
+          <p style={text}>{paras[index]?.text}</p>
         </div>
       )}
 
-      {phase === "questions" && (
+      {phase === "question" && (
         <div style={panel}>
-          <h3>Check Your Understanding</h3>
-          {questions.map((q, i) => (
-            <div key={i} style={{ marginBottom: 14 }}>
-              <b>{q.q}</b>
-              {q.options.map((o, oi) => (
-                <div key={oi}>
-                  <label>
-                    <input
-                      type="radio"
-                      name={"q" + i}
-                      onChange={() =>
-                        setAnswers(a => ({ ...a, [i]: oi }))
-                      }
-                    />{" "}
-                    {o}
-                  </label>
-                </div>
-              ))}
+          <b>{paras[index].question.q}</b>
+          {paras[index].question.options.map((o, oi) => (
+            <div key={oi}>
+              <label>
+                <input
+                  type="radio"
+                  name={"q" + index}
+                  onChange={() =>
+                    setAnswers(a => ({ ...a, [index]: oi }))
+                  }
+                />{" "}
+                {o}
+              </label>
             </div>
           ))}
-          <button style={btn} onClick={submit}>Submit</button>
+          <button style={{ ...btn, marginTop: 12 }} onClick={nextPara}>
+            Continue
+          </button>
         </div>
       )}
 
       {phase === "result" && (
         <div style={panel}>
           <h2>Drill Result</h2>
-          <p><b>Raw Speed:</b> {result.raw} WPM</p>
+          <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
-          <p><b>Effective Speed:</b> {result.effective} WPM</p>
+          <p><b>Effective Speed:</b> {result.effectiveWPM} WPM</p>
           <button style={btn} onClick={() => setPhase("intro")}>
             Next Drill
           </button>
@@ -191,7 +191,7 @@ const wrap = {
 
 const panel = {
   width: "100%",
-  maxWidth: 800,
+  maxWidth: 820,
   padding: 28,
   borderRadius: 20,
   background: "linear-gradient(180deg, #ecfeff, #f0fdfa)",
