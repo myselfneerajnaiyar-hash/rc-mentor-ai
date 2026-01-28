@@ -562,7 +562,7 @@ function updateTodayRCProgress() {
     )}
 
     {view === "rc" && <RCView view={view} setView={setView} />}
-      {view === "speed" && <SpeedGym setView={setView} />}
+     {view === "speed" && <SpeedGym onBack={() => setView("home")} />}
   </main>
 );
 }
