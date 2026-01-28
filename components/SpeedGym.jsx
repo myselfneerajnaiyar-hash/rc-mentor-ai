@@ -25,36 +25,46 @@ export default function SpeedGym({ onBack }) {
   }
 
   async function start() {
-    const target = computeTarget();
-    setMeta(target);
-    setPhase("loading");
+  const target = computeTarget();
+  setMeta(target);
+  setPhase("loading");
 
+  try {
     const res = await fetch("/api/speed-generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(target),
     });
 
+    if (!res.ok) {
+      throw new Error("API failed: " + res.status);
+    }
+
     const data = await res.json();
 
-   const parts = data.text.match(/(.{1,260})(\s|$)/g) || [];
+    if (!data.text) {
+      throw new Error("No text returned");
+    }
 
-setChunks(parts);
-setQuestions(data.questions || []);
-setAnswers({});
-setCurrent(0);
+    const words = data.text.split(/\s+/).length;
+    const totalSeconds = Math.ceil((words / target.wpm) * 60);
 
-const totalSeconds = Math.ceil(
-  (data.text.split(/\s+/).length / target.wpm) * 60
-);
-setTimeLeft(totalSeconds);
+    setPassage(data.text);
+    setQuestions(data.questions || []);
+    setAnswers({});
+    setResult(null);
+    setTimeLeft(totalSeconds);
 
-// Delay phase switch until chunks are committed
-setTimeout(() => {
-  setPhase("reading");
-}, 0);
+    // Move to reading phase after state is ready
+    setTimeout(() => {
+      setPhase("reading");
+    }, 50);
+  } catch (e) {
+    console.error(e);
+    alert("Speed drill could not load. Check API / console.");
+    setPhase("intro");
   }
-    
+}
   useEffect(() => {
     if (phase !== "reading") return;
     if (timeLeft <= 0) {
