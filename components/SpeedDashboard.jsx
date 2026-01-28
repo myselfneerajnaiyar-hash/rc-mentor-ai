@@ -72,7 +72,7 @@ function StatCard({ label, value }) {
         padding: 16,
         borderRadius: 10,
         border: "1px solid #e5e7eb",
-        background: "#f8fafc",
+        background: "#eef4ff",
         textAlign: "center",
       }}
     >
@@ -269,7 +269,7 @@ export default function SpeedDashboard() {
                   padding: 16,
                   borderRadius: 12,
                   border: "1px solid #e5e7eb",
-                  background: "#f8fafc",
+                  background: "#eef4ff",
                 }}
               >
                 <div><b>Effective:</b> {d.effectiveWPM}</div>
