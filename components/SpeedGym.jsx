@@ -49,7 +49,7 @@ export default function SpeedGym({ onBack }) {
     const words = data.text.split(/\s+/).length;
     const totalSeconds = Math.ceil((words / target.wpm) * 60);
 
-    setPassage(data.text);
+    setChunks(data.text.match(/(.{1,260})(\s|$)/g) || []);
     setQuestions(data.questions || []);
     setAnswers({});
     setResult(null);
