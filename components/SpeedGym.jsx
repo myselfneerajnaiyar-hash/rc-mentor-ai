@@ -1,84 +1,75 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function SpeedGym({ onBack }) {
   const [phase, setPhase] = useState("intro");
   const [chunks, setChunks] = useState([]);
-  const [current, setCurrent] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [current, setCurrent] = useState(0);
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
 
+  const startTimeRef = useRef(null);
+  const intervalRef = useRef(null);
+
   function computeTarget() {
     const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
-    if (!history.length) return { wpm: 180, words: 120, level: "easy" };
+    if (!history.length) return { wpm: 180, level: "easy" };
 
     const recent = history.slice(-5);
-    const avg = recent.reduce((a, b) => a + b.effectiveWPM, 0) / recent.length;
+    const avgWPM =
+      recent.reduce((a, b) => a + b.rawWpm, 0) / recent.length;
+    const avgAcc =
+      recent.reduce((a, b) => a + b.accuracy, 0) / recent.length;
 
-    if (avg < 160) return { wpm: 180, words: 120, level: "easy" };
-    if (avg < 210) return { wpm: 220, words: 150, level: "moderate" };
-    if (avg < 260) return { wpm: 260, words: 180, level: "hard" };
-    return { wpm: 300, words: 210, level: "elite" };
+    if (avgWPM < 200 || avgAcc < 60) return { wpm: 180, level: "easy" };
+    if (avgWPM < 240 || avgAcc < 70) return { wpm: 220, level: "moderate" };
+    if (avgWPM < 280 || avgAcc < 80) return { wpm: 260, level: "hard" };
+    return { wpm: 300, level: "elite" };
   }
 
   async function start() {
-  const target = computeTarget();
-  setMeta(target);
-  setPhase("loading");
+    const target = computeTarget();
+    setMeta(target);
+    setPhase("loading");
 
-  try {
-    const res = await fetch("/api/speed-generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(target),
-    });
+    try {
+      const res = await fetch("/api/speed-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(target),
+      });
 
-    if (!res.ok) {
-      throw new Error("API failed: " + res.status);
-    }
+      const data = await res.json();
 
-    const data = await res.json();
+      const parts =
+        data.text.match(/(.{1,220})(\s|$)/g) || [];
 
-    if (!data.text) {
-      throw new Error("No text returned");
-    }
+      setChunks(parts);
+      setQuestions(data.questions || []);
+      setAnswers({});
+      setCurrent(0);
+      setResult(null);
 
-    const words = data.text.split(/\s+/).length;
-    const totalSeconds = Math.ceil((words / target.wpm) * 60);
-
-    setChunks(data.text.match(/(.{1,260})(\s|$)/g) || []);
-    setQuestions(data.questions || []);
-    setAnswers({});
-    setResult(null);
-    setTimeLeft(totalSeconds);
-
-    // Move to reading phase after state is ready
-    setTimeout(() => {
       setPhase("reading");
-    }, 50);
-  } catch (e) {
-    console.error(e);
-    alert("Speed drill could not load. Check API / console.");
-    setPhase("intro");
-  }
-}
-  useEffect(() => {
-    if (phase !== "reading") return;
-    if (timeLeft <= 0) {
-      setPhase("questions");
-      return;
+      startTimeRef.current = Date.now();
+
+      intervalRef.current = setInterval(() => {
+        setCurrent(c => {
+          if (c + 1 >= parts.length) {
+            clearInterval(intervalRef.current);
+            setPhase("questions");
+            return c;
+          }
+          return c + 1;
+        });
+      }, 800);
+    } catch (e) {
+      alert("Speed drill could not load. Check API / console.");
+      setPhase("intro");
     }
-
-    const id = setInterval(() => {
-      setTimeLeft(t => t - 1);
-      setCurrent(c => Math.min(c + 1, chunks.length - 1));
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, [phase, timeLeft, chunks.length]);
+  }
 
   function submit() {
     const correct = questions.reduce(
@@ -86,18 +77,19 @@ export default function SpeedGym({ onBack }) {
       0
     );
 
-    const seenText = chunks.slice(0, current + 1).join(" ");
-    const words = seenText.split(/\s+/).length;
+    const shown = chunks.slice(0, current + 1).join(" ");
+    const words = shown.split(/\s+/).length;
 
-    const rawWPM = Math.round((words / (meta.words / meta.wpm)) * meta.wpm);
+    const seconds = (Date.now() - startTimeRef.current) / 1000;
+    const rawWpm = Math.round((words / seconds) * 60);
     const accuracy = Math.round((correct / questions.length) * 100);
-    const effectiveWPM = Math.round(rawWPM * (accuracy / 100));
+    const effectiveWpm = Math.round(rawWpm * (accuracy / 100));
 
     const record = {
       date: Date.now(),
-      rawWPM,
+      rawWpm,
       accuracy,
-      effectiveWPM,
+      effectiveWpm,
       level: meta.level,
     };
 
@@ -105,7 +97,7 @@ export default function SpeedGym({ onBack }) {
     history.push(record);
     localStorage.setItem("speedProfile", JSON.stringify(history));
 
-    setResult({ rawWPM, accuracy, effectiveWPM });
+    setResult(record);
     setPhase("result");
   }
 
@@ -129,10 +121,7 @@ export default function SpeedGym({ onBack }) {
 
       {phase === "reading" && (
         <div style={panel}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <b>Read Fast</b>
-            <b>{timeLeft}s</b>
-          </div>
+          <h3>Read Fast</h3>
           <p style={text}>{chunks[current]}</p>
         </div>
       )}
@@ -149,7 +138,9 @@ export default function SpeedGym({ onBack }) {
                     <input
                       type="radio"
                       name={"q" + i}
-                      onChange={() => setAnswers(a => ({ ...a, [i]: oi }))}
+                      onChange={() =>
+                        setAnswers(a => ({ ...a, [i]: oi }))
+                      }
                     />{" "}
                     {o}
                   </label>
@@ -164,9 +155,9 @@ export default function SpeedGym({ onBack }) {
       {phase === "result" && (
         <div style={panel}>
           <h2>Drill Result</h2>
-          <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
+          <p><b>Raw Speed:</b> {result.rawWpm} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
-          <p><b>Effective Speed:</b> {result.effectiveWPM} WPM</p>
+          <p><b>Effective Speed:</b> {result.effectiveWpm} WPM</p>
           <button style={btn} onClick={() => setPhase("intro")}>
             Next Drill
           </button>
