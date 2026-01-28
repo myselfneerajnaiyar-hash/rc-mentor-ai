@@ -1,69 +1,59 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  try {
-    const { level } = await req.json();
+  const { level } = await req.json();
 
-    const topicPool = [
-      "urbanization and social change",
-      "technology and human attention",
-      "education and social mobility",
-      "climate and everyday behavior",
-      "culture and identity",
-      "work in the digital age",
-      "science and public trust",
-    ];
+  const levelPrompts = {
+    easy: "Write a very simple, concrete 400-word passage using short sentences and everyday examples.",
+    "easy+": "Write a 400-word passage with mild abstraction and clear structure.",
+    moderate: "Write a 400-word academic-style RC passage similar to CAT level.",
+    "moderate+": "Write a dense 400-word analytical passage with layered reasoning.",
+    hard: "Write a complex 400-word philosophical or sociological passage.",
+    elite: "Write an elite CAT-level RC passage with abstract reasoning and tight logic."
+  };
 
-    const topic = topicPool[Math.floor(Math.random() * topicPool.length)];
+  const systemPrompt = `
+${levelPrompts[level] || levelPrompts.easy}
 
-    const prompt = `
-Create one reading passage of about 400 words on the topic "${topic}".
-Split it into exactly FOUR paragraphs of roughly equal length.
+Structure:
+- Divide into exactly 4 paragraphs (~100 words each).
+- After each paragraph, create 1 easy comprehension question.
 
-After each paragraph, create ONE very easy comprehension question
-based only on that paragraph.
-
-Each question must have:
-- q: the question
-- options: 4 simple options
-- correct: index (0-3)
-
-Return JSON strictly in this format:
-
+Return ONLY valid JSON in this format:
 {
-  "paragraphs": [
-    { "text": "...", "question": { "q": "...", "options": ["A","B","C","D"], "correct": 0 } },
-    { "text": "...", "question": { ... } },
-    { "text": "...", "question": { ... } },
-    { "text": "...", "question": { ... } }
+  "paragraphs": ["p1", "p2", "p3", "p4"],
+  "questions": [
+    { "q": "Question on para 1", "options": ["A","B","C","D"], "correct": 0 },
+    { "q": "Question on para 2", "options": ["A","B","C","D"], "correct": 1 },
+    { "q": "Question on para 3", "options": ["A","B","C","D"], "correct": 2 },
+    { "q": "Question on para 4", "options": ["A","B","C","D"], "correct": 3 }
   ]
 }
-
-Keep language CAT-style but easy.
-Questions should be factual and local to that paragraph.
 `;
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.6,
-      }),
-    });
+  const r = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: systemPrompt }],
+      temperature: 0.7
+    })
+  });
 
-    const data = await res.json();
-    const text = data.choices[0].message.content;
+  const data = await r.json();
+  const text = data.choices[0].message.content;
 
-    const jsonStart = text.indexOf("{");
-    const json = JSON.parse(text.slice(jsonStart));
-
-    return NextResponse.json(json);
-  } catch (e) {
-    return NextResponse.json({ error: "Generation failed" }, { status: 500 });
+  try {
+    const parsed = JSON.parse(text);
+    return NextResponse.json(parsed);
+  } catch {
+    return NextResponse.json(
+      { error: "AI response invalid" },
+      { status: 500 }
+    );
   }
 }
