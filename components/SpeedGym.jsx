@@ -37,17 +37,22 @@ export default function SpeedGym({ onBack }) {
 
     const data = await res.json();
 
-    const parts = data.text.match(/(.{1,260})(\s|$)/g) || [];
-    setChunks(parts);
-    setQuestions(data.questions || []);
-    setAnswers({});
-    setCurrent(0);
+   const parts = data.text.match(/(.{1,260})(\s|$)/g) || [];
 
-    const totalSeconds = Math.ceil((data.text.split(/\s+/).length / target.wpm) * 60);
-    setTimeLeft(totalSeconds);
-    setPhase("reading");
-  }
+setChunks(parts);
+setQuestions(data.questions || []);
+setAnswers({});
+setCurrent(0);
 
+const totalSeconds = Math.ceil(
+  (data.text.split(/\s+/).length / target.wpm) * 60
+);
+setTimeLeft(totalSeconds);
+
+// Delay phase switch until chunks are committed
+setTimeout(() => {
+  setPhase("reading");
+}, 0);
   useEffect(() => {
     if (phase !== "reading") return;
     if (timeLeft <= 0) {
