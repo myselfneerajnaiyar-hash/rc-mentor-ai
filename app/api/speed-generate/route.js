@@ -5,20 +5,41 @@ export async function POST(req) {
     const { level = "easy" } = await req.json();
 
     const levelPrompts = {
-      easy: "Write a very simple, concrete 400-word passage using short sentences and everyday examples.",
-      "easy+": "Write a 400-word passage with mild abstraction and clear structure.",
-      moderate: "Write a 400-word academic-style RC passage similar to CAT level.",
-      "moderate+": "Write a dense 400-word analytical passage with layered reasoning.",
-      hard: "Write a complex 400-word philosophical or sociological passage.",
+      easy: "Write a very simple, concrete passage using short sentences and everyday examples.",
+      "easy+": "Write a passage with mild abstraction and clear structure.",
+      moderate: "Write an academic-style RC passage similar to CAT level.",
+      "moderate+": "Write a dense analytical passage with layered reasoning.",
+      hard: "Write a complex conceptual passage with depth.",
       elite: "Write an elite CAT-level RC passage with abstract reasoning and tight logic."
     };
 
+    const genres = [
+      "science & technology",
+      "history & civilization",
+      "psychology & behavior",
+      "economics & society",
+      "nature & environment",
+      "culture & arts",
+      "business & innovation",
+      "sports & human performance"
+    ];
+
+    const pickedGenre = genres[Math.floor(Math.random() * genres.length)];
+
     const systemPrompt = `
+You are generating a speed-reading drill.
+
+Difficulty: ${level}
+Genre: ${pickedGenre}
+
 ${levelPrompts[level] || levelPrompts.easy}
 
-Structure:
-- Divide into exactly 4 paragraphs (~100 words each).
-- After each paragraph, create 1 easy comprehension question.
+Rules:
+- The passage MUST match the genre: ${pickedGenre}.
+- Avoid philosophy/cognition themes unless the genre is psychology.
+- Write exactly 4 paragraphs (~100 words each, total ~400 words).
+- Each paragraph should flow as part of one article.
+- After each paragraph, create 1 EASY comprehension question.
 
 Return ONLY valid JSON in this format:
 {
@@ -50,55 +71,55 @@ Return ONLY valid JSON in this format:
 
     const match = raw.match(/\{[\s\S]*\}/);
 
-    // Safe fallback so UI never breaks
+    // Hard fallback so UI never breaks
     if (!match) {
       return NextResponse.json({
         paragraphs: [
-          "Reading speed improves when the brain learns to process meaning in clusters rather than word by word. Skilled readers do not rush blindly; they anticipate structure, skim strategically, and confirm understanding quickly. With practice, comprehension becomes faster, not weaker. The goal of speed reading is not haste, but efficiency—absorbing ideas with clarity while reducing unnecessary pauses.",
-          "Good readers form mental maps as they move through text. They identify topic sentences, track shifts in argument, and ignore decorative details. This allows them to move faster without losing coherence. Speed emerges from pattern recognition rather than mechanical acceleration.",
-          "When readers slow down unnecessarily, they often lose the thread of meaning. Ironically, moderate speed can enhance focus by preventing wandering attention. The mind stays engaged because it must continuously predict and verify ideas.",
-          "Speed training therefore aims to align eye movement, attention, and comprehension. It is not about racing across pages but about building fluency. As fluency improves, both confidence and retention rise together."
+          "Solar energy has moved from rooftops to entire cities. Advances in photovoltaic cells have reduced costs while increasing efficiency. What once required government subsidies now competes directly with fossil fuels. Countries with abundant sunlight are rapidly expanding solar farms, turning deserts and unused land into power hubs.",
+          "Battery technology has followed a similar curve. Early storage systems were expensive and short-lived. Today, lithium-based solutions and emerging solid-state designs allow energy to be stored for hours or even days. This solves the core challenge of renewable power: intermittency.",
+          "Urban planning is also adapting. Buildings are being designed to generate, store, and distribute their own electricity. Smart grids balance demand across neighborhoods, reducing wastage and outages. Energy is no longer just produced centrally—it flows dynamically.",
+          "The future grid will be decentralized, adaptive, and clean. Instead of a single source feeding millions, millions of micro-sources will feed each other. This shift is not only technological but cultural, redefining how societies think about power."
         ],
         questions: [
           {
-            q: "What is the goal of speed reading?",
+            q: "What has changed about solar energy?",
             options: [
-              "To rush through text",
-              "To ignore meaning",
-              "To read efficiently with understanding",
-              "To skip structure"
-            ],
-            correct: 2
-          },
-          {
-            q: "How do good readers move faster?",
-            options: [
-              "By memorizing every word",
-              "By recognizing structure and patterns",
-              "By skipping paragraphs",
-              "By reading aloud"
+              "It is more decorative",
+              "It is cheaper and more efficient",
+              "It only works in cities",
+              "It needs more subsidies"
             ],
             correct: 1
           },
           {
-            q: "Why can slow reading reduce comprehension?",
+            q: "What problem do batteries solve?",
             options: [
-              "It tires the eyes",
-              "It increases page count",
-              "It breaks attention and flow",
-              "It makes words longer"
+              "Energy theft",
+              "Grid design",
+              "Power intermittency",
+              "Urban planning"
             ],
             correct: 2
           },
           {
-            q: "What does speed training primarily build?",
+            q: "How are buildings changing?",
             options: [
-              "Haste",
-              "Fluency",
-              "Memory tricks",
-              "Vocabulary"
+              "They are becoming taller",
+              "They generate and manage energy",
+              "They use more glass",
+              "They reduce windows"
             ],
             correct: 1
+          },
+          {
+            q: "What defines the future grid?",
+            options: [
+              "Centralization",
+              "Manual control",
+              "Decentralized flow",
+              "Single power plants"
+            ],
+            correct: 2
           }
         ]
       });
@@ -114,9 +135,9 @@ Return ONLY valid JSON in this format:
       });
     }
   } catch (e) {
-    return NextResponse.json({
-      error: "Route failed",
-      message: String(e)
-    }, { status: 500 });
+    return NextResponse.json(
+      { error: "Route failed", message: String(e) },
+      { status: 500 }
+    );
   }
 }
