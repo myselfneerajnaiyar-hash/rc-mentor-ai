@@ -31,7 +31,7 @@ function LineChart({ data, color, label, unit }) {
 
       <div
         style={{
-          background: "#ffffff",
+          background: "#f8fbff",
           padding: 16,
           borderRadius: 12,
           border: "1px solid #e5e7eb",
@@ -269,7 +269,7 @@ export default function SpeedDashboard() {
                   padding: 16,
                   borderRadius: 12,
                   border: "1px solid #e5e7eb",
-                  background: "#ffffff",
+                  background: "#f8fafc",
                 }}
               >
                 <div><b>Effective:</b> {d.effectiveWPM}</div>
