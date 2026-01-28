@@ -44,16 +44,23 @@ export default function SpeedGym({ onBack }) {
 
       const data = await res.json();
 
-if (!data.text) {
+if (!data.paragraphs || !data.questions) {
   console.error("API error:", data);
-  throw new Error("No text from API");
+  throw new Error("Invalid API response");
 }
-      setParas(data.paragraphs);
+
+// Combine paragraph + question into one array
+const merged = data.paragraphs.map((p, i) => ({
+  text: p,
+  question: data.questions[i],
+}));
+
+setParas(merged);
       setIndex(0);
       setAnswers({});
       setReadSeconds(0);
 
-      const words = data.paragraphs[0].text.split(/\s+/).length;
+      const words = merged[0].text.split(/\s+/).length;
       const sec = Math.ceil((words / target.wpm) * 60);
       setTimeLeft(sec);
       setPhase("reading");
