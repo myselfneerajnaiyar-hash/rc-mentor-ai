@@ -5,7 +5,7 @@ import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
 import RCView from "../components/RCView";
 import SpeedGym from "../components/SpeedGym";
-import SpeedDashboard from "@/components/SpeedDashboard";
+import SpeedDashboard from "../components/SpeedDashboard";
 
 export default function Page() {
   const [text, setText] = useState("");
