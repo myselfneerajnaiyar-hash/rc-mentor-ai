@@ -11,9 +11,11 @@ function LineChart({ data, color, label, unit }) {
   const max = Math.max(...data);
   const min = Math.min(...data);
 
+  if (!isFinite(max) || !isFinite(min) || max === min) return null;
+
   const points = data.map((v, i) => {
     const x = pad + (i / (data.length - 1 || 1)) * (w - pad * 2);
-    const y = h - pad - ((v - min) / (max - min || 1)) * (h - pad * 2);
+    const y = h - pad - ((v - min) / (max - min)) * (h - pad * 2);
     return { x, y, v };
   });
 
@@ -48,7 +50,8 @@ function LineChart({ data, color, label, unit }) {
                 textAnchor="middle"
                 fill="#374151"
               >
-                {p.v}{unit}
+                {p.v}
+                {unit}
               </text>
             </g>
           ))}
@@ -63,8 +66,11 @@ function LineChart({ data, color, label, unit }) {
 }
 
 function Pie({ a, b, labelA, labelB, colorA, colorB }) {
-  const total = a + b || 1;
-  const angle = (a / total) * 360;
+  const safeA = Number.isFinite(a) ? a : 0;
+  const safeB = Number.isFinite(b) ? b : 0;
+
+  const total = safeA + safeB || 1;
+  const angle = (safeA / total) * 360;
 
   return (
     <div
@@ -85,17 +91,15 @@ function Pie({ a, b, labelA, labelB, colorA, colorB }) {
           height: 120,
           borderRadius: "50%",
           background: `conic-gradient(${colorA} 0deg ${angle}deg, ${colorB} ${angle}deg 360deg)`,
-          boxShadow:
-            "inset 0 0 12px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.15)",
         }}
       />
 
       <div style={{ fontSize: 14, lineHeight: 1.6 }}>
         <div style={{ fontWeight: 600 }}>{labelA}</div>
-        <div style={{ color: colorA }}>{a}</div>
+        <div style={{ color: colorA }}>{safeA}</div>
 
         <div style={{ marginTop: 8, fontWeight: 600 }}>{labelB}</div>
-        <div style={{ color: colorB }}>{b}</div>
+        <div style={{ color: colorB }}>{safeB}</div>
       </div>
     </div>
   );
@@ -107,7 +111,15 @@ export default function SpeedDashboard() {
 
   useEffect(() => {
     const raw = JSON.parse(localStorage.getItem("speedProfile") || "[]");
-    setHistory(raw);
+
+    const clean = raw.filter(
+      r =>
+        Number.isFinite(r.rawWPM) &&
+        Number.isFinite(r.effectiveWPM) &&
+        Number.isFinite(r.accuracy)
+    );
+
+    setHistory(clean);
   }, []);
 
   if (!history.length) {
@@ -124,15 +136,19 @@ export default function SpeedDashboard() {
   const effTimeline = recent.map(d => d.effectiveWPM);
   const accTimeline = recent.map(d => d.accuracy);
 
-  const avgEff = Math.round(
-    history.reduce((a, b) => a + b.effectiveWPM, 0) / history.length
-  );
-  const avgRaw = Math.round(
-    history.reduce((a, b) => a + b.rawWPM, 0) / history.length
-  );
-  const avgAcc = Math.round(
-    history.reduce((a, b) => a + b.accuracy, 0) / history.length
-  );
+  const drills = history.length;
+
+  const avgEff = drills
+    ? Math.round(history.reduce((a, b) => a + b.effectiveWPM, 0) / drills)
+    : 0;
+
+  const avgRaw = drills
+    ? Math.round(history.reduce((a, b) => a + b.rawWPM, 0) / drills)
+    : 0;
+
+  const avgAcc = drills
+    ? Math.round(history.reduce((a, b) => a + b.accuracy, 0) / drills)
+    : 0;
 
   const accDelta =
     effTimeline.length > 1
@@ -154,7 +170,7 @@ export default function SpeedDashboard() {
       : "Speed and comprehension are aligning. This is CAT-ready fluency.";
 
   const under = history.filter(d => d.accuracy >= 70).length;
-  const miss = history.length - under;
+  const miss = drills - under;
 
   return (
     <div style={{ marginTop: 20 }}>
@@ -193,7 +209,7 @@ export default function SpeedDashboard() {
               { label: "Effective WPM", value: avgEff },
               { label: "Raw WPM", value: avgRaw },
               { label: "Avg Accuracy", value: avgAcc + "%" },
-              { label: "Drills", value: history.length },
+              { label: "Drills", value: drills },
             ].map((c, i) => (
               <div
                 key={i}
