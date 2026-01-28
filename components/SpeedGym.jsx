@@ -182,7 +182,7 @@ export default function SpeedGym({ setView }) {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginTop: 16 }}>
               <Stat label="Speed" value={result.wpm + " WPM"} />
               <Stat label="Accuracy" value={result.accuracy + "%"} />
-              <Stat label="Ideas Retained" value={${result.correct}/${result.total}} />
+              <Stat label="Ideas Retained" value={`${result.correct}/${result.total}`} />
             </div>
 
             <p style={{ marginTop: 20, color: "#475569" }}>
