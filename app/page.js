@@ -5,6 +5,7 @@ import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
 import RCView from "../components/RCView";
 import SpeedGym from "../components/SpeedGym";
+import SpeedDashboard from "@/components/SpeedDashboard";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -562,7 +563,8 @@ function updateTodayRCProgress() {
     )}
 
     {view === "rc" && <RCView view={view} setView={setView} />}
-     {view === "speed" && <SpeedGym onBack={() => setView("home")} />}
+    {view === "speed" && <SpeedDashboard setView={setView} />}
+      {view === "speed-gym" && <SpeedGym onBack={() => setView("speed")} />}
   </main>
 );
 }
