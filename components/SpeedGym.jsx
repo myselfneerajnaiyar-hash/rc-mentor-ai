@@ -53,6 +53,8 @@ setTimeLeft(totalSeconds);
 setTimeout(() => {
   setPhase("reading");
 }, 0);
+  }
+    
   useEffect(() => {
     if (phase !== "reading") return;
     if (timeLeft <= 0) {
