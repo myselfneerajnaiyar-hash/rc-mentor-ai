@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { todayWords, vocabLessons } from "../app/data/vocabLessons";
+import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
