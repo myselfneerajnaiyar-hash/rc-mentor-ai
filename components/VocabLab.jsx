@@ -41,6 +41,37 @@ export default function VocabLab() {
     setLookup({ word, ...data });
   }
 
+  async function openWord(w) {
+    // If already enriched, just show it
+    if (w.partOfSpeech || w.enriched) {
+      setLookup(w);
+      return;
+    }
+
+    setLoadingLookup(true);
+
+    const res = await fetch("/api/enrich-word", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ word: w.word }),
+    });
+
+    const data = await res.json();
+    setLoadingLookup(false);
+
+    const upgraded = bank.map(item =>
+      item.word.toLowerCase() === w.word.toLowerCase()
+        ? { ...item, ...data, enriched: true }
+        : item
+    );
+
+    localStorage.setItem("vocabBank", JSON.stringify(upgraded));
+    setBank(upgraded);
+
+    const fresh = upgraded.find(x => x.word === w.word);
+    setLookup(fresh);
+  }
+
   return (
     <div
       style={{
@@ -95,7 +126,7 @@ export default function VocabLab() {
               loading={loadingLookup}
               handleManualAdd={handleManualAdd}
               bank={bank}
-              setLookup={setLookup}
+              openWord={openWord}
             />
           )}
           {tab === "drill" && <VocabDrill />}
@@ -116,7 +147,7 @@ function WordBank({
   loading,
   handleManualAdd,
   bank,
-  setLookup,
+  openWord,
 }) {
   return (
     <div>
@@ -188,7 +219,7 @@ function WordBank({
               {bank.map((w, i) => (
                 <button
                   key={i}
-                  onClick={() => setLookup(w)}
+                  onClick={() => openWord(w)}
                   style={{
                     padding: "8px 10px",
                     borderRadius: 8,
