@@ -2,6 +2,7 @@ export const vocabLessons = [
   {
     id: "uncertainty",
     title: "Shades of Uncertainty",
+    category: "rc",
     goal: "Learn how CAT passages hide meaning using subtle forms of vagueness.",
     words: [
       {
@@ -56,6 +57,7 @@ export const vocabLessons = [
   {
     id: "evaluation",
     title: "Language of Evaluation",
+    category: "rc",
     goal: "Recognize when the author is judging, approving, or criticizing.",
     words: [
       {
@@ -110,6 +112,7 @@ export const vocabLessons = [
   {
     id: "contrast",
     title: "Contrast & Reversal Signals",
+    category: "rc",
     goal: "Spot turning points where arguments shift direction.",
     words: [
       {
@@ -164,6 +167,7 @@ export const vocabLessons = [
   {
     id: "causation",
     title: "Causation vs Correlation",
+    category: "rc",
     goal: "Differentiate causes from mere associations.",
     words: [
       {
@@ -218,6 +222,7 @@ export const vocabLessons = [
   {
     id: "scope",
     title: "Scope & Limitation",
+    category: "rc",
     goal: "Understand when claims are narrow, broad, or conditional.",
     words: [
       {
@@ -271,6 +276,7 @@ export const vocabLessons = [
   {
     id: "certainty",
     title: "Degrees of Certainty",
+    category: "rc",
     goal: "Understand how authors express confidence, doubt, and probability.",
     words: [
       {
@@ -326,6 +332,7 @@ CAT often replaces "tentative" with "certain" in traps.`,
   {
     id: "support",
     title: "Support & Evidence Language",
+    category: "rc",
     goal: "Track how authors justify claims.",
     words: [
       {
@@ -381,6 +388,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "argument",
     title: "Argument Structure",
+    category: "rc",
     goal: "Recognize claims, premises, and conclusions.",
     words: [
       {
@@ -435,6 +443,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "bias",
     title: "Bias & Perspective",
+    category: "rc",
     goal: "Detect partiality and framing.",
     words: [
       {
@@ -489,6 +498,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "implication",
     title: "Implications & Consequences",
+    category: "rc",
     goal: "Track what follows from an idea.",
     words: [
       {
@@ -542,6 +552,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "assumption",
     title: "Hidden Assumptions",
+    category: "rc",
     goal: "Spot what the author takes for granted.",
     words: [
       {
@@ -597,6 +608,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "comparison",
     title: "Comparison & Analogy",
+    category: "rc",
     goal: "Understand how authors relate ideas.",
     words: [
       {
@@ -651,6 +663,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "qualification",
     title: "Qualification & Hedging",
+    category: "rc",
     goal: "Notice how claims are softened.",
     words: [
       {
@@ -705,6 +718,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "process",
     title: "Process & Change",
+    category: "rc",
     goal: "Track movement and development.",
     words: [
       {
@@ -759,6 +773,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "policy",
     title: "Policy & Reform Language",
+    category: "rc",
     goal: "Decode governance and reform vocabulary.",
     words: [
       {
@@ -812,6 +827,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "evidence",
     title: "Evidence & Support",
+    category: "rc",
     goal: "Recognize how authors justify claims.",
     words: [
       {
@@ -866,6 +882,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "bias",
     title: "Bias & Perspective",
+    category: "rc",
     goal: "Detect subjectivity in tone.",
     words: [
       {
@@ -920,6 +937,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "prediction",
     title: "Forecast & Speculation",
+    category: "rc",
     goal: "Understand future-oriented language.",
     words: [
       {
@@ -974,6 +992,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "critique",
     title: "Critique & Rebuttal",
+    category: "rc",
     goal: "Track counter-arguments.",
     words: [
       {
@@ -1028,6 +1047,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "synthesis",
     title: "Synthesis & Integration",
+    category: "rc",
     goal: "Understand how ideas are combined.",
     words: [
       {
@@ -1081,6 +1101,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "qualification",
     title: "Hedging & Qualification",
+    category: "rc",
     goal: "Notice when authors soften claims.",
     words: [
       {
@@ -1135,6 +1156,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "methodology",
     title: "Method & Process",
+    category: "rc",
     goal: "Track how studies and arguments are built.",
     words: [
       {
@@ -1189,6 +1211,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "impact",
     title: "Impact & Consequence",
+    category: "rc",
     goal: "Understand effect-oriented language.",
     words: [
       {
@@ -1243,6 +1266,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "comparison",
     title: "Comparison & Analogy",
+    category: "rc",
     goal: "Read similarities and differences carefully.",
     words: [
       {
@@ -1297,6 +1321,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "conclusion",
     title: "Conclusion & Resolution",
+    category: "rc",
     goal: "Recognize how arguments close.",
     words: [
       {
