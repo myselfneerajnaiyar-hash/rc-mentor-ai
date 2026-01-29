@@ -275,12 +275,13 @@ function WordBank({
 }
 
 function VocabDrill() {
-  const [stage, setStage] = useState("start"); // start | run | result
+  const [stage, setStage] = useState("start"); // start | run | result | review
   const [bank, setBank] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
@@ -317,16 +318,23 @@ function VocabDrill() {
     setIndex(0);
     setScore(0);
     setSelected(null);
+    setAnswers([]);
     setStage("run");
   }
 
   function choose(opt) {
     if (selected) return;
+
+    const q = questions[index];
     setSelected(opt);
 
-    if (opt === questions[index].correct) {
-      setScore(s => s + 1);
-    }
+    const isCorrect = opt === q.correct;
+    if (isCorrect) setScore(s => s + 1);
+
+    setAnswers(a => [
+      ...a,
+      { word: q.word, correct: q.correct, chosen: opt },
+    ]);
 
     setTimeout(() => {
       if (index + 1 < questions.length) {
@@ -368,19 +376,88 @@ function VocabDrill() {
         <p>
           Score: <b>{score}</b> / {questions.length}
         </p>
+
+        <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
+          <button
+            onClick={() => setStage("review")}
+            style={{
+              padding: "10px 16px",
+              borderRadius: 8,
+              border: "1px solid #f97316",
+              background: "#fff7ed",
+              color: "#c2410c",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            View Solutions
+          </button>
+
+          <button
+            onClick={startDrill}
+            style={{
+              padding: "10px 16px",
+              borderRadius: 8,
+              border: "none",
+              background: "#f97316",
+              color: "#fff",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Start Next Drill
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (stage === "review") {
+    return (
+      <div>
+        <h2>Solutions</h2>
+
+        <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
+          {answers.map((a, i) => {
+            const correct = a.chosen === a.correct;
+            return (
+              <div
+                key={i}
+                style={{
+                  padding: 12,
+                  borderRadius: 10,
+                  background: correct ? "#dcfce7" : "#fee2e2",
+                  border: "1px solid #e5e7eb",
+                }}
+              >
+                <b>{i + 1}. {a.word}</b>
+                <div style={{ marginTop: 6 }}>
+                  Your answer: {a.chosen}
+                </div>
+                {!correct && (
+                  <div>
+                    Correct answer: <b>{a.correct}</b>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
         <button
           onClick={startDrill}
           style={{
+            marginTop: 20,
             padding: "10px 16px",
             borderRadius: 8,
-            border: "1px solid #f97316",
-            background: "#fff7ed",
-            color: "#c2410c",
+            border: "none",
+            background: "#f97316",
+            color: "#fff",
             fontWeight: 600,
             cursor: "pointer",
           }}
         >
-          New Drill
+          Start Next Drill
         </button>
       </div>
     );
@@ -395,7 +472,8 @@ function VocabDrill() {
       </div>
 
       <h3 style={{ marginBottom: 16 }}>
-        Closest meaning of <span style={{ color: "#f97316" }}>{q.word}</span>
+        Closest meaning of{" "}
+        <span style={{ color: "#f97316" }}>{q.word}</span>
       </h3>
 
       <div style={{ display: "grid", gap: 10 }}>
@@ -428,7 +506,6 @@ function VocabDrill() {
     </div>
   );
 }
-
 function VocabLearn() {
   return <div><h2>Learn</h2><p>Coming next.</p></div>;
 }
