@@ -1372,6 +1372,66 @@ CAT loves asking: “Which assumption underlies the argument?”`,
     ],
     concept: `End-of-passage questions hinge on recognizing closure language.`,
   },
+  {
+  id: "omet-business-tone",
+  title: "Business & Corporate Tone",
+  category: "omet",
+  goal: "Understand formal corporate language used in NMAT, SNAP, XAT passages.",
+  words: [
+    {
+      word: "Leverage",
+      meaning: "To use something to maximum advantage",
+      pos: "Verb",
+      usage: "The company plans to leverage its brand value.",
+      root: "French: lever (to raise)",
+      synonyms: ["utilize", "exploit"],
+      antonyms: ["waste", "neglect"],
+    },
+    {
+      word: "Viable",
+      meaning: "Capable of working successfully",
+      pos: "Adjective",
+      usage: "This is a viable business model.",
+      root: "French: vie (life)",
+      synonyms: ["feasible", "workable"],
+      antonyms: ["impractical", "unfeasible"],
+    },
+    {
+      word: "Scalable",
+      meaning: "Able to grow without losing efficiency",
+      pos: "Adjective",
+      usage: "The platform offers a scalable solution.",
+      root: "Latin: scala (ladder)",
+      synonyms: ["expandable"],
+      antonyms: ["limited"],
+    },
+    {
+      word: "Benchmark",
+      meaning: "A standard for comparison",
+      pos: "Noun",
+      usage: "The firm set industry benchmarks.",
+      root: "Old English: benche (mark)",
+      synonyms: ["standard"],
+      antonyms: ["exception"],
+    },
+    {
+      word: "Synergy",
+      meaning: "Combined effect greater than individual efforts",
+      pos: "Noun",
+      usage: "The merger created operational synergy.",
+      root: "Greek: synergos (working together)",
+      synonyms: ["collaboration"],
+      antonyms: ["conflict"],
+    },
+  ],
+  concept: `OMET passages often use polished corporate language.
+Words may sound positive but hide neutral or strategic intent.
+
+Focus on:
+* Practical feasibility  
+* Business outcomes  
+* Strategic positioning`,
+},
 ];
 
 /* 🔁 Dynamic daily picker */
