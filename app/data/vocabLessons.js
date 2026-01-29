@@ -2,7 +2,7 @@ export const vocabLessons = [
   {
     id: "uncertainty",
     title: "Shades of Uncertainty",
-    category: "rc",
+    exam: "CAT",
     goal: "Learn how CAT passages hide meaning using subtle forms of vagueness.",
     words: [
       {
@@ -57,7 +57,7 @@ export const vocabLessons = [
   {
     id: "evaluation",
     title: "Language of Evaluation",
-    category: "rc",
+    exam: "CAT",
     goal: "Recognize when the author is judging, approving, or criticizing.",
     words: [
       {
@@ -112,7 +112,7 @@ export const vocabLessons = [
   {
     id: "contrast",
     title: "Contrast & Reversal Signals",
-    category: "rc",
+   exam: "CAT",
     goal: "Spot turning points where arguments shift direction.",
     words: [
       {
@@ -167,7 +167,7 @@ export const vocabLessons = [
   {
     id: "causation",
     title: "Causation vs Correlation",
-    category: "rc",
+    exam: "CAT",
     goal: "Differentiate causes from mere associations.",
     words: [
       {
@@ -222,7 +222,7 @@ export const vocabLessons = [
   {
     id: "scope",
     title: "Scope & Limitation",
-    category: "rc",
+   exam: "CAT",
     goal: "Understand when claims are narrow, broad, or conditional.",
     words: [
       {
@@ -276,7 +276,7 @@ export const vocabLessons = [
   {
     id: "certainty",
     title: "Degrees of Certainty",
-    category: "rc",
+   exam: "CAT",
     goal: "Understand how authors express confidence, doubt, and probability.",
     words: [
       {
@@ -332,7 +332,7 @@ CAT often replaces "tentative" with "certain" in traps.`,
   {
     id: "support",
     title: "Support & Evidence Language",
-    category: "rc",
+   exam: "CAT",
     goal: "Track how authors justify claims.",
     words: [
       {
@@ -388,7 +388,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "argument",
     title: "Argument Structure",
-    category: "rc",
+    exam: "CAT",
     goal: "Recognize claims, premises, and conclusions.",
     words: [
       {
@@ -443,7 +443,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "bias",
     title: "Bias & Perspective",
-    category: "rc",
+    exam: "CAT",
     goal: "Detect partiality and framing.",
     words: [
       {
@@ -498,7 +498,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "implication",
     title: "Implications & Consequences",
-    category: "rc",
+    exam: "CAT",
     goal: "Track what follows from an idea.",
     words: [
       {
@@ -552,7 +552,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   {
     id: "assumption",
     title: "Hidden Assumptions",
-    category: "rc",
+    exam: "CAT",
     goal: "Spot what the author takes for granted.",
     words: [
       {
@@ -608,7 +608,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "comparison",
     title: "Comparison & Analogy",
-    category: "rc",
+   exam: "CAT",
     goal: "Understand how authors relate ideas.",
     words: [
       {
@@ -663,7 +663,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "qualification",
     title: "Qualification & Hedging",
-    category: "rc",
+   exam: "CAT",
     goal: "Notice how claims are softened.",
     words: [
       {
@@ -718,7 +718,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "process",
     title: "Process & Change",
-    category: "rc",
+   exam: "CAT",
     goal: "Track movement and development.",
     words: [
       {
@@ -773,7 +773,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "policy",
     title: "Policy & Reform Language",
-    category: "rc",
+   exam: "CAT",
     goal: "Decode governance and reform vocabulary.",
     words: [
       {
@@ -827,7 +827,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "evidence",
     title: "Evidence & Support",
-    category: "rc",
+  exam: "CAT",
     goal: "Recognize how authors justify claims.",
     words: [
       {
@@ -882,7 +882,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "bias",
     title: "Bias & Perspective",
-    category: "rc",
+    exam: "CAT",
     goal: "Detect subjectivity in tone.",
     words: [
       {
@@ -937,7 +937,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "prediction",
     title: "Forecast & Speculation",
-    category: "rc",
+  exam: "CAT",
     goal: "Understand future-oriented language.",
     words: [
       {
@@ -992,7 +992,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "critique",
     title: "Critique & Rebuttal",
-    category: "rc",
+   exam: "CAT",
     goal: "Track counter-arguments.",
     words: [
       {
@@ -1047,7 +1047,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "synthesis",
     title: "Synthesis & Integration",
-    category: "rc",
+    exam: "CAT",
     goal: "Understand how ideas are combined.",
     words: [
       {
@@ -1101,7 +1101,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "qualification",
     title: "Hedging & Qualification",
-    category: "rc",
+   exam: "CAT",
     goal: "Notice when authors soften claims.",
     words: [
       {
@@ -1156,7 +1156,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "methodology",
     title: "Method & Process",
-    category: "rc",
+   exam: "CAT",
     goal: "Track how studies and arguments are built.",
     words: [
       {
@@ -1211,7 +1211,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "impact",
     title: "Impact & Consequence",
-    category: "rc",
+   exam: "CAT",
     goal: "Understand effect-oriented language.",
     words: [
       {
@@ -1266,7 +1266,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "comparison",
     title: "Comparison & Analogy",
-    category: "rc",
+    exam: "CAT",
     goal: "Read similarities and differences carefully.",
     words: [
       {
@@ -1321,7 +1321,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
     id: "conclusion",
     title: "Conclusion & Resolution",
-    category: "rc",
+    exam: "CAT",
     goal: "Recognize how arguments close.",
     words: [
       {
@@ -1375,7 +1375,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   {
   id: "omet-business-tone",
   title: "Business & Corporate Tone",
-  category: "omet",
+ exam: "OMET",
   goal: "Understand formal corporate language used in NMAT, SNAP, XAT passages.",
   words: [
     {
@@ -1435,7 +1435,7 @@ Focus on:
   {
   id: "omet-risk",
   title: "Risk & Decision Language",
-  category: "omet",
+  exam: "OMET",
   goal: "Interpret language around uncertainty, risk, and managerial decisions.",
   words: [
     {
@@ -1494,7 +1494,7 @@ Read carefully:
 {
   id: "omet-data",
   title: "Data, Evidence & Analysis",
-  category: "omet",
+  exam: "OMET",
   goal: "Decode analytical and data-driven vocabulary.",
   words: [
     {
@@ -1549,7 +1549,7 @@ Understanding analytical vocabulary prevents misinterpretation.`,
 {
   id: "omet-strategy",
   title: "Strategy & Planning Language",
-  category: "omet",
+   exam: "OMET",
   goal: "Understand strategic intent in management passages.",
   words: [
     {
@@ -1603,7 +1603,7 @@ These words indicate planning vs implementation.`,
 },{
   id: "omet-ethics",
   title: "Ethics & Corporate Responsibility",
-  category: "omet",
+  exam: "OMET",
   goal: "Interpret moral and governance-related language.",
   words: [
     {
@@ -1658,7 +1658,7 @@ Vocabulary here signals norms, obligations, and expectations.`,
   {
   id: "omet_business_tone",
   title: "Business & Corporate Tone",
-  category: "omet",
+   exam: "OMET",
   goal: "Understand vocabulary commonly used in corporate, business, and management passages.",
   words: [
     {
@@ -1714,7 +1714,7 @@ These words signal long-term thinking and corporate reasoning.`,
 {
   id: "omet_data_reasoning",
   title: "Data & Evidence Language",
-  category: "omet",
+  exam: "OMET",
   goal: "Decode how data, trends, and evidence are discussed in OMET passages.",
   words: [
     {
@@ -1770,7 +1770,7 @@ Strong candidates avoid over-inference and respect evidence limits.`,
 {
   id: "omet_economics",
   title: "Economic & Market Language",
-  category: "omet",
+  exam: "OMET",
   goal: "Understand vocabulary used in economics, markets, and finance contexts.",
   words: [
     {
@@ -1826,7 +1826,7 @@ Precision matters more than jargon.`,
 {
   id: "omet_policy_language",
   title: "Policy & Governance Vocabulary",
-  category: "omet",
+   exam: "OMET",
   goal: "Identify language used in policy analysis and governance discussions.",
   words: [
     {
@@ -1882,7 +1882,7 @@ Watch for procedural language rather than opinionated tone.`,
 {
   id: "omet_social_analysis",
   title: "Social & Behavioral Analysis",
-  category: "omet",
+   exam: "OMET",
   goal: "Decode sociological and behavioral reasoning common in OMET RCs.",
   words: [
     {
@@ -2218,7 +2218,7 @@ These words define quality of judgment.`,
 },
   {
   id: "omet-decision",
-  category: "omet",
+  exam: "OMET",
   title: "Decision & Choice Vocabulary",
   goal: "Understand language related to selection, preference, and judgment.",
   words: [
@@ -2280,7 +2280,7 @@ Decision vocabulary clarifies authority and intent.`,
 
 {
   id: "omet-structure",
-  category: "omet",
+  exam: "OMET",
   title: "Organizational Structure",
   goal: "Decode hierarchy, roles, and institutional setup.",
   words: [
@@ -2342,7 +2342,7 @@ Structure words prevent role-confusion traps.`,
 
 {
   id: "omet-change",
-  category: "omet",
+  exam: "OMET",
   title: "Change & Transition Language",
   goal: "Recognize words that indicate transformation or shift.",
   words: [
@@ -2404,7 +2404,7 @@ Change words signal intent and timeline.`,
 
 {
   id: "omet-constraint",
-  category: "omet",
+   exam: "OMET",
   title: "Constraints & Restrictions",
   goal: "Understand limiting conditions and boundaries.",
   words: [
@@ -2466,7 +2466,7 @@ Constraint language defines boundaries.`,
 
 {
   id: "omet-outcome",
-  category: "omet",
+  exam: "OMET",
   title: "Outcome & Result Vocabulary",
   goal: "Track results, consequences, and end-states.",
   words: [
