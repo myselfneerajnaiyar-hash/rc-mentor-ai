@@ -581,8 +581,8 @@ const [testScore, setTestScore] = useState(0);
             <p><b>Meaning:</b> {w.meaning}</p>
             <p><b>Usage:</b> {w.usage}</p>
             <p><b>Root:</b> {w.root}</p>
-            <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
-            <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+            <p><b>Synonyms:</b> {(w.synonyms || []).join(", ")}</p>
+            <p><b>Antonyms:</b> {(w.antonyms || []).join(", ")}</p>
           </div>
         ))}
         <button
@@ -606,19 +606,22 @@ const [testScore, setTestScore] = useState(0);
   function startLessonTest(lesson) {
     const words = lesson.words;
 
-    const qs = words.slice(0, 5).map(w => {
-      const correct = w.synonyms[0];
-      const distractors = words
-        .filter(x => x.word !== w.word)
-        .map(x => x.synonyms[0])
-        .slice(0, 3);
+  const usable = words.filter(w => w.synonyms && w.synonyms.length);
 
-      return {
-        word: w.word,
-        correct,
-        options: [...distractors, correct].sort(() => Math.random() - 0.5),
-      };
-    });
+const qs = usable.slice(0, 5).map(w => {
+  const correct = w.synonyms[0];
+
+  const distractors = usable
+    .filter(x => x.word !== w.word)
+    .map(x => x.synonyms[0])
+    .slice(0, 3);
+
+  return {
+    word: w.word,
+    correct,
+    options: [...distractors, correct].sort(() => Math.random() - 0.5),
+  };
+});
 
     setTestQs(qs);
     setTestIndex(0);
