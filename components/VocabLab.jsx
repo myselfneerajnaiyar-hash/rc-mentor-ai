@@ -546,10 +546,12 @@ function VocabDrill() {
 function VocabLearn() {
   const [mode, setMode] = useState("home"); // home | lesson | test | result
 const [activeLesson, setActiveLesson] = useState(null);
-const [progress, setProgress] = useState(() => {
+  const [progress, setProgress] = useState(() => {
   return JSON.parse(localStorage.getItem("vocabProgress") || '{"completed": []}');
 });
-
+const [testQs, setTestQs] = useState([]);
+const [testIndex, setTestIndex] = useState(0);
+const [testScore, setTestScore] = useState(0);
   const todayWords = [
     {
       word: "Obscure",
@@ -651,6 +653,28 @@ Understanding this cluster directly improves inference accuracy.`,
     );
   }
 
+  function startLessonTest(lesson) {
+    const words = lesson.words;
+
+    const qs = words.slice(0, 5).map(w => {
+      const correct = w.synonyms[0];
+      const distractors = words
+        .filter(x => x.word !== w.word)
+        .map(x => x.synonyms[0])
+        .slice(0, 3);
+
+      return {
+        word: w.word,
+        correct,
+        options: [...distractors, correct].sort(() => Math.random() - 0.5),
+      };
+    });
+
+    setTestQs(qs);
+    setTestIndex(0);
+    setTestScore(0);
+    setMode("test");
+  }
   return (
     <div>
       <h2>Today’s Top Words</h2>
