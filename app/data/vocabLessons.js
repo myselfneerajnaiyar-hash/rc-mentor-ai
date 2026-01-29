@@ -1,25 +1,3 @@
-/* 🔁 Dynamic daily picker */
-export function getTodayWords(vocabLessons) {
-  const allWords = vocabLessons
-    .flatMap(l => l.words)
-    .filter(w => w && typeof w.word === "string" && w.word.length > 0);
-
-  const seed = new Date().toDateString();
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  return [...allWords]
-    .sort((a, b) => {
-      const aCode = a.word.charCodeAt(0);
-      const bCode = b.word.charCodeAt(0);
-      return (hash + aCode) % 7 - (hash + bCode) % 7;
-    })
-    .slice(0, 5);
-}
-
-/* 📚 ALL LESSONS LIVE BELOW */
 export const vocabLessons = [
   {
     id: "uncertainty",
@@ -72,9 +50,9 @@ export const vocabLessons = [
         antonyms: ["precise"],
       },
     ],
-    concept: `CAT often hides meaning inside imprecision.
-These words don’t just mean “unclear”—each signals a different kind of doubt.`,
+    concept: `CAT often hides meaning inside imprecision.`,
   },
+
   {
     id: "evaluation",
     title: "Language of Evaluation",
@@ -126,8 +104,7 @@ These words don’t just mean “unclear”—each signals a different kind of d
         antonyms: ["deep", "thorough"],
       },
     ],
-    concept: `RC passages often embed judgment in subtle adjectives.
-These words reveal the author’s stance and bias.`,
+    concept: `RC passages often embed judgment in subtle adjectives.`,
   },
 
   {
@@ -181,8 +158,7 @@ These words reveal the author’s stance and bias.`,
         antonyms: ["and"],
       },
     ],
-    concept: `Most RC traps occur after contrast words.
-CAT often places the main idea after these.`,
+    concept: `Most RC traps occur after contrast words.`,
   },
 
   {
@@ -292,6 +268,19 @@ CAT often places the main idea after these.`,
     ],
     concept: `Scope errors are the most common CAT traps.`,
   },
-
-  // 👇 PASTE EVERY NEW LESSON HERE, ONE AFTER ANOTHER
 ];
+
+/* 🔁 Dynamic daily picker */
+export function getTodayWords() {
+  const allWords = vocabLessons.flatMap(l => l.words);
+
+  const seed = new Date().toDateString();
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  return [...allWords]
+    .sort((a, b) => (hash + a.word.charCodeAt(0)) % 7 - (hash + b.word.charCodeAt(0)) % 7)
+    .slice(0, 5);
+}
