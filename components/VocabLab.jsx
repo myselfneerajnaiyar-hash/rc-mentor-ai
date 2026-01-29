@@ -282,6 +282,8 @@ function VocabDrill() {
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
   const [history, setHistory] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
@@ -298,14 +300,14 @@ function VocabDrill() {
       .slice(0, 3)
       .map(w => w.synonyms[0]);
 
-    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+    if (distractors.length < 3) return null;
 
     return {
       type: "synonym",
       prompt: `Closest meaning of`,
       word: word.word,
       correct,
-      options,
+      options: [...distractors, correct].sort(() => Math.random() - 0.5),
     };
   }
 
@@ -319,14 +321,14 @@ function VocabDrill() {
       .slice(0, 3)
       .map(w => w.antonyms[0]);
 
-    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+    if (distractors.length < 3) return null;
 
     return {
       type: "antonym",
       prompt: `Opposite of`,
       word: word.word,
       correct,
-      options,
+      options: [...distractors, correct].sort(() => Math.random() - 0.5),
     };
   }
 
@@ -342,22 +344,22 @@ function VocabDrill() {
       .slice(0, 3)
       .map(w => w.word);
 
-    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+    if (distractors.length < 3) return null;
 
     return {
       type: "fill",
       prompt: sentence,
       word: null,
       correct,
-      options,
+      options: [...distractors, correct].sort(() => Math.random() - 0.5),
     };
   }
 
   function buildQuestion(word) {
-    const makers = [makeSynonymQ, makeAntonymQ, makeFillBlankQ];
-    const shuffled = makers.sort(() => Math.random() - 0.5);
-
-    for (let fn of shuffled) {
+    const makers = [makeSynonymQ, makeAntonymQ, makeFillBlankQ].sort(
+      () => Math.random() - 0.5
+    );
+    for (let fn of makers) {
       const q = fn(word);
       if (q) return q;
     }
@@ -365,19 +367,34 @@ function VocabDrill() {
   }
 
   function startDrill() {
-    if (bank.length < 4) {
-      alert("Add at least 4 enriched words to start drills.");
+    if (bank.length < 6) {
+      alert("Add more enriched words to enable full drills.");
       return;
     }
 
-    const shuffled = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
-    const qs = shuffled.map(w => buildQuestion(w)).filter(Boolean);
+    const pool = [...bank].sort(() => Math.random() - 0.5);
+    const qs = [];
+
+    let i = 0;
+    while (qs.length < 10 && i < pool.length * 3) {
+      const w = pool[i % pool.length];
+      const q = buildQuestion(w);
+      if (q) qs.push(q);
+      i++;
+    }
+
+    if (qs.length < 10) {
+      alert("Not enough rich data yet to build 10 questions.");
+      return;
+    }
 
     setQuestions(qs);
     setIndex(0);
     setScore(0);
     setSelected(null);
     setHistory([]);
+    setStartTime(Date.now());
+    setEndTime(null);
     setStage("run");
   }
 
@@ -386,17 +403,12 @@ function VocabDrill() {
     const q = questions[index];
 
     setSelected(opt);
-
     const correct = opt === q.correct;
     if (correct) setScore(s => s + 1);
 
     setHistory(h => [
       ...h,
-      {
-        ...q,
-        chosen: opt,
-        isCorrect: correct,
-      },
+      { ...q, chosen: opt, isCorrect: correct },
     ]);
 
     setTimeout(() => {
@@ -404,6 +416,7 @@ function VocabDrill() {
         setIndex(i => i + 1);
         setSelected(null);
       } else {
+        setEndTime(Date.now());
         setStage("result");
       }
     }, 700);
@@ -413,7 +426,7 @@ function VocabDrill() {
     return (
       <div>
         <h2>Vocab Drills</h2>
-        <p>Mixed MCQ drills: meaning, opposite, and usage.</p>
+        <p>10 mixed MCQs: meaning, opposite, usage.</p>
         <button
           onClick={startDrill}
           style={{
@@ -433,11 +446,16 @@ function VocabDrill() {
   }
 
   if (stage === "result") {
+    const timeTaken = Math.round((endTime - startTime) / 1000);
+    const accuracy = Math.round((score / questions.length) * 100);
+
     return (
       <div>
         <h2>Drill Complete</h2>
         <p>
-          Score: <b>{score}</b> / {questions.length}
+          Score: <b>{score}</b> / {questions.length} &nbsp;|&nbsp;
+          Accuracy: <b>{accuracy}%</b> &nbsp;|&nbsp;
+          Time: <b>{timeTaken}s</b>
         </p>
 
         <div style={{ marginTop: 20 }}>
