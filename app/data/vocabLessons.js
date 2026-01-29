@@ -2216,6 +2216,315 @@ These words define quality of judgment.`,
   ],
   concept: `OMET aptitude tests frequently test efficiency-related vocabulary.`,
 },
+  {
+  id: "omet-decision",
+  category: "omet",
+  title: "Decision & Choice Vocabulary",
+  goal: "Understand language related to selection, preference, and judgment.",
+  words: [
+    {
+      word: "Opt",
+      meaning: "To make a choice from alternatives",
+      pos: "Verb",
+      usage: "Candidates may opt for the early interview slot.",
+      root: "Latin: optare (to choose)",
+      synonyms: ["choose", "select"],
+      antonyms: ["reject"],
+    },
+    {
+      word: "Preference",
+      meaning: "A greater liking for one option over others",
+      pos: "Noun",
+      usage: "The firm showed a preference for experienced candidates.",
+      root: "Latin: praeferre (carry before)",
+      synonyms: ["inclination"],
+      antonyms: ["aversion"],
+    },
+    {
+      word: "Discretion",
+      meaning: "Freedom to decide based on judgment",
+      pos: "Noun",
+      usage: "The manager has discretion in approving leave.",
+      root: "Latin: discernere (separate)",
+      synonyms: ["judgment"],
+      antonyms: ["compulsion"],
+    },
+    {
+      word: "Deliberate",
+      meaning: "To think carefully before deciding",
+      pos: "Verb",
+      usage: "The panel deliberated before announcing results.",
+      root: "Latin: deliberare (weigh)",
+      synonyms: ["consider"],
+      antonyms: ["rush"],
+    },
+    {
+      word: "Consensus",
+      meaning: "General agreement",
+      pos: "Noun",
+      usage: "The committee reached a consensus.",
+      root: "Latin: consentire (agree)",
+      synonyms: ["accord"],
+      antonyms: ["disagreement"],
+    },
+  ],
+  concept: `OMET questions often describe decision-making environments.
+
+Track:
+* Who decides  
+* On what basis  
+* With how much freedom  
+
+Decision vocabulary clarifies authority and intent.`,
+},
+
+{
+  id: "omet-structure",
+  category: "omet",
+  title: "Organizational Structure",
+  goal: "Decode hierarchy, roles, and institutional setup.",
+  words: [
+    {
+      word: "Hierarchy",
+      meaning: "A system of ranked authority",
+      pos: "Noun",
+      usage: "The hierarchy defines reporting relationships.",
+      root: "Greek: hierarkhia (rule of a high priest)",
+      synonyms: ["chain of command"],
+      antonyms: ["flat structure"],
+    },
+    {
+      word: "Delegation",
+      meaning: "Assignment of responsibility",
+      pos: "Noun",
+      usage: "Delegation improves efficiency.",
+      root: "Latin: delegare (send)",
+      synonyms: ["assignment"],
+      antonyms: ["retention"],
+    },
+    {
+      word: "Subordinate",
+      meaning: "Lower in rank",
+      pos: "Noun",
+      usage: "Subordinates report to the manager.",
+      root: "Latin: subordinare (rank below)",
+      synonyms: ["junior"],
+      antonyms: ["superior"],
+    },
+    {
+      word: "Autonomy",
+      meaning: "Independence in decision-making",
+      pos: "Noun",
+      usage: "Teams were given operational autonomy.",
+      root: "Greek: autos (self) + nomos (law)",
+      synonyms: ["independence"],
+      antonyms: ["control"],
+    },
+    {
+      word: "Oversight",
+      meaning: "Supervision or monitoring",
+      pos: "Noun",
+      usage: "Regulatory oversight is mandatory.",
+      root: "Old English: ofersēon (look over)",
+      synonyms: ["supervision"],
+      antonyms: ["neglect"],
+    },
+  ],
+  concept: `OMET passages often describe institutional setups.
+
+Identify:
+* Power flow  
+* Control points  
+* Responsibility boundaries  
+
+Structure words prevent role-confusion traps.`,
+},
+
+{
+  id: "omet-change",
+  category: "omet",
+  title: "Change & Transition Language",
+  goal: "Recognize words that indicate transformation or shift.",
+  words: [
+    {
+      word: "Transition",
+      meaning: "Process of change from one state to another",
+      pos: "Noun",
+      usage: "The company is in a transition phase.",
+      root: "Latin: transire (go across)",
+      synonyms: ["shift"],
+      antonyms: ["stability"],
+    },
+    {
+      word: "Reform",
+      meaning: "Improvement through change",
+      pos: "Noun",
+      usage: "Educational reform is underway.",
+      root: "Latin: reformare (shape again)",
+      synonyms: ["restructure"],
+      antonyms: ["preserve"],
+    },
+    {
+      word: "Adapt",
+      meaning: "Adjust to new conditions",
+      pos: "Verb",
+      usage: "Employees adapted quickly.",
+      root: "Latin: adaptare (fit)",
+      synonyms: ["adjust"],
+      antonyms: ["resist"],
+    },
+    {
+      word: "Overhaul",
+      meaning: "Thorough revision",
+      pos: "Noun",
+      usage: "The system underwent an overhaul.",
+      root: "Old English: of + hal (pull apart)",
+      synonyms: ["revamp"],
+      antonyms: ["retain"],
+    },
+    {
+      word: "Phase-out",
+      meaning: "Gradual removal",
+      pos: "Verb",
+      usage: "Old policies were phased out.",
+      root: "Phase + out",
+      synonyms: ["eliminate"],
+      antonyms: ["introduce"],
+    },
+  ],
+  concept: `OMET passages frequently test policy and organizational change.
+
+Watch:
+* Speed of change  
+* Direction  
+* Degree of disruption  
+
+Change words signal intent and timeline.`,
+},
+
+{
+  id: "omet-constraint",
+  category: "omet",
+  title: "Constraints & Restrictions",
+  goal: "Understand limiting conditions and boundaries.",
+  words: [
+    {
+      word: "Constraint",
+      meaning: "A limiting factor",
+      pos: "Noun",
+      usage: "Budget is a major constraint.",
+      root: "Latin: constringere (bind)",
+      synonyms: ["limitation"],
+      antonyms: ["freedom"],
+    },
+    {
+      word: "Ceiling",
+      meaning: "Upper limit",
+      pos: "Noun",
+      usage: "There is a salary ceiling.",
+      root: "Latin: caelum (sky)",
+      synonyms: ["cap"],
+      antonyms: ["floor"],
+    },
+    {
+      word: "Mandate",
+      meaning: "Official requirement",
+      pos: "Noun",
+      usage: "Masks are mandatory by mandate.",
+      root: "Latin: mandare (order)",
+      synonyms: ["directive"],
+      antonyms: ["option"],
+    },
+    {
+      word: "Compliance",
+      meaning: "Act of obeying rules",
+      pos: "Noun",
+      usage: "Compliance is monitored strictly.",
+      root: "Latin: complere (fulfill)",
+      synonyms: ["adherence"],
+      antonyms: ["violation"],
+    },
+    {
+      word: "Restriction",
+      meaning: "Control or limitation",
+      pos: "Noun",
+      usage: "Travel restrictions remain.",
+      root: "Latin: restringere (bind back)",
+      synonyms: ["constraint"],
+      antonyms: ["permission"],
+    },
+  ],
+  concept: `OMET questions often revolve around limits.
+
+Identify:
+* Who imposes the restriction  
+* On whom  
+* With what flexibility  
+
+Constraint language defines boundaries.`,
+},
+
+{
+  id: "omet-outcome",
+  category: "omet",
+  title: "Outcome & Result Vocabulary",
+  goal: "Track results, consequences, and end-states.",
+  words: [
+    {
+      word: "Outcome",
+      meaning: "Final result",
+      pos: "Noun",
+      usage: "The outcome was favorable.",
+      root: "Old English: ut + cuman (come out)",
+      synonyms: ["result"],
+      antonyms: ["cause"],
+    },
+    {
+      word: "Impact",
+      meaning: "Strong effect",
+      pos: "Noun",
+      usage: "The policy had significant impact.",
+      root: "Latin: impactus (strike)",
+      synonyms: ["effect"],
+      antonyms: ["insignificance"],
+    },
+    {
+      word: "Repercussion",
+      meaning: "Indirect consequence",
+      pos: "Noun",
+      usage: "The decision had legal repercussions.",
+      root: "Latin: repercutere (strike back)",
+      synonyms: ["consequence"],
+      antonyms: ["cause"],
+    },
+    {
+      word: "Yield",
+      meaning: "To produce a result",
+      pos: "Verb",
+      usage: "The strategy yielded profits.",
+      root: "Old English: gieldan (pay)",
+      synonyms: ["produce"],
+      antonyms: ["consume"],
+    },
+    {
+      word: "Net effect",
+      meaning: "Overall final effect",
+      pos: "Noun",
+      usage: "The net effect was positive.",
+      root: "Net (final)",
+      synonyms: ["overall result"],
+      antonyms: ["partial effect"],
+    },
+  ],
+  concept: `OMET RC and reasoning questions focus heavily on outcomes.
+
+Always ask:
+* Intended vs actual result  
+* Short-term vs long-term  
+* Direct vs indirect effect  
+
+Outcome words anchor conclusions.`,
+},
 ];
 
 /* 🔁 Dynamic daily picker */
