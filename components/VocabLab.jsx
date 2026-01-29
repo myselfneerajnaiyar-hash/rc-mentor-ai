@@ -763,22 +763,26 @@ const qs = usable.slice(0, 5).map(w => {
         >
           <h3>{l.title}</h3>
           <p style={{ color: "#555" }}>{l.goal}</p>
-          <button
-            onClick={() => {
-              setActiveLesson(l);
-              setMode("lesson");
-            }}
-            style={{
-              padding: "8px 14px",
-              borderRadius: 8,
-              background: l.category === "rc" ? "#f97316" : "#16a34a",
-              color: "#fff",
-              border: "none",
-              fontWeight: 600,
-            }}
-          >
-            Start Lesson
-          </button>
+         <button
+  onClick={() => {
+    setActiveLesson(l);
+    setMode("lesson");
+  }}
+  style={{
+    padding: "8px 14px",
+    borderRadius: 8,
+    border: "none",
+    fontWeight: 600,
+    cursor: "pointer",
+    background:
+      l.exam === "CAT"
+        ? "#f97316"    // 🟧 orange for CAT RC
+        : "#22c55e",   // 🟩 green for OMET
+    color: "#fff",
+  }}
+>
+  {l.title}
+</button>
         </div>
       ))}
     </div>
