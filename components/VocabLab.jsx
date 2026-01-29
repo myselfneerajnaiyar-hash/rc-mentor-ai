@@ -757,7 +757,7 @@ const qs = usable.slice(0, 5).map(w => {
             style={{
               padding: "8px 14px",
               borderRadius: 8,
-              background: "#f97316",
+              background: l.category === "rc" ? "#f97316" : "#16a34a",
               color: "#fff",
               border: "none",
               fontWeight: 600,
