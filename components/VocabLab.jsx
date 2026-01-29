@@ -710,7 +710,7 @@ const [testScore, setTestScore] = useState(0);
           paddingBottom: 12,
         }}
       >
-        {todayWords.map((w, i) => (
+       {getTodayWords().map((w, i) => (
           <div
             key={i}
             style={{
