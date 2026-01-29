@@ -553,6 +553,8 @@ const [activeLesson, setActiveLesson] = useState(null);
 const [testQs, setTestQs] = useState([]);
 const [testIndex, setTestIndex] = useState(0);
 const [testScore, setTestScore] = useState(0);
+  const [examFilter, setExamFilter] = useState("ALL"); 
+// ALL | CAT | OMET
  
 
   if (mode === "lesson" && activeLesson) {
@@ -703,7 +705,14 @@ const qs = usable.slice(0, 5).map(w => {
   }
   return (
     <div>
-      <h2>Today’s Top Words</h2>
+     <h2>Today’s Top Words</h2>
+
+<div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+  <button onClick={() => setExamFilter("ALL")}>All</button>
+  <button onClick={() => setExamFilter("CAT")}>CAT RC</button>
+  <button onClick={() => setExamFilter("OMET")}>OMET</button>
+</div>
+      
 
       <div
         style={{
@@ -736,7 +745,12 @@ const qs = usable.slice(0, 5).map(w => {
 
       <h2 style={{ marginTop: 24 }}>Vocabulary Lessons</h2>
 
-      {vocabLessons.map(l => (
+      {vocabLessons
+  .filter(l => {
+    if (examFilter === "ALL") return true;
+    return l.exam === examFilter;
+  })
+  .map(l => (
         <div
           key={l.id}
           style={{
