@@ -542,7 +542,178 @@ function VocabDrill() {
   );
 }
 function VocabLearn() {
-  return <div><h2>Learn</h2><p>Coming next.</p></div>;
+  const [mode, setMode] = useState("home"); // home | lesson
+  const [activeLesson, setActiveLesson] = useState(null);
+
+  const todayWords = [
+    {
+      word: "Obscure",
+      meaning: "Hard to understand due to complexity",
+      pos: "Adjective",
+      usage: "The theory is obscure to non-specialists.",
+      root: "Latin: obscurus (hidden)",
+      synonyms: ["arcane", "abstruse"],
+      antonyms: ["clear", "obvious"],
+    },
+    {
+      word: "Ambiguous",
+      meaning: "Open to more than one interpretation",
+      pos: "Adjective",
+      usage: "The statement was deliberately ambiguous.",
+      root: "Latin: ambiguus (uncertain)",
+      synonyms: ["equivocal", "unclear"],
+      antonyms: ["definite"],
+    },
+    {
+      word: "Equivocal",
+      meaning: "Deliberately unclear to avoid commitment",
+      pos: "Adjective",
+      usage: "The minister gave an equivocal reply.",
+      root: "Latin: aequivocus (double-voiced)",
+      synonyms: ["evasive"],
+      antonyms: ["direct"],
+    },
+    {
+      word: "Opaque",
+      meaning: "Difficult to understand; intentionally hidden",
+      pos: "Adjective",
+      usage: "The policy’s logic remains opaque.",
+      root: "Latin: opacus (darkened)",
+      synonyms: ["impenetrable"],
+      antonyms: ["transparent"],
+    },
+    {
+      word: "Vague",
+      meaning: "Lacking clear detail",
+      pos: "Adjective",
+      usage: "The plan was vague and poorly defined.",
+      root: "Latin: vagus (wandering)",
+      synonyms: ["hazy"],
+      antonyms: ["precise"],
+    },
+  ];
+
+  const lessons = [
+    {
+      id: "uncertainty",
+      title: "Shades of Uncertainty",
+      goal:
+        "Learn how CAT passages hide meaning using subtle forms of vagueness.",
+      words: todayWords,
+      concept: `CAT often hides meaning inside imprecision.
+These words don’t just mean “unclear”—each signals a different kind of doubt.
+
+When you see them in RC:
+* The author is withholding certainty  
+* The claim is softened  
+* The argument is not fully committed  
+
+Understanding this cluster directly improves inference accuracy.`,
+    },
+  ];
+
+  if (mode === "lesson" && activeLesson) {
+    const L = activeLesson;
+    return (
+      <div>
+        <button onClick={() => setMode("home")}>← Back</button>
+
+        <h2 style={{ marginTop: 12 }}>{L.title}</h2>
+        <p style={{ color: "#555", whiteSpace: "pre-wrap" }}>{L.concept}</p>
+
+        <h3 style={{ marginTop: 20 }}>Word Cards</h3>
+
+        {L.words.map((w, i) => (
+          <div
+            key={i}
+            style={{
+              marginTop: 12,
+              padding: 14,
+              borderRadius: 12,
+              border: "1px solid #fed7aa",
+              background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
+            }}
+          >
+            <h4>{w.word}</h4>
+            <p><b>Meaning:</b> {w.meaning}</p>
+            <p><b>Usage:</b> {w.usage}</p>
+            <p><b>Root:</b> {w.root}</p>
+            <p><b>Synonyms:</b> {w.synonyms.join(", ")}</p>
+            <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2>Today’s Top Words</h2>
+
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          overflowX: "auto",
+          paddingBottom: 12,
+        }}
+      >
+        {todayWords.map((w, i) => (
+          <div
+            key={i}
+            style={{
+              minWidth: 220,
+              padding: 14,
+              borderRadius: 14,
+              background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
+              border: "1px solid #fed7aa",
+              boxShadow: "0 6px 14px rgba(251,146,60,0.25)",
+            }}
+          >
+            <h4>{w.word}</h4>
+            <p style={{ fontSize: 13 }}>{w.meaning}</p>
+            <p style={{ fontSize: 12, color: "#7c2d12" }}>
+              {w.synonyms.join(", ")}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <h2 style={{ marginTop: 24 }}>Vocabulary Lessons</h2>
+
+      {lessons.map(l => (
+        <div
+          key={l.id}
+          style={{
+            marginTop: 12,
+            padding: 16,
+            borderRadius: 12,
+            border: "1px solid #e5e7eb",
+            background: "#f8fafc",
+          }}
+        >
+          <h3>{l.title}</h3>
+          <p style={{ color: "#555" }}>{l.goal}</p>
+          <button
+            onClick={() => {
+              setActiveLesson(l);
+              setMode("lesson");
+            }}
+            style={{
+              padding: "8px 14px",
+              borderRadius: 8,
+              background: "#f97316",
+              color: "#fff",
+              border: "none",
+              fontWeight: 600,
+            }}
+          >
+            Start Lesson
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function VocabProfile() {
