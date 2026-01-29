@@ -7,6 +7,7 @@ import RCView from "../components/RCView";
 import SpeedGym from "../components/SpeedGym";
 import SpeedDashboard from "../components/SpeedDashboard";
 import SpeedContainer from "../components/SpeedContainer";
+import VocabLab from "../components/VocabLab";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -569,8 +570,7 @@ return (
 
     {view === "speed" && <SpeedContainer />}
 
-    {view === "vocab" && <div style={{ padding: 40 }}>Vocabulary Lab (next)</div>}
-
+    {view === "vocab" && <VocabLab />}
     {view === "cat" && <div style={{ padding: 40 }}>CAT Arena (soon)</div>}
   </main>
 );
