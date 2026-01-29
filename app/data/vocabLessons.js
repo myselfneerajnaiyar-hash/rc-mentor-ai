@@ -258,7 +258,7 @@ Always ask:
 * What is explicitly excluded?  
 
 Scope errors are the most common CAT traps.`,
-}
+},
       {
         word: "Ambiguous",
         meaning: "Open to more than one interpretation",
