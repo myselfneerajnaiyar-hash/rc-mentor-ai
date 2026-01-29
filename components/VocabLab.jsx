@@ -7,34 +7,35 @@ export default function VocabLab() {
   const [lookup, setLookup] = useState(null);
   const [loadingLookup, setLoadingLookup] = useState(false);
 
- async function handleManualAdd(word) {
-  setManualWord("");
-  setLookup(null);
-  setLoadingLookup(true);
+  async function handleManualAdd(word) {
+    setManualWord("");
+    setLookup(null);
+    setLoadingLookup(true);
 
-  const res = await fetch("/api/enrich-word", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ word }),
-  });
-
-  const data = await res.json();
-  setLoadingLookup(false);
-
-  const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-
-  if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
-    bank.push({
-      word,
-      ...data,
-      correctCount: 0,
-      enriched: true,
+    const res = await fetch("/api/enrich-word", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ word }),
     });
-    localStorage.setItem("vocabBank", JSON.stringify(bank));
+
+    const data = await res.json();
+    setLoadingLookup(false);
+
+    const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+    if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+      bank.push({
+        word,
+        ...data,
+        correctCount: 0,
+        enriched: true,
+      });
+      localStorage.setItem("vocabBank", JSON.stringify(bank));
+    }
+
+    setLookup({ word, ...data });
   }
 
-  setLookup({ word, ...data });
-}
   return (
     <div
       style={{
@@ -64,6 +65,7 @@ export default function VocabLab() {
                 background: tab === t.key ? "#4f46e5" : "#eef2ff",
                 color: tab === t.key ? "#fff" : "#1e293b",
                 fontWeight: 600,
+                cursor: "pointer",
               }}
             >
               {t.label}
@@ -85,6 +87,7 @@ export default function VocabLab() {
               manualWord={manualWord}
               setManualWord={setManualWord}
               lookup={lookup}
+              loading={loadingLookup}
               handleManualAdd={handleManualAdd}
             />
           )}
@@ -99,7 +102,7 @@ export default function VocabLab() {
 
 /* ---------------- COMPONENTS ---------------- */
 
-function WordBank({ manualWord, setManualWord, lookup, handleManualAdd }) {
+function WordBank({ manualWord, setManualWord, lookup, loading, handleManualAdd }) {
   return (
     <div>
       <h2>WordBank</h2>
@@ -135,6 +138,8 @@ function WordBank({ manualWord, setManualWord, lookup, handleManualAdd }) {
           }}
         />
 
+        {loading && <p style={{ marginTop: 12 }}>Looking up word…</p>}
+
         {lookup && (
           <div
             style={{
@@ -146,12 +151,12 @@ function WordBank({ manualWord, setManualWord, lookup, handleManualAdd }) {
             }}
           >
             <h3>{lookup.word}</h3>
-            <p><b>Meaning:</b> {lookup.meaning}</p>
-            <p><b>Part of Speech:</b> {lookup.partOfSpeech}</p>
-            <p><b>Usage:</b> {lookup.usage}</p>
-            <p><b>Root:</b> {lookup.root}</p>
-            <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ")}</p>
-            <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ")}</p>
+            <p><b>Meaning:</b> {lookup.meaning || "—"}</p>
+            <p><b>Part of Speech:</b> {lookup.partOfSpeech || "—"}</p>
+            <p><b>Usage:</b> {lookup.usage || "—"}</p>
+            <p><b>Root:</b> {lookup.root || "—"}</p>
+            <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ") || "—"}</p>
+            <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ") || "—"}</p>
           </div>
         )}
       </div>
