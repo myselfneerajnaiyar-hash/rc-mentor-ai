@@ -7,6 +7,8 @@ export default function VocabLab() {
   const [lookup, setLookup] = useState(null);
   const [loadingLookup, setLoadingLookup] = useState(false);
   const [bank, setBank] = useState([]);
+  const [mode, setMode] = useState("home"); // home | lesson | test | result
+
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
@@ -542,8 +544,11 @@ function VocabDrill() {
   );
 }
 function VocabLearn() {
-  const [mode, setMode] = useState("home"); // home | lesson
-  const [activeLesson, setActiveLesson] = useState(null);
+  const [mode, setMode] = useState("home"); // home | lesson | test | result
+const [activeLesson, setActiveLesson] = useState(null);
+const [progress, setProgress] = useState(() => {
+  return JSON.parse(localStorage.getItem("vocabProgress") || '{"completed": []}');
+});
 
   const todayWords = [
     {
