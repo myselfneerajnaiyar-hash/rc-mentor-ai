@@ -275,7 +275,158 @@ function WordBank({
 }
 
 function VocabDrill() {
-  return <div><h2>Vocab Drills</h2><p>Coming next.</p></div>;
+  const [stage, setStage] = useState("start"); // start | run | result
+  const [bank, setBank] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+    setBank(saved.filter(w => w.synonyms && w.synonyms.length));
+  }, []);
+
+  function startDrill() {
+    if (bank.length < 4) {
+      alert("Add at least 4 enriched words to start drills.");
+      return;
+    }
+
+    const shuffled = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
+
+    const qs = shuffled.map(word => {
+      const correct = word.synonyms[0];
+
+      const distractors = bank
+        .filter(w => w.word !== word.word && w.synonyms && w.synonyms.length)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(w => w.synonyms[0]);
+
+      const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+
+      return {
+        word: word.word,
+        correct,
+        options,
+      };
+    });
+
+    setQuestions(qs);
+    setIndex(0);
+    setScore(0);
+    setSelected(null);
+    setStage("run");
+  }
+
+  function choose(opt) {
+    if (selected) return;
+    setSelected(opt);
+
+    if (opt === questions[index].correct) {
+      setScore(s => s + 1);
+    }
+
+    setTimeout(() => {
+      if (index + 1 < questions.length) {
+        setIndex(i => i + 1);
+        setSelected(null);
+      } else {
+        setStage("result");
+      }
+    }, 700);
+  }
+
+  if (stage === "start") {
+    return (
+      <div>
+        <h2>Vocab Drills</h2>
+        <p>10 rapid MCQs. Recognition → Recall.</p>
+        <button
+          onClick={startDrill}
+          style={{
+            padding: "12px 18px",
+            borderRadius: 10,
+            border: "none",
+            background: "#f97316",
+            color: "#fff",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Start Drill
+        </button>
+      </div>
+    );
+  }
+
+  if (stage === "result") {
+    return (
+      <div>
+        <h2>Drill Complete</h2>
+        <p>
+          Score: <b>{score}</b> / {questions.length}
+        </p>
+        <button
+          onClick={startDrill}
+          style={{
+            padding: "10px 16px",
+            borderRadius: 8,
+            border: "1px solid #f97316",
+            background: "#fff7ed",
+            color: "#c2410c",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          New Drill
+        </button>
+      </div>
+    );
+  }
+
+  const q = questions[index];
+
+  return (
+    <div>
+      <div style={{ marginBottom: 12, color: "#6b7280" }}>
+        Q {index + 1} / {questions.length}
+      </div>
+
+      <h3 style={{ marginBottom: 16 }}>
+        Closest meaning of <span style={{ color: "#f97316" }}>{q.word}</span>
+      </h3>
+
+      <div style={{ display: "grid", gap: 10 }}>
+        {q.options.map((opt, i) => {
+          let bg = "#ffffff";
+          if (selected) {
+            if (opt === q.correct) bg = "#dcfce7";
+            else if (opt === selected) bg = "#fee2e2";
+          }
+
+          return (
+            <button
+              key={i}
+              onClick={() => choose(opt)}
+              style={{
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                background: bg,
+                textAlign: "left",
+                cursor: "pointer",
+                fontSize: 15,
+              }}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function VocabLearn() {
