@@ -1,37 +1,37 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
-  // "bank" | "drill" | "learn" | "profile"
-const [manualWord, setManualWord] = useState("");
-const [lookup, setLookup] = useState(null);
+  const [manualWord, setManualWord] = useState("");
+  const [lookup, setLookup] = useState(null);
 
-async function handleManualAdd(word) {
-  setManualWord("");
-  const res = await fetch("/api/enrich-word", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ word }),
-  });
+  async function handleManualAdd(word) {
+    setManualWord("");
 
-  const data = await res.json();
-
-  const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-
-  if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
-    bank.push({
-      word,
-      ...data,
-      correctCount: 0,
-      enriched: true,
+    const res = await fetch("/api/enrich-word", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ word }),
     });
-    localStorage.setItem("vocabBank", JSON.stringify(bank));
+
+    const data = await res.json();
+
+    const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+    if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+      bank.push({
+        word,
+        ...data,
+        correctCount: 0,
+        enriched: true,
+      });
+      localStorage.setItem("vocabBank", JSON.stringify(bank));
+    }
+
+    setLookup({ word, ...data });
   }
 
-  setLookup({ word, ...data });
-}
-  
   return (
     <div
       style={{
@@ -44,7 +44,6 @@ async function handleManualAdd(word) {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <h1 style={{ marginBottom: 12 }}>Vocabulary Lab</h1>
 
-        {/* Top Tabs */}
         <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
           {[
             { key: "bank", label: "WordBank" },
@@ -62,7 +61,6 @@ async function handleManualAdd(word) {
                 background: tab === t.key ? "#4f46e5" : "#eef2ff",
                 color: tab === t.key ? "#fff" : "#1e293b",
                 fontWeight: 600,
-                cursor: "pointer",
               }}
             >
               {t.label}
@@ -70,7 +68,6 @@ async function handleManualAdd(word) {
           ))}
         </div>
 
-        {/* Content Area */}
         <div
           style={{
             background: "#ffffff",
@@ -80,7 +77,14 @@ async function handleManualAdd(word) {
             boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
           }}
         >
-          {tab === "bank" && <WordBank />}
+          {tab === "bank" && (
+            <WordBank
+              manualWord={manualWord}
+              setManualWord={setManualWord}
+              lookup={lookup}
+              handleManualAdd={handleManualAdd}
+            />
+          )}
           {tab === "drill" && <VocabDrill />}
           {tab === "learn" && <VocabLearn />}
           {tab === "profile" && <VocabProfile />}
@@ -90,9 +94,9 @@ async function handleManualAdd(word) {
   );
 }
 
-/* ---------------- PLACEHOLDERS ---------------- */
+/* ---------------- COMPONENTS ---------------- */
 
-function WordBank() {
+function WordBank({ manualWord, setManualWord, lookup, handleManualAdd }) {
   return (
     <div>
       <h2>WordBank</h2>
@@ -110,127 +114,56 @@ function WordBank() {
           background: "#f8fafc",
         }}
       >
-        <div style={{ marginTop: 16 }}>
-  <input
-    placeholder="Type a word and press Enter"
-    value={manualWord}
-    onChange={e => setManualWord(e.target.value)}
-    onKeyDown={e => {
-      if (e.key === "Enter" && manualWord.trim()) {
-        handleManualAdd(manualWord.trim());
-      }
-    }}
-    style={{
-      width: "100%",
-      padding: 12,
-      borderRadius: 8,
-      border: "1px solid #d1d5db",
-      fontSize: 16,
-    }}
-  />
+        <input
+          placeholder="Type a word and press Enter"
+          value={manualWord}
+          onChange={e => setManualWord(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === "Enter" && manualWord.trim()) {
+              handleManualAdd(manualWord.trim());
+            }
+          }}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 8,
+            border: "1px solid #d1d5db",
+            fontSize: 16,
+          }}
+        />
 
-  {lookup && (
-    <div
-      style={{
-        marginTop: 16,
-        padding: 16,
-        borderRadius: 12,
-        border: "1px solid #e5e7eb",
-        background: "#f8fafc",
-      }}
-    >
-      <h3>{lookup.word}</h3>
-      <p><b>Meaning:</b> {lookup.meaning}</p>
-      <p><b>Part of Speech:</b> {lookup.partOfSpeech}</p>
-      <p><b>Usage:</b> {lookup.usage}</p>
-      <p><b>Root:</b> {lookup.root}</p>
-      <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ")}</p>
-      <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ")}</p>
-    </div>
-  )}
-</div>
-        <p style={{ fontSize: 14, color: "#6b7280" }}>
-          Type a word and press Enter. It will behave like a dictionary and auto-save.
-        </p>
+        {lookup && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: 16,
+              borderRadius: 12,
+              border: "1px solid #e5e7eb",
+              background: "#f8fafc",
+            }}
+          >
+            <h3>{lookup.word}</h3>
+            <p><b>Meaning:</b> {lookup.meaning}</p>
+            <p><b>Part of Speech:</b> {lookup.partOfSpeech}</p>
+            <p><b>Usage:</b> {lookup.usage}</p>
+            <p><b>Root:</b> {lookup.root}</p>
+            <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ")}</p>
+            <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ")}</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 function VocabDrill() {
-  return (
-    <div>
-      <h2>Vocab Drills</h2>
-      <p style={{ color: "#555" }}>
-        Timed micro-tests to convert recognition into recall. Endless. Adaptive.
-      </p>
-
-      <div
-        style={{
-          marginTop: 16,
-          padding: 16,
-          borderRadius: 12,
-          border: "1px dashed #c7d2fe",
-          background: "#f8fafc",
-        }}
-      >
-        <b>Drill Engine (coming next)</b>
-        <p style={{ fontSize: 14, color: "#6b7280" }}>
-          10-question timed drills generated from your WordBank.
-        </p>
-      </div>
-    </div>
-  );
+  return <div><h2>Vocab Drills</h2><p>Coming next.</p></div>;
 }
 
 function VocabLearn() {
-  return (
-    <div>
-      <h2>Learn</h2>
-      <p style={{ color: "#555" }}>
-        Structured lessons that teach clusters of words together for memory.
-      </p>
-
-      <div
-        style={{
-          marginTop: 16,
-          padding: 16,
-          borderRadius: 12,
-          border: "1px dashed #c7d2fe",
-          background: "#f8fafc",
-        }}
-      >
-        <b>Lesson System (coming next)</b>
-        <p style={{ fontSize: 14, color: "#6b7280" }}>
-          Cognitive verbs, academic tone, uncertainty, power, emotion gradients.
-        </p>
-      </div>
-    </div>
-  );
+  return <div><h2>Learn</h2><p>Coming next.</p></div>;
 }
 
 function VocabProfile() {
-  return (
-    <div>
-      <h2>Vocab Profile</h2>
-      <p style={{ color: "#555" }}>
-        Track retention, mastery curve, and your lexical growth.
-      </p>
-
-      <div
-        style={{
-          marginTop: 16,
-          padding: 16,
-          borderRadius: 12,
-          border: "1px dashed #c7d2fe",
-          background: "#f8fafc",
-        }}
-      >
-        <b>Analytics (coming next)</b>
-        <p style={{ fontSize: 14, color: "#6b7280" }}>
-          Word counts, mastery distribution, recall accuracy, mentor diagnosis.
-        </p>
-      </div>
-    </div>
-  );
+  return <div><h2>Profile</h2><p>Coming next.</p></div>;
 }
