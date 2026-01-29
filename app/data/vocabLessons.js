@@ -310,7 +310,9 @@ Understanding this cluster directly improves inference accuracy.`,
 
 /* 🔁 Dynamic daily picker */
 export function getTodayWords() {
-  const allWords = vocabLessons.flatMap(l => l.words);
+  const allWords = vocabLessons
+    .flatMap(l => l.words)
+    .filter(w => w && typeof w.word === "string" && w.word.length > 0);
 
   const seed = new Date().toDateString();
   let hash = 0;
@@ -319,6 +321,10 @@ export function getTodayWords() {
   }
 
   return [...allWords]
-    .sort((a, b) => (hash + a.word.charCodeAt(0)) % 7 - (hash + b.word.charCodeAt(0)) % 7)
+    .sort((a, b) => {
+      const aCode = a.word.charCodeAt(0);
+      const bCode = b.word.charCodeAt(0);
+      return (hash + aCode) % 7 - (hash + bCode) % 7;
+    })
     .slice(0, 5);
 }
