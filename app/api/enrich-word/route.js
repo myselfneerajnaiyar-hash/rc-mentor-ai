@@ -2,21 +2,22 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { word, meaning } = await req.json();
+    const { word } = await req.json();
 
     const prompt = `
-You are a vocabulary coach.
-Given a word and its meaning, return ONLY valid JSON with:
+You are a vocabulary coach for CAT-level English.
+
+Given a word, return ONLY valid JSON with these fields:
+- meaning (clear, concise definition)
 - partOfSpeech
-- usage (one example sentence)
-- synonyms (array)
-- antonyms (array)
-- root (etymology in 1 line)
+- usage (one natural example sentence)
+- synonyms (array of 3–5)
+- antonyms (array of 2–4)
+- root (1-line etymology)
 
 Word: ${word}
-Meaning: ${meaning}
 
-Return ONLY JSON.
+Return ONLY JSON. No explanation. No markdown.
 `;
 
     const openaiRes = await fetch("https://api.openai.com/v1/responses", {
@@ -28,7 +29,7 @@ Return ONLY JSON.
       body: JSON.stringify({
         model: "gpt-4.1-mini",
         input: prompt,
-        temperature: 0.4,
+        temperature: 0.3,
       }),
     });
 
