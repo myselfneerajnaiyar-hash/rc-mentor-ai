@@ -5,33 +5,36 @@ export default function VocabLab() {
   const [tab, setTab] = useState("bank");
   const [manualWord, setManualWord] = useState("");
   const [lookup, setLookup] = useState(null);
+  const [loadingLookup, setLoadingLookup] = useState(false);
 
-  async function handleManualAdd(word) {
-    setManualWord("");
+ async function handleManualAdd(word) {
+  setManualWord("");
+  setLookup(null);
+  setLoadingLookup(true);
 
-    const res = await fetch("/api/enrich-word", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ word }),
+  const res = await fetch("/api/enrich-word", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ word }),
+  });
+
+  const data = await res.json();
+  setLoadingLookup(false);
+
+  const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+  if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+    bank.push({
+      word,
+      ...data,
+      correctCount: 0,
+      enriched: true,
     });
-
-    const data = await res.json();
-
-    const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-
-    if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
-      bank.push({
-        word,
-        ...data,
-        correctCount: 0,
-        enriched: true,
-      });
-      localStorage.setItem("vocabBank", JSON.stringify(bank));
-    }
-
-    setLookup({ word, ...data });
+    localStorage.setItem("vocabBank", JSON.stringify(bank));
   }
 
+  setLookup({ word, ...data });
+}
   return (
     <div
       style={{
