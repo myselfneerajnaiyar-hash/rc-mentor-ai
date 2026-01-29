@@ -725,7 +725,7 @@ const [testScore, setTestScore] = useState(0);
             <h4>{w.word}</h4>
             <p style={{ fontSize: 13 }}>{w.meaning}</p>
             <p style={{ fontSize: 12, color: "#7c2d12" }}>
-              {w.synonyms.join(", ")}
+             {(w.synonyms || []).join(", ")}
             </p>
           </div>
         ))}
