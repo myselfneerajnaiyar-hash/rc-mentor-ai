@@ -72,6 +72,36 @@ export default function VocabLab() {
     setLookup(fresh);
   }
 
+  async function openWord(w) {
+  // If already enriched, just show
+  if (w.partOfSpeech) {
+    setLookup(w);
+    return;
+  }
+
+  // Otherwise enrich
+  setLoadingLookup(true);
+
+  const res = await fetch("/api/enrich-word", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ word: w.word }),
+  });
+
+  const data = await res.json();
+  setLoadingLookup(false);
+
+  const updated = bank.map(x =>
+    x.word.toLowerCase() === w.word.toLowerCase()
+      ? { ...x, ...data, enriched: true }
+      : x
+  );
+
+  localStorage.setItem("vocabBank", JSON.stringify(updated));
+  setBank(updated);
+
+  setLookup({ ...w, ...data });
+}
   return (
     <div
       style={{
