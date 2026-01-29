@@ -649,6 +649,20 @@ Understanding this cluster directly improves inference accuracy.`,
             <p><b>Antonyms:</b> {w.antonyms.join(", ")}</p>
           </div>
         ))}
+        <button
+        onClick={() => startLessonTest(L)}
+        style={{
+          marginTop: 20,
+          padding: "10px 16px",
+          borderRadius: 8,
+          background: "#f97316",
+          color: "#fff",
+          border: "none",
+          fontWeight: 600,
+        }}
+      >
+        Take Mini Test
+      </button>
       </div>
     );
   }
@@ -674,6 +688,79 @@ Understanding this cluster directly improves inference accuracy.`,
     setTestIndex(0);
     setTestScore(0);
     setMode("test");
+  }
+  if (mode === "test") {
+    const q = testQs[testIndex];
+
+    return (
+      <div>
+        <h3>
+          Closest meaning of{" "}
+          <span style={{ color: "#f97316" }}>{q.word}</span>
+        </h3>
+
+        {q.options.map((o, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              if (o === q.correct) setTestScore(s => s + 1);
+
+              if (testIndex + 1 < testQs.length) {
+                setTestIndex(i => i + 1);
+              } else {
+                setMode("result");
+              }
+            }}
+            style={{
+              display: "block",
+              width: "100%",
+              marginTop: 8,
+              padding: 10,
+              borderRadius: 8,
+              border: "1px solid #e5e7eb",
+              background: "#fff",
+            }}
+          >
+            {o}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  if (mode === "result") {
+    return (
+      <div>
+        <h2>Lesson Test Complete</h2>
+        <p>
+          Score: <b>{testScore}</b> / {testQs.length}
+        </p>
+
+        <button
+          onClick={() => {
+            const updated = {
+              ...progress,
+              completed: [
+                ...new Set([...progress.completed, activeLesson.id]),
+              ],
+            };
+            localStorage.setItem("vocabProgress", JSON.stringify(updated));
+            setProgress(updated);
+            setMode("home");
+          }}
+          style={{
+            padding: "10px 16px",
+            borderRadius: 8,
+            background: "#22c55e",
+            color: "#fff",
+            border: "none",
+            fontWeight: 600,
+          }}
+        >
+          Mark Complete
+        </button>
+      </div>
+    );
   }
   return (
     <div>
