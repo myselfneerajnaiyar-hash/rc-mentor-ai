@@ -1,11 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
   const [manualWord, setManualWord] = useState("");
   const [lookup, setLookup] = useState(null);
   const [loadingLookup, setLoadingLookup] = useState(false);
+  const [bank, setBank] = useState([]);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+    setBank(saved);
+  }, []);
 
   async function handleManualAdd(word) {
     setManualWord("");
@@ -21,16 +27,15 @@ export default function VocabLab() {
     const data = await res.json();
     setLoadingLookup(false);
 
-    const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+    const existing = JSON.parse(localStorage.getItem("vocabBank") || "[]");
 
-    if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
-      bank.push({
-        word,
-        ...data,
-        correctCount: 0,
-        enriched: true,
-      });
-      localStorage.setItem("vocabBank", JSON.stringify(bank));
+    if (!existing.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+      const updated = [
+        ...existing,
+        { word, ...data, correctCount: 0, enriched: true },
+      ];
+      localStorage.setItem("vocabBank", JSON.stringify(updated));
+      setBank(updated);
     }
 
     setLookup({ word, ...data });
@@ -89,6 +94,8 @@ export default function VocabLab() {
               lookup={lookup}
               loading={loadingLookup}
               handleManualAdd={handleManualAdd}
+              bank={bank}
+              setLookup={setLookup}
             />
           )}
           {tab === "drill" && <VocabDrill />}
@@ -102,7 +109,15 @@ export default function VocabLab() {
 
 /* ---------------- COMPONENTS ---------------- */
 
-function WordBank({ manualWord, setManualWord, lookup, loading, handleManualAdd }) {
+function WordBank({
+  manualWord,
+  setManualWord,
+  lookup,
+  loading,
+  handleManualAdd,
+  bank,
+  setLookup,
+}) {
   return (
     <div>
       <h2>WordBank</h2>
@@ -157,6 +172,39 @@ function WordBank({ manualWord, setManualWord, lookup, loading, handleManualAdd 
             <p><b>Root:</b> {lookup.root || "—"}</p>
             <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ") || "—"}</p>
             <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ") || "—"}</p>
+          </div>
+        )}
+
+        {bank.length > 0 && (
+          <div style={{ marginTop: 24 }}>
+            <h4>Saved Words</h4>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                gap: 10,
+              }}
+            >
+              {bank.map((w, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLookup(w)}
+                  style={{
+                    padding: "8px 10px",
+                    borderRadius: 8,
+                    border: "1px solid #e5e7eb",
+                    background: "#ffffff",
+                    textAlign: "left",
+                    cursor: "pointer",
+                  }}
+                >
+                  <b>{w.word}</b>
+                  <div style={{ fontSize: 12, color: "#6b7280" }}>
+                    {w.partOfSpeech || ""}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>
