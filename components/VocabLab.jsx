@@ -216,16 +216,17 @@ function WordBank({
 
         {loading && <p style={{ marginTop: 12 }}>Looking up word…</p>}
 
-        {lookup && (
-          <div
-            style={{
-              marginTop: 16,
-              padding: 16,
-              borderRadius: 12,
-              border: "1px solid #e5e7eb",
-              background: "#f8fafc",
-            }}
-          >
+       {lookup && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: 18,
+      borderRadius: 14,
+      border: "1px solid #fed7aa",
+      background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
+      boxShadow: "0 10px 24px rgba(251, 146, 60, 0.25)",
+    }}
+  >
             <h3>{lookup.word}</h3>
             <p><b>Meaning:</b> {lookup.meaning || "—"}</p>
             <p><b>Part of Speech:</b> {lookup.partOfSpeech || "—"}</p>
