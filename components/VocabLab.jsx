@@ -4,7 +4,34 @@ import { useState, useEffect } from "react";
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
   // "bank" | "drill" | "learn" | "profile"
+const [manualWord, setManualWord] = useState("");
+const [lookup, setLookup] = useState(null);
 
+async function handleManualAdd(word) {
+  setManualWord("");
+  const res = await fetch("/api/enrich-word", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ word }),
+  });
+
+  const data = await res.json();
+
+  const bank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+  if (!bank.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+    bank.push({
+      word,
+      ...data,
+      correctCount: 0,
+      enriched: true,
+    });
+    localStorage.setItem("vocabBank", JSON.stringify(bank));
+  }
+
+  setLookup({ word, ...data });
+}
+  
   return (
     <div
       style={{
@@ -83,7 +110,45 @@ function WordBank() {
           background: "#f8fafc",
         }}
       >
-        <b>Manual Add (coming next)</b>
+        <div style={{ marginTop: 16 }}>
+  <input
+    placeholder="Type a word and press Enter"
+    value={manualWord}
+    onChange={e => setManualWord(e.target.value)}
+    onKeyDown={e => {
+      if (e.key === "Enter" && manualWord.trim()) {
+        handleManualAdd(manualWord.trim());
+      }
+    }}
+    style={{
+      width: "100%",
+      padding: 12,
+      borderRadius: 8,
+      border: "1px solid #d1d5db",
+      fontSize: 16,
+    }}
+  />
+
+  {lookup && (
+    <div
+      style={{
+        marginTop: 16,
+        padding: 16,
+        borderRadius: 12,
+        border: "1px solid #e5e7eb",
+        background: "#f8fafc",
+      }}
+    >
+      <h3>{lookup.word}</h3>
+      <p><b>Meaning:</b> {lookup.meaning}</p>
+      <p><b>Part of Speech:</b> {lookup.partOfSpeech}</p>
+      <p><b>Usage:</b> {lookup.usage}</p>
+      <p><b>Root:</b> {lookup.root}</p>
+      <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ")}</p>
+      <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ")}</p>
+    </div>
+  )}
+</div>
         <p style={{ fontSize: 14, color: "#6b7280" }}>
           Type a word and press Enter. It will behave like a dictionary and auto-save.
         </p>
