@@ -275,18 +275,94 @@ function WordBank({
 }
 
 function VocabDrill() {
-  const [stage, setStage] = useState("start"); // start | run | result | review
+  const [stage, setStage] = useState("start"); // start | run | result
   const [bank, setBank] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
-  const [answers, setAnswers] = useState([]);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-    setBank(saved.filter(w => w.synonyms && w.synonyms.length));
+    setBank(saved.filter(w => w.synonyms || w.antonyms || w.usage));
   }, []);
+
+  function makeSynonymQ(word) {
+    const correct = word.synonyms?.[0];
+    if (!correct) return null;
+
+    const distractors = bank
+      .filter(w => w.word !== word.word && w.synonyms?.length)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.synonyms[0]);
+
+    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+
+    return {
+      type: "synonym",
+      prompt: `Closest meaning of`,
+      word: word.word,
+      correct,
+      options,
+    };
+  }
+
+  function makeAntonymQ(word) {
+    const correct = word.antonyms?.[0];
+    if (!correct) return null;
+
+    const distractors = bank
+      .filter(w => w.word !== word.word && w.antonyms?.length)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.antonyms[0]);
+
+    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+
+    return {
+      type: "antonym",
+      prompt: `Opposite of`,
+      word: word.word,
+      correct,
+      options,
+    };
+  }
+
+  function makeFillBlankQ(word) {
+    if (!word.usage) return null;
+
+    const sentence = word.usage.replace(new RegExp(word.word, "i"), "___");
+    const correct = word.word;
+
+    const distractors = bank
+      .filter(w => w.word !== word.word)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.word);
+
+    const options = [...distractors, correct].sort(() => Math.random() - 0.5);
+
+    return {
+      type: "fill",
+      prompt: sentence,
+      word: null,
+      correct,
+      options,
+    };
+  }
+
+  function buildQuestion(word) {
+    const makers = [makeSynonymQ, makeAntonymQ, makeFillBlankQ];
+    const shuffled = makers.sort(() => Math.random() - 0.5);
+
+    for (let fn of shuffled) {
+      const q = fn(word);
+      if (q) return q;
+    }
+    return null;
+  }
 
   function startDrill() {
     if (bank.length < 4) {
@@ -295,45 +371,32 @@ function VocabDrill() {
     }
 
     const shuffled = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
-
-    const qs = shuffled.map(word => {
-      const correct = word.synonyms[0];
-
-      const distractors = bank
-        .filter(w => w.word !== word.word && w.synonyms && w.synonyms.length)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-        .map(w => w.synonyms[0]);
-
-      const options = [...distractors, correct].sort(() => Math.random() - 0.5);
-
-      return {
-        word: word.word,
-        correct,
-        options,
-      };
-    });
+    const qs = shuffled.map(w => buildQuestion(w)).filter(Boolean);
 
     setQuestions(qs);
     setIndex(0);
     setScore(0);
     setSelected(null);
-    setAnswers([]);
+    setHistory([]);
     setStage("run");
   }
 
   function choose(opt) {
     if (selected) return;
-
     const q = questions[index];
+
     setSelected(opt);
 
-    const isCorrect = opt === q.correct;
-    if (isCorrect) setScore(s => s + 1);
+    const correct = opt === q.correct;
+    if (correct) setScore(s => s + 1);
 
-    setAnswers(a => [
-      ...a,
-      { word: q.word, correct: q.correct, chosen: opt },
+    setHistory(h => [
+      ...h,
+      {
+        ...q,
+        chosen: opt,
+        isCorrect: correct,
+      },
     ]);
 
     setTimeout(() => {
@@ -350,7 +413,7 @@ function VocabDrill() {
     return (
       <div>
         <h2>Vocab Drills</h2>
-        <p>10 rapid MCQs. Recognition → Recall.</p>
+        <p>Mixed MCQ drills: meaning, opposite, and usage.</p>
         <button
           onClick={startDrill}
           style={{
@@ -377,82 +440,33 @@ function VocabDrill() {
           Score: <b>{score}</b> / {questions.length}
         </p>
 
-        <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-          <button
-            onClick={() => setStage("review")}
-            style={{
-              padding: "10px 16px",
-              borderRadius: 8,
-              border: "1px solid #f97316",
-              background: "#fff7ed",
-              color: "#c2410c",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
-            View Solutions
-          </button>
-
-          <button
-            onClick={startDrill}
-            style={{
-              padding: "10px 16px",
-              borderRadius: 8,
-              border: "none",
-              background: "#f97316",
-              color: "#fff",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
-            Start Next Drill
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (stage === "review") {
-    return (
-      <div>
-        <h2>Solutions</h2>
-
-        <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
-          {answers.map((a, i) => {
-            const correct = a.chosen === a.correct;
-            return (
-              <div
-                key={i}
-                style={{
-                  padding: 12,
-                  borderRadius: 10,
-                  background: correct ? "#dcfce7" : "#fee2e2",
-                  border: "1px solid #e5e7eb",
-                }}
-              >
-                <b>{i + 1}. {a.word}</b>
-                <div style={{ marginTop: 6 }}>
-                  Your answer: {a.chosen}
-                </div>
-                {!correct && (
-                  <div>
-                    Correct answer: <b>{a.correct}</b>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div style={{ marginTop: 20 }}>
+          {history.map((h, i) => (
+            <div
+              key={i}
+              style={{
+                marginBottom: 12,
+                padding: 12,
+                borderRadius: 8,
+                background: h.isCorrect ? "#dcfce7" : "#fee2e2",
+              }}
+            >
+              <b>{i + 1}. {h.word || "Fill in the blank"}</b>
+              <div>Your answer: {h.chosen}</div>
+              {!h.isCorrect && <div>Correct: {h.correct}</div>}
+            </div>
+          ))}
         </div>
 
         <button
           onClick={startDrill}
           style={{
-            marginTop: 20,
+            marginTop: 16,
             padding: "10px 16px",
             borderRadius: 8,
-            border: "none",
-            background: "#f97316",
-            color: "#fff",
+            border: "1px solid #f97316",
+            background: "#fff7ed",
+            color: "#c2410c",
             fontWeight: 600,
             cursor: "pointer",
           }}
@@ -471,10 +485,13 @@ function VocabDrill() {
         Q {index + 1} / {questions.length}
       </div>
 
-      <h3 style={{ marginBottom: 16 }}>
-        Closest meaning of{" "}
-        <span style={{ color: "#f97316" }}>{q.word}</span>
-      </h3>
+      {q.type === "fill" ? (
+        <h3 style={{ marginBottom: 16 }}>{q.prompt}</h3>
+      ) : (
+        <h3 style={{ marginBottom: 16 }}>
+          {q.prompt} <span style={{ color: "#f97316" }}>{q.word}</span>
+        </h3>
+      )}
 
       <div style={{ display: "grid", gap: 10 }}>
         {q.options.map((opt, i) => {
