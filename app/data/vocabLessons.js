@@ -661,7 +661,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   },
 
   {
-    id: "qualification",
+    id: "cat-qualification",
     title: "Qualification & Hedging",
    exam: "CAT",
     goal: "Notice how claims are softened.",
