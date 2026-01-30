@@ -1,71 +1,34 @@
-"use client";
-import { useEffect, useState } from "react";
-
-// Analytics components
-import StatCard from "./analytics/StatCard";
-import RadialProgress from "./analytics/RadialProgress";
-import StrengthBars from "./analytics/StrengthBars";
+import { useState } from "react";
 
 export default function VocabProfile() {
   const [tab, setTab] = useState("overview");
-  const [bank, setBank] = useState([]);
-  const [drillHistory, setDrillHistory] = useState([]);
 
-  useEffect(() => {
-    const savedBank = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-    setBank(savedBank);
+  // TEMP DATA (replace later with real data)
+  const totalWords = 34;
+  const masteredWords = 0;
+  const masteryPercent = 0;
 
-    const history = JSON.parse(localStorage.getItem("vocabDrillHistory") || "[]");
-    setDrillHistory(history);
-  }, []);
-
-  // ---------- METRICS ----------
-  const totalWords = bank.length;
-  const masteredWords = bank.filter(w => (w.correctCount || 0) >= 3).length;
-  const masteryPct = totalWords
-    ? Math.round((masteredWords / totalWords) * 100)
-    : 0;
-
-  // Strength buckets
-  const buckets = {
-    veryWeak: bank.filter(w => (w.correctCount || 0) === 0).length,
-    weak: bank.filter(w => (w.correctCount || 0) === 1).length,
-    moderate: bank.filter(w => (w.correctCount || 0) === 2).length,
-    strong: bank.filter(w => (w.correctCount || 0) >= 3).length,
-  };
-
-  // Discipline
-  const totalDrills = drillHistory.length;
-  const avgAccuracy = totalDrills
-    ? Math.round(
-        drillHistory.reduce((a, b) => a + b.accuracy, 0) / totalDrills
-      )
-    : 0;
+  const strengthData = [
+    { label: "Very Weak", value: 34, color: "#ef4444" },
+    { label: "Weak", value: 0, color: "#f97316" },
+    { label: "Moderate", value: 0, color: "#eab308" },
+    { label: "Strong", value: 0, color: "#22c55e" }
+  ];
 
   return (
-    <div>
-      {/* HEADER */}
-      <div style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: 24 }}>Vocab Profile</h2>
-        <p style={{ color: "#6b7280" }}>
-          Your vocabulary intelligence dashboard
-        </p>
-      </div>
+    <div style={styles.page}>
+      <h2 style={styles.title}>Vocab Profile</h2>
+      <p style={styles.subtitle}>Your vocabulary intelligence dashboard</p>
 
-      {/* TABS */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
+      {/* Tabs */}
+      <div style={styles.tabs}>
         {["overview", "strength", "discipline", "revision"].map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
             style={{
-              padding: "8px 14px",
-              borderRadius: 10,
-              border: "1px solid #e5e7eb",
-              background: tab === t ? "#2563eb" : "#f8fafc",
-              color: tab === t ? "#fff" : "#1f2937",
-              fontWeight: 600,
-              cursor: "pointer",
+              ...styles.tab,
+              ...(tab === t ? styles.tabActive : {})
             }}
           >
             {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -73,112 +36,171 @@ export default function VocabProfile() {
         ))}
       </div>
 
-      {/* OVERVIEW */}
+      {/* CONTENT */}
       {tab === "overview" && (
-        <>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 16,
-            }}
-          >
-            <StatCard
-              title="Total Words Seen"
-              value={totalWords}
-              accent="#2563eb"
-            />
-            <StatCard
-              title="Mastered Words"
-              value={masteredWords}
-              accent="#16a34a"
-            />
-            <StatCard
-              title="Overall Mastery"
-              value={`${masteryPct}%`}
-              accent="#f97316"
-            />
-          </div>
+        <div style={styles.grid}>
+          <StatCard title="Total Words Seen" value={totalWords} />
+          <StatCard title="Mastered Words" value={masteredWords} />
+          <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
 
-          <div style={{ marginTop: 32, maxWidth: 360 }}>
-            <RadialProgress
-              value={masteryPct}
-              label="Vocabulary Mastery"
-            />
-          </div>
-        </>
-      )}
-
-      {/* STRENGTH */}
-      {tab === "strength" && (
-        <div style={{ maxWidth: 520 }}>
-          <h3 style={{ marginBottom: 16 }}>Strength Distribution</h3>
-          <StrengthBars
-            data={[
-              { label: "Very Weak (0%)", value: buckets.veryWeak, color: "#dc2626" },
-              { label: "Weak (1 hit)", value: buckets.weak, color: "#f97316" },
-              { label: "Moderate (2 hits)", value: buckets.moderate, color: "#eab308" },
-              { label: "Strong (3+ hits)", value: buckets.strong, color: "#16a34a" },
-            ]}
-          />
-        </div>
-      )}
-
-      {/* DISCIPLINE */}
-      {tab === "discipline" && (
-        <div style={{ maxWidth: 520 }}>
-          <h3 style={{ marginBottom: 16 }}>Practice Discipline</h3>
-
-          {totalDrills === 0 ? (
-            <p style={{ color: "#6b7280" }}>
-              No drill history yet. Start practicing 🚀
-            </p>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: 16,
-              }}
-            >
-              <StatCard
-                title="Total Drills"
-                value={totalDrills}
-                accent="#2563eb"
-              />
-              <StatCard
-                title="Avg Accuracy"
-                value={`${avgAccuracy}%`}
-                accent="#16a34a"
-              />
+          <div style={styles.card}>
+            <h4>Vocabulary Mastery</h4>
+            <div style={styles.ring}>
+              <span>{masteryPercent}%</span>
             </div>
-          )}
+          </div>
         </div>
       )}
 
-      {/* REVISION */}
-      {tab === "revision" && (
-        <div style={{ maxWidth: 520 }}>
-          <h3 style={{ marginBottom: 12 }}>Revision Queue</h3>
+      {tab === "strength" && (
+        <div style={styles.card}>
+          <h4>Strength Distribution</h4>
+          {strengthData.map(s => (
+            <div key={s.label} style={{ marginBottom: 14 }}>
+              <div style={styles.row}>
+                <span>{s.label}</span>
+                <span>{s.value}</span>
+              </div>
+              <div style={styles.barBg}>
+                <div
+                  style={{
+                    ...styles.barFill,
+                    width: `${(s.value / totalWords) * 100}%`,
+                    background: s.color
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-          {bank.filter(w => (w.correctCount || 0) <= 1).length === 0 ? (
-            <p style={{ color: "#16a34a" }}>
-              🎉 No revision backlog. You’re in control.
-            </p>
-          ) : (
-            <ul>
-              {bank
-                .filter(w => (w.correctCount || 0) <= 1)
-                .slice(0, 10)
-                .map((w, i) => (
-                  <li key={i} style={{ marginBottom: 6 }}>
-                    {w.word}
-                  </li>
-                ))}
-            </ul>
-          )}
+      {tab === "discipline" && (
+        <div style={styles.card}>
+          <h4>Practice Discipline</h4>
+          <p style={styles.muted}>
+            No drill history yet. Start practicing 🚀
+          </p>
+        </div>
+      )}
+
+      {tab === "revision" && (
+        <div style={styles.card}>
+          <h4>Revision Queue</h4>
+          <ul style={styles.list}>
+            {[
+              "Obscure",
+              "Pragmatic",
+              "Ambiguous",
+              "Conundrum",
+              "Nuance",
+              "Conduit",
+              "Belies",
+              "Interplay",
+              "Pervasive",
+              "Amplification"
+            ].map(w => (
+              <li key={w}>{w}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
   );
 }
+
+/* ---------------- COMPONENTS ---------------- */
+
+function StatCard({ title, value }) {
+  return (
+    <div style={styles.card}>
+      <p style={styles.cardTitle}>{title}</p>
+      <h2>{value}</h2>
+    </div>
+  );
+}
+
+/* ---------------- STYLES ---------------- */
+
+const styles = {
+  page: {
+    padding: 32,
+    background: "#f4f6fb",
+    minHeight: "100vh"
+  },
+  title: {
+    marginBottom: 4
+  },
+  subtitle: {
+    color: "#6b7280",
+    marginBottom: 20
+  },
+  tabs: {
+    display: "flex",
+    gap: 10,
+    marginBottom: 24
+  },
+  tab: {
+    padding: "8px 16px",
+    borderRadius: 20,
+    border: "1px solid #d1d5db",
+    background: "#fff",
+    cursor: "pointer"
+  },
+  tabActive: {
+    background: "#2563eb",
+    color: "#fff",
+    borderColor: "#2563eb"
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: 20
+  },
+  card: {
+    background: "#fff",
+    padding: 20,
+    borderRadius: 16,
+    boxShadow: "0 10px 25px rgba(0,0,0,0.08)"
+  },
+  cardTitle: {
+    color: "#6b7280",
+    fontSize: 14
+  },
+  ring: {
+    marginTop: 16,
+    width: 120,
+    height: 120,
+    borderRadius: "50%",
+    border: "10px solid #e5e7eb",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#2563eb"
+  },
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: 14,
+    marginBottom: 4
+  },
+  barBg: {
+    height: 10,
+    background: "#e5e7eb",
+    borderRadius: 6,
+    overflow: "hidden"
+  },
+  barFill: {
+    height: "100%",
+    borderRadius: 6
+  },
+  muted: {
+    color: "#6b7280"
+  },
+  list: {
+    marginTop: 10,
+    paddingLeft: 18
+  }
+};
