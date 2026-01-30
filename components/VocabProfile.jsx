@@ -450,7 +450,7 @@ const styles = {
  heroPercent: {
   fontSize: 56,
   fontWeight: 900,
-  color: retentionColor
+
 },
   heroInsight: {
     color: "#475569",
