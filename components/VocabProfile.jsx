@@ -89,13 +89,13 @@ const masteryPercent = totalWords
          <div style={styles.graphCard}>
   <h3 style={styles.cardTitle}>Mastery Over Time</h3>
 
-  {masteryTimeline.length > 0 ? (
-    <MasteryOverTime data={masteryTimeline} />
-  ) : (
-    <p style={{ color: "#64748b" }}>
-      Practice more to unlock timeline
-    </p>
-  )}
+ {masteryTimeline.length >= 2 ? (
+  <MasteryOverTime data={masteryTimeline} />
+) : (
+  <p style={{ color: "#64748b" }}>
+    Complete more drills to see progress over time
+  </p>
+)}
 </div>
         </>
       )}
