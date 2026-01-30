@@ -3,6 +3,7 @@ import RadialProgress from "./analytics/RadialProgress";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [showWeakWords, setShowWeakWords] = useState(false);
 
   /* ================== DATA (DYNAMIC LATER) ================== */
  
