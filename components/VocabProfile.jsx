@@ -255,15 +255,47 @@ const revisionWords = bank.filter(w => {
     )}
   </div>
 )}
-      {activeTab === "discipline" && (
+     {activeTab === "discipline" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Practice Discipline</h3>
 
-    <p>Active (last 2 days): <b>{active}</b></p>
-    <p>Slipping (3–6 days): <b>{slipping}</b></p>
-    <p>Cold (7+ days): <b>{cold}</b></p>
+    <p style={styles.helperText}>
+      This shows how regularly you revise vocabulary words.
+    </p>
+
+    <div style={{ marginTop: 16 }}>
+      <p>
+        🟢 <b>Active</b> (revised in last 2 days): <b>{active}</b>
+      </p>
+      <p style={styles.helperText}>
+        These words are fresh in your memory.
+      </p>
+    </div>
+
+    <div style={{ marginTop: 16 }}>
+      <p>
+        🟡 <b>Slipping</b> (3–6 days gap): <b>{slipping}</b>
+      </p>
+      <p style={styles.helperText}>
+        These words are starting to fade — revise soon.
+      </p>
+    </div>
+
+    <div style={{ marginTop: 16 }}>
+      <p>
+        🔴 <b>Cold</b> (not revised for 7+ days): <b>{cold}</b>
+      </p>
+      <p style={styles.helperText}>
+        High risk of forgetting. Prioritise these.
+      </p>
+    </div>
+
+    <p style={{ ...styles.helperText, marginTop: 20 }}>
+      🎯 Goal: keep most words in <b>Active</b>, minimise <b>Cold</b>.
+    </p>
   </div>
 )}
+     
       {activeTab === "revision" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Revision Queue</h3>
