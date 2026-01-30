@@ -4,11 +4,24 @@ export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
   const [count, setCount] = useState({ words: 0, mastered: 0 });
 
+  // ====== DATA (SAFE, DEFINED ONCE) ======
   const totalWords = 34;
   const masteredWords = 0;
-  const masteryPercent = 0;
+  const masteryPercent = Math.round((masteredWords / totalWords) * 100);
 
-  // COUNT-UP ANIMATION
+  const strengthData = [
+    { label: "Very Weak", value: 34, color: "#ef4444" },
+    { label: "Weak", value: 0, color: "#f97316" },
+    { label: "Moderate", value: 0, color: "#eab308" },
+    { label: "Strong", value: 0, color: "#22c55e" }
+  ];
+
+  const revisionQueue = [
+    "Obscure", "Pragmatic", "Ambiguous", "Conundrum",
+    "Nuance", "Conduit", "Belies", "Interplay"
+  ];
+
+  // ====== COUNT-UP ANIMATION ======
   useEffect(() => {
     let w = 0;
     let m = 0;
@@ -21,26 +34,14 @@ export default function VocabProfile() {
     return () => clearInterval(interval);
   }, []);
 
-  const strengthData = [
-    { label: "Very Weak", value: 34, color: "#ef4444" },
-    { label: "Weak", value: 0, color: "#f97316" },
-    { label: "Moderate", value: 0, color: "#eab308" },
-    { label: "Strong", value: 0, color: "#22c55e" }
-  ];
-
-  const revisionQueue = [
-    "Obscure","Pragmatic","Ambiguous","Conundrum",
-    "Nuance","Conduit","Belies","Interplay"
-  ];
-
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Vocab Profile</h1>
       <p style={styles.subtitle}>Your vocabulary intelligence dashboard</p>
 
-      {/* TABS */}
+      {/* ====== TABS ====== */}
       <div style={styles.tabs}>
-        {["overview","strength","discipline","revision"].map(tab => (
+        {["overview", "strength", "discipline", "revision"].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -54,105 +55,88 @@ export default function VocabProfile() {
         ))}
       </div>
 
-      {/* CONTENT */}
-      <div style={styles.fadeIn} key={activeTab}>
-      
-
-      {/* ================= OVERVIEW ================= */}
-{activeTab === "overview" && (
-  <div style={styles.overviewWrap}>
-
-    {/* HERO CARD */}
-    <div style={styles.heroCard}>
-      <div>
-        <h2 style={styles.heroTitle}>Your Vocabulary Reality Check</h2>
-        <p style={styles.heroSub}>
-          You’ve encountered <b>{totalWords}</b> words so far.
-        </p>
-
-        <div style={styles.heroInsight}>
-          {masteredWords === 0 ? (
-            <span>⚠️ All {totalWords} words still need reinforcement</span>
-          ) : (
-            <span>🔥 You’ve mastered {masteredWords} words — keep going</span>
-          )}
-        </div>
-      </div>
-
-      {/* RING */}
-      <div style={styles.ringWrap}>
-        <div style={styles.ring}>
-         <span style={styles.ringText}>{masteryPercent}%</span>
-        </div>
-        <p style={styles.ringLabel}>Overall Mastery</p>
-      </div>
-    </div>
-
-    {/* SECONDARY STATS */}
-    <div style={styles.statGrid}>
-      <div style={styles.statCard}>
-        <p className="label">Words Seen</p>
-        <h2>{totalWords}</h2>
-      </div>
-      <div style={styles.statCard}>
-        <p className="label">Mastered</p>
-        <h2>{masteredWords}</h2>
-      </div>
-      <div style={styles.statCard}>
-        <p className="label">Needs Revision</p>
-        <h2>{totalWords - masteredWords}</h2>
-      </div>
-    </div>
-
-  </div>
-)}
-        {activeTab === "strength" && (
-  <div style={styles.card}>
-    <h3 style={styles.cardTitle}>Strength Distribution</h3>
-
-    {strengthData.map(item => (
-      <div key={item.label} style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>{item.label}</span>
-          <span>{item.value}</span>
-        </div>
-
-        <div style={styles.barBg}>
-          <div
-            style={{
-              ...styles.barFill,
-              width: `${(item.value / totalWords) * 100}%`,
-              background: item.color
-            }}
-          />
-        </div>
-      </div>
-    ))}
-  </div>
-)}
-        {activeTab === "discipline" && (
-          <div style={styles.card}>
-            <h3 style={styles.cardTitle}>Practice Discipline</h3>
-            <p style={styles.empty}>No practice yet — consistency unlocks mastery 🔥</p>
-          </div>
-        )}
-
-        {activeTab === "revision" && (
-          <div style={styles.card}>
-            <h3 style={styles.cardTitle}>Revision Queue</h3>
-            <div style={styles.chips}>
-              {revisionQueue.map(w => (
-                <div key={w} style={styles.chip}>{w}</div>
-              ))}
+      {/* ====== OVERVIEW ====== */}
+      {activeTab === "overview" && (
+        <>
+          {/* HERO */}
+          <div style={styles.hero}>
+            <div>
+              <p style={styles.heroLabel}>OVERALL MASTERY</p>
+              <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
+              <p style={styles.heroInsight}>
+                {masteredWords === 0
+                  ? "All words currently need reinforcement"
+                  : "You're building strong vocabulary momentum"}
+              </p>
             </div>
+
+            <MasteryRing percent={masteryPercent} />
           </div>
-        )}
-      </div>
+
+          {/* STATS */}
+          <div style={styles.statGrid}>
+            <StatCard title="Words Seen" value={count.words} />
+            <StatCard title="Mastered Words" value={count.mastered} />
+            <StatCard
+              title="Needs Revision"
+              value={totalWords - masteredWords}
+            />
+          </div>
+        </>
+      )}
+
+      {/* ====== STRENGTH ====== */}
+      {activeTab === "strength" && (
+        <div style={styles.card}>
+          <h3 style={styles.cardTitle}>Strength Distribution</h3>
+
+          {strengthData.map(item => (
+            <div key={item.label} style={{ marginBottom: 18 }}>
+              <div style={styles.strengthRow}>
+                <span>{item.label}</span>
+                <span>{item.value}</span>
+              </div>
+
+              <div style={styles.barBg}>
+                <div
+                  style={{
+                    ...styles.barFill,
+                    width: `${(item.value / totalWords) * 100}%`,
+                    background: item.color
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ====== DISCIPLINE ====== */}
+      {activeTab === "discipline" && (
+        <div style={styles.card}>
+          <h3 style={styles.cardTitle}>Practice Discipline</h3>
+          <p style={styles.empty}>
+            No practice yet — consistency unlocks mastery 🔥
+          </p>
+        </div>
+      )}
+
+      {/* ====== REVISION ====== */}
+      {activeTab === "revision" && (
+        <div style={styles.card}>
+          <h3 style={styles.cardTitle}>Revision Queue</h3>
+          <div style={styles.chips}>
+            {revisionQueue.map(word => (
+              <div key={word} style={styles.chip}>{word}</div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ---------- COMPONENTS ---------- */
+/* ====== COMPONENTS ====== */
 
 function StatCard({ title, value }) {
   return (
@@ -165,21 +149,20 @@ function StatCard({ title, value }) {
 
 function MasteryRing({ percent }) {
   return (
-    <div style={{ ...styles.card, alignItems: "center" }}>
-      <h3 style={styles.cardTitle}>Vocabulary Mastery</h3>
-      <div style={styles.ringOuter}>
-        <div style={{
+    <div style={styles.ringOuter}>
+      <div
+        style={{
           ...styles.ringInner,
-          background: `conic-gradient(#22c55e ${percent * 3.6}deg, #e5e7eb 0deg)`
-        }}>
-          <span style={styles.ringText}>{percent}%</span>
-        </div>
+          background: `conic-gradient(#f97316 ${percent * 3.6}deg, #e5e7eb 0deg)`
+        }}
+      >
+        <span style={styles.ringText}>{percent}%</span>
       </div>
     </div>
   );
 }
 
-/* ---------- STYLES ---------- */
+/* ====== STYLES ====== */
 
 const styles = {
   page: {
@@ -188,18 +171,18 @@ const styles = {
     minHeight: "100vh"
   },
   title: {
-    fontSize: 30,
+    fontSize: 32,
     fontWeight: 800,
     color: "#0f172a"
   },
   subtitle: {
     color: "#475569",
-    marginBottom: 24
+    marginBottom: 28
   },
   tabs: {
     display: "flex",
     gap: 12,
-    marginBottom: 28
+    marginBottom: 32
   },
   tab: {
     padding: "10px 18px",
@@ -207,8 +190,7 @@ const styles = {
     border: "1px solid #e5e7eb",
     background: "#fff",
     cursor: "pointer",
-    fontWeight: 600,
-    letterSpacing: 0.5
+    fontWeight: 600
   },
   tabActive: {
     background: "#f97316",
@@ -216,18 +198,46 @@ const styles = {
     borderColor: "#f97316",
     boxShadow: "0 8px 20px rgba(249,115,22,.45)"
   },
-  fadeIn: {
-    animation: "fade .3s ease"
+
+  hero: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #fff7ed, #ffffff)",
+    padding: 32,
+    borderRadius: 24,
+    boxShadow: "0 20px 40px rgba(249,115,22,.15)",
+    marginBottom: 32
   },
-  grid: {
+  heroLabel: {
+    fontSize: 12,
+    letterSpacing: 1,
+    fontWeight: 700,
+    color: "#f97316"
+  },
+  heroPercent: {
+    fontSize: 64,
+    fontWeight: 900,
+    color: "#0f172a",
+    lineHeight: 1
+  },
+  heroInsight: {
+    marginTop: 8,
+    color: "#475569",
+    maxWidth: 300
+  },
+
+  statGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))",
-    gap: 22
+    gap: 20,
+    marginBottom: 32
   },
+
   card: {
     background: "#fff",
     borderRadius: 20,
-    padding: 22,
+    padding: 24,
     boxShadow: "0 12px 30px rgba(0,0,0,.08)"
   },
   cardTitle: {
@@ -241,10 +251,10 @@ const styles = {
     fontSize: 34,
     fontWeight: 800
   },
+
   ringOuter: {
     width: 140,
-    height: 140,
-    marginTop: 10
+    height: 140
   },
   ringInner: {
     width: "100%",
@@ -252,13 +262,13 @@ const styles = {
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    transition: "all .6s ease"
+    justifyContent: "center"
   },
   ringText: {
     fontSize: 24,
     fontWeight: 800
   },
+
   strengthRow: {
     display: "flex",
     justifyContent: "space-between",
@@ -275,9 +285,11 @@ const styles = {
     borderRadius: 999,
     transition: "width .6s ease"
   },
+
   empty: {
     color: "#64748b"
   },
+
   chips: {
     display: "flex",
     flexWrap: "wrap",
