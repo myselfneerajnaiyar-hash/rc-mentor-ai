@@ -351,7 +351,7 @@ function StatCard({ title, value,accent }) {
   return (
     <div style={styles.card}>
       <p style={styles.statLabel}>{title}</p>
-      <h2 style={styles.statValue}>{value}</h2>
+     <h2 style={{ ...styles.statValue, color: accent }}>{value}</h2>
     </div>
   );
 }
