@@ -91,20 +91,7 @@ function StatCard({ title, value }) {
   );
 }
 
-function MasteryRing({ percent }) {
-  return (
-    <div style={styles.ringOuter}>
-      <div
-        style={{
-          ...styles.ringInner,
-          background: `conic-gradient(#f97316 ${percent * 3.6}deg, #e5e7eb 0deg)`
-        }}
-      >
-        <span style={styles.ringText}>{percent}%</span>
-      </div>
-    </div>
-  );
-}
+
 
 function MasteryOverTime({ data }) {
   const max = Math.max(...data.map(d => d.value), 1);
