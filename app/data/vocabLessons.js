@@ -606,7 +606,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
   },
 
   {
-    id: "comparison",
+    id: "cat-comparison",
     title: "Comparison & Analogy",
    exam: "CAT",
     goal: "Understand how authors relate ideas.",
