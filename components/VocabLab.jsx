@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
+import VocabProfile from "../components/VocabProfile";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
@@ -791,6 +792,3 @@ const qs = usable.slice(0, 5).map(w => {
   );
 }
 
-function VocabProfile() {
-  return <div><h2>Profile</h2><p>Coming next.</p></div>;
-}
