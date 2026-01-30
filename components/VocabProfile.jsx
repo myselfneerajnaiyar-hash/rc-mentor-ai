@@ -116,6 +116,22 @@ const revisionWords = bank.filter(w => {
               <p style={styles.heroInsight}>
                 Based on your last 7 days of vocabulary practice
               </p>
+              <p
+  style={{
+    marginTop: 8,
+    fontSize: 14,
+    color: retentionPercent < 40 ? "#ef4444" : "#475569",
+    fontWeight: 500
+  }}
+>
+  {retentionPercent === 0
+    ? "Start practising to build your retention score."
+    : retentionPercent < 40
+    ? "Your retention is low — focused revision will help."
+    : retentionPercent < 70
+    ? "Good progress. Consistency will improve retention."
+    : "Excellent retention. Keep this momentum!"}
+</p>
             </div>
 
             {/* SINGLE RADIAL — SOURCE OF TRUTH */}
