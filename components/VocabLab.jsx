@@ -407,7 +407,23 @@ function VocabDrill() {
     const q = questions[index];
 
     setSelected(opt);
-    const correct = opt === q.correct;
+   const correct = opt === q.correct;
+
+const stored = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+const updated = stored.map(w => {
+  if (w.word === (q.word || q.correct)) {
+    return {
+      ...w,
+      attempts: (w.attempts || 0) + 1,
+      correctCount: (w.correctCount || 0) + (correct ? 1 : 0),
+      lastTested: Date.now(),
+    };
+  }
+  return w;
+});
+
+localStorage.setItem("vocabBank", JSON.stringify(updated));
     if (correct) setScore(s => s + 1);
 
     setHistory(h => [
@@ -419,10 +435,23 @@ function VocabDrill() {
       if (index + 1 < questions.length) {
         setIndex(i => i + 1);
         setSelected(null);
-      } else {
-        setEndTime(Date.now());
-        setStage("result");
-      }
+     } else {
+  const end = Date.now();
+  setEndTime(end);
+
+  // 🔥 SAVE DAILY PERFORMANCE SNAPSHOT
+  const timeline =
+    JSON.parse(localStorage.getItem("vocabTimeline") || "[]");
+
+  timeline.push({
+    date: new Date().toISOString().slice(0, 10),
+    accuracy: Math.round((score / questions.length) * 100),
+  });
+
+  localStorage.setItem("vocabTimeline", JSON.stringify(timeline));
+
+  setStage("result");
+}
     }, 700);
   }
 
