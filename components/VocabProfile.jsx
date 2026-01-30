@@ -206,7 +206,7 @@ This shows how well you remember words based on past test accuracy.
     <p style={styles.helperText}>
 Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
 </p>
-   {showWeakWords && (
+  {showWeakWords && (
   <div style={{ marginTop: 16 }}>
 
     {bank.filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4).length === 0 ? (
@@ -216,7 +216,6 @@ Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
       </p>
 
     ) : (
-
       <>
         <h4 style={{ marginBottom: 8 }}>
           Weak Words (Revise First)
@@ -236,7 +235,7 @@ Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
                 border: "1px solid #fee2e2",
                 background: "#fff7f7",
                 marginBottom: 6,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               <b>{w.word}</b>
