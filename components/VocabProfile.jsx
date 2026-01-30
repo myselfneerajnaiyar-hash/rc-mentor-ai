@@ -154,7 +154,7 @@ const styles = {
   color: "#fff",
   borderColor: "#f97316",
   boxShadow: "0 6px 16px rgba(249,115,22,0.45)"
-}
+},
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
