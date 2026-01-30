@@ -1,42 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [count, setCount] = useState({ words: 0, mastered: 0 });
 
-  // MOCK DATA (later you’ll wire real data)
   const totalWords = 34;
   const masteredWords = 0;
   const masteryPercent = 0;
 
+  // COUNT-UP ANIMATION
+  useEffect(() => {
+    let w = 0;
+    let m = 0;
+    const interval = setInterval(() => {
+      if (w < totalWords) w++;
+      if (m < masteredWords) m++;
+      setCount({ words: w, mastered: m });
+      if (w >= totalWords && m >= masteredWords) clearInterval(interval);
+    }, 20);
+    return () => clearInterval(interval);
+  }, []);
+
   const strengthData = [
-    { label: "Very Weak (0%)", value: 34, color: "#ef4444" },
-    { label: "Weak (1 hit)", value: 0, color: "#f97316" },
-    { label: "Moderate (2 hits)", value: 0, color: "#eab308" },
-    { label: "Strong (3+ hits)", value: 0, color: "#22c55e" }
+    { label: "Very Weak", value: 34, color: "#ef4444" },
+    { label: "Weak", value: 0, color: "#f97316" },
+    { label: "Moderate", value: 0, color: "#eab308" },
+    { label: "Strong", value: 0, color: "#22c55e" }
   ];
 
   const revisionQueue = [
-    "Obscure",
-    "Pragmatic",
-    "Ambiguous",
-    "Conundrum",
-    "Nuance",
-    "Conduit",
-    "Belies",
-    "Interplay",
-    "Pervasive",
-    "Amplification"
+    "Obscure","Pragmatic","Ambiguous","Conundrum",
+    "Nuance","Conduit","Belies","Interplay"
   ];
 
   return (
     <div style={styles.page}>
-      {/* HEADER */}
       <h1 style={styles.title}>Vocab Profile</h1>
       <p style={styles.subtitle}>Your vocabulary intelligence dashboard</p>
 
       {/* TABS */}
       <div style={styles.tabs}>
-        {["overview", "strength", "discipline", "revision"].map(tab => (
+        {["overview","strength","discipline","revision"].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -45,79 +49,69 @@ export default function VocabProfile() {
               ...(activeTab === tab ? styles.tabActive : {})
             }}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {tab.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {/* OVERVIEW */}
-      {activeTab === "overview" && (
-        <div style={styles.grid}>
-          <StatCard title="Total Words Seen" value={totalWords} />
-          <StatCard title="Mastered Words" value={masteredWords} />
-          <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
+      {/* CONTENT */}
+      <div style={styles.fadeIn} key={activeTab}>
+        {activeTab === "overview" && (
+          <div style={styles.grid}>
+            <StatCard title="Total Words Seen" value={count.words} />
+            <StatCard title="Mastered Words" value={count.mastered} />
+            <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
 
-          <div style={styles.card}>
-            <h3 style={styles.cardTitle}>Vocabulary Mastery</h3>
-            <div style={styles.ringWrap}>
-              <div style={styles.ring}>{masteryPercent}%</div>
-            </div>
+            <MasteryRing percent={masteryPercent} />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* STRENGTH */}
-      {activeTab === "strength" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Strength Distribution</h3>
-          {strengthData.map(item => (
-            <div key={item.label} style={{ marginBottom: 14 }}>
-              <div style={styles.strengthLabel}>
-                <span>{item.label}</span>
-                <span>{item.value}</span>
-              </div>
-              <div style={styles.barBg}>
-                <div
-                  style={{
-                    ...styles.barFill,
-                    width: `${(item.value / totalWords) * 100}%`,
-                    background: item.color
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* DISCIPLINE */}
-      {activeTab === "discipline" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Practice Discipline</h3>
-          <p style={styles.emptyText}>
-            No drill history yet. Start practicing 🚀
-          </p>
-        </div>
-      )}
-
-      {/* REVISION */}
-      {activeTab === "revision" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Revision Queue</h3>
-          <div style={styles.revisionGrid}>
-            {revisionQueue.map(word => (
-              <div key={word} style={styles.revisionChip}>
-                {word}
+        {activeTab === "strength" && (
+          <div style={styles.card}>
+            <h3 style={styles.cardTitle}>Strength Distribution</h3>
+            {strengthData.map(s => (
+              <div key={s.label} style={{ marginBottom: 14 }}>
+                <div style={styles.strengthRow}>
+                  <span>{s.label}</span>
+                  <span>{s.value}</span>
+                </div>
+                <div style={styles.barBg}>
+                  <div
+                    style={{
+                      ...styles.barFill,
+                      width: `${(s.value / totalWords) * 100}%`,
+                      background: s.color
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        )}
+
+        {activeTab === "discipline" && (
+          <div style={styles.card}>
+            <h3 style={styles.cardTitle}>Practice Discipline</h3>
+            <p style={styles.empty}>No practice yet — consistency unlocks mastery 🔥</p>
+          </div>
+        )}
+
+        {activeTab === "revision" && (
+          <div style={styles.card}>
+            <h3 style={styles.cardTitle}>Revision Queue</h3>
+            <div style={styles.chips}>
+              {revisionQueue.map(w => (
+                <div key={w} style={styles.chip}>{w}</div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-/* ---------------- COMPONENTS ---------------- */
+/* ---------- COMPONENTS ---------- */
 
 function StatCard({ title, value }) {
   return (
@@ -128,7 +122,23 @@ function StatCard({ title, value }) {
   );
 }
 
-/* ---------------- STYLES ---------------- */
+function MasteryRing({ percent }) {
+  return (
+    <div style={{ ...styles.card, alignItems: "center" }}>
+      <h3 style={styles.cardTitle}>Vocabulary Mastery</h3>
+      <div style={styles.ringOuter}>
+        <div style={{
+          ...styles.ringInner,
+          background: `conic-gradient(#22c55e ${percent * 3.6}deg, #e5e7eb 0deg)`
+        }}>
+          <span style={styles.ringText}>{percent}%</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- STYLES ---------- */
 
 const styles = {
   page: {
@@ -136,126 +146,108 @@ const styles = {
     background: "#f8fafc",
     minHeight: "100vh"
   },
-
   title: {
-    fontSize: 28,
-    fontWeight: 700,
+    fontSize: 30,
+    fontWeight: 800,
     color: "#0f172a"
   },
-
   subtitle: {
-    marginTop: 4,
-    marginBottom: 24,
-    color: "#475569"
+    color: "#475569",
+    marginBottom: 24
   },
-
   tabs: {
     display: "flex",
-    gap: 10,
+    gap: 12,
     marginBottom: 28
   },
-
   tab: {
-    padding: "8px 18px",
+    padding: "10px 18px",
     borderRadius: 999,
     border: "1px solid #e5e7eb",
-    background: "#ffffff",
+    background: "#fff",
     cursor: "pointer",
-    fontWeight: 500,
-    color: "#334155"
+    fontWeight: 600,
+    letterSpacing: 0.5
   },
-
   tabActive: {
     background: "#f97316",
-    color: "#ffffff",
+    color: "#fff",
     borderColor: "#f97316",
-    boxShadow: "0 6px 16px rgba(249,115,22,0.35)"
+    boxShadow: "0 8px 20px rgba(249,115,22,.45)"
   },
-
+  fadeIn: {
+    animation: "fade .3s ease"
+  },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: 20
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))",
+    gap: 22
   },
-
   card: {
-    background: "#ffffff",
-    borderRadius: 18,
+    background: "#fff",
+    borderRadius: 20,
     padding: 22,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.06)"
+    boxShadow: "0 12px 30px rgba(0,0,0,.08)"
   },
-
   cardTitle: {
-    fontWeight: 600,
-    marginBottom: 16,
-    color: "#0f172a"
-  },
-
-  statLabel: {
-    color: "#64748b",
-    marginBottom: 6
-  },
-
-  statValue: {
-    fontSize: 32,
     fontWeight: 700,
-    color: "#0f172a"
+    marginBottom: 16
   },
-
-  ringWrap: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: 16
+  statLabel: {
+    color: "#64748b"
   },
-
-  ring: {
-    width: 110,
-    height: 110,
+  statValue: {
+    fontSize: 34,
+    fontWeight: 800
+  },
+  ringOuter: {
+    width: 140,
+    height: 140,
+    marginTop: 10
+  },
+  ringInner: {
+    width: "100%",
+    height: "100%",
     borderRadius: "50%",
-    border: "10px solid #e5e7eb",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontWeight: 700,
-    fontSize: 22,
-    color: "#22c55e"
+    transition: "all .6s ease"
   },
-
-  strengthLabel: {
+  ringText: {
+    fontSize: 24,
+    fontWeight: 800
+  },
+  strengthRow: {
     display: "flex",
     justifyContent: "space-between",
     fontSize: 14,
     marginBottom: 6
   },
-
   barBg: {
-    width: "100%",
     height: 10,
-    background: "#e5e7eb",
-    borderRadius: 999
+    borderRadius: 999,
+    background: "#e5e7eb"
   },
-
   barFill: {
     height: "100%",
-    borderRadius: 999
+    borderRadius: 999,
+    transition: "width .6s ease"
   },
-
-  emptyText: {
+  empty: {
     color: "#64748b"
   },
-
-  revisionGrid: {
+  chips: {
     display: "flex",
     flexWrap: "wrap",
     gap: 10
   },
-
-  revisionChip: {
+  chip: {
     padding: "8px 14px",
     borderRadius: 999,
     background: "#fff7ed",
     color: "#9a3412",
-    fontWeight: 500,
+    fontWeight: 600,
     border: "1px solid #fed7aa"
   }
 };
