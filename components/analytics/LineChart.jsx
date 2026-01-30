@@ -7,7 +7,7 @@ export default function LineChart({ data, color }) {
     .map((d, i) => {
       const x = (i / (data.length - 1)) * 300;
       const y = 120 - (d / max) * 100;
-      return ${x},${y};
+      return `${x},${y}`;
     })
     .join(" ");
 
