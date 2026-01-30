@@ -147,51 +147,52 @@ const revisionWords = bank.filter(w => {
 {activeTab === "strength" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Strength Distribution</h3>
+
     <p style={styles.helperText}>
-This shows how well you remember words based on past test accuracy.
-</p>
+      This shows how well you remember words based on past test accuracy.
+    </p>
 
     {[
-  {
-    label: "Strong (Exam-ready words)",
-    value: strength.strong,
-    color: "#22c55e",
-  },
-  {
-    label: "Medium (Need revision)",
-    value: strength.medium,
-    color: "#eab308",
-  },
-  {
-    label: "Weak (High priority)",
-    value: strength.weak,
-    color: "#ef4444",
-  },
-].map(row => (
-      <div key={row.label} style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-         <span style={{ display: "flex", gap: 8, alignItems: "center" }}>
-  {row.label}
-
-  {row.label === "Weak" && row.value > 0 && (
-    <button
-      onClick={() => setShowWeakWords(s => !s)}
-      style={{
-        fontSize: 12,
-        padding: "2px 8px",
-        borderRadius: 6,
-        border: "1px solid #ef4444",
-        background: "#fff",
+      {
+        label: "Strong (Exam-ready words)",
+        value: strength.strong,
+        color: "#22c55e",
+      },
+      {
+        label: "Medium (Need revision)",
+        value: strength.medium,
+        color: "#eab308",
+      },
+      {
+        label: "Weak (High priority)",
+        value: strength.weak,
         color: "#ef4444",
-        cursor: "pointer",
-      }}
-    >
-      {showWeakWords ? "Hide" : "View"}
-    </button>
-  )}
-</span>
+      },
+    ].map(row => (
+      <div key={row.label} style={{ marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>{row.label}</span>
+
+          {row.label.startsWith("Weak") && row.value > 0 && (
+            <button
+              onClick={() => setShowWeakWords(v => !v)}
+              style={{
+                fontSize: 12,
+                padding: "2px 8px",
+                borderRadius: 6,
+                border: "1px solid #ef4444",
+                background: "#fff",
+                color: "#ef4444",
+                cursor: "pointer",
+              }}
+            >
+              {showWeakWords ? "Hide" : "View"}
+            </button>
+          )}
+
           <span>{row.value}</span>
         </div>
+
         <div style={styles.barBg}>
           <div
             style={{
@@ -203,50 +204,55 @@ This shows how well you remember words based on past test accuracy.
         </div>
       </div>
     ))}
+
     <p style={styles.helperText}>
-Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
-</p>
-  {showWeakWords && (
-  <div style={{ marginTop: 16 }}>
+      Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
+    </p>
 
-    {bank.filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4).length === 0 ? (
+    {showWeakWords && (
+      <div style={{ marginTop: 16 }}>
+        {bank.filter(
+          w => w.attempts && (w.correctCount / w.attempts) < 0.4
+        ).length === 0 ? (
+          <p style={{ color: "#16a34a" }}>
+            🎉 No weak words right now. Great job!
+          </p>
+        ) : (
+          <div>
+            <h4 style={{ marginBottom: 8 }}>
+              Weak Words (Revise First)
+            </h4>
 
-      <p style={{ color: "#16a34a" }}>
-        🎉 No weak words right now. Great job!
-      </p>
-
-    ) : (
-      <>
-        <h4 style={{ marginBottom: 8 }}>
-          Weak Words (Revise First)
-        </h4>
-
-        {bank
-          .filter(w => {
-            if (!w.attempts) return false;
-            return (w.correctCount / w.attempts) < 0.4;
-          })
-          .map(w => (
-            <div
-              key={w.word}
-              style={{
-                padding: "8px 12px",
-                borderRadius: 8,
-                border: "1px solid #fee2e2",
-                background: "#fff7f7",
-                marginBottom: 6,
-                cursor: "pointer",
-              }}
-            >
-              <b>{w.word}</b>
-              <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>
-                {w.correctCount}/{w.attempts} correct
-              </span>
-            </div>
-          ))}
-      </>
+            {bank
+              .filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4)
+              .map(w => (
+                <div
+                  key={w.word}
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    border: "1px solid #fee2e2",
+                    background: "#fff7f7",
+                    marginBottom: 6,
+                    cursor: "pointer",
+                  }}
+                >
+                  <b>{w.word}</b>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: "#6b7280",
+                      marginLeft: 8,
+                    }}
+                  >
+                    {w.correctCount}/{w.attempts} correct
+                  </span>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     )}
-
   </div>
 )}
       {activeTab === "discipline" && (
