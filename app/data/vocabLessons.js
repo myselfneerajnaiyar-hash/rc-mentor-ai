@@ -441,7 +441,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
   },
 
   {
-    id: "bias",
+    id: "cat-bias",
     title: "Bias & Perspective",
     exam: "CAT",
     goal: "Detect partiality and framing.",
