@@ -745,46 +745,48 @@ const qs = usable.slice(0, 5).map(w => {
 
       <h2 style={{ marginTop: 24 }}>Vocabulary Lessons</h2>
 
-      {vocabLessons
-  .filter(l => {
-    if (examFilter === "ALL") return true;
-    return l.exam === examFilter;
-  })
-  .map(l => (
-        <div
-          key={l.id}
-          style={{
-            marginTop: 12,
-            padding: 16,
-            borderRadius: 12,
-            border: "1px solid #e5e7eb",
-            background: "#f8fafc",
-          }}
-        >
-          <h3>{l.title}</h3>
-          <p style={{ color: "#555" }}>{l.goal}</p>
-         <button
-  onClick={() => {
-    setActiveLesson(l);
-    setMode("lesson");
-  }}
-  style={{
-    padding: "8px 14px",
-    borderRadius: 8,
-    border: "none",
-    fontWeight: 600,
-    cursor: "pointer",
-    background:
-      l.exam === "CAT"
-        ? "#f97316"    // 🟧 orange for CAT RC
-        : "#22c55e",   // 🟩 green for OMET
-    color: "#fff",
-  }}
->
-  {l.title}
-</button>
-        </div>
-      ))}
+     {Array.from(
+  new Map(
+    vocabLessons
+      .filter(l => {
+        if (examFilter === "ALL") return true;
+        return l.exam === examFilter;
+      })
+      .map(l => [l.id, l])
+  ).values()
+).map(l => (
+  <div
+    key={l.id}
+    style={{
+      marginTop: 12,
+      padding: 16,
+      borderRadius: 12,
+      border: "1px solid #e5e7eb",
+      background: "#f8fafc",
+    }}
+  >
+    <h3>{l.title}</h3>
+    <p style={{ color: "#555" }}>{l.goal}</p>
+
+    <button
+      onClick={() => {
+        setActiveLesson(l);
+        setMode("lesson");
+      }}
+      style={{
+        padding: "8px 14px",
+        borderRadius: 8,
+        border: "none",
+        fontWeight: 600,
+        cursor: "pointer",
+        background: l.exam === "CAT" ? "#f97316" : "#22c55e",
+        color: "#fff",
+      }}
+    >
+      Start Lesson
+    </button>
+  </div>
+))}
     </div>
   );
 }
