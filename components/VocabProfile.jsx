@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RadialProgress from "./analytics/RadialProgress";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
 
-  // ---- DATA (HOOK THIS TO BACKEND LATER) ----
+  /* ================== DATA (DYNAMIC LATER) ================== */
   const totalWords = 34;
   const masteredWords = 0;
-  const masteryPercent = Math.round((masteredWords / totalWords) * 100);
+
+  // Retention Health (behavioural metric)
+  const retentionPercent = 0;
 
   const masteryTimeline = [
     { day: "Day 1", value: 0 },
@@ -16,12 +18,20 @@ export default function VocabProfile() {
     { day: "Day 4", value: 0 }
   ];
 
+  const retentionColor =
+    retentionPercent < 40
+      ? "#ef4444"
+      : retentionPercent < 70
+      ? "#f97316"
+      : "#22c55e";
+
+  /* ================== UI ================== */
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Vocab Profile</h1>
-      <p style={styles.subtitle}>Your vocabulary intelligence dashboard</p>
+      <p style={styles.subtitle}>Your vocabulary performance dashboard</p>
 
-      {/* TABS */}
+      {/* ---------- TABS ---------- */}
       <div style={styles.tabs}>
         {["overview", "strength", "discipline", "revision"].map(tab => (
           <button
@@ -40,32 +50,32 @@ export default function VocabProfile() {
       {/* ================= OVERVIEW ================= */}
       {activeTab === "overview" && (
         <>
-         {/* HERO */}
-<div style={styles.hero}>
-  <div>
-    <p style={styles.heroLabel}>OVERALL MASTERY</p>
-    <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
-    <p style={styles.heroInsight}>
-      {masteredWords === 0
-        ? `All ${totalWords} words currently need reinforcement`
-        : `You have mastered ${masteredWords} words`}
-    </p>
-  </div>
+          {/* HERO */}
+          <div style={styles.hero}>
+            <div>
+              <p style={styles.heroLabel}>RETENTION HEALTH</p>
+              <h1 style={styles.heroPercent}>{retentionPercent}%</h1>
+              <p style={styles.heroInsight}>
+                Based on your last 7 days of vocabulary practice
+              </p>
+            </div>
 
-  {/* SINGLE SOURCE OF TRUTH */}
-  <RadialProgress
-    value={masteryPercent}
-    size={140}
-    strokeWidth={10}
-    color="#f97316"
-  />
-</div>
+            {/* SINGLE RADIAL — SOURCE OF TRUTH */}
+            <RadialProgress
+              percent={retentionPercent}
+              label="Retention"
+              color={retentionColor}
+            />
+          </div>
 
           {/* STATS */}
           <div style={styles.statGrid}>
             <StatCard title="Words Seen" value={totalWords} />
             <StatCard title="Mastered Words" value={masteredWords} />
-            <StatCard title="Needs Revision" value={totalWords - masteredWords} />
+            <StatCard
+              title="Needs Revision"
+              value={totalWords - masteredWords}
+            />
           </div>
 
           {/* LINE GRAPH */}
@@ -79,14 +89,14 @@ export default function VocabProfile() {
       {/* ================= PLACEHOLDERS ================= */}
       {activeTab !== "overview" && (
         <div style={styles.placeholder}>
-          This section will activate as data grows.
+          This section will unlock as your practice data grows.
         </div>
       )}
     </div>
   );
 }
 
-/* ---------- COMPONENTS ---------- */
+/* ================= COMPONENTS ================= */
 
 function StatCard({ title, value }) {
   return (
@@ -97,26 +107,21 @@ function StatCard({ title, value }) {
   );
 }
 
-
-
 function MasteryOverTime({ data }) {
   const max = Math.max(...data.map(d => d.value), 1);
 
   return (
-    <svg width="100%" height="120">
-      {/* AXIS */}
-      <line x1="40" y1="90" x2="95%" y2="90" stroke="#cbd5e1" />
+    <svg width="100%" height="130">
+      <line x1="40" y1="100" x2="95%" y2="100" stroke="#cbd5e1" />
 
-      {/* LINE */}
-      {data.map((point, i) => {
+      {data.map((p, i) => {
         if (i === 0) return null;
         const prev = data[i - 1];
 
         const x1 = 40 + (i - 1) * 120;
-        const y1 = 90 - (prev.value / max) * 60;
-
+        const y1 = 100 - (prev.value / max) * 60;
         const x2 = 40 + i * 120;
-        const y2 = 90 - (point.value / max) * 60;
+        const y2 = 100 - (p.value / max) * 60;
 
         return (
           <line
@@ -131,26 +136,19 @@ function MasteryOverTime({ data }) {
         );
       })}
 
-      {/* DOTS */}
-      {data.map((point, i) => {
+      {data.map((p, i) => {
         const x = 40 + i * 120;
-        const y = 90 - (point.value / max) * 60;
+        const y = 100 - (p.value / max) * 60;
 
         return (
-          <circle
-            key={i}
-            cx={x}
-            cy={y}
-            r="5"
-            fill="#f97316"
-          />
+          <circle key={i} cx={x} cy={y} r="5" fill="#f97316" />
         );
       })}
     </svg>
   );
 }
 
-/* ---------- STYLES ---------- */
+/* ================= STYLES ================= */
 
 const styles = {
   page: {
@@ -185,7 +183,6 @@ const styles = {
     color: "#fff",
     borderColor: "#f97316"
   },
-
   hero: {
     background: "#fff",
     borderRadius: 18,
@@ -205,9 +202,9 @@ const styles = {
     fontWeight: 900
   },
   heroInsight: {
-    color: "#475569"
+    color: "#475569",
+    maxWidth: 300
   },
-
   statGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
@@ -226,24 +223,6 @@ const styles = {
     fontSize: 32,
     fontWeight: 800
   },
-
-  ringOuter: {
-    width: 140,
-    height: 140
-  },
-  ringInner: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  ringText: {
-    fontSize: 22,
-    fontWeight: 800
-  },
-
   graphCard: {
     background: "#fff",
     borderRadius: 18,
@@ -253,7 +232,6 @@ const styles = {
     fontWeight: 700,
     marginBottom: 12
   },
-
   placeholder: {
     padding: 40,
     color: "#64748b",
