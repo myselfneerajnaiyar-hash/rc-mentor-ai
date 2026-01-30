@@ -412,7 +412,9 @@ function VocabDrill() {
 const stored = JSON.parse(localStorage.getItem("vocabBank") || "[]");
 
 const updated = stored.map(w => {
-  if (w.word === (q.word || q.correct)) {
+  const testedWord = q.word || q.correct;
+
+if (w.word.toLowerCase() === testedWord.toLowerCase()) {
     return {
       ...w,
       attempts: (w.attempts || 0) + 1,
