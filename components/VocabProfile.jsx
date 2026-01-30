@@ -340,6 +340,9 @@ const revisionWords = bank.filter(w => {
     </p>
   </div>
 )}
+    </div>
+    );
+}
       
 /* ================= COMPONENTS ================= */
 
