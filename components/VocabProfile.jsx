@@ -208,37 +208,46 @@ Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
 </p>
    {showWeakWords && (
   <div style={{ marginTop: 16 }}>
+
     {bank.filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4).length === 0 ? (
+
       <p style={{ color: "#16a34a" }}>
         🎉 No weak words right now. Great job!
       </p>
-    ) : (
-    <h4 style={{ marginBottom: 8 }}>Weak Words (Revise First)</h4>
 
-    {bank
-      .filter(w => {
-        if (!w.attempts) return false;
-        return (w.correctCount / w.attempts) < 0.4;
-      })
-      .map(w => (
-        <div
-          key={w.word}
-          style={{
-            padding: "8px 12px",
-            borderRadius: 8,
-            border: "1px solid #fee2e2",
-            background: "#fff7f7",
-            marginBottom: 6,
-          }}
-        >
-          <b>{w.word}</b>
-          <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>
-            {w.correctCount}/{w.attempts} correct
-          </span>
-        </div>
-      ))}
-  </div>
-)}
+    ) : (
+
+      <>
+        <h4 style={{ marginBottom: 8 }}>
+          Weak Words (Revise First)
+        </h4>
+
+        {bank
+          .filter(w => {
+            if (!w.attempts) return false;
+            return (w.correctCount / w.attempts) < 0.4;
+          })
+          .map(w => (
+            <div
+              key={w.word}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #fee2e2",
+                background: "#fff7f7",
+                marginBottom: 6,
+                cursor: "pointer"
+              }}
+            >
+              <b>{w.word}</b>
+              <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>
+                {w.correctCount}/{w.attempts} correct
+              </span>
+            </div>
+          ))}
+      </>
+    )}
+
   </div>
 )}
       {activeTab === "discipline" && (
