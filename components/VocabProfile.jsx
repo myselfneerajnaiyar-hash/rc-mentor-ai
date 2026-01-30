@@ -295,39 +295,52 @@ const revisionWords = bank.filter(w => {
     </p>
   </div>
 )}
-     
-      {activeTab === "revision" && (
+     {activeTab === "revision" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Revision Queue</h3>
 
+    <p style={styles.helperText}>
+      These words need immediate revision due to low accuracy or long gaps.
+    </p>
+
     {revisionWords.length === 0 ? (
-      <p style={{ color: "#64748b" }}>
-        🎉 No urgent revisions right now.
+      <p style={{ color: "#16a34a", marginTop: 12 }}>
+        🎉 You’re all caught up! No urgent revisions.
       </p>
     ) : (
-      revisionWords.map(w => (
-        <div
-          key={w.word}
-          style={{
-            padding: 10,
-            marginBottom: 8,
-            borderRadius: 8,
-            background: "#fff7ed",
-            border: "1px solid #fed7aa",
-          }}
-        >
-          <b>{w.word}</b> — {w.correctCount}/{w.attempts} correct
-        </div>
-      ))
+      <div style={{ marginTop: 16 }}>
+        {revisionWords.map(w => {
+          const accuracy = Math.round(
+            (w.correctCount / w.attempts) * 100
+          );
+
+          return (
+            <div
+              key={w.word}
+              style={{
+                padding: 10,
+                marginBottom: 8,
+                borderRadius: 8,
+                background: "#fff7ed",
+                border: "1px solid #fed7aa",
+              }}
+            >
+              <b>{w.word}</b>
+              <div style={{ fontSize: 12, color: "#6b7280" }}>
+                Accuracy: {accuracy}% · Attempts: {w.attempts}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     )}
+
+    <p style={{ ...styles.helperText, marginTop: 16 }}>
+      🔁 Revise these words to move them into <b>Strong</b> and <b>Active</b>.
+    </p>
   </div>
 )}
       
-     
-    </div>
-  );
-}
-
 /* ================= COMPONENTS ================= */
 
 function StatCard({ title, value }) {
