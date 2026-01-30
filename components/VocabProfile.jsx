@@ -8,7 +8,6 @@ export default function VocabProfile() {
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
 
-    // Normalize data (VERY IMPORTANT)
     const normalized = saved.map(w => ({
       word: w.word,
       correctCount: w.correctCount || 0,
@@ -19,7 +18,7 @@ export default function VocabProfile() {
     setBank(normalized);
   }, []);
 
-  /* ---------------- DERIVED METRICS ---------------- */
+  /* ---------------- METRICS ---------------- */
 
   const totalWords = bank.length;
 
@@ -28,11 +27,9 @@ export default function VocabProfile() {
   ).length;
 
   const overallMastery =
-    totalWords === 0
-      ? 0
-      : Math.round((masteredWords / totalWords) * 100);
+    totalWords === 0 ? 0 : Math.round((masteredWords / totalWords) * 100);
 
-  const strengthBuckets = {
+  const buckets = {
     veryWeak: 0,
     weak: 0,
     moderate: 0,
@@ -41,21 +38,22 @@ export default function VocabProfile() {
 
   bank.forEach(w => {
     if (w.attemptCount === 0) {
-      strengthBuckets.veryWeak++;
+      buckets.veryWeak++;
       return;
     }
     const acc = w.correctCount / w.attemptCount;
-    if (acc < 0.4) strengthBuckets.veryWeak++;
-    else if (acc < 0.6) strengthBuckets.weak++;
-    else if (acc < 0.8) strengthBuckets.moderate++;
-    else strengthBuckets.strong++;
+    if (acc < 0.4) buckets.veryWeak++;
+    else if (acc < 0.6) buckets.weak++;
+    else if (acc < 0.8) buckets.moderate++;
+    else buckets.strong++;
   });
 
   const now = Date.now();
   const revisionBacklog = bank.filter(w => {
     if (!w.lastAttempted) return false;
-    const days = (now - w.lastAttempted) / (1000 * 60 * 60 * 24);
-    return days >= 3 && w.correctCount / Math.max(1, w.attemptCount) < 0.8;
+    const daysGap = (now - w.lastAttempted) / (1000 * 60 * 60 * 24);
+    const acc = w.correctCount / Math.max(1, w.attemptCount);
+    return daysGap >= 3 && acc < 0.8;
   });
 
   /* ---------------- UI ---------------- */
@@ -64,105 +62,121 @@ export default function VocabProfile() {
     <div>
       <h2>Vocab Profile</h2>
 
+      {/* Tabs */}
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        {[
-          { key: "overview", label: "Overview" },
-          { key: "strength", label: "Strength" },
-          { key: "discipline", label: "Discipline" },
-          { key: "revision", label: "Revision" },
-        ].map(t => (
+        {["overview", "strength", "discipline", "revision"].map(t => (
           <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
+            key={t}
+            onClick={() => setTab(t)}
             style={{
               padding: "6px 12px",
               borderRadius: 6,
               border: "1px solid #d1d5db",
-              background: tab === t.key ? "#2563eb" : "#f9fafb",
-              color: tab === t.key ? "#fff" : "#111827",
+              background: tab === t ? "#2563eb" : "#f9fafb",
+              color: tab === t ? "#fff" : "#111827",
               fontWeight: 600,
               cursor: "pointer",
             }}
           >
-            {t.label}
+            {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
 
-      {/* ---------------- OVERVIEW ---------------- */}
+      {/* OVERVIEW */}
       {tab === "overview" && (
-        <div>
-          <p>Total Words Seen: <b>{totalWords}</b></p>
-          <p>Mastered Words: <b>{masteredWords}</b></p>
-          <p>Overall Mastery: <b>{overallMastery}%</b></p>
+        <>
+          <Stat label="Total Words Seen" value={totalWords} />
+          <Stat label="Mastered Words" value={masteredWords} />
+          <Stat label="Overall Mastery" value={`${overallMastery}%`} />
 
-          <div style={{ marginTop: 16 }}>
-            <ProgressBar value={overallMastery} />
-          </div>
-        </div>
+          <h4 style={{ marginTop: 16 }}>Mastery Progress</h4>
+          <ProgressBar value={overallMastery} />
+        </>
       )}
 
-      {/* ---------------- STRENGTH ---------------- */}
+      {/* STRENGTH */}
       {tab === "strength" && (
-        <div>
-          <p>Very Weak (0–40%): {strengthBuckets.veryWeak}</p>
-          <p>Weak (40–60%): {strengthBuckets.weak}</p>
-          <p>Moderate (60–80%): {strengthBuckets.moderate}</p>
-          <p>Strong (80–100%): {strengthBuckets.strong}</p>
-        </div>
+        <>
+          <h4>Strength Distribution</h4>
+          <Bar label="Very Weak (0–40%)" value={buckets.veryWeak} color="#ef4444" />
+          <Bar label="Weak (40–60%)" value={buckets.weak} color="#f97316" />
+          <Bar label="Moderate (60–80%)" value={buckets.moderate} color="#eab308" />
+          <Bar label="Strong (80–100%)" value={buckets.strong} color="#22c55e" />
+        </>
       )}
 
-      {/* ---------------- DISCIPLINE ---------------- */}
+      {/* DISCIPLINE */}
       {tab === "discipline" && (
-        <div>
-          {bank.some(w => w.lastAttempted) ? (
-            <p>Practice data detected ✅</p>
+        <>
+          <h4>Practice Discipline</h4>
+          {bank.some(w => w.attemptCount > 0) ? (
+            <p>Practice activity detected ✅</p>
           ) : (
             <p>No recent practice data</p>
           )}
-        </div>
+        </>
       )}
 
-      {/* ---------------- REVISION ---------------- */}
+      {/* REVISION */}
       {tab === "revision" && (
-        <div>
+        <>
+          <h4>Revision Queue</h4>
           {revisionBacklog.length === 0 ? (
             <p>No revision backlog 🎉</p>
           ) : (
-            <div>
-              <p>Words due for revision:</p>
-              <ul>
-                {revisionBacklog.map((w, i) => (
-                  <li key={i}>{w.word}</li>
-                ))}
-              </ul>
-            </div>
+            <ul>
+              {revisionBacklog.map((w, i) => (
+                <li key={i}>{w.word}</li>
+              ))}
+            </ul>
           )}
-        </div>
+        </>
       )}
     </div>
   );
 }
 
-/* ---------------- SMALL COMPONENT ---------------- */
+/* ---------------- UI HELPERS ---------------- */
+
+function Stat({ label, value }) {
+  return (
+    <p>
+      {label}: <b>{value}</b>
+    </p>
+  );
+}
 
 function ProgressBar({ value }) {
   return (
-    <div
-      style={{
-        height: 10,
-        borderRadius: 6,
-        background: "#e5e7eb",
-        overflow: "hidden",
-      }}
-    >
+    <div style={{ height: 10, background: "#e5e7eb", borderRadius: 6 }}>
       <div
         style={{
           width: `${value}%`,
           height: "100%",
           background: value >= 80 ? "#22c55e" : "#f97316",
+          borderRadius: 6,
         }}
       />
+    </div>
+  );
+}
+
+function Bar({ label, value, color }) {
+  const width = Math.min(100, value * 10); // visual scaling
+  return (
+    <div style={{ marginBottom: 8 }}>
+      <div style={{ fontSize: 13 }}>{label}: {value}</div>
+      <div style={{ height: 8, background: "#e5e7eb", borderRadius: 6 }}>
+        <div
+          style={{
+            width: `${width}%`,
+            height: "100%",
+            background: color,
+            borderRadius: 6,
+          }}
+        />
+      </div>
     </div>
   );
 }
