@@ -136,7 +136,7 @@ const revisionWords = bank.filter(w => {
 
             {/* SINGLE RADIAL — SOURCE OF TRUTH */}
             <RadialProgress
-              percent={retentionPercent}
+             percent={Math.max(retentionPercent, 3)}
               label="Retention"
               color={retentionColor}
             />
