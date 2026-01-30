@@ -56,15 +56,7 @@ export default function VocabProfile() {
 
       {/* CONTENT */}
       <div style={styles.fadeIn} key={activeTab}>
-        {activeTab === "overview" && (
-          <div style={styles.grid}>
-            <StatCard title="Total Words Seen" value={count.words} />
-            <StatCard title="Mastered Words" value={count.mastered} />
-            <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
-
-            <MasteryRing percent={masteryPercent} />
-          </div>
-        )}
+      
 
       {/* ================= OVERVIEW ================= */}
 {activeTab === "overview" && (
@@ -112,6 +104,30 @@ export default function VocabProfile() {
       </div>
     </div>
 
+  </div>
+)}
+        {activeTab === "strength" && (
+  <div style={styles.card}>
+    <h3 style={styles.cardTitle}>Strength Distribution</h3>
+
+    {strengthData.map(item => (
+      <div key={item.label} style={{ marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{item.label}</span>
+          <span>{item.value}</span>
+        </div>
+
+        <div style={styles.barBg}>
+          <div
+            style={{
+              ...styles.barFill,
+              width: `${(item.value / totalWords) * 100}%`,
+              background: item.color
+            }}
+          />
+        </div>
+      </div>
+    ))}
   </div>
 )}
         {activeTab === "discipline" && (
