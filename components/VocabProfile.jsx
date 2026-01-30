@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RadialProgress from "./analytics/RadialProgress";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -39,21 +40,26 @@ export default function VocabProfile() {
       {/* ================= OVERVIEW ================= */}
       {activeTab === "overview" && (
         <>
-          {/* HERO */}
-          <div style={styles.hero}>
-            <div>
-              <p style={styles.heroLabel}>OVERALL MASTERY</p>
-              <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
-              <p style={styles.heroInsight}>
-                {masteredWords === 0
-                  ? `All ${totalWords} words currently need reinforcement`
-                  : `You have mastered ${masteredWords} words`}
-              </p>
-            </div>
+         {/* HERO */}
+<div style={styles.hero}>
+  <div>
+    <p style={styles.heroLabel}>OVERALL MASTERY</p>
+    <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
+    <p style={styles.heroInsight}>
+      {masteredWords === 0
+        ? `All ${totalWords} words currently need reinforcement`
+        : `You have mastered ${masteredWords} words`}
+    </p>
+  </div>
 
-            {/* SINGLE RING ONLY */}
-           
-          </div>
+  {/* SINGLE SOURCE OF TRUTH */}
+  <RadialProgress
+    value={masteryPercent}
+    size={140}
+    strokeWidth={10}
+    color="#f97316"
+  />
+</div>
 
           {/* STATS */}
           <div style={styles.statGrid}>
