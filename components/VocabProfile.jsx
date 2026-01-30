@@ -121,11 +121,12 @@ const revisionWords = bank.filter(w => {
 
           {/* STATS */}
           <div style={styles.statGrid}>
-            <StatCard title="Words Seen" value={totalWords} />
-            <StatCard title="Mastered Words" value={masteredWords} />
+            <StatCard title="Words Seen" value={totalWords} accent="#3b82f6" />
+            <StatCard title="Mastered Words" value={masteredWords} accent="#22c55e" />
             <StatCard
-              title="Needs Revision"
-              value={totalWords - masteredWords}
+            title="Needs Revision"
+            value={totalWords - masteredWords}
+            accent="#ef4444"
             />
           </div>
 
