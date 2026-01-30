@@ -206,12 +206,7 @@ const revisionWords = bank.filter(w => {
   </div>
 )}
       
-      {/* ================= PLACEHOLDERS ================= */}
-      {activeTab !== "overview" && (
-        <div style={styles.placeholder}>
-          This section will unlock as your practice data grows.
-        </div>
-      )}
+     
     </div>
   );
 }
