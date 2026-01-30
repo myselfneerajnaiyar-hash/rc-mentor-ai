@@ -129,6 +129,13 @@ const revisionWords = bank.filter(w => {
             accent="#ef4444"
             />
           </div>
+          <p style={{ marginTop: 12, color: "#475569", fontWeight: 500 }}>
+  👉 Focus on revising{" "}
+  <b style={{ color: "#ef4444" }}>
+    {totalWords - masteredWords}
+  </b>{" "}
+  weak words to improve retention.
+</p>
 
           {/* LINE GRAPH */}
          <div style={styles.graphCard}>
