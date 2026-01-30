@@ -105,7 +105,14 @@ const revisionWords = bank.filter(w => {
           <div style={styles.hero}>
             <div>
               <p style={styles.heroLabel}>RETENTION HEALTH</p>
-              <h1 style={styles.heroPercent}>{retentionPercent}%</h1>
+             <h1
+  style={{
+    ...styles.heroPercent,
+    color: retentionColor
+  }}
+>
+  {retentionPercent}%
+</h1>
               <p style={styles.heroInsight}>
                 Based on your last 7 days of vocabulary practice
               </p>
