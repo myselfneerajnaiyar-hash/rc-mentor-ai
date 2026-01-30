@@ -432,8 +432,9 @@ const styles = {
     borderColor: "#f97316"
   },
   hero: {
-    background: "#fff",
+    background: "linear-gradient(135deg, #fff7ed, #ffffff)",
     borderRadius: 18,
+    border: "1px solid #fed7aa"
     padding: 28,
     display: "flex",
     justifyContent: "space-between",
@@ -445,10 +446,11 @@ const styles = {
     fontWeight: 700,
     letterSpacing: 1
   },
-  heroPercent: {
-    fontSize: 56,
-    fontWeight: 900
-  },
+ heroPercent: {
+  fontSize: 56,
+  fontWeight: 900,
+  color: retentionColor
+},
   heroInsight: {
     color: "#475569",
     maxWidth: 300
