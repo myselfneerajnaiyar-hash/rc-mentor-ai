@@ -148,7 +148,7 @@ const styles = {
   cursor: "pointer",
   fontWeight: 500,
   color: "#374151"
-}
+},
  tabActive: {
   background: "#f97316", // ORANGE
   color: "#fff",
