@@ -183,6 +183,9 @@ This shows how well you remember words based on past test accuracy.
         </div>
       </div>
     ))}
+    <p style={styles.helperText}>
+Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
+</p>
   </div>
 )}
       {activeTab === "discipline" && (
