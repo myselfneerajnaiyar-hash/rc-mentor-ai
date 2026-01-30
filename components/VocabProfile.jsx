@@ -32,6 +32,49 @@ const masteredWords = bank.filter(
 const masteryPercent = totalWords
   ? Math.round((masteredWords / totalWords) * 100)
   : 0;
+  // ===== DERIVED DATA FROM vocabBank =====
+
+// -------- STRENGTH --------
+const strength = { strong: 0, medium: 0, weak: 0 };
+
+bank.forEach(w => {
+  if (!w.attempts) return;
+
+  const acc = w.correctCount / w.attempts;
+
+  if (acc >= 0.8 && w.attempts >= 3) strength.strong++;
+  else if (acc >= 0.4) strength.medium++;
+  else strength.weak++;
+});
+
+// -------- DISCIPLINE --------
+const now = Date.now();
+let active = 0, slipping = 0, cold = 0;
+
+bank.forEach(w => {
+  if (!w.lastTested) {
+    cold++;
+    return;
+  }
+
+  const days = (now - w.lastTested) / 86400000;
+
+  if (days <= 2) active++;
+  else if (days <= 6) slipping++;
+  else cold++;
+});
+
+// -------- REVISION --------
+const revisionWords = bank.filter(w => {
+  if (!w.attempts) return false;
+
+  const acc = w.correctCount / w.attempts;
+  const days = w.lastTested
+    ? (Date.now() - w.lastTested) / 86400000
+    : 999;
+
+  return acc < 0.7 || days > 5;
+});
   /* ================== UI ================== */
   return (
     <div style={styles.page}>
@@ -100,6 +143,69 @@ const masteryPercent = totalWords
         </>
       )}
 
+{activeTab === "strength" && (
+  <div style={styles.card}>
+    <h3 style={styles.cardTitle}>Strength Distribution</h3>
+
+    {[
+      { label: "Strong", value: strength.strong, color: "#22c55e" },
+      { label: "Medium", value: strength.medium, color: "#eab308" },
+      { label: "Weak", value: strength.weak, color: "#ef4444" },
+    ].map(row => (
+      <div key={row.label} style={{ marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{row.label}</span>
+          <span>{row.value}</span>
+        </div>
+        <div style={styles.barBg}>
+          <div
+            style={{
+              ...styles.barFill,
+              width: `${bank.length ? (row.value / bank.length) * 100 : 0}%`,
+              background: row.color,
+            }}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+      {activeTab === "discipline" && (
+  <div style={styles.card}>
+    <h3 style={styles.cardTitle}>Practice Discipline</h3>
+
+    <p>Active (last 2 days): <b>{active}</b></p>
+    <p>Slipping (3–6 days): <b>{slipping}</b></p>
+    <p>Cold (7+ days): <b>{cold}</b></p>
+  </div>
+)}
+      {activeTab === "revision" && (
+  <div style={styles.card}>
+    <h3 style={styles.cardTitle}>Revision Queue</h3>
+
+    {revisionWords.length === 0 ? (
+      <p style={{ color: "#64748b" }}>
+        🎉 No urgent revisions right now.
+      </p>
+    ) : (
+      revisionWords.map(w => (
+        <div
+          key={w.word}
+          style={{
+            padding: 10,
+            marginBottom: 8,
+            borderRadius: 8,
+            background: "#fff7ed",
+            border: "1px solid #fed7aa",
+          }}
+        >
+          <b>{w.word}</b> — {w.correctCount}/{w.attempts} correct
+        </div>
+      ))
+    )}
+  </div>
+)}
+      
       {/* ================= PLACEHOLDERS ================= */}
       {activeTab !== "overview" && (
         <div style={styles.placeholder}>
@@ -251,5 +357,15 @@ const styles = {
     color: "#64748b",
     background: "#fff",
     borderRadius: 16
-  }
+  },
+  barBg: {
+  height: 10,
+  background: "#e5e7eb",
+  borderRadius: 999,
+  marginTop: 6,
+},
+barFill: {
+  height: "100%",
+  borderRadius: 999,
+},
 };
