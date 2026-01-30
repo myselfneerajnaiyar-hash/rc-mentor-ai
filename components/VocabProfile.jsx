@@ -142,16 +142,19 @@ const styles = {
   },
   tab: {
     padding: "8px 16px",
-    borderRadius: 20,
-    border: "1px solid #d1d5db",
-    background: "#fff",
+    borderRadius: 999,
+    border: "1px solid #e5e7eb",
+    background: "#f9fafb",
     cursor: "pointer"
+    fontWeight: 500,
+  color: "#374151"
   },
-  tabActive: {
-    background: "#2563eb",
-    color: "#fff",
-    borderColor: "#2563eb"
-  },
+ tabActive: {
+  background: "#f97316", // ORANGE
+  color: "#fff",
+  borderColor: "#f97316",
+  boxShadow: "0 6px 16px rgba(249,115,22,0.45)"
+},
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
