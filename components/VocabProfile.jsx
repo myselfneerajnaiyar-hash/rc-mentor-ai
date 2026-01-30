@@ -435,12 +435,12 @@ const styles = {
   hero: {
     background: "linear-gradient(135deg, #fff7ed, #ffffff)",
     borderRadius: 18,
-    border: "1px solid #fed7aa"
     padding: 28,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 28
+    
   },
   heroLabel: {
     color: "#f97316",
