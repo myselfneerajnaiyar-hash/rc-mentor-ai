@@ -5,19 +5,14 @@ export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
 
   /* ================== DATA (DYNAMIC LATER) ================== */
-  const totalWords = 34;
-  const masteredWords = 0;
+ 
 
   // Retention Health (behavioural metric)
   const retentionPercent = 0;
 
-  const masteryTimeline = [
-    { day: "Day 1", value: 0 },
-    { day: "Day 2", value: 0 },
-    { day: "Day 3", value: 0 },
-    { day: "Day 4", value: 0 }
-  ];
-
+ const masteryTimeline =
+  JSON.parse(localStorage.getItem("vocabTimeline") || "[]");
+  
   const retentionColor =
     retentionPercent < 40
       ? "#ef4444"
@@ -25,6 +20,18 @@ export default function VocabProfile() {
       ? "#f97316"
       : "#22c55e";
 
+  const bank =
+  JSON.parse(localStorage.getItem("vocabBank") || "[]");
+
+const totalWords = bank.length;
+
+const masteredWords = bank.filter(
+  w => (w.correctCount || 0) >= 2
+).length;
+
+const masteryPercent = totalWords
+  ? Math.round((masteredWords / totalWords) * 100)
+  : 0;
   /* ================== UI ================== */
   return (
     <div style={styles.page}>
