@@ -481,15 +481,17 @@ const styles = {
     fontSize: 32,
     fontWeight: 800
   },
-  graphCard: {
-    background: "#fff",
-    borderRadius: 18,
-    padding: 24
-  },
-  cardTitle: {
-    fontWeight: 700,
-    marginBottom: 12
-  },
+ graphCard: {
+  background: "#fff",
+  borderRadius: 18,
+  padding: 24,
+  border: "1px solid #fed7aa"
+},
+ cardTitle: {
+  fontWeight: 700,
+  marginBottom: 12,
+  color: "#ea580c"
+},
   placeholder: {
     padding: 40,
     color: "#64748b",
