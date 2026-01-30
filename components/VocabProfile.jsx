@@ -153,7 +153,7 @@ const revisionWords = bank.filter(w => {
       )}
 
 {activeTab === "strength" && (
- <div style={{ ...styles.card, borderLeft: `6px solid ${accent}` }}>
+ <div style={styles.card}>
     <h3 style={styles.cardTitle}>Strength Distribution</h3>
 
     <p style={styles.helperText}>
