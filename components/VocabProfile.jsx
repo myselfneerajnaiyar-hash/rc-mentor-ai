@@ -52,7 +52,7 @@ export default function VocabProfile() {
             </div>
 
             {/* SINGLE RING ONLY */}
-            <MasteryRing percent={masteryPercent} />
+           
           </div>
 
           {/* STATS */}
