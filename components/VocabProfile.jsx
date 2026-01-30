@@ -20,6 +20,13 @@ export default function VocabProfile() {
     "Obscure", "Pragmatic", "Ambiguous", "Conundrum",
     "Nuance", "Conduit", "Belies", "Interplay"
   ];
+  // Mastery over time (mock for now – later replace with API)
+const masteryTimeline = [
+  { day: "Day 1", value: 0 },
+  { day: "Day 2", value: 0 },
+  { day: "Day 3", value: 0 },
+  { day: "Day 4", value: masteryPercent }
+]
 
   // ====== COUNT-UP ANIMATION ======
   useEffect(() => {
@@ -56,34 +63,22 @@ export default function VocabProfile() {
       </div>
 
       {/* ====== OVERVIEW ====== */}
-      {activeTab === "overview" && (
-        <>
-          {/* HERO */}
-          <div style={styles.hero}>
-            <div>
-              <p style={styles.heroLabel}>OVERALL MASTERY</p>
-              <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
-              <p style={styles.heroInsight}>
-                {masteredWords === 0
-                  ? "All words currently need reinforcement"
-                  : "You're building strong vocabulary momentum"}
-              </p>
-            </div>
+    {/* ====== OVERVIEW ====== */}
+{activeTab === "overview" && (
+  <>
+    {/* TOP KPI GRID */}
+    <div style={styles.grid}>
+      <StatCard title="Words Seen" value={count.words} />
+      <StatCard title="Mastered" value={count.mastered} />
+      <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
+    </div>
 
-            <MasteryRing percent={masteryPercent} />
-          </div>
-
-          {/* STATS */}
-          <div style={styles.statGrid}>
-            <StatCard title="Words Seen" value={count.words} />
-            <StatCard title="Mastered Words" value={count.mastered} />
-            <StatCard
-              title="Needs Revision"
-              value={totalWords - masteredWords}
-            />
-          </div>
-        </>
-      )}
+    {/* TREND GRAPH */}
+    <div style={{ marginTop: 28 }}>
+      <MasteryOverTime data={masteryTimeline} />
+    </div>
+  </>
+)}
 
       {/* ====== STRENGTH ====== */}
       {activeTab === "strength" && (
@@ -162,6 +157,49 @@ function MasteryRing({ percent }) {
   );
 }
 
+function MasteryOverTime({ data }) {
+  const maxY = 100;
+  const width = 420;
+  const height = 160;
+  const padding = 30;
+
+  const points = data.map((d, i) => {
+    const x = padding + (i * (width - padding * 2)) / (data.length - 1);
+    const y = height - padding - (d.value / maxY) * (height - padding * 2);
+    return `${x},${y}`;
+  }).join(" ");
+
+  return (
+    <div style={styles.card}>
+      <h3 style={styles.cardTitle}>Mastery Over Time</h3>
+
+      <svg width="100%" viewBox={`0 0 ${width} ${height}`}>
+        {/* AXES */}
+        <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#e5e7eb" />
+        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#e5e7eb" />
+
+        {/* LINE */}
+        <polyline
+          fill="none"
+          stroke="#f97316"
+          strokeWidth="3"
+          points={points}
+        />
+
+        {/* DOTS */}
+        {data.map((d, i) => {
+          const x = padding + (i * (width - padding * 2)) / (data.length - 1);
+          const y = height - padding - (d.value / maxY) * (height - padding * 2);
+          return <circle key={i} cx={x} cy={y} r="4" fill="#f97316" />;
+        })}
+      </svg>
+
+      <p style={{ color: "#64748b", fontSize: 13 }}>
+        Tracks how your vocabulary mastery evolves with practice
+      </p>
+    </div>
+  );
+}
 /* ====== STYLES ====== */
 
 const styles = {
