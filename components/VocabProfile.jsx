@@ -354,11 +354,18 @@ const revisionWords = bank.filter(w => {
       
 /* ================= COMPONENTS ================= */
 
-function StatCard({ title, value,accent }) {
+function StatCard({ title, value, accent = "#64748b" }) {
   return (
-    <div style={styles.card}>
-      <p style={styles.statLabel}>{title}</p>
-     <h2 style={{ ...styles.statValue, color: accent }}>{value}</h2>
+    <div
+      style={{
+        ...styles.card,
+        borderLeft: `6px solid ${accent}`,
+      }}
+    >
+      <p style={{ ...styles.statLabel, color: accent }}>
+        {title}
+      </p>
+      <h2 style={styles.statValue}>{value}</h2>
     </div>
   );
 }
