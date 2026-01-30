@@ -2,51 +2,25 @@ import { useEffect, useState } from "react";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
-  const [count, setCount] = useState({ words: 0, mastered: 0 });
 
-  // ====== DATA (SAFE, DEFINED ONCE) ======
+  // ---- DATA (HOOK THIS TO BACKEND LATER) ----
   const totalWords = 34;
   const masteredWords = 0;
   const masteryPercent = Math.round((masteredWords / totalWords) * 100);
 
-  const strengthData = [
-    { label: "Very Weak", value: 34, color: "#ef4444" },
-    { label: "Weak", value: 0, color: "#f97316" },
-    { label: "Moderate", value: 0, color: "#eab308" },
-    { label: "Strong", value: 0, color: "#22c55e" }
+  const masteryTimeline = [
+    { day: "Day 1", value: 0 },
+    { day: "Day 2", value: 0 },
+    { day: "Day 3", value: 0 },
+    { day: "Day 4", value: 0 }
   ];
-
-  const revisionQueue = [
-    "Obscure", "Pragmatic", "Ambiguous", "Conundrum",
-    "Nuance", "Conduit", "Belies", "Interplay"
-  ];
-  // Mastery over time (mock for now – later replace with API)
-const masteryTimeline = [
-  { day: "Day 1", value: 0 },
-  { day: "Day 2", value: 0 },
-  { day: "Day 3", value: 0 },
-  { day: "Day 4", value: masteryPercent }
-]
-
-  // ====== COUNT-UP ANIMATION ======
-  useEffect(() => {
-    let w = 0;
-    let m = 0;
-    const interval = setInterval(() => {
-      if (w < totalWords) w++;
-      if (m < masteredWords) m++;
-      setCount({ words: w, mastered: m });
-      if (w >= totalWords && m >= masteredWords) clearInterval(interval);
-    }, 20);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Vocab Profile</h1>
       <p style={styles.subtitle}>Your vocabulary intelligence dashboard</p>
 
-      {/* ====== TABS ====== */}
+      {/* TABS */}
       <div style={styles.tabs}>
         {["overview", "strength", "discipline", "revision"].map(tab => (
           <button
@@ -62,76 +36,51 @@ const masteryTimeline = [
         ))}
       </div>
 
-      {/* ====== OVERVIEW ====== */}
-    {/* ====== OVERVIEW ====== */}
-{activeTab === "overview" && (
-  <>
-    {/* TOP KPI GRID */}
-    <div style={styles.grid}>
-      <StatCard title="Words Seen" value={count.words} />
-      <StatCard title="Mastered" value={count.mastered} />
-      <StatCard title="Overall Mastery" value={`${masteryPercent}%`} />
-    </div>
-
-    {/* TREND GRAPH */}
-    <div style={{ marginTop: 28 }}>
-      <MasteryOverTime data={masteryTimeline} />
-    </div>
-  </>
-)}
-
-      {/* ====== STRENGTH ====== */}
-      {activeTab === "strength" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Strength Distribution</h3>
-
-          {strengthData.map(item => (
-            <div key={item.label} style={{ marginBottom: 18 }}>
-              <div style={styles.strengthRow}>
-                <span>{item.label}</span>
-                <span>{item.value}</span>
-              </div>
-
-              <div style={styles.barBg}>
-                <div
-                  style={{
-                    ...styles.barFill,
-                    width: `${(item.value / totalWords) * 100}%`,
-                    background: item.color
-                  }}
-                />
-              </div>
+      {/* ================= OVERVIEW ================= */}
+      {activeTab === "overview" && (
+        <>
+          {/* HERO */}
+          <div style={styles.hero}>
+            <div>
+              <p style={styles.heroLabel}>OVERALL MASTERY</p>
+              <h1 style={styles.heroPercent}>{masteryPercent}%</h1>
+              <p style={styles.heroInsight}>
+                {masteredWords === 0
+                  ? `All ${totalWords} words currently need reinforcement`
+                  : `You have mastered ${masteredWords} words`}
+              </p>
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* ====== DISCIPLINE ====== */}
-      {activeTab === "discipline" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Practice Discipline</h3>
-          <p style={styles.empty}>
-            No practice yet — consistency unlocks mastery 🔥
-          </p>
-        </div>
-      )}
-
-      {/* ====== REVISION ====== */}
-      {activeTab === "revision" && (
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Revision Queue</h3>
-          <div style={styles.chips}>
-            {revisionQueue.map(word => (
-              <div key={word} style={styles.chip}>{word}</div>
-            ))}
+            {/* SINGLE RING ONLY */}
+            <MasteryRing percent={masteryPercent} />
           </div>
+
+          {/* STATS */}
+          <div style={styles.statGrid}>
+            <StatCard title="Words Seen" value={totalWords} />
+            <StatCard title="Mastered Words" value={masteredWords} />
+            <StatCard title="Needs Revision" value={totalWords - masteredWords} />
+          </div>
+
+          {/* LINE GRAPH */}
+          <div style={styles.graphCard}>
+            <h3 style={styles.cardTitle}>Mastery Over Time</h3>
+            <MasteryOverTime data={masteryTimeline} />
+          </div>
+        </>
+      )}
+
+      {/* ================= PLACEHOLDERS ================= */}
+      {activeTab !== "overview" && (
+        <div style={styles.placeholder}>
+          This section will activate as data grows.
         </div>
       )}
     </div>
   );
 }
 
-/* ====== COMPONENTS ====== */
+/* ---------- COMPONENTS ---------- */
 
 function StatCard({ title, value }) {
   return (
@@ -158,69 +107,77 @@ function MasteryRing({ percent }) {
 }
 
 function MasteryOverTime({ data }) {
-  const maxY = 100;
-  const width = 420;
-  const height = 160;
-  const padding = 30;
-
-  const points = data.map((d, i) => {
-    const x = padding + (i * (width - padding * 2)) / (data.length - 1);
-    const y = height - padding - (d.value / maxY) * (height - padding * 2);
-    return `${x},${y}`;
-  }).join(" ");
+  const max = Math.max(...data.map(d => d.value), 1);
 
   return (
-    <div style={styles.card}>
-      <h3 style={styles.cardTitle}>Mastery Over Time</h3>
+    <svg width="100%" height="120">
+      {/* AXIS */}
+      <line x1="40" y1="90" x2="95%" y2="90" stroke="#cbd5e1" />
 
-      <svg width="100%" viewBox={`0 0 ${width} ${height}`}>
-        {/* AXES */}
-        <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#e5e7eb" />
-        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#e5e7eb" />
+      {/* LINE */}
+      {data.map((point, i) => {
+        if (i === 0) return null;
+        const prev = data[i - 1];
 
-        {/* LINE */}
-        <polyline
-          fill="none"
-          stroke="#f97316"
-          strokeWidth="3"
-          points={points}
-        />
+        const x1 = 40 + (i - 1) * 120;
+        const y1 = 90 - (prev.value / max) * 60;
 
-        {/* DOTS */}
-        {data.map((d, i) => {
-          const x = padding + (i * (width - padding * 2)) / (data.length - 1);
-          const y = height - padding - (d.value / maxY) * (height - padding * 2);
-          return <circle key={i} cx={x} cy={y} r="4" fill="#f97316" />;
-        })}
-      </svg>
+        const x2 = 40 + i * 120;
+        const y2 = 90 - (point.value / max) * 60;
 
-      <p style={{ color: "#64748b", fontSize: 13 }}>
-        Tracks how your vocabulary mastery evolves with practice
-      </p>
-    </div>
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="#f97316"
+            strokeWidth="3"
+          />
+        );
+      })}
+
+      {/* DOTS */}
+      {data.map((point, i) => {
+        const x = 40 + i * 120;
+        const y = 90 - (point.value / max) * 60;
+
+        return (
+          <circle
+            key={i}
+            cx={x}
+            cy={y}
+            r="5"
+            fill="#f97316"
+          />
+        );
+      })}
+    </svg>
   );
 }
-/* ====== STYLES ====== */
+
+/* ---------- STYLES ---------- */
 
 const styles = {
   page: {
     padding: 32,
-    background: "#f8fafc",
+    background: "#f1f5f9",
     minHeight: "100vh"
   },
   title: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 800,
     color: "#0f172a"
   },
   subtitle: {
     color: "#475569",
-    marginBottom: 28
+    marginBottom: 24
   },
   tabs: {
     display: "flex",
     gap: 12,
-    marginBottom: 32
+    marginBottom: 28
   },
   tab: {
     padding: "10px 18px",
@@ -233,60 +190,47 @@ const styles = {
   tabActive: {
     background: "#f97316",
     color: "#fff",
-    borderColor: "#f97316",
-    boxShadow: "0 8px 20px rgba(249,115,22,.45)"
+    borderColor: "#f97316"
   },
 
   hero: {
+    background: "#fff",
+    borderRadius: 18,
+    padding: 28,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    background: "linear-gradient(135deg, #fff7ed, #ffffff)",
-    padding: 32,
-    borderRadius: 24,
-    boxShadow: "0 20px 40px rgba(249,115,22,.15)",
-    marginBottom: 32
+    marginBottom: 28
   },
   heroLabel: {
-    fontSize: 12,
-    letterSpacing: 1,
+    color: "#f97316",
     fontWeight: 700,
-    color: "#f97316"
+    letterSpacing: 1
   },
   heroPercent: {
-    fontSize: 64,
-    fontWeight: 900,
-    color: "#0f172a",
-    lineHeight: 1
+    fontSize: 56,
+    fontWeight: 900
   },
   heroInsight: {
-    marginTop: 8,
-    color: "#475569",
-    maxWidth: 300
+    color: "#475569"
   },
 
   statGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))",
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: 20,
-    marginBottom: 32
+    marginBottom: 28
   },
-
   card: {
     background: "#fff",
-    borderRadius: 20,
-    padding: 24,
-    boxShadow: "0 12px 30px rgba(0,0,0,.08)"
-  },
-  cardTitle: {
-    fontWeight: 700,
-    marginBottom: 16
+    borderRadius: 16,
+    padding: 20
   },
   statLabel: {
     color: "#64748b"
   },
   statValue: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: 800
   },
 
@@ -303,42 +247,24 @@ const styles = {
     justifyContent: "center"
   },
   ringText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 800
   },
 
-  strengthRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    fontSize: 14,
-    marginBottom: 6
+  graphCard: {
+    background: "#fff",
+    borderRadius: 18,
+    padding: 24
   },
-  barBg: {
-    height: 10,
-    borderRadius: 999,
-    background: "#e5e7eb"
-  },
-  barFill: {
-    height: "100%",
-    borderRadius: 999,
-    transition: "width .6s ease"
+  cardTitle: {
+    fontWeight: 700,
+    marginBottom: 12
   },
 
-  empty: {
-    color: "#64748b"
-  },
-
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: 10
-  },
-  chip: {
-    padding: "8px 14px",
-    borderRadius: 999,
-    background: "#fff7ed",
-    color: "#9a3412",
-    fontWeight: 600,
-    border: "1px solid #fed7aa"
+  placeholder: {
+    padding: 40,
+    color: "#64748b",
+    background: "#fff",
+    borderRadius: 16
   }
 };
