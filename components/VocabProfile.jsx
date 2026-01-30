@@ -347,7 +347,7 @@ const revisionWords = bank.filter(w => {
       
 /* ================= COMPONENTS ================= */
 
-function StatCard({ title, value }) {
+function StatCard({ title, value,accent }) {
   return (
     <div style={styles.card}>
       <p style={styles.statLabel}>{title}</p>
