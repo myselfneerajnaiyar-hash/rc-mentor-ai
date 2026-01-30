@@ -146,12 +146,27 @@ const revisionWords = bank.filter(w => {
 {activeTab === "strength" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Strength Distribution</h3>
+    <p style={styles.helperText}>
+This shows how well you remember words based on past test accuracy.
+</p>
 
     {[
-      { label: "Strong", value: strength.strong, color: "#22c55e" },
-      { label: "Medium", value: strength.medium, color: "#eab308" },
-      { label: "Weak", value: strength.weak, color: "#ef4444" },
-    ].map(row => (
+  {
+    label: "Strong (Exam-ready words)",
+    value: strength.strong,
+    color: "#22c55e",
+  },
+  {
+    label: "Medium (Need revision)",
+    value: strength.medium,
+    color: "#eab308",
+  },
+  {
+    label: "Weak (High priority)",
+    value: strength.weak,
+    color: "#ef4444",
+  },
+].map(row => (
       <div key={row.label} style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>{row.label}</span>
