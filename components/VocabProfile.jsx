@@ -170,7 +170,26 @@ This shows how well you remember words based on past test accuracy.
 ].map(row => (
       <div key={row.label} style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>{row.label}</span>
+         <span style={{ display: "flex", gap: 8, alignItems: "center" }}>
+  {row.label}
+
+  {row.label === "Weak" && row.value > 0 && (
+    <button
+      onClick={() => setShowWeakWords(s => !s)}
+      style={{
+        fontSize: 12,
+        padding: "2px 8px",
+        borderRadius: 6,
+        border: "1px solid #ef4444",
+        background: "#fff",
+        color: "#ef4444",
+        cursor: "pointer",
+      }}
+    >
+      {showWeakWords ? "Hide" : "View"}
+    </button>
+  )}
+</span>
           <span>{row.value}</span>
         </div>
         <div style={styles.barBg}>
@@ -187,6 +206,39 @@ This shows how well you remember words based on past test accuracy.
     <p style={styles.helperText}>
 Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
 </p>
+   {showWeakWords && (
+  <div style={{ marginTop: 16 }}>
+    {bank.filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4).length === 0 ? (
+      <p style={{ color: "#16a34a" }}>
+        🎉 No weak words right now. Great job!
+      </p>
+    ) : (
+    <h4 style={{ marginBottom: 8 }}>Weak Words (Revise First)</h4>
+
+    {bank
+      .filter(w => {
+        if (!w.attempts) return false;
+        return (w.correctCount / w.attempts) < 0.4;
+      })
+      .map(w => (
+        <div
+          key={w.word}
+          style={{
+            padding: "8px 12px",
+            borderRadius: 8,
+            border: "1px solid #fee2e2",
+            background: "#fff7f7",
+            marginBottom: 6,
+          }}
+        >
+          <b>{w.word}</b>
+          <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>
+            {w.correctCount}/{w.attempts} correct
+          </span>
+        </div>
+      ))}
+  </div>
+)}
   </div>
 )}
       {activeTab === "discipline" && (
