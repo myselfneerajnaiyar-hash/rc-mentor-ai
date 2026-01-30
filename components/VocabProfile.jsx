@@ -90,7 +90,7 @@ export default function VocabProfile() {
       {/* RING */}
       <div style={styles.ringWrap}>
         <div style={styles.ring}>
-          <span style={styles.ringText}>{overallMastery}%</span>
+         <span style={styles.ringText}>{masteryPercent}%</span>
         </div>
         <p style={styles.ringLabel}>Overall Mastery</p>
       </div>
