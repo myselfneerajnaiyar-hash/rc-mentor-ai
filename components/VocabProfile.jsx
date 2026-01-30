@@ -66,29 +66,54 @@ export default function VocabProfile() {
           </div>
         )}
 
-        {activeTab === "strength" && (
-          <div style={styles.card}>
-            <h3 style={styles.cardTitle}>Strength Distribution</h3>
-            {strengthData.map(s => (
-              <div key={s.label} style={{ marginBottom: 14 }}>
-                <div style={styles.strengthRow}>
-                  <span>{s.label}</span>
-                  <span>{s.value}</span>
-                </div>
-                <div style={styles.barBg}>
-                  <div
-                    style={{
-                      ...styles.barFill,
-                      width: `${(s.value / totalWords) * 100}%`,
-                      background: s.color
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* ================= OVERVIEW ================= */}
+{activeTab === "overview" && (
+  <div style={styles.overviewWrap}>
 
+    {/* HERO CARD */}
+    <div style={styles.heroCard}>
+      <div>
+        <h2 style={styles.heroTitle}>Your Vocabulary Reality Check</h2>
+        <p style={styles.heroSub}>
+          You’ve encountered <b>{totalWords}</b> words so far.
+        </p>
+
+        <div style={styles.heroInsight}>
+          {masteredWords === 0 ? (
+            <span>⚠️ All {totalWords} words still need reinforcement</span>
+          ) : (
+            <span>🔥 You’ve mastered {masteredWords} words — keep going</span>
+          )}
+        </div>
+      </div>
+
+      {/* RING */}
+      <div style={styles.ringWrap}>
+        <div style={styles.ring}>
+          <span style={styles.ringText}>{overallMastery}%</span>
+        </div>
+        <p style={styles.ringLabel}>Overall Mastery</p>
+      </div>
+    </div>
+
+    {/* SECONDARY STATS */}
+    <div style={styles.statGrid}>
+      <div style={styles.statCard}>
+        <p className="label">Words Seen</p>
+        <h2>{totalWords}</h2>
+      </div>
+      <div style={styles.statCard}>
+        <p className="label">Mastered</p>
+        <h2>{masteredWords}</h2>
+      </div>
+      <div style={styles.statCard}>
+        <p className="label">Needs Revision</p>
+        <h2>{totalWords - masteredWords}</h2>
+      </div>
+    </div>
+
+  </div>
+)}
         {activeTab === "discipline" && (
           <div style={styles.card}>
             <h3 style={styles.cardTitle}>Practice Discipline</h3>
