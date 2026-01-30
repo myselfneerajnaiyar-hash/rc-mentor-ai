@@ -115,7 +115,7 @@ function StatCard({ title, value }) {
 }
 
 function MasteryOverTime({ data }) {
-  const max = Math.max(...data.map(d => d.value), 1);
+  const max = Math.max(...data.map(d => d.accuracy), 1);
 
   return (
     <svg width="100%" height="130">
@@ -126,9 +126,9 @@ function MasteryOverTime({ data }) {
         const prev = data[i - 1];
 
         const x1 = 40 + (i - 1) * 120;
-        const y1 = 100 - (prev.value / max) * 60;
+        const y1 = 90 - (prev.accuracy / max) * 60;
         const x2 = 40 + i * 120;
-        const y2 = 100 - (p.value / max) * 60;
+        const y2 = 90 - (p.accuracy / max) * 60;
 
         return (
           <line
@@ -145,7 +145,7 @@ function MasteryOverTime({ data }) {
 
       {data.map((p, i) => {
         const x = 40 + i * 120;
-        const y = 100 - (p.value / max) * 60;
+        const y = 90 - (p.accuracy / max) * 60;
 
         return (
           <circle key={i} cx={x} cy={y} r="5" fill="#f97316" />
