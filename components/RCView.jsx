@@ -523,7 +523,15 @@ return (
       ].map(tab => (
         <button
           key={tab.key}
-          onClick={() => setRcTab(tab.key)}
+          onClick={() => {
+  setRcTab(tab.key);
+
+  if (tab.key === "generate") {
+    setShowGenerator(true);
+  } else {
+    setShowGenerator(false);
+  }
+}}
           style={{
             padding: "8px 14px",
             borderRadius: 6,
