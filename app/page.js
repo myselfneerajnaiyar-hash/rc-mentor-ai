@@ -8,6 +8,7 @@ import SpeedGym from "../components/SpeedGym";
 import SpeedDashboard from "../components/SpeedDashboard";
 import SpeedContainer from "../components/SpeedContainer";
 import VocabLab from "../components/VocabLab";
+import CATArenaLanding from "./cat-arena/CATArenaLanding";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -571,7 +572,18 @@ return (
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
-    {view === "cat" && <div style={{ padding: 40 }}>CAT Arena (soon)</div>}
+    {view === "cat" && (
+  <CATArenaLanding
+    onStartRC={(testId) => {
+      console.log("Start RC Test:", testId);
+      // later → navigate to CAT RC runner
+    }}
+    onStartVocab={(testId) => {
+      console.log("Start Vocab Test:", testId);
+      // later → vocab test runner
+    }}
+  />
+)}
   </main>
 );
 }
