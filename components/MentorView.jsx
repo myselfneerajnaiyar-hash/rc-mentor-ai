@@ -42,20 +42,7 @@ export default function MentorView({
           Split Passage
         </button>
 
-        <button
-          onClick={() => setShowGenerator(true)}
-          style={{
-            padding: "10px 16px",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 8,
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          Generate New Passage
-        </button>
+       
       </div>
     </div>
   );
