@@ -533,16 +533,16 @@ return (
   }
 }}
           style={{
-            padding: "8px 14px",
-            borderRadius: 6,
-            border: "none",
-            fontWeight: 600,
-            cursor: "pointer",
-            background:
-              rcTab === tab.key ? "#2563eb" : "transparent",
-            color:
-              rcTab === tab.key ? "#fff" : "#374151",
-          }}
+  padding: "8px 14px",
+  borderRadius: 6,
+  border: rcTab === tab.key
+    ? "1px solid #2563eb"
+    : "1px solid #d1d5db",
+  fontWeight: 600,
+  cursor: "pointer",
+  background: rcTab === tab.key ? "#2563eb" : "#ffffff",
+  color: rcTab === tab.key ? "#fff" : "#374151",
+}}
         >
           {tab.label}
         </button>
