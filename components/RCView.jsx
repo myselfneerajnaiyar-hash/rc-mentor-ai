@@ -504,65 +504,7 @@ return (
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
   <Navbar view={view} setView={setView} />
-        <h1
-          style={{ cursor: "pointer", margin: 0 }}
-          onClick={() => {
-            setIsAdaptive(false);
-            setParas([]);
-            setText("");
-            setIndex(0);
-            setData(null);
-            setFeedback("");
-            setMode("idle");
-            setGeneratedRC(null);
-            setTestQuestions([]);
-            setTestAnswers({});
-            setResult(null);
-            setShowGenerator(false);
-            setPhase("mentor");
-          }}
-        >
-          RC Mentor
-        </h1>
-
-        <div style={{ display: "flex", gap: 12 }}>
-          <button
-            onClick={() => {
-              setIsAdaptive(false);
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("mentor");
-            }}
-          >
-            Home
-          </button>
-
-          <button
-            onClick={() => {
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("profile");
-            }}
-          >
-            RC Profile
-          </button>
-
-          <button
-            onClick={() => {
-              setParas([]);
-              setShowGenerator(false);
-              setPhase("vocab");
-            }}
-            style={{
-              background: "#fde68a",
-              border: "1px solid #f59e0b",
-              color: "#92400e",
-              fontWeight: 600,
-            }}
-          >
-            Vocabulary
-          </button>
-        </div>
+       
       </div>
 
   {view === "rc" && (
