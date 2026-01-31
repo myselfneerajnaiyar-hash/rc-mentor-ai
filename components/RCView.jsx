@@ -560,12 +560,11 @@ return (
   paras.length === 0 &&
   phase === "mentor" &&
   rcMode !== "plan" && (
-    <MentorView
-      text={text}
-      setText={setText}
-      splitPassage={splitPassage}
-      setShowGenerator={setShowGenerator}
-    />
+   <MentorView
+  text={text}
+  setText={setText}
+  splitPassage={splitPassage}
+/>
 )}
   {paras.length > 0 && phase === "mentor" && (
   <div style={{ marginTop: 20, background: "#fff", padding: 20, borderRadius: 12 }}>
