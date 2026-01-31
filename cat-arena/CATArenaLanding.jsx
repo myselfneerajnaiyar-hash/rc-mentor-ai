@@ -24,6 +24,11 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
     difficulty: "Exam Focused",
   }));
 
+  const COLORS = {
+    rc: "#2563eb",      // Blue
+    vocab: "#f97316",   // Orange
+  };
+
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 16px" }}>
       {/* Header */}
@@ -35,22 +40,16 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
       </div>
 
       {/* Mode Toggle */}
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          marginBottom: 24,
-        }}
-      >
+      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
         <button
           onClick={() => setMode("rc")}
-          style={tabStyle(mode === "rc")}
+          style={tabStyle(mode === "rc", COLORS.rc)}
         >
           CAT RC Sectionals
         </button>
         <button
           onClick={() => setMode("vocab")}
-          style={tabStyle(mode === "vocab")}
+          style={tabStyle(mode === "vocab", COLORS.vocab)}
         >
           Vocabulary Sectionals
         </button>
@@ -77,18 +76,11 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
           >
             <h4 style={{ marginBottom: 8 }}>{test.title}</h4>
 
-            <p style={metaStyle}>
-              ⏱ {test.time}
-            </p>
-
-            <p style={metaStyle}>
-              📊 {test.questions} questions
-            </p>
+            <p style={metaStyle}>⏱ {test.time}</p>
+            <p style={metaStyle}>📊 {test.questions} questions</p>
 
             {mode === "rc" && (
-              <p style={metaStyle}>
-                📘 {test.passages} passages
-              </p>
+              <p style={metaStyle}>📘 {test.passages} passages</p>
             )}
 
             <p style={{ ...metaStyle, marginBottom: 12 }}>
@@ -101,7 +93,7 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
                   ? onStartRC(test.id)
                   : onStartVocab(test.id)
               }
-              style={primaryButton}
+              style={primaryButton(COLORS[mode])}
             >
               Start Test
             </button>
@@ -136,28 +128,28 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
 
 /* ---------- styles ---------- */
 
-function tabStyle(active) {
+function tabStyle(active, color) {
   return {
     padding: "10px 18px",
     borderRadius: 8,
-    border: active ? "2px solid #2563eb" : "1px solid #cbd5f5",
-    background: active ? "#2563eb" : "#f8fafc",
+    border: active ? 2px solid ${color} : "1px solid #cbd5f5",
+    background: active ? color : "#f8fafc",
     color: active ? "#fff" : "#1f2937",
     fontWeight: 600,
     cursor: "pointer",
   };
 }
 
-const primaryButton = {
+const primaryButton = (color) => ({
   width: "100%",
   padding: "10px 14px",
   borderRadius: 8,
   border: "none",
-  background: "#2563eb",
+  background: color,
   color: "#fff",
   fontWeight: 600,
   cursor: "pointer",
-};
+});
 
 const secondaryButton = {
   padding: "10px 14px",
