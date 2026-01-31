@@ -505,9 +505,45 @@ return (
  
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
+    {view === "rc" && (
+  <div style={{ marginTop: 16, marginBottom: 16 }}>
+    <div
+      style={{
+        display: "flex",
+        gap: 12,
+        borderBottom: "1px solid #e5e7eb",
+        paddingBottom: 8,
+      }}
+    >
+      {[
+        { key: "paste", label: "Paste your passage" },
+        { key: "generate", label: "Generate Passage" },
+        { key: "profile", label: "RC Profile" },
+      ].map(tab => (
+        <button
+          key={tab.key}
+          onClick={() => setRcTab(tab.key)}
+          style={{
+            padding: "8px 14px",
+            borderRadius: 6,
+            border: "none",
+            fontWeight: 600,
+            cursor: "pointer",
+            background:
+              rcTab === tab.key ? "#2563eb" : "transparent",
+            color:
+              rcTab === tab.key ? "#fff" : "#374151",
+          }}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
  
        
-      </div>
+   </div>
 
   {view === "rc" && (
   <>
