@@ -664,7 +664,7 @@ return (
     )}
   </div>
 )}
-   {showGenerator && rcMode !=="plan" && (
+   {rcTab === "generate" && showGenerator && rcMode !=="plan" && (
   <div
     style={{
       marginTop: 16,
