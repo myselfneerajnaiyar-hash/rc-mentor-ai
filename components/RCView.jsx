@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
 import Navbar from "./Navbar";
+const [rcTab, setRcTab] = useState("paste");
+// "paste" | "generate" | "profile"
 
 export default function RCView({view,setView }) {
   const [text, setText] = useState("");
