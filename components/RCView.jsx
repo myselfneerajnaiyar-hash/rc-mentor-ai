@@ -872,13 +872,15 @@ return (
     <button onClick={startTest}>Start Test</button>
   </div>
 )}
-    {phase === "profile" && (
+   
+    {rcTab === "profile" && (
   <RCProfile
     activeTab={activeProfileTab}
     setActiveTab={setActiveProfileTab}
-    onBack={() => setPhase("mentor")}
+    onBack={() => setRcTab("paste")}
   />
 )}
+    
   {phase === "test" && testQuestions.length > 0 && (
   <div style={{ marginTop: 20 }}>
     <div
