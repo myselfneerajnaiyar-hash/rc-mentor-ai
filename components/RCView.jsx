@@ -503,7 +503,7 @@ return (
  
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
-  <Navbar view={view} setView={setView} />
+ 
        
       </div>
 
