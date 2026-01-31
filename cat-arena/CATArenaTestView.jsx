@@ -18,35 +18,50 @@ export default function CATArenaTestView() {
     currentPassage.questions[currentQIndex % 4];
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "32% 38% 30%",
-        gap: 16,
-        minHeight: "80vh",
-      }}
-    >
-      {/* LEFT — Passage */}
-      <PassagePanel passage={currentPassage} />
-
-      {/* CENTER — Question */}
-      <QuestionPanel
-        question={currentQuestion}
-        qNumber={currentQIndex + 1}
-        onNext={() =>
-          setCurrentQIndex(i => Math.min(i + 1, 15))
-        }
-        onPrev={() =>
-          setCurrentQIndex(i => Math.max(i - 1, 0))
-        }
+    <>
+      {/* ===== TOP HEADER (CAT STYLE) ===== */}
+      <CATArenaHeader
+        title="CAT RC Sectional"
+        timeLeft="30:00"
+        onExit={() => {
+          if (confirm("Exit test? Your progress will be lost.")) {
+            window.location.reload(); // TEMP
+          }
+        }}
       />
 
-      {/* RIGHT — Palette */}
-      <QuestionPalette
-        total={16}
-        current={currentQIndex}
-        onJump={setCurrentQIndex}
-      />
-    </div>
+      {/* ===== MAIN TEST GRID ===== */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "32% 38% 30%",
+          gap: 16,
+          minHeight: "80vh",
+          padding: "16px",
+        }}
+      >
+        {/* LEFT — Passage */}
+        <PassagePanel passage={currentPassage} />
+
+        {/* CENTER — Question */}
+        <QuestionPanel
+          question={currentQuestion}
+          qNumber={currentQIndex + 1}
+          onNext={() =>
+            setCurrentQIndex(i => Math.min(i + 1, 15))
+          }
+          onPrev={() =>
+            setCurrentQIndex(i => Math.max(i - 1, 0))
+          }
+        />
+
+        {/* RIGHT — Palette */}
+        <QuestionPalette
+          total={16}
+          current={currentQIndex}
+          onJump={setCurrentQIndex}
+        />
+      </div>
+    </>
   );
 }
