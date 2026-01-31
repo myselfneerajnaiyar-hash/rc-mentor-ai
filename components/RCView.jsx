@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
+import RCProfile from "./RCProfile";
 
 export default function RCView({view,setView }) {
   const [text, setText] = useState("");
@@ -1172,7 +1173,6 @@ return (
     </button>
   </div>
 )}
-  </div>
     </div>
 
   );
