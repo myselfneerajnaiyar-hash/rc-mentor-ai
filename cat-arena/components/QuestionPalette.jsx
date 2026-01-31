@@ -1,41 +1,14 @@
 "use client";
 
 export default function QuestionPalette({
-  totalQuestions,
-  currentIndex,
-  questionStatus,
+  total,
+  current,
+  states,
   onJump,
 }) {
-  function getStyle(status, isCurrent) {
-    let bg = "#e5e7eb"; // unvisited
-    let color = "#1f2937";
-
-    if (status === "visited") bg = "#ffffff";
-    if (status === "answered") bg = "#22c55e";
-    if (status === "review") bg = "#7c3aed";
-
-    return {
-      width: 40,
-      height: 40,
-      borderRadius: 6,
-      border: isCurrent ? "3px solid #2563eb" : "1px solid #cbd5e1",
-      background: bg,
-      color: status === "review" ? "#fff" : color,
-      fontWeight: 700,
-      cursor: "pointer",
-    };
-  }
-
   return (
-    <div
-      style={{
-        padding: 16,
-        borderLeft: "1px solid #e5e7eb",
-        height: "calc(100vh - 120px)",
-        overflowY: "auto",
-      }}
-    >
-      <h4 style={{ marginBottom: 12 }}>Question Palette</h4>
+    <div>
+      <h4 style={{ marginBottom: 12 }}>Questions</h4>
 
       <div
         style={{
@@ -44,26 +17,50 @@ export default function QuestionPalette({
           gap: 10,
         }}
       >
-        {Array.from({ length: totalQuestions }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => onJump(i)}
-            style={getStyle(
-              questionStatus[i],
-              i === currentIndex
-            )}
-          >
-            {i + 1}
-          </button>
-        ))}
+        {Array.from({ length: total }).map((_, i) => {
+          const state = states[i];
+
+          let bg = "#e5e7eb"; // unattempted
+          let color = "#111827";
+          let border = "none";
+
+          if (state === 1) bg = "#22c55e"; // answered
+          if (state === 2) bg = "#a855f7"; // marked
+          if (state === 3) {
+            bg = "#22c55e";
+            border = "3px solid #a855f7";
+          }
+
+          if (i === current) {
+            border = "3px solid #2563eb";
+          }
+
+          return (
+            <button
+              key={i}
+              onClick={() => onJump(i)}
+              style={{
+                height: 44,
+                borderRadius: 8,
+                fontWeight: 700,
+                background: bg,
+                color,
+                border,
+                cursor: "pointer",
+              }}
+            >
+              {i + 1}
+            </button>
+          );
+        })}
       </div>
 
       {/* Legend */}
-      <div style={{ marginTop: 20, fontSize: 13, color: "#475569" }}>
-        <p><b>Legend</b></p>
-        <p>⬜ Visited</p>
-        <p style={{ color: "#22c55e" }}>🟩 Answered</p>
-        <p style={{ color: "#7c3aed" }}>🟪 Marked for Review</p>
+      <div style={{ marginTop: 16, fontSize: 13 }}>
+        <p>⚪ Unattempted</p>
+        <p>🟢 Answered</p>
+        <p>🟣 Marked for Review</p>
+        <p>🟢🟣 Answered + Marked</p>
       </div>
     </div>
   );
