@@ -42,6 +42,7 @@ export default function Page() {
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setView] = useState("home"); 
 // home | rc | vocab | speed | cat
+  const [activeRCTest, setActiveRCTest] = useState(null);
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
