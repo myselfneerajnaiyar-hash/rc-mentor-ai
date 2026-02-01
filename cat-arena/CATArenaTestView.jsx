@@ -5,6 +5,7 @@ import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import { sampleRCTest } from "./data/sampleRCTest";
+import CATTimer from "./components/CATTimer";
 
 export default function CATArenaTestView() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -53,6 +54,40 @@ export default function CATArenaTestView() {
         minHeight: "80vh",
       }}
     >
+
+{/* ===== TOP BAR ===== */}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "12px 16px",
+    borderBottom: "1px solid #e5e7eb",
+  }}
+>
+  <div style={{ fontWeight: 600 }}>
+    CAT RC Sectional
+  </div>
+
+  <CATTimer
+    durationMinutes={30}
+    onTimeUp={() => alert("Time Up!")}
+  />
+
+  <button
+    style={{
+      border: "1px solid #dc2626",
+      color: "#dc2626",
+      padding: "6px 12px",
+      borderRadius: 4,
+      background: "transparent",
+      cursor: "pointer",
+    }}
+  >
+    Exit Test
+  </button>
+</div>
+      
       {/* LEFT: Passage */}
       <PassagePanel
         passages={sampleRCTest.passages}
