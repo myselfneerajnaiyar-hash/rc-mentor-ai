@@ -40,6 +40,8 @@ export default function CATArenaTestView() {
       qs[currentQuestionIndex] === 2 ? 3 : 1;
     setQuestionStates(qs);
   }
+  const [mode, setMode] = useState("test"); 
+// "test" | "review"
 
   function handleMark() {
     const qs = [...questionStates];
@@ -60,9 +62,9 @@ export default function CATArenaTestView() {
   }
 
   function handleSubmitTest() {
-    setShowSubmit(false);
-    alert("✅ Test submitted successfully");
-  }
+  setShowSubmit(false);
+  setMode("review"); // 🔥 THIS IS THE KEY
+}
 
   return (
     <>
@@ -70,7 +72,9 @@ export default function CATArenaTestView() {
       <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-        <CATTimer durationMinutes={30} />
+       {mode === "test" && (
+  <CATTimer durationMinutes={30} />
+)}
 
         <button style={exitBtn}>Exit Test</button>
       </div>
@@ -89,6 +93,7 @@ export default function CATArenaTestView() {
           onAnswer={handleAnswer}
           onMark={handleMark}
           onClear={handleClear}
+          mode={mode}
           onPrev={() =>
             setCurrentQuestionIndex(i => Math.max(i - 1, 0))
           }
