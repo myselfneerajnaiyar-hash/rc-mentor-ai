@@ -53,7 +53,17 @@ Rules:
     temperature: 0.7,
   });
 
-  return NextResponse.json({
-    raw: completion.choices[0].message.content,
-  });
+ const content = completion.choices[0].message.content;
+
+let data;
+try {
+  data = JSON.parse(content);
+} catch (err) {
+  return NextResponse.json(
+    { error: "Invalid JSON from OpenAI", raw: content },
+    { status: 500 }
+  );
+}
+
+return NextResponse.json(data);
 }
