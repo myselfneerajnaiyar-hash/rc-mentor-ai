@@ -55,24 +55,28 @@ export default function CATArenaTestView() {
       }}
     >
 
-{/* ===== TOP BAR ===== */}
+{/* ===== FIXED HEADER ===== */}
 <div
   style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 56,
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
-    padding: "12px 16px",
+    justifyContent: "space-between",
+    padding: "0 16px",
+    background: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
+    zIndex: 100,
   }}
 >
   <div style={{ fontWeight: 600 }}>
     CAT RC Sectional
   </div>
 
-  <CATTimer
-    durationMinutes={30}
-    onTimeUp={() => alert("Time Up!")}
-  />
+  <CATTimer durationMinutes={30} />
 
   <button
     style={{
