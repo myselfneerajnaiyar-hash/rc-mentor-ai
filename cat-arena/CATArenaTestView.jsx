@@ -4,39 +4,60 @@ import { useEffect, useState } from "react";
 import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
-
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 
 export default function CATArenaTestView({ testData }) {
- const passages = testData?.passages || [];
-const QUESTIONS_PER_PASSAGE = 4;
+  /* ===================== SAFETY ===================== */
+  if (!testData || !testData.passages) {
+    return (
+      <div style={{ padding: 40 }}>
+        <h3>No test loaded</h3>
+        <p>Please start a CAT RC test again.</p>
+      </div>
+    );
+  }
 
-const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
+  /* ===================== CONSTANTS ===================== */
+  const passages = testData.passages;
+  const QUESTIONS_PER_PASSAGE = 4;
+  const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
+  /* ===================== STATE ===================== */
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(totalQuestions).fill(null));
-  const [questionStates, setQuestionStates] = useState(
-    Array(totalQuestions).fill(0)
+  const [answers, setAnswers] = useState([]);
+  const [questionStates, setQuestionStates] = useState([]);
+  const [showSubmit, setShowSubmit] = useState(false);
+  const [mode, setMode] = useState("test"); // test | review
+
+  /* ===================== RESET ON LOAD ===================== */
+  useEffect(() => {
+    if (!totalQuestions) return;
+
+    setAnswers(Array(totalQuestions).fill(null));
+    setQuestionStates(Array(totalQuestions).fill(0));
+    setCurrentQuestionIndex(0);
+
+    // hard reset timer
+    sessionStorage.removeItem("cat-timer");
+  }, [totalQuestions]);
+
+  /* ===================== DERIVED ===================== */
+  const passageIndex = Math.floor(
+    currentQuestionIndex / QUESTIONS_PER_PASSAGE
   );
 
-  const [showSubmit, setShowSubmit] = useState(false);
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
 
-  // 🔁 RESET TIMER ON HARD REFRESH
-  useEffect(() => {
-    sessionStorage.removeItem("cat-timer");
-  }, []);
+  const currentPassage = passages[passageIndex];
+  const currentQuestion =
+    currentPassage.questions[questionIndexInPassage];
 
-  // CAT LOGIC
-  const passageIndex = Math.floor(
-  currentQuestionIndex / QUESTIONS_PER_PASSAGE
-);
-
-const currentPassage = passages[passageIndex];
-const currentQuestion =
-  currentPassage?.questions[currentQuestionIndex % QUESTIONS_PER_PASSAGE];
-
+  /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
+    if (mode === "review") return;
+
     const a = [...answers];
     a[currentQuestionIndex] = optionIndex;
     setAnswers(a);
@@ -46,8 +67,6 @@ const currentQuestion =
       qs[currentQuestionIndex] === 2 ? 3 : 1;
     setQuestionStates(qs);
   }
-  const [mode, setMode] = useState("test"); 
-// "test" | "review"
 
   function handleMark() {
     const qs = [...questionStates];
@@ -57,6 +76,8 @@ const currentQuestion =
   }
 
   function handleClear() {
+    if (mode === "review") return;
+
     const a = [...answers];
     a[currentQuestionIndex] = null;
     setAnswers(a);
@@ -68,19 +89,18 @@ const currentQuestion =
   }
 
   function handleSubmitTest() {
-  setShowSubmit(false);
-  setMode("review"); // 🔥 THIS IS THE KEY
-}
+    setShowSubmit(false);
+    setMode("review"); // 🔥 KEY SWITCH
+  }
 
+  /* ===================== RENDER ===================== */
   return (
     <>
       {/* ================= HEADER ================= */}
       <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-       {mode === "test" && (
-  <CATTimer durationMinutes={30} />
-)}
+        {mode === "test" && <CATTimer durationMinutes={30} />}
 
         <button style={exitBtn}>Exit Test</button>
       </div>
@@ -88,7 +108,7 @@ const currentQuestion =
       {/* ================= MAIN GRID ================= */}
       <div style={gridStyle}>
         <PassagePanel
-          passages={sampleRCTest.passages}
+          passages={passages}
           currentQuestionIndex={currentQuestionIndex}
         />
 
@@ -96,10 +116,11 @@ const currentQuestion =
           question={currentQuestion}
           qNumber={currentQuestionIndex + 1}
           selectedOption={answers[currentQuestionIndex]}
+          correctIndex={currentQuestion.correctIndex}
+          mode={mode}
           onAnswer={handleAnswer}
           onMark={handleMark}
           onClear={handleClear}
-          mode={mode}
           onPrev={() =>
             setCurrentQuestionIndex(i => Math.max(i - 1, 0))
           }
@@ -136,7 +157,7 @@ const currentQuestion =
         </button>
       </div>
 
-      {/* ================= MODAL (OUTSIDE GRID) ================= */}
+      {/* ================= SUBMIT MODAL ================= */}
       <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
