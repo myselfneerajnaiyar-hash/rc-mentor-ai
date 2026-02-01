@@ -20,7 +20,7 @@ export default function QuestionPanel({
         {question.options.map((opt, idx) => (
           <button
             key={idx}
-            onClick={() => onAnswer(idx)}   {/* ✅ FIX */}
+            onClick={() => onAnswer(idx)}
             style={{
               textAlign: "left",
               padding: "10px 12px",
