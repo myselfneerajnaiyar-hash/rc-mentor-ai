@@ -12,10 +12,9 @@ export default function QuestionPanel({
 
   return (
     <div>
-      <h4 style={{ marginBottom: 12 }}>
-        Q{qNumber}. {question.stem}
-      </h4>
-
+     <h4 style={{ marginBottom: 12 }}>
+  Q{qNumber}. {question.question || question.text || question.prompt}
+</h4>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => (
           <button
