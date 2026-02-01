@@ -28,10 +28,13 @@ const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
   }, []);
 
   // CAT LOGIC
-  const passageIndex = Math.floor(currentQuestionIndex / 4);
-  const currentPassage = sampleRCTest.passages[passageIndex];
-  const currentQuestion =
-    currentPassage.questions[currentQuestionIndex % 4];
+  const passageIndex = Math.floor(
+  currentQuestionIndex / QUESTIONS_PER_PASSAGE
+);
+
+const currentPassage = passages[passageIndex];
+const currentQuestion =
+  currentPassage?.questions[currentQuestionIndex % QUESTIONS_PER_PASSAGE];
 
   function handleAnswer(optionIndex) {
     const a = [...answers];
