@@ -34,7 +34,7 @@ export default function QuestionPanel({
           >
             <input
               type="radio"
-              name={q-${qNumber}}
+              name={`q-${qNumber}`}
               onChange={() => onAnswer(idx)}
             />
             <span>
