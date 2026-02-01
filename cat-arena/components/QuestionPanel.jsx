@@ -50,6 +50,40 @@ export default function QuestionPanel({
           </label>
         ))}
       </div>
+      {/* ===== ACTION BUTTONS ===== */}
+<div
+  style={{
+    display: "flex",
+    gap: 10,
+    marginTop: 20,
+    justifyContent: "flex-end",
+  }}
+>
+  <button
+    onClick={onPrev}
+    style={{
+      padding: "6px 12px",
+      border: "1px solid #9ca3af",
+      background: "#fff",
+      cursor: "pointer",
+    }}
+  >
+    Previous
+  </button>
+
+  <button
+    onClick={onNext}
+    style={{
+      padding: "6px 16px",
+      background: "#16a34a", // green
+      color: "#fff",
+      border: "none",
+      cursor: "pointer",
+    }}
+  >
+    Save & Next
+  </button>
+</div>
    
     </div>
   );
