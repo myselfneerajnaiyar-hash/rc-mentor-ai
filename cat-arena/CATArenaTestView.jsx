@@ -1,139 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
+import { sampleRCTest } from "./data/sampleRCTest";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
-import { sampleRCTest } from "./data/sampleRCTest";
 
 export default function CATArenaTestView() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showSubmit, setShowSubmit] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
   const totalQuestions = sampleRCTest.passages.length * 4;
 
-  const [answers, setAnswers] = useState(
-    Array(totalQuestions).fill(null)
-  );
-
-  // 0 = not visited, 1 = answered, 2 = marked, 3 = answered + marked
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState(Array(totalQuestions).fill(null));
   const [questionStates, setQuestionStates] = useState(
     Array(totalQuestions).fill(0)
   );
 
-  // CAT logic: 4 questions per passage
+  const [showSubmit, setShowSubmit] = useState(false);
+
+  // 🔁 RESET TIMER ON HARD REFRESH
+  useEffect(() => {
+    sessionStorage.removeItem("cat-timer");
+  }, []);
+
+  // CAT LOGIC
   const passageIndex = Math.floor(currentQuestionIndex / 4);
   const currentPassage = sampleRCTest.passages[passageIndex];
   const currentQuestion =
     currentPassage.questions[currentQuestionIndex % 4];
 
   function handleAnswer(optionIndex) {
-    setAnswers(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] = optionIndex;
-      return copy;
-    });
+    const a = [...answers];
+    a[currentQuestionIndex] = optionIndex;
+    setAnswers(a);
 
-    setQuestionStates(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] =
-        copy[currentQuestionIndex] === 2 ? 3 : 1;
-      return copy;
-    });
+    const qs = [...questionStates];
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 2 ? 3 : 1;
+    setQuestionStates(qs);
   }
 
   function handleMark() {
-    setQuestionStates(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] =
-        copy[currentQuestionIndex] === 1 ? 3 : 2;
-      return copy;
-    });
+    const qs = [...questionStates];
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 1 ? 3 : 2;
+    setQuestionStates(qs);
   }
 
   function handleClear() {
-    setAnswers(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] = null;
-      return copy;
-    });
+    const a = [...answers];
+    a[currentQuestionIndex] = null;
+    setAnswers(a);
 
-    setQuestionStates(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] =
-        copy[currentQuestionIndex] === 3 ? 2 : 0;
-      return copy;
-    });
+    const qs = [...questionStates];
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 3 ? 2 : 0;
+    setQuestionStates(qs);
   }
 
   function handleSubmitTest() {
-    setSubmitted(true);
     setShowSubmit(false);
-    alert("Test submitted successfully!");
+    alert("✅ Test submitted successfully");
   }
 
   return (
     <>
-      {/* ===== FIXED HEADER ===== */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 56,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 16px",
-          background: "#ffffff",
-          borderBottom: "1px solid #e5e7eb",
-          zIndex: 1000,
-        }}
-      >
+      {/* ================= HEADER ================= */}
+      <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-        <CATTimer
-          durationMinutes={30}
-          onTimeUp={() => setShowSubmit(true)}
-        />
+        <CATTimer durationMinutes={30} />
 
-        <button
-          style={{
-            border: "1px solid #dc2626",
-            color: "#dc2626",
-            padding: "6px 12px",
-            borderRadius: 4,
-            background: "transparent",
-            cursor: "pointer",
-          }}
-        >
-          Exit Test
-        </button>
+        <button style={exitBtn}>Exit Test</button>
       </div>
 
-      {/* ===== MAIN CONTENT ===== */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "32% 38% 30%",
-          paddingTop: 56,
-          paddingBottom: 64,
-          minHeight: "100vh",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        {/* LEFT */}
+      {/* ================= MAIN GRID ================= */}
+      <div style={gridStyle}>
         <PassagePanel
           passages={sampleRCTest.passages}
           currentQuestionIndex={currentQuestionIndex}
         />
 
-        {/* CENTER */}
         <QuestionPanel
           question={currentQuestion}
           qNumber={currentQuestionIndex + 1}
@@ -151,7 +99,6 @@ export default function CATArenaTestView() {
           }
         />
 
-        {/* RIGHT */}
         <QuestionPalette
           totalQuestions={totalQuestions}
           currentQuestion={currentQuestionIndex}
@@ -160,60 +107,93 @@ export default function CATArenaTestView() {
         />
       </div>
 
-      {/* ===== FIXED FOOTER ===== */}
-     <div
-  style={{
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 64,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-    background: "#f9fafb",
-    borderTop: "1px solid #e5e7eb",
-    zIndex: 10000,
-    pointerEvents: "auto",
-  }}
->
-        <button
-          onClick={handleMark}
-          style={{ padding: "6px 12px" }}
-        >
+      {/* ================= FOOTER ================= */}
+      <div style={footerStyle}>
+        <button style={ghostBtn} onClick={handleMark}>
           Mark for Review
         </button>
 
-        <button
-          onClick={handleClear}
-          style={{ padding: "6px 12px" }}
-        >
+        <button style={ghostBtn} onClick={handleClear}>
           Clear Response
         </button>
 
         <button
+          style={submitBtn}
           onClick={() => setShowSubmit(true)}
-          style={{
-            padding: "6px 14px",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 4,
-            cursor: "pointer",
-          }}
         >
           Submit Test
         </button>
       </div>
 
-      {/* ===== SUBMIT MODAL ===== */}
-      {showSubmit && (
-        <SubmitModal
-          onConfirm={handleSubmitTest}
-          onCancel={() => setShowSubmit(false)}
-        />
-      )}
+      {/* ================= MODAL (OUTSIDE GRID) ================= */}
+      <SubmitModal
+        open={showSubmit}
+        onCancel={() => setShowSubmit(false)}
+        onConfirm={handleSubmitTest}
+      />
     </>
   );
 }
+
+/* ================= STYLES ================= */
+
+const headerStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  height: 56,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "0 16px",
+  background: "#fff",
+  borderBottom: "1px solid #e5e7eb",
+  zIndex: 1000,
+};
+
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "32% 38% 30%",
+  paddingTop: 56,
+  paddingBottom: 64,
+  minHeight: "100vh",
+};
+
+const footerStyle = {
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: 56,
+  display: "flex",
+  justifyContent: "center",
+  gap: 12,
+  alignItems: "center",
+  background: "#fff",
+  borderTop: "1px solid #e5e7eb",
+  zIndex: 1000,
+};
+
+const exitBtn = {
+  border: "1px solid #dc2626",
+  color: "#dc2626",
+  padding: "6px 12px",
+  background: "transparent",
+  cursor: "pointer",
+};
+
+const ghostBtn = {
+  padding: "6px 12px",
+  border: "1px solid #9ca3af",
+  background: "#fff",
+  cursor: "pointer",
+};
+
+const submitBtn = {
+  padding: "6px 14px",
+  background: "#2563eb",
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+};
