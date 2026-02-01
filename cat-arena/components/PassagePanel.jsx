@@ -1,11 +1,36 @@
 "use client";
 
-export default function PassagePanel({ passage }) {
+export default function PassagePanel({ passages, currentQuestionIndex }) {
+  if (!passages || passages.length === 0) return null;
+
+  // CAT logic: 4 questions per passage
+  const passageIndex = Math.floor(currentQuestionIndex / 4);
+  const passage = passages[passageIndex];
+
   if (!passage) return null;
 
   return (
-    <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.6 }}>
-      {passage.text}
+    <div
+      style={{
+        height: "calc(100vh - 110px)",
+        overflowY: "auto",
+        padding: "16px",
+        borderRight: "1px solid #e5e7eb",
+        background: "#ffffff",
+      }}
+    >
+      <h3 style={{ marginBottom: 12 }}>{passage.title}</h3>
+
+      <div
+        style={{
+          whiteSpace: "pre-wrap",
+          lineHeight: 1.6,
+          fontSize: 15,
+          color: "#111827",
+        }}
+      >
+        {passage.text}
+      </div>
     </div>
   );
 }
