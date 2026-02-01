@@ -1,79 +1,44 @@
 import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
-export async function POST() {
-  try {
-    const prompt = `
-You are a CAT exam RC expert.
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-Generate ONE CAT-level Reading Comprehension test.
+export async function POST(req) {
+  const { difficulty = "CAT", passages = 1 } = await req.json();
 
-PASSAGE:
-- 350–450 words
-- Abstract academic tone
-- Topic: philosophy, sociology, linguistics, science & society
-- Clear argument + counterargument
+  const prompt = `
+Generate ${passages} CAT-level Reading Comprehension passage(s).
 
-QUESTIONS:
-- Exactly 4 questions
-- Types: primary purpose, inference, tone, implication
-- 4 options each
-- One correct option
+For each passage:
+- 250–350 words
+- Abstract, analytical tone (CAT VARC level)
+- Topics: philosophy, sociology, science, history, economics
 
-VOCAB:
-- Extract 5 difficult words with meaning
+For EACH passage generate:
+- passage_id
+- title
+- text
+- 4 questions
 
-Return STRICT JSON only in this format:
+Each question must have:
+- stem
+- 4 options
+- correctIndex (0-3)
+- detailed explanation
 
-{
-  "passages": [
-    {
-      "title": "Passage 1",
-      "text": "full passage text",
-      "questions": [
-        {
-          "question": "Question text",
-          "options": ["A", "B", "C", "D"],
-          "correctIndex": 1,
-          "explanation": "Detailed CAT-style explanation"
-        }
-      ]
-    }
-  ],
-  "vocabulary": [
-    {
-      "word": "example",
-      "meaning": "meaning",
-      "context": "sentence"
-    }
-  ]
-}
+Also return:
+- vocabulary: list of difficult words with meanings
 `;
 
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.6,
-        }),
-      }
-    );
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.7,
+  });
 
-    const data = await response.json();
-    const content = data.choices[0].message.content;
-
-    return NextResponse.json(JSON.parse(content));
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json(
-      { error: "CAT RC generation failed" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({
+    raw: completion.choices[0].message.content,
+  });
 }
