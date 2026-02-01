@@ -73,23 +73,28 @@ export default function CATArenaTestView() {
   }}
 >
   <div style={{ fontWeight: 600 }}>
-    CAT RC Sectional
-  </div>
+  CAT RC Sectional
+</div>
 
-  <CATTimer durationMinutes={30} />
+<CATTimer
+  durationMinutes={30}
+  onTimeUp={() => {
+    alert("Time up! Test will be submitted.");
+  }}
+/>
 
-  <button
-    style={{
-      border: "1px solid #dc2626",
-      color: "#dc2626",
-      padding: "6px 12px",
-      borderRadius: 4,
-      background: "transparent",
-      cursor: "pointer",
-    }}
-  >
-    Exit Test
-  </button>
+<button
+  style={{
+    border: "1px solid #dc2626",
+    color: "#dc2626",
+    padding: "6px 12px",
+    borderRadius: 4,
+    background: "transparent",
+    cursor: "pointer",
+  }}
+>
+  Exit Test
+</button>
 </div>
       
       {/* LEFT: Passage */}
