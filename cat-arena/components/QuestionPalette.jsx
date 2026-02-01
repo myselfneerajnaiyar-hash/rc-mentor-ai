@@ -3,7 +3,7 @@
 export default function QuestionPalette({
   total,
   current,
-  states,
+  states = [],
   onJump,
 }) {
   return (
@@ -18,34 +18,28 @@ export default function QuestionPalette({
         }}
       >
         {Array.from({ length: total }).map((_, i) => {
-          const state = states[i];
+          const state = states[i] || 0;
 
           let bg = "#e5e7eb"; // unattempted
-          let color = "#111827";
-          let border = "none";
-
           if (state === 1) bg = "#22c55e"; // answered
           if (state === 2) bg = "#a855f7"; // marked
-          if (state === 3) {
-            bg = "#22c55e";
-            border = "3px solid #a855f7";
-          }
+          if (state === 3) bg = "#16a34a"; // answered + marked
 
-          if (i === current) {
-            border = "3px solid #2563eb";
-          }
+          const isCurrent = i === current;
 
           return (
             <button
               key={i}
-              onClick={() => onJump(i)}
+              onClick={() => onJump(i)}   // ✅ THIS IS THE FIX
               style={{
-                height: 44,
-                borderRadius: 8,
-                fontWeight: 700,
+                padding: "10px 0",
+                borderRadius: 6,
+                border: isCurrent
+                  ? "2px solid #2563eb"
+                  : "1px solid #cbd5e1",
                 background: bg,
-                color,
-                border,
+                color: "#000",
+                fontWeight: 600,
                 cursor: "pointer",
               }}
             >
@@ -57,7 +51,7 @@ export default function QuestionPalette({
 
       {/* Legend */}
       <div style={{ marginTop: 16, fontSize: 13 }}>
-        <p>⚪ Unattempted</p>
+        <p>⬜ Unattempted</p>
         <p>🟢 Answered</p>
         <p>🟣 Marked for Review</p>
         <p>🟢🟣 Answered + Marked</p>
