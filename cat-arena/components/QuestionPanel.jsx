@@ -3,63 +3,46 @@
 export default function QuestionPanel({
   question,
   qNumber,
+  selectedOption,
   onAnswer,
   onMark,
+  onClear,
   onNext,
   onPrev,
 }) {
   if (!question) return null;
 
   return (
-    <div style={{ padding: "12px 16px" }}>
-      {/* QUESTION NUMBER */}
-      <div
-        style={{
-          fontWeight: 600,
-          marginBottom: 10,
-          fontSize: 15,
-        }}
-      >
+    <div style={{ padding: "8px 16px" }}>
+      {/* Question No */}
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>
         Question No. {qNumber}
       </div>
 
-      {/* QUESTION TEXT — CRITICAL FIX */}
-      <div
-        style={{
-          border: "1px solid #d1d5db",
-          padding: "12px",
-          marginBottom: 16,
-          borderRadius: 4,
-          background: "#ffffff",
-          lineHeight: 1.6,
-          fontSize: 14,
-          color: "#111827",
-        }}
-      >
-        {question.stem || question.question || question.text}
+      {/* Question Text */}
+      <div style={{ marginBottom: 16, lineHeight: 1.6 }}>
+        {question.question}
       </div>
 
-      {/* OPTIONS */}
+      {/* Options */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => (
           <label
             key={idx}
             style={{
               display: "flex",
-              alignItems: "flex-start",
               gap: 10,
-              padding: "10px",
-              border: "1px solid #e5e7eb",
+              padding: "8px 10px",
+              border: "1px solid #d1d5db",
               borderRadius: 4,
               cursor: "pointer",
-              background: "#fff",
             }}
           >
             <input
               type="radio"
               name={`q-${qNumber}`}
+              checked={selectedOption === idx}
               onChange={() => onAnswer(idx)}
-              style={{ marginTop: 4 }}
             />
             <span>
               <strong>{String.fromCharCode(65 + idx)}.</strong> {opt}
@@ -68,9 +51,10 @@ export default function QuestionPanel({
         ))}
       </div>
 
-      {/* ACTION BUTTONS */}
-      <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+      {/* Buttons */}
+      <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
         <button onClick={onMark}>Mark for Review</button>
+        <button onClick={onClear}>Clear Response</button>
         <button onClick={onPrev}>Previous</button>
         <button onClick={onNext}>Save & Next</button>
       </div>
