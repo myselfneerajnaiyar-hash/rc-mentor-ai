@@ -11,31 +11,31 @@ export default function QuestionPanel({
   if (!question) return null;
 
   return (
-    <div style={{ padding: "8px 16px" }}>
-      {/* ===== QUESTION NUMBER ===== */}
+    <div style={{ padding: "16px" }}>
+      {/* QUESTION NUMBER */}
       <div style={{ fontWeight: 600, marginBottom: 8 }}>
         Question No. {qNumber}
       </div>
 
-      {/* ===== QUESTION STEM ===== */}
+      {/* QUESTION TEXT */}
       <div
         style={{
           marginBottom: 16,
           lineHeight: 1.6,
+          fontSize: 15,
           color: "#111827",
         }}
       >
-        {question.stem || question.question ||question.text}
+        {question.stem}
       </div>
 
-      {/* ===== OPTIONS ===== */}
+      {/* OPTIONS */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => (
           <label
             key={idx}
             style={{
               display: "flex",
-              alignItems: "center",
               gap: 10,
               padding: "8px 10px",
               border: "1px solid #d1d5db",
@@ -45,7 +45,7 @@ export default function QuestionPanel({
           >
             <input
               type="radio"
-              name="option"
+              name={q-${qNumber}}
               onChange={() => onAnswer(idx)}
             />
             <span>
@@ -55,7 +55,7 @@ export default function QuestionPanel({
         ))}
       </div>
 
-      {/* ===== ACTION BUTTONS ===== */}
+      {/* ACTION BUTTONS */}
       <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
         <button onClick={onMark}>Mark for Review</button>
         <button onClick={onPrev}>Previous</button>
