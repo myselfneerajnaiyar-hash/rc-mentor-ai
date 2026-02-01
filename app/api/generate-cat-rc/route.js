@@ -7,30 +7,45 @@ const openai = new OpenAI({
 
 export async function POST(req) {
   const { difficulty = "CAT", passages = 1 } = await req.json();
+const prompt = `
+You are an exam content generator for CAT VARC.
 
-  const prompt = `
-Generate ${passages} CAT-level Reading Comprehension passage(s).
+Return ONLY valid JSON. No markdown. No explanations outside JSON.
 
-For each passage:
-- 250–350 words
-- Abstract, analytical tone (CAT VARC level)
-- Topics: philosophy, sociology, science, history, economics
+Schema:
+{
+  "passages": [
+    {
+      "id": "string",
+      "title": "string",
+      "text": "string",
+      "questions": [
+        {
+          "id": "string",
+          "stem": "string",
+          "options": ["string", "string", "string", "string"],
+          "correctIndex": number,
+          "explanation": "string"
+        }
+      ]
+    }
+  ],
+  "vocabulary": [
+    {
+      "word": "string",
+      "meaning": "string"
+    }
+  ]
+}
 
-For EACH passage generate:
-- passage_id
-- title
-- text
-- 4 questions
-
-Each question must have:
-- stem
-- 4 options
-- correctIndex (0-3)
-- detailed explanation
-
-Also return:
-- vocabulary: list of difficult words with meanings
+Rules:
+- CAT-level difficulty
+- Abstract topics
+- 4 questions per passage
+- CorrectIndex must be 0–3
+- Explanation must justify why correct and why others are wrong
 `;
+  
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
