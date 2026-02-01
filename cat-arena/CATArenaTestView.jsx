@@ -13,28 +13,19 @@ export default function CATArenaTestView() {
 
   const totalQuestions = sampleRCTest.passages.length * 4;
 
-  // 0 = not visited
-  // 1 = answered
-  // 2 = marked
-  // 3 = answered + marked
+  const [answers, setAnswers] = useState(Array(totalQuestions).fill(null));
   const [questionStates, setQuestionStates] = useState(
     Array(totalQuestions).fill(0)
   );
 
-  const [answers, setAnswers] = useState(
-    Array(totalQuestions).fill(null)
-  );
-
   const [showSubmit, setShowSubmit] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
-  // CAT rule: 4 questions per passage
   const passageIndex = Math.floor(currentQuestionIndex / 4);
   const currentPassage = sampleRCTest.passages[passageIndex];
   const currentQuestion =
     currentPassage.questions[currentQuestionIndex % 4];
 
-  /* ================== HANDLERS ================== */
+  /* ---------- HANDLERS ---------- */
 
   function handleAnswer(optionIndex) {
     setAnswers(prev => {
@@ -76,13 +67,11 @@ export default function CATArenaTestView() {
   }
 
   function handleSubmitTest() {
-    setSubmitted(true);
     setShowSubmit(false);
     alert("Test submitted successfully!");
-    // later → route to results
   }
 
-  /* ================== UI ================== */
+  /* ---------- UI ---------- */
 
   return (
     <>
@@ -98,52 +87,38 @@ export default function CATArenaTestView() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 16px",
-          background: "#ffffff",
+          background: "#fff",
           borderBottom: "1px solid #e5e7eb",
-          zIndex: 100,
+          zIndex: 1000,
         }}
       >
-        <div style={{ fontWeight: 600 }}>
-          CAT RC Sectional
-        </div>
+        <strong>CAT RC Sectional</strong>
 
         <CATTimer
           durationMinutes={30}
           onTimeUp={() => setShowSubmit(true)}
         />
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button
-            onClick={() => setShowSubmit(true)}
-            style={{
-              padding: "6px 14px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
-          >
-            Submit Test
-          </button>
-
-          <button
-            style={{
-              border: "1px solid #dc2626",
-              color: "#dc2626",
-              padding: "6px 12px",
-              borderRadius: 4,
-              background: "transparent",
-              cursor: "pointer",
-            }}
-          >
-            Exit Test
-          </button>
-        </div>
+        <button
+          style={{
+            border: "1px solid #dc2626",
+            color: "#dc2626",
+            padding: "6px 12px",
+            background: "transparent",
+            cursor: "pointer",
+          }}
+        >
+          Exit Test
+        </button>
       </div>
 
-      {/* ===== MAIN GRID (OFFSET FOR HEADER) ===== */}
-      <div style={{ marginTop: 56 }}>
+      {/* ===== MAIN CONTENT ===== */}
+      <div
+        style={{
+          paddingTop: 56,
+          paddingBottom: 64,
+        }}
+      >
         <div
           style={{
             display: "grid",
@@ -151,31 +126,18 @@ export default function CATArenaTestView() {
             minHeight: "80vh",
           }}
         >
-          {/* LEFT: Passage */}
           <PassagePanel
             passages={sampleRCTest.passages}
             currentQuestionIndex={currentQuestionIndex}
           />
 
-          {/* CENTER: Question */}
           <QuestionPanel
             question={currentQuestion}
             qNumber={currentQuestionIndex + 1}
             selectedOption={answers[currentQuestionIndex]}
             onAnswer={handleAnswer}
-            onMark={handleMark}
-            onClear={handleClear}
-            onPrev={() =>
-              setCurrentQuestionIndex(i => Math.max(i - 1, 0))
-            }
-            onNext={() =>
-              setCurrentQuestionIndex(i =>
-                Math.min(i + 1, totalQuestions - 1)
-              )
-            }
           />
 
-          {/* RIGHT: Palette */}
           <QuestionPalette
             totalQuestions={totalQuestions}
             currentQuestion={currentQuestionIndex}
@@ -185,12 +147,53 @@ export default function CATArenaTestView() {
         </div>
       </div>
 
-      {/* ===== SUBMIT MODAL ===== */}
+      {/* ===== FIXED FOOTER (CAT STYLE) ===== */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 64,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 10,
+          background: "#f9fafb",
+          borderTop: "1px solid #e5e7eb",
+          zIndex: 1000,
+        }}
+      >
+        <button onClick={handleMark}>Mark for Review</button>
+        <button onClick={handleClear}>Clear Response</button>
+        <button
+          onClick={() =>
+            setCurrentQuestionIndex(i => Math.max(i - 1, 0))
+          }
+        >
+          Previous
+        </button>
+        <button
+          onClick={() =>
+            setCurrentQuestionIndex(i =>
+              Math.min(i + 1, totalQuestions - 1)
+            )
+          }
+        >
+          Save & Next
+        </button>
+        <button
+          style={{ background: "#2563eb", color: "#fff" }}
+          onClick={() => setShowSubmit(true)}
+        >
+          Submit Test
+        </button>
+      </div>
+
       {showSubmit && (
         <SubmitModal
-          questionStates={questionStates}
+          onConfirm={handleSubmitTest}
           onCancel={() => setShowSubmit(false)}
-          onSubmit={handleSubmitTest}
         />
       )}
     </>
