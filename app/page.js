@@ -575,15 +575,20 @@ return (
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
-    {view === "cat" && (
+
+{view === "cat-rc-test" && (
+  <CATArenaTestView />
+)}
+  
+{view === "cat" && (
   <CATArenaLanding
     onStartRC={(testId) => {
       console.log("Start RC Test:", testId);
-      // later → navigate to CAT RC runner
+      setActiveRCTest(testId);   // store which test
+      setView("cat-rc-test");    // 🚀 MOVE TO TEST VIEW
     }}
     onStartVocab={(testId) => {
       console.log("Start Vocab Test:", testId);
-      // later → vocab test runner
     }}
   />
 )}
