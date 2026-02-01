@@ -8,7 +8,7 @@ import { sampleRCTest } from "./data/sampleRCTest";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 
-export default function CATArenaTestView() {
+export default function CATArenaTestView({ testData }) {
   const totalQuestions = sampleRCTest.passages.length * 4;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
