@@ -5,7 +5,7 @@ import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import { sampleRCTest } from "./data/sampleRCTest";
-import CATArenaHeader from "@/components/cat/CATArenaHeader";
+import CATArenaHeader from "../components/cat/CATArenaHeader";
 
 export default function CATArenaTestView() {
  const [currentQIndex, setCurrentQIndex] = useState(0);
