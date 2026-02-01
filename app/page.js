@@ -9,6 +9,8 @@ import SpeedDashboard from "../components/SpeedDashboard";
 import SpeedContainer from "../components/SpeedContainer";
 import VocabLab from "../components/VocabLab";
 import CATArenaLanding from "../cat-arena/CATArenaLanding";
+import CATArenaTestView from "../cat-arena/CATArenaTestView";
+
 
 export default function Page() {
   const [text, setText] = useState("");
