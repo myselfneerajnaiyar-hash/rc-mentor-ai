@@ -12,35 +12,35 @@ export default function QuestionPanel({
 
   return (
     <div>
-     <h4 style={{ marginBottom: 12 }}>
-  Q{qNumber}. {question.question || question.text || question.prompt}
-</h4>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {question.options.map((opt, idx) => (
-          <button
-            key={idx}
-            onClick={() => onAnswer(idx)}
-            style={{
-              textAlign: "left",
-              padding: "10px 12px",
-              borderRadius: 6,
-              border: "1px solid #cbd5e1",
-              background: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            <strong>{String.fromCharCode(65 + idx)}.</strong> {opt}
-          </button>
-        ))}
+      <div style={{ marginBottom: 12 }}>
+        <strong>Question No. {qNumber}</strong>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          marginTop: 16,
-        }}
-      >
+      <div style={{ marginBottom: 16 }}>
+        {question.stem}
+      </div>
+
+      {question.options.map((opt, idx) => (
+        <label
+          key={idx}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: 8,
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="radio"
+            name={`q-${qNumber}`}
+            onChange={() => onAnswer(idx)}
+            style={{ marginRight: 8 }}
+          />
+          {opt}
+        </label>
+      ))}
+
+      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
         <button onClick={onMark}>Mark for Review</button>
         <button onClick={onPrev}>Previous</button>
         <button onClick={onNext}>Save & Next</button>
