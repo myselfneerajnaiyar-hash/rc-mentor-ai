@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
-import { sampleRCTest } from "./data/sampleRCTest";
+
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 
 export default function CATArenaTestView({ testData }) {
-  const totalQuestions = sampleRCTest.passages.length * 4;
+ const passages = testData?.passages || [];
+const QUESTIONS_PER_PASSAGE = 4;
+
+const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(totalQuestions).fill(null));
