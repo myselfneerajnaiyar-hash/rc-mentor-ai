@@ -575,8 +575,8 @@ return (
 
     {view === "vocab" && <VocabLab />}
 
-{view === "cat-rc-test" && (
-  <CATArenaTestView />
+{view === "cat-rc-test" && activeRCTest && (
+  <CATArenaTestView testData={activeRCTest} />
 )}
   
 {view === "cat" && (
