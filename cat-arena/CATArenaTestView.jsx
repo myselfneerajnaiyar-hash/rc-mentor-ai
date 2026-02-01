@@ -129,20 +129,22 @@ export default function CATArenaTestView() {
       />
 
       {/* CENTER: Question */}
-      <QuestionPanel
-        question={currentQuestion}
-        qNumber={currentQuestionIndex + 1}
-        onAnswer={handleAnswer}
-        onMark={handleMark}
-        onPrev={() =>
-          setCurrentQuestionIndex(i => Math.max(i - 1, 0))
-        }
-        onNext={() =>
-          setCurrentQuestionIndex(i =>
-            Math.min(i + 1, totalQuestions - 1)
-          )
-        }
-      />
+     <QuestionPanel
+  question={currentQuestion}
+  qNumber={currentQuestionIndex + 1}
+  selectedOption={answers[currentQuestionIndex]}
+  onAnswer={handleAnswer}
+  onMark={handleMark}
+  onClear={handleClear}
+  onPrev={() =>
+    setCurrentQuestionIndex(i => Math.max(i - 1, 0))
+  }
+  onNext={() =>
+    setCurrentQuestionIndex(i =>
+      Math.min(i + 1, totalQuestions - 1)
+    )
+  }
+/>
 
       {/* RIGHT: Palette */}
       <QuestionPalette
