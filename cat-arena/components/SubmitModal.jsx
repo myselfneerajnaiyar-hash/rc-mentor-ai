@@ -9,7 +9,8 @@ export default function SubmitModal({ open, onCancel, onConfirm }) {
         <h3 style={{ marginBottom: 12 }}>Submit Test?</h3>
 
         <p style={{ marginBottom: 16, color: "#374151" }}>
-          Are you sure you want to submit the test? <br />
+          Are you sure you want to submit the test?
+          <br />
           You will not be able to change your answers after submission.
         </p>
 
@@ -36,7 +37,8 @@ const overlayStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  zIndex: 200,
+  zIndex: 20000,              // 🔥 VERY IMPORTANT
+  pointerEvents: "auto",      // 🔥 ENSURES CLICK WORKS
 };
 
 const modalStyle = {
