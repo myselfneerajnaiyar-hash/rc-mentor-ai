@@ -50,14 +50,7 @@ export default function QuestionPanel({
           </label>
         ))}
       </div>
-
-      {/* Buttons */}
-      <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-        <button onClick={onMark}>Mark for Review</button>
-        <button onClick={onClear}>Clear Response</button>
-        <button onClick={onPrev}>Previous</button>
-        <button onClick={onNext}>Save & Next</button>
-      </div>
+   
     </div>
   );
 }
