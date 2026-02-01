@@ -62,36 +62,49 @@ export default function CATRCTestView({ testData }) {
   }
 
   // ---------- UI ----------
-  return (
+ return (
+  <>
+    <CATArenaHeader
+      title="CAT RC Sectional"
+      timeLeft="30:00"
+      onExit={() => {
+        if (confirm("Exit test?")) window.location.reload();
+      }}
+    />
+
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1.2fr 1fr 0.7fr",
-        height: "100vh",
+        gridTemplateColumns: "38% 37% 25%",
+        height: "calc(100vh - 64px)",
       }}
     >
-      {/* LEFT: PASSAGE */}
-      <PassagePanel text={currentPassage.text} />
+      {/* LEFT — PASSAGE */}
+      <div style={{ padding: 16, overflowY: "auto", borderRight: "1px solid #d1d5db" }}>
+        <PassagePanel passage={currentPassage} />
+      </div>
 
-      {/* MIDDLE: QUESTION */}
-      <QuestionPanel
-        question={currentQuestion}
-        qNumber={currentQ + 1}
-        selected={answers[currentQ]}
-        onSelect={opt =>
-          setAnswers(a => ({ ...a, [currentQ]: opt }))
-        }
-        onSave={saveAndNext}
-        onMark={markForReview}
-      />
+      {/* MIDDLE — QUESTION */}
+      <div style={{ padding: 16 }}>
+        <QuestionPanel
+          question={currentQuestion}
+          qNumber={currentQIndex + 1}
+          onAnswer={handleAnswer}
+          onMark={handleMark}
+          onNext={handleNext}
+          onPrev={handlePrev}
+        />
+      </div>
 
-      {/* RIGHT: PALETTE */}
-      <QuestionPalette
-        totalQuestions={totalQuestions}
-        currentIndex={currentQ}
-        questionStatus={status}
-        onJump={visitQuestion}
-      />
+      {/* RIGHT — PALETTE */}
+      <div style={{ padding: 12, borderLeft: "1px solid #d1d5db" }}>
+        <QuestionPalette
+          total={16}
+          current={currentQIndex}
+          states={questionStates}
+          onJump={setCurrentQIndex}
+        />
+      </div>
     </div>
-  );
-}
+  </>
+);
