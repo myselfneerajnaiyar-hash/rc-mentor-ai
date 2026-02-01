@@ -1,264 +1,278 @@
-// cat-arena/data/sampleRCTest.js
-
 export const sampleRCTest = {
-  id: "CAT-RC-01",
-  title: "CAT RC Sectional Test 1",
-  timeLimit: 30 * 60, // seconds
-
   passages: [
     {
-      id: "P1",
+      id: 1,
       title: "Passage 1",
       text: `
-The history of scientific progress is not linear. Periods of intense discovery
-are often followed by long phases of consolidation, skepticism, and even
-regression. This cyclical pattern challenges the popular notion that knowledge
-advances steadily and inevitably over time.
+Language evolution is shaped by a complex interaction of social, cognitive,
+and historical forces. While traditional linguistics focused on structural
+rules, modern theorists emphasize usage, context, and power. Languages do
+not merely evolve organically; they are often engineered through institutions,
+education systems, and political dominance.
+
+Colonial history offers a clear illustration. European languages spread not
+because of inherent superiority, but due to administrative enforcement and
+economic advantage. Indigenous languages were marginalised, often surviving
+only in informal or domestic contexts. This imbalance continues today in the
+digital sphere, where global platforms privilege a small subset of languages.
+
+However, resistance persists. Communities adapt dominant languages, infusing
+them with local idioms and meanings. New dialects emerge, challenging the
+notion of linguistic purity. Thus, language evolution reflects not just
+communication needs, but power struggles and identity formation.
       `,
       questions: [
         {
-          id: "Q1",
-          prompt:
+          id: 1,
+          question:
             "The primary purpose of the passage is to:",
           options: [
-            "criticize the scientific community for stagnation",
-            "challenge a common assumption about progress",
-            "describe major scientific discoveries",
-            "compare science with other disciplines",
+            "argue that language change is entirely organic",
+            "explain how language evolution is influenced by power structures",
+            "criticise traditional linguistic theory",
+            "highlight the superiority of indigenous languages",
           ],
           correctIndex: 1,
-          type: "main-idea",
         },
         {
-          id: "Q2",
-          prompt:
-            "The author would most likely agree that periods of regression:",
+          id: 2,
+          question:
+            "According to the author, colonial languages spread mainly because of:",
           options: [
-            "are unnecessary",
-            "halt all intellectual growth",
-            "are part of a broader cycle",
-            "occur only in science",
+            "their structural simplicity",
+            "cultural admiration by indigenous populations",
+            "administrative and economic dominance",
+            "technological superiority",
           ],
           correctIndex: 2,
-          type: "inference",
         },
         {
-          id: "Q3",
-          prompt:
-            "Which of the following best describes the tone of the passage?",
+          id: 3,
+          question:
+            "The author’s attitude towards linguistic purity can best be described as:",
           options: [
-            "Optimistic",
-            "Critical",
-            "Analytical",
-            "Dismissive",
+            "supportive",
+            "indifferent",
+            "critical",
+            "uncertain",
           ],
           correctIndex: 2,
-          type: "tone",
         },
         {
-          id: "Q4",
-          prompt:
-            "The passage implies that the idea of steady progress is:",
+          id: 4,
+          question:
+            "Which of the following would the author most likely agree with?",
           options: [
-            "universally accepted",
-            "historically accurate",
-            "overly simplistic",
-            "scientifically proven",
+            "Languages must be preserved in their original form",
+            "Language change reflects social identity",
+            "Digital platforms eliminate linguistic inequality",
+            "Institutional forces no longer affect language",
           ],
-          correctIndex: 2,
-          type: "inference",
+          correctIndex: 1,
         },
       ],
     },
 
     {
-      id: "P2",
+      id: 2,
       title: "Passage 2",
       text: `
-Urban planning often reflects the political and economic priorities of its time.
-Cities designed primarily for efficiency may sacrifice community spaces, while
-those emphasizing aesthetics may overlook accessibility and equity.
+Economic growth has traditionally been measured through aggregate indicators
+such as GDP. While useful, such metrics fail to capture distributional
+inequality and non-market contributions. Critics argue that an exclusive focus
+on growth obscures issues of sustainability and wellbeing.
+
+Alternative frameworks propose multidimensional indices incorporating health,
+education, and environmental stability. These models challenge policymakers
+to reconsider priorities. However, they face resistance due to measurement
+complexity and political inertia.
+
+Despite limitations, the debate has shifted. Growth is no longer viewed as
+an end in itself, but as a means to broader societal goals.
       `,
       questions: [
         {
-          id: "Q5",
-          prompt:
-            "The passage mainly discusses:",
+          id: 5,
+          question:
+            "The passage primarily criticises GDP because it:",
           options: [
-            "urban decay",
-            "transport systems",
-            "trade-offs in city design",
-            "architectural history",
-          ],
-          correctIndex: 2,
-          type: "main-idea",
-        },
-        {
-          id: "Q6",
-          prompt:
-            "Which concern is associated with efficiency-focused cities?",
-          options: [
-            "Lack of beauty",
-            "Loss of community spaces",
-            "High population density",
-            "Poor governance",
+            "is difficult to calculate accurately",
+            "ignores inequality and wellbeing",
+            "discourages economic growth",
+            "focuses too much on sustainability",
           ],
           correctIndex: 1,
-          type: "detail",
         },
         {
-          id: "Q7",
-          prompt:
-            "The author’s attitude toward urban planning can best be described as:",
+          id: 6,
+          question:
+            "Alternative economic frameworks are resisted mainly due to:",
           options: [
-            "Uncritical",
-            "Balanced",
-            "Dismissive",
-            "Enthusiastic",
+            "lack of academic support",
+            "political and practical challenges",
+            "public opposition",
+            "their focus on non-market factors",
           ],
           correctIndex: 1,
-          type: "tone",
         },
         {
-          id: "Q8",
-          prompt:
-            "The passage suggests that ideal urban planning should:",
+          id: 7,
+          question:
+            "The author’s view on economic growth can best be summarised as:",
           options: [
-            "prioritize efficiency",
-            "focus on aesthetics",
-            "balance multiple concerns",
-            "ignore political factors",
+            "essential above all else",
+            "irrelevant in modern economies",
+            "important but not sufficient",
+            "harmful to societal wellbeing",
           ],
           correctIndex: 2,
-          type: "inference",
+        },
+        {
+          id: 8,
+          question:
+            "Which shift does the author note in economic thinking?",
+          options: [
+            "From sustainability to growth",
+            "From growth as a goal to growth as a tool",
+            "From inequality to efficiency",
+            "From policy to theory",
+          ],
+          correctIndex: 1,
         },
       ],
     },
 
     {
-      id: "P3",
+      id: 3,
       title: "Passage 3",
       text: `
-Language evolution is shaped by both internal linguistic mechanisms and external
-social influences. While grammar may change slowly, vocabulary often adapts rapidly
-to cultural and technological shifts.
+Technological automation has reignited debates on employment. Early predictions
+of mass unemployment have not fully materialised, but job transformation is
+undeniable. Routine tasks are increasingly automated, while demand grows for
+roles requiring creativity and interpersonal skills.
+
+Education systems struggle to keep pace. Curricula often lag behind industry
+needs, producing skill mismatches. Lifelong learning is proposed as a solution,
+yet access remains unequal.
+
+Automation thus presents both opportunity and risk, contingent on institutional
+response rather than technological inevitability.
       `,
       questions: [
         {
-          id: "Q9",
-          prompt:
-            "The passage distinguishes vocabulary from grammar by noting that:",
+          id: 9,
+          question:
+            "The author suggests that automation has primarily led to:",
           options: [
-            "grammar is irrelevant",
-            "vocabulary changes faster",
-            "vocabulary is more complex",
-            "grammar adapts to culture",
-          ],
-          correctIndex: 1,
-          type: "detail",
-        },
-        {
-          id: "Q10",
-          prompt:
-            "Which factor most influences vocabulary change?",
-          options: [
-            "Linguistic rules",
-            "Historical texts",
-            "Social and technological shifts",
-            "Formal education",
+            "mass unemployment",
+            "job elimination without replacement",
+            "job transformation",
+            "economic stagnation",
           ],
           correctIndex: 2,
-          type: "inference",
         },
         {
-          id: "Q11",
-          prompt:
-            "The author’s purpose is to:",
+          id: 10,
+          question:
+            "Which problem do education systems face according to the passage?",
           options: [
-            "argue against language change",
-            "highlight mechanisms of language evolution",
-            "compare languages",
-            "criticize modern communication",
+            "Excessive funding",
+            "Outdated curricula",
+            "Overqualification of workers",
+            "Lack of technology",
           ],
           correctIndex: 1,
-          type: "main-idea",
         },
         {
-          id: "Q12",
-          prompt:
-            "The passage implies that grammar:",
+          id: 11,
+          question:
+            "The passage implies that the effects of automation depend largely on:",
           options: [
-            "never changes",
-            "changes rapidly",
-            "is resistant to change",
-            "is socially constructed",
+            "technological speed",
+            "market forces",
+            "institutional responses",
+            "worker resistance",
           ],
           correctIndex: 2,
-          type: "inference",
+        },
+        {
+          id: 12,
+          question:
+            "The tone of the passage is best described as:",
+          options: [
+            "alarmist",
+            "optimistic",
+            "balanced",
+            "dismissive",
+          ],
+          correctIndex: 2,
         },
       ],
     },
 
     {
-      id: "P4",
+      id: 4,
       title: "Passage 4",
       text: `
-Economic indicators are often treated as objective measures of national well-being.
-However, such metrics may fail to capture inequality, environmental degradation,
-and overall quality of life.
+Scientific consensus plays a crucial role in public policy, yet it is often
+misunderstood. Consensus does not imply unanimity, but broad agreement based
+on accumulated evidence. Public scepticism arises when scientific uncertainty
+is portrayed as ignorance.
+
+Media simplification exacerbates this issue, framing debates as binary
+conflicts. This undermines trust and hampers effective decision-making.
+
+Improving scientific literacy and communication is therefore essential for
+bridging the gap between expertise and public understanding.
       `,
       questions: [
         {
-          id: "Q13",
-          prompt:
-            "The passage questions the reliability of:",
+          id: 13,
+          question:
+            "According to the passage, scientific consensus is best defined as:",
           options: [
-            "economic growth",
-            "policy makers",
-            "economic indicators",
-            "statistical models",
+            "complete agreement among scientists",
+            "absence of uncertainty",
+            "broad agreement based on evidence",
+            "a political construct",
           ],
           correctIndex: 2,
-          type: "main-idea",
         },
         {
-          id: "Q14",
-          prompt:
-            "Which of the following is NOT mentioned as a limitation?",
+          id: 14,
+          question:
+            "Public scepticism towards science arises mainly because:",
           options: [
-            "Inequality",
-            "Environmental damage",
-            "Quality of life",
-            "Political instability",
-          ],
-          correctIndex: 3,
-          type: "detail",
-        },
-        {
-          id: "Q15",
-          prompt:
-            "The author’s stance toward economic indicators is best described as:",
-          options: [
-            "Unquestioning",
-            "Skeptical",
-            "Supportive",
-            "Indifferent",
+            "scientists are divided",
+            "media oversimplifies debates",
+            "evidence is insufficient",
+            "policies are ineffective",
           ],
           correctIndex: 1,
-          type: "tone",
         },
         {
-          id: "Q16",
-          prompt:
-            "The passage suggests that national well-being should be assessed using:",
+          id: 15,
+          question:
+            "The author suggests improving public trust through:",
           options: [
-            "only economic data",
-            "broader measures",
-            "historical comparisons",
-            "market trends",
+            "restricting media coverage",
+            "eliminating uncertainty",
+            "better communication and literacy",
+            "political intervention",
           ],
-          correctIndex: 1,
-          type: "inference",
+          correctIndex: 2,
+        },
+        {
+          id: 16,
+          question:
+            "The passage’s central concern is the relationship between:",
+          options: [
+            "science and politics",
+            "media and evidence",
+            "expertise and public understanding",
+            "uncertainty and ignorance",
+          ],
+          correctIndex: 2,
         },
       ],
     },
