@@ -6,6 +6,7 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import { sampleRCTest } from "./data/sampleRCTest";
 import CATTimer from "./components/CATTimer";
+import SubmitModal from "./components/SubmitModal";
 
 
 
@@ -25,6 +26,8 @@ export default function CATArenaTestView() {
   const [answers, setAnswers] = useState(
   Array(totalQuestions).fill(null)
 );
+  const [showSubmit, setShowSubmit] = useState(false);
+const [submitted, setSubmitted] = useState(false);
 
   // CAT rule: 4 questions per passage
   const passageIndex = Math.floor(currentQuestionIndex / 4);
@@ -70,6 +73,13 @@ export default function CATArenaTestView() {
       copy[currentQuestionIndex] === 3 ? 2 : 0;
     return copy;
   });
+}
+  function handleSubmitTest() {
+  setSubmitted(true);
+  setShowSubmit(false);
+
+  alert("Test submitted successfully!");
+  // later → navigate to results page
 }
   
 
