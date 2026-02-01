@@ -61,6 +61,7 @@ export default function CATRCTestView({ testData }) {
     }
   }
 
+  console.log("CURRENT QUESTION OBJECT 👉", currentQuestion);
   // ---------- UI ----------
  return (
   <>
