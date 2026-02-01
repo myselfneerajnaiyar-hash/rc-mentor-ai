@@ -8,54 +8,107 @@ export default function QuestionPalette({
 }) {
   return (
     <div>
-      <h4 style={{ marginBottom: 12 }}>Questions</h4>
+      {/* ===== LEGEND ===== */}
+      <div style={{ fontSize: 13, marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={dot("#16a34a")} /> Answered
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={dot("#7c3aed")} /> Marked for Review
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={dot("#e5e7eb")} /> Not Answered
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={dot("#16a34a", "#7c3aed")} /> Answered & Marked
+        </div>
+      </div>
 
+      {/* ===== TITLE ===== */}
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>
+        Choose a Question
+      </div>
+
+      {/* ===== GRID ===== */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 10,
+          gap: 8,
         }}
       >
         {Array.from({ length: total }).map((_, i) => {
           const state = states[i] || 0;
 
-          let bg = "#e5e7eb"; // unattempted
-          if (state === 1) bg = "#22c55e"; // answered
-          if (state === 2) bg = "#a855f7"; // marked
-          if (state === 3) bg = "#16a34a"; // answered + marked
+          const bg =
+            state === 1
+              ? "#16a34a" // answered
+              : state === 2
+              ? "#7c3aed" // marked
+              : state === 3
+              ? "#16a34a" // answered + marked
+              : "#e5e7eb"; // unattempted
 
-          const isCurrent = i === current;
+          const color =
+            state === 0 ? "#111827" : "#ffffff";
+
+          const border =
+            i === current
+              ? "2px solid #2563eb" // current question
+              : "1px solid #9ca3af";
 
           return (
             <button
               key={i}
-              onClick={() => onJump(i)}   // ✅ THIS IS THE FIX
+              onClick={() => onJump(i)}
               style={{
-                padding: "10px 0",
-                borderRadius: 6,
-                border: isCurrent
-                  ? "2px solid #2563eb"
-                  : "1px solid #cbd5e1",
+                height: 38,
+                borderRadius: 4,
                 background: bg,
-                color: "#000",
+                color,
+                border,
                 fontWeight: 600,
                 cursor: "pointer",
+                position: "relative",
               }}
             >
               {i + 1}
+
+              {/* purple dot for answered+marked */}
+              {state === 3 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 4,
+                    right: 4,
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: "#7c3aed",
+                  }}
+                />
+              )}
             </button>
           );
         })}
       </div>
-
-      {/* Legend */}
-      <div style={{ marginTop: 16, fontSize: 13 }}>
-        <p>⬜ Unattempted</p>
-        <p>🟢 Answered</p>
-        <p>🟣 Marked for Review</p>
-        <p>🟢🟣 Answered + Marked</p>
-      </div>
     </div>
   );
+}
+
+/* ===== helper ===== */
+function dot(bg, overlay) {
+  return {
+    width: 12,
+    height: 12,
+    borderRadius: "50%",
+    background: bg,
+    position: "relative",
+    display: "inline-block",
+    ...(overlay
+      ? {
+          boxShadow: `inset -4px -4px 0 0 ${overlay}`,
+        }
+      : {}),
+  };
 }
