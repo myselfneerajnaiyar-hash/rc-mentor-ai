@@ -6,6 +6,9 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import { sampleRCTest } from "./data/sampleRCTest";
 import CATTimer from "./components/CATTimer";
+const [answers, setAnswers] = useState(
+  Array(totalQuestions).fill(null)
+);
 
 export default function CATArenaTestView() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -28,14 +31,20 @@ export default function CATArenaTestView() {
   const currentQuestion =
     currentPassage.questions[currentQuestionIndex % 4];
 
-  function handleAnswer() {
-    setQuestionStates(prev => {
-      const copy = [...prev];
-      copy[currentQuestionIndex] =
-        copy[currentQuestionIndex] === 2 ? 3 : 1;
-      return copy;
-    });
-  }
+  function handleAnswer(optionIndex) {
+  setAnswers(prev => {
+    const copy = [...prev];
+    copy[currentQuestionIndex] = optionIndex;
+    return copy;
+  });
+
+  setQuestionStates(prev => {
+    const copy = [...prev];
+    copy[currentQuestionIndex] =
+      copy[currentQuestionIndex] === 2 ? 3 : 1;
+    return copy;
+  });
+}
 
   function handleMark() {
     setQuestionStates(prev => {
@@ -45,6 +54,22 @@ export default function CATArenaTestView() {
       return copy;
     });
   }
+  function handleClear() {
+  setAnswers(prev => {
+    const copy = [...prev];
+    copy[currentQuestionIndex] = null;
+    return copy;
+  });
+
+  setQuestionStates(prev => {
+    const copy = [...prev];
+    // if marked → stay marked
+    copy[currentQuestionIndex] =
+      copy[currentQuestionIndex] === 3 ? 2 : 0;
+    return copy;
+  });
+}
+  
 
   return (
     <div
