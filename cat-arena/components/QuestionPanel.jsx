@@ -25,7 +25,7 @@ export default function QuestionPanel({
           color: "#111827",
         }}
       >
-        {question.stem}
+        {question.stem || question.question ||question.text}
       </div>
 
       {/* ===== OPTIONS ===== */}
