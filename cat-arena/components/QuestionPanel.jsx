@@ -11,36 +11,52 @@ export default function QuestionPanel({
   if (!question) return null;
 
   return (
-    <div>
-      <div style={{ marginBottom: 12 }}>
-        <strong>Question No. {qNumber}</strong>
+    <div style={{ padding: "8px 16px" }}>
+      {/* ===== QUESTION NUMBER ===== */}
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>
+        Question No. {qNumber}
       </div>
 
-      <div style={{ marginBottom: 16 }}>
+      {/* ===== QUESTION STEM ===== */}
+      <div
+        style={{
+          marginBottom: 16,
+          lineHeight: 1.6,
+          color: "#111827",
+        }}
+      >
         {question.stem}
       </div>
 
-      {question.options.map((opt, idx) => (
-        <label
-          key={idx}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: 8,
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="radio"
-            name={`q-${qNumber}`}
-            onChange={() => onAnswer(idx)}
-            style={{ marginRight: 8 }}
-          />
-          {opt}
-        </label>
-      ))}
+      {/* ===== OPTIONS ===== */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {question.options.map((opt, idx) => (
+          <label
+            key={idx}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "8px 10px",
+              border: "1px solid #d1d5db",
+              borderRadius: 4,
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="radio"
+              name="option"
+              onChange={() => onAnswer(idx)}
+            />
+            <span>
+              <strong>{String.fromCharCode(65 + idx)}.</strong> {opt}
+            </span>
+          </label>
+        ))}
+      </div>
 
-      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+      {/* ===== ACTION BUTTONS ===== */}
+      <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
         <button onClick={onMark}>Mark for Review</button>
         <button onClick={onPrev}>Previous</button>
         <button onClick={onNext}>Save & Next</button>
