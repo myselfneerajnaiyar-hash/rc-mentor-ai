@@ -1,9 +1,12 @@
 "use client";
 
-export default function PassagePanel({ passages, currentQuestionIndex }) {
+export default function PassagePanel({
+  passages,
+  currentQuestionIndex,
+}) {
   if (!passages || passages.length === 0) return null;
 
-  // CAT logic: 4 questions per passage
+  // ✅ CAT RULE: 4 questions per passage
   const passageIndex = Math.floor(currentQuestionIndex / 4);
   const passage = passages[passageIndex];
 
@@ -12,21 +15,31 @@ export default function PassagePanel({ passages, currentQuestionIndex }) {
   return (
     <div
       style={{
-        height: "calc(100vh - 110px)",
+        height: "calc(100vh - 120px)",
         overflowY: "auto",
-        padding: "16px",
+        padding: "16px 18px",
         borderRight: "1px solid #e5e7eb",
         background: "#ffffff",
       }}
     >
-      <h3 style={{ marginBottom: 12 }}>{passage.title}</h3>
+      {/* ===== PASSAGE TITLE ===== */}
+      <div
+        style={{
+          fontWeight: 700,
+          marginBottom: 12,
+          color: "#111827",
+        }}
+      >
+        {passage.title}
+      </div>
 
+      {/* ===== PASSAGE TEXT ===== */}
       <div
         style={{
           whiteSpace: "pre-wrap",
-          lineHeight: 1.6,
+          lineHeight: 1.65,
           fontSize: 15,
-          color: "#111827",
+          color: "#374151",
         }}
       >
         {passage.text}
