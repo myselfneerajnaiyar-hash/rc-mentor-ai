@@ -6,9 +6,8 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import { sampleRCTest } from "./data/sampleRCTest";
 import CATTimer from "./components/CATTimer";
-const [answers, setAnswers] = useState(
-  Array(totalQuestions).fill(null)
-);
+
+
 
 export default function CATArenaTestView() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -23,6 +22,9 @@ export default function CATArenaTestView() {
   const [questionStates, setQuestionStates] = useState(
     Array(totalQuestions).fill(0)
   );
+  const [answers, setAnswers] = useState(
+  Array(totalQuestions).fill(null)
+);
 
   // CAT rule: 4 questions per passage
   const passageIndex = Math.floor(currentQuestionIndex / 4);
