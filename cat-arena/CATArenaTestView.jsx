@@ -161,22 +161,23 @@ export default function CATArenaTestView() {
       </div>
 
       {/* ===== FIXED FOOTER ===== */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 64,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 10,
-          background: "#f9fafb",
-          borderTop: "1px solid #e5e7eb",
-          zIndex: 9999,
-        }}
-      >
+     <div
+  style={{
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 64,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    background: "#f9fafb",
+    borderTop: "1px solid #e5e7eb",
+    zIndex: 10000,
+    pointerEvents: "auto",
+  }}
+>
         <button
           onClick={handleMark}
           style={{ padding: "6px 12px" }}
