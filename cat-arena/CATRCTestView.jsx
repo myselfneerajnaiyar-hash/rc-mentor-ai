@@ -4,7 +4,7 @@ import { useState } from "react";
 import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
-import CATArenaHeader from "../components/cat/CATArenaHeader";
+import CATArenaHeader from "./components/cat/CATArenaHeader";
 
 export default function CATRCTestView({ testData }) {
   const totalQuestions = 16;
