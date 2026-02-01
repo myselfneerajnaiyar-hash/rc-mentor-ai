@@ -8,6 +8,7 @@ export default function QuestionPanel({
   onMark,
   onClear,
   onNext,
+  mode,
   onPrev,
 }) {
   if (!question) return null;
@@ -39,11 +40,12 @@ export default function QuestionPanel({
             }}
           >
             <input
-              type="radio"
-              name={`q-${qNumber}`}
-              checked={selectedOption === idx}
-              onChange={() => onAnswer(idx)}
-            />
+  type="radio"
+  name="option"
+  checked={selectedOption === idx}
+  disabled={mode === "review"}
+  onChange={() => onAnswer(idx)}
+/>
             <span>
               <strong>{String.fromCharCode(65 + idx)}.</strong> {opt}
             </span>
