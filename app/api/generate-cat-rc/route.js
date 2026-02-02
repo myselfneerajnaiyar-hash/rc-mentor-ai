@@ -12,6 +12,8 @@ You are an exam content generator for CAT VARC.
 
 Return ONLY valid JSON. No markdown. No explanations outside JSON.
 
+Generate EXACTLY ${passages} passages.
+
 Schema:
 {
   "passages": [
@@ -39,13 +41,13 @@ Schema:
 }
 
 Rules:
+- Generate EXACTLY ${passages} passages
+- Each passage MUST have exactly 4 questions
 - CAT-level difficulty
-- Abstract topics
-- 4 questions per passage
-- CorrectIndex must be 0–3
+- Abstract / philosophy / science / society topics
+- correctIndex must be 0–3
 - Explanation must justify why correct and why others are wrong
 `;
-  
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
