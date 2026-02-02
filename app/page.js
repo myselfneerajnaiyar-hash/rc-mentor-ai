@@ -577,43 +577,7 @@ return (
 
     {view === "vocab" && <VocabLab />}
 
-{view === "cat-rc-test" && activeRCTest && (
-  <CATArenaTestView testData={activeRCTest} />
-)}
-  
-{view === "cat" && (
-  <CATArenaLanding
-    onStartRC={async () => {
-      try {
-        setLoading(true);
 
-        const res = await fetch("/api/generate-cat-rc", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            difficulty: "CAT",
-            passages: 2,
-          }),
-        });
-
-        if (!res.ok) throw new Error("CAT RC generation failed");
-
-        const data = await res.json();
-
-        setActiveRCTest(data);   // store generated test
-        setView("cat-rc-test");  // move to test UI
-      } catch (e) {
-        console.error(e);
-        setError("Could not start CAT RC test");
-      } finally {
-        setLoading(false);
-      }
-    }}
-    onStartVocab={(testId) => {
-      console.log("Start Vocab Test:", testId);
-    }}
-  />
-)}
   </main>
 );
 }
