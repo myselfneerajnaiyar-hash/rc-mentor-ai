@@ -3,31 +3,19 @@
 import { useState } from "react";
 
 export default function CATArenaLanding({ onStartRC, onStartVocab }) {
-  // rc | vocab
   const [mode, setMode] = useState("rc");
-
-  // TEMP: static test list (will be replaced by DB / JSON later)
-  const rcTests = Array.from({ length: 20 }).map((_, i) => ({
-    id: `RC-${i + 1}`,
-    title: `CAT RC Sectional ${i + 1}`,
-    passages: 4,
-    questions: 16,
-    time: "30 min",
-    difficulty: "CAT Level",
-  }));
-
-  const vocabTests = Array.from({ length: 30 }).map((_, i) => ({
-    id: `VOCAB-${i + 1}`,
-    title: `Vocabulary Test ${i + 1}`,
-    questions: 30,
-    time: "15 min",
-    difficulty: "Exam Focused",
-  }));
+  const [loading, setLoading] = useState(false);
 
   const COLORS = {
-    rc: "#2563eb",      // Blue
-    vocab: "#f97316",   // Orange
+    rc: "#2563eb",    // Blue
+    vocab: "#f97316", // Orange
   };
+
+  function handleStart() {
+    if (loading) return;
+    setLoading(true);
+    onStartRC(); // 🔥 NO IDs, NO FAKE TESTS
+  }
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 16px" }}>
@@ -55,73 +43,58 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
         </button>
       </div>
 
-      {/* Test Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-          gap: 16,
-        }}
-      >
-        {(mode === "rc" ? rcTests : vocabTests).map(test => (
-          <div
-            key={test.id}
-            style={{
-              background: "#ffffff",
-              borderRadius: 12,
-              padding: 16,
-              border: "1px solid #e5e7eb",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
-            }}
-          >
-            <h4 style={{ marginBottom: 8 }}>{test.title}</h4>
-
-            <p style={metaStyle}>⏱ {test.time}</p>
-            <p style={metaStyle}>📊 {test.questions} questions</p>
-
-            {mode === "rc" && (
-              <p style={metaStyle}>📘 {test.passages} passages</p>
-            )}
-
-            <p style={{ ...metaStyle, marginBottom: 12 }}>
-              🎯 {test.difficulty}
-            </p>
-
-            <button
-              onClick={() =>
-                mode === "rc"
-                  ? onStartRC(test.id)
-                  : onStartVocab(test.id)
-              }
-              style={primaryButton(COLORS[mode])}
-            >
-              Start Test
-            </button>
-          </div>
-        ))}
-
-        {/* Create New Test Card */}
+      {/* RC CARD */}
+      {mode === "rc" && (
         <div
           style={{
-            border: "2px dashed #94a3b8",
+            maxWidth: 360,
+            background: "#ffffff",
             borderRadius: 12,
-            padding: 16,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "#f8fafc",
+            padding: 20,
+            border: "1px solid #e5e7eb",
+            boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
           }}
         >
-          <h4 style={{ marginBottom: 10 }}>➕ Create New Test</h4>
+          <h4 style={{ marginBottom: 10 }}>CAT RC Sectional</h4>
+
+          <p style={metaStyle}>⏱ 30 minutes</p>
+          <p style={metaStyle}>📊 16 questions</p>
+          <p style={metaStyle}>📘 4 passages</p>
+          <p style={{ ...metaStyle, marginBottom: 16 }}>
+            🎯 CAT Level (Mixed Difficulty)
+          </p>
+
           <button
-            style={secondaryButton}
-            onClick={() => alert("Test generator will be added later")}
+            onClick={handleStart}
+            disabled={loading}
+            style={{
+              ...primaryButton(COLORS.rc),
+              opacity: loading ? 0.6 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
           >
-            Generate New
+            {loading ? "Generating CAT RC..." : "Start Test"}
           </button>
         </div>
-      </div>
+      )}
+
+      {/* VOCAB PLACEHOLDER */}
+      {mode === "vocab" && (
+        <div
+          style={{
+            maxWidth: 360,
+            background: "#ffffff",
+            borderRadius: 12,
+            padding: 20,
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <h4>Vocabulary Sectionals</h4>
+          <p style={{ color: "#64748b", marginTop: 8 }}>
+            Coming next.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -142,24 +115,13 @@ function tabStyle(active, color) {
 
 const primaryButton = (color) => ({
   width: "100%",
-  padding: "10px 14px",
+  padding: "12px 14px",
   borderRadius: 8,
   border: "none",
   background: color,
   color: "#fff",
   fontWeight: 600,
-  cursor: "pointer",
 });
-
-const secondaryButton = {
-  padding: "10px 14px",
-  borderRadius: 8,
-  border: "1px solid #2563eb",
-  background: "#ffffff",
-  color: "#2563eb",
-  fontWeight: 600,
-  cursor: "pointer",
-};
 
 const metaStyle = {
   fontSize: 14,
