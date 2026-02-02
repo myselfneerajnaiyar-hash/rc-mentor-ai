@@ -186,7 +186,7 @@ const headerStyle = {
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "32% 38% 30%",
+  gridTemplateColumns: "40% 35% 25%",
   paddingTop: 56,
   paddingBottom: 64,
   minHeight: "100vh",
