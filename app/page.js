@@ -61,6 +61,8 @@ export default function Page() {
   const [showMeaning, setShowMeaning] = useState(false);
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
+  const [catPhase, setCatPhase] = useState("idle");
+// idle | generating | instructions | test
 
   function loadVocab() {
     return JSON.parse(localStorage.getItem("vocabBank") || "[]");
