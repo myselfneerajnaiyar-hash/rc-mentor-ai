@@ -10,6 +10,7 @@ import SpeedContainer from "../components/SpeedContainer";
 import VocabLab from "../components/VocabLab";
 import CATArenaLanding from "../cat-arena/CATArenaLanding";
 import CATArenaTestView from "../cat-arena/CATArenaTestView";
+import CATInstructions from "../cat-arena/CATInstructions"
 
 export default function Page() {
   const [text, setText] = useState("");
