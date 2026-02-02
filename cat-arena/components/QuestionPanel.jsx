@@ -22,7 +22,7 @@ export default function QuestionPanel({
 
       {/* Question Text */}
       <div style={{ marginBottom: 16, lineHeight: 1.6 }}>
-        {question.question}
+        {question.stem || question.question}
       </div>
 
       {/* Options */}
