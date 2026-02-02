@@ -89,15 +89,23 @@ Choose EXACTLY 4 DISTINCT genres from this list (no repetition):
 PASSAGE RULES
 ====================
 - EXACTLY 4 passages
-- Each passage must have 4–6 coherent paragraphs
-- Abstract, argumentative, layered writing
-- Multiple viewpoints OR internal tension
-- No storytelling, no factual summaries
+- EACH passage must be between 400 and 500 words (strict)
+- EACH passage must have 4–6 paragraphs
+- Each paragraph must be 70–130 words
+- Paragraphs must be logically connected and progressive
+- Writing style must resemble actual CAT RCs:
+  abstract, dense, argumentative, multi-layered
+- Passages must involve:
+  - competing ideas OR
+  - tension between theory and implication OR
+  - critique of a dominant assumption
+- NO factual recall passages
+- NO storytelling
+- NO examples that directly give away answers
 
 DIFFICULTY DISTRIBUTION:
-- Passage 1 & 2 → medium (doable but indirect)
-- Passage 3 & 4 → hard (abstract, inference-heavy, trap options)
-
+- Passage 1 & 2: Medium (doable but indirect)
+- Passage 3 & 4: Hard (abstract, inference-heavy, trap options)
 ====================
 QUESTION RULES
 ====================
