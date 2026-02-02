@@ -612,7 +612,10 @@ return (
 )}
 
 {view === "cat" && catPhase === "generating" && (
-  <LoadingScreen text="Generating CAT RC Sectional..." />
+  <div style={{ padding: 40, textAlign: "center" }}>
+    <h2>Generating CAT RC Sectional…</h2>
+    <p>Please wait. This may take 10–15 seconds.</p>
+  </div>
 )}
 
 {view === "cat" && catPhase === "instructions" && (
