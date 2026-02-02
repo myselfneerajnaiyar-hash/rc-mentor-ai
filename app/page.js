@@ -577,7 +577,54 @@ return (
 
     {view === "vocab" && <VocabLab />}
 
+{/* ================= CAT ARENA ================= */}
 
+{view === "cat" && catPhase === "idle" && (
+  <CATArenaLanding
+    onStartRC={async () => {
+      try {
+        setCatPhase("generating");
+
+        const res = await fetch("/api/generate-cat-rc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            difficulty: "CAT",
+            passages: 4,
+          }),
+        });
+
+        if (!res.ok) throw new Error("CAT RC generation failed");
+
+        const data = await res.json();
+
+        setActiveRCTest(data);
+        setCatPhase("instructions");
+      } catch (e) {
+        console.error(e);
+        setError("Could not generate CAT RC test");
+        setCatPhase("idle");
+      }
+    }}
+    onStartVocab={() => {}}
+  />
+)}
+
+{view === "cat" && catPhase === "generating" && (
+  <LoadingScreen text="Generating CAT RC Sectional..." />
+)}
+
+{view === "cat" && catPhase === "instructions" && (
+  <CATInstructions
+    onStart={() => {
+      setCatPhase("test");
+    }}
+  />
+)}
+
+{view === "cat" && catPhase === "test" && activeRCTest && (
+  <CATArenaTestView testData={activeRCTest} />
+)}
   </main>
 );
 }
