@@ -28,6 +28,25 @@ export default function QuestionPanel({
       <div style={{ marginBottom: 16, lineHeight: 1.6 }}>
         {question.stem}
       </div>
+      {mode === "review" && (
+  <div style={{ marginBottom: 12, fontSize: 14 }}>
+    <div>
+      <strong>Your Answer:</strong>{" "}
+      {selectedOption === null
+        ? "Not Attempted"
+        : String.fromCharCode(65 + selectedOption)}
+    </div>
+
+    <div>
+      <strong>Correct Answer:</strong>{" "}
+      {String.fromCharCode(65 + correctIndex)}
+    </div>
+
+    <div>
+      <strong>Question Type:</strong> {question.questionType}
+    </div>
+  </div>
+)}
 
       {/* Options */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
