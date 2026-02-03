@@ -20,39 +20,20 @@ export default function QuestionPanel({
 
   return (
     <div style={{ padding: "8px 16px" }}>
-      {/* Question No */}
+      {/* ================= QUESTION HEADER ================= */}
       <div style={{ fontWeight: 600, marginBottom: 8 }}>
         Question No. {qNumber}
       </div>
 
-      {/* Question Text */}
+      {/* ================= QUESTION TEXT ================= */}
       <div style={{ marginBottom: 16, lineHeight: 1.6 }}>
         {question.stem}
       </div>
-      {mode === "review" && (
-  <div style={{ marginBottom: 12, fontSize: 14 }}>
-    <div>
-      <strong>Your Answer:</strong>{" "}
-      {selectedOption === null
-        ? "Not Attempted"
-        : String.fromCharCode(65 + selectedOption)}
-    </div>
 
-    <div>
-      <strong>Correct Answer:</strong>{" "}
-      {String.fromCharCode(65 + correctIndex)}
-    </div>
-
-    <div>
-      <strong>Question Type:</strong> {question.questionType}
-    </div>
-  </div>
-)}
-
-      {/* Options */}
+      {/* ================= OPTIONS ================= */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {question.options.map((opt, idx) => {
-          const isCorrect = idx === question.correctIndex;
+          const isCorrect = idx === correctIndex;
           const isSelected = selectedOption === idx;
 
           return (
@@ -97,9 +78,41 @@ export default function QuestionPanel({
         })}
       </div>
 
-      {/* View Explanation */}
+      {/* ================= REVIEW SUMMARY ================= */}
       {mode === "review" && (
-        <div style={{ marginTop: 16 }}>
+        <div
+          style={{
+            marginTop: 16,
+            padding: 10,
+            background: "#f9fafb",
+            border: "1px solid #e5e7eb",
+            borderRadius: 4,
+            fontSize: 14,
+            color: "#374151",
+          }}
+        >
+          <div>
+            <strong>Your Answer:</strong>{" "}
+            {selectedOption === null
+              ? "Not Attempted"
+              : optionLabel(selectedOption)}
+          </div>
+
+          <div>
+            <strong>Correct Answer:</strong>{" "}
+            {optionLabel(correctIndex)}
+          </div>
+
+          <div>
+            <strong>Question Type:</strong>{" "}
+            {question.type || "—"}
+          </div>
+        </div>
+      )}
+
+      {/* ================= EXPLANATION TOGGLE ================= */}
+      {mode === "review" && (
+        <div style={{ marginTop: 14 }}>
           <button
             onClick={() => setShowExplanation(v => !v)}
             style={{
@@ -115,38 +128,7 @@ export default function QuestionPanel({
         </div>
       )}
 
-      {/* Review Summary */}
-{mode === "review" && (
-  <div
-    style={{
-      marginTop: 12,
-      padding: 10,
-      background: "#f9fafb",
-      border: "1px solid #e5e7eb",
-      borderRadius: 4,
-      fontSize: 14,
-      color: "#374151",
-    }}
-  >
-    <div>
-      <strong>Your Answer:</strong>{" "}
-      {selectedOption !== null
-        ? String.fromCharCode(65 + selectedOption)
-        : "Not Attempted"}
-    </div>
-
-    <div>
-      <strong>Correct Answer:</strong>{" "}
-      {String.fromCharCode(65 + correctIndex)}
-    </div>
-
-    <div>
-      <strong>Question Type:</strong>{" "}
-      {question.questionType || "—"}
-    </div>
-  </div>
-)}
-      {/* Explanation Box */}
+      {/* ================= EXPLANATION BOX ================= */}
       {mode === "review" && showExplanation && (
         <div
           style={{
@@ -155,13 +137,12 @@ export default function QuestionPanel({
             background: "#f8fafc",
             border: "1px solid #cbd5f5",
             borderRadius: 4,
-            lineHeight: 1.6,
+            lineHeight: 1.65,
             color: "#1f2937",
           }}
         >
           <strong>Explanation:</strong>
           <div style={{ marginTop: 6 }}>
-            {/* Fix index-language issue */}
             {question.explanation
               ?.replace(/Option\s+0/g, "Option A")
               ?.replace(/Option\s+1/g, "Option B")
@@ -171,7 +152,7 @@ export default function QuestionPanel({
         </div>
       )}
 
-      {/* Navigation Buttons */}
+      {/* ================= NAVIGATION ================= */}
       <div
         style={{
           display: "flex",
