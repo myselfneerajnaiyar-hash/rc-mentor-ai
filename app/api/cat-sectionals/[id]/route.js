@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-export async function GET(req, { params }) {
+export async function GET(_, { params }) {
   try {
-    const { id } = params;
+    const id = params.id;
 
     const filePath = path.join(
       process.cwd(),
@@ -25,8 +25,9 @@ export async function GET(req, { params }) {
 
     return NextResponse.json(data);
   } catch (err) {
+    console.error("CAT Sectional API error:", err);
     return NextResponse.json(
-      { error: "Failed to load sectional" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
