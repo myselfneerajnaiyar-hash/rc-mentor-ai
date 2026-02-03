@@ -1,0 +1,249 @@
+{
+  "timeLimitMinutes": 30,
+  "passages": [
+    {
+      "id": "S2P1",
+      "genre": "Political Theory",
+      "difficulty": "medium",
+      "text": "Modern democratic theory often presumes that political legitimacy flows directly from popular participation. Voting, public deliberation, and civic engagement are treated as intrinsic goods, both reflecting and reinforcing democratic values. However, this emphasis on participation sometimes obscures the structural conditions that shape who can meaningfully participate and how their participation is interpreted.\n\nPolitical equality in theory does not translate seamlessly into political equality in practice. Socio-economic disparities, informational asymmetries, and institutional design collectively influence whose voices are amplified. As a result, participation can become symbolic rather than substantive, offering the appearance of inclusion without altering decision-making outcomes.\n\nSome theorists argue that excessive focus on participation risks burdening citizens with unrealistic expectations. In complex modern states, individuals may lack the time, expertise, or inclination to engage deeply with policy matters. Under such conditions, insisting on constant participation may foster political fatigue rather than empowerment.\n\nOthers counter that disengagement is itself a symptom of institutional failure rather than citizen apathy. They maintain that when political processes are transparent and responsive, participation becomes meaningful rather than onerous. The challenge, therefore, lies not in reducing participation but in restructuring institutions to make engagement consequential.\n\nThe debate reveals a tension between democratic ideals and practical governance. Participation alone cannot guarantee legitimacy; nor can legitimacy be sustained without avenues for participation. Democratic theory must therefore grapple with how participation, representation, and institutional design interact to produce genuinely responsive governance.",
+      "questions": [
+        {
+          "id": "S2P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily examines:",
+          "options": [
+            "the limitations of participation as the sole basis of democratic legitimacy",
+            "the superiority of representative democracy over participatory models",
+            "why citizens avoid political engagement",
+            "how voting systems distort political outcomes"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage critiques the assumption that citizen participation alone is sufficient to ensure democratic legitimacy, highlighting structural and institutional constraints.\n\nOption A is correct because the author repeatedly emphasizes that participation, while important, can become symbolic and ineffective without supportive institutional design.\n\nOption B is incorrect because the passage does not argue for representative democracy over participatory democracy; instead, it questions overreliance on participation without rejecting it.\n\nOption C is incorrect because citizen disengagement is discussed as a consequence of institutional failure, not as the central focus of the passage.\n\nOption D is incorrect because voting systems are not analyzed in detail; the argument is broader and institutional rather than technical."
+        },
+        {
+          "id": "S2P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author believes political disengagement is:",
+          "options": [
+            "often a consequence of institutional shortcomings",
+            "primarily due to citizen indifference",
+            "inevitable in large democracies",
+            "evidence that participation is unnecessary"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author suggests that disengagement results from political processes that fail to make participation meaningful.\n\nOption A is correct because the passage explicitly frames disengagement as a symptom of institutional failure rather than personal apathy.\n\nOption B is incorrect because the author rejects the idea that citizens are naturally indifferent.\n\nOption C is incorrect because the author does not claim disengagement is unavoidable, only context-dependent.\n\nOption D is incorrect because the passage insists that participation remains essential despite its limitations."
+        },
+        {
+          "id": "S2P1Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s tone can best be described as:",
+          "options": [
+            "critical yet balanced",
+            "dismissive of participatory democracy",
+            "strongly pessimistic",
+            "uncritically optimistic"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author evaluates both strengths and weaknesses of participatory models without rejecting them outright.\n\nOption A is correct because the author critiques participation while acknowledging its necessity.\n\nOption B is incorrect because participatory democracy is not dismissed.\n\nOption C is incorrect because the author does not express despair, only caution.\n\nOption D is incorrect because the passage clearly contains critique."
+        },
+        {
+          "id": "S2P1Q4",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most likely strengthen the author’s argument?",
+          "options": [
+            "Evidence that institutional reforms increase the impact of citizen participation",
+            "Data showing low voter turnout across democracies",
+            "An argument that elites should make decisions independently",
+            "A claim that political fatigue is unavoidable"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author argues that participation becomes meaningful when institutions are responsive.\n\nOption A is correct because it directly supports this institutional reform thesis.\n\nOption B is incorrect because turnout statistics do not address institutional responsiveness.\n\nOption C is incorrect because it contradicts the author’s insistence on participation.\n\nOption D is incorrect because it treats fatigue as inevitable rather than contingent."
+        }
+      ]
+    },
+    {
+  "passages": [
+    {
+      "id": "S2P2",
+      "genre": "Psychology",
+      "difficulty": "medium",
+      "text": "Contemporary psychology often treats rational decision-making as the ideal benchmark against which human behavior is evaluated. Models of choice typically assume that individuals weigh costs and benefits systematically before acting. Yet empirical research consistently reveals deviations from this ideal, suggesting that human cognition is shaped as much by context and emotion as by logic.\n\nRather than viewing these deviations as failures, some psychologists argue that heuristics and biases serve adaptive purposes. In environments characterized by uncertainty and limited information, quick, rule-based judgments may yield satisfactory outcomes more efficiently than exhaustive analysis. From this perspective, irrationality becomes a misnomer for context-sensitive reasoning.\n\nHowever, this reframing raises concerns about accountability. If cognitive shortcuts are adaptive, distinguishing between reasonable error and negligent judgment becomes difficult. In domains such as finance or medicine, reliance on heuristics may produce consequences that extend beyond individual decision-makers.\n\nOthers contend that the problem lies not in heuristics themselves but in the environments in which decisions are made. Modern institutions often exploit cognitive biases through complexity or information overload. Under such conditions, what appears to be irrational behavior may reflect rational adaptation to poorly designed systems.\n\nThe debate thus centers on whether human reasoning should be judged against abstract standards of rationality or evaluated within the contexts in which decisions occur. Psychology’s challenge is not merely to catalog biases but to understand how cognitive strategies interact with institutional structures.",
+      "questions": [
+        {
+          "id": "S2P2Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that:",
+          "options": [
+            "apparent irrationality may reflect adaptive reasoning shaped by context",
+            "humans are incapable of rational decision-making",
+            "institutions should eliminate all cognitive shortcuts",
+            "emotions invariably undermine judgment"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author challenges the assumption that deviations from rational models indicate flawed thinking, suggesting instead that such deviations may be contextually adaptive.\n\nOption A is correct because the passage repeatedly emphasizes that heuristics function as efficient strategies under uncertainty.\n\nOption B is incorrect because the author does not deny the possibility of rationality, only questions narrow definitions of it.\n\nOption C is incorrect because the passage criticizes institutional design rather than calling for elimination of heuristics.\n\nOption D is incorrect because emotions are not presented as universally detrimental but as part of contextual cognition."
+        },
+        {
+          "id": "S2P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that accountability becomes problematic when:",
+          "options": [
+            "heuristics are treated as inherently acceptable regardless of outcome",
+            "decisions are made under uncertainty",
+            "institutions simplify decision-making",
+            "emotions are excluded from reasoning"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage suggests that labeling all heuristic-based decisions as adaptive can obscure responsibility.\n\nOption A is correct because the author explicitly raises concerns about distinguishing error from negligence.\n\nOption B is incorrect because uncertainty is described as a normal decision condition, not the source of accountability issues.\n\nOption C is incorrect because the author criticizes complexity, not simplification.\n\nOption D is incorrect because the author does not advocate emotional exclusion."
+        },
+        {
+          "id": "S2P2Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward cognitive biases is best described as:",
+          "options": [
+            "analytical and qualified",
+            "dismissive",
+            "unconditionally approving",
+            "alarmist"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author evaluates biases by weighing their adaptive value against their risks.\n\nOption A is correct because the passage neither condemns nor celebrates biases uncritically.\n\nOption B is incorrect because biases are taken seriously.\n\nOption C is incorrect because risks are clearly acknowledged.\n\nOption D is incorrect because the tone remains measured."
+        },
+        {
+          "id": "S2P2Q4",
+          "type": "Weaken the Argument",
+          "stem": "Which of the following would most weaken the author’s argument?",
+          "options": [
+            "Evidence that heuristic-based decisions perform poorly even in uncertain environments",
+            "Examples of emotional decision-making leading to success",
+            "Research showing institutions influence behavior",
+            "Studies demonstrating cognitive efficiency limits"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author’s claim depends on heuristics being adaptive under uncertainty.\n\nOption A is correct because it directly undermines this foundational claim.\n\nOption B is incorrect because it supports contextual reasoning.\n\nOption C is incorrect because it aligns with institutional critique.\n\nOption D is incorrect because efficiency limits are already acknowledged."
+        }
+      ]
+    },
+
+    {
+      "id": "S2P3",
+      "genre": "Economics (Theoretical)",
+      "difficulty": "hard",
+      "text": "Economic models often rely on abstraction to reveal underlying mechanisms governing markets. Simplifying assumptions—perfect information, rational agents, and equilibrium conditions—allow economists to isolate causal relationships. Yet critics argue that these abstractions distance theory from lived economic realities.\n\nDefenders of abstraction counter that models are not literal descriptions but analytical tools. Their value lies not in realism but in explanatory power. By stripping away complexity, models enable economists to identify structural tendencies that might otherwise remain obscured.\n\nHowever, abstraction becomes problematic when models migrate from explanation to prescription. Policymakers frequently treat theoretical outcomes as forecasts rather than conditional insights. When assumptions fail to hold, policy guided by such models may exacerbate inequalities or instability.\n\nSome economists advocate methodological pluralism, combining abstract models with empirical and historical analysis. This approach acknowledges abstraction’s utility while resisting its dominance. Others warn that excessive pluralism risks theoretical incoherence.\n\nThe debate reflects a deeper tension between elegance and applicability. Economic knowledge advances not through abandoning abstraction, but through continuous negotiation between theoretical clarity and empirical relevance.",
+      "questions": [
+        {
+          "id": "S2P3Q1",
+          "type": "Primary Purpose",
+          "stem": "The primary purpose of the passage is to:",
+          "options": [
+            "evaluate the role and limits of abstraction in economic modeling",
+            "reject abstraction as misleading",
+            "argue for empirical economics exclusively",
+            "demonstrate the failure of economic theory"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage examines both the usefulness and risks of abstraction without rejecting it.\n\nOption A is correct because the author balances defense and critique of abstraction.\n\nOption B is incorrect because abstraction is defended.\n\nOption C is incorrect because pluralism, not exclusivity, is advocated.\n\nOption D is incorrect because failure is not claimed."
+        },
+        {
+          "id": "S2P3Q2",
+          "type": "Inference",
+          "stem": "The author implies that economic models become dangerous when they are:",
+          "options": [
+            "treated as predictive rather than conditional",
+            "mathematically complex",
+            "used by policymakers",
+            "based on equilibrium assumptions"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage criticizes the misuse of models as forecasts.\n\nOption A is correct because this misuse ignores conditional assumptions.\n\nOption B is incorrect because complexity is not the issue.\n\nOption C is incorrect because policymakers are criticized for misuse, not use.\n\nOption D is incorrect because equilibrium is not singled out."
+        },
+        {
+          "id": "S2P3Q3",
+          "type": "Distinguishing Viewpoints",
+          "stem": "The disagreement between economists centers on:",
+          "options": [
+            "the balance between abstraction and empirical grounding",
+            "whether markets exist",
+            "the role of mathematics in economics",
+            "the inevitability of inequality"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage contrasts defenders of abstraction with advocates of pluralism.\n\nOption A is correct because this tension recurs throughout.\n\nOption B is incorrect because market existence is assumed.\n\nOption C is incorrect because mathematics is not debated directly.\n\nOption D is incorrect because inequality is a consequence, not the focus."
+        },
+        {
+          "id": "S2P3Q4",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s tone is best described as:",
+          "options": [
+            "measured and analytical",
+            "hostile toward abstraction",
+            "sarcastic",
+            "dogmatic"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author evaluates competing perspectives without polemic.\n\nOption A is correct because the tone remains balanced.\n\nOption B is incorrect because abstraction is not rejected.\n\nOption C is incorrect because no sarcasm is present.\n\nOption D is incorrect because flexibility is emphasized."
+        }
+      ]
+    },
+
+    {
+      "id": "S2P4",
+      "genre": "Cultural Studies",
+      "difficulty": "hard",
+      "text": "Cultural narratives often frame technological change as either emancipatory or catastrophic. Such binaries obscure the uneven ways technology reshapes social relations. Innovations rarely produce uniform outcomes; instead, they interact with existing hierarchies and cultural norms.\n\nOptimistic accounts emphasize access, efficiency, and democratization. Digital platforms, for instance, promise to amplify marginalized voices. Yet these platforms are embedded within economic systems that prioritize profit, often reproducing inequalities under the guise of openness.\n\nConversely, dystopian critiques portray technology as an autonomous force eroding human agency. While such critiques highlight genuine risks, they risk absolving institutions of responsibility by attributing outcomes to technological inevitability.\n\nScholars increasingly argue for a relational understanding of technology. Technologies are neither neutral tools nor autonomous agents; they are shaped by human choices, power structures, and cultural meanings. This perspective foregrounds governance and accountability.\n\nReframing technological change in relational terms shifts the analytical focus. The question is no longer whether technology is good or bad, but under what conditions it amplifies or mitigates social inequality.",
+      "questions": [
+        {
+          "id": "S2P4Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that technological change should be understood as:",
+          "options": [
+            "a process shaped by social and institutional contexts",
+            "inherently emancipatory",
+            "inevitably harmful",
+            "independent of cultural forces"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author rejects binary narratives in favor of contextual analysis.\n\nOption A is correct because the relational view is emphasized.\n\nOption B is incorrect because optimism is critiqued.\n\nOption C is incorrect because dystopian views are also critiqued.\n\nOption D is incorrect because culture is central."
+        },
+        {
+          "id": "S2P4Q2",
+          "type": "Inference",
+          "stem": "The author suggests that dystopian critiques are limited because they:",
+          "options": [
+            "overlook institutional responsibility",
+            "ignore technological risks",
+            "celebrate inequality",
+            "assume human agency"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage argues dystopian views treat technology as inevitable.\n\nOption A is correct because this absolves institutions.\n\nOption B is incorrect because risks are acknowledged.\n\nOption C is incorrect because inequality is critiqued.\n\nOption D is incorrect because agency is downplayed."
+        },
+        {
+          "id": "S2P4Q3",
+          "type": "Paragraph Function",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "introduce an alternative analytical framework",
+            "summarize prior arguments",
+            "present empirical evidence",
+            "predict future technological trends"
+          ],
+          "correctIndex": 0,
+          "explanation": "The paragraph introduces relational analysis.\n\nOption A is correct because it reframes the debate.\n\nOption B is incorrect because it adds new perspective.\n\nOption C is incorrect because no data is presented.\n\nOption D is incorrect because predictions are absent."
+        },
+        {
+          "id": "S2P4Q4",
+          "type": "Best Summary",
+          "stem": "Which option best summarizes the passage?",
+          "options": [
+            "Technology’s social impact depends on how it is embedded within power structures",
+            "Technology inevitably worsens inequality",
+            "Digital platforms are neutral tools",
+            "Cultural narratives exaggerate technological risks"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage emphasizes conditional effects of technology.\n\nOption A is correct because it captures the relational thesis.\n\nOption B is incorrect because inevitability is rejected.\n\nOption C is incorrect because neutrality is denied.\n\nOption D is incorrect because exaggeration is not the main point."
+        }
+      ]
+    }
+  ]
+}
