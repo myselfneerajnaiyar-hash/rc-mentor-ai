@@ -124,7 +124,7 @@ export default function CATArenaTestView({ testData }) {
 
     setScore(s);
     setShowSubmit(false);
-    setMode("result");
+    setMode("diagnosis");
   }
 
   /* ===================== RENDER ===================== */
