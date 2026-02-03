@@ -1,215 +1,119 @@
 "use client";
 
-/**
- * DiagnosisView (LOCKED VERSION)
- * Assumptions:
- * - questions[] = flat array of all questions (with id, type, correctIndex)
- * - answers[]   = array indexed SAME as questions (can contain undefined)
- * - passages[]  = array of passages, each with questions[] containing ids
- */
-
 export default function DiagnosisView({
   passages = [],
-  questions = [],
   answers = [],
+  questions = [],
   onReview,
 }) {
-  /* ---------- BUILD SAFE LOOKUPS ---------- */
-
-  const questionById = {};
-  questions.forEach((q, i) => {
-    questionById[q.id] = { ...q, index: i };
-  });
-
-  /* ---------- OVERALL METRICS ---------- */
-
+  /* ---------- GLOBAL STATS ---------- */
+  const total = questions.length;
   let attempted = 0;
   let correct = 0;
 
   questions.forEach((q, i) => {
-    const ans = answers[i];
-    if (ans !== undefined && ans !== null) {
+    if (answers[i] !== null && answers[i] !== undefined) {
       attempted++;
-      if (ans === q.correctIndex) correct++;
+      if (answers[i] === q.correctIndex) correct++;
     }
   });
 
-  const totalQuestions = questions.length;
-  const incorrect = attempted - correct;
-  const accuracy =
-    attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+  const accuracy = attempted
+    ? Math.round((correct / attempted) * 100)
+    : 0;
 
-  /* ---------- PASSAGE-WISE DECISION QUALITY ---------- */
-
+  /* ---------- PASSAGE STATS ---------- */
   const passageStats = passages.map((p) => {
-    let total = 0;
-    let correctCount = 0;
-    let attemptedCount = 0;
+    let totalQ = p.questions.length;
+    let correctQ = 0;
 
-    p.questions?.forEach((pq) => {
-      const q = questionById[pq.id];
-      if (!q) return;
-
-      total++;
-      const ans = answers[q.index];
-      if (ans !== undefined && ans !== null) {
-        attemptedCount++;
-        if (ans === q.correctIndex) correctCount++;
-      }
+    p.questions.forEach((q) => {
+      const idx = questions.findIndex(x => x.id === q.id);
+      if (idx >= 0 && answers[idx] === q.correctIndex) correctQ++;
     });
 
-    const acc =
-      attemptedCount > 0 ? correctCount / attemptedCount : 0;
+    const ratio = totalQ ? correctQ / totalQ : 0;
 
     let tag = "Avoid in CAT";
-    if (attemptedCount >= 2 && acc >= 0.6) tag = "Selective Attempt";
-    if (attemptedCount >= 3 && acc >= 0.8) tag = "Strength";
+    if (ratio >= 0.8) tag = "Strength";
+    else if (ratio >= 0.6) tag = "Selective Attempt";
 
     return {
-      genre: p.genre || "Unknown",
-      attempted: attemptedCount,
-      correct: correctCount,
-      total,
+      genre: p.genre,
+      correct: correctQ,
+      total: totalQ,
+      ratio,
       tag,
     };
   });
 
-  /* ---------- QUESTION-TYPE SKILL MAP ---------- */
-
+  /* ---------- QUESTION TYPE MAP ---------- */
   const typeMap = {};
-
   questions.forEach((q, i) => {
     const type = q.type || "Unknown";
-    if (!typeMap[type]) {
-      typeMap[type] = { correct: 0, attempted: 0, total: 0 };
-    }
-
+    if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
     typeMap[type].total++;
-    const ans = answers[i];
-    if (ans !== undefined && ans !== null) {
-      typeMap[type].attempted++;
-      if (ans === q.correctIndex) typeMap[type].correct++;
-    }
+    if (answers[i] === q.correctIndex) typeMap[type].correct++;
   });
 
-  /* ---------- WEAK PRIORITIES ---------- */
-
-  const weakTypes = Object.entries(typeMap)
-    .map(([type, v]) => ({
-      type,
-      accuracy:
-        v.attempted > 0 ? v.correct / v.attempted : 0,
-      attempted: v.attempted,
-    }))
-    .filter(
-      (t) => t.attempted >= 2 && t.accuracy < 0.5
-    )
-    .slice(0, 3);
-
-  /* ---------- UI ---------- */
-
   return (
-    <div
-      style={{
-        background: "#f5f7fb",
-        minHeight: "100vh",
-        padding: "32px 20px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          background: "#ffffff",
-          borderRadius: 12,
-          padding: 28,
-        }}
-      >
-        <h1 style={{ marginBottom: 6 }}>RC Diagnosis Report</h1>
-        <p style={{ color: "#6b7280", marginBottom: 24 }}>
+    <div style={page}>
+      <div style={card}>
+        <h1>RC Diagnosis Report</h1>
+        <p style={{ color: "#6b7280" }}>
           CAT-style diagnosis focused on selection quality, not guesswork.
         </p>
 
-        {/* SUMMARY */}
-        <Grid4>
-          <Stat label="Score" value={`${correct} / ${totalQuestions}`} />
+        {/* ---------- SUMMARY ---------- */}
+        <div style={grid4}>
+          <Stat label="Score" value={`${correct} / ${total}`} />
           <Stat label="Attempted" value={attempted} />
-          <Stat label="Incorrect" value={incorrect} />
+          <Stat label="Incorrect" value={attempted - correct} />
           <Stat label="Accuracy" value={`${accuracy}%`} />
-        </Grid4>
+        </div>
 
-        {/* PASSAGE STRATEGY */}
+        {/* ---------- PASSAGE HEAT MAP ---------- */}
         <Section title="Passage Selection Intelligence">
-          {passageStats.length === 0 && (
-            <Muted>No passage data available.</Muted>
-          )}
-          {passageStats.map((p, i) => (
-            <Row
-              key={i}
-              left={`${p.genre} (${p.correct}/${p.attempted || 0})`}
-              right={p.tag}
-              color={tagColor(p.tag)}
+          {passageStats.map((p) => (
+            <HeatRow
+              key={p.genre}
+              label={`${p.genre} (${p.correct}/${p.total})`}
+              ratio={p.ratio}
+              tag={p.tag}
             />
           ))}
         </Section>
 
-        {/* QUESTION TYPE */}
+        {/* ---------- QUESTION TYPE HEAT MAP ---------- */}
         <Section title="Question-Type Accuracy Map">
           {Object.entries(typeMap).map(([type, v]) => {
-            const acc =
-              v.attempted > 0 ? v.correct / v.attempted : 0;
-
-            let label = "Avoid Guessing";
-            if (acc >= 0.7) label = "Strength";
-            else if (acc >= 0.5) label = "Needs Work";
+            const ratio = v.total ? v.correct / v.total : 0;
+            let tag = "Avoid Guessing";
+            if (ratio >= 0.7) tag = "Strength";
+            else if (ratio >= 0.5) tag = "Needs Work";
 
             return (
-              <Row
+              <HeatRow
                 key={type}
-                left={`${type} (${v.correct}/${v.attempted || 0})`}
-                right={label}
-                color={tagColor(label)}
+                label={`${type} (${v.correct}/${v.total})`}
+                ratio={ratio}
+                tag={tag}
               />
             );
           })}
         </Section>
 
-        {/* NEXT ACTIONS */}
-        <Section title="Next 7-Day Fix Plan">
-          {weakTypes.length === 0 ? (
-            <Muted>✅ No critical weaknesses detected.</Muted>
-          ) : (
-            weakTypes.map((w) => (
-              <p key={w.type}>
-                • Fix <b>{w.type}</b> (accuracy{" "}
-                {Math.round(w.accuracy * 100)}%)
-              </p>
-            ))
-          )}
-        </Section>
-
-        {/* RULES */}
+        {/* ---------- ACTION RULES ---------- */}
         <Section title="CAT RC Rules (Until Accuracy ≥ 60%)">
           <ul>
-            <li>Attempt max 2 passages per sectional.</li>
-            <li>Do not guess in weak question types.</li>
-            <li>Review only incorrect attempted questions.</li>
-            <li>Volume increases only after accuracy improves.</li>
+            <li>Attempt max 2 passages per sectional</li>
+            <li>Skip abstract / unfamiliar domains</li>
+            <li>Analyse only incorrect attempts</li>
+            <li>Increase volume only after accuracy improves</li>
           </ul>
         </Section>
 
-        <button
-          onClick={onReview}
-          style={{
-            marginTop: 20,
-            padding: "10px 18px",
-            background: "#2563eb",
-            color: "#fff",
-            borderRadius: 6,
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={onReview} style={btn}>
           Review Questions
         </button>
       </div>
@@ -217,33 +121,12 @@ export default function DiagnosisView({
   );
 }
 
-/* ---------- SMALL COMPONENTS ---------- */
-
-function Grid4({ children }) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: 16,
-        marginBottom: 32,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+/* ---------- COMPONENTS ---------- */
 
 function Stat({ label, value }) {
   return (
-    <div
-      style={{
-        background: "#f9fafb",
-        padding: 16,
-        borderRadius: 10,
-      }}
-    >
-      <div style={{ fontSize: 13, color: "#6b7280" }}>{label}</div>
+    <div style={stat}>
+      <div style={{ color: "#6b7280", fontSize: 13 }}>{label}</div>
       <div style={{ fontSize: 20, fontWeight: 600 }}>{value}</div>
     </div>
   );
@@ -251,36 +134,78 @@ function Stat({ label, value }) {
 
 function Section({ title, children }) {
   return (
-    <div style={{ marginBottom: 28 }}>
-      <h3 style={{ marginBottom: 12 }}>{title}</h3>
+    <div style={{ marginTop: 28 }}>
+      <h3>{title}</h3>
       {children}
     </div>
   );
 }
 
-function Row({ left, right, color }) {
+function HeatRow({ label, ratio, tag }) {
+  const width = Math.round(ratio * 100);
+  const color =
+    ratio >= 0.7 ? "#16a34a" : ratio >= 0.5 ? "#f59e0b" : "#dc2626";
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "8px 0",
-        borderBottom: "1px solid #e5e7eb",
-      }}
-    >
-      <span>{left}</span>
-      <span style={{ color, fontWeight: 500 }}>{right}</span>
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <span>{label}</span>
+        <span style={{ color, fontWeight: 500 }}>{tag}</span>
+      </div>
+      <div style={barBg}>
+        <div style={{ ...barFill, width: `${width}%`, background: color }} />
+      </div>
     </div>
   );
 }
 
-function Muted({ children }) {
-  return <p style={{ color: "#6b7280" }}>{children}</p>;
-}
+/* ---------- STYLES ---------- */
 
-function tagColor(tag) {
-  if (tag === "Strength") return "#16a34a";
-  if (tag === "Needs Work") return "#d97706";
-  if (tag === "Selective Attempt") return "#2563eb";
-  return "#dc2626";
-}
+const page = {
+  background: "#f5f7fb",
+  minHeight: "100vh",
+  padding: "32px 20px",
+};
+
+const card = {
+  maxWidth: 1100,
+  margin: "0 auto",
+  background: "#ffffff",
+  borderRadius: 14,
+  padding: 28,
+};
+
+const grid4 = {
+  display: "grid",
+  gridTemplateColumns: "repeat(4, 1fr)",
+  gap: 16,
+  marginTop: 24,
+};
+
+const stat = {
+  background: "#eef2ff",
+  padding: 16,
+  borderRadius: 12,
+};
+
+const barBg = {
+  height: 8,
+  background: "#e5e7eb",
+  borderRadius: 6,
+  marginTop: 6,
+};
+
+const barFill = {
+  height: "100%",
+  borderRadius: 6,
+};
+
+const btn = {
+  marginTop: 30,
+  padding: "10px 18px",
+  background: "#2563eb",
+  color: "#fff",
+  borderRadius: 8,
+  border: "none",
+  cursor: "pointer",
+};
