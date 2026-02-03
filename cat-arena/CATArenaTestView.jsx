@@ -30,6 +30,7 @@ export default function CATArenaTestView({ testData }) {
   const [showSubmit, setShowSubmit] = useState(false);
   const [mode, setMode] = useState("test"); 
 // test | result | review
+  const [score, setScore] = useState(0);
 
   /* ===================== RESET ON LOAD ===================== */
   useEffect(() => {
@@ -89,10 +90,20 @@ export default function CATArenaTestView({ testData }) {
     setQuestionStates(qs);
   }
 
- function handleSubmitTest() {
-  setShowSubmit(false);
+function handleSubmitTest() {
+  let s = 0;
 
-  // 🔒 Stop test & switch to result phase
+  passages.forEach((passage, pIdx) => {
+    passage.questions.forEach((q, qIdx) => {
+      const globalIndex = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+      if (answers[globalIndex] === q.correctIndex) {
+        s += 1;
+      }
+    });
+  });
+
+  setScore(s);
+  setShowSubmit(false);
   setMode("result");
 }
 
