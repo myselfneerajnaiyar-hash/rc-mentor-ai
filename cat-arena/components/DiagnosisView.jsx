@@ -1,196 +1,186 @@
 "use client";
 
+import React from "react";
+
 export default function DiagnosisView({
   passages,
-  answers,
-  QUESTIONS_PER_PASSAGE,
-  score,
   passageStats,
   byQuestionType,
+  score,
   attempted,
   unattempted,
+  QUESTIONS_PER_PASSAGE,
   onReview,
 }) {
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
   const accuracy = attempted ? Math.round((score / attempted) * 100) : 0;
-  const marks = score * 3 - (attempted - score);
 
-  function passageTag(acc) {
-    if (acc >= 75) return ["Strength", "#dcfce7", "#166534"];
-    if (acc >= 40) return ["Risk Zone", "#fef3c7", "#92400e"];
-    return ["Weak Area", "#fee2e2", "#991b1b"];
-  }
-
-  function typeTag(correct, total) {
-    const acc = total ? correct / total : 0;
-    if (acc >= 0.75) return ["Strong", "#dcfce7", "#166534"];
-    if (acc >= 0.45) return ["Needs Work", "#fef3c7", "#92400e"];
-    return ["Weak", "#fee2e2", "#991b1b"];
+  function level(correct, total) {
+    const pct = total ? correct / total : 0;
+    if (pct >= 0.6) return { label: "Strength", color: "#16a34a" };
+    if (pct >= 0.3) return { label: "Needs Work", color: "#f59e0b" };
+    return { label: "Weak Area", color: "#dc2626" };
   }
 
   return (
-    <div style={{ maxWidth: 1100, margin: "40px auto", padding: "0 16px" }}>
-      <h1>RC Diagnosis Report</h1>
-      <p style={{ color: "#475569", marginBottom: 24 }}>
-        This analysis focuses on patterns, not isolated mistakes.
+    <div style={container}>
+      <h1 style={title}>RC Diagnosis Report</h1>
+      <p style={subtitle}>
+        This analysis focuses on *decision patterns*, not isolated mistakes.
       </p>
 
-      {/* OVERALL */}
-      <Section title="Overall Snapshot">
-        <Grid>
-          <Stat label="Score" value={`${score} / ${totalQuestions}`} />
-          <Stat label="CAT Marks" value={marks} />
-          <Stat label="Accuracy" value={`${accuracy}%`} />
-          <Stat label="Attempted" value={attempted} />
-          <Stat label="Unattempted" value={unattempted} />
-        </Grid>
-      </Section>
+      {/* ================= OVERALL SNAPSHOT ================= */}
+      <div style={grid4}>
+        <StatCard label="Score" value={`${score} / ${totalQuestions}`} />
+        <StatCard label="Accuracy" value={`${accuracy}%`} />
+        <StatCard label="Attempted" value={attempted} />
+        <StatCard label="Unattempted" value={unattempted} />
+      </div>
 
-      {/* PASSAGE */}
+      {/* ================= PASSAGE PERFORMANCE ================= */}
       <Section title="Passage-wise Performance">
         {passageStats.map((p, i) => {
-          const acc = Math.round((p.correct / p.total) * 100);
-          const [text, bg, color] = passageTag(acc);
-
+          const lvl = level(p.correct, p.total);
           return (
-            <Row key={i}>
-              <div>
-                <strong>{p.genre}</strong>
-                <div style={muted}>
-                  {p.correct} / {p.total} correct
-                </div>
-              </div>
-
-              <Tag text={text} bg={bg} color={color} />
-            </Row>
+            <Row
+              key={i}
+              left={`${p.genre} (${p.correct}/${p.total})`}
+              right={lvl.label}
+              color={lvl.color}
+              percent={(p.correct / p.total) * 100}
+            />
           );
         })}
       </Section>
 
-      {/* QUESTION TYPE */}
+      {/* ================= QUESTION TYPE SKILL MAP ================= */}
       <Section title="Question-Type Skill Map">
         {Object.entries(byQuestionType).map(([type, v]) => {
-          const [text, bg, color] = typeTag(v.correct, v.total);
-          const acc = Math.round((v.correct / v.total) * 100);
-
+          const lvl = level(v.correct, v.total);
           return (
-            <Row key={type}>
-              <div>
-                <strong>{type}</strong>
-                <div style={muted}>
-                  {v.correct} / {v.total} correct ({acc}%)
-                </div>
-              </div>
-
-              <Tag text={text} bg={bg} color={color} />
-            </Row>
+            <Row
+              key={type}
+              left={`${type} (${v.correct}/${v.total})`}
+              right={lvl.label}
+              color={lvl.color}
+              percent={(v.correct / v.total) * 100}
+            />
           );
         })}
       </Section>
 
-      {/* ACTION */}
+      {/* ================= COACHING INSIGHTS ================= */}
       <Section title="Actionable Next Steps">
-        <ul style={{ lineHeight: 1.8 }}>
-          <li>Fix weak question types before increasing RC volume.</li>
+        <ul style={list}>
+          <li>Fix *Weak question types* before increasing RC volume.</li>
           <li>Avoid low-accuracy passages during real CAT attempts.</li>
-          <li>Focus on elimination logic rather than option spotting.</li>
-          <li>Review explanations to correct thinking patterns.</li>
+          <li>Focus on *elimination logic*, not option spotting.</li>
+          <li>Re-read explanations to correct thinking patterns.</li>
         </ul>
       </Section>
 
-      <div style={{ marginTop: 32 }}>
-        <button style={primaryBtn} onClick={onReview}>
-          Review Questions
-        </button>
+      <button onClick={onReview} style={primaryBtn}>
+        Review Questions
+      </button>
+    </div>
+  );
+}
+
+/* ================= COMPONENTS ================= */
+
+function StatCard({ label, value }) {
+  return (
+    <div style={statCard}>
+      <div style={statLabel}>{label}</div>
+      <div style={statValue}>{value}</div>
+    </div>
+  );
+}
+
+function Section({ title, children }) {
+  return (
+    <div style={{ marginTop: 36 }}>
+      <h3 style={sectionTitle}>{title}</h3>
+      <div style={card}>{children}</div>
+    </div>
+  );
+}
+
+function Row({ left, right, color, percent }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={rowTop}>
+        <span>{left}</span>
+        <span style={{ color, fontWeight: 600 }}>{right}</span>
+      </div>
+      <div style={barBg}>
+        <div style={{ ...barFill, width: `${percent}%`, background: color }} />
       </div>
     </div>
   );
 }
 
-/* REUSABLE COMPONENTS */
+/* ================= STYLES ================= */
 
-function Section({ title, children }) {
-  return (
-    <div style={card}>
-      <h3>{title}</h3>
-      {children}
-    </div>
-  );
-}
-
-function Stat({ label, value }) {
-  return (
-    <div>
-      <div style={{ fontSize: 13, color: "#64748b" }}>{label}</div>
-      <div style={{ fontSize: 20, fontWeight: 700 }}>{value}</div>
-    </div>
-  );
-}
-
-function Grid({ children }) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-        gap: 16,
-        marginTop: 16,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Row({ children }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 0",
-        borderBottom: "1px dashed #e5e7eb",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Tag({ text, bg, color }) {
-  return (
-    <div
-      style={{
-        padding: "4px 10px",
-        borderRadius: 999,
-        fontSize: 12,
-        fontWeight: 600,
-        background: bg,
-        color,
-      }}
-    >
-      {text}
-    </div>
-  );
-}
-
-/* STYLES */
-
-const card = {
-  background: "#ffffff",
-  border: "1px solid #e5e7eb",
-  borderRadius: 10,
-  padding: 20,
-  marginBottom: 24,
+const container = {
+  maxWidth: 1100,
+  margin: "40px auto",
+  padding: "0 16px",
+  fontFamily: "system-ui, sans-serif",
 };
 
-const muted = {
-  fontSize: 13,
-  color: "#64748b",
+const title = { fontSize: 28, marginBottom: 6 };
+const subtitle = { color: "#475569", marginBottom: 24 };
+
+const grid4 = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: 16,
+};
+
+const statCard = {
+  border: "1px solid #e5e7eb",
+  borderRadius: 8,
+  padding: 16,
+  background: "#f8fafc",
+};
+
+const statLabel = { fontSize: 13, color: "#64748b" };
+const statValue = { fontSize: 22, fontWeight: 600 };
+
+const sectionTitle = { marginBottom: 12 };
+
+const card = {
+  border: "1px solid #e5e7eb",
+  borderRadius: 8,
+  padding: 16,
+  background: "#fff",
+};
+
+const rowTop = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: 6,
+};
+
+const barBg = {
+  height: 6,
+  background: "#e5e7eb",
+  borderRadius: 4,
+};
+
+const barFill = {
+  height: "100%",
+  borderRadius: 4,
+};
+
+const list = {
+  paddingLeft: 18,
+  lineHeight: 1.7,
 };
 
 const primaryBtn = {
+  marginTop: 32,
   padding: "10px 16px",
   background: "#2563eb",
   color: "#fff",
