@@ -123,6 +123,29 @@ function handleSubmitTest() {
   setMode("result");
 }
 
+  const diagnosis = {
+  attempted: answers.filter(a => a !== null).length,
+  unattempted: answers.filter(a => a === null).length,
+  correct: score,
+  byQuestionType: {},
+};
+
+passages.forEach((p, pIdx) => {
+  p.questions.forEach((q, qIdx) => {
+    const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+    const qt = q.questionType;
+
+    if (!diagnosis.byQuestionType[qt]) {
+      diagnosis.byQuestionType[qt] = { correct: 0, total: 0 };
+    }
+
+    diagnosis.byQuestionType[qt].total++;
+
+    if (answers[gi] === q.correctIndex) {
+      diagnosis.byQuestionType[qt].correct++;
+    }
+  });
+});
  
   /* ===================== RENDER ===================== */
  return (
