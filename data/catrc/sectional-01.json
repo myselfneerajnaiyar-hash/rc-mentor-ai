@@ -6,7 +6,7 @@
     "passages": 4,
     "difficulty": "CAT Level"
   },
-  "passages": [
+  
     {
       "id": "P1",
       "genre": "Philosophy",
@@ -128,8 +128,7 @@
         }
       ]
     },
-    {
-  "passages": [
+    
     {
       "id": "P3",
       "genre": "Sociology",
