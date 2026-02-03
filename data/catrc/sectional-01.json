@@ -127,6 +127,131 @@
           "explanation": "The passage concludes by advocating a plurality of models suited to specific contexts. Option A directly reflects this recommendation. Options B, C, and D all represent extremes that the author explicitly or implicitly rejects."
         }
       ]
+    },
+    {
+  "passages": [
+    {
+      "id": "P3",
+      "genre": "Sociology",
+      "difficulty": "hard",
+      "text": "Sociological accounts of modern institutions often assume that formal rules and organizational structures are the primary determinants of social behavior. While such frameworks help explain patterns of authority and coordination, they frequently overlook the informal practices through which institutions are enacted in everyday life. Rules do not operate in isolation; they are interpreted, negotiated, and sometimes resisted by the individuals subject to them.\n\nResearch on bureaucratic organizations reveals that informal norms frequently shape outcomes more decisively than official regulations. Employees develop shared understandings about which rules are flexible, which can be ignored, and which must be strictly enforced. These informal practices are not merely deviations from institutional design; they are functional adaptations that enable organizations to cope with complexity, uncertainty, and resource constraints.\n\nHowever, the reliance on informal norms also produces unintended consequences. Practices developed to increase efficiency can reproduce inequalities by privileging insiders who possess tacit knowledge while marginalizing those unfamiliar with institutional culture. Moreover, informal arrangements often evade accountability mechanisms, making it difficult to identify responsibility when failures occur.\n\nThe tension between formal structure and informal practice challenges simplistic notions of institutional rationality. Institutions may appear coherent and rule-bound on paper while operating through flexible, context-sensitive arrangements in practice. Understanding institutions, therefore, requires attention not only to their formal design but also to the social processes that sustain them.\n\nA sociological analysis that foregrounds informal practices does not deny the importance of formal rules. Instead, it highlights the dynamic interaction between codified structures and lived experience. Institutions persist not because rules are perfectly enforced, but because actors continually adapt those rules to the demands of concrete situations.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The central argument of the passage is that institutions:",
+          "options": [
+            "function through an interaction between formal rules and informal practices",
+            "are rendered ineffective by informal norms",
+            "primarily rely on strict enforcement of codified regulations",
+            "fail because of bureaucratic inefficiency"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage consistently emphasizes that institutions cannot be understood solely through their formal structures. Instead, their functioning depends on how actors interpret, negotiate, and adapt rules in practice. Option A captures this interaction between formal and informal dimensions. Option B overstates the critique by suggesting that informal norms undermine institutions entirely. Option C contradicts the discussion of flexible enforcement. Option D narrows the argument to inefficiency, whereas the passage addresses broader sociological dynamics."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that informal practices within institutions are described as:",
+          "options": [
+            "both enabling organizational functioning and reproducing inequality",
+            "primarily detrimental to accountability",
+            "temporary deviations that disappear over time",
+            "evidence of institutional failure"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author notes that informal norms help institutions cope with complexity while also producing unintended consequences such as inequality and reduced accountability. Option A reflects this dual role. Option B captures only one aspect and ignores the enabling function. Option C is unsupported, as informal practices are depicted as persistent. Option D misrepresents them as signs of failure rather than adaptations."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward informal institutional practices is best described as:",
+          "options": [
+            "analytical and balanced",
+            "strongly condemnatory",
+            "uncritically approving",
+            "dismissive"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author evaluates informal practices by acknowledging both their functional role and their problematic consequences. This measured assessment makes Option A correct. Option B is incorrect because the author does not condemn informal practices outright. Option C ignores the discussion of inequality and accountability. Option D contradicts the detailed analysis presented."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "Which of the following would most strengthen the author’s argument?",
+          "options": [
+            "A case study showing how informal norms override written rules in a public institution",
+            "Evidence that formal rules are always strictly enforced",
+            "An argument that institutions should eliminate informal practices",
+            "Data showing that informal norms are irrational"
+          ],
+          "correctIndex": 0,
+          "explanation": "A concrete case illustrating informal norms shaping institutional outcomes would directly support the author’s claims. Option A does this effectively. Option B contradicts the argument. Option C ignores the functional role of informal practices. Option D mischaracterizes the author’s position, which does not label informal norms as irrational."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Cognitive Science",
+      "difficulty": "hard",
+      "text": "Contemporary cognitive science increasingly challenges the view that cognition is confined to processes occurring solely within the brain. According to extended cognition theories, cognitive activity often involves interactions between neural processes, bodily actions, and external artifacts. Tools such as notebooks, diagrams, and digital devices do not merely aid cognition; they can become integral components of cognitive systems.\n\nProponents of extended cognition argue that when external resources reliably perform functions equivalent to internal mental processes, they should be considered part of cognition itself. For example, a notebook used consistently to store and retrieve information may function analogously to biological memory. This perspective dissolves the sharp boundary traditionally drawn between mind and environment.\n\nCritics contend that such an expansive definition of cognition risks conceptual overreach. If every external aid is counted as cognitive, the concept of cognition may lose explanatory precision. They argue that external tools differ fundamentally from neural processes because they lack intrinsic intentionality and biological integration.\n\nThe debate hinges not on whether tools influence thinking—a point few dispute—but on how to demarcate cognitive systems. Some theorists propose criteria such as reliability, automaticity, and integration to distinguish genuinely cognitive extensions from mere aids. These criteria aim to preserve explanatory rigor while acknowledging the role of environmental scaffolding.\n\nThe implications of this debate extend beyond philosophy of mind. How cognition is defined affects research in education, human–computer interaction, and artificial intelligence. A nuanced account of extended cognition must balance inclusiveness with conceptual discipline, recognizing that cognition may be distributed without becoming unbounded.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Primary Purpose",
+          "stem": "The primary purpose of the passage is to:",
+          "options": [
+            "examine a debate about the boundaries of cognition",
+            "argue that cognition is entirely external to the brain",
+            "reject extended cognition as incoherent",
+            "demonstrate the superiority of digital tools"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage outlines competing positions on extended cognition, presenting both proponents’ arguments and critics’ concerns before discussing possible criteria for resolution. Option A accurately reflects this evaluative purpose. Option B exaggerates the proponents’ claims. Option C is incorrect because the author does not reject extended cognition outright. Option D narrows the discussion to technology, which is not the central focus."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author suggests that the main risk of extended cognition theories is that they may:",
+          "options": [
+            "undermine the explanatory clarity of the concept of cognition",
+            "ignore the role of the brain entirely",
+            "deny the usefulness of external tools",
+            "conflict with empirical findings in neuroscience"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage notes critics’ concerns that overly broad definitions could lead to conceptual overreach and loss of precision. Option A captures this risk. Option B misrepresents the argument, as no one denies the brain’s role. Option C contradicts the discussion. Option D is not mentioned as a primary concern."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s stance toward extended cognition theories can best be described as:",
+          "options": [
+            "cautiously balanced",
+            "unreservedly supportive",
+            "strongly skeptical",
+            "dismissive"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author presents both sides of the debate and emphasizes the need for balance between inclusiveness and rigor. Option A reflects this cautious balance. Option B ignores the noted criticisms. Option C overstates the skepticism. Option D is inconsistent with the careful engagement shown."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "Which of the following would the author most likely accept?",
+          "options": [
+            "External tools can be part of cognition if they meet specific criteria",
+            "All technological aids automatically count as cognitive processes",
+            "Cognition should be defined exclusively in neural terms",
+            "The concept of cognition should be abandoned"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage concludes by endorsing a nuanced position in which some external resources may qualify as cognitive extensions if they satisfy conditions like reliability and integration. Option A aligns with this view. Options B, C, and D represent extreme positions the author explicitly cautions against."
+        }
+      ]
     }
+  ]
+}
 
   
