@@ -24,13 +24,18 @@ export default function CATArenaTestView({ testData }) {
   const QUESTIONS_PER_PASSAGE = 4;
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
+  /* ✅ FLATTEN QUESTIONS (THIS WAS MISSING) */
+  const flatQuestions = useMemo(
+    () => passages.flatMap(p => p.questions),
+    [passages]
+  );
+
   /* ===================== STATE ===================== */
   const [mode, setMode] = useState("test"); // test | diagnosis | review
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [questionStates, setQuestionStates] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
-  const [score, setScore] = useState(0);
 
   /* ===================== RESET ON LOAD ===================== */
   useEffect(() => {
@@ -48,53 +53,6 @@ export default function CATArenaTestView({ testData }) {
   const currentPassage = passages[passageIndex];
   const currentQuestion =
     currentPassage.questions[questionIndexInPassage];
-
-  /* ===================== SCORE + DIAGNOSIS ===================== */
-  const diagnosis = useMemo(() => {
-    let correct = 0;
-    let attempted = 0;
-
-    const byQuestionType = {};
-    const passageStats = passages.map((p, pIdx) => {
-      let pCorrect = 0;
-
-      p.questions.forEach((q, qIdx) => {
-        const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-        const ans = answers[gi];
-
-        if (ans !== null) attempted++;
-        if (ans === q.correctIndex) {
-          correct++;
-          pCorrect++;
-        }
-
-        const type = q.type || "Unknown";
-        if (!byQuestionType[type]) {
-          byQuestionType[type] = { correct: 0, total: 0 };
-        }
-
-        byQuestionType[type].total++;
-        if (ans === q.correctIndex) {
-          byQuestionType[type].correct++;
-        }
-      });
-
-      return {
-        genre: p.genre,
-        difficulty: p.difficulty,
-        correct: pCorrect,
-        total: p.questions.length,
-      };
-    });
-
-    return {
-      score: correct,
-      attempted,
-      unattempted: totalQuestions - attempted,
-      passageStats,
-      byQuestionType,
-    };
-  }, [answers, passages, totalQuestions]);
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
@@ -131,7 +89,6 @@ export default function CATArenaTestView({ testData }) {
   }
 
   function handleSubmitTest() {
-    setScore(diagnosis.score);
     setShowSubmit(false);
     setMode("diagnosis");
   }
@@ -143,13 +100,8 @@ export default function CATArenaTestView({ testData }) {
       {mode === "diagnosis" && (
         <DiagnosisView
           passages={passages}
+          questions={flatQuestions}   {/* ✅ THIS FIXES EVERYTHING */}
           answers={answers}
-          QUESTIONS_PER_PASSAGE={QUESTIONS_PER_PASSAGE}
-          score={diagnosis.score}
-          passageStats={diagnosis.passageStats}
-          byQuestionType={diagnosis.byQuestionType}
-          attempted={diagnosis.attempted}
-          unattempted={diagnosis.unattempted}
           onReview={() => setMode("review")}
         />
       )}
@@ -173,7 +125,6 @@ export default function CATArenaTestView({ testData }) {
             <PassagePanel
               passages={passages}
               currentQuestionIndex={currentQuestionIndex}
-              passageStats={diagnosis.passageStats}
               mode={mode}
             />
 
