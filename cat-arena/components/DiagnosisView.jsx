@@ -76,7 +76,7 @@ export default function DiagnosisViewV2({
             key={type}
             title={type}
             stat={`${v.correct}/${v.total}`}
-            advice={Revise logic + explanation patterns for ${type}}
+            advice={`Revise logic + explanation patterns for ${type}`}
           />
         ))}
       </Section>
