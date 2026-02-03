@@ -1,249 +1,238 @@
 "use client";
 
-import React from "react";
-
 export default function DiagnosisView({
-  passages,
+  diagnosis,
   passageStats,
-  byQuestionType,
-  score,
-  attempted,
-  unattempted,
-  QUESTIONS_PER_PASSAGE,
-  previousSnapshot, // OPTIONAL
+  previousDiagnosis, // optional: pass last sectional diagnosis if available
   onReview,
 }) {
-  const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
-  const incorrect = attempted - score;
-  const accuracy = attempted ? Math.round((score / attempted) * 100) : 0;
+  /* ================= HELPERS ================= */
+  const accuracy = diagnosis.attempted
+    ? Math.round((diagnosis.correct / diagnosis.attempted) * 100)
+    : 0;
 
-  const sortedQT = Object.entries(byQuestionType || {}).sort(
-    (a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total
+  const sortedQT = Object.entries(diagnosis.byQuestionType || {}).sort(
+    (a, b) =>
+      b[1].total - a[1].total ||
+      a[1].correct / a[1].total - b[1].correct / b[1].total
   );
 
+  const priorityFixes = sortedQT
+    .filter(([_, v]) => v.total >= 2 && v.correct / v.total < 0.4)
+    .slice(0, 3);
+
+  /* ================= STYLES ================= */
+  const page = {
+    background: "#f8fafc",
+    minHeight: "100vh",
+    padding: "40px 16px",
+  };
+
+  const card = {
+    background: "#ffffff",
+    borderRadius: 12,
+    padding: 20,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.05)",
+    marginBottom: 24,
+  };
+
+  const h2 = { marginBottom: 8 };
+  const muted = { color: "#64748b", fontSize: 14 };
+
+  const statGrid = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))",
+    gap: 16,
+    marginTop: 16,
+  };
+
+  const statBox = (accent) => ({
+    borderLeft: `5px solid ${accent}`,
+    padding: "12px 14px",
+    background: "#f9fafb",
+    borderRadius: 8,
+  });
+
+  const barWrap = {
+    background: "#e5e7eb",
+    borderRadius: 6,
+    height: 8,
+    overflow: "hidden",
+  };
+
+  const bar = (pct, color) => ({
+    width: `${pct}%`,
+    height: "100%",
+    background: color,
+  });
+
+  const statusColor = (pct) =>
+    pct >= 70 ? "#16a34a" : pct >= 40 ? "#f59e0b" : "#dc2626";
+
+  /* ================= RENDER ================= */
   return (
     <div style={page}>
-      <h1 style={title}>RC Diagnosis Report</h1>
-      <p style={subtitle}>
-        Focuses on <b>decision patterns</b>, not isolated mistakes.
-      </p>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        {/* ================= HEADER ================= */}
+        <div style={card}>
+          <h2 style={h2}>RC Diagnosis Report</h2>
+          <p style={muted}>
+            Focuses on <b>decision patterns</b>, not isolated mistakes.
+          </p>
 
-      {/* ================= SNAPSHOT ================= */}
-      <div style={grid4}>
-        <Stat label="Score" value={`${score} / ${totalQuestions}`} />
-        <Stat label="Incorrect Attempts" value={incorrect} tone="danger" />
-        <Stat label="Smart Skips" value={unattempted} tone="neutral" />
-        <Stat label="Accuracy" value={`${accuracy}%`} tone="info" />
+          <div style={statGrid}>
+            <div style={statBox("#2563eb")}>
+              <div style={muted}>Score</div>
+              <strong>{diagnosis.correct} / {diagnosis.total}</strong>
+            </div>
+
+            <div style={statBox("#dc2626")}>
+              <div style={muted}>Incorrect Attempts</div>
+              <strong>{diagnosis.incorrect}</strong>
+            </div>
+
+            <div style={statBox("#0ea5e9")}>
+              <div style={muted}>Smart Skips</div>
+              <strong>{diagnosis.unattempted}</strong>
+            </div>
+
+            <div style={statBox("#16a34a")}>
+              <div style={muted}>Accuracy</div>
+              <strong>{accuracy}%</strong>
+            </div>
+          </div>
+
+          {/* ===== Comparison (only if previous exists) ===== */}
+          {!previousDiagnosis && (
+            <p style={{ marginTop: 12, fontSize: 13, color: "#64748b" }}>
+              📈 Progress comparison will appear after your next RC sectional.
+            </p>
+          )}
+
+          {previousDiagnosis && (
+            <p style={{ marginTop: 12, fontSize: 13 }}>
+              Accuracy change:{" "}
+              <b>
+                {accuracy -
+                  Math.round(
+                    (previousDiagnosis.correct /
+                      previousDiagnosis.attempted) *
+                      100
+                  )}
+                %
+              </b>
+            </p>
+          )}
+        </div>
+
+        {/* ================= PASSAGE STRATEGY ================= */}
+        <div style={card}>
+          <h3>Passage-wise CAT Strategy</h3>
+
+          {passageStats.map((p, i) => {
+            const pct = Math.round((p.correct / p.total) * 100);
+            const label =
+              pct >= 70
+                ? "Selective Attempt"
+                : pct >= 40
+                ? "Needs Caution"
+                : "Avoid in CAT";
+
+            return (
+              <div key={i} style={{ marginTop: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <strong>{p.genre} ({p.correct}/{p.total})</strong>
+                  <span style={{ color: statusColor(pct), fontSize: 13 }}>
+                    {label}
+                  </span>
+                </div>
+                <div style={barWrap}>
+                  <div style={bar(pct, statusColor(pct))} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ================= QUESTION TYPE MAP ================= */}
+        <div style={card}>
+          <h3>Question-Type Skill Map</h3>
+
+          {sortedQT.map(([type, v]) => {
+            const pct = Math.round((v.correct / v.total) * 100);
+            return (
+              <div key={type} style={{ marginTop: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <strong>
+                    {type} ({v.correct}/{v.total})
+                  </strong>
+                  <span style={{ color: statusColor(pct), fontSize: 13 }}>
+                    {pct >= 70
+                      ? "Strength"
+                      : pct >= 40
+                      ? "Needs Work"
+                      : "Weak Area"}
+                  </span>
+                </div>
+                <div style={barWrap}>
+                  <div style={bar(pct, statusColor(pct))} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ================= TOP PRIORITY FIXES ================= */}
+        <div style={card}>
+          <h3>Top Priority Fixes (Next 7 Days)</h3>
+          <p style={muted}>Focus ONLY on these. Ignore other RC work.</p>
+
+          {priorityFixes.length === 0 && (
+            <p style={{ color: "#16a34a" }}>
+              ✅ No critical weaknesses detected. Maintain strengths.
+            </p>
+          )}
+
+          {priorityFixes.map(([type, v], i) => (
+            <div key={type} style={{ marginTop: 14 }}>
+              <strong>
+                {i + 1}. {type} ({v.correct}/{v.total})
+              </strong>
+              <div style={{ fontSize: 13, color: "#475569" }}>
+                • Attempt focused drills only<br />
+                • Write why each wrong option is wrong<br />
+                • No mixed RC practice
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ================= ACTION PLAN ================= */}
+        <div style={card}>
+          <h3>Actionable Rules (Until Accuracy ≥ 60%)</h3>
+          <ul style={{ paddingLeft: 18, marginTop: 8 }}>
+            <li>Attempt only <b>2 passages</b> per RC sectional.</li>
+            <li>Skip abstract / unfamiliar tone passages.</li>
+            <li>Analyse only incorrect attempts.</li>
+            <li>Increase volume only after accuracy ≥ 60%.</li>
+          </ul>
+
+          <button
+            onClick={onReview}
+            style={{
+              marginTop: 16,
+              padding: "8px 14px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+            }}
+          >
+            Review Questions
+          </button>
+        </div>
       </div>
-
-      {/* ================= COMPARISON ================= */}
-      {previousSnapshot && (
-        <Section title="Progress vs Last RC Sectional">
-          <Compare
-            label="Score"
-            current={score}
-            previous={previousSnapshot.score}
-          />
-          <Compare
-            label="Accuracy"
-            current={accuracy}
-            previous={previousSnapshot.accuracy}
-            suffix="%"
-          />
-          <Compare
-            label="Attempts"
-            current={attempted}
-            previous={previousSnapshot.attempted}
-          />
-        </Section>
-      )}
-
-      {/* ================= PASSAGE STRATEGY ================= */}
-      <Section title="Passage-wise CAT Strategy">
-        {passageStats.map((p, i) => {
-          const pct = p.correct / p.total;
-          const tone =
-            pct >= 0.6 ? "good" : pct >= 0.3 ? "warn" : "bad";
-          const label =
-            pct >= 0.6
-              ? "Attempt Confidently"
-              : pct >= 0.3
-              ? "Selective Attempt"
-              : "Avoid in CAT";
-
-          return (
-            <BarRow
-              key={i}
-              left={`${p.genre} (${p.correct}/${p.total})`}
-              right={label}
-              percent={pct * 100}
-              tone={tone}
-            />
-          );
-        })}
-      </Section>
-
-      {/* ================= QUESTION TYPE MAP ================= */}
-      <Section title="Question-Type Skill Map">
-        {sortedQT.map(([type, v]) => {
-          const pct = v.correct / v.total;
-          const tone =
-            pct >= 0.6 ? "good" : pct >= 0.3 ? "warn" : "bad";
-          const label =
-            pct >= 0.6 ? "Strength" : pct >= 0.3 ? "Needs Work" : "Weak Area";
-
-          return (
-            <BarRow
-              key={type}
-              left={`${type} (${v.correct}/${v.total})`}
-              right={label}
-              percent={pct * 100}
-              tone={tone}
-            />
-          );
-        })}
-      </Section>
-
-      {/* ================= ACTION PLAN ================= */}
-      <Section title="Actionable Next Steps">
-        <ul style={list}>
-          <li>Attempt only <b>2 passages</b> per RC sectional.</li>
-          <li>Skip abstract / unfamiliar tone passages.</li>
-          <li>Analyse only incorrect attempts.</li>
-          <li>Increase volume only after accuracy ≥ 60%.</li>
-        </ul>
-      </Section>
-
-      <button onClick={onReview} style={cta}>
-        Review Questions
-      </button>
     </div>
   );
-}
-
-/* ================= SMALL COMPONENTS ================= */
-
-function Stat({ label, value, tone }) {
-  return (
-    <div style={{ ...stat, borderLeft: `4px solid ${toneColor(tone)}` }}>
-      <div style={statLabel}>{label}</div>
-      <div style={statValue}>{value}</div>
-    </div>
-  );
-}
-
-function Compare({ label, current, previous, suffix = "" }) {
-  const diff = current - previous;
-  const up = diff > 0;
-
-  return (
-    <div style={compareRow}>
-      <span>{label}</span>
-      <span style={{ color: up ? "#16a34a" : "#dc2626" }}>
-        {current}{suffix} {diff !== 0 && `( ${up ? "▲" : "▼"} ${Math.abs(diff)} )`}
-      </span>
-    </div>
-  );
-}
-
-function Section({ title, children }) {
-  return (
-    <div style={{ marginTop: 36 }}>
-      <h3 style={sectionTitle}>{title}</h3>
-      <div style={card}>{children}</div>
-    </div>
-  );
-}
-
-function BarRow({ left, right, percent, tone }) {
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={rowTop}>
-        <span>{left}</span>
-        <span style={{ fontWeight: 600, color: toneColor(tone) }}>
-          {right}
-        </span>
-      </div>
-      <div style={barBg}>
-        <div
-          style={{
-            ...barFill,
-            width: `${percent}%`,
-            background: toneColor(tone),
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* ================= THEME ================= */
-
-const page = {
-  background: "#f1f5f9",
-  minHeight: "100vh",
-  padding: "40px 16px",
-};
-
-const title = { fontSize: 28, marginBottom: 4 };
-const subtitle = { color: "#475569" };
-
-const grid4 = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))",
-  gap: 16,
-  marginTop: 24,
-};
-
-const stat = {
-  background: "#ffffff",
-  padding: 16,
-  borderRadius: 10,
-};
-
-const statLabel = { fontSize: 13, color: "#64748b" };
-const statValue = { fontSize: 22, fontWeight: 600 };
-
-const sectionTitle = { marginBottom: 12 };
-
-const card = {
-  background: "#ffffff",
-  padding: 16,
-  borderRadius: 10,
-};
-
-const rowTop = { display: "flex", justifyContent: "space-between" };
-
-const barBg = {
-  height: 6,
-  background: "#e5e7eb",
-  borderRadius: 4,
-};
-
-const barFill = { height: "100%", borderRadius: 4 };
-
-const compareRow = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginBottom: 8,
-};
-
-const list = { paddingLeft: 18, lineHeight: 1.8 };
-
-const cta = {
-  marginTop: 32,
-  padding: "12px 18px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 6,
-  cursor: "pointer",
-};
-
-function toneColor(tone) {
-  if (tone === "good") return "#16a34a";
-  if (tone === "warn") return "#f59e0b";
-  if (tone === "danger" || tone === "bad") return "#dc2626";
-  if (tone === "info") return "#2563eb";
-  return "#64748b";
 }
