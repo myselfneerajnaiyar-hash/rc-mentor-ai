@@ -4,21 +4,23 @@ export default function PassagePanel({
   passages,
   currentQuestionIndex,
   passageStats,
-  mode
+  mode,
 }) {
   if (!passages || passages.length === 0) return null;
 
-  // ✅ CAT RULE: 4 questions per passage
-  const passageIndex = Math.floor(currentQuestionIndex / 4);
+  // CAT rule: 4 questions per passage
+  const QUESTIONS_PER_PASSAGE = 4;
+  const passageIndex = Math.floor(
+    currentQuestionIndex / QUESTIONS_PER_PASSAGE
+  );
+
   const passage = passages[passageIndex];
+  const stats =
+    passageStats && passageStats[passageIndex]
+      ? passageStats[passageIndex]
+      : null;
 
   if (!passage) return null;
-  {mode === "review" && (
-  <div style={{ marginBottom: 8, fontSize: 13, color: "#374151" }}>
-    <strong>Passage Performance:</strong>{" "}
-    {stats.correct} / {stats.total}
-  </div>
-)}
 
   return (
     <div
@@ -30,16 +32,26 @@ export default function PassagePanel({
         background: "#ffffff",
       }}
     >
-      {/* ===== PASSAGE TITLE ===== */}
-      <div
-        style={{
-          fontWeight: 700,
-          marginBottom: 12,
-          color: "#111827",
-        }}
-      >
-        {passage.title}
-      </div>
+      {/* ===== PASSAGE PERFORMANCE (REVIEW / DIAGNOSIS ONLY) ===== */}
+      {(mode === "review" || mode === "diagnosis") && stats && (
+        <div
+          style={{
+            marginBottom: 12,
+            padding: "8px 10px",
+            background: "#f9fafb",
+            border: "1px solid #e5e7eb",
+            borderRadius: 4,
+            fontSize: 13,
+            color: "#374151",
+          }}
+        >
+          <strong>Passage Performance:</strong>{" "}
+          {stats.correct} / {stats.total}
+          <span style={{ marginLeft: 8, color: "#6b7280" }}>
+            ({stats.genre})
+          </span>
+        </div>
+      )}
 
       {/* ===== PASSAGE TEXT ===== */}
       <div
