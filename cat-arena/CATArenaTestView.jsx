@@ -107,13 +107,7 @@ function handleSubmitTest() {
   setMode("result");
 }
 
-  const score = answers.reduce((s, a, i) => {
-  const pIndex = Math.floor(i / QUESTIONS_PER_PASSAGE);
-  const qIndex = i % QUESTIONS_PER_PASSAGE;
-  const correct = passages[pIndex].questions[qIndex].correctIndex;
-  return s + (a === correct ? 1 : 0);
-}, 0);
-
+ 
   /* ===================== RENDER ===================== */
  return (
   <>
