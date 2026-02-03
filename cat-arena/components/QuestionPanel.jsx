@@ -115,6 +115,37 @@ export default function QuestionPanel({
         </div>
       )}
 
+      {/* Review Summary */}
+{mode === "review" && (
+  <div
+    style={{
+      marginTop: 12,
+      padding: 10,
+      background: "#f9fafb",
+      border: "1px solid #e5e7eb",
+      borderRadius: 4,
+      fontSize: 14,
+      color: "#374151",
+    }}
+  >
+    <div>
+      <strong>Your Answer:</strong>{" "}
+      {selectedOption !== null
+        ? String.fromCharCode(65 + selectedOption)
+        : "Not Attempted"}
+    </div>
+
+    <div>
+      <strong>Correct Answer:</strong>{" "}
+      {String.fromCharCode(65 + correctIndex)}
+    </div>
+
+    <div>
+      <strong>Question Type:</strong>{" "}
+      {question.questionType || "—"}
+    </div>
+  </div>
+)}
       {/* Explanation Box */}
       {mode === "review" && showExplanation && (
         <div
