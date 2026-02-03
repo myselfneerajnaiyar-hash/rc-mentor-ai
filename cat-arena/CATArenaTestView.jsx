@@ -29,7 +29,7 @@ export default function CATArenaTestView({ testData }) {
   const [questionStates, setQuestionStates] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
   const [mode, setMode] = useState("test"); 
-// test | result | review
+// test | result | review | diagnosis
   const [score, setScore] = useState(0);
 
   /* ===================== RESET ON LOAD ===================== */
