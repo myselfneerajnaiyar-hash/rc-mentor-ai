@@ -6,7 +6,7 @@
     "passages": 4,
     "difficulty": "CAT Level"
   },
-  
+  "passages": [
     {
       "id": "P1",
       "genre": "Philosophy",
@@ -18,52 +18,52 @@
           "type": "Main Idea / Central Theme",
           "stem": "The primary purpose of the passage is to argue that:",
           "options": [
-            "formal logic is insufficient to explain how reasoning operates in real-world contexts",
+            "formal logic alone cannot fully account for how reasoning operates in real-world contexts",
             "heuristics should replace deductive logic in all forms of reasoning",
-            "philosophical theories of rationality are largely outdated",
-            "social consensus is more important than logical validity"
+            "philosophical theories of rationality are largely obsolete",
+            "social agreement is more important than logical validity"
           ],
           "correctIndex": 0,
-          "explanation": "The author consistently challenges the assumption that reasoning is a purely internal, formal process governed only by logic. Instead, the passage emphasizes that reasoning is shaped by social, linguistic, and contextual factors. Option A captures this central thrust by noting the insufficiency of formal logic alone in explaining real-world reasoning. Option B is incorrect because the author does not advocate replacing logic entirely, only supplementing it. Option C exaggerates the critique; the author does not dismiss philosophical theories wholesale. Option D misrepresents the argument by suggesting that social agreement supersedes logic, whereas the passage stresses pluralism rather than replacement."
+          "explanation": "The passage consistently challenges the idea that rationality is purely an internal, formal process governed only by logic. The author argues that reasoning is shaped by social practices, linguistic norms, and contextual demands. Option A correctly captures this central claim. Option B is incorrect because the author does not argue for replacing logic entirely, only for recognizing its limits. Option C exaggerates the critique; the author does not dismiss philosophical theories wholesale. Option D misrepresents the argument by suggesting logic is secondary to consensus, whereas the author advocates pluralism rather than substitution."
         },
         {
           "id": "P1Q2",
           "type": "Inference",
-          "stem": "It can be inferred from the passage that the author would most likely agree with which of the following?",
+          "stem": "It can be inferred that the author would most likely agree that:",
           "options": [
-            "Different fields require different standards of what counts as rational reasoning",
-            "Formal logic is irrelevant in scientific inquiry",
-            "Public debates should avoid emotional or cultural appeals",
-            "Rationality can be defined independently of social context"
+            "standards of rationality vary across different domains of inquiry",
+            "formal logic is irrelevant to scientific reasoning",
+            "public deliberation should avoid cultural narratives",
+            "rationality can be defined independently of social context"
           ],
           "correctIndex": 0,
-          "explanation": "The passage explicitly notes that scientific, legal, and moral reasoning operate under different standards of justification, implying that rationality is domain-specific. Option A aligns directly with this inference. Option B is too extreme, as the author never dismisses formal logic entirely. Option C contradicts the discussion of persuasion relying on shared values and narratives. Option D is the opposite of the author’s position, which emphasizes the contextual nature of rationality."
+          "explanation": "The author explicitly notes that scientific, legal, and moral reasoning rely on distinct standards of justification. This supports the inference that rationality is domain-specific. Option A follows directly from this idea. Option B is incorrect because the author does not dismiss logic. Option C contradicts the discussion of persuasion relying on shared values. Option D directly opposes the author’s emphasis on contextual rationality."
         },
         {
           "id": "P1Q3",
           "type": "Author’s Tone or Attitude",
-          "stem": "The author’s attitude toward formal models of rationality can best be described as:",
+          "stem": "The author’s attitude toward formal models of rationality is best described as:",
           "options": [
-            "critical but not dismissive",
+            "critical but balanced",
             "openly hostile",
             "unquestioningly supportive",
             "largely indifferent"
           ],
           "correctIndex": 0,
-          "explanation": "The author critiques the limitations of formal models while acknowledging their value and stopping short of rejecting them outright. This balanced stance makes Option A correct. Option B is incorrect because the tone is measured, not hostile. Option C is contradicted by repeated critiques. Option D is wrong because the author clearly engages deeply with the issue."
+          "explanation": "The author acknowledges the usefulness of formal logic while pointing out its limitations, indicating a measured and balanced critique. Option A captures this stance. Option B is incorrect because the tone is analytical, not hostile. Option C ignores the repeated critiques. Option D is incorrect because the author engages deeply with the issue."
         },
         {
           "id": "P1Q4",
-          "type": "Implication",
+          "type": "Strengthen the Argument",
           "stem": "Which of the following would most strengthen the author’s argument?",
           "options": [
             "An example showing how legal reasoning departs from strict deductive logic",
             "Evidence that formal logic guarantees correct conclusions",
             "A claim that emotions always undermine rational thought",
-            "An argument that cultural narratives are irrational by nature"
+            "An argument that cultural narratives are inherently irrational"
           ],
           "correctIndex": 0,
-          "explanation": "The author argues that different domains use different standards of reasoning. Option A provides a concrete illustration supporting this claim. Option B undermines the author’s critique. Option C contradicts the idea that non-formal reasoning can be adaptive. Option D conflicts with the argument that narratives can play a legitimate role in reasoning."
+          "explanation": "The author argues that different domains employ different standards of reasoning. A concrete example from legal reasoning would directly support this claim. Option A therefore strengthens the argument. Option B undermines the author’s critique. Option C contradicts the idea that non-formal reasoning can be adaptive. Option D misrepresents the author’s view of narratives."
         }
       ]
     },
@@ -72,7 +72,7 @@
       "id": "P2",
       "genre": "Economics",
       "difficulty": "medium",
-      "text": "Economic models often rely on simplified assumptions about human behavior, such as rational self-interest and stable preferences. These assumptions allow economists to construct elegant models capable of generating precise predictions. However, the very features that make these models tractable also limit their explanatory power when applied to real-world economic behavior.\n\nEmpirical studies repeatedly demonstrate that individuals do not always act in accordance with rational choice theory. Preferences shift over time, decisions are influenced by framing effects, and individuals frequently prioritize fairness or social norms over material gain. Such findings have prompted the emergence of behavioral economics, which seeks to incorporate psychological insights into economic analysis.\n\nCritics of behavioral economics argue that abandoning simplifying assumptions risks sacrificing analytical clarity. Without stable preferences or rational actors, models may become too context-dependent to yield generalizable insights. This concern reflects a broader tension between realism and abstraction in economic theory.\n\nYet abstraction itself is not value-neutral. The choice of which factors to simplify and which to emphasize shapes the conclusions a model produces. Models that ignore inequality, power relations, or institutional constraints may inadvertently legitimize existing economic arrangements rather than critically examining them.\n\nA more reflexive approach to economic modeling would acknowledge both the usefulness and the limitations of abstraction. Rather than seeking a single, comprehensive model of economic behavior, economists might employ a plurality of models, each suited to specific questions and contexts.",
+      "text": "Economic theory has long relied on simplified assumptions about human behavior, such as rational self-interest and stable preferences. These assumptions enable economists to construct models that are analytically elegant and mathematically tractable. However, the very simplicity that allows such models to function also limits their ability to explain observed economic behavior.\n\nEmpirical research has repeatedly demonstrated that individuals frequently deviate from rational choice predictions. Decisions are influenced by framing effects, social norms, and perceptions of fairness, often at the expense of material self-interest. These findings have fueled the rise of behavioral economics, which seeks to integrate psychological insights into economic analysis.\n\nCritics argue that incorporating behavioral complexity threatens the coherence of economic theory. If preferences are unstable and context-dependent, models may lose their predictive power and generalizability. This concern reflects a broader tension between realism and abstraction within the discipline.\n\nYet abstraction itself is not neutral. Choices about which variables to include or exclude shape the conclusions models produce. By neglecting factors such as power relations or institutional constraints, models may implicitly legitimize existing economic arrangements rather than subject them to scrutiny.\n\nA more reflexive approach to economic modeling would recognize abstraction as a tool rather than a mirror of reality. Instead of seeking a single, unified model of economic behavior, economists might employ multiple models, each suited to particular questions and contexts.",
       "questions": [
         {
           "id": "P2Q1",
@@ -82,23 +82,23 @@
             "evaluate the strengths and limitations of abstraction in economic modeling",
             "argue that behavioral economics should replace traditional economics",
             "demonstrate the empirical failure of rational choice theory",
-            "criticize economists for ignoring psychological research"
+            "criticize economists for ignoring psychology"
           ],
           "correctIndex": 0,
-          "explanation": "The author examines both the advantages and drawbacks of abstraction in economics, advocating a balanced and pluralistic approach. Option A captures this evaluative purpose. Option B is too strong; replacement is not advocated. Option C overstates the critique, as rational choice is not declared a failure. Option D misrepresents the tone, which is analytical rather than accusatory."
+          "explanation": "The author assesses both the usefulness and the drawbacks of abstraction, ultimately advocating a pluralistic approach to modeling. Option A captures this evaluative purpose. Option B is too extreme; replacement is not suggested. Option C overstates the critique. Option D misrepresents the analytical tone."
         },
         {
           "id": "P2Q2",
           "type": "Inference",
           "stem": "The author would most likely agree that economic models:",
           "options": [
-            "inevitably reflect normative judgments through their assumptions",
-            "should aim to describe reality with complete accuracy",
-            "are rendered useless by behavioral findings",
-            "can avoid value judgments through formalization"
+            "inevitably reflect value judgments through their assumptions",
+            "should aim to replicate reality in full detail",
+            "are rendered obsolete by behavioral findings",
+            "can avoid normative implications through formalization"
           ],
           "correctIndex": 0,
-          "explanation": "The passage suggests that abstraction is not value-neutral and that modeling choices shape conclusions. Option A follows directly. Option B is unrealistic and not implied. Option C exaggerates the impact of behavioral economics. Option D contradicts the claim that abstraction carries implicit values."
+          "explanation": "The passage emphasizes that abstraction is not neutral and that modeling choices shape outcomes. Option A follows directly. Option B contradicts the defense of abstraction. Option C exaggerates the impact of behavioral economics. Option D conflicts with the argument that assumptions carry implicit values."
         },
         {
           "id": "P2Q3",
@@ -107,11 +107,11 @@
           "options": [
             "cautiously supportive",
             "uncritically enthusiastic",
-            "overtly dismissive",
+            "openly dismissive",
             "largely skeptical"
           ],
           "correctIndex": 0,
-          "explanation": "The author recognizes the contributions of behavioral economics while acknowledging critiques about loss of analytical clarity. This balanced view makes Option A correct. Option B ignores the noted limitations. Option C is incorrect as the author presents it respectfully. Option D overstates the critique."
+          "explanation": "The author acknowledges the contributions of behavioral economics while recognizing concerns about loss of coherence. This balanced stance is best captured by Option A. Options B, C, and D each mischaracterize the nuanced evaluation."
         },
         {
           "id": "P2Q4",
@@ -121,45 +121,45 @@
             "Using different models for different economic questions",
             "Abandoning formal modeling altogether",
             "Relying exclusively on empirical observation",
-            "Rejecting behavioral insights as too subjective"
+            "Rejecting behavioral insights as subjective"
           ],
           "correctIndex": 0,
-          "explanation": "The passage concludes by advocating a plurality of models suited to specific contexts. Option A directly reflects this recommendation. Options B, C, and D all represent extremes that the author explicitly or implicitly rejects."
+          "explanation": "The passage concludes by advocating pluralism in economic modeling. Option A directly reflects this recommendation. The remaining options represent extremes that the author explicitly or implicitly rejects."
         }
       ]
     },
-    
+
     {
       "id": "P3",
       "genre": "Sociology",
       "difficulty": "hard",
-      "text": "Sociological accounts of modern institutions often assume that formal rules and organizational structures are the primary determinants of social behavior. While such frameworks help explain patterns of authority and coordination, they frequently overlook the informal practices through which institutions are enacted in everyday life. Rules do not operate in isolation; they are interpreted, negotiated, and sometimes resisted by the individuals subject to them.\n\nResearch on bureaucratic organizations reveals that informal norms frequently shape outcomes more decisively than official regulations. Employees develop shared understandings about which rules are flexible, which can be ignored, and which must be strictly enforced. These informal practices are not merely deviations from institutional design; they are functional adaptations that enable organizations to cope with complexity, uncertainty, and resource constraints.\n\nHowever, the reliance on informal norms also produces unintended consequences. Practices developed to increase efficiency can reproduce inequalities by privileging insiders who possess tacit knowledge while marginalizing those unfamiliar with institutional culture. Moreover, informal arrangements often evade accountability mechanisms, making it difficult to identify responsibility when failures occur.\n\nThe tension between formal structure and informal practice challenges simplistic notions of institutional rationality. Institutions may appear coherent and rule-bound on paper while operating through flexible, context-sensitive arrangements in practice. Understanding institutions, therefore, requires attention not only to their formal design but also to the social processes that sustain them.\n\nA sociological analysis that foregrounds informal practices does not deny the importance of formal rules. Instead, it highlights the dynamic interaction between codified structures and lived experience. Institutions persist not because rules are perfectly enforced, but because actors continually adapt those rules to the demands of concrete situations.",
+      "text": "Sociological analyses of institutions often emphasize formal rules and organizational structures as the primary determinants of social behavior. While such frameworks explain patterns of authority and coordination, they frequently overlook the informal practices through which institutions function in everyday life. Rules do not operate automatically; they are interpreted, negotiated, and sometimes resisted by the individuals subject to them.\n\nStudies of bureaucratic organizations reveal that informal norms often shape outcomes more decisively than official regulations. Employees develop shared understandings regarding which rules can be bent, which can be ignored, and which must be strictly enforced. These practices enable organizations to manage complexity and uncertainty.\n\nHowever, informal practices also generate unintended consequences. They can reproduce inequalities by privileging insiders familiar with institutional culture while marginalizing outsiders. Additionally, because informal norms operate outside formal accountability mechanisms, responsibility for failures becomes difficult to assign.\n\nThis tension between formal structure and informal practice complicates conventional views of institutional rationality. Institutions may appear coherent on paper while functioning through flexible arrangements in practice. Understanding institutions therefore requires attention to both codified rules and lived experience.\n\nA sociological perspective that foregrounds informal practices does not deny the importance of formal rules. Instead, it highlights the dynamic interaction between structure and agency through which institutions persist and adapt.",
       "questions": [
         {
           "id": "P3Q1",
           "type": "Main Idea / Central Theme",
-          "stem": "The central argument of the passage is that institutions:",
+          "stem": "The passage primarily argues that institutions:",
           "options": [
             "function through an interaction between formal rules and informal practices",
-            "are rendered ineffective by informal norms",
-            "primarily rely on strict enforcement of codified regulations",
-            "fail because of bureaucratic inefficiency"
+            "are undermined by informal norms",
+            "depend entirely on strict rule enforcement",
+            "fail due to bureaucratic inefficiency"
           ],
           "correctIndex": 0,
-          "explanation": "The passage consistently emphasizes that institutions cannot be understood solely through their formal structures. Instead, their functioning depends on how actors interpret, negotiate, and adapt rules in practice. Option A captures this interaction between formal and informal dimensions. Option B overstates the critique by suggesting that informal norms undermine institutions entirely. Option C contradicts the discussion of flexible enforcement. Option D narrows the argument to inefficiency, whereas the passage addresses broader sociological dynamics."
+          "explanation": "The passage repeatedly emphasizes that institutions operate through the interplay of formal rules and informal practices. Option A captures this central argument. Option B overstates the critique. Option C contradicts the discussion of flexibility. Option D narrows the argument excessively."
         },
         {
           "id": "P3Q2",
           "type": "Inference",
-          "stem": "It can be inferred that informal practices within institutions are described as:",
+          "stem": "It can be inferred that informal practices are portrayed as:",
           "options": [
-            "both enabling organizational functioning and reproducing inequality",
-            "primarily detrimental to accountability",
-            "temporary deviations that disappear over time",
+            "both enabling institutional functioning and producing inequality",
+            "primarily harmful to organizations",
+            "temporary deviations from formal rules",
             "evidence of institutional failure"
           ],
           "correctIndex": 0,
-          "explanation": "The author notes that informal norms help institutions cope with complexity while also producing unintended consequences such as inequality and reduced accountability. Option A reflects this dual role. Option B captures only one aspect and ignores the enabling function. Option C is unsupported, as informal practices are depicted as persistent. Option D misrepresents them as signs of failure rather than adaptations."
+          "explanation": "The author notes that informal norms help institutions cope with complexity while also reproducing inequality. Option A reflects this dual role. The other options capture only one side or misrepresent the author’s position."
         },
         {
           "id": "P3Q3",
@@ -172,20 +172,20 @@
             "dismissive"
           ],
           "correctIndex": 0,
-          "explanation": "The author evaluates informal practices by acknowledging both their functional role and their problematic consequences. This measured assessment makes Option A correct. Option B is incorrect because the author does not condemn informal practices outright. Option C ignores the discussion of inequality and accountability. Option D contradicts the detailed analysis presented."
+          "explanation": "The author evaluates informal practices by weighing their functional benefits against their drawbacks. This balanced analysis supports Option A. The remaining options exaggerate or distort the tone."
         },
         {
           "id": "P3Q4",
-          "type": "Implication",
+          "type": "Strengthen the Argument",
           "stem": "Which of the following would most strengthen the author’s argument?",
           "options": [
-            "A case study showing how informal norms override written rules in a public institution",
+            "A case study showing informal norms overriding written rules in an organization",
             "Evidence that formal rules are always strictly enforced",
-            "An argument that institutions should eliminate informal practices",
-            "Data showing that informal norms are irrational"
+            "An argument for eliminating informal practices",
+            "Data showing informal norms are irrational"
           ],
           "correctIndex": 0,
-          "explanation": "A concrete case illustrating informal norms shaping institutional outcomes would directly support the author’s claims. Option A does this effectively. Option B contradicts the argument. Option C ignores the functional role of informal practices. Option D mischaracterizes the author’s position, which does not label informal norms as irrational."
+          "explanation": "A concrete example of informal norms shaping outcomes would directly support the passage’s claims. Option A therefore strengthens the argument. The other options contradict or mischaracterize the author’s position."
         }
       ]
     },
@@ -194,38 +194,38 @@
       "id": "P4",
       "genre": "Cognitive Science",
       "difficulty": "hard",
-      "text": "Contemporary cognitive science increasingly challenges the view that cognition is confined to processes occurring solely within the brain. According to extended cognition theories, cognitive activity often involves interactions between neural processes, bodily actions, and external artifacts. Tools such as notebooks, diagrams, and digital devices do not merely aid cognition; they can become integral components of cognitive systems.\n\nProponents of extended cognition argue that when external resources reliably perform functions equivalent to internal mental processes, they should be considered part of cognition itself. For example, a notebook used consistently to store and retrieve information may function analogously to biological memory. This perspective dissolves the sharp boundary traditionally drawn between mind and environment.\n\nCritics contend that such an expansive definition of cognition risks conceptual overreach. If every external aid is counted as cognitive, the concept of cognition may lose explanatory precision. They argue that external tools differ fundamentally from neural processes because they lack intrinsic intentionality and biological integration.\n\nThe debate hinges not on whether tools influence thinking—a point few dispute—but on how to demarcate cognitive systems. Some theorists propose criteria such as reliability, automaticity, and integration to distinguish genuinely cognitive extensions from mere aids. These criteria aim to preserve explanatory rigor while acknowledging the role of environmental scaffolding.\n\nThe implications of this debate extend beyond philosophy of mind. How cognition is defined affects research in education, human–computer interaction, and artificial intelligence. A nuanced account of extended cognition must balance inclusiveness with conceptual discipline, recognizing that cognition may be distributed without becoming unbounded.",
+      "text": "Contemporary cognitive science increasingly challenges the assumption that cognition is confined to processes occurring solely within the brain. Theories of extended cognition propose that cognitive activity often involves interactions between neural processes, bodily actions, and external artifacts such as tools and technologies.\n\nProponents argue that when external resources reliably perform functions equivalent to internal mental processes, they should be considered part of cognition itself. A notebook used consistently for memory storage, for instance, may function analogously to biological memory, blurring the boundary between mind and environment.\n\nCritics contend that such an expansive view risks conceptual overreach. If every external aid counts as cognitive, the concept of cognition may lose explanatory precision. They argue that external tools lack intrinsic intentionality and biological integration.\n\nThe debate centers not on whether tools influence thinking but on how to demarcate cognitive systems. Some theorists propose criteria such as reliability, automaticity, and integration to distinguish genuine cognitive extensions from mere aids.\n\nResolving this debate has implications beyond philosophy of mind. Definitions of cognition shape research in education, human–computer interaction, and artificial intelligence. A nuanced account must balance inclusiveness with conceptual rigor.",
       "questions": [
         {
           "id": "P4Q1",
           "type": "Primary Purpose",
           "stem": "The primary purpose of the passage is to:",
           "options": [
-            "examine a debate about the boundaries of cognition",
+            "examine a debate concerning the boundaries of cognition",
             "argue that cognition is entirely external to the brain",
-            "reject extended cognition as incoherent",
-            "demonstrate the superiority of digital tools"
+            "reject extended cognition theories",
+            "promote the use of digital tools"
           ],
           "correctIndex": 0,
-          "explanation": "The passage outlines competing positions on extended cognition, presenting both proponents’ arguments and critics’ concerns before discussing possible criteria for resolution. Option A accurately reflects this evaluative purpose. Option B exaggerates the proponents’ claims. Option C is incorrect because the author does not reject extended cognition outright. Option D narrows the discussion to technology, which is not the central focus."
+          "explanation": "The passage presents both proponents’ and critics’ views on extended cognition, aiming to evaluate the debate rather than advocate a single extreme position. Option A best captures this purpose."
         },
         {
           "id": "P4Q2",
           "type": "Inference",
           "stem": "The author suggests that the main risk of extended cognition theories is that they may:",
           "options": [
-            "undermine the explanatory clarity of the concept of cognition",
-            "ignore the role of the brain entirely",
-            "deny the usefulness of external tools",
-            "conflict with empirical findings in neuroscience"
+            "undermine conceptual clarity about what counts as cognition",
+            "ignore the role of the brain",
+            "deny the usefulness of tools",
+            "conflict with neuroscience findings"
           ],
           "correctIndex": 0,
-          "explanation": "The passage notes critics’ concerns that overly broad definitions could lead to conceptual overreach and loss of precision. Option A captures this risk. Option B misrepresents the argument, as no one denies the brain’s role. Option C contradicts the discussion. Option D is not mentioned as a primary concern."
+          "explanation": "The author highlights critics’ concerns about conceptual overreach and loss of precision. Option A reflects this risk. The other options misrepresent or exaggerate the critique."
         },
         {
           "id": "P4Q3",
           "type": "Author’s Tone or Attitude",
-          "stem": "The author’s stance toward extended cognition theories can best be described as:",
+          "stem": "The author’s stance toward extended cognition theories is best described as:",
           "options": [
             "cautiously balanced",
             "unreservedly supportive",
@@ -233,24 +233,22 @@
             "dismissive"
           ],
           "correctIndex": 0,
-          "explanation": "The author presents both sides of the debate and emphasizes the need for balance between inclusiveness and rigor. Option A reflects this cautious balance. Option B ignores the noted criticisms. Option C overstates the skepticism. Option D is inconsistent with the careful engagement shown."
+          "explanation": "By presenting both advantages and concerns, the author adopts a balanced and cautious stance. Option A accurately reflects this tone."
         },
         {
           "id": "P4Q4",
           "type": "Implication",
           "stem": "Which of the following would the author most likely accept?",
           "options": [
-            "External tools can be part of cognition if they meet specific criteria",
-            "All technological aids automatically count as cognitive processes",
+            "External tools may be part of cognition if they meet specific criteria",
+            "All technological aids automatically count as cognition",
             "Cognition should be defined exclusively in neural terms",
             "The concept of cognition should be abandoned"
           ],
           "correctIndex": 0,
-          "explanation": "The passage concludes by endorsing a nuanced position in which some external resources may qualify as cognitive extensions if they satisfy conditions like reliability and integration. Option A aligns with this view. Options B, C, and D represent extreme positions the author explicitly cautions against."
+          "explanation": "The passage suggests that external resources can qualify as cognitive extensions when they satisfy conditions like reliability and integration. Option A aligns with this nuanced conclusion."
         }
       ]
     }
   ]
 }
-
-  
