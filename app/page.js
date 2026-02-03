@@ -582,31 +582,26 @@ return (
 
 {view === "cat" && catPhase === "idle" && (
   <CATArenaLanding
-    onStartRC={async () => {
-      try {
-        setCatPhase("generating");
+   onStartRC={async () => {
+  try {
+    setCatPhase("loading");
 
-        const res = await fetch("/api/generate-cat-rc", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            difficulty: "CAT",
-            passages: 4,
-          }),
-        });
+    const res = await fetch("/api/cat-sectionals/sectional-01");
 
-        if (!res.ok) throw new Error("CAT RC generation failed");
+    if (!res.ok) {
+      alert("Failed to load CAT RC Sectional");
+      setCatPhase("idle");
+      return;
+    }
 
-        const data = await res.json();
-
-        setActiveRCTest(data);
-        setCatPhase("instructions");
-      } catch (e) {
-        console.error(e);
-        setError("Could not generate CAT RC test");
-        setCatPhase("idle");
-      }
-    }}
+    const data = await res.json();
+    setActiveRCTest(data);
+    setCatPhase("instructions");
+  } catch (e) {
+    console.error(e);
+    setCatPhase("idle");
+  }
+}}
     onStartVocab={() => {}}
   />
 )}
