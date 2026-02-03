@@ -8,6 +8,7 @@ export default function QuestionPanel({
   question,
   qNumber,
   selectedOption,
+  correctIndex,
   onAnswer,
   onNext,
   onPrev,
