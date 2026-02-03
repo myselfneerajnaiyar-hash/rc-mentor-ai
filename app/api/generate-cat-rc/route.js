@@ -134,9 +134,15 @@ OPTIONS & EXPLANATIONS
 - Options must be close and elimination-based
 - correctIndex must be between 0 and 3
 - Explanation must:
-  - Justify the correct option
-  - Briefly state why EACH wrong option fails
-
+- Begin with a 2–3 sentence summary of the author’s reasoning relevant to the question
+- Explicitly state why the correct option aligns with the passage’s argument or tone
+- For EACH incorrect option:
+  - Clearly state the specific flaw (distortion, extremity, irrelevance, contradiction, or unsupported inference)
+  - Reference the passage idea (not line numbers) that makes it incorrect
+- Use CAT coaching style language, as used by top CAT mentors
+- Do NOT use option numbers like “Option 0” — use A, B, C, D
+- Explanation length must be at least 120–150 words
+-Never refer to options as Option 0 / Option 1. Always use Option A, B, C, D.
 ====================
 VOCABULARY RULES
 ====================
