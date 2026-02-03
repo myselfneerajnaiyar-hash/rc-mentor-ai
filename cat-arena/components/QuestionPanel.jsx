@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const optionLabel = idx => String.fromCharCode(65 + idx); // A, B, C, D
+
 export default function QuestionPanel({
   question,
   qNumber,
@@ -68,14 +70,14 @@ export default function QuestionPanel({
                 onChange={() => onAnswer(idx)}
               />
               <span>
-                <strong>{String.fromCharCode(65 + idx)}.</strong> {opt}
+                <strong>{optionLabel(idx)}.</strong> {opt}
               </span>
             </label>
           );
         })}
       </div>
 
-      {/* View Explanation Button */}
+      {/* View Explanation */}
       {mode === "review" && (
         <div style={{ marginTop: 16 }}>
           <button
@@ -108,7 +110,12 @@ export default function QuestionPanel({
         >
           <strong>Explanation:</strong>
           <div style={{ marginTop: 6 }}>
-            {question.explanation}
+            {/* Fix index-language issue */}
+            {question.explanation
+              ?.replace(/Option\s+0/g, "Option A")
+              ?.replace(/Option\s+1/g, "Option B")
+              ?.replace(/Option\s+2/g, "Option C")
+              ?.replace(/Option\s+3/g, "Option D")}
           </div>
         </div>
       )}
@@ -144,7 +151,7 @@ export default function QuestionPanel({
             cursor: "pointer",
           }}
         >
-          Save & Next
+          {mode === "review" ? "Next" : "Save & Next"}
         </button>
       </div>
     </div>
