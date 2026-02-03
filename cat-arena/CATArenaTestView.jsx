@@ -176,10 +176,12 @@ function handleSubmitTest() {
 
         {/* MAIN GRID */}
         <div style={gridStyle}>
-          <PassagePanel
-            passages={passages}
-            currentQuestionIndex={currentQuestionIndex}
-          />
+         <PassagePanel
+  passages={passages}
+  currentQuestionIndex={currentQuestionIndex}
+  passageStats={passageStats}
+  mode={mode}
+/>
 
           <QuestionPanel
             question={currentQuestion}
