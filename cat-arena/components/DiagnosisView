@@ -1,0 +1,212 @@
+"use client";
+
+export default function DiagnosisView({
+  passages,
+  answers,
+  QUESTIONS_PER_PASSAGE,
+  score,
+  onReview,
+}) {
+  const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
+
+  /* ===================== DERIVED STATS ===================== */
+
+  const attempted = answers.filter(a => a !== null).length;
+  const unattempted = totalQuestions - attempted;
+
+  // Passage-wise performance
+  const passageStats = passages.map((p, pIdx) => {
+    let correct = 0;
+
+    p.questions.forEach((q, qIdx) => {
+      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+      if (answers[gi] === q.correctIndex) correct++;
+    });
+
+    return {
+      genre: p.genre,
+      difficulty: p.difficulty,
+      correct,
+      total: p.questions.length,
+    };
+  });
+
+  // Question-type diagnosis
+  const byQuestionType = {};
+  passages.forEach((p, pIdx) => {
+    p.questions.forEach((q, qIdx) => {
+      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+      const type = q.type || "Unknown";
+
+      if (!byQuestionType[type]) {
+        byQuestionType[type] = { correct: 0, total: 0 };
+      }
+
+      byQuestionType[type].total++;
+      if (answers[gi] === q.correctIndex) {
+        byQuestionType[type].correct++;
+      }
+    });
+  });
+
+  /* ===================== RENDER ===================== */
+
+  return (
+    <div
+      style={{
+        padding: "32px 20px",
+        maxWidth: 1100,
+        margin: "0 auto",
+        color: "#111827",
+      }}
+    >
+      {/* ================= SNAPSHOT ================= */}
+      <section style={card}>
+        <h2 style={{ marginBottom: 8 }}>Test Diagnosis</h2>
+
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+          <Stat label="Attempted" value={attempted} />
+          <Stat label="Correct" value={score} />
+          <Stat label="Unattempted" value={unattempted} />
+          <Stat
+            label="Accuracy"
+            value={`${Math.round((score / attempted || 0) * 100)}%`}
+          />
+        </div>
+
+        <p style={mentorNote}>
+          This test primarily tested inference depth and ability to track
+          argumentative shifts rather than surface comprehension.
+        </p>
+      </section>
+
+      {/* ================= PASSAGE PERFORMANCE ================= */}
+      <section style={section}>
+        <h3>Passage-wise Performance</h3>
+
+        <div style={grid}>
+          {passageStats.map((p, i) => (
+            <div key={i} style={card}>
+              <div style={{ fontWeight: 600 }}>{p.genre}</div>
+              <div style={{ fontSize: 14, color: "#475569" }}>
+                Difficulty: {p.difficulty}
+              </div>
+
+              <div style={{ marginTop: 8 }}>
+                <strong>{p.correct}</strong> / {p.total}
+              </div>
+
+              <StatusTag correct={p.correct} total={p.total} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= QUESTION TYPE ANALYSIS ================= */}
+      <section style={section}>
+        <h3>Question Type Analysis</h3>
+
+        {Object.entries(byQuestionType).map(([type, d]) => (
+          <div key={type} style={row}>
+            <div>{type}</div>
+            <div>
+              {d.correct} / {d.total}
+            </div>
+            <StatusText correct={d.correct} total={d.total} />
+          </div>
+        ))}
+      </section>
+
+      {/* ================= ACTION PLAN ================= */}
+      <section style={{ ...card, borderLeft: "4px solid #2563eb" }}>
+        <h3>Action Plan (Next 2 Tests)</h3>
+
+        <ul style={{ marginTop: 12, lineHeight: 1.6 }}>
+          <li>Slow down on inference-based questions.</li>
+          <li>Eliminate options introducing new ideas.</li>
+          <li>Track author stance shifts across paragraphs.</li>
+          <li>Ignore speed and accuracy for now.</li>
+        </ul>
+      </section>
+
+      {/* ================= CTA ================= */}
+      <div style={{ marginTop: 32 }}>
+        <button onClick={onReview} style={primaryBtn}>
+          Review This Test
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== SMALL COMPONENTS ===================== */
+
+function Stat({ label, value }) {
+  return (
+    <div>
+      <div style={{ fontSize: 14, color: "#475569" }}>{label}</div>
+      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+    </div>
+  );
+}
+
+function StatusTag({ correct, total }) {
+  const ratio = correct / total;
+  const color =
+    ratio >= 0.75 ? "#16a34a" : ratio >= 0.4 ? "#f59e0b" : "#dc2626";
+
+  return (
+    <div style={{ marginTop: 8, color, fontWeight: 600 }}>
+      {ratio >= 0.75 ? "Stable" : ratio >= 0.4 ? "Needs Work" : "Breakdown"}
+    </div>
+  );
+}
+
+function StatusText({ correct, total }) {
+  const ratio = correct / total;
+  return (
+    <div style={{ color: ratio < 0.4 ? "#dc2626" : "#475569" }}>
+      {ratio < 0.4 ? "Breakdown" : "Partial"}
+    </div>
+  );
+}
+
+/* ===================== STYLES ===================== */
+
+const section = {
+  marginTop: 32,
+};
+
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gap: 16,
+};
+
+const card = {
+  background: "#ffffff",
+  border: "1px solid #e5e7eb",
+  borderRadius: 8,
+  padding: 16,
+};
+
+const row = {
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "10px 0",
+  borderBottom: "1px solid #e5e7eb",
+};
+
+const mentorNote = {
+  marginTop: 12,
+  fontStyle: "italic",
+  color: "#374151",
+};
+
+const primaryBtn = {
+  padding: "10px 20px",
+  background: "#2563eb",
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+};
