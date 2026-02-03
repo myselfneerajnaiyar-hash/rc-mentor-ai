@@ -28,7 +28,8 @@ export default function CATArenaTestView({ testData }) {
   const [answers, setAnswers] = useState([]);
   const [questionStates, setQuestionStates] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
-  const [mode, setMode] = useState("test"); // test | review
+  const [mode, setMode] = useState("test"); 
+// test | result | review
 
   /* ===================== RESET ON LOAD ===================== */
   useEffect(() => {
@@ -88,83 +89,133 @@ export default function CATArenaTestView({ testData }) {
     setQuestionStates(qs);
   }
 
-  function handleSubmitTest() {
-    setShowSubmit(false);
-    setMode("review"); // 🔥 KEY SWITCH
-  }
+ function handleSubmitTest() {
+  setShowSubmit(false);
+
+  // 🔒 Stop test & switch to result phase
+  setMode("result");
+}
+
+  const score = answers.reduce((s, a, i) => {
+  const pIndex = Math.floor(i / QUESTIONS_PER_PASSAGE);
+  const qIndex = i % QUESTIONS_PER_PASSAGE;
+  const correct = passages[pIndex].questions[qIndex].correctIndex;
+  return s + (a === correct ? 1 : 0);
+}, 0);
 
   /* ===================== RENDER ===================== */
-  return (
-    <>
-      {/* ================= HEADER ================= */}
-      <div style={headerStyle}>
-        <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+ return (
+  <>
+    {/* ================= RESULT SCREEN ================= */}
+    {mode === "result" && (
+      <div style={{ padding: 40, maxWidth: 800, margin: "0 auto" }}>
+        <h2>Test Submitted Successfully</h2>
 
-        {mode === "test" && <CATTimer durationMinutes={30} />}
+        <p style={{ marginTop: 12 }}>
+          Your Score: <strong>{score} / {totalQuestions}</strong>
+        </p>
 
-        <button style={exitBtn}>Exit Test</button>
+        <div style={{ marginTop: 24, display: "flex", gap: 12 }}>
+          <button
+            style={{
+              padding: "10px 16px",
+              background: "#2563eb",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => setMode("review")}
+          >
+            Review Test
+          </button>
+
+          <button
+            style={{
+              padding: "10px 16px",
+              border: "1px solid #9ca3af",
+              background: "#fff",
+              cursor: "pointer",
+            }}
+          >
+            Back to CAT Arena
+          </button>
+        </div>
       </div>
+    )}
 
-      {/* ================= MAIN GRID ================= */}
-      <div style={gridStyle}>
-        <PassagePanel
-          passages={passages}
-          currentQuestionIndex={currentQuestionIndex}
+    {/* ================= TEST / REVIEW UI ================= */}
+    {mode !== "result" && (
+      <>
+        {/* HEADER */}
+        <div style={headerStyle}>
+          <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+          {mode === "test" && <CATTimer durationMinutes={30} />}
+          <button style={exitBtn}>Exit Test</button>
+        </div>
+
+        {/* MAIN GRID */}
+        <div style={gridStyle}>
+          <PassagePanel
+            passages={passages}
+            currentQuestionIndex={currentQuestionIndex}
+          />
+
+          <QuestionPanel
+            question={currentQuestion}
+            qNumber={currentQuestionIndex + 1}
+            selectedOption={answers[currentQuestionIndex]}
+            correctIndex={currentQuestion.correctIndex}
+            mode={mode}
+            onAnswer={handleAnswer}
+            onMark={handleMark}
+            onClear={handleClear}
+            onPrev={() =>
+              setCurrentQuestionIndex(i => Math.max(i - 1, 0))
+            }
+            onNext={() =>
+              setCurrentQuestionIndex(i =>
+                Math.min(i + 1, totalQuestions - 1)
+              )
+            }
+          />
+
+          <QuestionPalette
+            totalQuestions={totalQuestions}
+            currentQuestion={currentQuestionIndex}
+            questionStates={questionStates}
+            onJump={setCurrentQuestionIndex}
+          />
+        </div>
+
+        {/* FOOTER */}
+        {mode === "test" && (
+          <div style={footerStyle}>
+            <button style={ghostBtn} onClick={handleMark}>
+              Mark for Review
+            </button>
+
+            <button style={ghostBtn} onClick={handleClear}>
+              Clear Response
+            </button>
+
+            <button
+              style={submitBtn}
+              onClick={() => setShowSubmit(true)}
+            >
+              Submit Test
+            </button>
+          </div>
+        )}
+
+        <SubmitModal
+          open={showSubmit}
+          onCancel={() => setShowSubmit(false)}
+          onConfirm={handleSubmitTest}
         />
-
-        <QuestionPanel
-          question={currentQuestion}
-          qNumber={currentQuestionIndex + 1}
-          selectedOption={answers[currentQuestionIndex]}
-          correctIndex={currentQuestion.correctIndex}
-          mode={mode}
-          onAnswer={handleAnswer}
-          onMark={handleMark}
-          onClear={handleClear}
-          onPrev={() =>
-            setCurrentQuestionIndex(i => Math.max(i - 1, 0))
-          }
-          onNext={() =>
-            setCurrentQuestionIndex(i =>
-              Math.min(i + 1, totalQuestions - 1)
-            )
-          }
-        />
-
-        <QuestionPalette
-          totalQuestions={totalQuestions}
-          currentQuestion={currentQuestionIndex}
-          questionStates={questionStates}
-          onJump={setCurrentQuestionIndex}
-        />
-      </div>
-
-      {/* ================= FOOTER ================= */}
-      <div style={footerStyle}>
-        <button style={ghostBtn} onClick={handleMark}>
-          Mark for Review
-        </button>
-
-        <button style={ghostBtn} onClick={handleClear}>
-          Clear Response
-        </button>
-
-        <button
-          style={submitBtn}
-          onClick={() => setShowSubmit(true)}
-        >
-          Submit Test
-        </button>
-      </div>
-
-      {/* ================= SUBMIT MODAL ================= */}
-      <SubmitModal
-        open={showSubmit}
-        onCancel={() => setShowSubmit(false)}
-        onConfirm={handleSubmitTest}
-      />
-    </>
-  );
+      </>
+    )}
+  </>
+);
 }
 
 /* ================= STYLES ================= */
