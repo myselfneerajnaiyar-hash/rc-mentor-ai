@@ -1,36 +1,20 @@
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { CAT_SECTIONALS } from "../sectionals";
 
-export async function GET(_, { params }) {
-  try {
-    const id = params.id;
+export async function GET(request, { params }) {
+  const { id } = params;
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "catrc",
-      `${id}.json`
-    );
+  const test = CAT_SECTIONALS[id];
 
-    if (!fs.existsSync(filePath)) {
-      return NextResponse.json(
-        { error: "CAT RC Sectional not found" },
-        { status: 404 }
-      );
-    }
-
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(raw);
-
-    return NextResponse.json(data);
-  } catch (err) {
-    console.error("CAT Sectional API error:", err);
+  if (!test) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
+      { error: "CAT RC Sectional not found" },
+      { status: 404 }
     );
   }
+
+  return NextResponse.json(test);
 }
