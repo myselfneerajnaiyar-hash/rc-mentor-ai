@@ -30,14 +30,29 @@ export default function QuestionPanel({
         {question.options.map((opt, idx) => (
           <label
             key={idx}
-            style={{
-              display: "flex",
-              gap: 10,
-              padding: "8px 10px",
-              border: "1px solid #d1d5db",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
+           style={{
+  display: "flex",
+  gap: 10,
+  padding: "8px 10px",
+  borderRadius: 4,
+  cursor: mode === "review" ? "default" : "pointer",
+  border:
+    mode === "review"
+      ? idx === correctIndex
+        ? "2px solid #16a34a" // green
+        : selectedOption === idx
+        ? "2px solid #dc2626" // red
+        : "1px solid #d1d5db"
+      : "1px solid #d1d5db",
+  background:
+    mode === "review"
+      ? idx === correctIndex
+        ? "#dcfce7"
+        : selectedOption === idx
+        ? "#fee2e2"
+        : "#fff"
+      : "#fff",
+}
           >
             <input
   type="radio"
