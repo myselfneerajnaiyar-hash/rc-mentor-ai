@@ -1,254 +1,241 @@
 "use client";
 
 export default function DiagnosisView({
-  diagnosis = {},
-  passageStats = [],
-  previousDiagnosis = null,
-  onReview = () => {},
+  passages = [],
+  answers = [],
+  questions = [],
+  onReview,
 }) {
-  /* ================= SAFE NORMALIZATION ================= */
-  const safeDiagnosis = {
-    total: diagnosis.total ?? 0,
-    correct: diagnosis.correct ?? 0,
-    attempted:
-      diagnosis.attempted ??
-      (diagnosis.correct ?? 0) + (diagnosis.incorrect ?? 0),
-    incorrect: diagnosis.incorrect ?? 0,
-    unattempted: diagnosis.unattempted ?? 0,
-    byQuestionType: diagnosis.byQuestionType ?? {},
-  };
+  // ---------- SAFE COUNTS ----------
+  const totalQuestions = questions.length || 0;
 
+  let attempted = 0;
+  let correct = 0;
+
+  questions.forEach((q, i) => {
+    if (answers[i] !== undefined && answers[i] !== null) {
+      attempted++;
+      if (answers[i] === q.correctIndex) correct++;
+    }
+  });
+
+  const incorrect = attempted - correct;
   const accuracy =
-    safeDiagnosis.attempted > 0
-      ? Math.round((safeDiagnosis.correct / safeDiagnosis.attempted) * 100)
-      : 0;
+    attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
 
-  const qtEntries = Object.entries(safeDiagnosis.byQuestionType);
+  // ---------- PASSAGE WISE ----------
+  const passageStats = passages.map((p) => {
+    let total = p.questions?.length || 0;
+    let correctP = 0;
 
-  const sortedQT = qtEntries.sort(
-    (a, b) =>
-      b[1].total - a[1].total ||
-      a[1].correct / (a[1].total || 1) -
-        b[1].correct / (b[1].total || 1)
-  );
+    p.questions?.forEach((q) => {
+      const idx = questions.findIndex((x) => x.id === q.id);
+      if (idx >= 0 && answers[idx] === q.correctIndex) correctP++;
+    });
 
-  const priorityFixes = sortedQT
-    .filter(([_, v]) => v.total >= 2 && v.correct / v.total < 0.4)
+    let tag = "Avoid in CAT";
+    if (total > 0 && correctP / total >= 0.6) tag = "Selective Attempt";
+    if (total > 0 && correctP / total >= 0.8) tag = "Strength";
+
+    return {
+      genre: p.genre || "Unknown",
+      correct: correctP,
+      total,
+      tag,
+    };
+  });
+
+  // ---------- QUESTION TYPE ----------
+  const typeMap = {};
+  questions.forEach((q, i) => {
+    const type = q.type || "Unknown";
+    if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
+    typeMap[type].total++;
+    if (answers[i] === q.correctIndex) typeMap[type].correct++;
+  });
+
+  const weakTypes = Object.entries(typeMap)
+    .filter(([_, v]) => v.total > 0 && v.correct / v.total < 0.5)
     .slice(0, 3);
 
-  /* ================= STYLES ================= */
-  const page = {
-    background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
-    minHeight: "100vh",
-    padding: "40px 16px",
-  };
-
-  const card = {
-    background: "#ffffff",
-    borderRadius: 14,
-    padding: 22,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
-    marginBottom: 26,
-  };
-
-  const muted = { color: "#64748b", fontSize: 14 };
-  const h2 = { marginBottom: 6 };
-
-  const statGrid = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))",
-    gap: 16,
-    marginTop: 18,
-  };
-
-  const statBox = (accent) => ({
-    borderLeft: `5px solid ${accent}`,
-    padding: "12px 14px",
-    background: "#f9fafb",
-    borderRadius: 8,
-  });
-
-  const barWrap = {
-    background: "#e5e7eb",
-    borderRadius: 6,
-    height: 8,
-    overflow: "hidden",
-    marginTop: 6,
-  };
-
-  const bar = (pct, color) => ({
-    width: `${pct}%`,
-    height: "100%",
-    background: color,
-  });
-
-  const statusColor = (pct) =>
-    pct >= 70 ? "#16a34a" : pct >= 40 ? "#f59e0b" : "#dc2626";
-
-  /* ================= RENDER ================= */
+  // ---------- UI ----------
   return (
-    <div style={page}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        {/* ================= HEADER ================= */}
-        <div style={card}>
-          <h2 style={h2}>RC Diagnosis Report</h2>
-          <p style={muted}>
-            Focuses on <b>decision patterns</b>, not isolated mistakes.
-          </p>
+    <div
+      style={{
+        background: "#f5f7fb",
+        minHeight: "100vh",
+        padding: "32px 20px",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          background: "#ffffff",
+          borderRadius: 12,
+          padding: 28,
+        }}
+      >
+        <h1 style={{ marginBottom: 6 }}>RC Diagnosis Report</h1>
+        <p style={{ color: "#6b7280", marginBottom: 24 }}>
+          Focuses on decision patterns, not isolated mistakes.
+        </p>
 
-          <div style={statGrid}>
-            <div style={statBox("#2563eb")}>
-              <div style={muted}>Score</div>
-              <strong>
-                {safeDiagnosis.correct} / {safeDiagnosis.total}
-              </strong>
-            </div>
-
-            <div style={statBox("#dc2626")}>
-              <div style={muted}>Incorrect Attempts</div>
-              <strong>{safeDiagnosis.incorrect}</strong>
-            </div>
-
-            <div style={statBox("#0ea5e9")}>
-              <div style={muted}>Smart Skips</div>
-              <strong>{safeDiagnosis.unattempted}</strong>
-            </div>
-
-            <div style={statBox("#16a34a")}>
-              <div style={muted}>Accuracy</div>
-              <strong>{accuracy}%</strong>
-            </div>
-          </div>
-
-          {!previousDiagnosis && (
-            <p style={{ marginTop: 12, fontSize: 13, color: "#64748b" }}>
-              📊 Comparison will unlock after your next RC sectional.
-            </p>
-          )}
+        {/* SUMMARY */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 16,
+            marginBottom: 32,
+          }}
+        >
+          <Stat label="Score" value={`${correct} / ${totalQuestions}`} />
+          <Stat label="Incorrect Attempts" value={incorrect} />
+          <Stat label="Attempted" value={attempted} />
+          <Stat label="Accuracy" value={`${accuracy}%`} />
         </div>
 
-        {/* ================= PASSAGE STRATEGY ================= */}
-        <div style={card}>
-          <h3>Passage-wise CAT Strategy</h3>
+        {/* COMPARISON PLACEHOLDER */}
+        <div
+          style={{
+            background: "#eef2ff",
+            padding: 14,
+            borderRadius: 8,
+            marginBottom: 28,
+            fontSize: 14,
+          }}
+        >
+          📊 Comparison with last RC sectional will unlock after your next test.
+        </div>
 
+        {/* PASSAGE STRATEGY */}
+        <Section title="Passage-wise CAT Strategy">
           {passageStats.length === 0 && (
-            <p style={muted}>No passage data available.</p>
+            <Muted>No passage data available.</Muted>
           )}
-
-          {passageStats.map((p, i) => {
-            const pct =
-              p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
-
-            const label =
-              pct >= 70
-                ? "Selective Attempt"
-                : pct >= 40
-                ? "Needs Caution"
-                : "Avoid in CAT";
-
-            return (
-              <div key={i} style={{ marginTop: 14 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <strong>
-                    {p.genre} ({p.correct}/{p.total})
-                  </strong>
-                  <span style={{ color: statusColor(pct), fontSize: 13 }}>
-                    {label}
-                  </span>
-                </div>
-                <div style={barWrap}>
-                  <div style={bar(pct, statusColor(pct))} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ================= QUESTION TYPE MAP ================= */}
-        <div style={card}>
-          <h3>Question-Type Skill Map</h3>
-
-          {sortedQT.length === 0 && (
-            <p style={muted}>No question-type data available.</p>
-          )}
-
-          {sortedQT.map(([type, v]) => {
-            const pct =
-              v.total > 0 ? Math.round((v.correct / v.total) * 100) : 0;
-
-            return (
-              <div key={type} style={{ marginTop: 14 }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <strong>
-                    {type} ({v.correct}/{v.total})
-                  </strong>
-                  <span style={{ color: statusColor(pct), fontSize: 13 }}>
-                    {pct >= 70
-                      ? "Strength"
-                      : pct >= 40
-                      ? "Needs Work"
-                      : "Weak Area"}
-                  </span>
-                </div>
-                <div style={barWrap}>
-                  <div style={bar(pct, statusColor(pct))} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ================= TOP PRIORITY FIXES ================= */}
-        <div style={card}>
-          <h3>Top Priority Fixes (Next 7 Days)</h3>
-          <p style={muted}>Ignore everything else.</p>
-
-          {priorityFixes.length === 0 && (
-            <p style={{ color: "#16a34a" }}>
-              ✅ No critical weaknesses detected.
-            </p>
-          )}
-
-          {priorityFixes.map(([type, v], i) => (
-            <div key={type} style={{ marginTop: 14 }}>
-              <strong>
-                {i + 1}. {type}
-              </strong>
-              <div style={{ fontSize: 13, color: "#475569" }}>
-                • Analyse only wrong options<br />
-                • Identify elimination error<br />
-                • No mixed RC practice
-              </div>
-            </div>
+          {passageStats.map((p, i) => (
+            <Row
+              key={i}
+              left={`${p.genre} (${p.correct}/${p.total})`}
+              right={p.tag}
+              color={tagColor(p.tag)}
+            />
           ))}
-        </div>
+        </Section>
 
-        {/* ================= ACTION RULES ================= */}
-        <div style={card}>
-          <h3>Action Rules (Until Accuracy ≥ 60%)</h3>
-          <ul style={{ paddingLeft: 18 }}>
-            <li>Attempt only 2 passages per sectional.</li>
-            <li>Skip abstract / unfamiliar tones.</li>
+        {/* QUESTION TYPE */}
+        <Section title="Question-Type Skill Map">
+          {Object.keys(typeMap).length === 0 && (
+            <Muted>No question-type data available.</Muted>
+          )}
+          {Object.entries(typeMap).map(([type, v]) => {
+            const ratio = v.total ? v.correct / v.total : 0;
+            let label = "Weak Area";
+            if (ratio >= 0.7) label = "Strength";
+            else if (ratio >= 0.5) label = "Needs Work";
+
+            return (
+              <Row
+                key={type}
+                left={`${type} (${v.correct}/${v.total})`}
+                right={label}
+                color={tagColor(label)}
+              />
+            );
+          })}
+        </Section>
+
+        {/* NEXT 7 DAYS */}
+        <Section title="Top Priority Fixes (Next 7 Days)">
+          {weakTypes.length === 0 ? (
+            <Muted>✅ No critical weaknesses detected.</Muted>
+          ) : (
+            weakTypes.map(([t, v]) => (
+              <p key={t}>
+                • Fix <b>{t}</b> ({v.correct}/{v.total})
+              </p>
+            ))
+          )}
+        </Section>
+
+        {/* ACTION RULES */}
+        <Section title="Action Rules (Until Accuracy ≥ 60%)">
+          <ul>
+            <li>Attempt only 2 passages per RC sectional.</li>
+            <li>Skip abstract / unfamiliar tone passages.</li>
             <li>Analyse incorrect attempts only.</li>
             <li>Increase volume only after accuracy ≥ 60%.</li>
           </ul>
+        </Section>
 
-          <button
-            onClick={onReview}
-            style={{
-              marginTop: 14,
-              padding: "8px 14px",
-              background: "#2563eb",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              cursor: "pointer",
-            }}
-          >
-            Review Questions
-          </button>
-        </div>
+        <button
+          onClick={onReview}
+          style={{
+            marginTop: 20,
+            padding: "10px 18px",
+            background: "#2563eb",
+            color: "#fff",
+            borderRadius: 6,
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Review Questions
+        </button>
       </div>
     </div>
   );
+}
+
+/* ---------- SMALL COMPONENTS ---------- */
+
+function Stat({ label, value }) {
+  return (
+    <div
+      style={{
+        background: "#f9fafb",
+        padding: 16,
+        borderRadius: 10,
+      }}
+    >
+      <div style={{ fontSize: 13, color: "#6b7280" }}>{label}</div>
+      <div style={{ fontSize: 20, fontWeight: 600 }}>{value}</div>
+    </div>
+  );
+}
+
+function Section({ title, children }) {
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <h3 style={{ marginBottom: 12 }}>{title}</h3>
+      {children}
+    </div>
+  );
+}
+
+function Row({ left, right, color }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "8px 0",
+        borderBottom: "1px solid #e5e7eb",
+      }}
+    >
+      <span>{left}</span>
+      <span style={{ color, fontWeight: 500 }}>{right}</span>
+    </div>
+  );
+}
+
+function Muted({ children }) {
+  return <p style={{ color: "#6b7280" }}>{children}</p>;
+}
+
+function tagColor(tag) {
+  if (tag === "Strength") return "#16a34a";
+  if (tag === "Needs Work") return "#d97706";
+  return "#dc2626";
 }
