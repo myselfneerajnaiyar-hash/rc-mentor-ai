@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PassagePanel from "./components/PassagePanel";
 import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
@@ -25,12 +25,11 @@ export default function CATArenaTestView({ testData }) {
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
   /* ===================== STATE ===================== */
+  const [mode, setMode] = useState("test"); // test | diagnosis | review
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [questionStates, setQuestionStates] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
-  const [mode, setMode] = useState("test"); 
-  // test | result | review | diagnosis
   const [score, setScore] = useState(0);
 
   /* ===================== RESET ON LOAD ===================== */
@@ -43,43 +42,59 @@ export default function CATArenaTestView({ testData }) {
 
   /* ===================== DERIVED ===================== */
   const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndexInPassage = currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+
   const currentPassage = passages[passageIndex];
-  const currentQuestion = currentPassage.questions[questionIndexInPassage];
+  const currentQuestion =
+    currentPassage.questions[questionIndexInPassage];
 
-  /* ===================== PASSAGE STATS ===================== */
-  const passageStats = passages.map((p, pIdx) => {
+  /* ===================== SCORE + DIAGNOSIS ===================== */
+  const diagnosis = useMemo(() => {
     let correct = 0;
-    p.questions.forEach((q, qIdx) => {
-      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-      if (answers[gi] === q.correctIndex) correct++;
+    let attempted = 0;
+
+    const byQuestionType = {};
+    const passageStats = passages.map((p, pIdx) => {
+      let pCorrect = 0;
+
+      p.questions.forEach((q, qIdx) => {
+        const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+        const ans = answers[gi];
+
+        if (ans !== null) attempted++;
+        if (ans === q.correctIndex) {
+          correct++;
+          pCorrect++;
+        }
+
+        const type = q.type || "Unknown";
+        if (!byQuestionType[type]) {
+          byQuestionType[type] = { correct: 0, total: 0 };
+        }
+
+        byQuestionType[type].total++;
+        if (ans === q.correctIndex) {
+          byQuestionType[type].correct++;
+        }
+      });
+
+      return {
+        genre: p.genre,
+        difficulty: p.difficulty,
+        correct: pCorrect,
+        total: p.questions.length,
+      };
     });
-    return { genre: p.genre, correct, total: p.questions.length };
-  });
 
-  /* ===================== DIAGNOSIS ===================== */
-  const diagnosis = {
-    attempted: answers.filter(a => a !== null).length,
-    unattempted: answers.filter(a => a === null).length,
-    correct: score,
-    byQuestionType: {},
-  };
-
-  passages.forEach((p, pIdx) => {
-    p.questions.forEach((q, qIdx) => {
-      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-      const qt = q.questionType;
-
-      if (!diagnosis.byQuestionType[qt]) {
-        diagnosis.byQuestionType[qt] = { correct: 0, total: 0 };
-      }
-
-      diagnosis.byQuestionType[qt].total++;
-      if (answers[gi] === q.correctIndex) {
-        diagnosis.byQuestionType[qt].correct++;
-      }
-    });
-  });
+    return {
+      score: correct,
+      attempted,
+      unattempted: totalQuestions - attempted,
+      passageStats,
+      byQuestionType,
+    };
+  }, [answers, passages, totalQuestions]);
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
@@ -90,13 +105,15 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 2 ? 3 : 1;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 2 ? 3 : 1;
     setQuestionStates(qs);
   }
 
   function handleMark() {
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 1 ? 3 : 2;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 1 ? 3 : 2;
     setQuestionStates(qs);
   }
 
@@ -108,21 +125,13 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 3 ? 2 : 0;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 3 ? 2 : 0;
     setQuestionStates(qs);
   }
 
   function handleSubmitTest() {
-    let s = 0;
-
-    passages.forEach((p, pIdx) => {
-      p.questions.forEach((q, qIdx) => {
-        const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-        if (answers[gi] === q.correctIndex) s++;
-      });
-    });
-
-    setScore(s);
+    setScore(diagnosis.score);
     setShowSubmit(false);
     setMode("diagnosis");
   }
@@ -130,74 +139,41 @@ export default function CATArenaTestView({ testData }) {
   /* ===================== RENDER ===================== */
   return (
     <>
-      {/* ================= RESULT ================= */}
-      {mode === "result" && (
-        <div style={{ padding: 40, maxWidth: 800, margin: "0 auto" }}>
-          <h2>Test Submitted Successfully</h2>
-
-          <p style={{ marginTop: 12 }}>
-            Your Score: <strong>{score} / {totalQuestions}</strong>
-          </p>
-
-          <div style={{ marginTop: 24, display: "flex", gap: 12 }}>
-            <button onClick={() => setMode("review")} style={primaryBtn}>
-              Review Test
-            </button>
-
-            <button onClick={() => setMode("diagnosis")} style={greenBtn}>
-              View Detailed Analysis
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ================= DIAGNOSIS ================= */}
+      {/* ===================== DIAGNOSIS ===================== */}
       {mode === "diagnosis" && (
-        <div style={{ padding: 40, maxWidth: 900, margin: "0 auto" }}>
-          <h2>Detailed Diagnosis</h2>
-
-          <p style={{ marginTop: 16 }}>
-            Attempted: {diagnosis.attempted}<br />
-            Correct: {diagnosis.correct}<br />
-            Unattempted: {diagnosis.unattempted}
-          </p>
-
-          <h3 style={{ marginTop: 24 }}>Passage-wise Performance</h3>
-          {passageStats.map((p, i) => (
-            <div key={i}>
-              {p.genre}: {p.correct} / {p.total}
-            </div>
-          ))}
-
-          <h3 style={{ marginTop: 24 }}>Question Type Performance</h3>
-          {Object.entries(diagnosis.byQuestionType).map(([type, v]) => (
-            <div key={type}>
-              {type}: {v.correct} / {v.total}
-            </div>
-          ))}
-
-          <button
-            style={{ marginTop: 24, ...ghostBtn }}
-            onClick={() => setMode("review")}
-          >
-            Review Questions
-          </button>
-        </div>
+        <DiagnosisView
+          passages={passages}
+          answers={answers}
+          QUESTIONS_PER_PASSAGE={QUESTIONS_PER_PASSAGE}
+          score={diagnosis.score}
+          passageStats={diagnosis.passageStats}
+          byQuestionType={diagnosis.byQuestionType}
+          attempted={diagnosis.attempted}
+          unattempted={diagnosis.unattempted}
+          onReview={() => setMode("review")}
+        />
       )}
 
-      {/* ================= TEST / REVIEW ================= */}
+      {/* ===================== TEST / REVIEW ===================== */}
       {(mode === "test" || mode === "review") && (
         <>
+          {/* HEADER */}
           <div style={headerStyle}>
             <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
-            {mode === "test" && <CATTimer durationMinutes={30} onTimeUp={handleSubmitTest} />}
+            {mode === "test" && (
+              <CATTimer
+                durationMinutes={30}
+                onTimeUp={handleSubmitTest}
+              />
+            )}
           </div>
 
+          {/* MAIN GRID */}
           <div style={gridStyle}>
             <PassagePanel
               passages={passages}
               currentQuestionIndex={currentQuestionIndex}
-              passageStats={passageStats}
+              passageStats={diagnosis.passageStats}
               mode={mode}
             />
 
@@ -208,7 +184,9 @@ export default function CATArenaTestView({ testData }) {
               correctIndex={currentQuestion.correctIndex}
               mode={mode}
               onAnswer={handleAnswer}
-              onPrev={() => setCurrentQuestionIndex(i => Math.max(i - 1, 0))}
+              onPrev={() =>
+                setCurrentQuestionIndex(i => Math.max(i - 1, 0))
+              }
               onNext={() =>
                 setCurrentQuestionIndex(i =>
                   Math.min(i + 1, totalQuestions - 1)
@@ -224,11 +202,19 @@ export default function CATArenaTestView({ testData }) {
             />
           </div>
 
+          {/* FOOTER */}
           {mode === "test" && (
             <div style={footerStyle}>
-              <button style={ghostBtn} onClick={handleMark}>Mark for Review</button>
-              <button style={ghostBtn} onClick={handleClear}>Clear Response</button>
-              <button style={submitBtn} onClick={() => setShowSubmit(true)}>
+              <button style={ghostBtn} onClick={handleMark}>
+                Mark for Review
+              </button>
+              <button style={ghostBtn} onClick={handleClear}>
+                Clear Response
+              </button>
+              <button
+                style={submitBtn}
+                onClick={() => setShowSubmit(true)}
+              >
                 Submit Test
               </button>
             </div>
@@ -245,7 +231,7 @@ export default function CATArenaTestView({ testData }) {
   );
 }
 
-/* ================= STYLES ================= */
+/* ===================== STYLES ===================== */
 
 const headerStyle = {
   position: "fixed",
@@ -297,21 +283,5 @@ const ghostBtn = {
   padding: "6px 12px",
   border: "1px solid #9ca3af",
   background: "#fff",
-  cursor: "pointer",
-};
-
-const primaryBtn = {
-  padding: "10px 16px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const greenBtn = {
-  padding: "10px 16px",
-  background: "#16a34a",
-  color: "#fff",
-  border: "none",
   cursor: "pointer",
 };
