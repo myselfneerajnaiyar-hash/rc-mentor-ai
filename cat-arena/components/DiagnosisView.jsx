@@ -1,20 +1,35 @@
 "use client";
 
 export default function DiagnosisView({
-  diagnosis,
-  passageStats,
-  previousDiagnosis, // optional: pass last sectional diagnosis if available
-  onReview,
+  diagnosis = {},
+  passageStats = [],
+  previousDiagnosis = null,
+  onReview = () => {},
 }) {
-  /* ================= HELPERS ================= */
-  const accuracy = diagnosis.attempted
-    ? Math.round((diagnosis.correct / diagnosis.attempted) * 100)
-    : 0;
+  /* ================= SAFE NORMALIZATION ================= */
+  const safeDiagnosis = {
+    total: diagnosis.total ?? 0,
+    correct: diagnosis.correct ?? 0,
+    attempted:
+      diagnosis.attempted ??
+      (diagnosis.correct ?? 0) + (diagnosis.incorrect ?? 0),
+    incorrect: diagnosis.incorrect ?? 0,
+    unattempted: diagnosis.unattempted ?? 0,
+    byQuestionType: diagnosis.byQuestionType ?? {},
+  };
 
-  const sortedQT = Object.entries(diagnosis.byQuestionType || {}).sort(
+  const accuracy =
+    safeDiagnosis.attempted > 0
+      ? Math.round((safeDiagnosis.correct / safeDiagnosis.attempted) * 100)
+      : 0;
+
+  const qtEntries = Object.entries(safeDiagnosis.byQuestionType);
+
+  const sortedQT = qtEntries.sort(
     (a, b) =>
       b[1].total - a[1].total ||
-      a[1].correct / a[1].total - b[1].correct / b[1].total
+      a[1].correct / (a[1].total || 1) -
+        b[1].correct / (b[1].total || 1)
   );
 
   const priorityFixes = sortedQT
@@ -23,27 +38,27 @@ export default function DiagnosisView({
 
   /* ================= STYLES ================= */
   const page = {
-    background: "#f8fafc",
+    background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
     minHeight: "100vh",
     padding: "40px 16px",
   };
 
   const card = {
     background: "#ffffff",
-    borderRadius: 12,
-    padding: 20,
-    boxShadow: "0 8px 24px rgba(0,0,0,0.05)",
-    marginBottom: 24,
+    borderRadius: 14,
+    padding: 22,
+    boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+    marginBottom: 26,
   };
 
-  const h2 = { marginBottom: 8 };
   const muted = { color: "#64748b", fontSize: 14 };
+  const h2 = { marginBottom: 6 };
 
   const statGrid = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))",
     gap: 16,
-    marginTop: 16,
+    marginTop: 18,
   };
 
   const statBox = (accent) => ({
@@ -58,6 +73,7 @@ export default function DiagnosisView({
     borderRadius: 6,
     height: 8,
     overflow: "hidden",
+    marginTop: 6,
   };
 
   const bar = (pct, color) => ({
@@ -83,17 +99,19 @@ export default function DiagnosisView({
           <div style={statGrid}>
             <div style={statBox("#2563eb")}>
               <div style={muted}>Score</div>
-              <strong>{diagnosis.correct} / {diagnosis.total}</strong>
+              <strong>
+                {safeDiagnosis.correct} / {safeDiagnosis.total}
+              </strong>
             </div>
 
             <div style={statBox("#dc2626")}>
               <div style={muted}>Incorrect Attempts</div>
-              <strong>{diagnosis.incorrect}</strong>
+              <strong>{safeDiagnosis.incorrect}</strong>
             </div>
 
             <div style={statBox("#0ea5e9")}>
               <div style={muted}>Smart Skips</div>
-              <strong>{diagnosis.unattempted}</strong>
+              <strong>{safeDiagnosis.unattempted}</strong>
             </div>
 
             <div style={statBox("#16a34a")}>
@@ -102,25 +120,9 @@ export default function DiagnosisView({
             </div>
           </div>
 
-          {/* ===== Comparison (only if previous exists) ===== */}
           {!previousDiagnosis && (
             <p style={{ marginTop: 12, fontSize: 13, color: "#64748b" }}>
-              📈 Progress comparison will appear after your next RC sectional.
-            </p>
-          )}
-
-          {previousDiagnosis && (
-            <p style={{ marginTop: 12, fontSize: 13 }}>
-              Accuracy change:{" "}
-              <b>
-                {accuracy -
-                  Math.round(
-                    (previousDiagnosis.correct /
-                      previousDiagnosis.attempted) *
-                      100
-                  )}
-                %
-              </b>
+              📊 Comparison will unlock after your next RC sectional.
             </p>
           )}
         </div>
@@ -129,8 +131,14 @@ export default function DiagnosisView({
         <div style={card}>
           <h3>Passage-wise CAT Strategy</h3>
 
+          {passageStats.length === 0 && (
+            <p style={muted}>No passage data available.</p>
+          )}
+
           {passageStats.map((p, i) => {
-            const pct = Math.round((p.correct / p.total) * 100);
+            const pct =
+              p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
+
             const label =
               pct >= 70
                 ? "Selective Attempt"
@@ -141,7 +149,9 @@ export default function DiagnosisView({
             return (
               <div key={i} style={{ marginTop: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <strong>{p.genre} ({p.correct}/{p.total})</strong>
+                  <strong>
+                    {p.genre} ({p.correct}/{p.total})
+                  </strong>
                   <span style={{ color: statusColor(pct), fontSize: 13 }}>
                     {label}
                   </span>
@@ -158,8 +168,14 @@ export default function DiagnosisView({
         <div style={card}>
           <h3>Question-Type Skill Map</h3>
 
+          {sortedQT.length === 0 && (
+            <p style={muted}>No question-type data available.</p>
+          )}
+
           {sortedQT.map(([type, v]) => {
-            const pct = Math.round((v.correct / v.total) * 100);
+            const pct =
+              v.total > 0 ? Math.round((v.correct / v.total) * 100) : 0;
+
             return (
               <div key={type} style={{ marginTop: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -185,42 +201,42 @@ export default function DiagnosisView({
         {/* ================= TOP PRIORITY FIXES ================= */}
         <div style={card}>
           <h3>Top Priority Fixes (Next 7 Days)</h3>
-          <p style={muted}>Focus ONLY on these. Ignore other RC work.</p>
+          <p style={muted}>Ignore everything else.</p>
 
           {priorityFixes.length === 0 && (
             <p style={{ color: "#16a34a" }}>
-              ✅ No critical weaknesses detected. Maintain strengths.
+              ✅ No critical weaknesses detected.
             </p>
           )}
 
           {priorityFixes.map(([type, v], i) => (
             <div key={type} style={{ marginTop: 14 }}>
               <strong>
-                {i + 1}. {type} ({v.correct}/{v.total})
+                {i + 1}. {type}
               </strong>
               <div style={{ fontSize: 13, color: "#475569" }}>
-                • Attempt focused drills only<br />
-                • Write why each wrong option is wrong<br />
+                • Analyse only wrong options<br />
+                • Identify elimination error<br />
                 • No mixed RC practice
               </div>
             </div>
           ))}
         </div>
 
-        {/* ================= ACTION PLAN ================= */}
+        {/* ================= ACTION RULES ================= */}
         <div style={card}>
-          <h3>Actionable Rules (Until Accuracy ≥ 60%)</h3>
-          <ul style={{ paddingLeft: 18, marginTop: 8 }}>
-            <li>Attempt only <b>2 passages</b> per RC sectional.</li>
-            <li>Skip abstract / unfamiliar tone passages.</li>
-            <li>Analyse only incorrect attempts.</li>
+          <h3>Action Rules (Until Accuracy ≥ 60%)</h3>
+          <ul style={{ paddingLeft: 18 }}>
+            <li>Attempt only 2 passages per sectional.</li>
+            <li>Skip abstract / unfamiliar tones.</li>
+            <li>Analyse incorrect attempts only.</li>
             <li>Increase volume only after accuracy ≥ 60%.</li>
           </ul>
 
           <button
             onClick={onReview}
             style={{
-              marginTop: 16,
+              marginTop: 14,
               padding: "8px 14px",
               background: "#2563eb",
               color: "#fff",
