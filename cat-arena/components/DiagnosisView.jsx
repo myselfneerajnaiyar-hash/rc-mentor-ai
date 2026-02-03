@@ -2,11 +2,10 @@
 
 import React from "react";
 
-export default function DiagnosisViewV2({
+export default function DiagnosisView({
   passages,
   passageStats,
   byQuestionType,
-  answers,
   score,
   attempted,
   unattempted,
@@ -16,51 +15,47 @@ export default function DiagnosisViewV2({
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
   const incorrect = attempted - score;
 
-  /* ================= ATTEMPT QUALITY ================= */
-  const smartSkips = unattempted;
-  const badAttempts = incorrect;
-
-  /* ================= PRIORITY QUESTION TYPES ================= */
-  const sortedQT = Object.entries(byQuestionType).sort(
+  const sortedQT = Object.entries(byQuestionType || {}).sort(
     (a, b) => (a[1].correct / a[1].total) - (b[1].correct / b[1].total)
   );
 
-  const topFix = sortedQT.slice(0, 2);
+  const topFix = sortedQT.slice(0, 3);
 
   return (
     <div style={container}>
-      <h1 style={title}>RC Diagnosis Report — Coach View</h1>
+      <h1 style={title}>RC Diagnosis Report</h1>
       <p style={subtitle}>
-        This report analyses *decision quality, thinking errors, and CAT strategy*.
+        This analysis focuses on <b>decision quality</b>, not isolated mistakes.
       </p>
 
       {/* ================= SNAPSHOT ================= */}
       <div style={grid4}>
-        <Stat label="Score" value={`${score}/${totalQuestions}`} />
-        <Stat label="Incorrect Attempts" value={badAttempts} danger />
-        <Stat label="Smart Skips" value={smartSkips} />
-        <Stat label="Attempt Quality" value={attempted ? `${Math.round((score / attempted) * 100)}%` : "—"} />
+        <Stat label="Score" value={`${score} / ${totalQuestions}`} />
+        <Stat label="Incorrect Attempts" value={incorrect} danger />
+        <Stat label="Smart Skips" value={unattempted} />
+        <Stat
+          label="Attempt Accuracy"
+          value={attempted ? `${Math.round((score / attempted) * 100)}%` : "—"}
+        />
       </div>
 
-      {/* ================= DECISION QUALITY ================= */}
-      <Section title="Decision Quality Breakdown">
-        <Insight text={`You attempted ${attempted} questions. ${badAttempts} of them resulted in negative outcomes.`} />
-        <Insight text={`Your skip strategy is ${smartSkips >= totalQuestions / 3 ? "reasonable" : "risky"} for CAT-level RC.`} />
-      </Section>
-
       {/* ================= PASSAGE STRATEGY ================= */}
-      <Section title="CAT Passage Strategy Recommendation">
+      <Section title="Passage-wise CAT Strategy">
         {passageStats.map((p, i) => {
           const pct = p.correct / p.total;
           const label =
-            pct >= 0.6 ? "Attempt First" : pct >= 0.3 ? "Attempt Selectively" : "Avoid in CAT";
+            pct >= 0.6
+              ? "Strength — Attempt First"
+              : pct >= 0.3
+              ? "Needs Work — Attempt Selectively"
+              : "Weak Area — Avoid in CAT";
           const color =
             pct >= 0.6 ? "#16a34a" : pct >= 0.3 ? "#f59e0b" : "#dc2626";
 
           return (
             <Row
               key={i}
-              left={p.genre}
+              left={`${p.genre} (${p.correct}/${p.total})`}
               right={label}
               color={color}
               percent={pct * 100}
@@ -69,8 +64,29 @@ export default function DiagnosisViewV2({
         })}
       </Section>
 
-      {/* ================= THINKING SKILL PRIORITY ================= */}
-      <Section title="Top Thinking Skills to Fix (Next 7 Days)">
+      {/* ================= QUESTION TYPE SKILL MAP ================= */}
+      <Section title="Question-Type Skill Map">
+        {sortedQT.map(([type, v]) => {
+          const pct = v.correct / v.total;
+          const label =
+            pct >= 0.6 ? "Strength" : pct >= 0.3 ? "Needs Work" : "Weak Area";
+          const color =
+            pct >= 0.6 ? "#16a34a" : pct >= 0.3 ? "#f59e0b" : "#dc2626";
+
+          return (
+            <Row
+              key={type}
+              left={`${type} (${v.correct}/${v.total})`}
+              right={label}
+              color={color}
+              percent={pct * 100}
+            />
+          );
+        })}
+      </Section>
+
+      {/* ================= PRIORITY FIX ================= */}
+      <Section title="Top Priority Fixes (Next 7 Days)">
         {topFix.map(([type, v]) => (
           <PriorityCard
             key={type}
@@ -82,23 +98,23 @@ export default function DiagnosisViewV2({
       </Section>
 
       {/* ================= ACTION PLAN ================= */}
-      <Section title="7-Day RC Action Plan">
+      <Section title="Actionable Next Steps">
         <ul style={list}>
-          <li>Attempt only <b>2 passages</b> in sectional RC practice.</li>
+          <li>Attempt only <b>2 passages</b> per RC sectional practice.</li>
           <li>Skip passages with unfamiliar abstract tone.</li>
-          <li>Revise explanations for incorrect attempts only.</li>
-          <li>Do NOT increase volume until accuracy > 60%.</li>
+          <li>Review explanations for incorrect attempts only.</li>
+          <li>Do NOT increase volume until accuracy ≥ 60%.</li>
         </ul>
       </Section>
 
       <button onClick={onReview} style={primaryBtn}>
-        Review Mistakes with Explanations
+        Review Questions
       </button>
     </div>
   );
 }
 
-/* ================= UI BLOCKS ================= */
+/* ================= UI COMPONENTS ================= */
 
 function Stat({ label, value, danger }) {
   return (
@@ -134,15 +150,11 @@ function Row({ left, right, color, percent }) {
   );
 }
 
-function Insight({ text }) {
-  return <p style={{ marginBottom: 8, color: "#374151" }}>{text}</p>;
-}
-
 function PriorityCard({ title, stat, advice }) {
   return (
     <div style={priorityCard}>
       <strong>{title}</strong> ({stat})
-      <div style={{ fontSize: 13, color: "#475569", marginTop: 4 }}>{advice}</div>
+      <div style={priorityText}>{advice}</div>
     </div>
   );
 }
@@ -150,18 +162,18 @@ function PriorityCard({ title, stat, advice }) {
 /* ================= STYLES ================= */
 
 const container = { maxWidth: 1100, margin: "40px auto", padding: "0 16px" };
-const title = { fontSize: 28 };
+const title = { fontSize: 28, marginBottom: 6 };
 const subtitle = { color: "#475569", marginBottom: 24 };
 
 const grid4 = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
   gap: 16,
 };
 
 const statCard = {
   border: "1px solid",
-  borderRadius: 8,
+  borderRadius: 10,
   padding: 16,
   background: "#f8fafc",
 };
@@ -173,8 +185,9 @@ const sectionTitle = { marginBottom: 12 };
 
 const card = {
   border: "1px solid #e5e7eb",
-  borderRadius: 8,
+  borderRadius: 10,
   padding: 16,
+  background: "#ffffff",
 };
 
 const rowTop = { display: "flex", justifyContent: "space-between" };
@@ -183,19 +196,27 @@ const barBg = { height: 6, background: "#e5e7eb", borderRadius: 4 };
 const barFill = { height: "100%", borderRadius: 4 };
 
 const priorityCard = {
-  padding: 12,
+  padding: 14,
   border: "1px solid #e5e7eb",
-  borderRadius: 6,
-  marginBottom: 10,
+  borderRadius: 8,
+  marginBottom: 12,
+  background: "#f9fafb",
 };
 
-const list = { paddingLeft: 18, lineHeight: 1.7 };
+const priorityText = {
+  fontSize: 13,
+  color: "#475569",
+  marginTop: 4,
+};
+
+const list = { paddingLeft: 18, lineHeight: 1.8 };
 
 const primaryBtn = {
   marginTop: 32,
-  padding: "10px 16px",
+  padding: "12px 18px",
   background: "#2563eb",
   color: "#fff",
   border: "none",
+  borderRadius: 6,
   cursor: "pointer",
 };
