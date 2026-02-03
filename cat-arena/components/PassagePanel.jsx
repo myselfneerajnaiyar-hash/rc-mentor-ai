@@ -11,6 +11,12 @@ export default function PassagePanel({
   const passage = passages[passageIndex];
 
   if (!passage) return null;
+  {mode === "review" && (
+  <div style={{ marginBottom: 8, fontSize: 13, color: "#374151" }}>
+    <strong>Passage Performance:</strong>{" "}
+    {stats.correct} / {stats.total}
+  </div>
+)}
 
   return (
     <div
