@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 01",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Philosophy",
+      "difficulty": "medium",
+      "text": "Modern philosophical discussions of rationality often assume that reasoning is an internal, self-contained cognitive process governed primarily by formal rules of logic. This assumption, however, obscures the extent to which reasoning is shaped by social practices, linguistic conventions, and historically contingent norms. Far from being a purely abstract activity, rational thought emerges from shared frameworks that determine what counts as a valid question, a persuasive argument, or an acceptable conclusion.\n\nPhilosophers who emphasize formal logic tend to regard deviations from strict deductive reasoning as errors or cognitive biases. Yet such deviations may reflect adaptive responses to complex environments where information is incomplete, ambiguous, or contested. In these contexts, reliance on heuristics, analogies, and narrative coherence can be more practically effective than strict adherence to logical form.\n\nMoreover, the criteria by which arguments are evaluated are rarely neutral. What one intellectual tradition considers rigorous may appear overly narrow or irrelevant to another. Scientific reasoning, legal reasoning, and moral reasoning each employ distinct standards of justification, even when addressing similar questions. Attempts to impose a single, unified model of rationality risk ignoring these domain-specific requirements.\n\nThe social dimension of reasoning becomes particularly evident in public deliberation. Arguments gain traction not solely because they are logically valid, but because they resonate with shared values, institutional norms, and cultural narratives. Persuasion, therefore, cannot be reduced to logical demonstration alone.\n\nRecognizing the contextual nature of rationality does not entail abandoning standards of reasoning altogether. Instead, it calls for a more pluralistic understanding of rational thought—one that acknowledges the legitimacy of multiple forms of justification while remaining attentive to their limitations.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The primary purpose of the passage is to argue that:",
+          "options": [
+            "formal logic is insufficient to explain how reasoning operates in real-world contexts",
+            "heuristics should replace deductive logic in all forms of reasoning",
+            "philosophical theories of rationality are largely outdated",
+            "social consensus is more important than logical validity"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author consistently challenges the assumption that reasoning is a purely internal, formal process governed only by logic. Instead, the passage emphasizes that reasoning is shaped by social, linguistic, and contextual factors. Option A captures this central thrust by noting the insufficiency of formal logic alone in explaining real-world reasoning. Option B is incorrect because the author does not advocate replacing logic entirely, only supplementing it. Option C exaggerates the critique; the author does not dismiss philosophical theories wholesale. Option D misrepresents the argument by suggesting that social agreement supersedes logic, whereas the passage stresses pluralism rather than replacement."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred from the passage that the author would most likely agree with which of the following?",
+          "options": [
+            "Different fields require different standards of what counts as rational reasoning",
+            "Formal logic is irrelevant in scientific inquiry",
+            "Public debates should avoid emotional or cultural appeals",
+            "Rationality can be defined independently of social context"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage explicitly notes that scientific, legal, and moral reasoning operate under different standards of justification, implying that rationality is domain-specific. Option A aligns directly with this inference. Option B is too extreme, as the author never dismisses formal logic entirely. Option C contradicts the discussion of persuasion relying on shared values and narratives. Option D is the opposite of the author’s position, which emphasizes the contextual nature of rationality."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward formal models of rationality can best be described as:",
+          "options": [
+            "critical but not dismissive",
+            "openly hostile",
+            "unquestioningly supportive",
+            "largely indifferent"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques the limitations of formal models while acknowledging their value and stopping short of rejecting them outright. This balanced stance makes Option A correct. Option B is incorrect because the tone is measured, not hostile. Option C is contradicted by repeated critiques. Option D is wrong because the author clearly engages deeply with the issue."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "Which of the following would most strengthen the author’s argument?",
+          "options": [
+            "An example showing how legal reasoning departs from strict deductive logic",
+            "Evidence that formal logic guarantees correct conclusions",
+            "A claim that emotions always undermine rational thought",
+            "An argument that cultural narratives are irrational by nature"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author argues that different domains use different standards of reasoning. Option A provides a concrete illustration supporting this claim. Option B undermines the author’s critique. Option C contradicts the idea that non-formal reasoning can be adaptive. Option D conflicts with the argument that narratives can play a legitimate role in reasoning."
+        }
+      ]
+    },
+
+    {
+      "id": "P2",
+      "genre": "Economics",
+      "difficulty": "medium",
+      "text": "Economic models often rely on simplified assumptions about human behavior, such as rational self-interest and stable preferences. These assumptions allow economists to construct elegant models capable of generating precise predictions. However, the very features that make these models tractable also limit their explanatory power when applied to real-world economic behavior.\n\nEmpirical studies repeatedly demonstrate that individuals do not always act in accordance with rational choice theory. Preferences shift over time, decisions are influenced by framing effects, and individuals frequently prioritize fairness or social norms over material gain. Such findings have prompted the emergence of behavioral economics, which seeks to incorporate psychological insights into economic analysis.\n\nCritics of behavioral economics argue that abandoning simplifying assumptions risks sacrificing analytical clarity. Without stable preferences or rational actors, models may become too context-dependent to yield generalizable insights. This concern reflects a broader tension between realism and abstraction in economic theory.\n\nYet abstraction itself is not value-neutral. The choice of which factors to simplify and which to emphasize shapes the conclusions a model produces. Models that ignore inequality, power relations, or institutional constraints may inadvertently legitimize existing economic arrangements rather than critically examining them.\n\nA more reflexive approach to economic modeling would acknowledge both the usefulness and the limitations of abstraction. Rather than seeking a single, comprehensive model of economic behavior, economists might employ a plurality of models, each suited to specific questions and contexts.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "evaluate the strengths and limitations of abstraction in economic modeling",
+            "argue that behavioral economics should replace traditional economics",
+            "demonstrate the empirical failure of rational choice theory",
+            "criticize economists for ignoring psychological research"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author examines both the advantages and drawbacks of abstraction in economics, advocating a balanced and pluralistic approach. Option A captures this evaluative purpose. Option B is too strong; replacement is not advocated. Option C overstates the critique, as rational choice is not declared a failure. Option D misrepresents the tone, which is analytical rather than accusatory."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that economic models:",
+          "options": [
+            "inevitably reflect normative judgments through their assumptions",
+            "should aim to describe reality with complete accuracy",
+            "are rendered useless by behavioral findings",
+            "can avoid value judgments through formalization"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage suggests that abstraction is not value-neutral and that modeling choices shape conclusions. Option A follows directly. Option B is unrealistic and not implied. Option C exaggerates the impact of behavioral economics. Option D contradicts the claim that abstraction carries implicit values."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward behavioral economics is best described as:",
+          "options": [
+            "cautiously supportive",
+            "uncritically enthusiastic",
+            "overtly dismissive",
+            "largely skeptical"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author recognizes the contributions of behavioral economics while acknowledging critiques about loss of analytical clarity. This balanced view makes Option A correct. Option B ignores the noted limitations. Option C is incorrect as the author presents it respectfully. Option D overstates the critique."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "Which of the following would the author most likely endorse?",
+          "options": [
+            "Using different models for different economic questions",
+            "Abandoning formal modeling altogether",
+            "Relying exclusively on empirical observation",
+            "Rejecting behavioral insights as too subjective"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage concludes by advocating a plurality of models suited to specific contexts. Option A directly reflects this recommendation. Options B, C, and D all represent extremes that the author explicitly or implicitly rejects."
+        }
+      ]
+    }
+
+  
