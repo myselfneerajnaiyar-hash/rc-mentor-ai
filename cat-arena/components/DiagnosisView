@@ -5,206 +5,195 @@ export default function DiagnosisView({
   answers,
   QUESTIONS_PER_PASSAGE,
   score,
+  passageStats,
+  byQuestionType,
+  attempted,
+  unattempted,
   onReview,
 }) {
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
+  const accuracy = attempted ? Math.round((score / attempted) * 100) : 0;
+  const marks = score * 3 - (attempted - score);
 
-  /* ===================== DERIVED STATS ===================== */
+  function getTag(acc) {
+    if (acc >= 75) {
+      return { text: "Strength", bg: "#dcfce7", color: "#166534" };
+    }
+    if (acc >= 40) {
+      return { text: "Risk Zone", bg: "#fef3c7", color: "#92400e" };
+    }
+    return { text: "Weak Area", bg: "#fee2e2", color: "#991b1b" };
+  }
 
-  const attempted = answers.filter(a => a !== null).length;
-  const unattempted = totalQuestions - attempted;
-
-  // Passage-wise performance
-  const passageStats = passages.map((p, pIdx) => {
-    let correct = 0;
-
-    p.questions.forEach((q, qIdx) => {
-      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-      if (answers[gi] === q.correctIndex) correct++;
-    });
-
-    return {
-      genre: p.genre,
-      difficulty: p.difficulty,
-      correct,
-      total: p.questions.length,
-    };
-  });
-
-  // Question-type diagnosis
-  const byQuestionType = {};
-  passages.forEach((p, pIdx) => {
-    p.questions.forEach((q, qIdx) => {
-      const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
-      const type = q.type || "Unknown";
-
-      if (!byQuestionType[type]) {
-        byQuestionType[type] = { correct: 0, total: 0 };
-      }
-
-      byQuestionType[type].total++;
-      if (answers[gi] === q.correctIndex) {
-        byQuestionType[type].correct++;
-      }
-    });
-  });
-
-  /* ===================== RENDER ===================== */
+  function getSkillTag(correct, total) {
+    const acc = total ? correct / total : 0;
+    if (acc >= 0.75) return { text: "Strong", bg: "#dcfce7", color: "#166534" };
+    if (acc >= 0.45)
+      return { text: "Needs Work", bg: "#fef3c7", color: "#92400e" };
+    return { text: "Weak", bg: "#fee2e2", color: "#991b1b" };
+  }
 
   return (
-    <div
-      style={{
-        padding: "32px 20px",
-        maxWidth: 1100,
-        margin: "0 auto",
-        color: "#111827",
-      }}
-    >
-      {/* ================= SNAPSHOT ================= */}
-      <section style={card}>
-        <h2 style={{ marginBottom: 8 }}>Test Diagnosis</h2>
+    <div style={{ maxWidth: 1100, margin: "40px auto", padding: "0 16px" }}>
+      <h1>📊 RC Diagnosis Report</h1>
+      <p style={{ color: "#475569", marginBottom: 24 }}>
+        This report highlights patterns, not isolated mistakes.
+      </p>
 
-        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-          <Stat label="Attempted" value={attempted} />
-          <Stat label="Correct" value={score} />
-          <Stat label="Unattempted" value={unattempted} />
-          <Stat
-            label="Accuracy"
-            value={`${Math.round((score / attempted || 0) * 100)}%`}
-          />
-        </div>
-
-        <p style={mentorNote}>
-          This test primarily tested inference depth and ability to track
-          argumentative shifts rather than surface comprehension.
-        </p>
-      </section>
-
-      {/* ================= PASSAGE PERFORMANCE ================= */}
-      <section style={section}>
-        <h3>Passage-wise Performance</h3>
-
+      {/* OVERALL SNAPSHOT */}
+      <div style={card}>
+        <h3>Overall Snapshot</h3>
         <div style={grid}>
-          {passageStats.map((p, i) => (
-            <div key={i} style={card}>
-              <div style={{ fontWeight: 600 }}>{p.genre}</div>
-              <div style={{ fontSize: 14, color: "#475569" }}>
-                Difficulty: {p.difficulty}
-              </div>
-
-              <div style={{ marginTop: 8 }}>
-                <strong>{p.correct}</strong> / {p.total}
-              </div>
-
-              <StatusTag correct={p.correct} total={p.total} />
-            </div>
-          ))}
+          <Stat label="Score" value={`${score} / ${totalQuestions}`} />
+          <Stat label="CAT Marks" value={marks} />
+          <Stat label="Accuracy" value={`${accuracy}%`} />
+          <Stat label="Attempted" value={attempted} />
+          <Stat label="Unattempted" value={unattempted} />
         </div>
-      </section>
+      </div>
 
-      {/* ================= QUESTION TYPE ANALYSIS ================= */}
-      <section style={section}>
-        <h3>Question Type Analysis</h3>
+      {/* PASSAGE DIAGNOSIS */}
+      <div style={card}>
+        <h3>Passage-wise Diagnosis</h3>
 
-        {Object.entries(byQuestionType).map(([type, d]) => (
-          <div key={type} style={row}>
-            <div>{type}</div>
-            <div>
-              {d.correct} / {d.total}
+        {passageStats.map((p, i) => {
+          const acc = Math.round((p.correct / p.total) * 100);
+          const tag = getTag(acc);
+
+          return (
+            <div key={i} style={row}>
+              <div>
+                <strong>{p.genre}</strong>
+                <div style={muted}>
+                  {p.correct} / {p.total} correct
+                </div>
+              </div>
+
+              <div
+                style={{
+                  padding: "4px 10px",
+                  borderRadius: 999,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  background: tag.bg,
+                  color: tag.color,
+                }}
+              >
+                {tag.text}
+              </div>
             </div>
-            <StatusText correct={d.correct} total={d.total} />
-          </div>
-        ))}
-      </section>
+          );
+        })}
+      </div>
 
-      {/* ================= ACTION PLAN ================= */}
-      <section style={{ ...card, borderLeft: "4px solid #2563eb" }}>
-        <h3>Action Plan (Next 2 Tests)</h3>
+      {/* QUESTION TYPE DIAGNOSIS */}
+      <div style={card}>
+        <h3>Question-Type Skill Map</h3>
 
-        <ul style={{ marginTop: 12, lineHeight: 1.6 }}>
-          <li>Slow down on inference-based questions.</li>
-          <li>Eliminate options introducing new ideas.</li>
-          <li>Track author stance shifts across paragraphs.</li>
-          <li>Ignore speed and accuracy for now.</li>
+        {Object.entries(byQuestionType).map(([type, v]) => {
+          const tag = getSkillTag(v.correct, v.total);
+          const acc = Math.round((v.correct / v.total) * 100);
+
+          return (
+            <div key={type} style={row}>
+              <div>
+                <strong>{type}</strong>
+                <div style={muted}>
+                  {v.correct} / {v.total} correct ({acc}%)
+                </div>
+              </div>
+
+              <div
+                style={{
+                  padding: "4px 10px",
+                  borderRadius: 999,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  background: tag.bg,
+                  color: tag.color,
+                }}
+              >
+                {tag.text}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ACTIONABLE FEEDBACK */}
+      <div style={card}>
+        <h3>What You Should Fix Next</h3>
+        <ul style={{ lineHeight: 1.8 }}>
+          <li>
+            Strengthen <strong>Weak</strong> question types before increasing RC
+            volume.
+          </li>
+          <li>
+            Avoid over-attempting abstract passages unless accuracy crosses 65%.
+          </li>
+          <li>
+            Focus on elimination logic, not option spotting.
+          </li>
+          <li>
+            Review explanations to identify thinking errors, not just wrong
+            answers.
+          </li>
         </ul>
-      </section>
+      </div>
 
-      {/* ================= CTA ================= */}
+      {/* CTA */}
       <div style={{ marginTop: 32 }}>
-        <button onClick={onReview} style={primaryBtn}>
-          Review This Test
+        <button style={primaryBtn} onClick={onReview}>
+          Review Questions
         </button>
       </div>
     </div>
   );
 }
 
-/* ===================== SMALL COMPONENTS ===================== */
+/* SMALL COMPONENTS */
 
 function Stat({ label, value }) {
   return (
     <div>
-      <div style={{ fontSize: 14, color: "#475569" }}>{label}</div>
-      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+      <div style={{ fontSize: 13, color: "#64748b" }}>{label}</div>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>{value}</div>
     </div>
   );
 }
 
-function StatusTag({ correct, total }) {
-  const ratio = correct / total;
-  const color =
-    ratio >= 0.75 ? "#16a34a" : ratio >= 0.4 ? "#f59e0b" : "#dc2626";
-
-  return (
-    <div style={{ marginTop: 8, color, fontWeight: 600 }}>
-      {ratio >= 0.75 ? "Stable" : ratio >= 0.4 ? "Needs Work" : "Breakdown"}
-    </div>
-  );
-}
-
-function StatusText({ correct, total }) {
-  const ratio = correct / total;
-  return (
-    <div style={{ color: ratio < 0.4 ? "#dc2626" : "#475569" }}>
-      {ratio < 0.4 ? "Breakdown" : "Partial"}
-    </div>
-  );
-}
-
-/* ===================== STYLES ===================== */
-
-const section = {
-  marginTop: 32,
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: 16,
-};
+/* STYLES */
 
 const card = {
   background: "#ffffff",
   border: "1px solid #e5e7eb",
-  borderRadius: 8,
-  padding: 16,
+  borderRadius: 10,
+  padding: 20,
+  marginBottom: 24,
+};
+
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+  gap: 16,
+  marginTop: 16,
 };
 
 const row = {
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   padding: "10px 0",
-  borderBottom: "1px solid #e5e7eb",
+  borderBottom: "1px dashed #e5e7eb",
 };
 
-const mentorNote = {
-  marginTop: 12,
-  fontStyle: "italic",
-  color: "#374151",
+const muted = {
+  fontSize: 13,
+  color: "#64748b",
 };
 
 const primaryBtn = {
-  padding: "10px 20px",
+  padding: "10px 16px",
   background: "#2563eb",
   color: "#fff",
   border: "none",
