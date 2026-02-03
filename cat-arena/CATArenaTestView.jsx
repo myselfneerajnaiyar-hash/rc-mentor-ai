@@ -6,6 +6,7 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
+import DiagnosisView from "./components/DiagnosisView";
 
 export default function CATArenaTestView({ testData }) {
   /* ===================== SAFETY ===================== */
