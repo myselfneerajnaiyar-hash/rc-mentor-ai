@@ -56,6 +56,22 @@ export default function CATArenaTestView({ testData }) {
   const currentQuestion =
     currentPassage.questions[questionIndexInPassage];
 
+  /* ===================== PASSAGE STATS (FOR REVIEW / DIAGNOSIS) ===================== */
+const passageStats = passages.map((p, pIdx) => {
+  let correct = 0;
+
+  p.questions.forEach((q, qIdx) => {
+    const gi = pIdx * QUESTIONS_PER_PASSAGE + qIdx;
+    if (answers[gi] === q.correctIndex) correct++;
+  });
+
+  return {
+    genre: p.genre,
+    correct,
+    total: p.questions.length,
+  };
+});
+
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
     if (mode === "review") return;
