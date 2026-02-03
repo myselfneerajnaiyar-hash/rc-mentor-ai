@@ -156,12 +156,19 @@ VOCABULARY RULES
   let data;
   try {
     data = JSON.parse(content);
-  } catch (err) {
-    return NextResponse.json(
-      { error: "Invalid JSON from OpenAI", raw: content },
-      { status: 500 }
-    );
-  }
+ } catch (err) {
+  console.error("RAW OPENAI OUTPUT:", content);
+  console.error("JSON PARSE ERROR:", err);
+
+  return NextResponse.json(
+    {
+      error: "Invalid JSON from OpenAI",
+      message: err.message,
+      raw: content?.slice(0, 2000) // prevent browser crash
+    },
+    { status: 500 }
+  );
+}
 
   // HARD SAFETY CHECK (prevents blank questions in UI)
   if (
