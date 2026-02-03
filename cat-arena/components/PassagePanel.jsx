@@ -3,6 +3,8 @@
 export default function PassagePanel({
   passages,
   currentQuestionIndex,
+  passageStats,
+  mode
 }) {
   if (!passages || passages.length === 0) return null;
 
