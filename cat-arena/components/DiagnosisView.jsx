@@ -10,119 +10,138 @@ export default function DiagnosisView({
   attempted,
   unattempted,
   QUESTIONS_PER_PASSAGE,
+  previousSnapshot, // OPTIONAL
   onReview,
 }) {
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
   const incorrect = attempted - score;
+  const accuracy = attempted ? Math.round((score / attempted) * 100) : 0;
 
   const sortedQT = Object.entries(byQuestionType || {}).sort(
-    (a, b) => (a[1].correct / a[1].total) - (b[1].correct / b[1].total)
+    (a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total
   );
 
-  const topFix = sortedQT.slice(0, 3);
-
   return (
-    <div style={container}>
+    <div style={page}>
       <h1 style={title}>RC Diagnosis Report</h1>
       <p style={subtitle}>
-        This analysis focuses on <b>decision quality</b>, not isolated mistakes.
+        Focuses on <b>decision patterns</b>, not isolated mistakes.
       </p>
 
       {/* ================= SNAPSHOT ================= */}
       <div style={grid4}>
         <Stat label="Score" value={`${score} / ${totalQuestions}`} />
-        <Stat label="Incorrect Attempts" value={incorrect} danger />
-        <Stat label="Smart Skips" value={unattempted} />
-        <Stat
-          label="Attempt Accuracy"
-          value={attempted ? `${Math.round((score / attempted) * 100)}%` : "—"}
-        />
+        <Stat label="Incorrect Attempts" value={incorrect} tone="danger" />
+        <Stat label="Smart Skips" value={unattempted} tone="neutral" />
+        <Stat label="Accuracy" value={`${accuracy}%`} tone="info" />
       </div>
+
+      {/* ================= COMPARISON ================= */}
+      {previousSnapshot && (
+        <Section title="Progress vs Last RC Sectional">
+          <Compare
+            label="Score"
+            current={score}
+            previous={previousSnapshot.score}
+          />
+          <Compare
+            label="Accuracy"
+            current={accuracy}
+            previous={previousSnapshot.accuracy}
+            suffix="%"
+          />
+          <Compare
+            label="Attempts"
+            current={attempted}
+            previous={previousSnapshot.attempted}
+          />
+        </Section>
+      )}
 
       {/* ================= PASSAGE STRATEGY ================= */}
       <Section title="Passage-wise CAT Strategy">
         {passageStats.map((p, i) => {
           const pct = p.correct / p.total;
+          const tone =
+            pct >= 0.6 ? "good" : pct >= 0.3 ? "warn" : "bad";
           const label =
             pct >= 0.6
-              ? "Strength — Attempt First"
+              ? "Attempt Confidently"
               : pct >= 0.3
-              ? "Needs Work — Attempt Selectively"
-              : "Weak Area — Avoid in CAT";
-          const color =
-            pct >= 0.6 ? "#16a34a" : pct >= 0.3 ? "#f59e0b" : "#dc2626";
+              ? "Selective Attempt"
+              : "Avoid in CAT";
 
           return (
-            <Row
+            <BarRow
               key={i}
               left={`${p.genre} (${p.correct}/${p.total})`}
               right={label}
-              color={color}
               percent={pct * 100}
+              tone={tone}
             />
           );
         })}
       </Section>
 
-      {/* ================= QUESTION TYPE SKILL MAP ================= */}
+      {/* ================= QUESTION TYPE MAP ================= */}
       <Section title="Question-Type Skill Map">
         {sortedQT.map(([type, v]) => {
           const pct = v.correct / v.total;
+          const tone =
+            pct >= 0.6 ? "good" : pct >= 0.3 ? "warn" : "bad";
           const label =
             pct >= 0.6 ? "Strength" : pct >= 0.3 ? "Needs Work" : "Weak Area";
-          const color =
-            pct >= 0.6 ? "#16a34a" : pct >= 0.3 ? "#f59e0b" : "#dc2626";
 
           return (
-            <Row
+            <BarRow
               key={type}
               left={`${type} (${v.correct}/${v.total})`}
               right={label}
-              color={color}
               percent={pct * 100}
+              tone={tone}
             />
           );
         })}
-      </Section>
-
-      {/* ================= PRIORITY FIX ================= */}
-      <Section title="Top Priority Fixes (Next 7 Days)">
-        {topFix.map(([type, v]) => (
-          <PriorityCard
-            key={type}
-            title={type}
-            stat={`${v.correct}/${v.total}`}
-            advice={`Revise logic + explanation patterns for ${type}`}
-          />
-        ))}
       </Section>
 
       {/* ================= ACTION PLAN ================= */}
       <Section title="Actionable Next Steps">
         <ul style={list}>
-          <li>Attempt only <b>2 passages</b> per RC sectional practice.</li>
-          <li>Skip passages with unfamiliar abstract tone.</li>
-          <li>Review explanations for incorrect attempts only.</li>
-          <li>Do NOT increase volume until accuracy ≥ 60%.</li>
+          <li>Attempt only <b>2 passages</b> per RC sectional.</li>
+          <li>Skip abstract / unfamiliar tone passages.</li>
+          <li>Analyse only incorrect attempts.</li>
+          <li>Increase volume only after accuracy ≥ 60%.</li>
         </ul>
       </Section>
 
-      <button onClick={onReview} style={primaryBtn}>
+      <button onClick={onReview} style={cta}>
         Review Questions
       </button>
     </div>
   );
 }
 
-/* ================= UI COMPONENTS ================= */
+/* ================= SMALL COMPONENTS ================= */
 
-function Stat({ label, value, danger }) {
+function Stat({ label, value, tone }) {
   return (
-    <div style={{ ...statCard, borderColor: danger ? "#dc2626" : "#e5e7eb" }}>
+    <div style={{ ...stat, borderLeft: `4px solid ${toneColor(tone)}` }}>
       <div style={statLabel}>{label}</div>
-      <div style={{ ...statValue, color: danger ? "#dc2626" : "#111" }}>
-        {value}
-      </div>
+      <div style={statValue}>{value}</div>
+    </div>
+  );
+}
+
+function Compare({ label, current, previous, suffix = "" }) {
+  const diff = current - previous;
+  const up = diff > 0;
+
+  return (
+    <div style={compareRow}>
+      <span>{label}</span>
+      <span style={{ color: up ? "#16a34a" : "#dc2626" }}>
+        {current}{suffix} {diff !== 0 && `( ${up ? "▲" : "▼"} ${Math.abs(diff)} )`}
+      </span>
     </div>
   );
 }
@@ -136,46 +155,50 @@ function Section({ title, children }) {
   );
 }
 
-function Row({ left, right, color, percent }) {
+function BarRow({ left, right, percent, tone }) {
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={rowTop}>
         <span>{left}</span>
-        <span style={{ color, fontWeight: 600 }}>{right}</span>
+        <span style={{ fontWeight: 600, color: toneColor(tone) }}>
+          {right}
+        </span>
       </div>
       <div style={barBg}>
-        <div style={{ ...barFill, width: `${percent}%`, background: color }} />
+        <div
+          style={{
+            ...barFill,
+            width: `${percent}%`,
+            background: toneColor(tone),
+          }}
+        />
       </div>
     </div>
   );
 }
 
-function PriorityCard({ title, stat, advice }) {
-  return (
-    <div style={priorityCard}>
-      <strong>{title}</strong> ({stat})
-      <div style={priorityText}>{advice}</div>
-    </div>
-  );
-}
+/* ================= THEME ================= */
 
-/* ================= STYLES ================= */
+const page = {
+  background: "#f1f5f9",
+  minHeight: "100vh",
+  padding: "40px 16px",
+};
 
-const container = { maxWidth: 1100, margin: "40px auto", padding: "0 16px" };
-const title = { fontSize: 28, marginBottom: 6 };
-const subtitle = { color: "#475569", marginBottom: 24 };
+const title = { fontSize: 28, marginBottom: 4 };
+const subtitle = { color: "#475569" };
 
 const grid4 = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))",
   gap: 16,
+  marginTop: 24,
 };
 
-const statCard = {
-  border: "1px solid",
-  borderRadius: 10,
+const stat = {
+  background: "#ffffff",
   padding: 16,
-  background: "#f8fafc",
+  borderRadius: 10,
 };
 
 const statLabel = { fontSize: 13, color: "#64748b" };
@@ -184,34 +207,30 @@ const statValue = { fontSize: 22, fontWeight: 600 };
 const sectionTitle = { marginBottom: 12 };
 
 const card = {
-  border: "1px solid #e5e7eb",
-  borderRadius: 10,
-  padding: 16,
   background: "#ffffff",
+  padding: 16,
+  borderRadius: 10,
 };
 
 const rowTop = { display: "flex", justifyContent: "space-between" };
 
-const barBg = { height: 6, background: "#e5e7eb", borderRadius: 4 };
-const barFill = { height: "100%", borderRadius: 4 };
-
-const priorityCard = {
-  padding: 14,
-  border: "1px solid #e5e7eb",
-  borderRadius: 8,
-  marginBottom: 12,
-  background: "#f9fafb",
+const barBg = {
+  height: 6,
+  background: "#e5e7eb",
+  borderRadius: 4,
 };
 
-const priorityText = {
-  fontSize: 13,
-  color: "#475569",
-  marginTop: 4,
+const barFill = { height: "100%", borderRadius: 4 };
+
+const compareRow = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: 8,
 };
 
 const list = { paddingLeft: 18, lineHeight: 1.8 };
 
-const primaryBtn = {
+const cta = {
   marginTop: 32,
   padding: "12px 18px",
   background: "#2563eb",
@@ -220,3 +239,11 @@ const primaryBtn = {
   borderRadius: 6,
   cursor: "pointer",
 };
+
+function toneColor(tone) {
+  if (tone === "good") return "#16a34a";
+  if (tone === "warn") return "#f59e0b";
+  if (tone === "danger" || tone === "bad") return "#dc2626";
+  if (tone === "info") return "#2563eb";
+  return "#64748b";
+}
