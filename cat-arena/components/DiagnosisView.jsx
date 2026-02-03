@@ -1,64 +1,113 @@
 "use client";
 
+/**
+ * DiagnosisView (LOCKED VERSION)
+ * Assumptions:
+ * - questions[] = flat array of all questions (with id, type, correctIndex)
+ * - answers[]   = array indexed SAME as questions (can contain undefined)
+ * - passages[]  = array of passages, each with questions[] containing ids
+ */
+
 export default function DiagnosisView({
   passages = [],
-  answers = [],
   questions = [],
+  answers = [],
   onReview,
 }) {
-  // ---------- SAFE COUNTS ----------
-  const totalQuestions = questions.length || 0;
+  /* ---------- BUILD SAFE LOOKUPS ---------- */
+
+  const questionById = {};
+  questions.forEach((q, i) => {
+    questionById[q.id] = { ...q, index: i };
+  });
+
+  /* ---------- OVERALL METRICS ---------- */
 
   let attempted = 0;
   let correct = 0;
 
   questions.forEach((q, i) => {
-    if (answers[i] !== undefined && answers[i] !== null) {
+    const ans = answers[i];
+    if (ans !== undefined && ans !== null) {
       attempted++;
-      if (answers[i] === q.correctIndex) correct++;
+      if (ans === q.correctIndex) correct++;
     }
   });
 
+  const totalQuestions = questions.length;
   const incorrect = attempted - correct;
   const accuracy =
     attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
 
-  // ---------- PASSAGE WISE ----------
-  const passageStats = passages.map((p) => {
-    let total = p.questions?.length || 0;
-    let correctP = 0;
+  /* ---------- PASSAGE-WISE DECISION QUALITY ---------- */
 
-    p.questions?.forEach((q) => {
-      const idx = questions.findIndex((x) => x.id === q.id);
-      if (idx >= 0 && answers[idx] === q.correctIndex) correctP++;
+  const passageStats = passages.map((p) => {
+    let total = 0;
+    let correctCount = 0;
+    let attemptedCount = 0;
+
+    p.questions?.forEach((pq) => {
+      const q = questionById[pq.id];
+      if (!q) return;
+
+      total++;
+      const ans = answers[q.index];
+      if (ans !== undefined && ans !== null) {
+        attemptedCount++;
+        if (ans === q.correctIndex) correctCount++;
+      }
     });
 
+    const acc =
+      attemptedCount > 0 ? correctCount / attemptedCount : 0;
+
     let tag = "Avoid in CAT";
-    if (total > 0 && correctP / total >= 0.6) tag = "Selective Attempt";
-    if (total > 0 && correctP / total >= 0.8) tag = "Strength";
+    if (attemptedCount >= 2 && acc >= 0.6) tag = "Selective Attempt";
+    if (attemptedCount >= 3 && acc >= 0.8) tag = "Strength";
 
     return {
       genre: p.genre || "Unknown",
-      correct: correctP,
+      attempted: attemptedCount,
+      correct: correctCount,
       total,
       tag,
     };
   });
 
-  // ---------- QUESTION TYPE ----------
+  /* ---------- QUESTION-TYPE SKILL MAP ---------- */
+
   const typeMap = {};
+
   questions.forEach((q, i) => {
     const type = q.type || "Unknown";
-    if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
+    if (!typeMap[type]) {
+      typeMap[type] = { correct: 0, attempted: 0, total: 0 };
+    }
+
     typeMap[type].total++;
-    if (answers[i] === q.correctIndex) typeMap[type].correct++;
+    const ans = answers[i];
+    if (ans !== undefined && ans !== null) {
+      typeMap[type].attempted++;
+      if (ans === q.correctIndex) typeMap[type].correct++;
+    }
   });
 
+  /* ---------- WEAK PRIORITIES ---------- */
+
   const weakTypes = Object.entries(typeMap)
-    .filter(([_, v]) => v.total > 0 && v.correct / v.total < 0.5)
+    .map(([type, v]) => ({
+      type,
+      accuracy:
+        v.attempted > 0 ? v.correct / v.attempted : 0,
+      attempted: v.attempted,
+    }))
+    .filter(
+      (t) => t.attempted >= 2 && t.accuracy < 0.5
+    )
     .slice(0, 3);
 
-  // ---------- UI ----------
+  /* ---------- UI ---------- */
+
   return (
     <div
       style={{
@@ -78,46 +127,26 @@ export default function DiagnosisView({
       >
         <h1 style={{ marginBottom: 6 }}>RC Diagnosis Report</h1>
         <p style={{ color: "#6b7280", marginBottom: 24 }}>
-          Focuses on decision patterns, not isolated mistakes.
+          CAT-style diagnosis focused on selection quality, not guesswork.
         </p>
 
         {/* SUMMARY */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 16,
-            marginBottom: 32,
-          }}
-        >
+        <Grid4>
           <Stat label="Score" value={`${correct} / ${totalQuestions}`} />
-          <Stat label="Incorrect Attempts" value={incorrect} />
           <Stat label="Attempted" value={attempted} />
+          <Stat label="Incorrect" value={incorrect} />
           <Stat label="Accuracy" value={`${accuracy}%`} />
-        </div>
-
-        {/* COMPARISON PLACEHOLDER */}
-        <div
-          style={{
-            background: "#eef2ff",
-            padding: 14,
-            borderRadius: 8,
-            marginBottom: 28,
-            fontSize: 14,
-          }}
-        >
-          📊 Comparison with last RC sectional will unlock after your next test.
-        </div>
+        </Grid4>
 
         {/* PASSAGE STRATEGY */}
-        <Section title="Passage-wise CAT Strategy">
+        <Section title="Passage Selection Intelligence">
           {passageStats.length === 0 && (
             <Muted>No passage data available.</Muted>
           )}
           {passageStats.map((p, i) => (
             <Row
               key={i}
-              left={`${p.genre} (${p.correct}/${p.total})`}
+              left={`${p.genre} (${p.correct}/${p.attempted || 0})`}
               right={p.tag}
               color={tagColor(p.tag)}
             />
@@ -125,20 +154,19 @@ export default function DiagnosisView({
         </Section>
 
         {/* QUESTION TYPE */}
-        <Section title="Question-Type Skill Map">
-          {Object.keys(typeMap).length === 0 && (
-            <Muted>No question-type data available.</Muted>
-          )}
+        <Section title="Question-Type Accuracy Map">
           {Object.entries(typeMap).map(([type, v]) => {
-            const ratio = v.total ? v.correct / v.total : 0;
-            let label = "Weak Area";
-            if (ratio >= 0.7) label = "Strength";
-            else if (ratio >= 0.5) label = "Needs Work";
+            const acc =
+              v.attempted > 0 ? v.correct / v.attempted : 0;
+
+            let label = "Avoid Guessing";
+            if (acc >= 0.7) label = "Strength";
+            else if (acc >= 0.5) label = "Needs Work";
 
             return (
               <Row
                 key={type}
-                left={`${type} (${v.correct}/${v.total})`}
+                left={`${type} (${v.correct}/${v.attempted || 0})`}
                 right={label}
                 color={tagColor(label)}
               />
@@ -146,26 +174,27 @@ export default function DiagnosisView({
           })}
         </Section>
 
-        {/* NEXT 7 DAYS */}
-        <Section title="Top Priority Fixes (Next 7 Days)">
+        {/* NEXT ACTIONS */}
+        <Section title="Next 7-Day Fix Plan">
           {weakTypes.length === 0 ? (
             <Muted>✅ No critical weaknesses detected.</Muted>
           ) : (
-            weakTypes.map(([t, v]) => (
-              <p key={t}>
-                • Fix <b>{t}</b> ({v.correct}/{v.total})
+            weakTypes.map((w) => (
+              <p key={w.type}>
+                • Fix <b>{w.type}</b> (accuracy{" "}
+                {Math.round(w.accuracy * 100)}%)
               </p>
             ))
           )}
         </Section>
 
-        {/* ACTION RULES */}
-        <Section title="Action Rules (Until Accuracy ≥ 60%)">
+        {/* RULES */}
+        <Section title="CAT RC Rules (Until Accuracy ≥ 60%)">
           <ul>
-            <li>Attempt only 2 passages per RC sectional.</li>
-            <li>Skip abstract / unfamiliar tone passages.</li>
-            <li>Analyse incorrect attempts only.</li>
-            <li>Increase volume only after accuracy ≥ 60%.</li>
+            <li>Attempt max 2 passages per sectional.</li>
+            <li>Do not guess in weak question types.</li>
+            <li>Review only incorrect attempted questions.</li>
+            <li>Volume increases only after accuracy improves.</li>
           </ul>
         </Section>
 
@@ -189,6 +218,21 @@ export default function DiagnosisView({
 }
 
 /* ---------- SMALL COMPONENTS ---------- */
+
+function Grid4({ children }) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: 16,
+        marginBottom: 32,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 function Stat({ label, value }) {
   return (
@@ -237,5 +281,6 @@ function Muted({ children }) {
 function tagColor(tag) {
   if (tag === "Strength") return "#16a34a";
   if (tag === "Needs Work") return "#d97706";
+  if (tag === "Selective Attempt") return "#2563eb";
   return "#dc2626";
 }
