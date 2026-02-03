@@ -97,14 +97,14 @@ export default function CATArenaTestView({ testData }) {
   return (
     <>
       {/* ===================== DIAGNOSIS ===================== */}
-      {mode === "diagnosis" && (
-        <DiagnosisView
-          passages={passages}
-          questions={flatQuestions}   {/* ✅ THIS FIXES EVERYTHING */}
-          answers={answers}
-          onReview={() => setMode("review")}
-        />
-      )}
+     {mode === "diagnosis" && (
+  <DiagnosisView
+    passages={passages}
+    questions={flatQuestions}
+    answers={answers}
+    onReview={() => setMode("review")}
+  />
+)}
 
       {/* ===================== TEST / REVIEW ===================== */}
       {(mode === "test" || mode === "review") && (
