@@ -11,7 +11,9 @@ import DiagnosisView from "../components/DiagnosisView";
 */
 
 export default function RCSectionalContainer({ testData, onExit }) {
-  const [phase, setPhase] = useState("instructions");
+  const [phase, setPhase] = useState(
+  testData?.__startPhase || "instructions"
+);
   // instructions | test | diagnosis | review
 
   /**
