@@ -65,8 +65,7 @@ export default function Page() {
   const [vocabBank, setVocabBank] = useState([]);
   const [learningWord, setLearningWord] = useState(null);
   const [catPhase, setCatPhase] = useState("idle");
-// idle | generating | instructions | test
-
+// idle | generating | instructions | test | diagnosis | review
   function loadVocab() {
     return JSON.parse(localStorage.getItem("vocabBank") || "[]");
   }
@@ -642,6 +641,16 @@ return (
       setLastAttemptedSectional(activeRCTest.id);
       setCatPhase("idle");
     }}
+  />
+)}
+{view === "cat" && catPhase === "diagnosis" && result && (
+  <DiagnosisView
+    passages={result.passages}
+    questions={result.questions}
+    answers={result.answers}
+    questionTime={result.questionTime}
+    onBack={() => setCatPhase("idle")}
+    onReview={() => setCatPhase("review")}
   />
 )}
   </main>
