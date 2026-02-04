@@ -48,7 +48,7 @@ export default function DiagnosisView({
     return { t, label, color };
   });
 
-  /* ---------- TIME INTELLIGENCE ---------- */
+  /* ---------- TIME INSIGHT COUNTS ---------- */
   const slowWrong = timeHeat.filter(q => q.label === "Slow & Wrong").length;
   const fastWrong = timeHeat.filter(q => q.label === "Fast & Wrong").length;
   const slowCorrect = timeHeat.filter(q => q.label === "Slow & Correct").length;
@@ -106,7 +106,8 @@ export default function DiagnosisView({
       <div style={card}>
         <h1>RC Diagnosis Report</h1>
         <p style={{ color: "#6b7280" }}>
-          CAT-style diagnosis focused on passage selection, time, and decisions.
+          This diagnosis explains <b>what happened</b>, <b>why it happened</b>,
+          and <b>what to do next</b> — not just your score.
         </p>
 
         {/* ---------- SUMMARY ---------- */}
@@ -118,23 +119,36 @@ export default function DiagnosisView({
         </div>
 
         {/* ---------- PASSAGE HEAT MAP ---------- */}
-        <Section title="🔥 Passage-Level Heat Map (MOST IMPORTANT)">
+        <Section title="🔥 Passage Selection Intelligence">
+          <Explain>
+            Each passage is evaluated on two dimensions: <b>accuracy</b> and
+            <b> time invested</b>. CAT rewards passages where accuracy is high
+            and time cost is controlled.
+          </Explain>
+
           <div style={passageGrid}>
             {passageHeat.map((p, i) => (
               <div key={i} style={{ ...passageCard, background: p.color }}>
                 <h4>{p.title}</h4>
                 <p style={{ fontSize: 13 }}>{p.genre}</p>
                 <p>{p.correct}/{p.total} correct</p>
-                <p>{p.timeMin} min</p>
+                <p>{p.timeMin} min spent</p>
                 <b>{p.tag}</b>
               </div>
             ))}
           </div>
+
           <Legend />
         </Section>
 
         {/* ---------- QUESTION TIME HEATMAP ---------- */}
-        <Section title="⏱ Question-wise Time Heatmap">
+        <Section title="⏱ Question-wise Time & Accuracy Heatmap">
+          <Explain>
+            This grid shows how your <b>time spent</b> interacted with
+            <b> correctness</b>. CAT success depends on recognising when extra
+            time stops adding clarity.
+          </Explain>
+
           <div style={heatGrid}>
             {timeHeat.map((q, i) => (
               <div key={i} style={{ ...heatCell, background: q.color }}>
@@ -147,17 +161,34 @@ export default function DiagnosisView({
         </Section>
 
         {/* ---------- TIME INSIGHTS ---------- */}
-        <Section title="Time Intelligence Insights">
-          <Insight>🔴 {slowWrong} Slow & Wrong → comprehension without direction</Insight>
-          <Insight>🟠 {fastWrong} Fast & Wrong → impulsive elimination</Insight>
-          <Insight>🟡 {slowCorrect} Slow but Correct → accuracy exists, speed missing</Insight>
+        <Section title="🧠 What Your Time Patterns Reveal">
+          <Insight>
+            🔴 <b>{slowWrong}</b> Slow & Wrong → You are rereading without a
+            clear question framework. Reading depth is increasing, clarity is not.
+          </Insight>
+          <Insight>
+            🟠 <b>{fastWrong}</b> Fast & Wrong → You are eliminating options
+            before understanding the author’s stance.
+          </Insight>
+          <Insight>
+            🟡 <b>{slowCorrect}</b> Slow but Correct → Understanding exists,
+            but you must learn to stop reading once the answer becomes obvious.
+          </Insight>
         </Section>
 
         {/* ---------- QUESTION TYPE MAP ---------- */}
-        <Section title="Question-Type Accuracy Map">
+        <Section title="📌 Question-Type Skill Diagnosis">
+          <Explain>
+            Accuracy by question type shows whether your mistakes are due to
+            comprehension gaps, logic errors, or poor option elimination.
+          </Explain>
+
           {Object.entries(typeMap).map(([type, v]) => {
             const ratio = v.total ? v.correct / v.total : 0;
-            let tag = ratio >= 0.7 ? "Strength" : ratio >= 0.5 ? "Needs Work" : "Avoid";
+            let tag =
+              ratio >= 0.7 ? "Strength" :
+              ratio >= 0.5 ? "Needs Work" :
+              "Avoid for Now";
 
             return (
               <HeatRow
@@ -170,12 +201,24 @@ export default function DiagnosisView({
           })}
         </Section>
 
-        {/* ---------- ACTION RULES ---------- */}
-        <Section title="CAT RC Rules (Next 7 Days)">
+        {/* ---------- ACTION PLAN ---------- */}
+        <Section title="🎯 Action Plan for the Next 7 Days">
           <ul>
-            <li>Attempt only <b>Green passages</b></li>
-            <li>Never touch <b>Time Trap passages</b></li>
-            <li>Kill questions crossing <b>90 seconds</b></li>
+            <li>
+              <b>High ROI passages:</b> Attempt first. These match your natural
+              comprehension + time control.
+            </li>
+            <li>
+              <b>Selective passages:</b> Attempt only if time buffer exists.
+              Read with a clear question-first mindset.
+            </li>
+            <li>
+              <b>Time Traps:</b> Skip entirely. CAT rewards selection, not effort.
+            </li>
+            <li>
+              If a question crosses <b>90 seconds</b>, force a decision or skip.
+              Extra time rarely improves accuracy.
+            </li>
           </ul>
         </Section>
 
@@ -207,6 +250,14 @@ function Section({ title, children }) {
   );
 }
 
+function Explain({ children }) {
+  return (
+    <p style={{ fontSize: 14, color: "#4b5563", marginBottom: 10 }}>
+      {children}
+    </p>
+  );
+}
+
 function Insight({ children }) {
   return <p style={{ marginBottom: 6 }}>{children}</p>;
 }
@@ -221,7 +272,12 @@ function Legend() {
 
 function HeatRow({ label, ratio, tag }) {
   const width = Math.round(ratio * 100);
-  const color = tag === "Strength" ? "#16a34a" : tag === "Needs Work" ? "#f59e0b" : "#dc2626";
+  const color =
+    tag === "Strength"
+      ? "#16a34a"
+      : tag === "Needs Work"
+      ? "#f59e0b"
+      : "#dc2626";
 
   return (
     <div style={{ marginBottom: 12 }}>
@@ -252,4 +308,12 @@ const heatCell = { borderRadius: 10, padding: 14, color: "#fff", textAlign: "cen
 const barBg = { height: 8, background: "#e5e7eb", borderRadius: 6, marginTop: 6 };
 const barFill = { height: "100%", borderRadius: 6 };
 
-const btn = { marginTop: 30, padding: "10px 18px", background: "#2563eb", color: "#fff", borderRadius: 8, border: "none", cursor: "pointer" };
+const btn = {
+  marginTop: 30,
+  padding: "10px 18px",
+  background: "#2563eb",
+  color: "#fff",
+  borderRadius: 8,
+  border: "none",
+  cursor: "pointer",
+};
