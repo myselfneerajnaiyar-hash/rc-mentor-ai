@@ -97,7 +97,7 @@ function tabStyle(active, color) {
   return {
     padding: "10px 18px",
     borderRadius: 8,
-    border: active ? 2px solid ${color} : "1px solid #cbd5f5",
+    border: active ? `2px solid ${color}` : "1px solid #cbd5f5",
     background: active ? color : "#f8fafc",
     color: active ? "#fff" : "#1f2937",
     fontWeight: 600,
