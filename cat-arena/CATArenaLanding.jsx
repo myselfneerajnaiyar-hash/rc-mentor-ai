@@ -16,6 +16,7 @@ export default function CATArenaLanding({
     vocab: "#f97316",
   };
 
+  
   function handleStartRC() {
     if (loading) return;
     setLoading(true);
