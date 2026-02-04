@@ -587,7 +587,7 @@ return (
   try {
     setCatPhase("loading");
 
-    const res = await fetch("/api/cat-sectionals/sectional-01");
+    const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
 
     if (!res.ok) {
       alert("Failed to load CAT RC Sectional");
