@@ -2,19 +2,24 @@
 
 import { useState } from "react";
 
-export default function CATArenaLanding({ onStartRC, onStartVocab }) {
+export default function CATArenaLanding({
+  onStartRC,
+  onViewDiagnosis,
+  onReviewTest,
+  hasAttemptedRC,
+}) {
   const [mode, setMode] = useState("rc");
   const [loading, setLoading] = useState(false);
 
   const COLORS = {
-    rc: "#2563eb",    // Blue
-    vocab: "#f97316", // Orange
+    rc: "#2563eb",
+    vocab: "#f97316",
   };
 
-  function handleStart() {
+  function handleStartRC() {
     if (loading) return;
     setLoading(true);
-    onStartRC(); // 🔥 NO IDs, NO FAKE TESTS
+    onStartRC();
   }
 
   return (
@@ -43,18 +48,9 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
         </button>
       </div>
 
-      {/* RC CARD */}
+      {/* ================= RC SECTION ================= */}
       {mode === "rc" && (
-        <div
-          style={{
-            maxWidth: 360,
-            background: "#ffffff",
-            borderRadius: 12,
-            padding: 20,
-            border: "1px solid #e5e7eb",
-            boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
-          }}
-        >
+        <div style={cardStyle}>
           <h4 style={{ marginBottom: 10 }}>CAT RC Sectional</h4>
 
           <p style={metaStyle}>⏱ 30 minutes</p>
@@ -64,31 +60,39 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
             🎯 CAT Level (Mixed Difficulty)
           </p>
 
+          {/* ACTIONS */}
           <button
-            onClick={handleStart}
+            onClick={handleStartRC}
             disabled={loading}
             style={{
               ...primaryButton(COLORS.rc),
               opacity: loading ? 0.6 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? "Generating CAT RC..." : "Start Test"}
+            {loading ? "Generating CAT RC..." : "Take RC Sectional Test"}
+          </button>
+
+          <button
+            onClick={onViewDiagnosis}
+            disabled={!hasAttemptedRC}
+            style={secondaryButton(hasAttemptedRC)}
+          >
+            Diagnosis Report
+          </button>
+
+          <button
+            onClick={onReviewTest}
+            disabled={!hasAttemptedRC}
+            style={secondaryButton(hasAttemptedRC)}
+          >
+            Analyse / Review Test
           </button>
         </div>
       )}
 
-      {/* VOCAB PLACEHOLDER */}
+      {/* ================= VOCAB PLACEHOLDER ================= */}
       {mode === "vocab" && (
-        <div
-          style={{
-            maxWidth: 360,
-            background: "#ffffff",
-            borderRadius: 12,
-            padding: 20,
-            border: "1px solid #e5e7eb",
-          }}
-        >
+        <div style={cardStyle}>
           <h4>Vocabulary Sectionals</h4>
           <p style={{ color: "#64748b", marginTop: 8 }}>
             Coming next.
@@ -99,7 +103,7 @@ export default function CATArenaLanding({ onStartRC, onStartVocab }) {
   );
 }
 
-/* ---------- styles ---------- */
+/* ---------------- STYLES ---------------- */
 
 function tabStyle(active, color) {
   return {
@@ -113,6 +117,15 @@ function tabStyle(active, color) {
   };
 }
 
+const cardStyle = {
+  maxWidth: 360,
+  background: "#ffffff",
+  borderRadius: 12,
+  padding: 20,
+  border: "1px solid #e5e7eb",
+  boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+};
+
 const primaryButton = (color) => ({
   width: "100%",
   padding: "12px 14px",
@@ -121,6 +134,20 @@ const primaryButton = (color) => ({
   background: color,
   color: "#fff",
   fontWeight: 600,
+  marginBottom: 10,
+  cursor: "pointer",
+});
+
+const secondaryButton = (enabled) => ({
+  width: "100%",
+  padding: "10px 14px",
+  borderRadius: 8,
+  border: "1px solid #cbd5f5",
+  background: enabled ? "#f8fafc" : "#f1f5f9",
+  color: "#1f2937",
+  fontWeight: 500,
+  marginBottom: 8,
+  cursor: enabled ? "pointer" : "not-allowed",
 });
 
 const metaStyle = {
