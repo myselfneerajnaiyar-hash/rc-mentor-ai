@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
@@ -11,10 +11,16 @@ import DiagnosisView from "../components/DiagnosisView";
 */
 
 export default function RCSectionalContainer({ testData, onExit }) {
-  const [phase, setPhase] = useState(
-  testData?.__startPhase || "instructions"
-);
-  // instructions | test | diagnosis | review
+  // ✅ use __startPhase ONLY ONCE
+  const startPhaseUsed = useRef(false);
+
+  const [phase, setPhase] = useState(() => {
+    if (!startPhaseUsed.current && testData?.__startPhase) {
+      startPhaseUsed.current = true;
+      return testData.__startPhase;
+    }
+    return "instructions";
+  });
 
   /**
    * resultPayload shape (LOCKED CONTRACT)
@@ -44,20 +50,13 @@ export default function RCSectionalContainer({ testData, onExit }) {
     return (
       <CATArenaTestView
         testData={testData}
-        mode={phase}              // test | review
-        initialState={result}     // used ONLY in review
+        mode={phase}          // test | review
+        initialState={result} // ONLY for review
         onSubmit={(payload) => {
-          /**
-           * payload must contain:
-           * passages, questions, answers, questionTime
-           */
           setResult(payload);
           setPhase("diagnosis");
         }}
-        onExit={() => {
-          // safety exit (rarely used)
-          onExit();
-        }}
+        onExit={onExit}
       />
     );
   }
@@ -71,7 +70,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
         answers={result.answers}
         questionTime={result.questionTime}
         onReview={() => setPhase("review")}
-       onBack={onExit}
+        onBack={onExit}
       />
     );
   }
