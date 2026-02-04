@@ -6,8 +6,9 @@ export default function DiagnosisView({
   questions = [],
   questionTime = [],
   onReview,
+  onBack, // 👈 IMPORTANT: passed from TestView
 }) {
-  /* ---------- GLOBAL STATS ---------- */
+  /* ===================== GLOBAL STATS ===================== */
   const total = questions.length;
   let attempted = 0;
   let correct = 0;
@@ -23,7 +24,7 @@ export default function DiagnosisView({
     ? Math.round((correct / attempted) * 100)
     : 0;
 
-  /* ---------- QUESTION TIME HEATMAP ---------- */
+  /* ===================== QUESTION TIME HEATMAP ===================== */
   const timeHeat = questions.map((q, i) => {
     const t = questionTime[i] || 0;
     const isCorrect = answers[i] === q.correctIndex;
@@ -48,12 +49,12 @@ export default function DiagnosisView({
     return { t, label, color };
   });
 
-  /* ---------- TIME INSIGHT COUNTS ---------- */
+  /* ===================== TIME INSIGHT COUNTS ===================== */
   const slowWrong = timeHeat.filter(q => q.label === "Slow & Wrong").length;
   const fastWrong = timeHeat.filter(q => q.label === "Fast & Wrong").length;
   const slowCorrect = timeHeat.filter(q => q.label === "Slow & Correct").length;
 
-  /* ---------- PASSAGE LEVEL HEAT MAP ---------- */
+  /* ===================== PASSAGE LEVEL HEAT MAP ===================== */
   const passageHeat = passages.map((p, pIdx) => {
     let correctQ = 0;
     let timeSpent = 0;
@@ -92,7 +93,7 @@ export default function DiagnosisView({
     };
   });
 
-  /* ---------- QUESTION TYPE MAP ---------- */
+  /* ===================== QUESTION TYPE MAP ===================== */
   const typeMap = {};
   questions.forEach((q, i) => {
     const type = q.type || "Unknown";
@@ -101,16 +102,26 @@ export default function DiagnosisView({
     if (answers[i] === q.correctIndex) typeMap[type].correct++;
   });
 
+  /* ===================== RENDER ===================== */
   return (
     <div style={page}>
       <div style={card}>
+        {/* ===== TOP NAV ===== */}
+        <div style={{ marginBottom: 16 }}>
+          {onBack && (
+            <button onClick={onBack} style={ghostBtn}>
+              ← Back to CAT Arena
+            </button>
+          )}
+        </div>
+
         <h1>RC Diagnosis Report</h1>
-        <p style={{ color: "#6b7280" }}>
-          This diagnosis explains <b>what happened</b>, <b>why it happened</b>,
-          and <b>what to do next</b> — not just your score.
+        <p style={{ color: "#6b7280", marginBottom: 20 }}>
+          This report explains <b>what happened</b>, <b>why it happened</b>,
+          and <b>what to do next</b>. CAT RC is a selection game, not a reading contest.
         </p>
 
-        {/* ---------- SUMMARY ---------- */}
+        {/* ===== SUMMARY ===== */}
         <div style={grid4}>
           <Stat label="Score" value={`${correct} / ${total}`} />
           <Stat label="Attempted" value={attempted} />
@@ -118,12 +129,11 @@ export default function DiagnosisView({
           <Stat label="Accuracy" value={`${accuracy}%`} />
         </div>
 
-        {/* ---------- PASSAGE HEAT MAP ---------- */}
-        <Section title="🔥 Passage Selection Intelligence">
+        {/* ===== PASSAGE HEAT MAP ===== */}
+        <Section title="🔥 Passage-Level Selection Intelligence (MOST IMPORTANT)">
           <Explain>
-            Each passage is evaluated on two dimensions: <b>accuracy</b> and
-            <b> time invested</b>. CAT rewards passages where accuracy is high
-            and time cost is controlled.
+            Each passage is judged on <b>accuracy</b> and <b>time cost</b>.
+            CAT rewards passages where clarity comes early and accuracy stays high.
           </Explain>
 
           <div style={passageGrid}>
@@ -141,12 +151,11 @@ export default function DiagnosisView({
           <Legend />
         </Section>
 
-        {/* ---------- QUESTION TIME HEATMAP ---------- */}
+        {/* ===== QUESTION TIME HEATMAP ===== */}
         <Section title="⏱ Question-wise Time & Accuracy Heatmap">
           <Explain>
-            This grid shows how your <b>time spent</b> interacted with
-            <b> correctness</b>. CAT success depends on recognising when extra
-            time stops adding clarity.
+            This shows how <b>time spent</b> interacted with <b>accuracy</b>.
+            Beyond ~90 seconds, extra time usually stops adding clarity.
           </Explain>
 
           <div style={heatGrid}>
@@ -160,27 +169,27 @@ export default function DiagnosisView({
           </div>
         </Section>
 
-        {/* ---------- TIME INSIGHTS ---------- */}
+        {/* ===== TIME INSIGHTS ===== */}
         <Section title="🧠 What Your Time Patterns Reveal">
           <Insight>
-            🔴 <b>{slowWrong}</b> Slow & Wrong → You are rereading without a
-            clear question framework. Reading depth is increasing, clarity is not.
+            🔴 <b>{slowWrong}</b> Slow & Wrong → You are rereading without a clear
+            question framework. Depth ↑, clarity ✖.
           </Insight>
           <Insight>
-            🟠 <b>{fastWrong}</b> Fast & Wrong → You are eliminating options
+            🟠 <b>{fastWrong}</b> Fast & Wrong → Premature option elimination
             before understanding the author’s stance.
           </Insight>
           <Insight>
             🟡 <b>{slowCorrect}</b> Slow but Correct → Understanding exists,
-            but you must learn to stop reading once the answer becomes obvious.
+            but you must learn when to stop reading.
           </Insight>
         </Section>
 
-        {/* ---------- QUESTION TYPE MAP ---------- */}
+        {/* ===== QUESTION TYPE MAP ===== */}
         <Section title="📌 Question-Type Skill Diagnosis">
           <Explain>
-            Accuracy by question type shows whether your mistakes are due to
-            comprehension gaps, logic errors, or poor option elimination.
+            This reveals whether errors are coming from comprehension gaps,
+            logical misreads, or poor elimination.
           </Explain>
 
           {Object.entries(typeMap).map(([type, v]) => {
@@ -201,23 +210,23 @@ export default function DiagnosisView({
           })}
         </Section>
 
-        {/* ---------- ACTION PLAN ---------- */}
+        {/* ===== ACTION PLAN ===== */}
         <Section title="🎯 Action Plan for the Next 7 Days">
           <ul>
             <li>
-              <b>High ROI passages:</b> Attempt first. These match your natural
-              comprehension + time control.
+              <b>Attempt High ROI passages first.</b> These match your natural
+              comprehension and time control.
             </li>
             <li>
-              <b>Selective passages:</b> Attempt only if time buffer exists.
-              Read with a clear question-first mindset.
+              <b>Selective passages:</b> Attempt only with a question-first mindset.
+              Stop reading once the answer becomes clear.
             </li>
             <li>
-              <b>Time Traps:</b> Skip entirely. CAT rewards selection, not effort.
+              <b>Time Traps:</b> Skip completely. CAT rewards selection, not effort.
             </li>
             <li>
               If a question crosses <b>90 seconds</b>, force a decision or skip.
-              Extra time rarely improves accuracy.
+              Accuracy rarely improves beyond this point.
             </li>
           </ul>
         </Section>
@@ -230,7 +239,7 @@ export default function DiagnosisView({
   );
 }
 
-/* ---------- UI HELPERS ---------- */
+/* ===================== SMALL COMPONENTS ===================== */
 
 function Stat({ label, value }) {
   return (
@@ -292,7 +301,7 @@ function HeatRow({ label, ratio, tag }) {
   );
 }
 
-/* ---------- STYLES ---------- */
+/* ===================== STYLES ===================== */
 
 const page = { background: "#f5f7fb", minHeight: "100vh", padding: "32px 20px" };
 const card = { maxWidth: 1100, margin: "0 auto", background: "#fff", borderRadius: 14, padding: 28 };
@@ -315,5 +324,13 @@ const btn = {
   color: "#fff",
   borderRadius: 8,
   border: "none",
+  cursor: "pointer",
+};
+
+const ghostBtn = {
+  padding: "6px 12px",
+  border: "1px solid #9ca3af",
+  background: "#fff",
+  borderRadius: 6,
   cursor: "pointer",
 };
