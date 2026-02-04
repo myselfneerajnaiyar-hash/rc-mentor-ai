@@ -46,6 +46,7 @@ export default function Page() {
   const [view, setView] = useState("home"); 
 // home | rc | vocab | speed | cat
   const [activeRCTest, setActiveRCTest] = useState(null);
+  const [lastAttemptedSectional, setLastAttemptedSectional] = useState(null);
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
