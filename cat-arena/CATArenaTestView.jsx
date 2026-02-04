@@ -24,7 +24,7 @@ export default function CATArenaTestView({ testData }) {
   const QUESTIONS_PER_PASSAGE = 4;
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
-  /* ✅ FLATTEN QUESTIONS (THIS WAS MISSING) */
+  /* ===================== FLATTEN QUESTIONS ===================== */
   const flatQuestions = useMemo(
     () => passages.flatMap(p => p.questions),
     [passages]
@@ -37,13 +37,24 @@ export default function CATArenaTestView({ testData }) {
   const [questionStates, setQuestionStates] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
 
+  /* ⏱ TIME TRACKING */
+  const [questionTime, setQuestionTime] = useState([]);
+  const [questionStartTime, setQuestionStartTime] = useState(Date.now());
+
   /* ===================== RESET ON LOAD ===================== */
   useEffect(() => {
     setAnswers(Array(totalQuestions).fill(null));
     setQuestionStates(Array(totalQuestions).fill(0));
+    setQuestionTime(Array(totalQuestions).fill(0));
     setCurrentQuestionIndex(0);
+    setQuestionStartTime(Date.now());
     sessionStorage.removeItem("cat-timer");
   }, [totalQuestions]);
+
+  /* ===================== QUESTION CHANGE TIMER ===================== */
+  useEffect(() => {
+    setQuestionStartTime(Date.now());
+  }, [currentQuestionIndex]);
 
   /* ===================== DERIVED ===================== */
   const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
@@ -53,11 +64,18 @@ export default function CATArenaTestView({ testData }) {
   const currentPassage = passages[passageIndex];
   const currentQuestion =
     currentPassage.questions[questionIndexInPassage];
-  const [questionTime, setQuestionTime] = useState(
-  Array(totalQuestions).fill(0)
-);
 
-const [questionStartTime, setQuestionStartTime] = useState(Date.now());
+  /* ===================== TIME SAVE HELPER ===================== */
+  function saveTime() {
+    const now = Date.now();
+    const spent = Math.round((now - questionStartTime) / 1000);
+
+    setQuestionTime(prev => {
+      const updated = [...prev];
+      updated[currentQuestionIndex] += spent;
+      return updated;
+    });
+  }
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
@@ -93,32 +111,37 @@ const [questionStartTime, setQuestionStartTime] = useState(Date.now());
     setQuestionStates(qs);
   }
 
- function handleSubmitTest() {
-  const now = Date.now();
-  const timeSpent = Math.round((now - questionStartTime) / 1000);
+  function goNext() {
+    saveTime();
+    setCurrentQuestionIndex(i =>
+      Math.min(i + 1, totalQuestions - 1)
+    );
+  }
 
-  setQuestionTime(prev => {
-    const updated = [...prev];
-    updated[currentQuestionIndex] += timeSpent;
-    return updated;
-  });
+  function goPrev() {
+    saveTime();
+    setCurrentQuestionIndex(i => Math.max(i - 1, 0));
+  }
 
-  setScore(diagnosis.score);
-  setShowSubmit(false);
-  setMode("diagnosis");
-}
+  function handleSubmitTest() {
+    saveTime();
+    setShowSubmit(false);
+    setMode("diagnosis");
+  }
+
   /* ===================== RENDER ===================== */
   return (
     <>
       {/* ===================== DIAGNOSIS ===================== */}
-     {mode === "diagnosis" && (
-  <DiagnosisView
-    passages={passages}
-    questions={flatQuestions}
-    answers={answers}
-    onReview={() => setMode("review")}
-  />
-)}
+      {mode === "diagnosis" && (
+        <DiagnosisView
+          passages={passages}
+          questions={flatQuestions}
+          answers={answers}
+          questionTime={questionTime}
+          onReview={() => setMode("review")}
+        />
+      )}
 
       {/* ===================== TEST / REVIEW ===================== */}
       {(mode === "test" || mode === "review") && (
@@ -149,14 +172,8 @@ const [questionStartTime, setQuestionStartTime] = useState(Date.now());
               correctIndex={currentQuestion.correctIndex}
               mode={mode}
               onAnswer={handleAnswer}
-              onPrev={() =>
-                setCurrentQuestionIndex(i => Math.max(i - 1, 0))
-              }
-              onNext={() =>
-                setCurrentQuestionIndex(i =>
-                  Math.min(i + 1, totalQuestions - 1)
-                )
-              }
+              onPrev={goPrev}
+              onNext={goNext}
             />
 
             <QuestionPalette
