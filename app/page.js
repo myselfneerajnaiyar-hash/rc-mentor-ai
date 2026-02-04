@@ -583,7 +583,8 @@ return (
 {/* ================= CAT ARENA ================= */}
 
 {view === "cat" && catPhase === "idle" && (
- <CATArenaLanding
+<CATArenaLanding
+  lastAttemptedSectional={lastAttemptedSectional}
   onStartRC={async (sectionalId) => {
   try {
     setCatPhase("loading");
