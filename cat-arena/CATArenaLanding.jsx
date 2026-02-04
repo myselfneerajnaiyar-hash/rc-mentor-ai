@@ -1,127 +1,96 @@
 "use client";
-
 import { useState } from "react";
 
-/* ===== AVAILABLE RC SECTIONALS ===== */
-const RC_SECTIONALS = [
-  {
-    id: "sectional-01",
-    title: "CAT RC Sectional 01",
-  },
-  {
-    id: "sectional-02",
-    title: "CAT RC Sectional 02",
-  },
-];
-
-export default function CATArenaLanding({ onStartRC }) {
-  const [mode, setMode] = useState("rc");
+export default function CATArenaLanding({
+  onStartRC,
+  onViewDiagnosis,
+  onReviewTest,
+  lastAttemptedSectional,
+}) {
   const [loadingId, setLoadingId] = useState(null);
 
-  const COLORS = {
-    rc: "#2563eb",
-    vocab: "#f97316",
-  };
-
-  function handleStart(sectionalId) {
-    if (loadingId) return;
-    setLoadingId(sectionalId);
-    onStartRC(sectionalId);
-  }
+  const sectionals = [
+    { id: "sectional-01", title: "CAT RC Sectional 01" },
+    { id: "sectional-02", title: "CAT RC Sectional 02" },
+  ];
 
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 16px" }}>
-      {/* Header */}
-      <div style={{ marginBottom: 20 }}>
-        <h1 style={{ marginBottom: 6 }}>🔥 CAT Arena</h1>
-        <p style={{ color: "#475569" }}>
-          This is your battleground. Learning here shapes exam performance.
-        </p>
-      </div>
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
+      <h1>🔥 CAT Arena</h1>
+      <p style={{ color: "#475569", marginBottom: 24 }}>
+        This is your battleground. Learning here shapes exam performance.
+      </p>
 
-      {/* Mode Toggle */}
-      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-        <button
-          onClick={() => setMode("rc")}
-          style={tabStyle(mode === "rc", COLORS.rc)}
-        >
-          CAT RC Sectionals
-        </button>
-        <button
-          onClick={() => setMode("vocab")}
-          style={tabStyle(mode === "vocab", COLORS.vocab)}
-        >
-          Vocabulary Sectionals
-        </button>
-      </div>
+      {sectionals.map((s) => {
+        const attempted = lastAttemptedSectional === s.id;
 
-      {/* ================= RC SECTION ================= */}
-      {mode === "rc" && (
-        <div style={cardStyle}>
-          <h4 style={{ marginBottom: 12 }}>CAT RC Sectionals</h4>
+        return (
+          <div
+            key={s.id}
+            style={{
+              border: "1px solid #e5e7eb",
+              borderRadius: 12,
+              padding: 16,
+              marginBottom: 16,
+              background: "#fff",
+              maxWidth: 420,
+            }}
+          >
+            <h4>{s.title}</h4>
+            <p style={{ fontSize: 14, color: "#64748b" }}>
+              ⏱ 30 min · 📊 16 Q · 📘 4 passages
+            </p>
 
-          {RC_SECTIONALS.map(sec => (
             <button
-              key={sec.id}
-              onClick={() => handleStart(sec.id)}
-              disabled={loadingId !== null}
-              style={{
-                ...primaryButton(COLORS.rc),
-                opacity: loadingId ? 0.6 : 1,
+              onClick={() => {
+                setLoadingId(s.id);
+                onStartRC(s.id);
               }}
+              disabled={loadingId === s.id}
+              style={primaryBtn}
             >
-              {loadingId === sec.id
-                ? "Loading…"
-                : sec.title}
+              {loadingId === s.id ? "Loading…" : "Take Test"}
             </button>
-          ))}
-        </div>
-      )}
 
-      {/* ================= VOCAB PLACEHOLDER ================= */}
-      {mode === "vocab" && (
-        <div style={cardStyle}>
-          <h4>Vocabulary Sectionals</h4>
-          <p style={{ color: "#64748b", marginTop: 8 }}>
-            Coming next.
-          </p>
-        </div>
-      )}
+            <button
+              onClick={() => onViewDiagnosis(s.id)}
+              disabled={!attempted}
+              style={secondaryBtn(attempted)}
+            >
+              Diagnosis Report
+            </button>
+
+            <button
+              onClick={() => onReviewTest(s.id)}
+              disabled={!attempted}
+              style={secondaryBtn(attempted)}
+            >
+              Analyse / Review Test
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-/* ---------------- STYLES ---------------- */
-
-function tabStyle(active, color) {
-  return {
-    padding: "10px 18px",
-    borderRadius: 8,
-    border: active ? `2px solid ${color}` : "1px solid #cbd5f5",
-    background: active ? color : "#f8fafc",
-    color: active ? "#fff" : "#1f2937",
-    fontWeight: 600,
-    cursor: "pointer",
-  };
-}
-
-const cardStyle = {
-  maxWidth: 360,
-  background: "#ffffff",
-  borderRadius: 12,
-  padding: 20,
-  border: "1px solid #e5e7eb",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+const primaryBtn = {
+  width: "100%",
+  padding: "10px",
+  background: "#2563eb",
+  color: "#fff",
+  border: "none",
+  borderRadius: 8,
+  marginBottom: 8,
+  cursor: "pointer",
 };
 
-const primaryButton = color => ({
+const secondaryBtn = (enabled) => ({
   width: "100%",
-  padding: "12px 14px",
+  padding: "8px",
+  background: enabled ? "#f8fafc" : "#f1f5f9",
+  border: "1px solid #cbd5f5",
   borderRadius: 8,
-  border: "none",
-  background: color,
-  color: "#fff",
-  fontWeight: 600,
-  marginBottom: 10,
-  cursor: "pointer",
+  marginBottom: 6,
+  cursor: enabled ? "pointer" : "not-allowed",
 });
