@@ -622,7 +622,10 @@ return (
 )}
 
 {view === "cat" && catPhase === "test" && activeRCTest && (
-  <CATArenaTestView testData={activeRCTest} />
+  <RCSectionalContainer
+    testData={activeRCTest}
+    onExit={() => setCatPhase("idle")}
+  />
 )}
   </main>
 );
