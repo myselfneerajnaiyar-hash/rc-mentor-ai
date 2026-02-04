@@ -8,34 +8,36 @@ import DiagnosisView from "../components/DiagnosisView";
 /*
   RC Sectional Flow (LOCKED & SAFE):
   instructions → test → diagnosis → review → diagnosis → exit
-
-  RULE:
-  diagnosis/review is allowed ONLY if result exists
 */
 
 export default function RCSectionalContainer({ testData, onExit }) {
+  const STORAGE_KEY = `catResult-${testData?.id}`;
+
+  // ensure __startPhase is applied ONLY once
   const startPhaseUsed = useRef(false);
 
-  const [phase, setPhase] = useState("instructions");
+  const [phase, setPhase] = useState(() => {
+    if (!startPhaseUsed.current && testData?.__startPhase) {
+      startPhaseUsed.current = true;
+      return testData.__startPhase;
+    }
+    return "instructions";
+  });
+
   const [result, setResult] = useState(null);
 
-  /* -------------------- INITIAL PHASE RESOLUTION -------------------- */
+  /* -------------------- LOAD STORED RESULT (CRITICAL FIX) -------------------- */
   useEffect(() => {
-    if (startPhaseUsed.current) return;
-    startPhaseUsed.current = true;
-
-    const requested = testData?.__startPhase;
-
-    // 🚨 SAFETY RULE
-    if ((requested === "diagnosis" || requested === "review") && !result) {
-      setPhase("instructions");
-      return;
+    if ((phase === "diagnosis" || phase === "review") && !result) {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setResult(JSON.parse(saved));
+      } else {
+        // safety fallback
+        setPhase("instructions");
+      }
     }
-
-    if (requested) {
-      setPhase(requested);
-    }
-  }, [testData, result]);
+  }, [phase]);
 
   /* -------------------- INSTRUCTIONS -------------------- */
   if (phase === "instructions") {
@@ -43,6 +45,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
       <CATInstructions
         onStart={() => {
           setResult(null);
+          localStorage.removeItem(STORAGE_KEY);
           setPhase("test");
         }}
       />
@@ -54,9 +57,12 @@ export default function RCSectionalContainer({ testData, onExit }) {
     return (
       <CATArenaTestView
         testData={testData}
-        mode={phase}
-        initialState={phase === "review" ? result : null}
+        mode={phase}              // test | review
+        initialState={result}     // used ONLY for review
         onSubmit={(payload) => {
+          // ✅ STORE RESULT (THIS IS THE FIX)
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+
           setResult(payload);
           setPhase("diagnosis");
         }}
@@ -66,13 +72,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
   }
 
   /* -------------------- DIAGNOSIS -------------------- */
-  if (phase === "diagnosis") {
-    if (!result) {
-      // 🛡 Absolute safety fallback
-      setPhase("instructions");
-      return null;
-    }
-
+  if (phase === "diagnosis" && result) {
     return (
       <DiagnosisView
         passages={result.passages}
@@ -85,5 +85,6 @@ export default function RCSectionalContainer({ testData, onExit }) {
     );
   }
 
+  /* -------------------- SAFETY FALLBACK -------------------- */
   return null;
 }
