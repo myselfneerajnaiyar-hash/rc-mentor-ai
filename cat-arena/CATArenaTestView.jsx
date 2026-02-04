@@ -53,6 +53,11 @@ export default function CATArenaTestView({ testData }) {
   const currentPassage = passages[passageIndex];
   const currentQuestion =
     currentPassage.questions[questionIndexInPassage];
+  const [questionTime, setQuestionTime] = useState(
+  Array(totalQuestions).fill(0)
+);
+
+const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
@@ -88,11 +93,20 @@ export default function CATArenaTestView({ testData }) {
     setQuestionStates(qs);
   }
 
-  function handleSubmitTest() {
-    setShowSubmit(false);
-    setMode("diagnosis");
-  }
+ function handleSubmitTest() {
+  const now = Date.now();
+  const timeSpent = Math.round((now - questionStartTime) / 1000);
 
+  setQuestionTime(prev => {
+    const updated = [...prev];
+    updated[currentQuestionIndex] += timeSpent;
+    return updated;
+  });
+
+  setScore(diagnosis.score);
+  setShowSubmit(false);
+  setMode("diagnosis");
+}
   /* ===================== RENDER ===================== */
   return (
     <>
