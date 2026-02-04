@@ -1,18 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const MASTER_KEY = "catRCResults";
 
 export default function CATArenaLanding({
   onStartRC,
   onViewDiagnosis,
   onReviewTest,
-  lastAttemptedSectional,
 }) {
   const [loadingId, setLoadingId] = useState(null);
+  const [attemptedMap, setAttemptedMap] = useState({});
 
   const sectionals = [
     { id: "sectional-01", title: "CAT RC Sectional 01" },
     { id: "sectional-02", title: "CAT RC Sectional 02" },
   ];
+
+  // ✅ READ FROM LOCAL STORAGE (SOURCE OF TRUTH)
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
+    setAttemptedMap(stored);
+  }, []);
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
@@ -22,7 +30,7 @@ export default function CATArenaLanding({
       </p>
 
       {sectionals.map((s) => {
-        const attempted = lastAttemptedSectional === s.id;
+        const attempted = Boolean(attemptedMap[s.id]);
 
         return (
           <div
