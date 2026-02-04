@@ -10,10 +10,11 @@ import DiagnosisView from "../components/DiagnosisView";
   instructions → test → diagnosis → review → diagnosis → exit
 */
 
-export default function RCSectionalContainer({ testData, onExit }) {
-  const STORAGE_KEY = `catResult-${testData?.id}`;
+const MASTER_KEY = "catRCResults"; // 🔒 ONE SOURCE OF TRUTH
 
-  // ensure __startPhase is applied ONLY once
+export default function RCSectionalContainer({ testData, onExit }) {
+  const sectionalId = testData?.id;
+
   const startPhaseUsed = useRef(false);
 
   const [phase, setPhase] = useState(() => {
@@ -26,18 +27,17 @@ export default function RCSectionalContainer({ testData, onExit }) {
 
   const [result, setResult] = useState(null);
 
-  /* -------------------- LOAD STORED RESULT (CRITICAL FIX) -------------------- */
+  /* -------------------- LOAD STORED RESULT -------------------- */
   useEffect(() => {
     if ((phase === "diagnosis" || phase === "review") && !result) {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setResult(JSON.parse(saved));
+      const all = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
+      if (all[sectionalId]) {
+        setResult(all[sectionalId]);
       } else {
-        // safety fallback
         setPhase("instructions");
       }
     }
-  }, [phase]);
+  }, [phase, sectionalId]);
 
   /* -------------------- INSTRUCTIONS -------------------- */
   if (phase === "instructions") {
@@ -45,7 +45,6 @@ export default function RCSectionalContainer({ testData, onExit }) {
       <CATInstructions
         onStart={() => {
           setResult(null);
-          localStorage.removeItem(STORAGE_KEY);
           setPhase("test");
         }}
       />
@@ -57,11 +56,13 @@ export default function RCSectionalContainer({ testData, onExit }) {
     return (
       <CATArenaTestView
         testData={testData}
-        mode={phase}              // test | review
-        initialState={result}     // used ONLY for review
+        mode={phase}
+        initialState={result}
         onSubmit={(payload) => {
-          // ✅ STORE RESULT (THIS IS THE FIX)
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+          // 🔒 SAVE UNDER MASTER MAP
+          const all = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
+          all[sectionalId] = payload;
+          localStorage.setItem(MASTER_KEY, JSON.stringify(all));
 
           setResult(payload);
           setPhase("diagnosis");
@@ -85,6 +86,5 @@ export default function RCSectionalContainer({ testData, onExit }) {
     );
   }
 
-  /* -------------------- SAFETY FALLBACK -------------------- */
   return null;
 }
