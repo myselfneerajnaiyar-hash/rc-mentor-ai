@@ -583,29 +583,29 @@ return (
 {/* ================= CAT ARENA ================= */}
 
 {view === "cat" && catPhase === "idle" && (
-<CATArenaLanding
-  lastAttemptedSectional={lastAttemptedSectional}
-  onStartRC={async (sectionalId) => {
-  try {
-    setCatPhase("loading");
+  <CATArenaLanding
+    lastAttemptedSectional={lastAttemptedSectional}
+    onStartRC={async (sectionalId) => {
+      try {
+        setCatPhase("loading");
 
-    const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
+        const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
 
-    if (!res.ok) {
-      alert("Failed to load CAT RC Sectional");
-      setCatPhase("idle");
-      return;
-    }
+        if (!res.ok) {
+          alert("Failed to load CAT RC Sectional");
+          setCatPhase("idle");
+          return;
+        }
 
-    const data = await res.json();
-    setActiveRCTest(data);
-    setCatPhase("instructions");
-  } catch (e) {
-    console.error(e);
-    setCatPhase("idle");
-  }
-}}
-    onStartVocab={() => {}}
+        const data = await res.json();
+        data.id = sectionalId; // VERY IMPORTANT
+        setActiveRCTest(data);
+        setCatPhase("instructions");
+      } catch (e) {
+        console.error(e);
+        setCatPhase("idle");
+      }
+    }}
   />
 )}
 
