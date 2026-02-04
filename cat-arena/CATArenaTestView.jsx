@@ -24,68 +24,50 @@ export default function CATArenaTestView({ testData }) {
   const QUESTIONS_PER_PASSAGE = 4;
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
-  /* ===================== FLATTEN QUESTIONS ===================== */
   const flatQuestions = useMemo(
     () => passages.flatMap(p => p.questions),
     [passages]
   );
 
   /* ===================== STATE ===================== */
-  const [mode, setMode] = useState("loading"); // loading | test | diagnosis | review
+  const [mode, setMode] = useState("dashboard"); 
+  // dashboard | test | diagnosis | review
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [questionStates, setQuestionStates] = useState([]);
+  const [questionTime, setQuestionTime] = useState([]);
+  const [questionStartTime, setQuestionStartTime] = useState(0);
   const [showSubmit, setShowSubmit] = useState(false);
 
-  /* ⏱ TIME TRACKING */
-  const [questionTime, setQuestionTime] = useState([]);
-  const [questionStartTime, setQuestionStartTime] = useState(Date.now());
-
-  /* ===================== ENTRY GATE ===================== */
-  useEffect(() => {
-    const status = sessionStorage.getItem("cat-test-status");
-
-    if (status === "completed") {
-      setMode("diagnosis");
-    } else {
-      setMode("test");
-      sessionStorage.setItem("cat-test-status", "in-progress");
-    }
-  }, []);
-
-  /* ===================== RESET (ONLY ON FIRST TEST START) ===================== */
-  useEffect(() => {
-    if (mode !== "test") return;
-
+  /* ===================== INIT ON TEST START ===================== */
+  function startTest() {
     setAnswers(Array(totalQuestions).fill(null));
     setQuestionStates(Array(totalQuestions).fill(0));
     setQuestionTime(Array(totalQuestions).fill(0));
     setCurrentQuestionIndex(0);
     setQuestionStartTime(Date.now());
     sessionStorage.removeItem("cat-timer");
-  }, [mode, totalQuestions]);
+    setMode("test");
+  }
 
-  /* ===================== QUESTION CHANGE TIMER ===================== */
+  /* ===================== DERIVED ===================== */
+  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
+  const questionIndexInPassage = currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+  const currentPassage = passages[passageIndex];
+  const currentQuestion = currentPassage.questions[questionIndexInPassage];
+
+  /* ===================== TIME TRACKING ===================== */
   useEffect(() => {
     if (mode === "test") {
       setQuestionStartTime(Date.now());
     }
   }, [currentQuestionIndex, mode]);
 
-  /* ===================== DERIVED ===================== */
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndexInPassage =
-    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
-
-  const currentPassage = passages[passageIndex];
-  const currentQuestion =
-    currentPassage.questions[questionIndexInPassage];
-
-  /* ===================== TIME SAVE HELPER ===================== */
   function saveTime() {
-    const now = Date.now();
-    const spent = Math.round((now - questionStartTime) / 1000);
+    if (mode !== "test") return;
 
+    const spent = Math.round((Date.now() - questionStartTime) / 1000);
     setQuestionTime(prev => {
       const updated = [...prev];
       updated[currentQuestionIndex] += spent;
@@ -102,15 +84,13 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] =
-      qs[currentQuestionIndex] === 2 ? 3 : 1;
+    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 2 ? 3 : 1;
     setQuestionStates(qs);
   }
 
   function handleMark() {
     const qs = [...questionStates];
-    qs[currentQuestionIndex] =
-      qs[currentQuestionIndex] === 1 ? 3 : 2;
+    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 1 ? 3 : 2;
     setQuestionStates(qs);
   }
 
@@ -122,16 +102,13 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] =
-      qs[currentQuestionIndex] === 3 ? 2 : 0;
+    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 3 ? 2 : 0;
     setQuestionStates(qs);
   }
 
   function goNext() {
     saveTime();
-    setCurrentQuestionIndex(i =>
-      Math.min(i + 1, totalQuestions - 1)
-    );
+    setCurrentQuestionIndex(i => Math.min(i + 1, totalQuestions - 1));
   }
 
   function goPrev() {
@@ -141,103 +118,120 @@ export default function CATArenaTestView({ testData }) {
 
   function handleSubmitTest() {
     saveTime();
-    sessionStorage.setItem("cat-test-status", "completed");
     setShowSubmit(false);
     setMode("diagnosis");
   }
 
   /* ===================== RENDER ===================== */
-  if (mode === "loading") return null;
 
+  /* ---------- DASHBOARD ---------- */
+  if (mode === "dashboard") {
+    return (
+      <div style={{ padding: 40 }}>
+        <h2>CAT RC Arena</h2>
+        <p>Select what you want to do.</p>
+
+        <div style={{ marginTop: 20 }}>
+          <button onClick={startTest} style={primaryBtn}>
+            Take RC Sectional Test
+          </button>
+
+          <button
+            disabled={answers.length === 0}
+            onClick={() => setMode("diagnosis")}
+            style={ghostBtn}
+          >
+            Diagnosis Report
+          </button>
+
+          <button
+            disabled={answers.length === 0}
+            onClick={() => setMode("review")}
+            style={ghostBtn}
+          >
+            Analyse Test
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------- DIAGNOSIS ---------- */
+  if (mode === "diagnosis") {
+    return (
+      <DiagnosisView
+        passages={passages}
+        questions={flatQuestions}
+        answers={answers}
+        questionTime={questionTime}
+        onReview={() => setMode("review")}
+        onBack={() => setMode("dashboard")}
+      />
+    );
+  }
+
+  /* ---------- TEST / REVIEW ---------- */
   return (
     <>
-      {/* ===================== DIAGNOSIS ===================== */}
-      {mode === "diagnosis" && (
-        <DiagnosisView
+      <div style={headerStyle}>
+        <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+
+        {mode === "review" && (
+          <button onClick={() => setMode("diagnosis")} style={backBtn}>
+            ← Back to Diagnosis
+          </button>
+        )}
+
+        {mode === "test" && (
+          <CATTimer durationMinutes={30} onTimeUp={handleSubmitTest} />
+        )}
+      </div>
+
+      <div style={gridStyle}>
+        <PassagePanel
           passages={passages}
-          questions={flatQuestions}
-          answers={answers}
-          questionTime={questionTime}
-          onReview={() => setMode("review")}
+          currentQuestionIndex={currentQuestionIndex}
+          mode={mode}
         />
+
+        <QuestionPanel
+          question={currentQuestion}
+          qNumber={currentQuestionIndex + 1}
+          selectedOption={answers[currentQuestionIndex]}
+          correctIndex={currentQuestion.correctIndex}
+          mode={mode}
+          onAnswer={handleAnswer}
+          onPrev={goPrev}
+          onNext={goNext}
+        />
+
+        <QuestionPalette
+          totalQuestions={totalQuestions}
+          currentQuestion={currentQuestionIndex}
+          questionStates={questionStates}
+          onJump={setCurrentQuestionIndex}
+        />
+      </div>
+
+      {mode === "test" && (
+        <div style={footerStyle}>
+          <button style={ghostBtn} onClick={handleMark}>
+            Mark for Review
+          </button>
+          <button style={ghostBtn} onClick={handleClear}>
+            Clear Response
+          </button>
+          <button style={submitBtn} onClick={() => setShowSubmit(true)}>
+            Submit Test
+          </button>
+        </div>
       )}
 
-      {/* ===================== TEST / REVIEW ===================== */}
-      {(mode === "test" || mode === "review") && (
-        <>
-          {/* HEADER */}
-          <div style={headerStyle}>
-            <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
-
-            {mode === "review" && (
-              <button
-                onClick={() => setMode("diagnosis")}
-                style={backBtn}
-              >
-                ← Back to Diagnosis
-              </button>
-            )}
-
-            {mode === "test" && (
-              <CATTimer
-                durationMinutes={30}
-                onTimeUp={handleSubmitTest}
-              />
-            )}
-          </div>
-
-          {/* MAIN GRID */}
-          <div style={gridStyle}>
-            <PassagePanel
-              passages={passages}
-              currentQuestionIndex={currentQuestionIndex}
-              mode={mode}
-            />
-
-            <QuestionPanel
-              question={currentQuestion}
-              qNumber={currentQuestionIndex + 1}
-              selectedOption={answers[currentQuestionIndex]}
-              correctIndex={currentQuestion.correctIndex}
-              mode={mode}
-              onAnswer={handleAnswer}
-              onPrev={goPrev}
-              onNext={goNext}
-            />
-
-            <QuestionPalette
-              totalQuestions={totalQuestions}
-              currentQuestion={currentQuestionIndex}
-              questionStates={questionStates}
-              onJump={setCurrentQuestionIndex}
-            />
-          </div>
-
-          {/* FOOTER */}
-          {mode === "test" && (
-            <div style={footerStyle}>
-              <button style={ghostBtn} onClick={handleMark}>
-                Mark for Review
-              </button>
-              <button style={ghostBtn} onClick={handleClear}>
-                Clear Response
-              </button>
-              <button
-                style={submitBtn}
-                onClick={() => setShowSubmit(true)}
-              >
-                Submit Test
-              </button>
-            </div>
-          )}
-
-          <SubmitModal
-            open={showSubmit}
-            onCancel={() => setShowSubmit(false)}
-            onConfirm={handleSubmitTest}
-          />
-        </>
-      )}
+      <SubmitModal
+        open={showSubmit}
+        onCancel={() => setShowSubmit(false)}
+        onConfirm={handleSubmitTest}
+      />
     </>
   );
 }
@@ -251,21 +245,12 @@ const headerStyle = {
   right: 0,
   height: 56,
   display: "flex",
-  alignItems: "center",
   justifyContent: "space-between",
+  alignItems: "center",
   padding: "0 16px",
   background: "#fff",
   borderBottom: "1px solid #e5e7eb",
   zIndex: 1000,
-};
-
-const backBtn = {
-  padding: "6px 12px",
-  border: "1px solid #2563eb",
-  background: "#eef2ff",
-  cursor: "pointer",
-  borderRadius: 6,
-  fontSize: 13,
 };
 
 const gridStyle = {
@@ -288,7 +273,25 @@ const footerStyle = {
   alignItems: "center",
   background: "#fff",
   borderTop: "1px solid #e5e7eb",
-  zIndex: 1000,
+};
+
+const primaryBtn = {
+  padding: "10px 18px",
+  background: "#2563eb",
+  color: "#fff",
+  border: "none",
+  borderRadius: 8,
+  cursor: "pointer",
+  marginRight: 10,
+};
+
+const ghostBtn = {
+  padding: "10px 18px",
+  border: "1px solid #9ca3af",
+  background: "#fff",
+  borderRadius: 8,
+  cursor: "pointer",
+  marginRight: 10,
 };
 
 const submitBtn = {
@@ -299,9 +302,10 @@ const submitBtn = {
   cursor: "pointer",
 };
 
-const ghostBtn = {
+const backBtn = {
   padding: "6px 12px",
-  border: "1px solid #9ca3af",
-  background: "#fff",
+  border: "1px solid #2563eb",
+  background: "#eef2ff",
   cursor: "pointer",
+  borderRadius: 6,
 };
