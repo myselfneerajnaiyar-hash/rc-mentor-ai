@@ -23,29 +23,35 @@ export default function DiagnosisView({
     ? Math.round((correct / attempted) * 100)
     : 0;
 
-  /* ---------- TIME INTELLIGENCE ---------- */
-  const timeStats = questions.map((q, i) => {
+  /* ---------- QUESTION TIME HEATMAP ---------- */
+  const timeHeat = questions.map((q, i) => {
     const t = questionTime[i] || 0;
     const isCorrect = answers[i] === q.correctIndex;
 
-    let bucket = "Slow";
-    if (t <= 45) bucket = "Fast";
-    else if (t <= 90) bucket = "Optimal";
+    let label = "Slow & Wrong";
+    let color = "#dc2626"; // red
 
-    return { t, isCorrect, bucket };
+    if (t <= 45 && isCorrect) {
+      label = "Fast & Correct";
+      color = "#16a34a";
+    } else if (t <= 45 && !isCorrect) {
+      label = "Fast & Wrong";
+      color = "#f97316";
+    } else if (t <= 90 && isCorrect) {
+      label = "Optimal";
+      color = "#22c55e";
+    } else if (t > 90 && isCorrect) {
+      label = "Slow & Correct";
+      color = "#eab308";
+    }
+
+    return { t, label, color };
   });
 
-  const slowWrong = timeStats.filter(
-    q => q.bucket === "Slow" && !q.isCorrect
-  ).length;
-
-  const fastWrong = timeStats.filter(
-    q => q.bucket === "Fast" && !q.isCorrect
-  ).length;
-
-  const slowCorrect = timeStats.filter(
-    q => q.bucket === "Slow" && q.isCorrect
-  ).length;
+  /* ---------- TIME INTELLIGENCE ---------- */
+  const slowWrong = timeHeat.filter(q => q.label === "Slow & Wrong").length;
+  const fastWrong = timeHeat.filter(q => q.label === "Fast & Wrong").length;
+  const slowCorrect = timeHeat.filter(q => q.label === "Slow & Correct").length;
 
   /* ---------- PASSAGE STATS ---------- */
   const passageStats = passages.map((p) => {
@@ -103,11 +109,26 @@ export default function DiagnosisView({
           <Stat label="Accuracy" value={`${accuracy}%`} />
         </div>
 
+        {/* ---------- TIME HEATMAP ---------- */}
+        <Section title="⏱ Question-wise Time Heatmap">
+          <div style={heatGrid}>
+            {timeHeat.map((q, i) => (
+              <div key={i} style={{ ...heatCell, background: q.color }}>
+                <div style={{ fontWeight: 600 }}>Q{i + 1}</div>
+                <div style={{ fontSize: 12 }}>{q.t}s</div>
+                <div style={{ fontSize: 11 }}>{q.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <Legend />
+        </Section>
+
         {/* ---------- TIME DIAGNOSIS ---------- */}
-        <Section title="⏱ Time Diagnosis">
-          <Insight>• <b>{slowWrong}</b> questions were <b>Slow & Wrong</b> → over-reading without clarity</Insight>
-          <Insight>• <b>{fastWrong}</b> questions were <b>Fast & Wrong</b> → impulsive elimination</Insight>
-          <Insight>• <b>{slowCorrect}</b> questions were <b>Slow & Correct</b> → accuracy exists, speed pruning needed</Insight>
+        <Section title="Time Intelligence Insights">
+          <Insight>🔴 <b>{slowWrong}</b> Slow & Wrong → deep reading without clarity</Insight>
+          <Insight>🟠 <b>{fastWrong}</b> Fast & Wrong → impulsive elimination</Insight>
+          <Insight>🟡 <b>{slowCorrect}</b> Slow but Correct → accuracy exists, speed missing</Insight>
         </Section>
 
         {/* ---------- PASSAGE HEAT MAP ---------- */}
@@ -144,10 +165,10 @@ export default function DiagnosisView({
         {/* ---------- ACTION RULES ---------- */}
         <Section title="CAT RC Rules (Next 7 Days)">
           <ul>
+            <li>Kill any question crossing <b>90 seconds</b></li>
             <li>Avoid Time Trap passages completely</li>
-            <li>Attempt only High ROI / Selective passages</li>
-            <li>Slow & Wrong → reduce reading depth</li>
-            <li>Fast & Wrong → slow down option elimination</li>
+            <li>Fast & Wrong → slow down elimination</li>
+            <li>Slow & Wrong → reduce rereading</li>
           </ul>
         </Section>
 
@@ -181,6 +202,15 @@ function Section({ title, children }) {
 
 function Insight({ children }) {
   return <p style={{ marginBottom: 6 }}>{children}</p>;
+}
+
+function Legend() {
+  return (
+    <div style={{ fontSize: 13, marginTop: 10 }}>
+      🟢 Optimal & Correct &nbsp; 🟡 Slow & Correct &nbsp;
+      🟠 Fast & Wrong &nbsp; 🔴 Slow & Wrong
+    </div>
+  );
 }
 
 function HeatRow({ label, ratio, tag }) {
@@ -236,6 +266,20 @@ const stat = {
   background: "#eef2ff",
   padding: 16,
   borderRadius: 12,
+};
+
+const heatGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(4, 1fr)",
+  gap: 14,
+  marginTop: 12,
+};
+
+const heatCell = {
+  borderRadius: 10,
+  padding: 14,
+  color: "#fff",
+  textAlign: "center",
 };
 
 const barBg = {
