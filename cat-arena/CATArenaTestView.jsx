@@ -6,9 +6,21 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
-import DiagnosisView from "./components/DiagnosisView";
 
-export default function CATArenaTestView({ testData }) {
+/*
+  PROPS:
+  - testData        : CAT RC sectional JSON
+  - mode            : "test" | "review"
+  - initialState    : (optional) { answers, questionTime, questionStates }
+  - onSubmit        : function(resultPayload)
+*/
+
+export default function CATArenaTestView({
+  testData,
+  mode = "test",
+  initialState = null,
+  onSubmit,
+}) {
   /* ===================== SAFETY ===================== */
   if (!testData || !testData.passages) {
     return (
@@ -30,32 +42,22 @@ export default function CATArenaTestView({ testData }) {
   );
 
   /* ===================== STATE ===================== */
-  const [mode, setMode] = useState("dashboard"); 
-  // dashboard | test | diagnosis | review
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [questionStates, setQuestionStates] = useState([]);
-  const [questionTime, setQuestionTime] = useState([]);
+
+  const [answers, setAnswers] = useState(
+    initialState?.answers || Array(totalQuestions).fill(null)
+  );
+
+  const [questionStates, setQuestionStates] = useState(
+    initialState?.questionStates || Array(totalQuestions).fill(0)
+  );
+
+  const [questionTime, setQuestionTime] = useState(
+    initialState?.questionTime || Array(totalQuestions).fill(0)
+  );
+
   const [questionStartTime, setQuestionStartTime] = useState(0);
   const [showSubmit, setShowSubmit] = useState(false);
-
-  /* ===================== INIT ON TEST START ===================== */
-  function startTest() {
-    setAnswers(Array(totalQuestions).fill(null));
-    setQuestionStates(Array(totalQuestions).fill(0));
-    setQuestionTime(Array(totalQuestions).fill(0));
-    setCurrentQuestionIndex(0);
-    setQuestionStartTime(Date.now());
-    sessionStorage.removeItem("cat-timer");
-    setMode("test");
-  }
-
-  /* ===================== DERIVED ===================== */
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndexInPassage = currentQuestionIndex % QUESTIONS_PER_PASSAGE;
-  const currentPassage = passages[passageIndex];
-  const currentQuestion = currentPassage.questions[questionIndexInPassage];
 
   /* ===================== TIME TRACKING ===================== */
   useEffect(() => {
@@ -75,6 +77,15 @@ export default function CATArenaTestView({ testData }) {
     });
   }
 
+  /* ===================== DERIVED ===================== */
+  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+
+  const currentPassage = passages[passageIndex];
+  const currentQuestion =
+    currentPassage.questions[questionIndexInPassage];
+
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
     if (mode !== "test") return;
@@ -84,13 +95,17 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 2 ? 3 : 1;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 2 ? 3 : 1;
     setQuestionStates(qs);
   }
 
   function handleMark() {
+    if (mode !== "test") return;
+
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 1 ? 3 : 2;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 1 ? 3 : 2;
     setQuestionStates(qs);
   }
 
@@ -102,13 +117,16 @@ export default function CATArenaTestView({ testData }) {
     setAnswers(a);
 
     const qs = [...questionStates];
-    qs[currentQuestionIndex] = qs[currentQuestionIndex] === 3 ? 2 : 0;
+    qs[currentQuestionIndex] =
+      qs[currentQuestionIndex] === 3 ? 2 : 0;
     setQuestionStates(qs);
   }
 
   function goNext() {
     saveTime();
-    setCurrentQuestionIndex(i => Math.min(i + 1, totalQuestions - 1));
+    setCurrentQuestionIndex(i =>
+      Math.min(i + 1, totalQuestions - 1)
+    );
   }
 
   function goPrev() {
@@ -116,77 +134,32 @@ export default function CATArenaTestView({ testData }) {
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
-  function handleSubmitTest() {
+  function submitTest() {
     saveTime();
     setShowSubmit(false);
-    setMode("diagnosis");
+
+    onSubmit?.({
+      passages,
+      questions: flatQuestions,
+      answers,
+      questionTime,
+      questionStates,
+    });
   }
 
   /* ===================== RENDER ===================== */
-
-  /* ---------- DASHBOARD ---------- */
-  if (mode === "dashboard") {
-    return (
-      <div style={{ padding: 40 }}>
-        <h2>CAT RC Arena</h2>
-        <p>Select what you want to do.</p>
-
-        <div style={{ marginTop: 20 }}>
-          <button onClick={startTest} style={primaryBtn}>
-            Take RC Sectional Test
-          </button>
-
-          <button
-            disabled={answers.length === 0}
-            onClick={() => setMode("diagnosis")}
-            style={ghostBtn}
-          >
-            Diagnosis Report
-          </button>
-
-          <button
-            disabled={answers.length === 0}
-            onClick={() => setMode("review")}
-            style={ghostBtn}
-          >
-            Analyse Test
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  /* ---------- DIAGNOSIS ---------- */
-  if (mode === "diagnosis") {
-    return (
-      <DiagnosisView
-        passages={passages}
-        questions={flatQuestions}
-        answers={answers}
-        questionTime={questionTime}
-        onReview={() => setMode("review")}
-        onBack={() => setMode("dashboard")}
-      />
-    );
-  }
-
-  /* ---------- TEST / REVIEW ---------- */
   return (
     <>
+      {/* HEADER */}
       <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-        {mode === "review" && (
-          <button onClick={() => setMode("diagnosis")} style={backBtn}>
-            ← Back to Diagnosis
-          </button>
-        )}
-
         {mode === "test" && (
-          <CATTimer durationMinutes={30} onTimeUp={handleSubmitTest} />
+          <CATTimer durationMinutes={30} onTimeUp={submitTest} />
         )}
       </div>
 
+      {/* MAIN GRID */}
       <div style={gridStyle}>
         <PassagePanel
           passages={passages}
@@ -213,6 +186,7 @@ export default function CATArenaTestView({ testData }) {
         />
       </div>
 
+      {/* FOOTER */}
       {mode === "test" && (
         <div style={footerStyle}>
           <button style={ghostBtn} onClick={handleMark}>
@@ -230,7 +204,7 @@ export default function CATArenaTestView({ testData }) {
       <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
-        onConfirm={handleSubmitTest}
+        onConfirm={submitTest}
       />
     </>
   );
@@ -275,25 +249,6 @@ const footerStyle = {
   borderTop: "1px solid #e5e7eb",
 };
 
-const primaryBtn = {
-  padding: "10px 18px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 8,
-  cursor: "pointer",
-  marginRight: 10,
-};
-
-const ghostBtn = {
-  padding: "10px 18px",
-  border: "1px solid #9ca3af",
-  background: "#fff",
-  borderRadius: 8,
-  cursor: "pointer",
-  marginRight: 10,
-};
-
 const submitBtn = {
   padding: "6px 14px",
   background: "#2563eb",
@@ -302,10 +257,9 @@ const submitBtn = {
   cursor: "pointer",
 };
 
-const backBtn = {
+const ghostBtn = {
   padding: "6px 12px",
-  border: "1px solid #2563eb",
-  background: "#eef2ff",
+  border: "1px solid #9ca3af",
+  background: "#fff",
   cursor: "pointer",
-  borderRadius: 6,
 };
