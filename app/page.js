@@ -585,12 +585,12 @@ return (
 {view === "cat" && catPhase === "idle" && (
   <CATArenaLanding
     lastAttemptedSectional={lastAttemptedSectional}
+
     onStartRC={async (sectionalId) => {
       try {
-        setCatPhase("loading");
+        setCatPhase("generating");
 
         const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
-
         if (!res.ok) {
           alert("Failed to load CAT RC Sectional");
           setCatPhase("idle");
@@ -598,13 +598,24 @@ return (
         }
 
         const data = await res.json();
-        data.id = sectionalId; // VERY IMPORTANT
+        data.id = sectionalId;
         setActiveRCTest(data);
         setCatPhase("instructions");
       } catch (e) {
         console.error(e);
         setCatPhase("idle");
       }
+    }}
+
+    onViewDiagnosis={(sectionalId) => {
+      // reuse last attempted test
+      if (!lastAttemptedSectional) return;
+      setCatPhase("test");
+    }}
+
+    onReviewTest={(sectionalId) => {
+      if (!lastAttemptedSectional) return;
+      setCatPhase("test");
     }}
   />
 )}
