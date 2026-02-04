@@ -627,7 +627,10 @@ return (
 {view === "cat" && catPhase === "test" && activeRCTest && (
   <RCSectionalContainer
     testData={activeRCTest}
-    onExit={() => setCatPhase("idle")}
+    onExit={() => {
+      setLastAttemptedSectional(activeRCTest.id);
+      setCatPhase("idle");
+    }}
   />
 )}
   </main>
