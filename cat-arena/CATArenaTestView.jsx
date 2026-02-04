@@ -8,11 +8,11 @@ import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 
 /*
-  PROPS:
-  - testData        : CAT RC sectional JSON
-  - mode            : "test" | "review"
-  - initialState    : (optional) { answers, questionTime, questionStates }
-  - onSubmit        : function(resultPayload)
+PROPS
+- testData        : CAT RC sectional JSON
+- mode            : "test" | "review"
+- initialState    : { answers, questionTime, questionStates }
+- onSubmit        : function(resultPayload)
 */
 
 export default function CATArenaTestView({
@@ -134,9 +134,8 @@ export default function CATArenaTestView({
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
-  function submitTest() {
+  function submitPayload() {
     saveTime();
-    setShowSubmit(false);
 
     onSubmit?.({
       passages,
@@ -150,16 +149,22 @@ export default function CATArenaTestView({
   /* ===================== RENDER ===================== */
   return (
     <>
-      {/* HEADER */}
+      {/* ===================== HEADER ===================== */}
       <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
+        {mode === "review" && (
+          <button onClick={submitPayload} style={backBtn}>
+            ← Back to Diagnosis
+          </button>
+        )}
+
         {mode === "test" && (
-          <CATTimer durationMinutes={30} onTimeUp={submitTest} />
+          <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
         )}
       </div>
 
-      {/* MAIN GRID */}
+      {/* ===================== MAIN GRID ===================== */}
       <div style={gridStyle}>
         <PassagePanel
           passages={passages}
@@ -186,7 +191,7 @@ export default function CATArenaTestView({
         />
       </div>
 
-      {/* FOOTER */}
+      {/* ===================== FOOTER ===================== */}
       {mode === "test" && (
         <div style={footerStyle}>
           <button style={ghostBtn} onClick={handleMark}>
@@ -195,7 +200,10 @@ export default function CATArenaTestView({
           <button style={ghostBtn} onClick={handleClear}>
             Clear Response
           </button>
-          <button style={submitBtn} onClick={() => setShowSubmit(true)}>
+          <button
+            style={submitBtn}
+            onClick={() => setShowSubmit(true)}
+          >
             Submit Test
           </button>
         </div>
@@ -204,7 +212,7 @@ export default function CATArenaTestView({
       <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
-        onConfirm={submitTest}
+        onConfirm={submitPayload}
       />
     </>
   );
@@ -261,5 +269,13 @@ const ghostBtn = {
   padding: "6px 12px",
   border: "1px solid #9ca3af",
   background: "#fff",
+  cursor: "pointer",
+};
+
+const backBtn = {
+  padding: "6px 12px",
+  border: "1px solid #2563eb",
+  background: "#eef2ff",
+  borderRadius: 6,
   cursor: "pointer",
 };
