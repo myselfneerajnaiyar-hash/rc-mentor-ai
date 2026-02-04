@@ -31,7 +31,7 @@ export default function CATArenaTestView({ testData }) {
   );
 
   /* ===================== STATE ===================== */
-  const [mode, setMode] = useState("test"); // test | diagnosis | review
+  const [mode, setMode] = useState("loading"); // loading | test | diagnosis | review
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [questionStates, setQuestionStates] = useState([]);
@@ -41,20 +41,36 @@ export default function CATArenaTestView({ testData }) {
   const [questionTime, setQuestionTime] = useState([]);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
-  /* ===================== RESET ON LOAD ===================== */
+  /* ===================== ENTRY GATE ===================== */
   useEffect(() => {
+    const status = sessionStorage.getItem("cat-test-status");
+
+    if (status === "completed") {
+      setMode("diagnosis");
+    } else {
+      setMode("test");
+      sessionStorage.setItem("cat-test-status", "in-progress");
+    }
+  }, []);
+
+  /* ===================== RESET (ONLY ON FIRST TEST START) ===================== */
+  useEffect(() => {
+    if (mode !== "test") return;
+
     setAnswers(Array(totalQuestions).fill(null));
     setQuestionStates(Array(totalQuestions).fill(0));
     setQuestionTime(Array(totalQuestions).fill(0));
     setCurrentQuestionIndex(0);
     setQuestionStartTime(Date.now());
     sessionStorage.removeItem("cat-timer");
-  }, [totalQuestions]);
+  }, [mode, totalQuestions]);
 
   /* ===================== QUESTION CHANGE TIMER ===================== */
   useEffect(() => {
-    setQuestionStartTime(Date.now());
-  }, [currentQuestionIndex]);
+    if (mode === "test") {
+      setQuestionStartTime(Date.now());
+    }
+  }, [currentQuestionIndex, mode]);
 
   /* ===================== DERIVED ===================== */
   const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
@@ -125,11 +141,14 @@ export default function CATArenaTestView({ testData }) {
 
   function handleSubmitTest() {
     saveTime();
+    sessionStorage.setItem("cat-test-status", "completed");
     setShowSubmit(false);
     setMode("diagnosis");
   }
 
   /* ===================== RENDER ===================== */
+  if (mode === "loading") return null;
+
   return (
     <>
       {/* ===================== DIAGNOSIS ===================== */}
@@ -146,35 +165,26 @@ export default function CATArenaTestView({ testData }) {
       {/* ===================== TEST / REVIEW ===================== */}
       {(mode === "test" || mode === "review") && (
         <>
-         {/* HEADER */}
-<div style={headerStyle}>
-  <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+          {/* HEADER */}
+          <div style={headerStyle}>
+            <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-  {/* REVIEW → DIAGNOSIS NAVIGATION */}
-  {mode === "review" && (
-    <button
-      onClick={() => setMode("diagnosis")}
-      style={{
-        padding: "6px 12px",
-        border: "1px solid #2563eb",
-        background: "#eef2ff",
-        cursor: "pointer",
-        borderRadius: 6,
-        fontSize: 13,
-      }}
-    >
-      ← Back to Diagnosis
-    </button>
-  )}
+            {mode === "review" && (
+              <button
+                onClick={() => setMode("diagnosis")}
+                style={backBtn}
+              >
+                ← Back to Diagnosis
+              </button>
+            )}
 
-  {/* TIMER ONLY IN TEST MODE */}
-  {mode === "test" && (
-    <CATTimer
-      durationMinutes={30}
-      onTimeUp={handleSubmitTest}
-    />
-  )}
-</div>
+            {mode === "test" && (
+              <CATTimer
+                durationMinutes={30}
+                onTimeUp={handleSubmitTest}
+              />
+            )}
+          </div>
 
           {/* MAIN GRID */}
           <div style={gridStyle}>
@@ -247,6 +257,15 @@ const headerStyle = {
   background: "#fff",
   borderBottom: "1px solid #e5e7eb",
   zIndex: 1000,
+};
+
+const backBtn = {
+  padding: "6px 12px",
+  border: "1px solid #2563eb",
+  background: "#eef2ff",
+  cursor: "pointer",
+  borderRadius: 6,
+  fontSize: 13,
 };
 
 const gridStyle = {
