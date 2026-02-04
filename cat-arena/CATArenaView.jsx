@@ -3,50 +3,94 @@
 import { useState } from "react";
 import CATArenaLanding from "./CATArenaLanding";
 import RCSectionalRunner from "./rc/RCSectionalRunner";
-import VocabSectionalRunner from "./vocab/VocabSectionalRunner";
+import DiagnosisView from "./rc/components/DiagnosisView";
+
+/*
+  Arena Modes:
+  - landing       : CAT Arena home
+  - rc-test       : RC test running
+  - rc-diagnosis  : Diagnosis report
+  - rc-review     : Question review
+*/
 
 export default function CATArenaView() {
-  // which screen user is on inside CAT Arena
-  const [arenaScreen, setArenaScreen] = useState("landing");
-  // which test is currently running
+  const [arenaMode, setArenaMode] = useState("landing");
+
+  // which sectional test (01, 02, etc.)
   const [activeTestId, setActiveTestId] = useState(null);
 
-  // ---- navigation handlers ----
+  // persisted test result (in-memory for now)
+  const [lastRCResult, setLastRCResult] = useState(null);
+
+  /* ------------------ ACTIONS ------------------ */
+
   function startRCTest(testId) {
     setActiveTestId(testId);
-    setArenaScreen("rc");
+    setArenaMode("rc-test");
   }
 
-  function startVocabTest(testId) {
-    setActiveTestId(testId);
-    setArenaScreen("vocab");
+  function exitToArena() {
+    setArenaMode("landing");
   }
 
-  function goBackToLanding() {
-    setActiveTestId(null);
-    setArenaScreen("landing");
+  function onRCTestCompleted(resultPayload) {
+    // resultPayload = { passages, questions, answers, questionTime }
+    setLastRCResult(resultPayload);
+    setArenaMode("rc-diagnosis");
   }
+
+  function openDiagnosis() {
+    if (!lastRCResult) return;
+    setArenaMode("rc-diagnosis");
+  }
+
+  function openReview() {
+    if (!lastRCResult) return;
+    setArenaMode("rc-review");
+  }
+
+  /* ------------------ RENDER ------------------ */
 
   return (
     <>
-      {arenaScreen === "landing" && (
+      {/* ---------------- LANDING ---------------- */}
+      {arenaMode === "landing" && (
         <CATArenaLanding
-          onStartRC={startRCTest}
-          onStartVocab={startVocabTest}
+          onStartRC={() => startRCTest("rc-sectional-01")}
+          onViewDiagnosis={openDiagnosis}
+          onReviewTest={openReview}
+          hasAttemptedRC={!!lastRCResult}
         />
       )}
 
-      {arenaScreen === "rc" && (
+      {/* ---------------- RC TEST ---------------- */}
+      {arenaMode === "rc-test" && (
         <RCSectionalRunner
           testId={activeTestId}
-          onExit={goBackToLanding}
+          onExit={exitToArena}
+          onComplete={onRCTestCompleted}
         />
       )}
 
-      {arenaScreen === "vocab" && (
-        <VocabSectionalRunner
+      {/* ---------------- DIAGNOSIS ---------------- */}
+      {arenaMode === "rc-diagnosis" && lastRCResult && (
+        <DiagnosisView
+          passages={lastRCResult.passages}
+          questions={lastRCResult.questions}
+          answers={lastRCResult.answers}
+          questionTime={lastRCResult.questionTime}
+          onReview={() => setArenaMode("rc-review")}
+          onExit={exitToArena}
+        />
+      )}
+
+      {/* ---------------- REVIEW ---------------- */}
+      {arenaMode === "rc-review" && lastRCResult && (
+        <RCSectionalRunner
           testId={activeTestId}
-          onExit={goBackToLanding}
+          mode="review"
+          initialState={lastRCResult}
+          onExit={() => setArenaMode("rc-diagnosis")}
         />
       )}
     </>
