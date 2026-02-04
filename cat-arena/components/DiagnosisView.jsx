@@ -4,6 +4,7 @@ export default function DiagnosisView({
   passages = [],
   answers = [],
   questions = [],
+  questionTime = [],
   onReview,
 }) {
   /* ---------- GLOBAL STATS ---------- */
@@ -22,21 +23,50 @@ export default function DiagnosisView({
     ? Math.round((correct / attempted) * 100)
     : 0;
 
+  /* ---------- TIME INTELLIGENCE ---------- */
+  const timeStats = questions.map((q, i) => {
+    const t = questionTime[i] || 0;
+    const isCorrect = answers[i] === q.correctIndex;
+
+    let bucket = "Slow";
+    if (t <= 45) bucket = "Fast";
+    else if (t <= 90) bucket = "Optimal";
+
+    return { t, isCorrect, bucket };
+  });
+
+  const slowWrong = timeStats.filter(
+    q => q.bucket === "Slow" && !q.isCorrect
+  ).length;
+
+  const fastWrong = timeStats.filter(
+    q => q.bucket === "Fast" && !q.isCorrect
+  ).length;
+
+  const slowCorrect = timeStats.filter(
+    q => q.bucket === "Slow" && q.isCorrect
+  ).length;
+
   /* ---------- PASSAGE STATS ---------- */
   const passageStats = passages.map((p) => {
     let totalQ = p.questions.length;
     let correctQ = 0;
+    let timeSpent = 0;
 
     p.questions.forEach((q) => {
       const idx = questions.findIndex(x => x.id === q.id);
-      if (idx >= 0 && answers[idx] === q.correctIndex) correctQ++;
+      if (idx >= 0) {
+        if (answers[idx] === q.correctIndex) correctQ++;
+        timeSpent += questionTime[idx] || 0;
+      }
     });
 
     const ratio = totalQ ? correctQ / totalQ : 0;
 
     let tag = "Avoid in CAT";
-    if (ratio >= 0.8) tag = "Strength";
+    if (ratio >= 0.8 && timeSpent <= 300) tag = "High ROI";
     else if (ratio >= 0.6) tag = "Selective Attempt";
+    else if (timeSpent > 360) tag = "Time Trap";
 
     return {
       genre: p.genre,
@@ -44,6 +74,7 @@ export default function DiagnosisView({
       total: totalQ,
       ratio,
       tag,
+      time: Math.round(timeSpent / 60),
     };
   });
 
@@ -61,7 +92,7 @@ export default function DiagnosisView({
       <div style={card}>
         <h1>RC Diagnosis Report</h1>
         <p style={{ color: "#6b7280" }}>
-          CAT-style diagnosis focused on selection quality, not guesswork.
+          CAT-style diagnosis focused on selection, time, and decision quality.
         </p>
 
         {/* ---------- SUMMARY ---------- */}
@@ -72,12 +103,19 @@ export default function DiagnosisView({
           <Stat label="Accuracy" value={`${accuracy}%`} />
         </div>
 
+        {/* ---------- TIME DIAGNOSIS ---------- */}
+        <Section title="⏱ Time Diagnosis">
+          <Insight>• <b>{slowWrong}</b> questions were <b>Slow & Wrong</b> → over-reading without clarity</Insight>
+          <Insight>• <b>{fastWrong}</b> questions were <b>Fast & Wrong</b> → impulsive elimination</Insight>
+          <Insight>• <b>{slowCorrect}</b> questions were <b>Slow & Correct</b> → accuracy exists, speed pruning needed</Insight>
+        </Section>
+
         {/* ---------- PASSAGE HEAT MAP ---------- */}
         <Section title="Passage Selection Intelligence">
           {passageStats.map((p) => (
             <HeatRow
               key={p.genre}
-              label={`${p.genre} (${p.correct}/${p.total})`}
+              label={`${p.genre} (${p.correct}/${p.total}) • ${p.time} min`}
               ratio={p.ratio}
               tag={p.tag}
             />
@@ -104,12 +142,12 @@ export default function DiagnosisView({
         </Section>
 
         {/* ---------- ACTION RULES ---------- */}
-        <Section title="CAT RC Rules (Until Accuracy ≥ 60%)">
+        <Section title="CAT RC Rules (Next 7 Days)">
           <ul>
-            <li>Attempt max 2 passages per sectional</li>
-            <li>Skip abstract / unfamiliar domains</li>
-            <li>Analyse only incorrect attempts</li>
-            <li>Increase volume only after accuracy improves</li>
+            <li>Avoid Time Trap passages completely</li>
+            <li>Attempt only High ROI / Selective passages</li>
+            <li>Slow & Wrong → reduce reading depth</li>
+            <li>Fast & Wrong → slow down option elimination</li>
           </ul>
         </Section>
 
@@ -121,7 +159,7 @@ export default function DiagnosisView({
   );
 }
 
-/* ---------- COMPONENTS ---------- */
+/* ---------- UI HELPERS ---------- */
 
 function Stat({ label, value }) {
   return (
@@ -141,10 +179,22 @@ function Section({ title, children }) {
   );
 }
 
+function Insight({ children }) {
+  return <p style={{ marginBottom: 6 }}>{children}</p>;
+}
+
 function HeatRow({ label, ratio, tag }) {
   const width = Math.round(ratio * 100);
   const color =
-    ratio >= 0.7 ? "#16a34a" : ratio >= 0.5 ? "#f59e0b" : "#dc2626";
+    tag === "High ROI"
+      ? "#16a34a"
+      : tag === "Selective Attempt"
+      ? "#f59e0b"
+      : tag === "Time Trap"
+      ? "#dc2626"
+      : ratio >= 0.6
+      ? "#f59e0b"
+      : "#dc2626";
 
   return (
     <div style={{ marginBottom: 12 }}>
