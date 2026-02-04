@@ -582,8 +582,8 @@ return (
 {/* ================= CAT ARENA ================= */}
 
 {view === "cat" && catPhase === "idle" && (
-  <CATArenaLanding
-   onStartRC={async () => {
+ <CATArenaLanding
+  onStartRC={async (sectionalId) => {
   try {
     setCatPhase("loading");
 
