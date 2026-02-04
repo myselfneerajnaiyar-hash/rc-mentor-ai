@@ -606,16 +606,35 @@ return (
       }
     }}
 
-    onViewDiagnosis={(sectionalId) => {
-      // reuse last attempted test
-      if (!lastAttemptedSectional) return;
-      setCatPhase("test");
-    }}
+    onViewDiagnosis={async (sectionalId) => {
+  if (!lastAttemptedSectional) return;
 
-    onReviewTest={(sectionalId) => {
-      if (!lastAttemptedSectional) return;
-      setCatPhase("test");
-    }}
+  setCatPhase("generating");
+
+  const res = await fetch(`/api/cat-sectionals/${lastAttemptedSectional}`);
+  const data = await res.json();
+
+  data.id = lastAttemptedSectional;
+  data.__startPhase = "diagnosis";   // 👈 IMPORTANT
+  setActiveRCTest(data);
+
+  setCatPhase("test");
+}}
+
+onReviewTest={async (sectionalId) => {
+  if (!lastAttemptedSectional) return;
+
+  setCatPhase("generating");
+
+  const res = await fetch(`/api/cat-sectionals/${lastAttemptedSectional}`);
+  const data = await res.json();
+
+  data.id = lastAttemptedSectional;
+  data.__startPhase = "review";      // 👈 IMPORTANT
+  setActiveRCTest(data);
+
+  setCatPhase("test");
+}}
   />
 )}
 
@@ -643,16 +662,7 @@ return (
     }}
   />
 )}
-{view === "cat" && catPhase === "diagnosis" && result && (
-  <DiagnosisView
-    passages={result.passages}
-    questions={result.questions}
-    answers={result.answers}
-    questionTime={result.questionTime}
-    onBack={() => setCatPhase("idle")}
-    onReview={() => setCatPhase("review")}
-  />
-)}
+
   </main>
 );
 }
