@@ -69,10 +69,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
         answers={result.answers}
         questionTime={result.questionTime}
         onReview={() => setPhase("review")}
-       onBack={() => {
-  setLastAttemptedSectional(testData.id);
-  onExit();
-}}
+       onBack={onExit}
       />
     );
   }
