@@ -1,26 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
-
-const MASTER_KEY = "catRCResults";
+import { useState } from "react";
 
 export default function CATArenaLanding({
   onStartRC,
   onViewDiagnosis,
   onReviewTest,
+  lastAttemptedSectional,
 }) {
   const [loadingId, setLoadingId] = useState(null);
-  const [attemptedMap, setAttemptedMap] = useState({});
 
   const sectionals = [
     { id: "sectional-01", title: "CAT RC Sectional 01" },
     { id: "sectional-02", title: "CAT RC Sectional 02" },
   ];
-
-  // ✅ READ FROM LOCAL STORAGE (SOURCE OF TRUTH)
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
-    setAttemptedMap(stored);
-  }, []);
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
@@ -30,7 +22,7 @@ export default function CATArenaLanding({
       </p>
 
       {sectionals.map((s) => {
-        const attempted = Boolean(attemptedMap[s.id]);
+        const attempted = lastAttemptedSectional === s.id;
 
         return (
           <div
@@ -42,24 +34,37 @@ export default function CATArenaLanding({
               marginBottom: 16,
               background: "#fff",
               maxWidth: 420,
+              opacity: attempted ? 0.95 : 1,
             }}
           >
             <h4>{s.title}</h4>
+
             <p style={{ fontSize: 14, color: "#64748b" }}>
               ⏱ 30 min · 📊 16 Q · 📘 4 passages
             </p>
 
+            {/* ================= TAKE TEST (LOCKED) ================= */}
             <button
               onClick={() => {
+                if (attempted) return;
                 setLoadingId(s.id);
                 onStartRC(s.id);
               }}
-              disabled={loadingId === s.id}
-              style={primaryBtn}
+              disabled={attempted || loadingId === s.id}
+              style={{
+                ...primaryBtn,
+                background: attempted ? "#94a3b8" : "#2563eb",
+                cursor: attempted ? "not-allowed" : "pointer",
+              }}
             >
-              {loadingId === s.id ? "Loading…" : "Take Test"}
+              {attempted
+                ? "Attempted"
+                : loadingId === s.id
+                ? "Loading…"
+                : "Take Test"}
             </button>
 
+            {/* ================= DIAGNOSIS ================= */}
             <button
               onClick={() => onViewDiagnosis(s.id)}
               disabled={!attempted}
@@ -68,6 +73,7 @@ export default function CATArenaLanding({
               Diagnosis Report
             </button>
 
+            {/* ================= REVIEW ================= */}
             <button
               onClick={() => onReviewTest(s.id)}
               disabled={!attempted}
@@ -82,15 +88,16 @@ export default function CATArenaLanding({
   );
 }
 
+/* ================= STYLES ================= */
+
 const primaryBtn = {
   width: "100%",
   padding: "10px",
-  background: "#2563eb",
   color: "#fff",
   border: "none",
   borderRadius: 8,
   marginBottom: 8,
-  cursor: "pointer",
+  fontWeight: 600,
 };
 
 const secondaryBtn = (enabled) => ({
