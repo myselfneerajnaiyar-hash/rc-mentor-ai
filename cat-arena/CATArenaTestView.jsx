@@ -9,10 +9,10 @@ import SubmitModal from "./components/SubmitModal";
 
 /*
 PROPS
-- testData        : CAT RC sectional JSON
+- testData
 - mode            : "test" | "review"
 - initialState    : { answers, questionTime, questionStates }
-- onSubmit        : function(resultPayload)
+- onSubmit
 */
 
 export default function CATArenaTestView({
@@ -31,6 +31,8 @@ export default function CATArenaTestView({
     );
   }
 
+  const isReview = mode === "review";
+
   /* ===================== CONSTANTS ===================== */
   const passages = testData.passages;
   const QUESTIONS_PER_PASSAGE = 4;
@@ -45,29 +47,40 @@ export default function CATArenaTestView({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [answers, setAnswers] = useState(
-    initialState?.answers || Array(totalQuestions).fill(null)
+    Array(totalQuestions).fill(null)
   );
 
   const [questionStates, setQuestionStates] = useState(
-    initialState?.questionStates || Array(totalQuestions).fill(0)
+    Array(totalQuestions).fill(0)
   );
 
   const [questionTime, setQuestionTime] = useState(
-    initialState?.questionTime || Array(totalQuestions).fill(0)
+    Array(totalQuestions).fill(0)
   );
 
   const [questionStartTime, setQuestionStartTime] = useState(0);
   const [showSubmit, setShowSubmit] = useState(false);
 
+  /* ===================== 🔑 CRITICAL FIX ===================== */
+  // Rehydrate state EVERY TIME we enter review mode
+  useEffect(() => {
+    if (isReview && initialState) {
+      setAnswers([...initialState.answers]);
+      setQuestionStates([...initialState.questionStates]);
+      setQuestionTime([...initialState.questionTime]);
+      setCurrentQuestionIndex(0);
+    }
+  }, [isReview, initialState]);
+
   /* ===================== TIME TRACKING ===================== */
   useEffect(() => {
-    if (mode === "test") {
+    if (!isReview) {
       setQuestionStartTime(Date.now());
     }
-  }, [currentQuestionIndex, mode]);
+  }, [currentQuestionIndex, isReview]);
 
   function saveTime() {
-    if (mode !== "test") return;
+    if (isReview) return;
 
     const spent = Math.round((Date.now() - questionStartTime) / 1000);
     setQuestionTime(prev => {
@@ -88,7 +101,7 @@ export default function CATArenaTestView({
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
-    if (mode !== "test") return;
+    if (isReview) return;
 
     const a = [...answers];
     a[currentQuestionIndex] = optionIndex;
@@ -101,7 +114,7 @@ export default function CATArenaTestView({
   }
 
   function handleMark() {
-    if (mode !== "test") return;
+    if (isReview) return;
 
     const qs = [...questionStates];
     qs[currentQuestionIndex] =
@@ -110,7 +123,7 @@ export default function CATArenaTestView({
   }
 
   function handleClear() {
-    if (mode !== "test") return;
+    if (isReview) return;
 
     const a = [...answers];
     a[currentQuestionIndex] = null;
@@ -149,22 +162,22 @@ export default function CATArenaTestView({
   /* ===================== RENDER ===================== */
   return (
     <>
-      {/* ===================== HEADER ===================== */}
+      {/* HEADER */}
       <div style={headerStyle}>
         <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-        {mode === "review" && (
+        {isReview && (
           <button onClick={submitPayload} style={backBtn}>
             ← Back to Diagnosis
           </button>
         )}
 
-        {mode === "test" && (
+        {!isReview && (
           <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
         )}
       </div>
 
-      {/* ===================== MAIN GRID ===================== */}
+      {/* MAIN GRID */}
       <div style={gridStyle}>
         <PassagePanel
           passages={passages}
@@ -191,8 +204,8 @@ export default function CATArenaTestView({
         />
       </div>
 
-      {/* ===================== FOOTER ===================== */}
-      {mode === "test" && (
+      {/* FOOTER */}
+      {!isReview && (
         <div style={footerStyle}>
           <button style={ghostBtn} onClick={handleMark}>
             Mark for Review
