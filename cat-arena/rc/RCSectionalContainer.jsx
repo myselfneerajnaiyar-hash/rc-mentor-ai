@@ -7,11 +7,6 @@ import DiagnosisView from "../components/DiagnosisView";
 
 const STORAGE_KEY = "catRCResults";
 
-/*
-  RC Sectional Flow (LOCKED):
-  instructions → test → diagnosis → review → diagnosis → exit
-*/
-
 export default function RCSectionalContainer({ testData, onExit }) {
   const startPhaseUsed = useRef(false);
 
@@ -25,20 +20,19 @@ export default function RCSectionalContainer({ testData, onExit }) {
 
   const [result, setResult] = useState(null);
 
-  /* ---------------------------------------------
-     LOAD STORED RESULT (CRITICAL FIX)
-  --------------------------------------------- */
+  /* 🔑 LOAD STORED RESULT BEFORE DIAGNOSIS / REVIEW */
   useEffect(() => {
     if (phase === "diagnosis" || phase === "review") {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
       const stored = all[testData.id];
-      if (stored) {
+
+      if (stored && stored.questions && stored.answers) {
         setResult(stored);
       }
     }
   }, [phase, testData.id]);
 
-  /* -------------------- INSTRUCTIONS -------------------- */
+  /* ---------------- INSTRUCTIONS ---------------- */
   if (phase === "instructions") {
     return (
       <CATInstructions
@@ -50,7 +44,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
     );
   }
 
-  /* -------------------- TEST / REVIEW -------------------- */
+  /* ---------------- TEST / REVIEW ---------------- */
   if (phase === "test" || phase === "review") {
     return (
       <CATArenaTestView
@@ -58,15 +52,22 @@ export default function RCSectionalContainer({ testData, onExit }) {
         mode={phase}
         initialState={phase === "review" ? result : null}
         onSubmit={(payload) => {
-          // ✅ persist per-sectional
+          // 🚨 THIS IS THE MOST IMPORTANT PART
+          const cleanPayload = {
+            passages: payload.passages || [],
+            questions: payload.questions || [],
+            answers: payload.answers || {},
+            questionTime: payload.questionTime || {},
+          };
+
           const all = JSON.parse(
             localStorage.getItem(STORAGE_KEY) || "{}"
           );
 
-          all[testData.id] = payload;
+          all[testData.id] = cleanPayload;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
 
-          setResult(payload);
+          setResult(cleanPayload);
           setPhase("diagnosis");
         }}
         onExit={onExit}
@@ -74,7 +75,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
     );
   }
 
-  /* -------------------- DIAGNOSIS -------------------- */
+  /* ---------------- DIAGNOSIS ---------------- */
   if (phase === "diagnosis" && result) {
     return (
       <DiagnosisView
