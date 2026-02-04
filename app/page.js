@@ -606,18 +606,17 @@ return (
       }
     }}
 
-    onViewDiagnosis={async (sectionalId) => {
+    onViewDiagnosis={(sectionalId) => {
   if (!lastAttemptedSectional) return;
 
-  setCatPhase("generating");
+  setActiveRCTest({ id: sectionalId, __startPhase: "diagnosis" });
+  setCatPhase("test");
+}}
 
-  const res = await fetch(`/api/cat-sectionals/${lastAttemptedSectional}`);
-  const data = await res.json();
+onReviewTest={(sectionalId) => {
+  if (!lastAttemptedSectional) return;
 
-  data.id = lastAttemptedSectional;
-  data.__startPhase = "diagnosis";   // 👈 IMPORTANT
-  setActiveRCTest(data);
-
+  setActiveRCTest({ id: sectionalId, __startPhase: "review" });
   setCatPhase("test");
 }}
 
