@@ -1,20 +1,18 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
 
+const STORAGE_KEY = "catRCResults";
+
 /*
-  RC Sectional Flow (LOCKED & SAFE):
+  RC Sectional Flow (LOCKED):
   instructions → test → diagnosis → review → diagnosis → exit
 */
 
-const MASTER_KEY = "catRCResults"; // 🔒 ONE SOURCE OF TRUTH
-
 export default function RCSectionalContainer({ testData, onExit }) {
-  const sectionalId = testData?.id;
-
   const startPhaseUsed = useRef(false);
 
   const [phase, setPhase] = useState(() => {
@@ -27,17 +25,18 @@ export default function RCSectionalContainer({ testData, onExit }) {
 
   const [result, setResult] = useState(null);
 
-  /* -------------------- LOAD STORED RESULT -------------------- */
+  /* ---------------------------------------------
+     LOAD STORED RESULT (CRITICAL FIX)
+  --------------------------------------------- */
   useEffect(() => {
-    if ((phase === "diagnosis" || phase === "review") && !result) {
-      const all = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
-      if (all[sectionalId]) {
-        setResult(all[sectionalId]);
-      } else {
-        setPhase("instructions");
+    if (phase === "diagnosis" || phase === "review") {
+      const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const stored = all[testData.id];
+      if (stored) {
+        setResult(stored);
       }
     }
-  }, [phase, sectionalId]);
+  }, [phase, testData.id]);
 
   /* -------------------- INSTRUCTIONS -------------------- */
   if (phase === "instructions") {
@@ -57,12 +56,15 @@ export default function RCSectionalContainer({ testData, onExit }) {
       <CATArenaTestView
         testData={testData}
         mode={phase}
-        initialState={result}
+        initialState={phase === "review" ? result : null}
         onSubmit={(payload) => {
-          // 🔒 SAVE UNDER MASTER MAP
-          const all = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
-          all[sectionalId] = payload;
-          localStorage.setItem(MASTER_KEY, JSON.stringify(all));
+          // ✅ persist per-sectional
+          const all = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "{}"
+          );
+
+          all[testData.id] = payload;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
 
           setResult(payload);
           setPhase("diagnosis");
