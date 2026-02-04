@@ -146,16 +146,35 @@ export default function CATArenaTestView({ testData }) {
       {/* ===================== TEST / REVIEW ===================== */}
       {(mode === "test" || mode === "review") && (
         <>
-          {/* HEADER */}
-          <div style={headerStyle}>
-            <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
-            {mode === "test" && (
-              <CATTimer
-                durationMinutes={30}
-                onTimeUp={handleSubmitTest}
-              />
-            )}
-          </div>
+         {/* HEADER */}
+<div style={headerStyle}>
+  <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+
+  {/* REVIEW → DIAGNOSIS NAVIGATION */}
+  {mode === "review" && (
+    <button
+      onClick={() => setMode("diagnosis")}
+      style={{
+        padding: "6px 12px",
+        border: "1px solid #2563eb",
+        background: "#eef2ff",
+        cursor: "pointer",
+        borderRadius: 6,
+        fontSize: 13,
+      }}
+    >
+      ← Back to Diagnosis
+    </button>
+  )}
+
+  {/* TIMER ONLY IN TEST MODE */}
+  {mode === "test" && (
+    <CATTimer
+      durationMinutes={30}
+      onTimeUp={handleSubmitTest}
+    />
+  )}
+</div>
 
           {/* MAIN GRID */}
           <div style={gridStyle}>
