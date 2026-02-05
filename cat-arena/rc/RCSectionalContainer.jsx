@@ -55,11 +55,22 @@ export default function RCSectionalContainer({ testData, onExit }) {
 
   /* ---- Load attempts once ---- */
   useEffect(() => {
-    const list = loadAttempts(sectionalId);
-    setAttempts(list);
-    if (list.length) setActiveIndex(list.length - 1);
-  }, [sectionalId]);
+  const list = loadAttempts(sectionalId);
+  setAttempts(list);
 
+  if (!list.length) return;
+
+  // 🔥 If attemptId is provided (from dropdown)
+  if (testData.__attemptId) {
+    const idx = list.findIndex(
+      a => a.attemptId === testData.__attemptId
+    );
+    setActiveIndex(idx !== -1 ? idx : list.length - 1);
+  } else {
+    // default = latest attempt
+    setActiveIndex(list.length - 1);
+  }
+}, [sectionalId, testData.__attemptId]);
   const activeAttempt =
     activeIndex !== null ? attempts[activeIndex] : null;
 
