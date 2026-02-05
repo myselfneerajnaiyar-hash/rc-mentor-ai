@@ -130,6 +130,12 @@ export default function CATAnalytics() {
 >
   {(() => {
     const data = getSectionalAccuracyTrend();
+  let improvement = null;
+if (data.length >= 2) {
+  improvement =
+    data[data.length - 1].accuracy -
+    data[data.length - 2].accuracy;
+}
 
     if (!data.length) {
       return (
@@ -186,7 +192,12 @@ return (
     {/* Dots + values */}
     {points.map((p, i) => (
       <g key={i}>
-        <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+        <circle cx={p.x} cy={p.y} r="5" fill="#2563eb">
+  <title>
+    {p.label}
+    {"\n"}Accuracy: {p.accuracy}%
+  </title>
+</circle>
         <text
           x={p.x}
           y={p.y - 8}
@@ -210,6 +221,19 @@ return (
       </g>
     ))}
   </svg>
+  {improvement !== null && (
+  <div
+    style={{
+      marginTop: 8,
+      fontSize: 13,
+      color: improvement >= 0 ? "#16a34a" : "#dc2626",
+      fontWeight: 500,
+    }}
+  >
+    {improvement >= 0 ? "▲" : "▼"}{" "}
+    {Math.abs(improvement)}% from last sectional
+  </div>
+)}
 );
   })()}
 </div>
