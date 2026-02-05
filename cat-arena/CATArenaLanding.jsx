@@ -1,14 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "catRCResults";
 
-function hasAttempt(id) {
+function loadCounts() {
   try {
-    const all = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    return (all[id] || []).length > 0;
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    const counts = {};
+    Object.keys(data).forEach(k => {
+      counts[k] = Array.isArray(data[k]) ? data[k].length : 0;
+    });
+    return counts;
   } catch {
-    return false;
+    return {};
   }
 }
 
@@ -18,86 +22,94 @@ export default function CATArenaLanding({
   onReviewTest,
 }) {
   const [loadingId, setLoadingId] = useState(null);
-  const [attempted, setAttempted] = useState({});
+  const [counts, setCounts] = useState({});
+
+  useEffect(() => {
+    setCounts(loadCounts());
+  }, []);
 
   const sectionals = [
     { id: "sectional-01", title: "CAT RC Sectional 01" },
     { id: "sectional-02", title: "CAT RC Sectional 02" },
   ];
 
-  useEffect(() => {
-    const map = {};
-    sectionals.forEach(s => {
-      map[s.id] = hasAttempt(s.id);
-    });
-    setAttempted(map);
-  }, []);
-
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
       <h1>🔥 CAT Arena</h1>
 
-      {sectionals.map(s => (
-        <div key={s.id} style={card}>
-          <h4>{s.title}</h4>
+      {sectionals.map(s => {
+        const attempts = counts[s.id] || 0;
+        const attempted = attempts > 0;
 
-          <button
-            disabled={attempted[s.id]}
-            onClick={() => {
-              setLoadingId(s.id);
-              onStartRC(s.id);
-            }}
-            style={primary(attempted[s.id])}
-          >
-            {attempted[s.id] ? "Attempted" : "Take Test"}
-          </button>
+        return (
+          <div key={s.id} style={card}>
+            <h4>{s.title}</h4>
+            <p style={{ fontSize: 14, color: "#64748b" }}>
+              ⏱ 30 min · 📊 16 Q · 📘 4 passages
+            </p>
 
-          <button
-            disabled={!attempted[s.id]}
-            onClick={() => onViewDiagnosis(s.id)}
-            style={secondary(attempted[s.id])}
-          >
-            Diagnosis Report
-          </button>
+            <button
+              onClick={() => {
+                if (attempted) return;
+                setLoadingId(s.id);
+                onStartRC(s.id);
+              }}
+              disabled={attempted || loadingId === s.id}
+              style={{
+                ...primaryBtn,
+                background: attempted ? "#94a3b8" : "#2563eb",
+              }}
+            >
+              {attempted ? "Attempted" : "Take Test"}
+            </button>
 
-          <button
-            disabled={!attempted[s.id]}
-            onClick={() => onReviewTest(s.id)}
-            style={secondary(attempted[s.id])}
-          >
-            Analyse / Review Test
-          </button>
-        </div>
-      ))}
+            <button
+              onClick={() => onViewDiagnosis(s.id)}
+              disabled={!attempted}
+              style={secondaryBtn(attempted)}
+            >
+              Diagnosis Report ({attempts})
+            </button>
+
+            <button
+              onClick={() => onReviewTest(s.id)}
+              disabled={!attempted}
+              style={secondaryBtn(attempted)}
+            >
+              Analyse / Review Test
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-/* styles */
 const card = {
   border: "1px solid #e5e7eb",
   borderRadius: 12,
   padding: 16,
   marginBottom: 16,
+  background: "#fff",
   maxWidth: 420,
 };
 
-const primary = locked => ({
+const primaryBtn = {
   width: "100%",
   padding: 10,
-  background: locked ? "#94a3b8" : "#2563eb",
   color: "#fff",
   border: "none",
   borderRadius: 8,
   marginBottom: 8,
-  cursor: locked ? "not-allowed" : "pointer",
-});
+  fontWeight: 600,
+};
 
-const secondary = enabled => ({
+const secondaryBtn = enabled => ({
   width: "100%",
   padding: 8,
   background: enabled ? "#f8fafc" : "#f1f5f9",
   border: "1px solid #cbd5f5",
   borderRadius: 8,
   marginBottom: 6,
+  cursor: enabled ? "pointer" : "not-allowed",
 });
