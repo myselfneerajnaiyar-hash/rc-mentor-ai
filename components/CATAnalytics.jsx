@@ -82,14 +82,17 @@ function RCSkillRadar() {
         borderRadius: 12,
         background: "#f8fafc",
         border: "1px solid #e5e7eb",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#475569",
-        fontSize: 14,
+        padding: 8,
       }}
     >
-      RC Skill Radar (structure ready)
+      <canvas
+        width={300}
+        height={140}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
     </div>
   );
 }
