@@ -74,84 +74,7 @@ function getOverallAccuracy() {
     return null;
   }
 }
-function RCSkillRadar() {
-  const ref = React.useRef(null);
 
-  React.useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    const w = canvas.width;
-    const h = canvas.height;
-
-    ctx.clearRect(0, 0, w, h);
-
-    const cx = w / 2;
-    const cy = h / 2;
-    const radius = 50;
-    const levels = 4;
-
-    // grid circles
-    ctx.strokeStyle = "#cbd5e1";
-    for (let i = 1; i <= levels; i++) {
-      ctx.beginPath();
-      ctx.arc(cx, cy, (radius * i) / levels, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    // axes
-    const skills = 5;
-    for (let i = 0; i < skills; i++) {
-      const angle = (Math.PI * 2 * i) / skills - Math.PI / 2;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(
-        cx + radius * Math.cos(angle),
-        cy + radius * Math.sin(angle)
-      );
-      ctx.stroke();
-    }
-
-    // dummy values (0–100)
-    const values = [70, 55, 65, 60, 50];
-
-    ctx.beginPath();
-    values.forEach((v, i) => {
-      const angle = (Math.PI * 2 * i) / values.length - Math.PI / 2;
-      const r = (v / 100) * radius;
-      const x = cx + r * Math.cos(angle);
-      const y = cy + r * Math.sin(angle);
-
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
-    ctx.fillStyle = "rgba(37,99,235,0.3)";
-    ctx.strokeStyle = "#2563eb";
-    ctx.fill();
-    ctx.stroke();
-  }, []);
-
-  return (
-    <div
-      style={{
-        height: 160,
-        borderRadius: 12,
-        background: "#f8fafc",
-        border: "1px solid #e5e7eb",
-        padding: 8,
-      }}
-    >
-      <canvas
-        ref={ref}
-        width={300}
-        height={140}
-        style={{ width: "100%", height: "100%" }}
-      />
-    </div>
-  );
-}
 export default function CATAnalytics() {
   return (
     <div
@@ -376,8 +299,7 @@ return (
           <h3 style={cardTitle}>RC Skill Profile</h3>
           <p style={cardSub}>Accuracy & selection intelligence</p>
 
-          <RCSkillRadar />
-
+        
 <div
   style={{
     marginTop: 12,
