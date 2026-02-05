@@ -102,14 +102,20 @@ export default function CATArenaLanding({
 
 /* ================= STYLES ================= */
 
-const card = {
-  border: "1px solid #e5e7eb",
-  borderRadius: 12,
-  padding: 16,
-  marginBottom: 16,
-  background: "#fff",
-  maxWidth: 420,
-};
+const card = attempted => ({
+  borderRadius: 14,
+  padding: 18,
+  marginBottom: 20,
+  maxWidth: 460,
+  background: attempted
+    ? "linear-gradient(135deg, #e0f2fe, #f0f9ff)" // light blue
+    : "linear-gradient(135deg, #f8fafc, #ffffff)",
+  border: attempted
+    ? "1px solid #93c5fd"
+    : "1px solid #e5e7eb",
+  boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+  transition: "all 0.2s ease",
+});
 
 const primaryBtn = {
   width: "100%",
