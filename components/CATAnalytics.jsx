@@ -295,39 +295,55 @@ return (
         }}
       >
         {/* -------- Skill Breakdown -------- */}
-        <div style={card}>
-          <h3 style={cardTitle}>RC Skill Profile</h3>
-          <p style={cardSub}>Accuracy & selection intelligence</p>
+<div style={card}>
+  <h3 style={cardTitle}>RC Skill Profile</h3>
+  <p style={cardSub}>Strengths & weaknesses across RC dimensions</p>
 
-        
-<div
-  style={{
-    marginTop: 12,
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    rowGap: 6,
-    columnGap: 12,
-    fontSize: 13,
-    color: "#334155",
-  }}
->
-  <div>Accuracy</div>
-  <div>Correct answers %</div>
+  {[
+    { label: "Accuracy", value: 72, color: "#22c55e", note: "Correct answers %" },
+    { label: "Speed", value: 55, color: "#f59e0b", note: "Time per question" },
+    { label: "Selection", value: 65, color: "#eab308", note: "Passage choice" },
+    { label: "Elimination", value: 48, color: "#ef4444", note: "Option elimination" },
+    { label: "Endurance", value: 58, color: "#f97316", note: "Accuracy over time" },
+  ].map(skill => (
+    <div key={skill.label} style={{ marginBottom: 14 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 13,
+          marginBottom: 4,
+          color: "#334155",
+        }}
+      >
+        <span style={{ fontWeight: 600 }}>{skill.label}</span>
+        <span>{skill.value}%</span>
+      </div>
 
-  <div>Speed</div>
-  <div>Time per question</div>
+      <div
+        style={{
+          height: 10,
+          borderRadius: 6,
+          background: "#e5e7eb",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${skill.value}%`,
+            height: "100%",
+            background: skill.color,
+            borderRadius: 6,
+          }}
+        />
+      </div>
 
-  <div>Selection</div>
-  <div>Passage choice quality</div>
-
-  <div>Elimination</div>
-  <div>Option elimination skill</div>
-
-  <div>Endurance</div>
-  <div>Accuracy over time</div>
- 
+      <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
+        {skill.note}
+      </div>
+    </div>
+  ))}
 </div>
-        </div>
 
         {/* -------- Time Analysis -------- */}
         <div style={card}>
