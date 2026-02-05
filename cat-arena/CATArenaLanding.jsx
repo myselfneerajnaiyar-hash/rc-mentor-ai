@@ -31,21 +31,21 @@ export default function CATArenaLanding({
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-      <h1>🔥 CAT Arena</h1>
+      <h1 style={{ marginBottom: 24 }}>🔥 CAT Arena</h1>
 
       {sectionals.map(s => {
         const attempts = allAttempts[s.id] || [];
         const attempted = attempts.length > 0;
 
         return (
-         <div key={s.id} style={card(attempted)}>
+          <div key={s.id} style={card(attempted)}>
             <h3 style={{ marginBottom: 6 }}>{s.title}</h3>
 
-            <p style={{ fontSize: 14, color: "#64748b" }}>
+            <p style={{ fontSize: 14, color: "#64748b", marginBottom: 12 }}>
               ⏱ 30 min · 📊 16 Q · 📘 4 passages
             </p>
 
-            {/* ---------- TAKE TEST / ATTEMPTED ---------- */}
+            {/* ---------- STATUS / TAKE TEST ---------- */}
             <button
               onClick={() => {
                 if (attempted) return;
@@ -56,19 +56,20 @@ export default function CATArenaLanding({
               style={{
                 ...primaryBtn,
                 background: attempted ? "#94a3b8" : "#2563eb",
+                opacity: attempted ? 0.9 : 1,
               }}
             >
-              {attempted ? "Attempted" : "Take Test"}
+              {attempted ? "✓ Completed" : "Take Test"}
             </button>
 
             {/* ---------- DIAGNOSIS DROPDOWN ---------- */}
             {attempted && (
-              <details style={{ marginBottom: 6 }}>
+              <details style={{ marginBottom: 10 }}>
                 <summary style={summaryBtn}>
-                  Diagnosis Report ({attempts.length})
+                  📊 Diagnosis Report ({attempts.length})
                 </summary>
 
-                <div style={{ marginTop: 6 }}>
+                <div style={{ marginTop: 8 }}>
                   {attempts.map((a, i) => (
                     <button
                       key={a.attemptId}
@@ -77,7 +78,7 @@ export default function CATArenaLanding({
                         onViewDiagnosis(s.id, a.attemptId)
                       }
                     >
-                      Attempt {i + 1} ·{" "}
+                      {s.title} ·{" "}
                       {new Date(a.timestamp).toLocaleString()}
                     </button>
                   ))}
@@ -85,14 +86,16 @@ export default function CATArenaLanding({
               </details>
             )}
 
-            {/* ---------- REVIEW LATEST ATTEMPT ---------- */}
-            <button
-              onClick={() => onReviewTest(s.id)}
-              disabled={!attempted}
-              style={secondaryBtn(attempted)}
-            >
-              Analyse / Review Test
-            </button>
+            {/* ---------- REVIEW ---------- */}
+            <div style={{ marginTop: 6 }}>
+              <button
+                onClick={() => onReviewTest(s.id)}
+                disabled={!attempted}
+                style={secondaryBtn(attempted)}
+              >
+                Analyse / Review Test
+              </button>
+            </div>
           </div>
         );
       })}
@@ -103,17 +106,18 @@ export default function CATArenaLanding({
 /* ================= STYLES ================= */
 
 const card = attempted => ({
-  borderRadius: 14,
-  padding: 18,
-  marginBottom: 20,
-  maxWidth: 460,
+  borderRadius: 16,
+  padding: 20,
+  marginBottom: 22,
+  maxWidth: 480,
   background: attempted
-    ? "linear-gradient(135deg, #e0f2fe, #f0f9ff)" // light blue
+    ? "linear-gradient(135deg, #e0f2fe, #f0f9ff)"
     : "linear-gradient(135deg, #f8fafc, #ffffff)",
-  border: attempted
-    ? "1px solid #93c5fd"
-    : "1px solid #e5e7eb",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+  border: attempted ? "1px solid #93c5fd" : "1px solid #e5e7eb",
+  borderLeft: attempted
+    ? "6px solid #3b82f6"
+    : "6px solid #cbd5e1",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
   transition: "all 0.2s ease",
 });
 
@@ -122,28 +126,29 @@ const primaryBtn = {
   padding: 10,
   color: "#fff",
   border: "none",
-  borderRadius: 8,
-  marginBottom: 8,
-  fontWeight: 600,
+  borderRadius: 10,
+  marginBottom: 10,
+  fontWeight: 700,
+  fontSize: 15,
 };
 
 const summaryBtn = {
   width: "100%",
-  padding: 8,
+  padding: 9,
   background: "#f8fafc",
   border: "1px solid #cbd5e1",
-  borderRadius: 8,
+  borderRadius: 10,
   cursor: "pointer",
-  fontWeight: 500,
+  fontWeight: 600,
 };
 
 const attemptBtn = {
   width: "100%",
-  padding: 7,
-  marginBottom: 4,
+  padding: "8px 10px",
+  marginBottom: 6,
   background: "#ffffff",
   border: "1px solid #e5e7eb",
-  borderRadius: 6,
+  borderRadius: 8,
   cursor: "pointer",
   fontSize: 13,
   textAlign: "left",
@@ -151,9 +156,10 @@ const attemptBtn = {
 
 const secondaryBtn = enabled => ({
   width: "100%",
-  padding: 8,
-  background: enabled ? "#f8fafc" : "#f1f5f9",
+  padding: 9,
+  background: enabled ? "#ffffff" : "#f1f5f9",
   border: "1px solid #cbd5e1",
-  borderRadius: 8,
+  borderRadius: 10,
   cursor: enabled ? "pointer" : "not-allowed",
+  fontWeight: 600,
 });
