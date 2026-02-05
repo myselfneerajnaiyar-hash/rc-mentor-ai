@@ -81,15 +81,15 @@ function RCSkillRadar() {
         height: 160,
         borderRadius: 12,
         background: "#f8fafc",
-        border: "1px dashed #cbd5e1",
+        border: "1px solid #e5e7eb",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "#64748b",
+        color: "#475569",
         fontSize: 14,
       }}
     >
-      Radar chart (Accuracy • Attempts • Time • Selection)
+      RC Skill Radar (structure ready)
     </div>
   );
 }
