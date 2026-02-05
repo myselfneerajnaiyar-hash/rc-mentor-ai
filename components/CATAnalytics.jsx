@@ -75,6 +75,35 @@ function getOverallAccuracy() {
   }
 }
 
+function getSectionWiseMarks() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+    return Object.entries(data)
+      .map(([sectionId, attempts]) => {
+        if (!Array.isArray(attempts) || !attempts.length) return null;
+
+        const a = attempts[0]; // locked attempt
+
+        const correct = a.correct || 0;
+        const total = a.total || 0;
+        const wrong = Math.max(total - correct, 0);
+
+        const marks = correct * 3 - wrong * 1;
+
+        return {
+          label: sectionId.toUpperCase(),
+          marks,
+          correct,
+          wrong,
+        };
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 function getRCSkillMetrics() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
