@@ -220,14 +220,18 @@ return (
         </text>
       </g>
     ))}
-  </svg>
-  {improvement !== null && (
+ </svg>
+
+</div>
+
+{improvement !== null && (
   <div
     style={{
       marginTop: 8,
       fontSize: 13,
       color: improvement >= 0 ? "#16a34a" : "#dc2626",
       fontWeight: 500,
+      textAlign: "center",
     }}
   >
     {improvement >= 0 ? "▲" : "▼"}{" "}
