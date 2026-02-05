@@ -162,80 +162,71 @@ const points = data.map((d, i) => {
 });
 
 return (
-  <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
-    {/* X axis */}
-    <line
-      x1={padding}
-      y1={height - padding}
-      x2={width - padding}
-      y2={height - padding}
-      stroke="#cbd5e1"
-    />
+ <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+  {/* X axis */}
+  <line
+    x1={padding}
+    y1={height - padding}
+    x2={width - padding}
+    y2={height - padding}
+    stroke="#cbd5e1"
+  />
 
-    {/* Y axis */}
-    <line
-      x1={padding}
-      y1={padding}
-      x2={padding}
-      y2={height - padding}
-      stroke="#cbd5e1"
-    />
+  {/* Y axis */}
+  <line
+    x1={padding}
+    y1={padding}
+    x2={padding}
+    y2={height - padding}
+    stroke="#cbd5e1"
+  />
 
-    {/* Line */}
-    <polyline
-      fill="none"
-      stroke="#2563eb"
-      strokeWidth="3"
-      points={points.map(p => `${p.x},${p.y}`).join(" ")}
-    />
+  {/* Line */}
+  <polyline
+    fill="none"
+    stroke="#2563eb"
+    strokeWidth="3"
+    points={points.map(p => `${p.x},${p.y}`).join(" ")}
+  />
 
-    {/* Dots + values */}
-    {points.map((p, i) => (
-      <g key={i}>
-        <circle cx={p.x} cy={p.y} r="5" fill="#2563eb">
-  <title>
-    {p.label}
-    {"\n"}Accuracy: {p.accuracy}%
-  </title>
-</circle>
-        <text
-          x={p.x}
-          y={p.y - 8}
-          textAnchor="middle"
-          fontSize="11"
-          fill="#2563eb"
-        >
-          {p.accuracy}%
-        </text>
-
-        {/* X-axis label */}
-        <text
-          x={p.x}
-          y={height - 8}
-          textAnchor="middle"
-          fontSize="11"
-          fill="#334155"
-        >
-          {p.label}
-        </text>
-      </g>
-    ))}
- </svg>
-
+  {/* Points + labels */}
+  {points.map((p, i) => (
+    <g key={i}>
+      <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+      <text
+        x={p.x}
+        y={p.y - 8}
+        textAnchor="middle"
+        fontSize="11"
+        fill="#2563eb"
+      >
+        {p.accuracy}%
+      </text>
+      <text
+        x={p.x}
+        y={height - 8}
+        textAnchor="middle"
+        fontSize="11"
+        fill="#334155"
+      >
+        {p.label}
+      </text>
+    </g>
+  ))}
+</svg>
 </div>
 
 {improvement !== null && (
   <div
     style={{
       marginTop: 8,
-      fontSize: 13,
-      color: improvement >= 0 ? "#16a34a" : "#dc2626",
-      fontWeight: 500,
       textAlign: "center",
+      fontSize: 13,
+      fontWeight: 500,
+      color: improvement >= 0 ? "#16a34a" : "#dc2626",
     }}
   >
-    {improvement >= 0 ? "▲" : "▼"}{" "}
-    {Math.abs(improvement)}% from last sectional
+    {improvement >= 0 ? "▲" : "▼"} {Math.abs(improvement)}% from last sectional
   </div>
 )}
   </div>
