@@ -32,17 +32,24 @@ function getAverageTimePerQuestion() {
     let totalQuestions = 0;
     let totalTime = 0;
 
-    Object.values(data).forEach(sectionAttempts => {
-      if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
-        return;
+   Object.values(data).forEach(sectionAttempts => {
+  if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0) return;
 
-      const attempt = sectionAttempts[0];
+  const attempt = sectionAttempts[0];
 
-      if (attempt.total && attempt.timeTaken) {
-        totalQuestions += attempt.total;
-        totalTime += attempt.timeTaken;
-      }
-    });
+  // 🔒 HARD GUARD: ignore corrupted / empty attempts
+  if (
+    typeof attempt.total !== "number" ||
+    attempt.total <= 0 ||
+    typeof attempt.timeTaken !== "number" ||
+    attempt.timeTaken <= 0
+  ) {
+    return;
+  }
+
+  totalQuestions += attempt.total;
+  totalTime += attempt.timeTaken;
+});
 
     if (totalQuestions === 0) return null;
 
