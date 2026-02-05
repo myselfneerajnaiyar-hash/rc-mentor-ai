@@ -1,6 +1,29 @@
 "use client";
 const STORAGE_KEY = "catRCResults";
 
+function getSectionalAccuracyTrend() {
+  try {
+    const data = JSON.parse(localStorage.getItem("catRCResults")) || {};
+
+    return Object.entries(data)
+      .map(([sectionalId, attempts]) => {
+        if (!Array.isArray(attempts) || attempts.length === 0) return null;
+
+        const a = attempts[0]; // locked attempt
+        if (!a.correct || !a.total) return null;
+
+        return {
+          label: sectionalId.toUpperCase(),
+          accuracy: Math.round((a.correct / a.total) * 100),
+          time: a.timestamp,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.time - b.time);
+  } catch {
+    return [];
+  }
+}
 function getAverageTimePerQuestion() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
@@ -86,9 +109,32 @@ export default function CATAnalytics() {
             Tracks your sectional test performance over time
           </p>
 
-          <div style={placeholderBox}>
-            📈 Line chart coming here
-          </div>
+         <div style={{ height: 160, display: "flex", alignItems: "flex-end", gap: 12 }}>
+  {(() => {
+    const trend = getSectionalAccuracyTrend();
+
+    if (trend.length === 0) {
+      return <span style={{ color: "#64748b" }}>No data yet</span>;
+    }
+
+    return trend.map((p, i) => (
+      <div key={i} style={{ textAlign: "center" }}>
+        <div
+          style={{
+            width: 28,
+            height: `${p.accuracy * 1.2}px`,
+            background: "#3b82f6",
+            borderRadius: 6,
+            marginBottom: 6,
+          }}
+        />
+        <div style={{ fontSize: 11, color: "#64748b" }}>
+          {p.accuracy}%
+        </div>
+      </div>
+    ));
+  })()}
+</div>
 
           <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
             <Stat label="Total Sectionals" value="—" />
