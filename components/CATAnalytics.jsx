@@ -377,6 +377,33 @@ return (
           <p style={cardSub}>Accuracy & selection intelligence</p>
 
           <RCSkillRadar />
+
+<div
+  style={{
+    marginTop: 12,
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    rowGap: 6,
+    columnGap: 12,
+    fontSize: 13,
+    color: "#334155",
+  }}
+>
+  <div>Accuracy</div>
+  <div>Correct answers %</div>
+
+  <div>Speed</div>
+  <div>Time per question</div>
+
+  <div>Selection</div>
+  <div>Passage choice quality</div>
+
+  <div>Elimination</div>
+  <div>Option elimination skill</div>
+
+  <div>Endurance</div>
+  <div>Accuracy over time</div>
+</div>
         </div>
 
         {/* -------- Time Analysis -------- */}
