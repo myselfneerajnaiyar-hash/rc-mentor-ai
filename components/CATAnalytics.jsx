@@ -235,7 +235,7 @@ export default function CATAnalytics() {
     <Stat label="Total Sectionals" value="—" />
     <Stat label="Total Attempts" value="—" />
   </div>
-</div>
+
 
         {/* -------- Average Performance -------- */}
         <div style={card}>
