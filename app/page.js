@@ -13,6 +13,23 @@ import CATArenaTestView from "../cat-arena/CATArenaTestView";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
 
+function loadSectionalAttemptMap() {
+  try {
+    const raw = JSON.parse(localStorage.getItem("catRCResults") || "{}");
+    const map = {};
+
+    Object.keys(raw).forEach((sectionalId) => {
+      if (Array.isArray(raw[sectionalId]) && raw[sectionalId].length > 0) {
+        map[sectionalId] = true;
+      }
+    });
+
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
@@ -45,8 +62,8 @@ export default function Page() {
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setView] = useState("home"); 
 // home | rc | vocab | speed | cat
-  const [activeRCTest, setActiveRCTest] = useState(null);
-  const [lastAttemptedSectional, setLastAttemptedSectional] = useState(null);
+ const [activeRCTest, setActiveRCTest] = useState(null);
+const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
@@ -220,6 +237,12 @@ export default function Page() {
     return () => clearInterval(id);
   }, [vocabRunning, vocabTimer]);
 
+  useEffect(() => {
+  if (view === "cat") {
+    setSectionalAttemptMap(loadSectionalAttemptMap());
+  }
+}, [view]);
+  
   useEffect(() => {
     const existing = loadVocab();
     if (!existing.length) {
@@ -583,6 +606,7 @@ return (
 
 {view === "cat" && catPhase === "idle" && (
   <CATArenaLanding
+  attemptedMap={sectionalAttemptMap}
     onStartRC={async (sectionalId) => {
       setCatPhase("generating");
 
@@ -594,12 +618,18 @@ return (
       setCatPhase("test");
     }}
 
-    onViewDiagnosis={(sectionalId) => {
-      setActiveRCTest({ id: sectionalId, __startPhase: "diagnosis" });
-      setCatPhase("test");
-    }}
+   onViewDiagnosis={(sectionalId) => {
+  if (!sectionalAttemptMap[sectionalId]) return;
 
-    onReviewTest={async (sectionalId) => {
+  setActiveRCTest({ id: sectionalId, __startPhase: "diagnosis" });
+  setCatPhase("test");
+}}
+
+   onReviewTest={async (sectionalId) => {
+  if (!sectionalAttemptMap[sectionalId]) return;
+
+  try {
+    setCatPhase("generating");
   try {
     setCatPhase("generating");
 
@@ -641,12 +671,11 @@ return (
 
 {view === "cat" && catPhase === "test" && activeRCTest && (
   <RCSectionalContainer
-    testData={activeRCTest}
-    onExit={() => {
-      setLastAttemptedSectional(activeRCTest.id);
-      setCatPhase("idle");
-    }}
-  />
+  testData={activeRCTest}
+  onExit={() => {
+    setCatPhase("idle");
+  }}
+/>
 )}
 
   </main>
