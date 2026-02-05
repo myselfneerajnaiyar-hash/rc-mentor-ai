@@ -64,25 +64,30 @@ function getOverallAccuracy() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-    let correct = 0;
-    let total = 0;
+    let totalCorrect = 0;
+    let totalAttempted = 0;
 
     Object.values(data).forEach(sectionAttempts => {
       if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
         return;
 
-      const attempt = sectionAttempts[0];
+      const a = sectionAttempts[0];
 
-      // 🔒 HARD GUARD — THIS WAS MISSING
-      if (!attempt.total || attempt.total === 0) return;
+      if (
+        typeof a.correct !== "number" ||
+        typeof a.attempted !== "number" ||
+        a.attempted === 0
+      ) {
+        return;
+      }
 
-      correct += attempt.correct || 0;
-      total += attempt.total;
+      totalCorrect += a.correct;
+      totalAttempted += a.attempted;
     });
 
-    if (total === 0) return null;
+    if (totalAttempted === 0) return null;
 
-    return Math.round((correct / total) * 100);
+    return Math.round((totalCorrect / totalAttempted) * 100);
   } catch {
     return null;
   }
