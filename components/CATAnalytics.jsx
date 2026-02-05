@@ -75,6 +75,60 @@ function getOverallAccuracy() {
   }
 }
 
+function getRCSkillMetrics() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    const attempts = Object.values(data)
+      .map(a => (Array.isArray(a) ? a[0] : null))
+      .filter(Boolean);
+
+    if (attempts.length === 0) return null;
+
+    let correct = 0;
+    let total = 0;
+    let totalTime = 0;
+
+    attempts.forEach(a => {
+      correct += a.correct || 0;
+      total += a.total || 0;
+      totalTime += a.timeTaken || 0;
+    });
+
+    const accuracy = total ? Math.round((correct / total) * 100) : 0;
+    const avgTime = total ? Math.round(totalTime / total) : 0;
+
+    // Heuristic scores (CAT-style logic)
+    const speedScore =
+      avgTime <= 45 ? 80 :
+      avgTime <= 60 ? 65 :
+      avgTime <= 75 ? 50 : 35;
+
+    const selectionScore =
+      accuracy >= 75 ? 75 :
+      accuracy >= 65 ? 65 :
+      accuracy >= 55 ? 55 : 45;
+
+    const eliminationScore =
+      accuracy >= 70 ? 70 :
+      accuracy >= 60 ? 55 :
+      accuracy >= 50 ? 45 : 35;
+
+    const enduranceScore =
+      attempts.length >= 6 ? 70 :
+      attempts.length >= 4 ? 60 :
+      attempts.length >= 2 ? 50 : 40;
+
+    return {
+      accuracy,
+      speed: speedScore,
+      selection: selectionScore,
+      elimination: eliminationScore,
+      endurance: enduranceScore,
+    };
+  } catch {
+    return null;
+  }
+}
 export default function CATAnalytics() {
   return (
     <div
