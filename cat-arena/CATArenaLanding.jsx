@@ -12,6 +12,11 @@ function loadAll() {
   }
 }
 
+/* ---------- FORCE REFRESH ---------- */
+function refreshAttempts(setAllAttempts) {
+  setAllAttempts(loadAll());
+}
+
 export default function CATArenaLanding({
   onStartRC,
   onViewDiagnosis,
@@ -20,8 +25,9 @@ export default function CATArenaLanding({
   const [loadingId, setLoadingId] = useState(null);
   const [allAttempts, setAllAttempts] = useState({});
 
+  /* initial load */
   useEffect(() => {
-    setAllAttempts(loadAll());
+    refreshAttempts(setAllAttempts);
   }, []);
 
   const sectionals = [
@@ -51,6 +57,9 @@ export default function CATArenaLanding({
                 if (attempted) return;
                 setLoadingId(s.id);
                 onStartRC(s.id);
+
+                // 🔑 refresh shortly after start to avoid stale state
+                setTimeout(() => refreshAttempts(setAllAttempts), 300);
               }}
               disabled={attempted || loadingId === s.id}
               style={{
@@ -74,7 +83,10 @@ export default function CATArenaLanding({
                     <button
                       key={a.attemptId}
                       style={attemptBtn}
-                      onClick={() => onViewDiagnosis(s.id, a.attemptId)}
+                      onClick={() => {
+                        refreshAttempts(setAllAttempts);
+                        onViewDiagnosis(s.id, a.attemptId);
+                      }}
                     >
                       {s.title} ·{" "}
                       {typeof a.timestamp === "number"
@@ -89,7 +101,10 @@ export default function CATArenaLanding({
             {/* ---------- REVIEW ---------- */}
             <div style={{ marginTop: 6 }}>
               <button
-                onClick={() => onReviewTest(s.id)}
+                onClick={() => {
+                  refreshAttempts(setAllAttempts);
+                  onReviewTest(s.id);
+                }}
                 disabled={!attempted}
                 style={secondaryBtn(attempted)}
               >
