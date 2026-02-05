@@ -139,40 +139,78 @@ export default function CATAnalytics() {
       );
     }
 
-    const width = 500;
-    const height = 120;
-    const padding = 30;
+   const width = 500;
+const height = 140;
+const padding = 30;
 
-    const points = data.map((d, i) => {
-      const x =
-        padding +
-        (i * (width - padding * 2)) / (data.length - 1 || 1);
+const points = data.map((d, i) => {
+  const x =
+    padding +
+    (i * (width - padding * 2)) / (data.length - 1 || 1);
 
-      const y =
-        padding +
-        ((100 - d.accuracy) * (height - padding * 2)) / 100;
+  const y =
+    padding +
+    ((100 - d.accuracy) * (height - padding * 2)) / 100;
 
-      return `${x},${y}`;
-    });
+  return { x, y, label: d.label, accuracy: d.accuracy };
+});
 
-    return (
-      <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
-        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#cbd5e1" />
-        <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#cbd5e1" />
+return (
+  <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+    {/* X axis */}
+    <line
+      x1={padding}
+      y1={height - padding}
+      x2={width - padding}
+      y2={height - padding}
+      stroke="#cbd5e1"
+    />
 
-        <polyline
-          fill="none"
-          stroke="#2563eb"
-          strokeWidth="3"
-          points={points.join(" ")}
-        />
+    {/* Y axis */}
+    <line
+      x1={padding}
+      y1={padding}
+      x2={padding}
+      y2={height - padding}
+      stroke="#cbd5e1"
+    />
 
-        {points.map((p, i) => {
-          const [x, y] = p.split(",");
-          return <circle key={i} cx={x} cy={y} r="4" fill="#2563eb" />;
-        })}
-      </svg>
-    );
+    {/* Line */}
+    <polyline
+      fill="none"
+      stroke="#2563eb"
+      strokeWidth="3"
+      points={points.map(p => `${p.x},${p.y}`).join(" ")}
+    />
+
+    {/* Dots + values */}
+    {points.map((p, i) => (
+      <g key={i}>
+        <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+        <text
+          x={p.x}
+          y={p.y - 8}
+          textAnchor="middle"
+          fontSize="11"
+          fill="#2563eb"
+        >
+          {p.accuracy}%
+        </text>
+
+        {/* X-axis label */}
+        <text
+          x={p.x}
+          y={height - 8}
+          textAnchor="middle"
+          fontSize="11"
+          fill="#334155"
+        >
+          {p.label}
+        </text>
+      </g>
+    ))}
+  </svg>
+);
   })()}
 </div>
     );
