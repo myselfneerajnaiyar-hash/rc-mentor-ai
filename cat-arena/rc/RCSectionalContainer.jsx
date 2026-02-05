@@ -23,7 +23,11 @@ function saveAll(data) {
 
 function saveAttempt(sectionalId, payload) {
   const all = loadAll();
-  if (!all[sectionalId]) all[sectionalId] = [];
+
+  // 🛡️ force-correct corrupted data
+  if (!Array.isArray(all[sectionalId])) {
+    all[sectionalId] = [];
+  }
 
   all[sectionalId].push({
     attemptId: Date.now().toString(),
@@ -32,7 +36,7 @@ function saveAttempt(sectionalId, payload) {
   });
 
   saveAll(all);
-}
+
 
 function getLatestAttempt(sectionalId) {
   const all = loadAll();
