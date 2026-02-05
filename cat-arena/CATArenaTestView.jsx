@@ -172,6 +172,7 @@ function submitPayload() {
     timestamp: Date.now(),   // number
     total,                   // number
     correct,                 // number
+    attempted: answers.filter(a => a !== null && a !== undefined).length,
     timeTaken,               // seconds
   });
 }
