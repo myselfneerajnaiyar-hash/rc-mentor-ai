@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
@@ -23,8 +23,6 @@ function saveAll(data) {
 
 function saveAttempt(sectionalId, payload) {
   const all = loadAll();
-
-  // 🛡️ force-correct corrupted data
   if (!Array.isArray(all[sectionalId])) {
     all[sectionalId] = [];
   }
@@ -36,12 +34,11 @@ function saveAttempt(sectionalId, payload) {
   });
 
   saveAll(all);
-} // ✅ FIX: function properly closed
+}
 
-function getLatestAttempt(sectionalId) {
+function loadAttempts(sectionalId) {
   const all = loadAll();
-  const list = all[sectionalId] || [];
-  return list.length ? list[list.length - 1] : null;
+  return Array.isArray(all[sectionalId]) ? all[sectionalId] : [];
 }
 
 /* ================= COMPONENT ================= */
@@ -53,15 +50,18 @@ export default function RCSectionalContainer({ testData, onExit }) {
     testData.__startPhase || "instructions"
   );
 
-  const [result, setResult] = useState(null);
+  const [attempts, setAttempts] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  /* ---- load stored attempt for review / diagnosis ---- */
+  /* ---- Load attempts once ---- */
   useEffect(() => {
-    if (phase === "diagnosis" || phase === "review") {
-      const latest = getLatestAttempt(sectionalId);
-      if (latest) setResult(latest);
-    }
-  }, [phase, sectionalId]);
+    const list = loadAttempts(sectionalId);
+    setAttempts(list);
+    if (list.length) setActiveIndex(list.length - 1);
+  }, [sectionalId]);
+
+  const activeAttempt =
+    activeIndex !== null ? attempts[activeIndex] : null;
 
   /* ---------------- INSTRUCTIONS ---------------- */
   if (phase === "instructions") {
@@ -72,30 +72,70 @@ export default function RCSectionalContainer({ testData, onExit }) {
     );
   }
 
-  /* ---------------- TEST / REVIEW ---------------- */
-  if (phase === "test" || phase === "review") {
+  /* ---------------- TEST ---------------- */
+  if (phase === "test") {
     return (
       <CATArenaTestView
         testData={testData}
-        mode={phase}
-        initialState={phase === "review" ? result : null}
+        mode="test"
         onSubmit={(payload) => {
           saveAttempt(sectionalId, payload);
-          setResult(payload);
+          const updated = loadAttempts(sectionalId);
+          setAttempts(updated);
+          setActiveIndex(updated.length - 1);
           setPhase("diagnosis");
         }}
       />
     );
   }
 
+  /* ---------------- REVIEW ---------------- */
+  if (phase === "review" && activeAttempt) {
+    return (
+      <CATArenaTestView
+        testData={testData}
+        mode="review"
+        initialState={activeAttempt}
+        onSubmit={() => setPhase("diagnosis")}
+      />
+    );
+  }
+
   /* ---------------- DIAGNOSIS ---------------- */
-  if (phase === "diagnosis" && result) {
+  if (phase === "diagnosis" && activeAttempt) {
     return (
       <DiagnosisView
-        passages={result.passages}
-        questions={result.questions}
-        answers={result.answers}
-        questionTime={result.questionTime}
+        passages={activeAttempt.passages}
+        questions={activeAttempt.questions}
+        answers={activeAttempt.answers}
+        questionTime={activeAttempt.questionTime}
+        /* ========= ATTEMPT HISTORY UI ========= */
+        headerExtra={
+          <div style={{ marginBottom: 12 }}>
+            {attempts.map((a, i) => (
+              <button
+                key={a.attemptId}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  padding: "6px 10px",
+                  marginRight: 8,
+                  borderRadius: 6,
+                  border:
+                    i === activeIndex
+                      ? "2px solid #2563eb"
+                      : "1px solid #cbd5e1",
+                  background:
+                    i === activeIndex ? "#eef2ff" : "#fff",
+                  cursor: "pointer",
+                  fontSize: 13,
+                }}
+              >
+                Attempt {i + 1} ·{" "}
+                {new Date(a.timestamp).toLocaleString()}
+              </button>
+            ))}
+          </div>
+        }
         onReview={() => setPhase("review")}
         onBack={onExit}
       />
