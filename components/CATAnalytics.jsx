@@ -115,20 +115,59 @@ export default function CATAnalytics() {
           <p style={cardSub}>Overall accuracy across sectionals</p>
 
           <div
-            style={{
-              ...placeholderBox,
-              borderRadius: "50%",
-              height: 180,
-              width: 180,
-              margin: "20px auto",
-            }}
-          >
-            ⭕
-          </div>
+  style={{
+    height: 220,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  {(() => {
+    const accuracy = getOverallAccuracy();
 
-          <div style={{ textAlign: "center", color: "#64748b" }}>
-            Donut chart coming here
+    if (!accuracy) {
+      return <span style={{ color: "#64748b" }}>No data yet</span>;
+    }
+
+    return (
+      <div
+        style={{
+          width: 160,
+          height: 160,
+          borderRadius: "50%",
+          background: `conic-gradient(
+            #3b82f6 ${accuracy * 3.6}deg,
+            #e5e7eb 0deg
+          )`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            width: 110,
+            height: 110,
+            borderRadius: "50%",
+            background: "#ffffff",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+          }}
+        >
+          <div style={{ fontSize: 26, fontWeight: 700 }}>
+            {accuracy}%
           </div>
+          <div style={{ fontSize: 12, color: "#64748b" }}>
+            Accuracy
+          </div>
+        </div>
+      </div>
+    );
+  })()}
+</div>
         </div>
       </div>
 
