@@ -1,13 +1,4 @@
 "use client";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 const STORAGE_KEY = "catRCResults";
 
@@ -128,22 +119,62 @@ export default function CATAnalytics() {
     }
 
     return (
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="label" />
-          <YAxis domain={[0, 100]} />
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="accuracy"
-            stroke="#3b82f6"
-            strokeWidth={3}
-            dot={{ r: 5 }}
-            activeDot={{ r: 7 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+    <div
+  style={{
+    height: 180,
+    background: "#f8fafc",
+    border: "1px solid #e5e7eb",
+    borderRadius: 12,
+    padding: 12,
+  }}
+>
+  {(() => {
+    const data = getSectionalAccuracyTrend();
+
+    if (!data.length) {
+      return (
+        <div style={{ color: "#64748b", textAlign: "center", marginTop: 60 }}>
+          No data yet
+        </div>
+      );
+    }
+
+    const width = 500;
+    const height = 120;
+    const padding = 30;
+
+    const points = data.map((d, i) => {
+      const x =
+        padding +
+        (i * (width - padding * 2)) / (data.length - 1 || 1);
+
+      const y =
+        padding +
+        ((100 - d.accuracy) * (height - padding * 2)) / 100;
+
+      return `${x},${y}`;
+    });
+
+    return (
+      <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#cbd5e1" />
+        <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#cbd5e1" />
+
+        <polyline
+          fill="none"
+          stroke="#2563eb"
+          strokeWidth="3"
+          points={points.join(" ")}
+        />
+
+        {points.map((p, i) => {
+          const [x, y] = p.split(",");
+          return <circle key={i} cx={x} cy={y} r="4" fill="#2563eb" />;
+        })}
+      </svg>
+    );
+  })()}
+</div>
     );
   })()}
 </div>
