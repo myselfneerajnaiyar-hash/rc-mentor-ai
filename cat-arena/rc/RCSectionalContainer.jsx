@@ -142,7 +142,9 @@ export default function RCSectionalContainer({ testData, onExit }) {
                 }}
               >
                 Attempt {i + 1} ·{" "}
-                {new Date(a.timestamp).toLocaleString()}
+               a.timestamp
+  ? new Date(a.timestamp).toLocaleString()
+  : "—"
               </button>
             ))}
           </div>
