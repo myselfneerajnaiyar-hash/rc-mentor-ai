@@ -1,38 +1,4 @@
-
-import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "catRCResults";
-
-/* ---------- LOAD ALL ATTEMPTS ---------- */
-function loadAll() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  } catch {
-    return {};
-  }
-}
-
-export default function CATArenaLanding({
-  onStartRC,
-  onViewDiagnosis,
-  onReviewTest,
-}) {
-  const [loadingId, setLoadingId] = useState(null);
-  const [allAttempts, setAllAttempts] = useState({});
-
-  useEffect(() => {
-    setAllAttempts(loadAll());
-  }, []);
-
-  const sectionals = [
-    { id: "sectional-01", title: "CAT RC Sectional 01" },
-    { id: "sectional-02", title: "CAT RC Sectional 02" },
-  ];
-
-  return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-      <h1 s…
-[16:37, 5/2/2026] Neraj Naiyar: "use client";
+"use client";
 
 export default function Navbar({ view, setView }) {
   const tabs = [
