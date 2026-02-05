@@ -36,7 +36,7 @@ function saveAttempt(sectionalId, payload) {
   });
 
   saveAll(all);
-
+} // ✅ FIX: function properly closed
 
 function getLatestAttempt(sectionalId) {
   const all = loadAll();
