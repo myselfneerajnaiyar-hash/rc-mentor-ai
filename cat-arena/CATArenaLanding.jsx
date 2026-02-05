@@ -3,14 +3,10 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "catRCResults";
 
-function loadCounts() {
+/* ---------- LOAD ALL ATTEMPTS ---------- */
+function loadAll() {
   try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    const counts = {};
-    Object.keys(data).forEach(k => {
-      counts[k] = Array.isArray(data[k]) ? data[k].length : 0;
-    });
-    return counts;
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   } catch {
     return {};
   }
@@ -22,10 +18,10 @@ export default function CATArenaLanding({
   onReviewTest,
 }) {
   const [loadingId, setLoadingId] = useState(null);
-  const [counts, setCounts] = useState({});
+  const [allAttempts, setAllAttempts] = useState({});
 
   useEffect(() => {
-    setCounts(loadCounts());
+    setAllAttempts(loadAll());
   }, []);
 
   const sectionals = [
@@ -38,16 +34,18 @@ export default function CATArenaLanding({
       <h1>🔥 CAT Arena</h1>
 
       {sectionals.map(s => {
-        const attempts = counts[s.id] || 0;
-        const attempted = attempts > 0;
+        const attempts = allAttempts[s.id] || [];
+        const attempted = attempts.length > 0;
 
         return (
           <div key={s.id} style={card}>
             <h4>{s.title}</h4>
+
             <p style={{ fontSize: 14, color: "#64748b" }}>
               ⏱ 30 min · 📊 16 Q · 📘 4 passages
             </p>
 
+            {/* ---------- TAKE TEST / ATTEMPTED ---------- */}
             <button
               onClick={() => {
                 if (attempted) return;
@@ -63,14 +61,31 @@ export default function CATArenaLanding({
               {attempted ? "Attempted" : "Take Test"}
             </button>
 
-            <button
-              onClick={() => onViewDiagnosis(s.id)}
-              disabled={!attempted}
-              style={secondaryBtn(attempted)}
-            >
-              Diagnosis Report ({attempts})
-            </button>
+            {/* ---------- DIAGNOSIS DROPDOWN ---------- */}
+            {attempted && (
+              <details style={{ marginBottom: 6 }}>
+                <summary style={summaryBtn}>
+                  Diagnosis Report ({attempts.length})
+                </summary>
 
+                <div style={{ marginTop: 6 }}>
+                  {attempts.map((a, i) => (
+                    <button
+                      key={a.attemptId}
+                      style={attemptBtn}
+                      onClick={() =>
+                        onViewDiagnosis(s.id, a.attemptId)
+                      }
+                    >
+                      Attempt {i + 1} ·{" "}
+                      {new Date(a.timestamp).toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+              </details>
+            )}
+
+            {/* ---------- REVIEW LATEST ATTEMPT ---------- */}
             <button
               onClick={() => onReviewTest(s.id)}
               disabled={!attempted}
@@ -84,6 +99,8 @@ export default function CATArenaLanding({
     </div>
   );
 }
+
+/* ================= STYLES ================= */
 
 const card = {
   border: "1px solid #e5e7eb",
@@ -104,12 +121,33 @@ const primaryBtn = {
   fontWeight: 600,
 };
 
+const summaryBtn = {
+  width: "100%",
+  padding: 8,
+  background: "#f8fafc",
+  border: "1px solid #cbd5e1",
+  borderRadius: 8,
+  cursor: "pointer",
+  fontWeight: 500,
+};
+
+const attemptBtn = {
+  width: "100%",
+  padding: 7,
+  marginBottom: 4,
+  background: "#ffffff",
+  border: "1px solid #e5e7eb",
+  borderRadius: 6,
+  cursor: "pointer",
+  fontSize: 13,
+  textAlign: "left",
+};
+
 const secondaryBtn = enabled => ({
   width: "100%",
   padding: 8,
   background: enabled ? "#f8fafc" : "#f1f5f9",
-  border: "1px solid #cbd5f5",
+  border: "1px solid #cbd5e1",
   borderRadius: 8,
-  marginBottom: 6,
   cursor: enabled ? "pointer" : "not-allowed",
 });
