@@ -119,16 +119,7 @@ export default function CATAnalytics() {
     }
 
     return (
-    <div
-  style={{
-    height: 180,
-    background: "#f8fafc",
-    border: "1px solid #e5e7eb",
-    borderRadius: 12,
-    padding: 12,
-  }}
->
- <div
+  <div
   style={{
     height: 180,
     background: "#f8fafc",
