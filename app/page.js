@@ -84,22 +84,28 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [catPhase, setCatPhase] = useState("idle");
 // idle | generating | instructions | test | diagnosis | review
 
-  useEffect(() => {
+useEffect(() => {
   function handler(e) {
-    const { sectionalId } = e.detail;
+    const { sectionalId, attemptId } = e.detail || {};
 
     setView("cat");
     setCatPhase("test");
+
     setActiveRCTest({
-      id: sectionalId,
+      id: sectionalId || "_history_", // fallback safety
       __startPhase: "diagnosis",
+      __attemptId: attemptId,
     });
   }
 
   window.addEventListener("OPEN_DIAGNOSIS", handler);
-  return () =>
+  return () => {
     window.removeEventListener("OPEN_DIAGNOSIS", handler);
+  };
 }, []);
+
+
+  
   function loadVocab() {
     return JSON.parse(localStorage.getItem("vocabBank") || "[]");
   }
