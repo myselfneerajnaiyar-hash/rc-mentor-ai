@@ -79,7 +79,9 @@ export default function CATArenaLanding({
                       }
                     >
                       {s.title} ·{" "}
-                      {new Date(a.timestamp).toLocaleString()}
+                     a.timestamp
+  ? new Date(a.timestamp).toLocaleString()
+  : "—"
                     </button>
                   ))}
                 </div>
