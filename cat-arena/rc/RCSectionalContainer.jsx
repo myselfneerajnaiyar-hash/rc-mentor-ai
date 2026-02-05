@@ -1,25 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
 
-/*
-  STORAGE CONTRACT (LOCKED)
-  localStorage.catRCResults = {
-    [sectionalId]: {
-      passages,
-      questions,
-      answers,
-      questionTime
-    }
-  }
-*/
+/* ================= STORAGE ================= */
 
 const STORAGE_KEY = "catRCResults";
 
-function loadAllResults() {
+function loadAll() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   } catch {
@@ -27,55 +17,58 @@ function loadAllResults() {
   }
 }
 
-function saveResult(sectionalId, result) {
-  const all = loadAllResults();
-  all[sectionalId] = result;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+function saveAll(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-function loadResult(sectionalId) {
-  const all = loadAllResults();
-  return all[sectionalId] || null;
+function saveAttempt(sectionalId, payload) {
+  const all = loadAll();
+  if (!all[sectionalId]) all[sectionalId] = [];
+
+  all[sectionalId].push({
+    attemptId: Date.now().toString(),
+    timestamp: Date.now(),
+    ...payload,
+  });
+
+  saveAll(all);
 }
+
+function getLatestAttempt(sectionalId) {
+  const all = loadAll();
+  const list = all[sectionalId] || [];
+  return list.length ? list[list.length - 1] : null;
+}
+
+/* ================= COMPONENT ================= */
 
 export default function RCSectionalContainer({ testData, onExit }) {
   const sectionalId = testData.id;
 
-  // ✅ phase bootstrap (ONCE)
-  const startPhaseUsed = useRef(false);
-  const [phase, setPhase] = useState(() => {
-    if (!startPhaseUsed.current && testData.__startPhase) {
-      startPhaseUsed.current = true;
-      return testData.__startPhase;
-    }
-    return "instructions";
-  });
+  const [phase, setPhase] = useState(
+    testData.__startPhase || "instructions"
+  );
 
   const [result, setResult] = useState(null);
 
-  // ✅ Load stored result if entering diagnosis/review
+  /* ---- load stored attempt for review / diagnosis ---- */
   useEffect(() => {
     if (phase === "diagnosis" || phase === "review") {
-      const stored = loadResult(sectionalId);
-      if (stored) {
-        setResult(stored);
-      }
+      const latest = getLatestAttempt(sectionalId);
+      if (latest) setResult(latest);
     }
   }, [phase, sectionalId]);
 
-  /* -------------------- INSTRUCTIONS -------------------- */
+  /* ---------------- INSTRUCTIONS ---------------- */
   if (phase === "instructions") {
     return (
       <CATInstructions
-        onStart={() => {
-          setResult(null);
-          setPhase("test");
-        }}
+        onStart={() => setPhase("test")}
       />
     );
   }
 
-  /* -------------------- TEST / REVIEW -------------------- */
+  /* ---------------- TEST / REVIEW ---------------- */
   if (phase === "test" || phase === "review") {
     return (
       <CATArenaTestView
@@ -83,16 +76,15 @@ export default function RCSectionalContainer({ testData, onExit }) {
         mode={phase}
         initialState={phase === "review" ? result : null}
         onSubmit={(payload) => {
-          saveResult(sectionalId, payload);   // ✅ PER-SECTION SAVE
+          saveAttempt(sectionalId, payload);
           setResult(payload);
           setPhase("diagnosis");
         }}
-        onExit={onExit}
       />
     );
   }
 
-  /* -------------------- DIAGNOSIS -------------------- */
+  /* ---------------- DIAGNOSIS ---------------- */
   if (phase === "diagnosis" && result) {
     return (
       <DiagnosisView
