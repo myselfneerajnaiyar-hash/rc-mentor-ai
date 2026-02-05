@@ -1,4 +1,4 @@
-[13:31, 5/2/2026] Neraj Naiyar: "use client";
+
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "catRCResults";
