@@ -186,7 +186,9 @@ return (
     {/* Dots + values */}
     {points.map((p, i) => (
       <g key={i}>
-        <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+       <circle cx={p.x} cy={p.y} r="4" fill="#2563eb">
+  <title>{p.label} – {p.accuracy}% accuracy</title>
+</circle>
         <text
           x={p.x}
           y={p.y - 8}
