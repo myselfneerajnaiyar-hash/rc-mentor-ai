@@ -599,10 +599,28 @@ return (
       setCatPhase("test");
     }}
 
-    onReviewTest={(sectionalId) => {
-      setActiveRCTest({ id: sectionalId, __startPhase: "review" });
-      setCatPhase("test");
-    }}
+    onReviewTest={async (sectionalId) => {
+  try {
+    setCatPhase("generating");
+
+    const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
+    if (!res.ok) {
+      alert("Failed to load sectional for review");
+      setCatPhase("idle");
+      return;
+    }
+
+    const data = await res.json();
+    data.id = sectionalId;
+    data.__startPhase = "review";
+
+    setActiveRCTest(data);
+    setCatPhase("test");
+  } catch (e) {
+    console.error(e);
+    setCatPhase("idle");
+  }
+}}
   />
 )}
 
