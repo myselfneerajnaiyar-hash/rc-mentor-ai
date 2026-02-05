@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "catRCResults";
 
-/* ===== LOAD CAT DIAGNOSIS HISTORY (ONE ATTEMPT PER SECTIONAL) ===== */
+/* ===== LOAD CAT DIAGNOSIS HISTORY ===== */
 function loadDiagnosisHistory() {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -12,7 +12,7 @@ function loadDiagnosisHistory() {
     return Object.entries(raw)
       .filter(([_, arr]) => Array.isArray(arr) && arr.length > 0)
       .map(([sectionalId, arr]) => {
-        const attempt = arr[0]; // 🔒 locked: single attempt per sectional
+        const attempt = arr[0]; // locked single attempt
         return {
           sectionalId,
           timestamp: attempt.timestamp,
@@ -28,7 +28,6 @@ export default function Navbar({ view, setView }) {
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState([]);
 
-  /* Load history ONLY when dropdown opens */
   useEffect(() => {
     if (open) {
       setHistory(loadDiagnosisHistory());
@@ -57,7 +56,7 @@ export default function Navbar({ view, setView }) {
         alignItems: "center",
       }}
     >
-      {/* ===== LEFT TABS ===== */}
+      {/* LEFT TABS */}
       {tabs.map(t => (
         <button
           key={t.key}
@@ -76,16 +75,16 @@ export default function Navbar({ view, setView }) {
         </button>
       ))}
 
-      {/* ===== FLEX SPACER ===== */}
+      {/* SPACER */}
       <div style={{ flex: 1 }} />
 
-      {/* ===== CAT ARENA–SCOPED DIAGNOSIS HISTORY ===== */}
+      {/* ===== CAT-SCOPED DIAGNOSIS HISTORY ===== */}
       {view === "cat" && (
         <div style={{ position: "relative" }}>
           <button
             onClick={() => setOpen(o => !o)}
             style={{
-              background: "#f97316", // orange
+              background: "#f97316",
               color: "#fff",
               padding: "8px 14px",
               borderRadius: 8,
@@ -157,3 +156,4 @@ export default function Navbar({ view, setView }) {
       )}
     </div>
   );
+}
