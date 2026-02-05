@@ -6,28 +6,34 @@ export default function DiagnosisView({
   questions = [],
   questionTime = [],
   onReview,
-  onBack, // 👈 IMPORTANT: passed from TestView
+  onBack,
 }) {
+  /* ===================== 🔒 BACKWARD COMPATIBILITY FIX ===================== */
+  const resolvedQuestions =
+    questions && questions.length
+      ? questions
+      : passages.flatMap(p => p.questions || []);
+
   /* ===================== GLOBAL STATS ===================== */
-  const total = questions.length;
+  const total = resolvedQuestions.length;
   let attempted = 0;
   let correct = 0;
 
-  questions.forEach((q, i) => {
-  if (answers[i] !== null && answers[i] !== undefined) {
-    attempted++;
-    if (Number(answers[i]) === Number(q.correctIndex)) {
-      correct++;
+  resolvedQuestions.forEach((q, i) => {
+    if (answers[i] !== null && answers[i] !== undefined) {
+      attempted++;
+      if (Number(answers[i]) === Number(q.correctIndex)) {
+        correct++;
+      }
     }
-  }
-});
+  });
 
   const accuracy = attempted
     ? Math.round((correct / attempted) * 100)
     : 0;
 
   /* ===================== QUESTION TIME HEATMAP ===================== */
-  const timeHeat = questions.map((q, i) => {
+  const timeHeat = resolvedQuestions.map((q, i) => {
     const t = questionTime[i] || 0;
     const isCorrect = Number(answers[i]) === Number(q.correctIndex);
 
@@ -62,9 +68,9 @@ export default function DiagnosisView({
     let timeSpent = 0;
 
     p.questions.forEach((q) => {
-      const idx = questions.findIndex(x => x.id === q.id);
+      const idx = resolvedQuestions.findIndex(x => x.id === q.id);
       if (idx >= 0) {
-        if (answers[idx] === q.correctIndex) correctQ++;
+        if (Number(answers[idx]) === Number(q.correctIndex)) correctQ++;
         timeSpent += questionTime[idx] || 0;
       }
     });
@@ -97,11 +103,13 @@ export default function DiagnosisView({
 
   /* ===================== QUESTION TYPE MAP ===================== */
   const typeMap = {};
-  questions.forEach((q, i) => {
+  resolvedQuestions.forEach((q, i) => {
     const type = q.type || "Unknown";
     if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
     typeMap[type].total++;
-    if (answers[i] === q.correctIndex) typeMap[type].correct++;
+    if (Number(answers[i]) === Number(q.correctIndex)) {
+      typeMap[type].correct++;
+    }
   });
 
   /* ===================== RENDER ===================== */
