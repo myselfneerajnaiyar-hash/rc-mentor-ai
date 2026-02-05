@@ -234,6 +234,7 @@ return (
     {Math.abs(improvement)}% from last sectional
   </div>
 )}
+  </div>
 );
   })()}
 </div>
