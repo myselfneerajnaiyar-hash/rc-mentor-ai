@@ -477,7 +477,7 @@ return (
 </div>
         </div>
 
-       {/* -------- Section-wise CAT Score -------- */}
+     {/* -------- Section-wise CAT Score -------- */}
 <div style={card}>
   <h3 style={cardTitle}>Section-wise CAT Score</h3>
   <p style={cardSub}>Exact CAT scoring (+3 correct, −1 wrong)</p>
@@ -518,8 +518,7 @@ return (
               title={`${d.marks} marks (${d.correct}C, ${d.wrong}W)`}
               style={{
                 height: `${(Math.abs(d.marks) / maxAbsMarks) * 120}px`,
-                background:
-                  d.marks >= 0 ? "#22c55e" : "#ef4444",
+                background: d.marks >= 0 ? "#22c55e" : "#ef4444",
                 borderRadius: 6,
                 marginBottom: 6,
                 transition: "height 0.3s",
