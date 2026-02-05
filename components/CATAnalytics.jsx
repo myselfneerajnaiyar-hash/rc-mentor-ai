@@ -94,13 +94,17 @@ function getSectionWiseMarks() {
 
     return Object.entries(data)
       .map(([sectionId, attempts]) => {
-        if (!Array.isArray(attempts) || !attempts.length) return null;
+        if (!Array.isArray(attempts) || attempts.length === 0) return null;
 
-        const a = attempts[0]; // locked attempt
+        const a = attempts[0];
 
-        const correct = a.correct || 0;
-        const total = a.total || 0;
-        const wrong = Math.max(total - correct, 0);
+        // 🔒 HARD GUARDS
+        if (!a.total || a.total === 0) return null;
+        if (typeof a.correct !== "number") return null;
+
+        const correct = a.correct;
+        const attempted = a.attempted ?? a.correct; // backward safe
+        const wrong = Math.max(attempted - correct, 0);
 
         const marks = correct * 3 - wrong * 1;
 
