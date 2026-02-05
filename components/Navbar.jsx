@@ -12,7 +12,7 @@ function loadDiagnosisHistory() {
     return Object.entries(raw)
       .filter(([_, arr]) => Array.isArray(arr) && arr.length > 0)
       .map(([sectionalId, arr]) => {
-        const attempt = arr[0]; // locked single attempt
+        const attempt = arr[0]; // 🔒 locked single attempt per sectional
         return {
           sectionalId,
           timestamp: attempt.timestamp,
@@ -40,6 +40,7 @@ export default function Navbar({ view, setView }) {
     { key: "vocab", label: "VocabularyLab" },
     { key: "speed", label: "SpeedGym" },
     { key: "cat", label: "CAT Arena" },
+    { key: "analytics", label: "Analytics" }, // ✅ NEW TAB
   ];
 
   return (
@@ -56,11 +57,14 @@ export default function Navbar({ view, setView }) {
         alignItems: "center",
       }}
     >
-      {/* LEFT TABS */}
+      {/* ================= LEFT TABS ================= */}
       {tabs.map(t => (
         <button
           key={t.key}
-          onClick={() => setView(t.key)}
+          onClick={() => {
+            setView(t.key);
+            setOpen(false); // close dropdown on navigation
+          }}
           style={{
             padding: "8px 14px",
             borderRadius: 8,
@@ -78,13 +82,13 @@ export default function Navbar({ view, setView }) {
       {/* SPACER */}
       <div style={{ flex: 1 }} />
 
-      {/* ===== CAT-SCOPED DIAGNOSIS HISTORY ===== */}
+      {/* ===== CAT-SCOPED DIAGNOSIS HISTORY (DO NOT REMOVE) ===== */}
       {view === "cat" && (
         <div style={{ position: "relative" }}>
           <button
             onClick={() => setOpen(o => !o)}
             style={{
-              background: "#f97316",
+              background: "#f97316", // orange
               color: "#fff",
               padding: "8px 14px",
               borderRadius: 8,
