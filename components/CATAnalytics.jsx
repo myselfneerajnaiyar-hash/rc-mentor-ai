@@ -5,60 +5,47 @@ function getAverageTimePerQuestion() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
+    let totalQuestions = 0;
     let totalTime = 0;
-    let totalAttempts = 0;
 
     Object.values(data).forEach(sectionAttempts => {
-      if (!Array.isArray(sectionAttempts)) return;
+      if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
+        return;
 
-      sectionAttempts.forEach(attempt => {
-        const times = attempt.questionTime || {};
-        const answers = attempt.answers || {};
+      const attempt = sectionAttempts[0];
 
-        Object.keys(answers).forEach(qid => {
-          if (answers[qid] !== null && times[qid]) {
-            totalTime += times[qid];
-            totalAttempts += 1;
-          }
-        });
-      });
+      if (attempt.total && attempt.timeTaken) {
+        totalQuestions += attempt.total;
+        totalTime += attempt.timeTaken;
+      }
     });
 
-    if (totalAttempts === 0) return null;
+    if (totalQuestions === 0) return null;
 
-    return Math.round(totalTime / totalAttempts);
+    return Math.round(totalTime / totalQuestions);
   } catch {
     return null;
   }
 }
 function getOverallAccuracy() {
   try {
-    const data = JSON.parse(localStorage.getItem("catRCResults")) || {};
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
     let correct = 0;
-    let attempted = 0;
+    let total = 0;
 
     Object.values(data).forEach(sectionAttempts => {
-      if (!Array.isArray(sectionAttempts)) return;
+      if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
+        return;
 
-      sectionAttempts.forEach(attempt => {
-        const answers = attempt.answers || {};
-        const questions = attempt.questions || {};
-
-        Object.keys(answers).forEach(qid => {
-          if (answers[qid] !== null) {
-            attempted += 1;
-            if (answers[qid] === questions[qid]?.correctOption) {
-              correct += 1;
-            }
-          }
-        });
-      });
+      const attempt = sectionAttempts[0]; // locked attempt
+      correct += attempt.correct || 0;
+      total += attempt.total || 0;
     });
 
-    if (attempted === 0) return null;
+    if (total === 0) return null;
 
-    return Math.round((correct / attempted) * 100);
+    return Math.round((correct / total) * 100);
   } catch {
     return null;
   }
