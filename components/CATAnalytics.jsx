@@ -36,6 +36,7 @@ function getAverageTimePerQuestion() {
   if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0) return;
 
   const attempt = sectionAttempts[0];
+     if (!attempt.total || attempt.total === 0) return;
 
   // 🔒 HARD GUARD: ignore corrupted / empty attempts
   if (
