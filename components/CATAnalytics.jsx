@@ -403,6 +403,20 @@ return (
 
   <div>Endurance</div>
   <div>Accuracy over time</div>
+  <div
+  style={{
+    marginTop: 12,
+    padding: "10px 12px",
+    borderRadius: 8,
+    background: "#eef2ff",
+    color: "#1e3a8a",
+    fontSize: 13,
+    lineHeight: 1.4,
+  }}
+>
+  📌 <b>Insight:</b> Your accuracy is stable, but time pressure is reducing
+  elimination efficiency. Focus on skipping low-ROI passages earlier.
+</div>
 </div>
         </div>
 
