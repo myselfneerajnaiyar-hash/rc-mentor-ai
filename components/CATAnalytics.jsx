@@ -103,7 +103,9 @@ function getSectionWiseMarks() {
         if (typeof a.correct !== "number") return null;
 
         const correct = a.correct;
-        const attempted = a.attempted ?? a.correct; // backward safe
+        if (typeof a.attempted !== "number") return null;
+
+        const attempted = a.attempted;
         const wrong = Math.max(attempted - correct, 0);
 
         const marks = correct * 3 - wrong * 1;
