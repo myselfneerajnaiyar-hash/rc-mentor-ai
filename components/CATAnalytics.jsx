@@ -1,4 +1,14 @@
 "use client";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
 const STORAGE_KEY = "catRCResults";
 
 function getSectionalAccuracyTrend() {
@@ -109,33 +119,34 @@ export default function CATAnalytics() {
             Tracks your sectional test performance over time
           </p>
 
-         <div style={{ height: 160, display: "flex", alignItems: "flex-end", gap: 12 }}>
+        <div style={{ width: "100%", height: 220 }}>
   {(() => {
-    const trend = getSectionalAccuracyTrend();
+    const data = getSectionalAccuracyTrend();
 
-    if (trend.length === 0) {
+    if (data.length === 0) {
       return <span style={{ color: "#64748b" }}>No data yet</span>;
     }
 
-    return trend.map((p, i) => (
-      <div key={i} style={{ textAlign: "center" }}>
-        <div
-          style={{
-            width: 28,
-            height: `${p.accuracy * 1.2}px`,
-            background: "#3b82f6",
-            borderRadius: 6,
-            marginBottom: 6,
-          }}
-        />
-        <div style={{ fontSize: 11, color: "#64748b" }}>
-          {p.accuracy}%
-        </div>
-      </div>
-    ));
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="label" />
+          <YAxis domain={[0, 100]} />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="accuracy"
+            stroke="#3b82f6"
+            strokeWidth={3}
+            dot={{ r: 5 }}
+            activeDot={{ r: 7 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    );
   })()}
 </div>
-
           <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
             <Stat label="Total Sectionals" value="—" />
             <Stat label="Total Attempts" value="—" />
