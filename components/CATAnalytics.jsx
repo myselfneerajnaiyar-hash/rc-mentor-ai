@@ -59,35 +59,30 @@ function getAverageTimePerQuestion() {
     return null;
   }
 }
+
 function getOverallAccuracy() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
     let correct = 0;
-    let attempted = 0;
+    let total = 0;
 
     Object.values(data).forEach(sectionAttempts => {
       if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
         return;
 
-      const a = sectionAttempts[0]; // locked attempt
+      const attempt = sectionAttempts[0];
 
-      // 🔒 HARD GUARDS
-      if (
-        typeof a.correct !== "number" ||
-        typeof a.attempted !== "number" ||
-        a.attempted === 0
-      ) {
-        return;
-      }
+      // 🔒 HARD GUARD — THIS WAS MISSING
+      if (!attempt.total || attempt.total === 0) return;
 
-      correct += a.correct;
-      attempted += a.attempted;
+      correct += attempt.correct || 0;
+      total += attempt.total;
     });
 
-    if (attempted === 0) return null;
+    if (total === 0) return null;
 
-    return Math.round((correct / attempted) * 100);
+    return Math.round((correct / total) * 100);
   } catch {
     return null;
   }
