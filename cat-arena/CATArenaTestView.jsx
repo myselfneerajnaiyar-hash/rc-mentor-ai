@@ -147,8 +147,19 @@ export default function CATArenaTestView({
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
- function submitPayload() {
+function submitPayload() {
   saveTime();
+
+  const total = flatQuestions.length;
+
+  let correct = 0;
+  answers.forEach((ans, i) => {
+    if (ans === flatQuestions[i]?.correctIndex) {
+      correct++;
+    }
+  });
+
+  const timeTaken = questionTime.reduce((a, b) => a + (b || 0), 0);
 
   onSubmit?.({
     passages,
@@ -156,7 +167,12 @@ export default function CATArenaTestView({
     answers,
     questionTime,
     questionStates,
-    timestamp: Date.now(), // ✅ ALWAYS NUMBER, NEVER BREAKS
+
+    // 🔒 REQUIRED FOR ANALYTICS
+    timestamp: Date.now(),   // number
+    total,                   // number
+    correct,                 // number
+    timeTaken,               // seconds
   });
 }
 
