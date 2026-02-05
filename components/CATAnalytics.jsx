@@ -212,6 +212,28 @@ return (
       </g>
     ))}
   </svg>
+  {(() => {
+  if (data.length < 2) return null;
+
+  const improvement =
+    data[data.length - 1].accuracy -
+    data[data.length - 2].accuracy;
+
+  return (
+    <div
+      style={{
+        marginTop: 8,
+        textAlign: "center",
+        fontSize: 13,
+        fontWeight: 500,
+        color: improvement >= 0 ? "#16a34a" : "#dc2626",
+      }}
+    >
+      {improvement >= 0 ? "▲" : "▼"}{" "}
+      {Math.abs(improvement)}% from last sectional
+    </div>
+  );
+})()}
 );
   })()}
 </div>
