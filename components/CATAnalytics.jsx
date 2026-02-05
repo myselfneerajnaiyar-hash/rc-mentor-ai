@@ -353,13 +353,19 @@ return (
   <h3 style={cardTitle}>RC Skill Profile</h3>
   <p style={cardSub}>Strengths & weaknesses across RC dimensions</p>
 
-  {[
-    { label: "Accuracy", value: 72, color: "#22c55e", note: "Correct answers %" },
-    { label: "Speed", value: 55, color: "#f59e0b", note: "Time per question" },
-    { label: "Selection", value: 65, color: "#eab308", note: "Passage choice" },
-    { label: "Elimination", value: 48, color: "#ef4444", note: "Option elimination" },
-    { label: "Endurance", value: 58, color: "#f97316", note: "Accuracy over time" },
-  ].map(skill => (
+ {(() => {
+  const metrics = getRCSkillMetrics();
+  if (!metrics) return <div style={{ color: "#64748b" }}>No data yet</div>;
+
+  const skills = [
+    { label: "Accuracy", value: metrics.accuracy, color: "#22c55e", note: "Correct answers %" },
+    { label: "Speed", value: metrics.speed, color: "#f59e0b", note: "Time per question" },
+    { label: "Selection", value: metrics.selection, color: "#eab308", note: "Passage choice" },
+    { label: "Elimination", value: metrics.elimination, color: "#ef4444", note: "Option elimination" },
+    { label: "Endurance", value: metrics.endurance, color: "#f97316", note: "Accuracy over time" },
+  ];
+
+  return skills.map(skill => (
     <div key={skill.label} style={{ marginBottom: 14 }}>
       <div
         style={{
