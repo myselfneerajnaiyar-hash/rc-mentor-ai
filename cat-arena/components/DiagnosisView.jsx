@@ -14,11 +14,13 @@ export default function DiagnosisView({
   let correct = 0;
 
   questions.forEach((q, i) => {
-    if (answers[i] !== null && answers[i] !== undefined) {
-      attempted++;
-      if (answers[i] === q.correctIndex) correct++;
+  if (answers[i] !== null && answers[i] !== undefined) {
+    attempted++;
+    if (Number(answers[i]) === Number(q.correctIndex)) {
+      correct++;
     }
-  });
+  }
+});
 
   const accuracy = attempted
     ? Math.round((correct / attempted) * 100)
@@ -27,7 +29,7 @@ export default function DiagnosisView({
   /* ===================== QUESTION TIME HEATMAP ===================== */
   const timeHeat = questions.map((q, i) => {
     const t = questionTime[i] || 0;
-    const isCorrect = answers[i] === q.correctIndex;
+    const isCorrect = Number(answers[i]) === Number(q.correctIndex);
 
     let label = "Slow & Wrong";
     let color = "#dc2626";
