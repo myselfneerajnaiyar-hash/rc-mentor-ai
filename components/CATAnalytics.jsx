@@ -31,6 +31,38 @@ function getAverageTimePerQuestion() {
     return null;
   }
 }
+function getOverallAccuracy() {
+  try {
+    const data = JSON.parse(localStorage.getItem("catRCResults")) || {};
+
+    let correct = 0;
+    let attempted = 0;
+
+    Object.values(data).forEach(sectionAttempts => {
+      if (!Array.isArray(sectionAttempts)) return;
+
+      sectionAttempts.forEach(attempt => {
+        const answers = attempt.answers || {};
+        const questions = attempt.questions || {};
+
+        Object.keys(answers).forEach(qid => {
+          if (answers[qid] !== null) {
+            attempted += 1;
+            if (answers[qid] === questions[qid]?.correctOption) {
+              correct += 1;
+            }
+          }
+        });
+      });
+    });
+
+    if (attempted === 0) return null;
+
+    return Math.round((correct / attempted) * 100);
+  } catch {
+    return null;
+  }
+}
 
 export default function CATAnalytics() {
   return (
