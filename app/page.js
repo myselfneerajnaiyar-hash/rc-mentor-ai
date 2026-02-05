@@ -625,11 +625,9 @@ return (
   setCatPhase("test");
 }}
 
-   onReviewTest={async (sectionalId) => {
+  onReviewTest={async (sectionalId) => {
   if (!sectionalAttemptMap[sectionalId]) return;
 
-  try {
-    setCatPhase("generating");
   try {
     setCatPhase("generating");
 
