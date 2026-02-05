@@ -74,6 +74,25 @@ function getOverallAccuracy() {
     return null;
   }
 }
+function RCSkillRadar() {
+  return (
+    <div
+      style={{
+        height: 160,
+        borderRadius: 12,
+        background: "#f8fafc",
+        border: "1px dashed #cbd5e1",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#64748b",
+        fontSize: 14,
+      }}
+    >
+      Radar chart (Accuracy • Attempts • Time • Selection)
+    </div>
+  );
+}
 
 export default function CATAnalytics() {
   return (
@@ -299,9 +318,7 @@ return (
           <h3 style={cardTitle}>RC Skill Profile</h3>
           <p style={cardSub}>Accuracy & selection intelligence</p>
 
-          <div style={placeholderBox}>
-            🕸 Radar chart coming here
-          </div>
+          <RCSkillRadar />
         </div>
 
         {/* -------- Time Analysis -------- */}
