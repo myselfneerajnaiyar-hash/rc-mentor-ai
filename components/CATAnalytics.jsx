@@ -128,114 +128,122 @@ export default function CATAnalytics() {
     padding: 12,
   }}
 >
-  {(() => {
+ <div
+  style={{
+    height: 180,
+    background: "#f8fafc",
+    border: "1px solid #e5e7eb",
+    borderRadius: 12,
+    padding: 12,
+  }}
+>
+  {getSectionalAccuracyTrend().length === 0 ? (
+    <div style={{ color: "#64748b", textAlign: "center", marginTop: 60 }}>
+      No data yet
+    </div>
+  ) : (() => {
     const data = getSectionalAccuracyTrend();
-  let improvement = null;
-if (data.length >= 2) {
-  improvement =
-    data[data.length - 1].accuracy -
-    data[data.length - 2].accuracy;
-}
 
-    if (!data.length) {
-      return (
-        <div style={{ color: "#64748b", textAlign: "center", marginTop: 60 }}>
-          No data yet
-        </div>
-      );
+    let improvement = null;
+    if (data.length >= 2) {
+      improvement =
+        data[data.length - 1].accuracy -
+        data[data.length - 2].accuracy;
     }
 
-   const width = 500;
-const height = 140;
-const padding = 30;
+    const width = 500;
+    const height = 140;
+    const padding = 30;
 
-const points = data.map((d, i) => {
-  const x =
-    padding +
-    (i * (width - padding * 2)) / (data.length - 1 || 1);
+    const points = data.map((d, i) => {
+      const x =
+        padding +
+        (i * (width - padding * 2)) / (data.length - 1 || 1);
 
-  const y =
-    padding +
-    ((100 - d.accuracy) * (height - padding * 2)) / 100;
+      const y =
+        padding +
+        ((100 - d.accuracy) * (height - padding * 2)) / 100;
 
-  return { x, y, label: d.label, accuracy: d.accuracy };
-});
+      return { x, y, label: d.label, accuracy: d.accuracy };
+    });
 
-return (
-<svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
-  {/* X axis */}
-  <line
-    x1={padding}
-    y1={height - padding}
-    x2={width - padding}
-    y2={height - padding}
-    stroke="#cbd5e1"
-  />
+    return (
+      <>
+        <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+          {/* X axis */}
+          <line
+            x1={padding}
+            y1={height - padding}
+            x2={width - padding}
+            y2={height - padding}
+            stroke="#cbd5e1"
+          />
 
-  {/* Y axis */}
-  <line
-    x1={padding}
-    y1={padding}
-    x2={padding}
-    y2={height - padding}
-    stroke="#cbd5e1"
-  />
+          {/* Y axis */}
+          <line
+            x1={padding}
+            y1={padding}
+            x2={padding}
+            y2={height - padding}
+            stroke="#cbd5e1"
+          />
 
-  {/* Line */}
-  <polyline
-    fill="none"
-    stroke="#2563eb"
-    strokeWidth="3"
-    points={points.map(p => `${p.x},${p.y}`).join(" ")}
-  />
+          {/* Line */}
+          <polyline
+            fill="none"
+            stroke="#2563eb"
+            strokeWidth="3"
+            points={points.map(p => `${p.x},${p.y}`).join(" ")}
+          />
 
-  {/* Points + labels */}
-  {points.map((p, i) => (
-    <g key={i}>
-      <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+          {/* Points */}
+          {points.map((p, i) => (
+            <g key={i}>
+              <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+              <text
+                x={p.x}
+                y={p.y - 8}
+                textAnchor="middle"
+                fontSize="11"
+                fill="#2563eb"
+              >
+                {p.accuracy}%
+              </text>
+              <text
+                x={p.x}
+                y={height - 8}
+                textAnchor="middle"
+                fontSize="11"
+                fill="#334155"
+              >
+                {p.label}
+              </text>
+            </g>
+          ))}
+        </svg>
 
-      <text
-        x={p.x}
-        y={p.y - 8}
-        textAnchor="middle"
-        fontSize="11"
-        fill="#2563eb"
-      >
-        {p.accuracy}%
-      </text>
+        {improvement !== null && (
+          <div
+            style={{
+              marginTop: 8,
+              textAlign: "center",
+              fontSize: 13,
+              fontWeight: 500,
+              color: improvement >= 0 ? "#16a34a" : "#dc2626",
+            }}
+          >
+            {improvement >= 0 ? "▲" : "▼"}{" "}
+            {Math.abs(improvement)}% from last sectional
+          </div>
+        )}
+      </>
+    );
+  })()}
 
-      <text
-        x={p.x}
-        y={height - 8}
-        textAnchor="middle"
-        fontSize="11"
-        fill="#334155"
-      >
-        {p.label}
-      </text>
-    </g>
-  ))}
-</svg>
-
-</div>
-
-{improvement !== null && (
-  <div
-    style={{
-      marginTop: 8,
-      textAlign: "center",
-      fontSize: 13,
-      fontWeight: 500,
-      color: improvement >= 0 ? "#16a34a" : "#dc2626",
-    }}
-  >
-    {improvement >= 0 ? "▲" : "▼"} {Math.abs(improvement)}% from last sectional
+  <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
+    <Stat label="Total Sectionals" value="—" />
+    <Stat label="Total Attempts" value="—" />
   </div>
-)}
-
-<div style={{ display: "flex", gap: 20, marginTop: 16 }}>
-  <Stat label="Total Sectionals" value="—" />
-  <Stat label="Total Attempts" value="—" />
 </div>
 
         {/* -------- Average Performance -------- */}
