@@ -33,7 +33,7 @@ export default function CATArenaLanding({
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
       <h1 style={{ marginBottom: 24 }}>🔥 CAT Arena</h1>
 
-      {sectionals.map(s => {
+      {sectionals.map((s) => {
         const attempts = allAttempts[s.id] || [];
         const attempted = attempts.length > 0;
 
@@ -70,18 +70,16 @@ export default function CATArenaLanding({
                 </summary>
 
                 <div style={{ marginTop: 8 }}>
-                  {attempts.map((a, i) => (
+                  {attempts.map((a) => (
                     <button
                       key={a.attemptId}
                       style={attemptBtn}
-                      onClick={() =>
-                        onViewDiagnosis(s.id, a.attemptId)
-                      }
+                      onClick={() => onViewDiagnosis(s.id, a.attemptId)}
                     >
                       {s.title} ·{" "}
-                     typeof a.timestamp === "number"
-  ? new Date(a.timestamp).toLocaleString()
-  : "-"
+                      {typeof a.timestamp === "number"
+                        ? new Date(a.timestamp).toLocaleString()
+                        : "-"}
                     </button>
                   ))}
                 </div>
@@ -107,7 +105,7 @@ export default function CATArenaLanding({
 
 /* ================= STYLES ================= */
 
-const card = attempted => ({
+const card = (attempted) => ({
   borderRadius: 16,
   padding: 20,
   marginBottom: 22,
@@ -116,11 +114,8 @@ const card = attempted => ({
     ? "linear-gradient(135deg, #e0f2fe, #f0f9ff)"
     : "linear-gradient(135deg, #f8fafc, #ffffff)",
   border: attempted ? "1px solid #93c5fd" : "1px solid #e5e7eb",
-  borderLeft: attempted
-    ? "6px solid #3b82f6"
-    : "6px solid #cbd5e1",
+  borderLeft: attempted ? "6px solid #3b82f6" : "6px solid #cbd5e1",
   boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-  transition: "all 0.2s ease",
 });
 
 const primaryBtn = {
@@ -156,7 +151,7 @@ const attemptBtn = {
   textAlign: "left",
 };
 
-const secondaryBtn = enabled => ({
+const secondaryBtn = (enabled) => ({
   width: "100%",
   padding: 9,
   background: enabled ? "#ffffff" : "#f1f5f9",
