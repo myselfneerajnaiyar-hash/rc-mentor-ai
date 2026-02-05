@@ -618,10 +618,15 @@ return (
       setCatPhase("test");
     }}
 
-   onViewDiagnosis={(sectionalId) => {
+  onViewDiagnosis={(sectionalId, attemptId) => {
   if (!sectionalAttemptMap[sectionalId]) return;
 
-  setActiveRCTest({ id: sectionalId, __startPhase: "diagnosis" });
+  setActiveRCTest({
+    id: sectionalId,
+    __startPhase: "diagnosis",
+    __attemptId: attemptId,   // 👈 THIS IS THE KEY
+  });
+
   setCatPhase("test");
 }}
 
