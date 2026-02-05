@@ -38,8 +38,8 @@ export default function CATArenaLanding({
         const attempted = attempts.length > 0;
 
         return (
-          <div key={s.id} style={card}>
-            <h4>{s.title}</h4>
+         <div key={s.id} style={card(attempted)}>
+            <h3 style={{ marginBottom: 6 }}>{s.title}</h3>
 
             <p style={{ fontSize: 14, color: "#64748b" }}>
               ⏱ 30 min · 📊 16 Q · 📘 4 passages
