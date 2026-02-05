@@ -1,4 +1,36 @@
 "use client";
+const STORAGE_KEY = "catRCResults";
+
+function getAverageTimePerQuestion() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+    let totalTime = 0;
+    let totalAttempts = 0;
+
+    Object.values(data).forEach(sectionAttempts => {
+      if (!Array.isArray(sectionAttempts)) return;
+
+      sectionAttempts.forEach(attempt => {
+        const times = attempt.questionTime || {};
+        const answers = attempt.answers || {};
+
+        Object.keys(answers).forEach(qid => {
+          if (answers[qid] !== null && times[qid]) {
+            totalTime += times[qid];
+            totalAttempts += 1;
+          }
+        });
+      });
+    });
+
+    if (totalAttempts === 0) return null;
+
+    return Math.round(totalTime / totalAttempts);
+  } catch {
+    return null;
+  }
+}
 
 export default function CATAnalytics() {
   return (
@@ -91,9 +123,40 @@ export default function CATAnalytics() {
           <h3 style={cardTitle}>Time Analysis</h3>
           <p style={cardSub}>Average time per question</p>
 
-          <div style={placeholderBox}>
-            ⏱ Bar chart coming here
-          </div>
+         <div
+  style={{
+    height: 160,
+    borderRadius: 12,
+    background: "#f1f5f9",
+    border: "1px solid #cbd5e1",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  {(() => {
+    const avg = getAverageTimePerQuestion();
+
+    if (!avg) {
+      return <span style={{ color: "#64748b" }}>No data yet</span>;
+    }
+
+    const min = Math.floor(avg / 60);
+    const sec = avg % 60;
+
+    return (
+      <>
+        <div style={{ fontSize: 26, fontWeight: 700 }}>
+          {min}m {sec}s
+        </div>
+        <div style={{ fontSize: 13, color: "#64748b" }}>
+          Avg time per question
+        </div>
+      </>
+    );
+  })()}
+</div>
         </div>
 
         {/* -------- Plan of Action -------- */}
