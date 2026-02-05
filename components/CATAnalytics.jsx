@@ -403,20 +403,7 @@ return (
 
   <div>Endurance</div>
   <div>Accuracy over time</div>
-  <div
-  style={{
-    marginTop: 12,
-    padding: "10px 12px",
-    borderRadius: 8,
-    background: "#eef2ff",
-    color: "#1e3a8a",
-    fontSize: 13,
-    lineHeight: 1.4,
-  }}
->
-  📌 <b>Insight:</b> Your accuracy is stable, but time pressure is reducing
-  elimination efficiency. Focus on skipping low-ROI passages earlier.
-</div>
+ 
 </div>
         </div>
 
@@ -473,6 +460,28 @@ return (
           </ul>
         </div>
       </div>
+      {/* ================= INSIGHT ROW ================= */}
+<div
+  style={{
+    marginTop: 24,
+    padding: "16px 20px",
+    borderRadius: 14,
+    background: "#eef2ff",
+    border: "1px solid #c7d2fe",
+    color: "#1e3a8a",
+    fontSize: 14,
+    lineHeight: 1.6,
+  }}
+>
+  <div style={{ fontWeight: 700, marginBottom: 6 }}>
+    📌 Performance Insight
+  </div>
+  <div>
+    Your accuracy is stable, but time pressure is reducing elimination
+    efficiency. Focus on skipping low-ROI passages earlier to preserve mental
+    bandwidth.
+  </div>
+</div>
     </div>
   );
 }
