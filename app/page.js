@@ -83,6 +83,23 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [learningWord, setLearningWord] = useState(null);
   const [catPhase, setCatPhase] = useState("idle");
 // idle | generating | instructions | test | diagnosis | review
+
+  useEffect(() => {
+  function handler(e) {
+    const { sectionalId } = e.detail;
+
+    setView("cat");
+    setCatPhase("test");
+    setActiveRCTest({
+      id: sectionalId,
+      __startPhase: "diagnosis",
+    });
+  }
+
+  window.addEventListener("OPEN_DIAGNOSIS", handler);
+  return () =>
+    window.removeEventListener("OPEN_DIAGNOSIS", handler);
+}, []);
   function loadVocab() {
     return JSON.parse(localStorage.getItem("vocabBank") || "[]");
   }
