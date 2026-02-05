@@ -477,18 +477,64 @@ return (
 </div>
         </div>
 
-        {/* -------- Plan of Action -------- */}
-        <div style={card}>
-          <h3 style={cardTitle}>Plan of Action</h3>
-          <p style={cardSub}>What you should focus on next</p>
+       {/* -------- Section-wise CAT Score -------- */}
+<div style={card}>
+  <h3 style={cardTitle}>Section-wise CAT Score</h3>
+  <p style={cardSub}>Exact CAT scoring (+3 correct, −1 wrong)</p>
 
-          <ul style={{ paddingLeft: 18, color: "#334155" }}>
-            <li>Improve passage selection</li>
-            <li>Reduce time spent on low ROI passages</li>
-            <li>Increase accuracy above threshold</li>
-          </ul>
-        </div>
+  {(() => {
+    const data = getSectionWiseMarks();
+
+    if (!data.length) {
+      return <span style={{ color: "#64748b" }}>No data yet</span>;
+    }
+
+    const maxAbsMarks = Math.max(
+      ...data.map(d => Math.abs(d.marks)),
+      1
+    );
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          gap: 16,
+          height: 180,
+          marginTop: 12,
+        }}
+      >
+        {data.map(d => (
+          <div
+            key={d.label}
+            style={{
+              flex: 1,
+              textAlign: "center",
+              fontSize: 12,
+              color: "#334155",
+            }}
+          >
+            <div
+              title={`${d.marks} marks (${d.correct}C, ${d.wrong}W)`}
+              style={{
+                height: `${(Math.abs(d.marks) / maxAbsMarks) * 120}px`,
+                background:
+                  d.marks >= 0 ? "#22c55e" : "#ef4444",
+                borderRadius: 6,
+                marginBottom: 6,
+                transition: "height 0.3s",
+              }}
+            />
+            <div style={{ fontWeight: 600 }}>{d.marks}</div>
+            <div style={{ fontSize: 11, color: "#64748b" }}>
+              {d.label}
+            </div>
+          </div>
+        ))}
       </div>
+    );
+  })()}
+</div>
       {/* ================= INSIGHT ROW ================= */}
 <div
   style={{
