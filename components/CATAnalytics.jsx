@@ -348,61 +348,63 @@ return (
           gap: 20,
         }}
       >
-        {/* -------- Skill Breakdown -------- */}
+       {/* -------- Skill Breakdown -------- */}
 <div style={card}>
   <h3 style={cardTitle}>RC Skill Profile</h3>
   <p style={cardSub}>Strengths & weaknesses across RC dimensions</p>
 
- {(() => {
-  const metrics = getRCSkillMetrics();
-  if (!metrics) return <div style={{ color: "#64748b" }}>No data yet</div>;
+  {(() => {
+    const metrics = getRCSkillMetrics();
+    if (!metrics)
+      return <div style={{ color: "#64748b" }}>No data yet</div>;
 
-  const skills = [
-    { label: "Accuracy", value: metrics.accuracy, color: "#22c55e", note: "Correct answers %" },
-    { label: "Speed", value: metrics.speed, color: "#f59e0b", note: "Time per question" },
-    { label: "Selection", value: metrics.selection, color: "#eab308", note: "Passage choice" },
-    { label: "Elimination", value: metrics.elimination, color: "#ef4444", note: "Option elimination" },
-    { label: "Endurance", value: metrics.endurance, color: "#f97316", note: "Accuracy over time" },
-  ];
+    const skills = [
+      { label: "Accuracy", value: metrics.accuracy, color: "#22c55e", note: "Correct answers %" },
+      { label: "Speed", value: metrics.speed, color: "#f59e0b", note: "Time per question" },
+      { label: "Selection", value: metrics.selection, color: "#eab308", note: "Passage choice" },
+      { label: "Elimination", value: metrics.elimination, color: "#ef4444", note: "Option elimination" },
+      { label: "Endurance", value: metrics.endurance, color: "#f97316", note: "Accuracy over time" },
+    ];
 
-  return skills.map(skill => (
-    <div key={skill.label} style={{ marginBottom: 14 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          fontSize: 13,
-          marginBottom: 4,
-          color: "#334155",
-        }}
-      >
-        <span style={{ fontWeight: 600 }}>{skill.label}</span>
-        <span>{skill.value}%</span>
-      </div>
-
-      <div
-        style={{
-          height: 10,
-          borderRadius: 6,
-          background: "#e5e7eb",
-          overflow: "hidden",
-        }}
-      >
+    return skills.map(skill => (
+      <div key={skill.label} style={{ marginBottom: 14 }}>
         <div
           style={{
-            width: `${skill.value}%`,
-            height: "100%",
-            background: skill.color,
-            borderRadius: 6,
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: 13,
+            marginBottom: 4,
+            color: "#334155",
           }}
-        />
-      </div>
+        >
+          <span style={{ fontWeight: 600 }}>{skill.label}</span>
+          <span>{skill.value}%</span>
+        </div>
 
-      <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
-        {skill.note}
+        <div
+          style={{
+            height: 10,
+            borderRadius: 6,
+            background: "#e5e7eb",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: `${skill.value}%`,
+              height: "100%",
+              background: skill.color,
+              borderRadius: 6,
+            }}
+          />
+        </div>
+
+        <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
+          {skill.note}
+        </div>
       </div>
-    </div>
-  ))}
+    ));
+  })()}
 </div>
 
         {/* -------- Time Analysis -------- */}
