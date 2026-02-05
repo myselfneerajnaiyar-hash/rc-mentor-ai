@@ -162,7 +162,7 @@ const points = data.map((d, i) => {
 });
 
 return (
- <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+<svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
   {/* X axis */}
   <line
     x1={padding}
@@ -193,6 +193,7 @@ return (
   {points.map((p, i) => (
     <g key={i}>
       <circle cx={p.x} cy={p.y} r="4" fill="#2563eb" />
+
       <text
         x={p.x}
         y={p.y - 8}
@@ -202,6 +203,7 @@ return (
       >
         {p.accuracy}%
       </text>
+
       <text
         x={p.x}
         y={height - 8}
@@ -214,6 +216,7 @@ return (
     </g>
   ))}
 </svg>
+
 </div>
 
 {improvement !== null && (
@@ -229,18 +232,11 @@ return (
     {improvement >= 0 ? "▲" : "▼"} {Math.abs(improvement)}% from last sectional
   </div>
 )}
-  </div>
-);
-  })()}
+
+<div style={{ display: "flex", gap: 20, marginTop: 16 }}>
+  <Stat label="Total Sectionals" value="—" />
+  <Stat label="Total Attempts" value="—" />
 </div>
-    );
-  })()}
-</div>
-          <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
-            <Stat label="Total Sectionals" value="—" />
-            <Stat label="Total Attempts" value="—" />
-          </div>
-        </div>
 
         {/* -------- Average Performance -------- */}
         <div style={card}>
