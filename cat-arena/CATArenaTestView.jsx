@@ -147,17 +147,18 @@ export default function CATArenaTestView({
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
-  function submitPayload() {
-    saveTime();
+ function submitPayload() {
+  saveTime();
 
-    onSubmit?.({
-      passages,
-      questions: flatQuestions,
-      answers,
-      questionTime,
-      questionStates,
-    });
-  }
+  onSubmit?.({
+    passages,
+    questions: flatQuestions,
+    answers,
+    questionTime,
+    questionStates,
+    timestamp: Date.now(), // ✅ ALWAYS NUMBER, NEVER BREAKS
+  });
+}
 
   /* ===================== RENDER ===================== */
   return (
