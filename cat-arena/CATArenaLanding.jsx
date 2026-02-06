@@ -30,10 +30,18 @@ export default function CATArenaLanding({
     refreshAttempts(setAllAttempts);
   }, []);
 
-  const sectionals = [
-    { id: "sectional-01", title: "CAT RC Sectional 01" },
-    { id: "sectional-02", title: "CAT RC Sectional 02" },
-  ];
+ const sectionals = [
+  { id: "sectional-01", title: "CAT RC Sectional 01" },
+  { id: "sectional-02", title: "CAT RC Sectional 02" },
+  { id: "sectional-03", title: "CAT RC Sectional 03" },
+  { id: "sectional-04", title: "CAT RC Sectional 04" },
+  { id: "sectional-05", title: "CAT RC Sectional 05" },
+  { id: "sectional-06", title: "CAT RC Sectional 06" },
+  { id: "sectional-07", title: "CAT RC Sectional 07" },
+  { id: "sectional-08", title: "CAT RC Sectional 08" },
+  { id: "sectional-09", title: "CAT RC Sectional 09" },
+  { id: "sectional-10", title: "CAT RC Sectional 10" },
+];
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
