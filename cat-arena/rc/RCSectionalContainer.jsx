@@ -91,6 +91,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
         mode="test"
         onSubmit={(payload) => {
           saveAttempt(sectionalId, payload);
+          window.dispatchEvent(new Event("CAT_ATTEMPT_SAVED"));
           const updated = loadAttempts(sectionalId);
           setAttempts(updated);
           setActiveIndex(updated.length - 1);
