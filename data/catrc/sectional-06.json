@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 06",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (Difficult)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Critique of a Book",
+      "difficulty": "hard",
+      "text": "Recent critical discussions of the book \"Progress Without Illusions\" have focused on its ambitious attempt to synthesize economic history, political theory, and moral philosophy into a single explanatory framework. The author argues that modern societies have overestimated the inevitability of progress, mistaking contingent historical developments for universal laws. According to the book, this misconception has fostered complacency toward structural inequality and environmental degradation.\n\nOne of the book’s central claims is that narratives of linear progress often obscure the uneven distribution of gains. While aggregate indicators may show improvement, such measures conceal persistent disparities across class, region, and generation. The author supports this claim with historical examples drawn from industrialization and postwar economic expansion, illustrating how periods of growth frequently coincided with intensified exclusion.\n\nCritics of the book, however, have questioned whether its sweeping scope undermines analytical precision. By ranging across centuries and disciplines, the argument risks oversimplifying complex causal relationships. Some reviewers note that the book’s reliance on selective historical episodes leaves it vulnerable to charges of confirmation bias.\n\nDefenders respond that the book is not intended as a comprehensive historical account but as a diagnostic intervention. Its purpose, they argue, is to unsettle complacent assumptions rather than to provide predictive models. From this perspective, the book’s broad scope is a deliberate strategy designed to provoke moral and political reflection.\n\nUltimately, the debate surrounding \"Progress Without Illusions\" reflects a deeper tension between explanatory rigor and critical ambition. Whether one finds the book persuasive may depend less on empirical disagreements than on differing expectations about what social critique ought to accomplish.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily aims to:",
+          "options": [
+            "assess the strengths and limitations of a book’s critical argument",
+            "summarize the historical thesis advanced in the book",
+            "defend the inevitability of social progress",
+            "criticize reviewers for misunderstanding the book"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage presents both criticisms and defenses of the book, weighing its ambition against concerns about precision. Option A captures this evaluative purpose. Option B is too narrow, as the passage focuses on the debate rather than summary. Option C contradicts the book’s thesis. Option D misrepresents the neutral analytical tone."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "The critics’ concern about the book’s scope suggests that they value:",
+          "options": [
+            "methodological rigor over provocative breadth",
+            "moral engagement over empirical detail",
+            "interdisciplinary approaches to social theory",
+            "historical narrative as a literary device"
+          ],
+          "correctIndex": 0,
+          "explanation": "Critics argue that wide scope risks oversimplification, implying a preference for precision and rigor. Option A follows logically. Options B and C align more with defenders. Option D is unrelated."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "present a counter-response defending the book’s approach",
+            "introduce new empirical evidence",
+            "summarize the book’s historical examples",
+            "acknowledge factual errors in the book"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four articulates the defenders’ argument that the book’s breadth is intentional. Option A correctly identifies this function. The remaining options misrepresent the paragraph’s content."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that disagreements about the book stem largely from:",
+          "options": [
+            "differing views on the role of social critique",
+            "errors in historical data",
+            "ideological hostility toward the author",
+            "conflicting interpretations of economic theory"
+          ],
+          "correctIndex": 0,
+          "explanation": "The concluding sentence explicitly states that disagreement depends on expectations of what critique should accomplish. Option A reflects this. Options B, C, and D are unsupported."
+        }
+      ]
+    },
+
+    {
+      "id": "P2",
+      "genre": "Education",
+      "difficulty": "hard",
+      "text": "Educational reform debates frequently invoke the language of efficiency, accountability, and outcomes. Standardized testing regimes, performance metrics, and data-driven evaluations are often presented as neutral tools for improving learning. Proponents argue that such mechanisms introduce transparency and comparability into systems previously characterized by inconsistency.\n\nHowever, critics contend that an excessive focus on measurement distorts educational priorities. When success is defined narrowly through test scores, pedagogical practices may shift toward short-term optimization rather than deep understanding. Subjects that resist quantification, such as critical thinking or creativity, risk marginalization.\n\nThe tension between accountability and autonomy is particularly evident in teacher evaluation systems. While accountability frameworks aim to ensure quality, they may also constrain professional judgment. Teachers operating under constant surveillance may prioritize compliance over experimentation, reducing the adaptive capacity of classrooms.\n\nAdvocates of reform counter that abandoning metrics altogether invites complacency and inequity. Without standardized benchmarks, they argue, disadvantaged students are more likely to be underserved. The challenge, therefore, lies not in rejecting measurement but in designing systems that support rather than supplant educational judgment.\n\nMeaningful reform requires acknowledging that education is both a technical and moral endeavor. Metrics can inform practice, but they cannot substitute for normative decisions about what learning should entail. Treating education as a purely instrumental process risks eroding its broader social purpose.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that educational metrics:",
+          "options": [
+            "must be balanced with professional judgment and broader learning goals",
+            "inevitably undermine teaching quality",
+            "are neutral tools that improve outcomes",
+            "should replace teacher autonomy entirely"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques overreliance on metrics while acknowledging their role. Option A captures this balanced stance. Options B, C, and D reflect extreme or one-sided interpretations."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that standardized testing:",
+          "options": [
+            "can distort teaching if treated as the sole indicator of success",
+            "should be eliminated from educational systems",
+            "accurately captures all dimensions of learning",
+            "has little impact on classroom practices"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage warns against narrow definitions of success tied to test scores. Option A follows logically. The other options contradict the nuanced argument."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The third paragraph primarily highlights:",
+          "options": [
+            "the impact of accountability systems on teacher autonomy",
+            "the benefits of standardized benchmarks",
+            "student resistance to testing",
+            "historical trends in educational reform"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph three focuses on how evaluation frameworks affect teachers’ professional judgment. Option A correctly identifies this role."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that educational reform is limited when it:",
+          "options": [
+            "ignores the moral dimensions of teaching",
+            "relies on empirical data",
+            "emphasizes equity concerns",
+            "seeks transparency"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion stresses education as a moral endeavor. Option A follows directly. The other options misrepresent the critique."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Social Inclusion",
+      "difficulty": "hard",
+      "text": "Policies promoting social inclusion often emphasize representation and access. Expanding participation in education, employment, and political institutions is widely viewed as a corrective to historical exclusion. Such measures aim to remove formal barriers that have disadvantaged particular groups.\n\nYet inclusion is not merely a question of access. Sociological research indicates that institutions may remain inhospitable even after formal barriers are lowered. Norms, practices, and informal hierarchies can perpetuate exclusion in subtler forms, limiting meaningful participation.\n\nThis distinction between formal and substantive inclusion complicates policy design. Numerical diversity does not automatically translate into voice or influence. In some cases, individuals from marginalized groups are included symbolically while decision-making power remains concentrated elsewhere.\n\nCritics caution that overly technocratic approaches to inclusion risk depoliticizing inequality. By focusing on representation metrics, policymakers may avoid addressing deeper structural dynamics. Inclusion, from this perspective, becomes an administrative objective rather than a transformative process.\n\nEffective inclusion requires continuous negotiation rather than one-time intervention. Institutions must adapt not only their rules but also their cultures. Without such reflexivity, inclusion initiatives may reinforce the very hierarchies they seek to dismantle.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "critique narrow conceptions of social inclusion",
+            "defend representation-based policies",
+            "argue that inclusion efforts are ineffective",
+            "outline legal frameworks for inclusion"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage problematizes access-focused approaches and calls for deeper change. Option A captures this critical aim. Options B, C, and D misstate the argument."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that inclusion policies fail when they:",
+          "options": [
+            "treat diversity as an endpoint rather than a process",
+            "prioritize cultural change",
+            "address informal hierarchies",
+            "emphasize institutional reflexivity"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage stresses that inclusion must be ongoing and substantive. Option A reflects this. The other options describe what the author supports, not criticizes."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "warn against depoliticized approaches to inclusion",
+            "summarize empirical findings",
+            "propose specific policy instruments",
+            "reject sociological perspectives"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four cautions that technocratic metrics can obscure structural inequality. Option A correctly identifies its role."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "The passage implies that genuine inclusion requires:",
+          "options": [
+            "changes in institutional culture as well as rules",
+            "only legal reforms",
+            "temporary policy interventions",
+            "greater emphasis on numerical targets"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes cultural adaptation alongside formal change. Option A aligns with this. The remaining options contradict the argument."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Finance and Accounting",
+      "difficulty": "very hard",
+      "text": "Financial statements are commonly regarded as objective representations of organizational performance. Standardized accounting principles aim to ensure consistency and comparability across firms, enabling investors and regulators to make informed decisions. Balance sheets, income statements, and cash flow reports thus appear to offer transparent windows into economic reality.\n\nHowever, accounting involves judgment as much as calculation. Decisions about asset valuation, revenue recognition, and risk provisioning require interpretation under conditions of uncertainty. These judgments can significantly influence reported performance without violating formal standards.\n\nCritics argue that this discretion allows firms to manage earnings strategically. By timing revenue or adjusting assumptions, organizations may present a smoother financial trajectory than underlying conditions warrant. Such practices challenge the notion that accounting merely reflects reality.\n\nDefenders respond that discretion is unavoidable in complex economic environments. Eliminating judgment would require rigid rules incapable of capturing diverse business models. From this view, the problem lies not in discretion itself but in inadequate disclosure and oversight.\n\nThe debate underscores a fundamental tension in financial reporting: the desire for objectivity versus the necessity of interpretation. Recognizing this tension does not imply abandoning accounting standards, but it does call for greater skepticism toward claims of neutrality in financial representation.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily examines:",
+          "options": [
+            "the tension between objectivity and judgment in accounting",
+            "the failure of accounting standards",
+            "the superiority of market-based valuation",
+            "fraudulent practices in financial reporting"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author highlights the unavoidable role of judgment within standardized frameworks. Option A captures this central theme. Options B, C, and D exaggerate or misstate the argument."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that earnings management occurs because:",
+          "options": [
+            "accounting standards permit interpretive flexibility",
+            "most firms intentionally mislead investors",
+            "regulators discourage transparency",
+            "financial reporting lacks any rules"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage links earnings management to discretionary judgment within standards. Option A follows logically. The other options introduce unsupported claims."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s position?",
+          "options": [
+            "Evidence that firms report different profits under identical standards",
+            "Data showing rising global investment flows",
+            "A critique of corporate governance models",
+            "Historical accounts of accounting fraud"
+          ],
+          "correctIndex": 0,
+          "explanation": "Showing variation in reported outcomes despite identical standards would directly support the argument about judgment. Option A is most relevant."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that users of financial statements should:",
+          "options": [
+            "approach reported figures with informed skepticism",
+            "reject accounting information entirely",
+            "focus exclusively on cash flow data",
+            "assume neutrality of reported numbers"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion calls for skepticism rather than rejection. Option A reflects this balanced implication. The other options are extreme or contradicted."
+        }
+      ]
+    }
+  ]
+}
