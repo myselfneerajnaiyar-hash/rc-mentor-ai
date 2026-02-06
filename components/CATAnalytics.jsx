@@ -910,3 +910,17 @@ const insightBox = {
   border: "1px solid #cbd5e1",
   fontSize: 13,
 };
+const sectionTitle = {
+  fontSize: 22,
+  fontWeight: 800,
+  marginBottom: 6,
+  color: "#0f172a",
+};
+
+const planTitle = {
+  fontSize: 17,
+  fontWeight: 700,
+  marginTop: 14,
+  marginBottom: 10,
+  color: "#1e293b",
+};
