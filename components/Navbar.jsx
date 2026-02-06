@@ -40,30 +40,59 @@ export default function Navbar({ view, setView }) {
     { key: "vocab", label: "VocabularyLab" },
     { key: "speed", label: "SpeedGym" },
     { key: "cat", label: "CAT Arena" },
-    { key: "analytics", label: "Analytics" }, // ✅ NEW TAB
+    { key: "analytics", label: "Analytics" },
   ];
 
   return (
     <div
       style={{
         display: "flex",
-        gap: 16,
+        alignItems: "center",
+        gap: 18,
         padding: "12px 20px",
         borderBottom: "1px solid #e5e7eb",
         background: "#ffffff",
         position: "sticky",
         top: 0,
         zIndex: 100,
-        alignItems: "center",
       }}
     >
-      {/* ================= LEFT TABS ================= */}
+      {/* ================= BRAND ================= */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginRight: 16,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 18,
+            fontWeight: 800,
+            color: "#1e3a8a",
+            lineHeight: 1,
+          }}
+        >
+          AuctorRC
+        </div>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: "#64748b",
+          }}
+        >
+          by Auctor Labs
+        </div>
+      </div>
+
+      {/* ================= NAV TABS ================= */}
       {tabs.map(t => (
         <button
           key={t.key}
           onClick={() => {
             setView(t.key);
-            setOpen(false); // close dropdown on navigation
+            setOpen(false);
           }}
           style={{
             padding: "8px 14px",
@@ -82,13 +111,13 @@ export default function Navbar({ view, setView }) {
       {/* SPACER */}
       <div style={{ flex: 1 }} />
 
-      {/* ===== CAT-SCOPED DIAGNOSIS HISTORY (DO NOT REMOVE) ===== */}
+      {/* ================= DIAGNOSIS HISTORY ================= */}
       {view === "cat" && (
         <div style={{ position: "relative" }}>
           <button
             onClick={() => setOpen(o => !o)}
             style={{
-              background: "#f97316", // orange
+              background: "#f97316",
               color: "#fff",
               padding: "8px 14px",
               borderRadius: 8,
