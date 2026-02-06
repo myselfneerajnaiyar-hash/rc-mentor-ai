@@ -228,6 +228,50 @@ function extractMetrics(sectionId) {
   }
 }
 
+/* ================= PLAN TEMPLATES ================= */
+
+const PLAN_TEMPLATES = {
+  SELECTION_RESET: {
+    title: "Passage Selection Reset (10 Days)",
+    focus: ["Passage Selection", "Author Intent", "Attempt Discipline"],
+    plan: [
+      "Day 1–2: Solve 2 RC passages/day. Skip at least 1 passage consciously.",
+      "Day 3–4: Solve 3 RC passages/day. Attempt max 3 questions per passage.",
+      "Day 5–6: Mixed RC practice. Stop after 2 wrong in a passage.",
+      "Day 7–8: Timed RC set (8–9 attempts max). No rereading passages.",
+      "Day 9: Full RC sectional. Attempt cap = 9 questions.",
+      "Day 10: Review all wrong + skipped passages. Write reasons."
+    ]
+  },
+
+  ELIMINATION_FIX: {
+    title: "Option Elimination Fix (10 Days)",
+    focus: ["Option Elimination", "Trap Recognition"],
+    plan: [
+      "Day 1–2: Practice eliminating 2 options before reading fully.",
+      "Day 3–4: RC drills focusing on extreme words (always, never).",
+      "Day 5–6: Solve only inference questions.",
+      "Day 7–8: Timed RC (10 questions) with elimination first.",
+      "Day 9: Sectional RC focusing on accuracy.",
+      "Day 10: Review wrong options and trap patterns."
+    ]
+  }
+};
+
+function getPersonalizedPlan(metrics, comparisonDrop) {
+  if (!metrics) return null;
+
+  if (metrics.wrong >= 4) {
+    return PLAN_TEMPLATES.ELIMINATION_FIX;
+  }
+
+  if (comparisonDrop || metrics.attempted >= 12) {
+    return PLAN_TEMPLATES.SELECTION_RESET;
+  }
+
+  return PLAN_TEMPLATES.SELECTION_RESET;
+}
+
 export default function CATAnalytics() {
   const [compareA, setCompareA] = useState("");
 const [compareB, setCompareB] = useState("");
