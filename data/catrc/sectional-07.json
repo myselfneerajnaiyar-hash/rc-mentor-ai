@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 07",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (Moderate, Lengthy)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Robotics",
+      "difficulty": "moderate",
+      "text": "Public discussions of robotics often oscillate between exaggerated optimism and dystopian anxiety. Robots are alternately portrayed as inevitable liberators of human labor or as existential threats poised to displace workers en masse. These polarized narratives obscure the more mundane but consequential ways in which robotics is already reshaping economic and social life.\n\nMost contemporary robots are not autonomous agents capable of independent judgment. Instead, they function as components within tightly structured systems, performing repetitive or highly constrained tasks. In manufacturing, logistics, and warehousing, robots augment human labor by increasing speed and consistency rather than replacing workers entirely. Their impact is therefore uneven, altering job composition more than employment levels.\n\nThe consequences of this shift depend heavily on institutional context. In settings where workers have access to retraining, job mobility, and social protection, automation can coexist with rising productivity and stable employment. Conversely, where labor markets are rigid or protections weak, robotics may exacerbate inequality by displacing workers without viable alternatives.\n\nMoreover, the introduction of robots frequently reorganizes decision-making authority. Tasks once reliant on human discretion become encoded into software protocols, transferring power from frontline workers to system designers and managers. This transformation raises questions not only about efficiency but also about accountability. When automated systems fail, responsibility becomes diffuse.\n\nUnderstanding robotics, therefore, requires moving beyond simplistic predictions of job loss or technological salvation. The effects of robots are mediated by policy choices, organizational structures, and social norms. Whether robotics amplifies inequality or supports shared prosperity is less a technological question than a political one.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that the impact of robotics:",
+          "options": [
+            "depends largely on institutional and policy contexts",
+            "is best understood as widespread job replacement",
+            "is exaggerated by both critics and supporters",
+            "is determined mainly by technological sophistication"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author repeatedly emphasizes that robotics’ effects are shaped by labor institutions, policy, and social protection. Option A captures this central claim. Option B is rejected explicitly. Option C is secondary, not central. Option D ignores the passage’s emphasis on context over technology."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that concerns about robotics are misplaced when they:",
+          "options": [
+            "treat technology as operating independently of social structures",
+            "focus on power shifts within organizations",
+            "consider retraining and worker mobility",
+            "examine accountability in automated systems"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage argues against treating robotics as an autonomous force. Option A follows directly. Options B, C, and D align with the author’s concerns and are therefore not misplaced."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "highlight changes in authority and accountability caused by robotics",
+            "provide examples of successful automation",
+            "criticize managerial resistance to technology",
+            "compare robotics with earlier industrial tools"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four focuses on how automation redistributes decision-making power and complicates responsibility. Option A correctly identifies this function."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that debates about robotics should focus more on:",
+          "options": [
+            "governance and policy choices",
+            "technical feasibility",
+            "consumer adoption rates",
+            "ethical design principles alone"
+          ],
+          "correctIndex": 0,
+          "explanation": "The concluding sentence frames robotics as a political rather than purely technical issue. Option A reflects this implication. The other options are narrower than the author’s conclusion."
+        }
+      ]
+    },
+
+    {
+      "id": "P2",
+      "genre": "Genetics",
+      "difficulty": "moderate",
+      "text": "Advances in genetic research have transformed understanding of heredity, disease, and human variation. Technologies such as genome sequencing have revealed the complexity of genetic expression, challenging earlier models that treated genes as discrete and deterministic units. Traits once attributed to single genes are now understood to emerge from intricate interactions among multiple genetic and environmental factors.\n\nDespite these scientific developments, public discourse often continues to rely on simplified genetic explanations. Media narratives frequently frame genes as destiny, reinforcing the belief that biological inheritance rigidly determines outcomes. Such interpretations persist partly because they offer intuitive clarity in the face of complexity.\n\nScientists caution that genetic information is probabilistic rather than predictive. Possessing a genetic variant associated with a condition does not guarantee its manifestation. Environmental conditions, lifestyle choices, and epigenetic processes all influence how genes are expressed over time.\n\nThe misuse of genetic explanations carries social risks. Overemphasis on biological causation can obscure structural factors shaping health and opportunity, such as socioeconomic inequality or access to healthcare. In extreme cases, genetic determinism has historically been used to justify discriminatory policies.\n\nA more responsible engagement with genetics requires recognizing both its explanatory power and its limits. Scientific insight must be communicated in ways that resist reductionism while remaining accessible. Failure to do so risks distorting both scientific understanding and public policy.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "challenge deterministic interpretations of genetic research",
+            "summarize recent technological advances in genetics",
+            "argue that genes are irrelevant to human traits",
+            "criticize media coverage of science exclusively"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques simplified, deterministic readings of genetics while acknowledging scientific advances. Option A captures this aim. Options B and D are partial. Option C contradicts the passage."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that genetic explanations become problematic when they:",
+          "options": [
+            "ignore environmental and social influences",
+            "rely on probabilistic reasoning",
+            "are communicated cautiously",
+            "acknowledge historical misuse"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage criticizes genetic determinism that overlooks non-genetic factors. Option A follows logically. The other options reflect positions the author supports."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "highlight social consequences of genetic reductionism",
+            "explain technical limits of genome sequencing",
+            "trace the history of genetic research",
+            "argue for stricter scientific regulation"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four discusses social risks and misuse of genetic explanations. Option A correctly identifies its role."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that effective science communication should:",
+          "options": [
+            "balance clarity with acknowledgment of complexity",
+            "prioritize accessibility over accuracy",
+            "avoid discussing social implications",
+            "emphasize genetic causation"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph stresses resisting reductionism while remaining accessible. Option A aligns with this implication."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Philosophy",
+      "difficulty": "moderate",
+      "text": "Philosophical discussions of freedom often assume that autonomy consists in the absence of external constraints. On this view, individuals are free to the extent that they can act without interference. While intuitively appealing, this conception overlooks the conditions necessary for meaningful choice.\n\nCritics argue that freedom requires more than non-interference. Access to education, economic security, and social recognition shapes the range of options available to individuals. Without such enabling conditions, formal liberty may coexist with substantive unfreedom.\n\nThis distinction becomes evident in debates over coercion. A choice made under severe economic pressure may be formally voluntary yet morally troubling. Philosophers who emphasize substantive freedom contend that evaluating liberty requires attention to background conditions, not merely overt constraints.\n\nDefenders of negative liberty caution that expanding the concept of freedom risks paternalism. If freedom depends on contested judgments about well-being, authorities may justify intrusive interventions in the name of autonomy. The challenge lies in recognizing enabling conditions without collapsing freedom into enforced conformity.\n\nThe ongoing debate reflects competing intuitions about responsibility, agency, and justice. Rather than offering a definitive resolution, contemporary philosophy seeks to clarify the trade-offs inherent in different conceptions of freedom.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily explores:",
+          "options": [
+            "competing conceptions of freedom and their implications",
+            "the historical origins of negative liberty",
+            "economic coercion as a moral problem",
+            "government intervention in individual choice"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage contrasts negative and substantive conceptions of freedom. Option A captures this exploration. The other options are narrower aspects."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that substantive freedom emphasizes:",
+          "options": [
+            "the conditions enabling meaningful choice",
+            "the elimination of all authority",
+            "absolute non-interference",
+            "legal definitions of rights"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage repeatedly stresses enabling conditions. Option A follows directly."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "present a caution against expanding freedom too broadly",
+            "reject substantive freedom entirely",
+            "support economic regulation",
+            "define paternalism historically"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four presents concerns about paternalism. Option A correctly identifies this function."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "The passage implies that debates about freedom are unlikely to be resolved because they involve:",
+          "options": [
+            "trade-offs between competing values",
+            "lack of empirical evidence",
+            "conceptual confusion",
+            "political ideology alone"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph emphasizes trade-offs rather than definitive answers. Option A aligns with this implication."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Sociology",
+      "difficulty": "moderate",
+      "text": "Sociological analyses of modern societies often emphasize individual choice as a defining feature of contemporary life. Consumers select identities through lifestyle, occupation, and consumption, creating the appearance of autonomy and self-direction. This emphasis aligns with broader cultural narratives celebrating flexibility and personal responsibility.\n\nHowever, sociologists caution that the expansion of choice does not necessarily imply greater control. Choices are structured by economic constraints, cultural expectations, and institutional arrangements. What appears as individual preference may reflect patterned inequalities.\n\nMoreover, the burden of choice itself can become a source of pressure. Individuals are increasingly held accountable for outcomes that depend partly on structural conditions beyond their control. Failure is interpreted as personal inadequacy rather than systemic limitation.\n\nThis dynamic reshapes social solidarity. As responsibility is individualized, collective responses to risk and inequality weaken. Social problems are reframed as private troubles, reducing support for shared solutions.\n\nUnderstanding modern choice therefore requires situating individual decisions within broader social contexts. Autonomy and constraint are not opposites but intertwined features of contemporary social life.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that individual choice in modern society:",
+          "options": [
+            "is shaped and constrained by social structures",
+            "has expanded without consequence",
+            "eliminates the need for social support",
+            "reflects purely personal preference"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage consistently emphasizes structural constraints shaping choice. Option A captures this central idea."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that increased emphasis on personal responsibility:",
+          "options": [
+            "can obscure structural causes of inequality",
+            "enhances collective solidarity",
+            "reduces social pressure",
+            "ensures fair outcomes"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage links individualization to weakened collective responses. Option A follows logically."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The third paragraph primarily serves to:",
+          "options": [
+            "explain how choice becomes a source of pressure",
+            "criticize consumer culture",
+            "celebrate individual autonomy",
+            "describe institutional reform"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph three focuses on the psychological and social burden of choice. Option A correctly identifies its role."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that addressing social problems requires:",
+          "options": [
+            "recognizing the link between individual decisions and structural forces",
+            "encouraging greater personal accountability",
+            "reducing available choices",
+            "abandoning individual autonomy"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes contextualizing choice rather than rejecting it. Option A aligns with this implication."
+        }
+      ]
+    }
+  ]
+}
