@@ -667,12 +667,17 @@ setCatPhase("test");
     }}
 
   onViewDiagnosis={(sectionalId, attemptId) => {
-  if (!sectionalAttemptMap[sectionalId]) return;
+  const attempts = JSON.parse(
+    localStorage.getItem("catRCResults") || "{}"
+  );
+
+  // 🔒 HARD GUARD — no attempts, no diagnosis
+  if (!attempts[sectionalId]?.length) return;
 
   setActiveRCTest({
     id: sectionalId,
     __startPhase: "diagnosis",
-    __attemptId: attemptId,   // 👈 THIS IS THE KEY
+    __attemptId: attemptId,
   });
 
   setCatPhase("test");
