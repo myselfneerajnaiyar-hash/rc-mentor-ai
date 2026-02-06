@@ -781,7 +781,9 @@ return (
 
     {/* ================= PLAN OF ACTION ================= */}
 <div style={card}>
-  <h3 style={cardTitle}>🎯 Personalized 10-Day Plan</h3>
+  <h2 style={sectionTitle}>
+  🎯 Personalized 10-Day Plan
+</h2>
   <p style={cardSub}>
     What to focus on before your next CAT RC sectional
   </p>
