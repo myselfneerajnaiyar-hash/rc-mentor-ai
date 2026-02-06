@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 10",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (Trap-Heavy)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Urban Policy & Infrastructure",
+      "difficulty": "hard",
+      "text": "Urban infrastructure debates are often framed around visible deficits: traffic congestion, housing shortages, and overstretched public utilities. These problems are typically attributed to rapid urbanization and population growth. However, such explanations risk obscuring the role of governance structures in shaping infrastructural outcomes.\n\nIn many cities, infrastructure planning remains fragmented across agencies with overlapping mandates. Transport authorities, housing boards, and environmental regulators frequently operate in isolation, leading to solutions that address narrow objectives while generating broader inefficiencies. For instance, expanding road capacity without coordinating land-use policy can encourage urban sprawl, ultimately exacerbating congestion rather than alleviating it.\n\nMoreover, the political economy of infrastructure investment favors projects with immediate visibility. Large-scale construction offers tangible symbols of progress, whereas maintenance and incremental upgrades attract less political capital. As a result, cities often prioritize expansion over upkeep, despite evidence that deteriorating existing systems impose higher long-term costs.\n\nSome scholars argue that technological interventions—smart traffic systems, data-driven planning tools—can compensate for governance failures. While such tools may improve efficiency at the margins, they cannot substitute for institutional coordination. Without reforms that align incentives and accountability across agencies, technological fixes risk becoming superficial enhancements layered onto structurally flawed systems.\n\nAddressing urban infrastructure challenges therefore requires shifting attention from growth-centric narratives to governance reform. Sustainable urban development depends less on the scale of investment than on the coherence of decision-making processes that guide it.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea",
+          "stem": "The passage primarily argues that urban infrastructure problems are best understood as a consequence of:",
+          "options": [
+            "weak coordination and governance rather than mere population growth",
+            "technological limitations in urban planning",
+            "insufficient financial investment",
+            "citizen resistance to urban reform"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author consistently shifts focus from population growth to governance failures. Option A captures this central argument. Option B is discussed but dismissed as insufficient. Option C is not the focus. Option D is not mentioned."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that expanding road capacity without institutional reform is likely to:",
+          "options": [
+            "worsen long-term congestion",
+            "solve housing shortages",
+            "reduce political incentives",
+            "improve environmental outcomes"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author explicitly notes that such expansion encourages sprawl and worsens congestion. Option A follows directly. The other options contradict or are irrelevant."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward technological solutions is best described as:",
+          "options": [
+            "cautiously skeptical",
+            "uncritically optimistic",
+            "hostile",
+            "indifferent"
+          ],
+          "correctIndex": 0,
+          "explanation": "Technology is acknowledged as marginally useful but insufficient. This reflects cautious skepticism, not hostility or optimism."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s argument?",
+          "options": [
+            "Evidence showing cities with strong inter-agency coordination perform better with similar budgets",
+            "Data indicating rapid urbanization increases congestion",
+            "Examples of successful smart-city pilot projects",
+            "Studies highlighting voter preference for visible infrastructure"
+          ],
+          "correctIndex": 0,
+          "explanation": "Option A directly supports the governance-centric thesis. Options B and D reinforce points the author downplays. Option C weakens the critique of techno-fixes."
+        }
+      ]
+    },
+
+    {
+      "id": "P2",
+      "genre": "Game Theory & Strategic Behavior",
+      "difficulty": "hard",
+      "text": "Game theory models strategic interaction by assuming that agents act rationally to maximize payoffs given their beliefs about others’ behavior. These models have been influential across economics, political science, and evolutionary biology. Yet their predictive success depends critically on the assumptions embedded within them.\n\nIn real-world interactions, agents often lack complete information about payoffs or strategies. Moreover, they may not share common beliefs or possess the cognitive capacity to calculate equilibrium outcomes. Experimental studies repeatedly demonstrate deviations from equilibrium predictions, particularly in one-shot or unfamiliar games.\n\nSome theorists interpret these deviations as evidence against the descriptive validity of game theory. Others argue that game theory should be understood as a normative framework, specifying how agents ought to behave under idealized conditions rather than predicting actual behavior.\n\nA third perspective treats game theory as a heuristic tool. On this view, its value lies not in precise prediction but in clarifying strategic structure—identifying incentives, constraints, and potential points of conflict or cooperation. Even when agents do not play equilibrium strategies, the framework can illuminate why certain outcomes are unstable or surprising.\n\nThe debate over game theory’s role thus reflects broader questions about the aims of modeling: whether explanation requires accurate prediction, or whether conceptual insight alone can justify abstraction.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily discusses:",
+          "options": [
+            "competing interpretations of the purpose of game theory",
+            "the empirical failure of game theory",
+            "the superiority of experimental economics",
+            "limitations of rational choice theory alone"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage contrasts descriptive, normative, and heuristic views. Option A captures this. Others isolate only one strand."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that predictive inaccuracy:",
+          "options": [
+            "does not automatically render a model useless",
+            "invalidates all strategic models",
+            "can be eliminated through better data",
+            "proves agents are irrational"
+          ],
+          "correctIndex": 0,
+          "explanation": "The heuristic defense implies usefulness beyond prediction. Option A follows. Others contradict the argument."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "reframe game theory’s value independent of prediction",
+            "summarize empirical objections",
+            "criticize rationality assumptions",
+            "introduce evolutionary models"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four presents the heuristic perspective. Option A is correct."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that abstraction in modeling is justified if it:",
+          "options": [
+            "clarifies strategic relationships even without precise forecasts",
+            "mirrors real behavior exactly",
+            "eliminates uncertainty",
+            "avoids normative assumptions"
+          ],
+          "correctIndex": 0,
+          "explanation": "This is the core defense of abstraction offered by the author."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Linguistics",
+      "difficulty": "hard",
+      "text": "Language is often treated as a neutral vehicle for conveying information. From this perspective, words function as transparent labels attached to pre-existing concepts. Linguistic research, however, suggests that language shapes thought as much as it expresses it.\n\nGrammatical structures influence how speakers perceive events, assign responsibility, and encode causality. Languages that require explicit marking of agency, for example, can affect how speakers remember actions and assign blame. Vocabulary choices similarly frame interpretation, foregrounding certain aspects of reality while backgrounding others.\n\nThis does not imply that language determines thought in a rigid manner. Rather, linguistic structures create habitual patterns of attention. Speakers can think outside these patterns, but doing so often requires conscious effort.\n\nThe relationship between language and cognition therefore resists simple causal claims. Language neither traps speakers within fixed worldviews nor functions as a passive mirror. It operates as a set of constraints and affordances that interact dynamically with cognitive processes.\n\nUnderstanding this interaction has implications for education, translation, and public discourse. Awareness of linguistic framing can enable more reflective communication, but it cannot eliminate interpretive variation altogether.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea",
+          "stem": "The passage primarily argues that language:",
+          "options": [
+            "shapes habitual patterns of thought without rigidly determining them",
+            "completely determines cognition",
+            "plays no role in perception",
+            "is merely a tool for communication"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author explicitly rejects determinism while emphasizing influence. Option A captures this balance."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that linguistic awareness:",
+          "options": [
+            "can improve communication but cannot eliminate misunderstanding",
+            "guarantees objectivity",
+            "removes cognitive bias",
+            "makes translation unnecessary"
+          ],
+          "correctIndex": 0,
+          "explanation": "The concluding paragraph supports this inference."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s tone is best described as:",
+          "options": [
+            "analytical and nuanced",
+            "dogmatic",
+            "dismissive",
+            "advocacy-driven"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage carefully balances claims without exaggeration."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s position?",
+          "options": [
+            "Studies showing memory differences linked to grammatical structure",
+            "Evidence that language has no cognitive effect",
+            "Claims that all languages encode reality identically",
+            "Arguments denying mental flexibility"
+          ],
+          "correctIndex": 0,
+          "explanation": "Option A provides empirical backing for linguistic influence."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Technology & Ethics",
+      "difficulty": "hard",
+      "text": "Technological automation is often portrayed as a neutral process of efficiency enhancement. Algorithms replace human judgment in tasks ranging from hiring to credit evaluation, promising consistency and speed. However, such portrayals overlook the normative assumptions embedded in algorithmic systems.\n\nAlgorithms are trained on historical data, which may encode existing social biases. Decisions produced by automated systems can therefore reproduce or amplify inequalities under the guise of objectivity. Moreover, the opacity of complex models makes it difficult to assign responsibility when outcomes are contested.\n\nSome proponents argue that transparency and better data can mitigate these risks. While such measures are necessary, they may be insufficient. Bias can arise not only from data but also from problem formulation: which variables are included, which objectives are optimized, and which trade-offs are deemed acceptable.\n\nCritically, the delegation of decisions to algorithms can reshape institutional norms. When automated outputs are treated as authoritative, human oversight may erode, even in contexts where ethical judgment is essential. The risk is not that machines replace humans, but that humans defer responsibility to machines.\n\nEthical evaluation of automation must therefore extend beyond technical fixes to institutional design. Accountability requires maintaining spaces for human judgment rather than outsourcing moral responsibility to computational systems.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily argues that automation:",
+          "options": [
+            "poses ethical risks that cannot be solved by technical improvements alone",
+            "should be halted entirely",
+            "is inherently biased",
+            "eliminates the need for human judgment"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author emphasizes institutional and ethical concerns beyond data or transparency fixes."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that algorithmic objectivity is problematic because:",
+          "options": [
+            "algorithms reflect human value judgments",
+            "machines cannot compute accurately",
+            "humans misuse technology",
+            "automation slows decision-making"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage highlights embedded assumptions and bias."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward automation is best described as:",
+          "options": [
+            "critical but not rejectionist",
+            "enthusiastically supportive",
+            "fear-mongering",
+            "technologically pessimistic"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques without calling for abandonment."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that ethical automation requires:",
+          "options": [
+            "preserving meaningful human oversight",
+            "fully autonomous systems",
+            "eliminating institutional norms",
+            "maximizing algorithmic authority"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph clearly supports this implication."
+        }
+      ]
+    }
+  ]
+}
