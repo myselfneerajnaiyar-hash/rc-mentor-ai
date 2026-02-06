@@ -804,7 +804,7 @@ return (
           ))}
         </ul>
 
-        <h4 style={{ marginTop: 12 }}>📅 {plan.title}</h4>
+        <h3 style={{ marginTop: 12 }}>📅 {plan.title}</h3>
         <ol>
           {plan.plan.map((step, i) => (
             <li key={i} style={{ marginBottom: 6 }}>
