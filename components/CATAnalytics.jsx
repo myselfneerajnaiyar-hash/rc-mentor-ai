@@ -258,27 +258,27 @@ const PLAN_TEMPLATES = {
   }
 };
 
-function getPersonalizedPlan(metrics, comparisonDrop) {
+function getPersonalizedPlan(metrics) {
   if (!metrics) return null;
 
-  if (metrics.wrong >= 4) {
+  // High wrong answers → elimination problem
+  if (metrics.accuracy < 60) {
     return PLAN_TEMPLATES.ELIMINATION_FIX;
   }
 
-  if (comparisonDrop || metrics.attempted >= 12) {
+  // Over-attempting → selection problem
+  if (metrics.accuracy >= 60 && metrics.accuracy <= 70) {
     return PLAN_TEMPLATES.SELECTION_RESET;
   }
 
+  // Default
   return PLAN_TEMPLATES.SELECTION_RESET;
 }
-
 export default function CATAnalytics() {
   const [compareA, setCompareA] = useState("");
 const [compareB, setCompareB] = useState("");
   const metrics = getRCSkillMetrics();
-  const accuracyDropped =
-  A && B && B.accuracy < A.accuracy;
-  
+ 
   return (
     <div
       style={{
