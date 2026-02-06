@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 const STORAGE_KEY = "catRCResults";
-const [compareA, setCompareA] = useState("");
-const [compareB, setCompareB] = useState("");
 
 
 function getSectionalAccuracyTrend() {
@@ -231,6 +229,8 @@ function extractMetrics(sectionId) {
 }
 
 export default function CATAnalytics() {
+  const [compareA, setCompareA] = useState("");
+const [compareB, setCompareB] = useState("");
   return (
     <div
       style={{
