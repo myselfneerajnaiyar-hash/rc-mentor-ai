@@ -1,1 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 05",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (Difficult)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Architecture",
+      "difficulty": "hard",
+      "text": "Architectural discourse has long grappled with the tension between form and function. Early modernist architects argued that buildings should prioritize utility, efficiency, and structural honesty, rejecting ornament as unnecessary excess. This philosophy was partly a response to industrialization, which demanded scalable, cost-effective construction methods for rapidly growing urban populations.\n\nHowever, critics of strict functionalism contend that such approaches reduce architecture to engineering, neglecting its cultural and experiential dimensions. Buildings are not merely shelters or machines; they also shape human perception, social interaction, and symbolic meaning. A purely functional structure may satisfy material needs while failing to foster emotional or communal engagement.\n\nThe postmodern turn in architecture sought to address these concerns by reintroducing historical references, symbolism, and playfulness. Yet postmodernism itself faced criticism for superficiality, accused of applying decorative elements without substantive integration into spatial logic. In some cases, symbolism appeared arbitrary, detached from social context or structural necessity.\n\nMore recent architectural thinking attempts to move beyond this oscillation. Concepts such as critical regionalism emphasize sensitivity to local climate, materials, and cultural practices while retaining modern construction techniques. Sustainability discourse has further complicated the debate, introducing ecological performance as a central design criterion.\n\nRather than resolving the form–function tension, contemporary architecture increasingly treats it as a productive constraint. By acknowledging competing demands—utility, symbolism, environmental responsibility—architects can create spaces that are both functional and meaningful, resisting reductive definitions of architectural value.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that architecture should:",
+          "options": [
+            "balance functional requirements with cultural and experiential considerations",
+            "return to modernist principles of efficiency and structural honesty",
+            "prioritize symbolism over utility",
+            "abandon historical debates about form and function"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques both strict functionalism and superficial symbolism, ultimately arguing for an integrated approach. Option A captures this synthesis. Option B reflects an earlier position that the author questions. Option C represents an extreme postmodern stance that is criticized. Option D is incorrect because the passage engages deeply with these debates rather than dismissing them."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author views postmodern architecture as problematic mainly because it:",
+          "options": [
+            "often separates symbolism from structural and social coherence",
+            "rejects all modern construction techniques",
+            "ignores historical references",
+            "overemphasizes sustainability concerns"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage notes that postmodern symbolism is sometimes superficial and detached from context. Option A follows directly. Options B and C contradict the description. Option D misattributes a concern discussed later."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph mainly serves to:",
+          "options": [
+            "introduce contemporary attempts to reconcile earlier debates",
+            "criticize sustainability as a design principle",
+            "defend postmodern symbolism",
+            "summarize the failures of modernism"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four presents critical regionalism and sustainability as newer frameworks addressing past limitations. Option A correctly identifies this role. Options B, C, and D misrepresent the paragraph’s intent."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that unresolved tensions in architecture are:",
+          "options": [
+            "useful in generating innovative design solutions",
+            "evidence of conceptual failure within the discipline",
+            "primarily economic in origin",
+            "best eliminated through standardized norms"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author explicitly describes tension as a productive constraint. Option A aligns with this. Options B, C, and D contradict the concluding perspective."
+        }
+      ]
+    },
 
+    {
+      "id": "P2",
+      "genre": "Romanticism",
+      "difficulty": "hard",
+      "text": "Romanticism emerged in late eighteenth-century Europe as a reaction against Enlightenment rationalism and classical restraint. Romantic thinkers and artists emphasized emotion, imagination, and individual experience, challenging the belief that reason alone could capture the richness of human life. Nature, in particular, was elevated as a source of spiritual insight rather than merely an object of scientific inquiry.\n\nThis movement did not reject reason entirely; instead, it questioned reason’s dominance. Romantic writers argued that excessive rationalization alienated individuals from authentic feeling and creativity. Poetry, art, and music became vehicles for expressing subjective truths that could not be reduced to universal laws.\n\nHowever, Romanticism has often been criticized for encouraging irrationality and political escapism. By privileging emotion, critics claim, Romantic thought risks undermining collective responsibility and social order. Such critiques became especially prominent in the aftermath of political upheavals that exposed the dangers of unrestrained passion.\n\nDefenders counter that Romanticism offers a corrective rather than an alternative to rationalism. Emotion and imagination, they argue, expand rather than negate human understanding. Romantic ideas have influenced later movements, including environmentalism and existentialism, both of which emphasize lived experience and moral engagement.\n\nThe enduring legacy of Romanticism lies in its insistence that human understanding is incomplete without attention to affective and imaginative dimensions. Its challenge to Enlightenment certainty continues to provoke debate about the proper balance between reason and emotion.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "evaluate Romanticism as a response to Enlightenment rationalism",
+            "argue that emotion should replace reason entirely",
+            "criticize Romanticism for political irresponsibility",
+            "trace the historical decline of Enlightenment thought"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage presents both critiques and defenses of Romanticism, assessing its role and legacy. Option A captures this evaluative aim. Options B and C reflect only one-sided interpretations. Option D misstates the focus."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward Romanticism is best described as:",
+          "options": [
+            "measured and balanced",
+            "uncritically celebratory",
+            "openly dismissive",
+            "deeply skeptical"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author acknowledges both criticisms and defenses, indicating a balanced tone. Option A fits. Options B, C, and D exaggerate or mischaracterize the stance."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Inference",
+          "stem": "The author would most likely agree that Romanticism:",
+          "options": [
+            "sought to complement rather than abolish rational inquiry",
+            "rejected all scientific modes of understanding",
+            "was primarily responsible for political instability",
+            "had limited influence beyond its historical moment"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage stresses that Romanticism questioned reason’s dominance, not its existence. Option A follows directly. Options B, C, and D are unsupported or contradicted."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that debates over Romanticism persist because they concern:",
+          "options": [
+            "the enduring tension between reason and emotion",
+            "the accuracy of historical interpretation",
+            "the role of art in political governance",
+            "the decline of scientific authority"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion highlights ongoing debates about balancing reason and emotion. Option A reflects this. The other options introduce themes not central to the passage."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Polity",
+      "difficulty": "hard",
+      "text": "Constitutional democracies are founded on the principle that power must be constrained through institutional checks and balances. Written constitutions delineate the scope of authority among branches of government, aiming to prevent concentration of power while enabling effective governance. Judicial review, legislative oversight, and executive accountability are central to this framework.\n\nYet constitutional design cannot anticipate every political contingency. Emergencies, shifting social norms, and evolving interpretations of rights place strain on rigid institutional arrangements. In such moments, constitutional norms may be stretched, reinterpreted, or selectively invoked.\n\nProponents of constitutional flexibility argue that adaptability is essential for democratic survival. Strict adherence to original intent, they claim, risks rendering constitutions obsolete. Critics counter that excessive flexibility undermines the rule of law, allowing governments to justify extraordinary powers without adequate safeguards.\n\nThis debate often surfaces in discussions of executive authority. Expansions of executive power are frequently defended as necessary responses to crisis, yet such expansions may persist beyond their original justification. Retrenching power once norms have shifted proves politically difficult.\n\nThe challenge for constitutional democracies lies in maintaining legitimacy while navigating change. Institutions must balance stability with responsiveness, ensuring that flexibility does not become a pretext for erosion of democratic constraints.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily examines:",
+          "options": [
+            "the tension between constitutional stability and political adaptability",
+            "the failure of constitutional democracies",
+            "the inevitability of executive dominance",
+            "the superiority of rigid constitutionalism"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author consistently discusses balancing stability and adaptability. Option A captures this. Options B, C, and D present exaggerated or unsupported conclusions."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author views emergencies as:",
+          "options": [
+            "tests of constitutional resilience rather than exceptions to it",
+            "justifications for suspending constitutional norms permanently",
+            "irrelevant to constitutional theory",
+            "evidence of constitutional failure"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage frames emergencies as moments that strain constitutional design, not negate it. Option A fits. The other options misrepresent the author’s position."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s analysis?",
+          "options": [
+            "An example of emergency powers remaining in effect after a crisis",
+            "Data on voter turnout in democracies",
+            "A critique of judicial review as undemocratic",
+            "Historical evidence of constitutional collapse"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author discusses difficulty in retracting emergency powers. Option A directly supports this claim. The others introduce tangential issues."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "The passage implies that constitutional legitimacy depends on:",
+          "options": [
+            "preventing flexibility from eroding institutional constraints",
+            "strict adherence to original constitutional intent",
+            "executive efficiency during crises",
+            "minimizing judicial intervention"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes balancing flexibility with constraint. Option A reflects this nuanced position. The remaining options reflect one-sided interpretations."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Sports",
+      "difficulty": "very hard",
+      "text": "Elite competitive sports are often framed as meritocratic arenas in which success reflects talent, discipline, and effort. Performance metrics—times, scores, rankings—appear to offer objective measures of achievement. This narrative reinforces the idea that sport rewards individual excellence transparently and fairly.\n\nHowever, sociological analyses challenge this perception. Access to training facilities, quality coaching, nutrition, and early exposure varies significantly across socioeconomic contexts. These structural advantages shape athletic development long before competition becomes visible, complicating claims of pure meritocracy.\n\nMoreover, modern sport increasingly relies on data analytics, biomechanics, and technological enhancement. While these tools optimize performance, they also raise questions about fairness and accessibility. Athletes embedded in resource-rich systems benefit disproportionately from innovations that are unavailable elsewhere.\n\nDefenders of elite sport argue that inequality is unavoidable in any competitive system and that rules apply equally to all participants. Critics respond that formal equality obscures substantive inequality, legitimizing outcomes without addressing unequal starting conditions.\n\nThe meritocratic ideal persists partly because it serves institutional interests. Sporting organizations, sponsors, and audiences are invested in narratives of individual triumph. Recognizing structural determinants of success does not negate athletic effort, but it complicates simplistic accounts of fairness in competitive sport.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Primary Purpose",
+          "stem": "The primary purpose of the passage is to:",
+          "options": [
+            "critically examine the meritocratic narrative in elite sports",
+            "argue that technology has ruined competitive sport",
+            "defend socioeconomic inequality in athletics",
+            "deny the role of individual effort in sports success"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage questions the idea of pure meritocracy while acknowledging effort. Option A captures this critique. Options B, C, and D misrepresent the balanced analysis."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward the meritocratic ideal in sports is best described as:",
+          "options": [
+            "analytically skeptical",
+            "uncritically supportive",
+            "dismissive",
+            "nostalgic"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author systematically questions the meritocratic claim without rejecting effort outright. Option A fits. The other options mischaracterize the tone."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Inference",
+          "stem": "The author would most likely agree that technological advances in sport:",
+          "options": [
+            "amplify existing inequalities between athletes",
+            "eliminate the importance of training",
+            "ensure objective fairness",
+            "benefit all competitors equally"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage notes disproportionate benefits to resource-rich systems. Option A follows logically. Options B, C, and D contradict this argument."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that acknowledging structural inequality in sports would:",
+          "options": [
+            "complicate prevailing narratives without denying individual effort",
+            "invalidate competitive rankings entirely",
+            "require abolishing elite competitions",
+            "undermine spectator interest permanently"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author explicitly states that recognizing structure does not negate effort but complicates fairness narratives. Option A captures this nuance. The other options are extreme extrapolations."
+        }
+      ]
+    }
+  ]
+}
