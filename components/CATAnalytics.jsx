@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
 const STORAGE_KEY = "catRCResults";
+const [compareA, setCompareA] = useState("");
+const [compareB, setCompareB] = useState("");
+
 
 function getSectionalAccuracyTrend() {
   try {
@@ -182,6 +185,51 @@ function getRCSkillMetrics() {
     return null;
   }
 }
+
+function getAttemptedSectionals() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    return Object.keys(data).filter(
+      k => Array.isArray(data[k]) && data[k].length > 0
+    );
+  } catch {
+    return [];
+  }
+}
+
+function extractMetrics(sectionId) {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    const a = data[sectionId]?.[0];
+    if (!a) return null;
+
+    const attempted = a.attempted || a.total || 0;
+    const correct = a.correct || 0;
+    const wrong = a.wrong ?? Math.max(attempted - correct, 0);
+
+    const accuracy = attempted
+      ? Math.round((correct / attempted) * 100)
+      : 0;
+
+    const score = correct * 3 - wrong;
+
+    const avgTime = attempted
+      ? Math.round((a.timeTaken || 0) / attempted)
+      : 0;
+
+    return {
+      accuracy,
+      score,
+      avgTime,
+      correct,
+      wrong,
+      attempted,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export default function CATAnalytics() {
   return (
     <div
@@ -559,6 +607,119 @@ return (
   })()}
 </div>
       </div>
+
+{/* ================= COMPARISON ================= */}
+<div style={card}>
+  <h3 style={cardTitle}>📊 Sectional Comparison</h3>
+  <p style={cardSub}>Compare performance between two sectionals</p>
+
+  {(() => {
+    const sectionals = getAttemptedSectionals();
+
+    if (sectionals.length < 2) {
+      return (
+        <div style={{ color: "#64748b" }}>
+          Attempt at least 2 sectionals to enable comparison
+        </div>
+      );
+    }
+
+    const A = extractMetrics(compareA);
+    const B = extractMetrics(compareB);
+
+    return (
+      <>
+        {/* Dropdowns */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+          <select
+            value={compareA}
+            onChange={e => setCompareA(e.target.value)}
+            style={selectStyle}
+          >
+            <option value="">Select Sectional</option>
+            {sectionals.map(s => (
+              <option key={s} value={s}>
+                {s.toUpperCase()}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={compareB}
+            onChange={e => setCompareB(e.target.value)}
+            style={selectStyle}
+          >
+            <option value="">Select Sectional</option>
+            {sectionals.map(s => (
+              <option key={s} value={s}>
+                {s.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Comparison Table */}
+        {A && B && (
+          <>
+            <table style={tableStyle}>
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>{compareA.toUpperCase()}</th>
+                  <th>{compareB.toUpperCase()}</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Accuracy (%)", A.accuracy, B.accuracy],
+                  ["Score", A.score, B.score],
+                  ["Avg Time/Q (s)", A.avgTime, B.avgTime],
+                  ["Correct", A.correct, B.correct],
+                  ["Wrong", A.wrong, B.wrong],
+                ].map(([label, v1, v2]) => {
+                  const diff = v2 - v1;
+                  const color =
+                    diff > 0 ? "#16a34a" : diff < 0 ? "#dc2626" : "#64748b";
+
+                  return (
+                    <tr key={label}>
+                      <td>{label}</td>
+                      <td>{v1}</td>
+                      <td>{v2}</td>
+                      <td style={{ color, fontWeight: 600 }}>
+                        {diff > 0 ? "+" : ""}
+                        {diff}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
+            {/* Auto Insight */}
+            <div style={insightBox}>
+              {B.accuracy < A.accuracy && B.avgTime < A.avgTime && (
+                <>⚠️ Speed increased but accuracy dropped. You may be rushing comprehension.</>
+              )}
+
+              {B.score > A.score && B.wrong < A.wrong && (
+                <>✅ Better option elimination is improving your score.</>
+              )}
+
+              {B.attempted > A.attempted && B.accuracy < A.accuracy && (
+                <>📉 Over-attempting reduced accuracy. Be more selective.</>
+              )}
+            </div>
+          </>
+        )}
+      </>
+    );
+  })()}
+</div>
+
+
+      
       {/* ================= INSIGHT ROW ================= */}
 <div
   style={{
@@ -628,4 +789,26 @@ const placeholderBox = {
   justifyContent: "center",
   color: "#64748b",
   fontSize: 14,
+};
+const selectStyle = {
+  flex: 1,
+  padding: 8,
+  borderRadius: 8,
+  border: "1px solid #cbd5e1",
+  background: "#fff",
+};
+
+const tableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  fontSize: 13,
+};
+
+const insightBox = {
+  marginTop: 14,
+  padding: 12,
+  borderRadius: 10,
+  background: "#f1f5f9",
+  border: "1px solid #cbd5e1",
+  fontSize: 13,
 };
