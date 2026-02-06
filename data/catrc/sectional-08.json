@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 08",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (Difficult)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Digital Art",
+      "difficulty": "hard",
+      "text": "The emergence of digital art has unsettled long-standing assumptions about authorship, originality, and artistic value. Unlike traditional art forms rooted in physical media, digital works are infinitely reproducible, easily modified, and often dependent on software environments that evolve over time. These characteristics complicate conventional criteria used to evaluate artistic authenticity.\n\nCritics argue that digital art lacks the material permanence that underpins historical notions of artistic worth. A painting’s value, for instance, is tied to its physical singularity and vulnerability to decay. Digital artworks, by contrast, can persist through endless duplication, seemingly immune to degradation. Yet this apparent permanence is illusory, as digital formats rely on technological infrastructures prone to obsolescence.\n\nProponents counter that reproducibility does not negate artistic merit. They contend that creativity lies not in physical uniqueness but in conceptual design, algorithmic structure, and interactive potential. From this perspective, digital art expands rather than diminishes the scope of artistic expression by incorporating participation, variability, and generative processes.\n\nThe rise of blockchain-based authentication illustrates attempts to reconcile digital art with traditional market logic. By assigning scarcity through cryptographic verification, such systems seek to restore exclusivity. However, this solution raises further questions about whether value is being anchored to artistic content or merely to artificial scarcity.\n\nDebates surrounding digital art therefore reflect broader tensions between technological change and cultural valuation. Rather than resolving disputes about authenticity, digital art forces reconsideration of why originality matters and who determines artistic worth in evolving cultural ecosystems.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily examines:",
+          "options": [
+            "how digital art challenges traditional concepts of artistic value",
+            "why digital art is inferior to physical art",
+            "the technical mechanics of blockchain authentication",
+            "the historical evolution of art markets"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage focuses on how digital art disrupts ideas of authorship, originality, and value. Option A captures this central concern. Option B is incorrect because the author presents competing views. Option C is too narrow. Option D is tangential."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that attempts to impose scarcity on digital art:",
+          "options": [
+            "reflect discomfort with redefining artistic value",
+            "prove that digital art lacks intrinsic worth",
+            "eliminate concerns about authenticity",
+            "resolve debates about originality"
+          ],
+          "correctIndex": 0,
+          "explanation": "The blockchain discussion suggests an effort to align digital art with traditional valuation norms. Option A follows logically. The other options overstate or misinterpret the author’s position."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "illustrate an attempted solution to valuation concerns",
+            "argue for the superiority of blockchain technology",
+            "dismiss market-based art valuation",
+            "describe the technical limits of cryptography"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four presents blockchain authentication as an attempted reconciliation, not an endorsement. Option A correctly identifies its function."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that debates over digital art ultimately concern:",
+          "options": [
+            "the criteria by which cultural value is assigned",
+            "technological literacy among artists",
+            "copyright enforcement mechanisms",
+            "consumer preferences in art markets"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes reconsidering why originality matters and who assigns value. Option A aligns with this implication."
+        }
+      ]
+    },
+
+    {
+      "id": "P2",
+      "genre": "Genetics",
+      "difficulty": "hard",
+      "text": "Genetic research has increasingly emphasized the role of gene–environment interaction in shaping human traits. Rather than functioning as isolated determinants, genes operate within biological systems responsive to external conditions. This shift has challenged earlier frameworks that treated genetic influence as largely fixed.\n\nDespite this complexity, public and institutional applications of genetic knowledge often retain deterministic assumptions. Genetic risk scores, for example, are sometimes presented as predictive tools for health outcomes, even though they capture only statistical associations within specific populations.\n\nSuch applications raise concerns about interpretation and misuse. When genetic probabilities are treated as certainties, individuals may be categorized in ways that overlook environmental interventions capable of mitigating risk. This framing may also divert attention from social determinants of health.\n\nFurthermore, genetic data is unevenly distributed. Most large-scale genomic studies draw disproportionately from populations in wealthier countries, limiting the generalizability of findings. Applying these results universally risks reinforcing health disparities rather than alleviating them.\n\nA nuanced understanding of genetics therefore requires integrating biological insight with social awareness. Without such integration, genetic knowledge may produce policies that appear scientifically grounded while remaining socially blind.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "critique deterministic applications of genetic research",
+            "summarize recent advances in genomics",
+            "argue that genetics is unreliable",
+            "advocate genetic screening programs"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage focuses on misuse and oversimplification of genetic data. Option A captures this purpose. Other options misstate or narrow the argument."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that genetic risk scores are problematic because they:",
+          "options": [
+            "ignore contextual and population-specific limitations",
+            "are based on flawed statistical methods",
+            "eliminate environmental influence entirely",
+            "lack any scientific basis"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage emphasizes population bias and contextual limits. Option A follows logically. The remaining options exaggerate."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s argument?",
+          "options": [
+            "Evidence showing health outcomes improving through non-genetic interventions",
+            "Data proving genes determine all major diseases",
+            "A claim that environmental factors are unpredictable",
+            "Examples of successful universal genetic policies"
+          ],
+          "correctIndex": 0,
+          "explanation": "Demonstrating environmental mitigation supports the author’s critique of determinism. Option A strengthens the argument."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that genetic research should be applied:",
+          "options": [
+            "in conjunction with social and environmental analysis",
+            "independently of public policy",
+            "only within laboratory settings",
+            "as a primary determinant of health strategy"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph stresses integration of biological and social insight. Option A reflects this implication."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Psychology",
+      "difficulty": "hard",
+      "text": "Psychological research on decision-making has revealed systematic deviations from rational choice models. Individuals frequently rely on heuristics—mental shortcuts that simplify complex judgments. While these heuristics can improve efficiency, they also introduce predictable biases.\n\nEarly interpretations framed such biases as cognitive flaws. More recent perspectives, however, argue that heuristics are adaptive responses to limited information and time constraints. In uncertain environments, striving for optimal decisions may be impractical.\n\nThe evaluation of heuristics therefore depends on context. A rule of thumb effective in one domain may fail in another. Misapplication, rather than heuristic use itself, often produces error.\n\nThis insight has implications for behavioral interventions. Policies designed to correct bias must consider when and why heuristics function effectively. Overcorrecting may impose cognitive burdens that outweigh benefits.\n\nUnderstanding human judgment thus requires balancing normative ideals of rationality with descriptive accounts of cognitive functioning. Psychological realism, rather than strict optimization, offers a more practical framework.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that heuristics:",
+          "options": [
+            "should be evaluated based on contextual effectiveness",
+            "are inherently irrational",
+            "always outperform rational models",
+            "should be eliminated from decision-making"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage stresses context-dependent evaluation. Option A captures this. Other options present extreme positions."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that behavioral policies fail when they:",
+          "options": [
+            "ignore the adaptive value of heuristics",
+            "rely on psychological evidence",
+            "aim to improve decision-making",
+            "address cognitive limitations"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage cautions against overcorrection. Option A follows logically."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The third paragraph primarily serves to:",
+          "options": [
+            "qualify earlier criticisms of heuristics",
+            "introduce a new research method",
+            "dismiss rational choice theory",
+            "describe experimental design"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph three clarifies that heuristics are not uniformly flawed. Option A is correct."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "The passage implies that rationality should be understood as:",
+          "options": [
+            "a practical balance between ideals and constraints",
+            "strict logical consistency",
+            "error-free computation",
+            "a fixed cognitive trait"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion favors psychological realism over strict optimization. Option A aligns with this implication."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Media and Communication",
+      "difficulty": "hard",
+      "text": "Contemporary media environments are characterized by unprecedented information abundance. Digital platforms enable rapid dissemination of content, collapsing traditional barriers between producers and consumers. While this expansion promises democratization, it also alters how attention is allocated.\n\nAlgorithms increasingly mediate visibility, prioritizing content likely to generate engagement. This logic favors emotionally charged or simplified narratives over nuanced analysis. As a result, public discourse may become polarized despite greater informational access.\n\nCritics argue that algorithmic curation undermines deliberative democracy by fragmenting shared informational spaces. Supporters counter that personalization merely reflects user preference and that concerns about fragmentation exaggerate media influence.\n\nYet the structure of platforms shapes behavior in subtle ways. Metrics such as likes and shares create feedback loops that reward certain forms of expression. Over time, these incentives can reshape norms of communication.\n\nUnderstanding media influence therefore requires examining technological affordances alongside cultural practices. The consequences of digital media are not predetermined but emerge from interactions between platforms, users, and institutional regulation.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that digital media influence arises from:",
+          "options": [
+            "interactions between algorithms, users, and institutions",
+            "technological determinism alone",
+            "consumer demand for entertainment",
+            "the decline of traditional journalism"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage stresses interaction rather than determinism. Option A captures this view."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that algorithmic systems:",
+          "options": [
+            "shape communication indirectly through incentives",
+            "fully control public opinion",
+            "are neutral tools",
+            "eliminate user agency"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage emphasizes subtle shaping rather than total control. Option A follows logically."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "explain behavioral consequences of platform metrics",
+            "criticize emotional content",
+            "support algorithmic regulation",
+            "describe historical media trends"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four explains feedback loops created by metrics. Option A correctly identifies this role."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that improving public discourse requires:",
+          "options": [
+            "considering both technological design and social norms",
+            "removing personalization entirely",
+            "increasing content volume",
+            "eliminating algorithms"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes examining affordances and practices together. Option A aligns with this implication."
+        }
+      ]
+    }
+  ]
+}
