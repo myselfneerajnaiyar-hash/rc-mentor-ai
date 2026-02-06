@@ -279,14 +279,9 @@ export default function CATAnalytics() {
 const [compareB, setCompareB] = useState("");
   const metrics = getRCSkillMetrics();
  
-  return (
-    <div
-      style={{
-        maxWidth: 1200,
-        margin: "0 auto",
-        padding: "32px 24px",
-      }}
-    >
+ return (
+  <div style={pageWrapper}>
+    <div style={pageInner}>
       {/* ================= HEADER ================= */}
       <h1 style={{ fontSize: 28, marginBottom: 6 }}>
         📊 CAT Sectional Analytics
@@ -841,6 +836,7 @@ return (
   </div>
 </div>
     </div>
+  </div>
   );
 }
 
@@ -923,4 +919,14 @@ const planTitle = {
   marginTop: 14,
   marginBottom: 10,
   color: "#1e293b",
+};
+const pageWrapper = {
+  minHeight: "100vh",
+  background: "#f1f5fb", // light blue / grey-blue
+};
+
+const pageInner = {
+  maxWidth: 1200,
+  margin: "0 auto",
+  padding: "32px 24px",
 };
