@@ -1,1 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 04",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level (High)"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Paintings",
+      "difficulty": "hard",
+      "text": "Art historical interpretations of painting have often oscillated between formalist and contextual approaches. Formalist critics prioritize composition, color, line, and technique, treating the artwork as a self-contained aesthetic object. Contextual critics, by contrast, emphasize the social, political, and economic conditions under which artworks are produced and received.\n\nThe formalist tradition gained prominence in the early twentieth century, particularly as modernist painters sought autonomy from narrative and representational constraints. By focusing on purely visual elements, formalism claimed to protect art from ideological distortion. However, critics later argued that this supposed neutrality masked implicit assumptions about taste, power, and cultural hierarchy.\n\nContextual approaches emerged partly in response to these limitations. Feminist, postcolonial, and Marxist scholars demonstrated how artistic canons often excluded certain groups while presenting their exclusions as universal standards of quality. Paintings, they argued, do not merely reflect reality but actively participate in shaping social meanings.\n\nYet contextual analysis also faces criticism. When artworks are treated primarily as historical documents, their aesthetic specificity risks being reduced to illustration. Excessive emphasis on context can flatten interpretive nuance, making paintings interchangeable with other cultural artifacts.\n\nContemporary art history increasingly rejects this binary opposition. Instead, scholars argue for interpretive frameworks that recognize both the formal properties of paintings and the contexts in which they operate. Such approaches view aesthetic form and social meaning not as rivals but as mutually constitutive dimensions of artistic significance.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that art historical interpretation should:",
+          "options": [
+            "integrate formal analysis with contextual understanding",
+            "prioritize social context over aesthetic form",
+            "return to strict formalism to avoid ideological bias",
+            "treat paintings mainly as historical documents"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques both purely formalist and purely contextual approaches and concludes by advocating an integrated framework. Option A directly captures this synthesis. Option B reflects an extreme contextualist position that the author criticizes. Option C contradicts the critique of formalism’s hidden assumptions. Option D echoes a limitation of contextual analysis highlighted by the author."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author considers formalism problematic mainly because it:",
+          "options": [
+            "conceals underlying cultural and power assumptions",
+            "ignores artistic technique entirely",
+            "rejects modernist painting",
+            "denies that paintings have aesthetic value"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage notes that formalism’s claim to neutrality hides assumptions about taste and hierarchy. Option A follows directly. Option B is incorrect because formalism emphasizes technique. Option C is factually wrong, as formalism aligned with modernism. Option D reverses the formalist emphasis on aesthetics."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Function of a Paragraph",
+          "stem": "The fourth paragraph primarily serves to:",
+          "options": [
+            "identify a limitation of contextual analysis",
+            "summarize the advantages of formalism",
+            "introduce a new historical movement",
+            "resolve the debate definitively"
+          ],
+          "correctIndex": 0,
+          "explanation": "Paragraph four critiques contextual approaches for reducing aesthetic specificity. Option A accurately captures this role. Options B and C are unrelated. Option D is incorrect because resolution occurs only in the final paragraph."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that treating form and context as mutually exclusive leads to:",
+          "options": [
+            "incomplete interpretations of paintings",
+            "greater analytical clarity",
+            "stronger aesthetic judgments",
+            "more objective evaluations"
+          ],
+          "correctIndex": 0,
+          "explanation": "By criticizing both extremes, the author implies that separation produces partial understanding. Option A follows logically. Options B, C, and D contradict the integrative conclusion."
+        }
+      ]
+    },
 
+    {
+      "id": "P2",
+      "genre": "Psychology",
+      "difficulty": "hard",
+      "text": "Psychological research has long attempted to distinguish between automatic and controlled processes in human cognition. Automatic processes are typically described as fast, effortless, and unconscious, while controlled processes are slower, effortful, and subject to conscious awareness. This distinction has informed theories of attention, memory, and decision-making.\n\nHowever, accumulating evidence suggests that the boundary between these processes is less stable than originally assumed. Skills that initially require deliberate effort—such as reading or driving—can become automatic through practice. Conversely, automatic responses can be overridden under certain conditions, indicating a degree of flexibility.\n\nMoreover, the automatic–controlled dichotomy often obscures the role of context. Environmental cues, emotional states, and social expectations can shift cognitive processing along a continuum rather than between discrete categories. As a result, the same task may elicit different cognitive dynamics depending on situational factors.\n\nSome researchers argue that clinging to a strict dichotomy limits explanatory power. By forcing cognitive phenomena into binary categories, psychologists may overlook intermediate processes that do not fit neatly into either class. Alternative models propose graded or hybrid frameworks that better capture cognitive variability.\n\nThese debates have practical implications. Interventions designed to change behavior—such as habit formation or bias reduction—depend on accurate assumptions about cognitive control. Oversimplified models may lead to ineffective or even counterproductive strategies.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "question the adequacy of a strict automatic–controlled distinction",
+            "reject the concept of automatic processing altogether",
+            "demonstrate the superiority of habit-based interventions",
+            "establish a definitive model of cognition"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques the rigidity of the dichotomy while not discarding it entirely. Option A captures this evaluative aim. Options B and D are too extreme. Option C is tangential."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that cognitive processes:",
+          "options": [
+            "often operate along a continuum influenced by context",
+            "can always be classified as either automatic or controlled",
+            "are largely unaffected by emotional states",
+            "become less flexible with experience"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage emphasizes contextual modulation and continuity. Option A follows directly. Options B, C, and D contradict explicit claims."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Assumption",
+          "stem": "The critique of binary models assumes that:",
+          "options": [
+            "explanatory accuracy is improved by capturing cognitive variability",
+            "simplicity is preferable to realism in theory building",
+            "behavioral interventions do not rely on theory",
+            "cognitive processes are entirely conscious"
+          ],
+          "correctIndex": 0,
+          "explanation": "The argument presupposes that better models reflect variability. Option A is necessary. The remaining options conflict with the passage’s logic."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that poorly designed interventions may fail because they:",
+          "options": [
+            "rely on oversimplified assumptions about cognitive control",
+            "ignore neuroscientific data",
+            "focus too heavily on environmental factors",
+            "attempt to change habits too slowly"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph explicitly links oversimplified models to ineffective interventions. Option A directly reflects this. Other options are unsupported."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Law",
+      "difficulty": "hard",
+      "text": "Legal systems rely on the principle of precedent to ensure consistency and predictability in judicial decision-making. By adhering to prior rulings, courts aim to treat similar cases alike, thereby reinforcing the legitimacy of the rule of law. Precedent also constrains judicial discretion, limiting arbitrary interpretation.\n\nYet strict adherence to precedent can conflict with evolving social values. Laws crafted in earlier eras may reflect assumptions that no longer align with contemporary understandings of justice. In such cases, courts face the dilemma of preserving stability while avoiding the perpetuation of outdated norms.\n\nJudicial interpretation often resolves this tension through gradual modification rather than abrupt departure. Courts may distinguish cases on narrow grounds, reinterpret principles in light of new circumstances, or signal openness to future revision. This incrementalism allows legal doctrine to adapt without undermining continuity.\n\nCritics argue that such flexibility grants judges excessive power. By selectively invoking or distinguishing precedent, courts may effectively legislate from the bench. Defenders counter that rigid formalism would render law incapable of responding to social change.\n\nThe debate over precedent thus reflects a broader question about legal authority: whether legitimacy derives primarily from consistency with the past or responsiveness to present conditions. Legal systems must navigate this tension to remain both stable and relevant.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily examines:",
+          "options": [
+            "the tension between legal stability and adaptability",
+            "the superiority of judicial activism",
+            "the decline of precedent in modern law",
+            "the arbitrariness of judicial reasoning"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author analyzes how courts balance precedent with social change. Option A captures this tension. Options B, C, and D mischaracterize the balanced analysis."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that incremental legal change is portrayed as:",
+          "options": [
+            "a compromise between rigidity and arbitrariness",
+            "a sign of judicial weakness",
+            "an abandonment of precedent",
+            "a purely strategic maneuver"
+          ],
+          "correctIndex": 0,
+          "explanation": "Incrementalism is presented as balancing continuity and adaptation. Option A follows logically. The others impose negative or unsupported interpretations."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s analysis?",
+          "options": [
+            "An example of courts updating doctrine without overturning precedent",
+            "Evidence that judges ignore precedent entirely",
+            "Data showing public distrust of courts",
+            "A critique of legislative processes"
+          ],
+          "correctIndex": 0,
+          "explanation": "A concrete illustration of incremental adaptation would reinforce the argument. Option A directly supports it. The others shift focus or contradict the passage."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Implication",
+          "stem": "The passage implies that legal legitimacy depends on:",
+          "options": [
+            "balancing consistency with responsiveness",
+            "strict adherence to historical rulings",
+            "judicial independence from society",
+            "eliminating judicial discretion"
+          ],
+          "correctIndex": 0,
+          "explanation": "The conclusion emphasizes navigating stability and relevance. Option A reflects this. Options B, C, and D are extremes rejected by the discussion."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Ecology",
+      "difficulty": "very hard",
+      "text": "Ecological conservation strategies have traditionally prioritized the preservation of pristine habitats, operating under the assumption that minimal human interference yields optimal ecological outcomes. Protected areas were designed to exclude human activity, treating conservation and development as inherently opposing goals.\n\nHowever, this approach has increasingly been challenged. Many ecosystems have co-evolved with human practices such as agriculture, grazing, and controlled burning. Excluding human communities from conservation areas can disrupt long-standing ecological dynamics and generate resistance that undermines conservation objectives.\n\nCommunity-based conservation models seek to address these shortcomings by integrating local livelihoods into ecological management. Proponents argue that when communities derive tangible benefits from conservation, they are more likely to support sustainable practices. Critics, however, warn that economic incentives may encourage overuse or commodification of natural resources.\n\nMoreover, ecological outcomes are difficult to predict in complex systems. Interventions intended to restore balance may produce unintended consequences, particularly when applied uniformly across diverse contexts. This uncertainty complicates efforts to generalize conservation strategies.\n\nThe debate highlights a broader shift in ecological thinking: from static preservation toward adaptive management. Rather than aiming to freeze ecosystems in an idealized state, adaptive approaches emphasize monitoring, learning, and adjustment. Conservation, in this view, becomes an ongoing process rather than a fixed end goal.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily aims to:",
+          "options": [
+            "examine the limitations of exclusionary conservation models",
+            "argue that human activity always harms ecosystems",
+            "promote economic development over conservation",
+            "establish a single best conservation strategy"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques traditional exclusionary models and explores alternatives. Option A captures this purpose. Options B, C, and D misrepresent the nuanced discussion."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author suggests that excluding communities from conservation efforts may:",
+          "options": [
+            "undermine ecological goals by disrupting co-evolved systems",
+            "guarantee ecosystem stability",
+            "eliminate uncertainty in outcomes",
+            "simplify conservation planning"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage notes co-evolution and resistance. Option A follows logically. The other options contradict the discussion of complexity."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Assumption",
+          "stem": "The argument for adaptive management assumes that:",
+          "options": [
+            "ecosystems are dynamic and context-dependent",
+            "ecological systems naturally reach equilibrium",
+            "uniform policies produce consistent outcomes",
+            "human intervention should be minimized at all costs"
+          ],
+          "correctIndex": 0,
+          "explanation": "Adaptive management relies on dynamism and uncertainty. Option A is essential. Options B and C contradict this premise. Option D reflects the earlier, criticized view."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that successful conservation requires:",
+          "options": [
+            "continuous learning and policy adjustment",
+            "strict separation of humans and nature",
+            "fixed preservation targets",
+            "exclusive reliance on expert knowledge"
+          ],
+          "correctIndex": 0,
+          "explanation": "The final paragraph emphasizes monitoring and adjustment. Option A aligns with this conclusion. The remaining options reflect outdated or rejected approaches."
+        }
+      ]
+    }
+  ]
+}
