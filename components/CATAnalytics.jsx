@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 const STORAGE_KEY = "catRCResults";
 const [compareA, setCompareA] = useState("");
 const [compareB, setCompareB] = useState("");
