@@ -266,6 +266,15 @@ useEffect(() => {
     setSectionalAttemptMap(loadSectionalAttemptMap());
   }
 }, [view]);
+
+  useEffect(() => {
+  function refresh() {
+    setSectionalAttemptMap(loadSectionalAttemptMap());
+  }
+
+  window.addEventListener("CAT_ATTEMPT_SAVED", refresh);
+  return () => window.removeEventListener("CAT_ATTEMPT_SAVED", refresh);
+}, []);
   
   useEffect(() => {
     const existing = loadVocab();
