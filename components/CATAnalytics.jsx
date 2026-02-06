@@ -819,7 +819,7 @@ return (
     marginTop: 24,
     padding: "16px 20px",
     borderRadius: 14,
-    background: "#eef2ff",
+    background: "#ffffff",
     border: "1px solid #c7d2fe",
     color: "#1e3a8a",
     fontSize: 14,
