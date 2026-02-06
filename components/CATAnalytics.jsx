@@ -731,6 +731,106 @@ return (
   })()}
 </div>
 
+      {/* ================= PLAN OF ACTION ================= */}
+<div style={card}>
+  <h3 style={cardTitle}>🧭 Personalized Plan of Action</h3>
+  <p style={cardSub}>
+    What to focus on before your next CAT RC sectional
+  </p>
+
+  {(() => {
+    const data = getSectionalAccuracyTrend();
+    if (!data.length) {
+      return <div style={{ color: "#64748b" }}>No data yet</div>;
+    }
+
+    // Latest attempt
+    const latest = data[data.length - 1];
+    const prev = data.length > 1 ? data[data.length - 2] : null;
+
+    const metrics = extractMetrics(latest.label.toLowerCase());
+    if (!metrics) return null;
+
+    const actions = [];
+
+    // ---------- RULE 1: Accuracy vs Time ----------
+    if (metrics.accuracy < 65 && metrics.avgTime < 45) {
+      actions.push(
+        "⏸ Slow down slightly. Your speed is high but comprehension is suffering."
+      );
+    }
+
+    if (metrics.accuracy < 65 && metrics.avgTime > 65) {
+      actions.push(
+        "📖 Spend more time understanding passage structure before attempting questions."
+      );
+    }
+
+    if (metrics.accuracy >= 70 && metrics.avgTime > 65) {
+      actions.push(
+        "⚡ Work on efficiency: pre-identify question types before reading deeply."
+      );
+    }
+
+    // ---------- RULE 2: Attempting ----------
+    if (metrics.attempted >= 12 && metrics.accuracy < 65) {
+      actions.push(
+        "🚫 Reduce attempts. Skip low-ROI passages earlier."
+      );
+    }
+
+    if (metrics.attempted <= 8 && metrics.accuracy >= 75) {
+      actions.push(
+        "🎯 Increase attempts slightly — you’re being over-selective."
+      );
+    }
+
+    // ---------- RULE 3: Wrong Answers ----------
+    if (metrics.wrong >= 4) {
+      actions.push(
+        "❌ Focus on option elimination — identify trap choices explicitly."
+      );
+    }
+
+    // ---------- RULE 4: Trend ----------
+    if (prev) {
+      if (latest.accuracy < prev.accuracy) {
+        actions.push(
+          "📉 Accuracy dropped vs previous test — revisit passage selection strategy."
+        );
+      }
+
+      if (latest.accuracy > prev.accuracy) {
+        actions.push(
+          "📈 Accuracy improved — maintain current passage selection approach."
+        );
+      }
+    }
+
+    // Fallback safety
+    if (actions.length === 0) {
+      actions.push(
+        "✅ Maintain current approach. Focus on consistency across passages."
+      );
+    }
+
+    return (
+      <ul
+        style={{
+          paddingLeft: 18,
+          lineHeight: 1.7,
+          fontSize: 14,
+          color: "#1e293b",
+        }}
+      >
+        {actions.slice(0, 5).map((a, i) => (
+          <li key={i}>{a}</li>
+        ))}
+      </ul>
+    );
+  })()}
+</div>
+
 
       
       {/* ================= INSIGHT ROW ================= */}
