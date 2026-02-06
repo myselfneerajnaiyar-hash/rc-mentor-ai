@@ -275,6 +275,10 @@ function getPersonalizedPlan(metrics, comparisonDrop) {
 export default function CATAnalytics() {
   const [compareA, setCompareA] = useState("");
 const [compareB, setCompareB] = useState("");
+  const metrics = getRCSkillMetrics();
+  const accuracyDropped =
+  A && B && B.accuracy < A.accuracy;
+  
   return (
     <div
       style={{
