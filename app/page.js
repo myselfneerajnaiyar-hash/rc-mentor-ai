@@ -637,9 +637,15 @@ return (
       const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
       const data = await res.json();
 
-      data.id = sectionalId;
-      setActiveRCTest(data);
-      setCatPhase("test");
+if (!data.passages) {
+  alert("Invalid test file. Check JSON structure.");
+  setCatPhase("idle");
+  return;
+}
+
+data.id = sectionalId;
+setActiveRCTest(data);
+setCatPhase("test");
     }}
 
   onViewDiagnosis={(sectionalId, attemptId) => {
