@@ -1,1 +1,254 @@
+{
+  "meta": {
+    "testName": "CAT RC Sectional Test 03",
+    "timeMinutes": 30,
+    "totalQuestions": 16,
+    "passages": 4,
+    "difficulty": "CAT Level"
+  },
+  "passages": [
+    {
+      "id": "P1",
+      "genre": "Urban Development",
+      "difficulty": "medium-hard",
+      "text": "Urban development debates often frame density as either a solution to environmental degradation or as a cause of declining quality of life. Proponents of high-density development argue that compact cities reduce per-capita energy consumption by shortening travel distances, enabling efficient public transportation, and preserving surrounding ecosystems. Critics counter that density exacerbates congestion, strains infrastructure, and erodes social cohesion.\n\nThese opposing views frequently rest on selective evidence. While dense urban cores can reduce automobile dependence, they also require careful planning to avoid overcrowding and service bottlenecks. Density alone does not guarantee sustainability; governance capacity, land-use regulation, and investment in public goods play decisive roles.\n\nHistorical examples illustrate this complexity. Cities that pursued density without parallel investment in sanitation, housing quality, and public transit often experienced deteriorating living conditions. Conversely, cities that combined density with inclusive planning mechanisms—such as mixed-use zoning and affordable housing mandates—managed to balance efficiency with livability.\n\nThe distributional effects of density further complicate the debate. Rising land values in dense areas can displace lower-income residents, transforming sustainability initiatives into drivers of inequality. Without safeguards, density-oriented policies risk prioritizing environmental metrics while neglecting social equity.\n\nA more productive approach reframes density as a conditional tool rather than an intrinsic virtue. Urban outcomes depend less on how many people occupy a space than on how institutions manage growth, allocate resources, and respond to resident needs. Recognizing this shifts attention from abstract density targets to the concrete political and administrative choices that shape urban life.",
+      "questions": [
+        {
+          "id": "P1Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues that urban density:",
+          "options": [
+            "is effective only when accompanied by appropriate institutional and policy frameworks",
+            "inevitably leads to environmental sustainability",
+            "is the principal cause of urban inequality",
+            "should be avoided in favor of low-density development"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author consistently emphasizes that density by itself does not determine urban outcomes; rather, governance, planning, and institutional capacity are decisive. Option A accurately captures this conditional framing. Option B is incorrect because the passage explicitly rejects density as an automatic solution. Option C exaggerates one consequence discussed but ignores the broader argument. Option D contradicts the author’s call for a nuanced, rather than oppositional, view of density."
+        },
+        {
+          "id": "P1Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author would most likely criticize urban policies that:",
+          "options": [
+            "focus on numerical density targets without addressing social equity",
+            "promote mixed-use zoning in dense areas",
+            "invest heavily in public transportation",
+            "combine environmental and housing objectives"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage highlights how density-focused policies can worsen inequality if social safeguards are absent. Option A directly follows from this concern. Options B, C, and D are aligned with the kinds of complementary measures the author views favorably."
+        },
+        {
+          "id": "P1Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s argument?",
+          "options": [
+            "A comparative study showing divergent outcomes in cities with similar density but different governance quality",
+            "Evidence that low-density cities consume more energy overall",
+            "A case showing residents prefer suburban living",
+            "Data indicating population growth is inevitable"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author’s central claim is that institutional factors mediate the effects of density. Option A directly supports this by isolating governance as the key variable. Option B shifts focus back to density alone. Option C introduces preference without relevance to institutional effectiveness. Option D is tangential to the argument."
+        },
+        {
+          "id": "P1Q4",
+          "type": "Implication",
+          "stem": "The passage implies that sustainable urban development requires:",
+          "options": [
+            "integrating environmental goals with social and administrative considerations",
+            "prioritizing environmental efficiency over social concerns",
+            "reducing population concentration in cities",
+            "standardizing density thresholds across cities"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author argues for reframing density as a tool governed by institutional choices, implying the need for integrated policy-making. Option A captures this synthesis. The other options reflect reductionist or uniform approaches rejected by the passage."
+        }
+      ]
+    },
 
+    {
+      "id": "P2",
+      "genre": "Game Theory",
+      "difficulty": "hard",
+      "text": "Game theory models strategic interaction by assuming rational agents who seek to maximize their payoffs given the expected actions of others. These models have generated insights across economics, political science, and evolutionary biology. However, their reliance on common knowledge and stable preferences raises questions about applicability in real-world settings.\n\nIn practice, individuals often operate under uncertainty regarding others’ intentions, available strategies, or even the structure of the game itself. Experimental studies demonstrate that players frequently rely on heuristics, social norms, or fairness considerations rather than strict equilibrium reasoning. Such behavior may appear irrational within formal models but can be adaptive in environments characterized by incomplete information.\n\nAttempts to address these limitations have produced refinements such as bounded rationality and behavioral game theory. These approaches relax assumptions about perfect optimization while preserving strategic interaction as a core concept. Yet they also complicate prediction, as outcomes become sensitive to psychological parameters that vary across contexts.\n\nCritics argue that expanding game theory to incorporate behavioral factors risks diluting its explanatory power. If models can be adjusted to fit almost any observed behavior, their capacity to generate falsifiable predictions diminishes. Supporters counter that realism enhances relevance, even at the cost of elegance.\n\nThe tension between tractability and realism reflects a broader methodological dilemma. Rather than seeking a single definitive model, some scholars advocate using multiple game-theoretic frameworks, each tailored to specific empirical domains. This pluralistic stance treats models as instruments for understanding, not as literal descriptions of human behavior.",
+      "questions": [
+        {
+          "id": "P2Q1",
+          "type": "Primary Purpose",
+          "stem": "The passage primarily seeks to:",
+          "options": [
+            "evaluate the trade-off between realism and tractability in game-theoretic modeling",
+            "demonstrate the empirical failure of classical game theory",
+            "argue that behavioral models should replace equilibrium analysis",
+            "reject the usefulness of formal models altogether"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage examines both classical and behavioral approaches, focusing on the methodological tension between simplicity and realism. Option A captures this evaluative purpose. Option B overstates the critique. Option C implies replacement rather than coexistence. Option D contradicts the author’s instrumental view of models."
+        },
+        {
+          "id": "P2Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that behavioral deviations from equilibrium strategies:",
+          "options": [
+            "may represent adaptive responses rather than irrational errors",
+            "render strategic interaction meaningless",
+            "invalidate the concept of rationality",
+            "are irrelevant to theoretical modeling"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage explicitly notes that heuristics and norms can be adaptive under uncertainty. Option A aligns with this view. The other options contradict the nuanced treatment of rationality and modeling."
+        },
+        {
+          "id": "P2Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s pluralistic approach?",
+          "options": [
+            "Evidence that different game models predict behavior accurately in different institutional settings",
+            "Proof that equilibrium models always fail empirically",
+            "A critique of psychological experimentation",
+            "An argument for abandoning prediction in social science"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author supports using multiple models suited to specific contexts. Option A directly reinforces this stance. The remaining options introduce extreme or unrelated positions."
+        },
+        {
+          "id": "P2Q4",
+          "type": "Implication",
+          "stem": "The passage implies that the value of a game-theoretic model lies primarily in its:",
+          "options": [
+            "usefulness for understanding specific strategic contexts",
+            "ability to perfectly describe human cognition",
+            "mathematical elegance",
+            "universality across all domains"
+          ],
+          "correctIndex": 0,
+          "explanation": "The instrumental view of models emphasized in the conclusion supports Option A. The other options reflect assumptions the author explicitly problematizes."
+        }
+      ]
+    },
+
+    {
+      "id": "P3",
+      "genre": "Linguistics",
+      "difficulty": "hard",
+      "text": "Linguistic theories have long debated whether meaning is primarily a property of sentences or of their use in context. Formal semantic approaches attempt to specify meaning through abstract rules that map linguistic expressions to truth conditions. While this enables precision, it often struggles to account for pragmatic phenomena such as implicature, irony, and contextual enrichment.\n\nPragmatic theories emphasize that speakers routinely convey meanings that exceed literal sentence content. Listeners draw on shared knowledge, conversational norms, and assumptions about speaker intentions to infer what is meant rather than what is strictly said. This inferential process allows communication to remain efficient despite underspecification.\n\nHowever, privileging pragmatics raises its own difficulties. If meaning depends too heavily on context, linguistic analysis risks becoming indeterminate, as almost any interpretation could be justified post hoc. Critics argue that without constraints, pragmatic accounts lack explanatory rigor.\n\nRecent approaches seek to reconcile semantics and pragmatics by viewing them as complementary rather than competing. Under such models, semantic structure provides a stable baseline that pragmatics enriches through systematic, rule-governed processes. Meaning emerges from the interaction of encoded content and contextual inference.\n\nThis integrative perspective reshapes longstanding disputes. Instead of asking whether meaning resides in sentences or contexts, it reframes the question as how linguistic systems coordinate formal structure with flexible use. Such coordination underlies the productivity and adaptability of human language.",
+      "questions": [
+        {
+          "id": "P3Q1",
+          "type": "Main Idea / Central Theme",
+          "stem": "The passage primarily argues for:",
+          "options": [
+            "an integrative view that combines semantic structure with pragmatic inference",
+            "the superiority of pragmatic theories over semantic ones",
+            "the abandonment of formal semantics",
+            "treating meaning as entirely context-dependent"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author repeatedly emphasizes reconciliation rather than replacement. Option A captures this synthesis. Options B, C, and D represent positions explicitly problematized in the passage."
+        },
+        {
+          "id": "P3Q2",
+          "type": "Inference",
+          "stem": "It can be inferred that the author views purely pragmatic accounts as:",
+          "options": [
+            "insufficiently constrained without a semantic baseline",
+            "more rigorous than semantic theories",
+            "immune to indeterminacy",
+            "irrelevant to linguistic analysis"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author notes that excessive reliance on context risks indeterminacy. Option A follows directly. The other options contradict this critique."
+        },
+        {
+          "id": "P3Q3",
+          "type": "Author’s Tone or Attitude",
+          "stem": "The author’s attitude toward the semantics–pragmatics debate is best described as:",
+          "options": [
+            "conciliatory and analytical",
+            "dismissive of traditional linguistics",
+            "strongly partisan",
+            "indifferent"
+          ],
+          "correctIndex": 0,
+          "explanation": "The passage adopts a measured tone aimed at reconciliation and conceptual clarity. Option A best reflects this stance. The remaining options mischaracterize the author’s approach."
+        },
+        {
+          "id": "P3Q4",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s integrative claim?",
+          "options": [
+            "Evidence that pragmatic interpretations systematically depend on grammatical structure",
+            "Examples showing context always overrides sentence meaning",
+            "A critique of conversational norms",
+            "Data showing ambiguity is unavoidable"
+          ],
+          "correctIndex": 0,
+          "explanation": "Option A directly supports the idea that semantics provides structure which pragmatics builds upon. The other options undermine or distract from the integrative thesis."
+        }
+      ]
+    },
+
+    {
+      "id": "P4",
+      "genre": "Technology",
+      "difficulty": "medium-hard",
+      "text": "Technological innovation is often portrayed as an autonomous force that reshapes society according to its own internal logic. Such narratives suggest that once a technology emerges, its social consequences are inevitable. This view obscures the role of human agency in shaping technological trajectories.\n\nHistorical analyses reveal that technologies are embedded in social, economic, and political contexts that influence how they are adopted and used. Competing interests, regulatory choices, and cultural values all affect whether a technology amplifies inequality, enhances productivity, or alters power relations.\n\nThe determinist framing also simplifies ethical debates. If technological outcomes are inevitable, moral responsibility appears diffused, reducing incentives for deliberate intervention. By contrast, recognizing contingency highlights opportunities for governance and design choices that align technological development with societal goals.\n\nYet rejecting determinism does not imply unlimited control. Technologies impose constraints by enabling certain actions while foreclosing others. The challenge lies in navigating this constrained flexibility, balancing innovation with accountability.\n\nUnderstanding technology as a socio-technical process reframes policy discussions. It shifts attention from predicting technological futures to shaping them through institutions, norms, and collective decision-making.",
+      "questions": [
+        {
+          "id": "P4Q1",
+          "type": "Primary Purpose",
+          "stem": "The primary purpose of the passage is to:",
+          "options": [
+            "challenge technological determinism by emphasizing social agency",
+            "argue that technology should be tightly regulated",
+            "predict future technological developments",
+            "demonstrate the inevitability of innovation"
+          ],
+          "correctIndex": 0,
+          "explanation": "The author critiques deterministic narratives and stresses the role of social choices. Option A captures this objective. Options B, C, and D misrepresent the scope and intent of the passage."
+        },
+        {
+          "id": "P4Q2",
+          "type": "Inference",
+          "stem": "The author would most likely agree that ethical responsibility in technology:",
+          "options": [
+            "persists because technological outcomes are shaped by human decisions",
+            "is irrelevant once innovation begins",
+            "rests solely with engineers",
+            "can be eliminated through automation"
+          ],
+          "correctIndex": 0,
+          "explanation": "The argument against determinism implies continued moral responsibility. Option A follows directly. The other options contradict the passage’s emphasis on governance and agency."
+        },
+        {
+          "id": "P4Q3",
+          "type": "Strengthen the Argument",
+          "stem": "Which of the following would most strengthen the author’s critique of determinism?",
+          "options": [
+            "A case where regulatory choices significantly altered a technology’s social impact",
+            "Evidence that technologies constrain human behavior",
+            "An account of rapid innovation",
+            "Examples of failed predictions"
+          ],
+          "correctIndex": 0,
+          "explanation": "Option A directly demonstrates contingency and agency, reinforcing the critique. Option B supports a more deterministic view. Options C and D are insufficiently connected."
+        },
+        {
+          "id": "P4Q4",
+          "type": "Implication",
+          "stem": "The passage implies that effective technology policy should focus on:",
+          "options": [
+            "institutional and normative frameworks guiding technological use",
+            "preventing all unintended consequences",
+            "slowing innovation",
+            "leaving outcomes to market forces"
+          ],
+          "correctIndex": 0,
+          "explanation": "The concluding emphasis on shaping technology through institutions supports Option A. The remaining options reflect extremes or simplifications rejected by the passage."
+        }
+      ]
+    }
+  ]
+}
