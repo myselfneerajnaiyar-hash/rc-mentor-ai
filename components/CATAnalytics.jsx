@@ -659,60 +659,73 @@ return (
         </div>
 
         {/* Comparison Table */}
-        {A && B && (
-          <>
-            <table style={tableStyle}>
-              <thead>
-                <tr>
-                  <th>Metric</th>
-                  <th>{compareA.toUpperCase()}</th>
-                  <th>{compareB.toUpperCase()}</th>
-                  <th>Change</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ["Accuracy (%)", A.accuracy, B.accuracy],
-                  ["Score", A.score, B.score],
-                  ["Avg Time/Q (s)", A.avgTime, B.avgTime],
-                  ["Correct", A.correct, B.correct],
-                  ["Wrong", A.wrong, B.wrong],
-                ].map(([label, v1, v2]) => {
-                  const diff = v2 - v1;
-                  const color =
-                    diff > 0 ? "#16a34a" : diff < 0 ? "#dc2626" : "#64748b";
+       {A && B && (
+  <>
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {[
+        { label: "Accuracy (%)", a: A.accuracy, b: B.accuracy, higherBetter: true },
+        { label: "Score", a: A.score, b: B.score, higherBetter: true },
+        { label: "Avg Time / Q (s)", a: A.avgTime, b: B.avgTime, higherBetter: false },
+        { label: "Correct", a: A.correct, b: B.correct, higherBetter: true },
+        { label: "Wrong", a: A.wrong, b: B.wrong, higherBetter: false },
+      ].map(({ label, a, b, higherBetter }) => {
+        const diff = b - a;
+        const improved = higherBetter ? diff > 0 : diff < 0;
+        const worsened = higherBetter ? diff < 0 : diff > 0;
 
-                  return (
-                    <tr key={label}>
-                      <td>{label}</td>
-                      <td>{v1}</td>
-                      <td>{v2}</td>
-                      <td style={{ color, fontWeight: 600 }}>
-                        {diff > 0 ? "+" : ""}
-                        {diff}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        const color = improved
+          ? "#16a34a"
+          : worsened
+          ? "#dc2626"
+          : "#64748b";
 
-            {/* Auto Insight */}
-            <div style={insightBox}>
-              {B.accuracy < A.accuracy && B.avgTime < A.avgTime && (
-                <>⚠️ Speed increased but accuracy dropped. You may be rushing comprehension.</>
-              )}
+        const arrow = improved ? "⬆" : worsened ? "⬇" : "➜";
 
-              {B.score > A.score && B.wrong < A.wrong && (
-                <>✅ Better option elimination is improving your score.</>
-              )}
-
-              {B.attempted > A.attempted && B.accuracy < A.accuracy && (
-                <>📉 Over-attempting reduced accuracy. Be more selective.</>
-              )}
+        return (
+          <div
+            key={label}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.4fr 1fr 1fr 0.8fr",
+              alignItems: "center",
+              padding: "10px 12px",
+              borderRadius: 10,
+              background: "#f8fafc",
+              border: "1px solid #e5e7eb",
+              fontSize: 13,
+            }}
+          >
+            <strong>{label}</strong>
+            <div>{a}</div>
+            <div>{b}</div>
+            <div style={{ color, fontWeight: 700 }}>
+              {arrow} {diff > 0 ? "+" : ""}
+              {diff}
             </div>
-          </>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* Smart Insights */}
+    <div style={insightBox}>
+      <ul style={{ paddingLeft: 18, lineHeight: 1.6 }}>
+        {B.score < A.score && (
+          <li>📉 Score dropped despite similar accuracy. Review risk calibration.</li>
         )}
+        {B.avgTime <= A.avgTime && B.accuracy < A.accuracy && (
+          <li>⚠️ Speed improved but accuracy fell — possible rushing.</li>
+        )}
+        {B.wrong < A.wrong && (
+          <li>✅ Fewer wrong answers — elimination skills improving.</li>
+        )}
+        {B.attempted > A.attempted && B.accuracy < A.accuracy && (
+          <li>🧠 Over-attempting reduced accuracy. Be more selective.</li>
+        )}
+      </ul>
+    </div>
+  </>
+)}
       </>
     );
   })()}
