@@ -787,7 +787,7 @@ return (
   </p>
 
   {(() => {
-    const plan = getPersonalizedPlan(metrics, accuracyDropped);
+    const plan = getPersonalizedPlan(metrics);
 
     if (!plan) {
       return <div style={{ color: "#64748b" }}>No data yet</div>;
