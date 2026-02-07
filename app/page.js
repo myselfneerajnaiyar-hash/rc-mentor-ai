@@ -13,6 +13,7 @@ import CATArenaTestView from "../cat-arena/CATArenaTestView";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
 import CATAnalytics from "../components/CATAnalytics";
+import MobileBottomNav from "../components/MobileBottomNav";
 
 function loadSectionalAttemptMap() {
   try {
@@ -738,5 +739,9 @@ setCatPhase("test");
 )}
 {view === "analytics" && <CATAnalytics />}
   </main>
+{/* MOBILE BOTTOM NAV */}
+<div className="mobile-only">
+  <MobileBottomNav view={view} setView={setView} />
+</div>
 );
 }
