@@ -1,35 +1,40 @@
 "use client";
 
+import {
+  Home,
+  BookOpen,
+  Gauge,
+  GraduationCap,
+  Timer
+} from "lucide-react";
+
 export default function MobileBottomNav({ view, setView }) {
   const tabs = [
-    { key: "home", label: "Home", icon: "🏠" },
-    { key: "rc", label: "RC", icon: "📘" },
-    { key: "speed", label: "Speed", icon: "⚡" },
-    { key: "vocab", label: "Vocab", icon: "📚" },
-    { key: "cat", label: "CAT", icon: "📊" },
+    { key: "home", label: "Home", icon: Home },
+    { key: "rc", label: "RC", icon: BookOpen },
+    { key: "speed", label: "Speed", icon: Timer },
+    { key: "vocab", label: "Vocab", icon: Gauge },
+    { key: "cat", label: "CAT", icon: GraduationCap }
   ];
 
   return (
     <nav className="mobile-nav">
-      {tabs.map((tab) => (
-        <button
-          key={tab.key}
-          onClick={() => setView(tab.key)}
-          className={view === tab.key ? "active" : ""}
-          style={{
-            background: "none",
-            border: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontSize: 12,
-            cursor: "pointer",
-          }}
-        >
-          <span style={{ fontSize: 20 }}>{tab.icon}</span>
-          <span>{tab.label}</span>
-        </button>
-      ))}
+      {tabs.map((tab) => {
+        const active = view === tab.key;
+        const Icon = tab.icon;
+
+        return (
+          <button
+            key={tab.key}
+            onClick={() => setView(tab.key)}
+            className={`mobile-tab ${active ? "active" : ""}`}
+            aria-label={tab.label}
+          >
+            <Icon size={22} strokeWidth={active ? 2.5 : 2} />
+            <span>{tab.label}</span>
+          </button>
+        );
+      })}
     </nav>
   );
 }
