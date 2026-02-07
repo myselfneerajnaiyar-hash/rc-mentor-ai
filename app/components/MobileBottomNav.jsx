@@ -1,14 +1,6 @@
 "use client";
 
-export default function MobileBottomNav({ view, setView }) {
-  const tabs = [
-    { key: "home", label: "Home", icon: "🏠" },
-    { key: "rc", label: "Practice", icon: "📘" },
-    { key: "vocab", label: "Vocab", icon: "🧠" },
-    { key: "speed", label: "Speed", icon: "⚡" },
-    { key: "analytics", label: "Stats", icon: "📊" },
-  ];
-
+export default function MobileBottomNav() {
   return (
     <nav
       style={{
@@ -16,7 +8,7 @@ export default function MobileBottomNav({ view, setView }) {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 64,
+        height: "64px",
         background: "#ffffff",
         borderTop: "1px solid #e5e7eb",
         display: "flex",
@@ -25,24 +17,28 @@ export default function MobileBottomNav({ view, setView }) {
         zIndex: 1000,
       }}
     >
-      {tabs.map((tab) => (
-        <button
-          key={tab.key}
-          onClick={() => setView(tab.key)}
-          style={{
-            background: "none",
-            border: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontSize: 12,
-            color: view === tab.key ? "#2563eb" : "#6b7280",
-          }}
-        >
-          <span style={{ fontSize: 22 }}>{tab.icon}</span>
-          {tab.label}
-        </button>
-      ))}
+      <NavItem label="Home" icon="🏠" />
+      <NavItem label="Practice" icon="📘" />
+      <NavItem label="Vocab" icon="📚" />
+      <NavItem label="Speed" icon="⚡" />
+      <NavItem label="Arena" icon="🎯" />
     </nav>
+  );
+}
+
+function NavItem({ label, icon }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        fontSize: "12px",
+        color: "#374151",
+      }}
+    >
+      <div style={{ fontSize: "20px" }}>{icon}</div>
+      {label}
+    </div>
   );
 }
