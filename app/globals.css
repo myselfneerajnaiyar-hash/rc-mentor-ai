@@ -95,3 +95,9 @@ body {
     flex: 0 0 auto;
   }
 }
+/* Hide desktop navbar on mobile */
+@media (max-width: 768px) {
+  .desktop-navbar {
+    display: none !important;
+  }
+
