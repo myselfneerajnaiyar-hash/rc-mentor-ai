@@ -14,31 +14,46 @@ export default function MobileBottomNav() {
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        zIndex: 1000,
+        zIndex: 9999,
+        fontSize: "12px",
       }}
     >
-      <NavItem label="Home" icon="🏠" />
-      <NavItem label="Practice" icon="📘" />
-      <NavItem label="Vocab" icon="📚" />
-      <NavItem label="Speed" icon="⚡" />
-      <NavItem label="Arena" icon="🎯" />
+      <div style={itemStyle}>
+        <span style={iconStyle}>🏠</span>
+        <span>Home</span>
+      </div>
+
+      <div style={itemStyle}>
+        <span style={iconStyle}>📘</span>
+        <span>RC</span>
+      </div>
+
+      <div style={itemStyle}>
+        <span style={iconStyle}>⚡</span>
+        <span>Speed</span>
+      </div>
+
+      <div style={itemStyle}>
+        <span style={iconStyle}>📚</span>
+        <span>Vocab</span>
+      </div>
+
+      <div style={itemStyle}>
+        <span style={iconStyle}>📊</span>
+        <span>CAT</span>
+      </div>
     </nav>
   );
 }
 
-function NavItem({ label, icon }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        fontSize: "12px",
-        color: "#374151",
-      }}
-    >
-      <div style={{ fontSize: "20px" }}>{icon}</div>
-      {label}
-    </div>
-  );
-}
+const itemStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "4px",
+  color: "#111827",
+};
+
+const iconStyle = {
+  fontSize: "20px",
+};
