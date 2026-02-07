@@ -1,8 +1,4 @@
-"use client";
-
 import "./globals.css";
-import { useState } from "react";
-import MobileBottomNav from "./components/MobileBottomNav";
 
 export const metadata = {
   title: "AuctorRC",
@@ -20,8 +16,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const [view, setView] = useState("home");
-
   return (
     <html lang="en">
       <head>
@@ -36,17 +30,10 @@ export default function RootLayout({ children }) {
       <body
         style={{
           margin: 0,
-          paddingBottom: "72px", // 👈 CRITICAL for mobile scroll
           background: "#f8fafc",
         }}
       >
-        {/* App Content */}
-        <div>{children}</div>
-
-        {/* Mobile Bottom Navigation */}
-        <div className="mobile-only">
-          <MobileBottomNav view={view} setView={setView} />
-        </div>
+        {children}
 
         {/* Service Worker */}
         <script
