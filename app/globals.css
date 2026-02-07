@@ -76,3 +76,27 @@ html, body {
     display: none;
   }
 }
+/* ===== MOBILE SAFE AREA FOR BOTTOM NAV ===== */
+body {
+  margin: 0;
+  padding-bottom: 72px; /* space for bottom nav */
+}
+
+main {
+  min-height: 100vh;
+  padding-bottom: 72px;
+}
+
+/* hide mobile nav on desktop */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+/* hide desktop-only on mobile */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
