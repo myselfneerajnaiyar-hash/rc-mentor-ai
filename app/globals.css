@@ -46,36 +46,38 @@ html, body {
     pointer-events: auto;
   }
 
-  .mobile-nav a {
-    flex: 1;
-    text-align: center;
+ .mobile-nav button {
+  flex: 1;
+  height: 100%;
+  border: none;
+  background: none;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    text-decoration: none;
-    font-size: 11px;
-    color: #6b7280;
+  font-size: 11px;
+  color: #6b7280;
+  cursor: pointer;
 
-    -webkit-tap-highlight-color: transparent;
-  }
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
 
-  .mobile-nav a .icon {
-    font-size: 20px;
-    margin-bottom: 2px;
-  }
+.mobile-nav button .icon {
+  font-size: 20px;
+  line-height: 1;
+}
 
-  .mobile-nav a.active {
-    color: #2563eb;
-    font-weight: 600;
-  }
+.mobile-nav button.active {
+  color: #2563eb;
+  font-weight: 600;
+}
 
-  .mobile-nav a:active {
-    transform: scale(0.95);
-  }
-
+.mobile-nav button:active {
+  transform: scale(0.94);
+}
   /* CRITICAL: content spacing */
   main {
     padding-bottom: 80px;
