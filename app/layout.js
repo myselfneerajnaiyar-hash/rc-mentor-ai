@@ -1,6 +1,15 @@
 export const metadata = {
-  title: "RC Mentor AI",
-  description: "Your personal RC mentor for CAT",
+  title: "AuctorRC",
+  description: "AuctorRC by Auctor Labs – CAT RC mastery platform",
+
+  manifest: "/manifest.json",
+
+  themeColor: "#2563eb",
+
+  icons: {
+    icon: "/logo.jpeg",
+    apple: "/logo.jpeg",
+  },
 };
 
 export default function RootLayout({ children }) {
