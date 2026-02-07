@@ -1,25 +1,53 @@
+/* ===============================
+   GLOBAL RESET
+================================ */
+
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
+  height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* DESKTOP NAVBAR (unchanged, just mark it) */
+/* ===============================
+   LAYOUT SAFETY
+================================ */
+
+main {
+  min-height: 100vh;
+  padding-bottom: 80px; /* space for mobile bottom nav */
+}
+
+/* ===============================
+   DESKTOP NAVBAR
+================================ */
+
 .desktop-navbar {
   display: flex;
 }
 
-/* ---------- MOBILE BOTTOM NAV ---------- */
+/* ===============================
+   MOBILE VISIBILITY HELPERS
+================================ */
 
-.mobile-nav {
+.mobile-only {
   display: none;
 }
+
+.desktop-only {
+  display: block;
+}
+
+/* ===============================
+   MOBILE RULES
+================================ */
 
 @media (max-width: 768px) {
   /* Hide desktop navbar */
@@ -27,76 +55,54 @@ html, body {
     display: none !important;
   }
 
-  /* Bottom nav */
-  .mobile-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background: #ffffff;
-    border-top: 1px solid #e5e7eb;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 1000;
+  .desktop-only {
+    display: none !important;
   }
 
-  .mobile-nav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    font-size: 11px;
-    color: #6b7280;
-    text-decoration: none;
+  .mobile-only {
+    display: block;
   }
 
-  .mobile-nav a .icon {
-    font-size: 20px;
-  }
-
-  .mobile-nav a.active {
-    color: #2563eb;
-    font-weight: 600;
-  }
-
-  /* Prevent content hiding under navbar */
+  /* Prevent content from hiding under bottom nav */
   body {
     padding-bottom: 80px;
   }
 }
 
-.desktop-only {
-  display: block;
+/* ===============================
+   MOBILE BOTTOM NAV
+================================ */
+
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 9999;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none;
-  }
-}
-/* ===== MOBILE SAFE AREA FOR BOTTOM NAV ===== */
-body {
-  margin: 0;
-  padding-bottom: 72px; /* space for bottom nav */
-}
-
-main {
-  min-height: 100vh;
-  padding-bottom: 72px;
+.mobile-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: #6b7280;
+  text-decoration: none;
 }
 
-/* hide mobile nav on desktop */
-@media (min-width: 769px) {
-  .mobile-only {
-    display: none;
-  }
+.mobile-nav a .icon {
+  font-size: 20px;
 }
 
-/* hide desktop-only on mobile */
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none;
-  }
+.mobile-nav a.active {
+  color: #2563eb;
+  font-weight: 600;
 }
