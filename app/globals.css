@@ -66,3 +66,13 @@ html, body {
     padding-bottom: 80px;
   }
 }
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
