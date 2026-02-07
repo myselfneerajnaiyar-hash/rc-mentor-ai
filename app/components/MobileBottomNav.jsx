@@ -1,14 +1,12 @@
 "use client";
 
-import { Home, BookOpen, BarChart2, Zap, ClipboardList } from "lucide-react";
-
 export default function MobileBottomNav({ view, setView }) {
   const tabs = [
-    { key: "home", label: "Home", icon: Home },
-    { key: "rc", label: "Practice", icon: BookOpen },
-    { key: "vocab", label: "Vocab", icon: ClipboardList },
-    { key: "speed", label: "Speed", icon: Zap },
-    { key: "analytics", label: "Stats", icon: BarChart2 },
+    { key: "home", label: "Home", icon: "🏠" },
+    { key: "rc", label: "Practice", icon: "📘" },
+    { key: "vocab", label: "Vocab", icon: "🧠" },
+    { key: "speed", label: "Speed", icon: "⚡" },
+    { key: "analytics", label: "Stats", icon: "📊" },
   ];
 
   return (
@@ -27,10 +25,10 @@ export default function MobileBottomNav({ view, setView }) {
         zIndex: 1000,
       }}
     >
-      {tabs.map(({ key, label, icon: Icon }) => (
+      {tabs.map((tab) => (
         <button
-          key={key}
-          onClick={() => setView(key)}
+          key={tab.key}
+          onClick={() => setView(tab.key)}
           style={{
             background: "none",
             border: "none",
@@ -38,11 +36,11 @@ export default function MobileBottomNav({ view, setView }) {
             flexDirection: "column",
             alignItems: "center",
             fontSize: 12,
-            color: view === key ? "#2563eb" : "#6b7280",
+            color: view === tab.key ? "#2563eb" : "#6b7280",
           }}
         >
-          <Icon size={22} />
-          {label}
+          <span style={{ fontSize: 22 }}>{tab.icon}</span>
+          {tab.label}
         </button>
       ))}
     </nav>
