@@ -1,22 +1,24 @@
+"use client";
+
 import {
   Home,
   BookOpen,
   Timer,
-  BookText,
-  GraduationCap
+  ListChecks,
+  GraduationCap,
 } from "lucide-react";
 
-const tabs = [
-  { key: "home", label: "Home", icon: Home },
-  { key: "rc", label: "RC", icon: BookOpen },
-  { key: "speed", label: "Speed", icon: Timer },
-  { key: "vocab", label: "Vocab", icon: BookText },
-  { key: "cat", label: "CAT", icon: GraduationCap },
-];
-
 export default function MobileBottomNav({ view, setView }) {
+  const tabs = [
+    { key: "home", label: "Home", icon: Home },
+    { key: "rc", label: "RC", icon: BookOpen },
+    { key: "speed", label: "Speed", icon: Timer },
+    { key: "vocab", label: "Vocab", icon: ListChecks },
+    { key: "cat", label: "CAT", icon: GraduationCap },
+  ];
+
   return (
-    <nav className="mobile-nav">
+    <nav className="mobile-nav mobile-only">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const active = view === tab.key;
@@ -24,11 +26,11 @@ export default function MobileBottomNav({ view, setView }) {
         return (
           <button
             key={tab.key}
+            className={`mobile-tab ${active ? "active" : ""}`}
             onClick={() => setView(tab.key)}
-            className={active ? "active" : ""}
             aria-label={tab.label}
           >
-            <Icon size={22} />
+            <Icon />
             <span>{tab.label}</span>
           </button>
         );
