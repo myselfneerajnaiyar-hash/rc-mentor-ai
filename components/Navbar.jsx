@@ -12,7 +12,7 @@ function loadDiagnosisHistory() {
     return Object.entries(raw)
       .filter(([_, arr]) => Array.isArray(arr) && arr.length > 0)
       .map(([sectionalId, arr]) => {
-        const attempt = arr[0]; // 🔒 locked single attempt per sectional
+        const attempt = arr[0];
         return {
           sectionalId,
           timestamp: attempt.timestamp,
@@ -47,42 +47,41 @@ export default function Navbar({ view, setView }) {
     <div
       style={{
         display: "flex",
-        alignItems: "center",
-        gap: 18,
-        padding: "12px 20px",
+        gap: 16,
+        padding: "10px 20px",
         borderBottom: "1px solid #e5e7eb",
         background: "#ffffff",
         position: "sticky",
         top: 0,
         zIndex: 100,
+        alignItems: "center",
       }}
     >
       {/* ================= BRAND ================= */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          marginRight: 16,
+          alignItems: "center",
+          gap: 10,
+          marginRight: 12,
         }}
       >
-        <div
+        <img
+          src="/logo.jpeg"
+          alt="Auctor Labs"
           style={{
-            fontSize: 18,
-            fontWeight: 800,
-            color: "#1e3a8a",
-            lineHeight: 1,
+            height: 36,
+            width: 36,
+            objectFit: "contain",
           }}
-        >
-          AuctorRC
-        </div>
-        <div
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            color: "#64748b",
-          }}
-        >
-          by Auctor Labs
+        />
+        <div style={{ lineHeight: 1.1 }}>
+          <div style={{ fontWeight: 800, fontSize: 16 }}>
+            AuctorRC
+          </div>
+          <div style={{ fontSize: 11, color: "#64748b" }}>
+            by Auctor Labs
+          </div>
         </div>
       </div>
 
@@ -111,7 +110,7 @@ export default function Navbar({ view, setView }) {
       {/* SPACER */}
       <div style={{ flex: 1 }} />
 
-      {/* ================= DIAGNOSIS HISTORY ================= */}
+      {/* ================= CAT DIAGNOSIS ================= */}
       {view === "cat" && (
         <div style={{ position: "relative" }}>
           <button
