@@ -44,7 +44,8 @@ export default function Navbar({ view, setView }) {
   ];
 
   return (
-    <div
+   <div
+  className="desktop-navbar"
       style={{
         display: "flex",
         gap: 16,
