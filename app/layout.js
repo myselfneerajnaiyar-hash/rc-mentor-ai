@@ -1,45 +1,31 @@
 import "./globals.css";
-import InstallAppButton from "./components/InstallAppButton";
 
 export const metadata = {
   title: "AuctorRC",
   description: "AuctorRC by Auctor Labs — CAT RC mastery platform",
   applicationName: "AuctorRC",
-
   icons: {
-    icon: [
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" }
-    ],
-    apple: "/icon-192.png"
-  }
+    icon: "/logo.jpeg",
+    apple: "/logo.jpeg",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "AuctorRC",
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* PWA */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2563eb" />
-
-        {/* Mobile / iOS support */}
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-        {/* CRITICAL for mobile layout */}
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
 
       <body>
         {children}
-
-        {/* Visible Install App button */}
-        <InstallAppButton />
 
         {/* Service Worker */}
         <script
@@ -50,7 +36,7 @@ export default function RootLayout({ children }) {
                   navigator.serviceWorker.register('/sw.js');
                 });
               }
-            `
+            `,
           }}
         />
       </body>
