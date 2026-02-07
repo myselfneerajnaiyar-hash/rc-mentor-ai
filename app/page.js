@@ -13,7 +13,7 @@ import CATArenaTestView from "../cat-arena/CATArenaTestView";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
 import CATAnalytics from "../components/CATAnalytics";
-import MobileBottomNav from "../components/MobileBottomNav";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 function loadSectionalAttemptMap() {
   try {
