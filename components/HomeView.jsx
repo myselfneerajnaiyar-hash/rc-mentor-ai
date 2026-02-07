@@ -2,7 +2,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
   return (
     <div style={wrap}>
       <div style={panel}>
-        <h1 style={title}>RC Mentor</h1>
+        <h1 style={title}>AuctorRC</h1>
         <p style={subtitle}>Today, build clarity. One RC at a time.</p>
 
         {/* Progress Card */}
@@ -66,7 +66,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
           <ul>
             <li>You don’t fail CAT because of weak vocabulary.</li>
             <li>You fail by misreading logic and falling for traps.</li>
-            <li>RC Mentor trains how you think, not just what you read.</li>
+            <li>AuctorRC trains how you think, not just what you read.</li>
           </ul>
         </div>
       </div>
