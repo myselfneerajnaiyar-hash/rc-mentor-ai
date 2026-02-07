@@ -59,3 +59,39 @@ body {
     padding: 8px 12px;
   }
 }
+/* =========================
+   MOBILE NAVBAR FIX
+   ========================= */
+
+@media (max-width: 768px) {
+
+  /* Navbar container */
+  nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  /* Hide ugly scrollbar */
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Navbar buttons / links */
+  nav a,
+  nav button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 12px;
+  }
+
+  /* Logo area */
+  .navbar-logo {
+    flex: 0 0 auto;
+  }
+}
