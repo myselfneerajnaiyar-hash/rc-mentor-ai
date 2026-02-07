@@ -1,21 +1,28 @@
 export const metadata = {
   title: "AuctorRC",
-  description: "AuctorRC by Auctor Labs – CAT RC mastery platform",
+  description: "AuctorRC by Auctor Labs — CAT RC mastery platform",
 
-  manifest: "/manifest.json",
-
-  themeColor: "#2563eb",
+  applicationName: "AuctorRC",
 
   icons: {
     icon: "/logo.jpeg",
     apple: "/logo.jpeg",
   },
-};
 
+  appleWebApp: {
+    capable: true,
+    title: "AuctorRC",
+    statusBarStyle: "default",
+  },
+};
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
-    </html>
+  <head>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+  </head>
+  <body>{children}</body>
+</html>
   );
 }
