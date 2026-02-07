@@ -629,7 +629,10 @@ function updateTodayRCProgress() {
   
 return (
   <main>
-    <Navbar view={view} setView={setView} />
+   {/* Desktop Navbar */}
+<div className="desktop-only">
+  <Navbar view={view} setView={setView} />
+</div>
 
     {view === "home" && (
       <HomeView
