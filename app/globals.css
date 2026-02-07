@@ -63,6 +63,6 @@ html, body {
 
   /* Prevent content hiding under navbar */
   body {
-    padding-bottom: 64px;
+    padding-bottom: 80px;
   }
 }
