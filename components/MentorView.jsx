@@ -8,7 +8,7 @@ export default function MentorView({
 }) {
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
-      <h2 style={{ marginTop: 0 }}>RC Mentor</h2>
+      <h2 style={{ marginTop: 0 }}>AuctorRC</h2>
 
       <p>Paste a passage. Let’s read it together.</p>
 
