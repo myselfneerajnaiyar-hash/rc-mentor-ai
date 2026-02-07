@@ -18,11 +18,27 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-  <head>
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#2563eb" />
-  </head>
-  <body>{children}</body>
-</html>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2563eb" />
+      </head>
+
+      <body>
+        {children}
+
+        {/* ✅ PWA Service Worker Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
+      </body>
+    </html>
   );
 }
