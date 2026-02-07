@@ -629,6 +629,7 @@ function updateTodayRCProgress() {
 }
   
 return (
+  <>
   <main>
    {/* Desktop Navbar */}
 <div className="desktop-only">
@@ -743,5 +744,7 @@ setCatPhase("test");
 <div className="mobile-only">
   <MobileBottomNav view={view} setView={setView} />
 </div>
+<>
+  );
 );
 }
