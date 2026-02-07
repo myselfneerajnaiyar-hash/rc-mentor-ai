@@ -745,7 +745,6 @@ setCatPhase("test");
   <MobileBottomNav view={view} setView={setView} />
 </div>
   </>
-);
 
 );
 }
