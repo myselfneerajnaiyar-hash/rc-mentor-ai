@@ -1,4 +1,5 @@
 import "./globals.css";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 export const metadata = {
   title: "AuctorRC",
@@ -26,6 +27,9 @@ export default function RootLayout({ children }) {
 
       <body>
         {children}
+  <div className="mobile-only">
+  <MobileBottomNav />
+</div>
 
         {/* Service Worker */}
         <script
