@@ -11,15 +11,23 @@ export default function MobileBottomNav({ view, setView }) {
 
   return (
     <nav className="mobile-nav">
-      {tabs.map(tab => (
+      {tabs.map((tab) => (
         <button
           key={tab.key}
-          type="button"
           onClick={() => setView(tab.key)}
           className={view === tab.key ? "active" : ""}
+          style={{
+            background: "none",
+            border: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            fontSize: 12,
+            cursor: "pointer",
+          }}
         >
-          <span className="icon">{tab.icon}</span>
-          <span className="label">{tab.label}</span>
+          <span style={{ fontSize: 20 }}>{tab.icon}</span>
+          <span>{tab.label}</span>
         </button>
       ))}
     </nav>
