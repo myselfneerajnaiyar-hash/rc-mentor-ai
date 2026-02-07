@@ -12,14 +12,15 @@ export default function MobileBottomNav({ view, setView }) {
   return (
     <nav className="mobile-nav">
       {tabs.map(tab => (
-        <a
+        <button
           key={tab.key}
-          className={view === tab.key ? "active" : ""}
+          type="button"
           onClick={() => setView(tab.key)}
+          className={view === tab.key ? "active" : ""}
         >
           <span className="icon">{tab.icon}</span>
-          <span>{tab.label}</span>
-        </a>
+          <span className="label">{tab.label}</span>
+        </button>
       ))}
     </nav>
   );
