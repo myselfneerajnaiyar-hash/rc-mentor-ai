@@ -1,18 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PassagePanel from "../../cat-arena/components/PassagePanel";
 import QuestionPanel from "../../cat-arena/components/QuestionPanel";
 
 export default function MobileRCSectional({
   passage,
   question,
-  options,
   selectedOption,
 
   durationSeconds,
   currentQuestionIndex,
-  totalQuestions,
 
   onSelectOption,
   onNext,
@@ -48,16 +45,19 @@ export default function MobileRCSectional({
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
 
-      {/* CONTENT */}
-      <div className="rc-content">
+      {/* SCROLL AREA */}
+      <div style={{ padding: 16, overflowY: "auto" }}>
 
-        {/* PASSAGE — REUSE DESKTOP LOGIC */}
+        {/* PASSAGE — SIMPLE & SAFE */}
         <section className="rc-passage">
-          <PassagePanel passage={{ text: passage }} />
+          <h3>Passage</h3>
+          <p style={{ whiteSpace: "pre-line", lineHeight: 1.6 }}>
+            {passage}
+          </p>
         </section>
 
-        {/* QUESTION — 🔥 THIS IS THE FIX 🔥 */}
-        <section className="rc-question">
+        {/* QUESTION — REUSE DESKTOP LOGIC */}
+        <section className="rc-question" style={{ marginTop: 24 }}>
           <QuestionPanel
             question={question}
             qNumber={currentQuestionIndex + 1}
