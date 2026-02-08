@@ -196,27 +196,34 @@ function submitPayload() {
 
 
 /* ===================== RENDER ===================== */
-const isMobileView = isMobile && !isReview;
+return isMobile ? (
+  <MobileRCSectional
+    passage={currentPassage.text}
+    question={currentQuestion}
+    selectedOption={answers[currentQ]}
 
-return isMobileView ? (
- <MobileRCSectional
-  passage={currentPassage?.text || ""}
-  question={currentQuestion}
-  options={currentQuestion?.options || []}
-  selectedOption={answers[currentQuestionIndex]}   // ✅ FIX
-  durationSeconds={30 * 60}
+    durationSeconds={30 * 60}
+    currentQuestionIndex={currentQ}
+    totalQuestions={totalQuestions}
+    questionStates={status}
 
-  currentQuestionIndex={currentQuestionIndex}
-  totalQuestions={totalQuestions}
-  questionStates={questionStates}
+    onSelectOption={(i) =>
+      setAnswers(a => ({ ...a, [currentQ]: i }))
+    }
 
-  onSelectOption={handleAnswer}
-  onNext={goNext}
-  onMark={handleMark}
-  onClear={handleClear}
-  onJump={setCurrentQuestionIndex}
-  onSubmit={() => setShowSubmit(true)}
-/>
+    onNext={saveAndNext}
+    onMark={markForReview}
+    onClear={() =>
+      setAnswers(a => {
+        const copy = { ...a };
+        delete copy[currentQ];
+        return copy;
+      })
+    }
+
+    onJump={visitQuestion}
+    onSubmit={() => alert("SUBMIT MODAL LATER")}
+  />
 ) : (
   <>
     {/* HEADER */}
