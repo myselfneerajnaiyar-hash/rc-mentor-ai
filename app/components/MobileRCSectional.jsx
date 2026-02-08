@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SubmitModal from "../SubmitModal";
+import SubmitModal from "@/cat-arena/components/SubmitModal";
 
 export default function MobileRCSectional({
   passage,
