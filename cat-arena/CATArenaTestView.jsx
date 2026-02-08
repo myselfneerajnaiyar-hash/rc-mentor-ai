@@ -18,7 +18,7 @@ export default function CATArenaTestView({
 }) {
   const isReview = mode === "review";
   const passages = testData.passages;
-  const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
+ const totalQuestions = QUESTIONS_PER_PASSAGE;
   /* ================= MOBILE DETECTION ================= */
   const [isMobile, setIsMobile] = useState(false);
 
