@@ -193,38 +193,28 @@ function submitPayload() {
   });
 }
 
-
-
 /* ===================== RENDER ===================== */
-return isMobile ? (
-  <MobileRCSectional
-    passage={currentPassage.text}
-    question={currentQuestion}
-    selectedOption={answers[currentQ]}
 
-    durationSeconds={30 * 60}
-    currentQuestionIndex={currentQ}
-    totalQuestions={totalQuestions}
-    questionStates={status}
+if (isMobile) {
+  return (
+    <MobileRCSectional
+      passage={currentPassage.text || currentPassage.passage}
+      question={currentQuestion}
+      selectedOption={answers[currentQuestionIndex]}
+      durationSeconds={30 * 60}
+      currentQuestionIndex={currentQuestionIndex}
+      totalQuestions={totalQuestions}
+      questionStates={questionStates}
+      onSelectOption={handleAnswer}
+      onNext={goNext}
+      onMark={handleMark}
+      onClear={handleClear}
+      onJump={setCurrentQuestionIndex}
+      onSubmit={() => setShowSubmit(true)}
+    />
+  );
+}
 
-    onSelectOption={(i) =>
-      setAnswers(a => ({ ...a, [currentQ]: i }))
-    }
-
-    onNext={saveAndNext}
-    onMark={markForReview}
-    onClear={() =>
-      setAnswers(a => {
-        const copy = { ...a };
-        delete copy[currentQ];
-        return copy;
-      })
-    }
-
-    onJump={visitQuestion}
-    onSubmit={() => alert("SUBMIT MODAL LATER")}
-  />
-) : (
   <>
     {/* HEADER */}
     <div style={headerStyle}>
