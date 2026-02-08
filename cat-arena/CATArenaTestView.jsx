@@ -34,14 +34,14 @@ useEffect(() => {
 if (isMobile && testData && testData.passages) {
   return (
     <MobileRCSectional
-      passage={currentPassage.text}
-      question={currentQuestion.question}
-      options={currentQuestion.options}
-      timeLeft={timeLeft}
-      onSelectOption={handleAnswer}
-      onNext={handleNext}
-      onSubmit={() => setShowSubmit(true)}
-    />
+  passage={currentPassage.text}
+  question={currentQuestion.question}
+  options={currentQuestion.options}
+  timeLeft={30 * 60}
+  onSelectOption={handleAnswer}
+  onNext={goNext}
+  onSubmit={() => setShowSubmit(true)}
+/>
   );
 }
   
