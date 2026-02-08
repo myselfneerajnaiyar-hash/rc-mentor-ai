@@ -8,10 +8,12 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100%;
   overflow-x: hidden;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   background: #f8fafc;
+  touch-action: manipulation; /* 🔑 MOBILE TAP FIX */
 }
 
 /* ===================== DESKTOP NAV ===================== */
@@ -26,7 +28,6 @@ body {
 }
 
 /* ===================== MOBILE BOTTOM NAV ===================== */
-
 .mobile-nav {
   display: none;
 }
@@ -46,8 +47,7 @@ body {
     justify-content: space-around;
     align-items: center;
 
-    z-index: 9999;
-
+    z-index: 50; /* 🔥 LOWERED */
     box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.06);
   }
 
@@ -86,11 +86,12 @@ body {
   }
 
   main {
-    padding-bottom: 80px;
+    padding-bottom: 140px; /* 🔥 space for palette + nav */
   }
 }
+
 /* ===============================
-   MOBILE RC SECTIONAL UI (FIXED)
+   MOBILE RC SECTIONAL (FINAL)
 ================================ */
 
 .rc-mobile-root {
@@ -98,13 +99,15 @@ body {
   display: flex;
   flex-direction: column;
   background: #f5f7fb;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------- HEADER ---------- */
 .rc-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 
   height: 56px;
   background: #ffffff;
@@ -128,10 +131,11 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 12px;
-  padding-bottom: 160px; /* IMPORTANT */
+  padding-bottom: 220px; /* 🔥 CRITICAL */
   position: relative;
   z-index: 1;
 }
+
 /* ---------- PASSAGE ---------- */
 .rc-passage {
   background: #ffffff;
@@ -142,8 +146,8 @@ body {
   font-size: 15px;
   line-height: 1.6;
 
-  max-height: 45vh;          /* 🔑 KEY FIX */
-  overflow-y: auto;          /* 🔑 KEY FIX */
+  max-height: 45vh;
+  overflow-y: auto;
 }
 
 /* ---------- QUESTION ---------- */
@@ -151,6 +155,8 @@ body {
   background: #ffffff;
   border-radius: 14px;
   padding: 16px;
+  position: relative;
+  z-index: 10; /* 🔥 ABOVE PALETTE */
 }
 
 .rc-question h4 {
@@ -164,6 +170,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
+  z-index: 10;
 }
 
 .rc-option {
@@ -171,20 +179,30 @@ body {
   padding: 12px;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
-  background: #f9fafb;
+  background: #ffffff;
 
   font-size: 14px;
   cursor: pointer;
+
+  pointer-events: auto;   /* 🔥 TAP FIX */
+  touch-action: manipulation;
 }
 
 .rc-option:active {
   transform: scale(0.98);
 }
 
-/* ---------- FIXED ACTION PALETTE ---------- */
+/* ---------- QUESTION PALETTE ---------- */
+.rc-question-palette {
+  margin-top: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+/* ---------- FIXED ACTION BAR ---------- */
 .rc-palette {
   position: fixed;
-  bottom: 64px; /* above mobile nav */
+  bottom: 64px;
   left: 0;
   right: 0;
 
@@ -197,7 +215,7 @@ body {
   gap: 8px;
   padding: 10px;
 
-  z-index: 1000;
+  z-index: 60; /* BELOW CONTENT TAPS, ABOVE NAV */
 }
 
 .rc-palette button {
@@ -205,6 +223,7 @@ body {
   border: none;
   font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .rc-palette .primary {
