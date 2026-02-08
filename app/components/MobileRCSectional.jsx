@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SubmitModal from "../SubmitModal";
 
 export default function MobileRCSectional({
   passage,
@@ -20,6 +21,7 @@ export default function MobileRCSectional({
   onSubmit,
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
+  const [showSubmit, setShowSubmit] = useState(false);
   
 
   /* ================= TIMER ================= */
@@ -249,7 +251,8 @@ export default function MobileRCSectional({
         }}
       >
         <button
-          onClick={onSubmit}
+         - onClick={onSubmit}
++ onClick={() => setShowSubmit(true)}
           style={{
             width: "100%",
             padding: "14px",
@@ -264,6 +267,14 @@ export default function MobileRCSectional({
           Submit Test
         </button>
       </div>
+    <SubmitModal
+        open={showSubmit}
+        onCancel={() => setShowSubmit(false)}
+        onConfirm={() => {
+          setShowSubmit(false);
+          onSubmit();
+        }}
+      />
     </div>
   );
 }
