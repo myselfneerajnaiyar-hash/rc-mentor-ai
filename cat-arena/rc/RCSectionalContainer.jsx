@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
+import MobileRCSectional from "../../app/components/MobileRCSectional";
 
 /* ================= STORAGE ================= */
 
@@ -53,39 +54,63 @@ export default function RCSectionalContainer({ testData, onExit }) {
   const [attempts, setAttempts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
 
-  /* ---- Load attempts once ---- */
+  /* ---- Mobile detection ---- */
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
-  const list = loadAttempts(sectionalId);
-  setAttempts(list);
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
-  if (!list.length) return;
+  /* ---- Load attempts ---- */
+  useEffect(() => {
+    const list = loadAttempts(sectionalId);
+    setAttempts(list);
 
-  // 🔥 If attemptId is provided (from dropdown)
-  if (testData.__attemptId) {
-    const idx = list.findIndex(
-      a => a.attemptId === testData.__attemptId
-    );
-    setActiveIndex(idx !== -1 ? idx : list.length - 1);
-  } else {
-    // default = latest attempt
-    setActiveIndex(list.length - 1);
-  }
-}, [sectionalId, testData.__attemptId]);
+    if (!list.length) return;
+
+    if (testData.__attemptId) {
+      const idx = list.findIndex(
+        a => a.attemptId === testData.__attemptId
+      );
+      setActiveIndex(idx !== -1 ? idx : list.length - 1);
+    } else {
+      setActiveIndex(list.length - 1);
+    }
+  }, [sectionalId, testData.__attemptId]);
+
   const activeAttempt =
     activeIndex !== null ? attempts[activeIndex] : null;
 
   /* ---------------- INSTRUCTIONS ---------------- */
   if (phase === "instructions") {
-    return (
-      <CATInstructions
-        onStart={() => setPhase("test")}
-      />
-    );
+    return <CATInstructions onStart={() => setPhase("test")} />;
   }
 
   /* ---------------- TEST ---------------- */
   if (phase === "test") {
-    return (
+    return isMobile ? (
+      <MobileRCSectional
+        passage={testData.passages[0]?.text || ""}
+        question={testData.passages[0]?.questions[0]}
+        options={testData.passages[0]?.questions[0]?.options || []}
+        durationSeconds={30 * 60}
+        currentQuestionIndex={0}
+        totalQuestions={testData.passages.length * 4}
+        questionStates={[]}
+        onSelectOption={() => {}}
+        onNext={() => {}}
+        onMark={() => {}}
+        onClear={() => {}}
+        onJump={() => {}}
+        onSubmit={() => {
+          saveAttempt(sectionalId, {});
+          setPhase("diagnosis");
+        }}
+      />
+    ) : (
       <CATArenaTestView
         testData={testData}
         mode="test"
@@ -121,35 +146,6 @@ export default function RCSectionalContainer({ testData, onExit }) {
         questions={activeAttempt.questions}
         answers={activeAttempt.answers}
         questionTime={activeAttempt.questionTime}
-        /* ========= ATTEMPT HISTORY UI ========= */
-        headerExtra={
-          <div style={{ marginBottom: 12 }}>
-            {attempts.map((a, i) => (
-              <button
-                key={a.attemptId}
-                onClick={() => setActiveIndex(i)}
-                style={{
-                  padding: "6px 10px",
-                  marginRight: 8,
-                  borderRadius: 6,
-                  border:
-                    i === activeIndex
-                      ? "2px solid #2563eb"
-                      : "1px solid #cbd5e1",
-                  background:
-                    i === activeIndex ? "#eef2ff" : "#fff",
-                  cursor: "pointer",
-                  fontSize: 13,
-                }}
-              >
-                Attempt {i + 1} ·{" "}
-               a.timestamp
-  ? new Date(a.timestamp).toLocaleString()
-  : "—"
-              </button>
-            ))}
-          </div>
-        }
         onReview={() => setPhase("review")}
         onBack={onExit}
       />
