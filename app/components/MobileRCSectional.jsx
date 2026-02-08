@@ -10,9 +10,14 @@ export default function MobileRCSectional({
 
   durationSeconds,
   currentQuestionIndex,
+  totalQuestions,
+  questionStates,
 
   onSelectOption,
   onNext,
+  onMark,
+  onClear,
+  onJump,
   onSubmit,
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
@@ -36,6 +41,13 @@ export default function MobileRCSectional({
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60).padStart(2, "0");
 
+  function getPaletteColor(state) {
+    if (state === 1) return "#22c55e"; // answered
+    if (state === 2) return "#3b82f6"; // marked
+    if (state === 3) return "#7c3aed"; // answered + marked
+    return "#e5e7eb"; // unvisited
+  }
+
   return (
     <div className="rc-mobile-root">
 
@@ -45,10 +57,10 @@ export default function MobileRCSectional({
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
 
-      {/* SCROLL AREA */}
-      <div style={{ padding: 16, overflowY: "auto" }}>
+      {/* SCROLLABLE CONTENT */}
+      <div style={{ padding: 16, paddingBottom: 120 }}>
 
-        {/* PASSAGE — SIMPLE & SAFE */}
+        {/* PASSAGE */}
         <section className="rc-passage">
           <h3>Passage</h3>
           <p style={{ whiteSpace: "pre-line", lineHeight: 1.6 }}>
@@ -56,8 +68,8 @@ export default function MobileRCSectional({
           </p>
         </section>
 
-        {/* QUESTION — REUSE DESKTOP LOGIC */}
-        <section className="rc-question" style={{ marginTop: 24 }}>
+        {/* QUESTION */}
+        <section style={{ marginTop: 24 }}>
           <QuestionPanel
             question={question}
             qNumber={currentQuestionIndex + 1}
@@ -69,13 +81,95 @@ export default function MobileRCSectional({
           />
         </section>
 
+        {/* QUESTION PALETTE */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>
+            Questions
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)",
+              gap: 8,
+            }}
+          >
+            {Array.from({ length: totalQuestions }).map((_, idx) => {
+              const state = questionStates[idx];
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onJump(idx)}
+                  style={{
+                    padding: "8px 0",
+                    borderRadius: 6,
+                    background: getPaletteColor(state),
+                    border:
+                      currentQuestionIndex === idx
+                        ? "2px solid #111827"
+                        : "1px solid #d1d5db",
+                    color: state === 0 ? "#111827" : "#fff",
+                    fontSize: 12,
+                  }}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* ACTION BAR */}
-      <div className="rc-palette">
-        <button className="primary" onClick={onNext}>Next</button>
-        <button className="danger" onClick={onSubmit}>Submit</button>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 56,
+          display: "flex",
+          gap: 8,
+          padding: "0 8px",
+          alignItems: "center",
+          background: "#fff",
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        <button onClick={onClear} style={btnGhost}>Clear</button>
+        <button onClick={onMark} style={btnGhost}>Mark</button>
+        <button onClick={onNext} style={btnPrimary}>Next</button>
+        <button onClick={onSubmit} style={btnDanger}>Submit</button>
       </div>
     </div>
   );
 }
+
+/* ---------- BUTTON STYLES ---------- */
+
+const btnPrimary = {
+  flex: 1,
+  height: 40,
+  background: "#2563eb",
+  color: "#fff",
+  border: "none",
+  borderRadius: 6,
+};
+
+const btnGhost = {
+  flex: 1,
+  height: 40,
+  background: "#f9fafb",
+  border: "1px solid #d1d5db",
+  borderRadius: 6,
+};
+
+const btnDanger = {
+  flex: 1,
+  height: 40,
+  background: "#fee2e2",
+  color: "#991b1b",
+  border: "1px solid #fecaca",
+  borderRadius: 6,
+};
