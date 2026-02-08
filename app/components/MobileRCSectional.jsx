@@ -78,7 +78,13 @@ export default function MobileRCSectional({
     lineHeight: 1.5,
   }}
 >
-  {question?.text || question?.question}
+ {
+  question?.questionText ||
+  question?.stem ||
+  question?.prompt ||
+  question?.text ||
+  question?.question
+}
 </p>
 
           <div className="rc-options">
