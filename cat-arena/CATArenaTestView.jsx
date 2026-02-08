@@ -7,11 +7,12 @@ import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 import MobileRCSectional from "../app/components/MobileRCSectional";
+
 /*
 PROPS
 - testData
 - mode            : "test" | "review"
-- initialState    : { answers, questionTime, questionStates }
+- initialState
 - onSubmit
 */
 
@@ -21,31 +22,24 @@ export default function CATArenaTestView({
   initialState = null,
   onSubmit,
 }) {
-  // 🔍 Mobile detection
-const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-  checkMobile();
-  window.addEventListener("resize", checkMobile);
-  return () => window.removeEventListener("resize", checkMobile);
-}, []);
-
-
-  
-  /* ===================== SAFETY ===================== */
-  if (!testData || !testData.passages) {
-    return (
-      <div style={{ padding: 40 }}>
-        <h3>No test loaded</h3>
-        <p>Please start a CAT RC test again.</p>
-      </div>
-    );
-  }
-
   const isReview = mode === "review";
 
-  /* ===================== CONSTANTS ===================== */
+  /* ================= MOBILE DETECTION ================= */
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  /* ================= SAFETY ================= */
+  if (!testData?.passages) {
+    return <div style={{ padding: 40 }}>No test loaded</div>;
+  }
+
+  /* ================= CONSTANTS ================= */
   const passages = testData.passages;
   const QUESTIONS_PER_PASSAGE = 4;
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
@@ -55,7 +49,7 @@ useEffect(() => {
     [passages]
   );
 
-  /* ===================== STATE ===================== */
+  /* ================= STATE ================= */
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [answers, setAnswers] = useState(
@@ -70,22 +64,21 @@ useEffect(() => {
     Array(totalQuestions).fill(0)
   );
 
-  const [questionStartTime, setQuestionStartTime] = useState(0);
+  const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   const [showSubmit, setShowSubmit] = useState(false);
 
-  /* ===================== DERIVED ===================== */
-const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-const questionIndexInPassage =
-  currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+  /* ================= DERIVED ================= */
+  const passageIndex = Math.floor(
+    currentQuestionIndex / QUESTIONS_PER_PASSAGE
+  );
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
 
-const currentPassage = passages[passageIndex];
-const currentQuestion =
-  currentPassage.questions[questionIndexInPassage];
+  const currentPassage = passages[passageIndex];
+  const currentQuestion =
+    currentPassage.questions[questionIndexInPassage];
 
-
-
-  /* ===================== 🔑 CRITICAL FIX ===================== */
-  // Rehydrate state EVERY TIME we enter review mode
+  /* ================= REVIEW REHYDRATE ================= */
   useEffect(() => {
     if (isReview && initialState) {
       setAnswers([...initialState.answers]);
@@ -95,32 +88,27 @@ const currentQuestion =
     }
   }, [isReview, initialState]);
 
-  /* ===================== TIME TRACKING ===================== */
+  /* ================= TIME TRACKING ================= */
   useEffect(() => {
-    if (!isReview) {
-      setQuestionStartTime(Date.now());
-    }
+    if (!isReview) setQuestionStartTime(Date.now());
   }, [currentQuestionIndex, isReview]);
 
   function saveTime() {
     if (isReview) return;
-
     const spent = Math.round((Date.now() - questionStartTime) / 1000);
-    setQuestionTime(prev => {
-      const updated = [...prev];
-      updated[currentQuestionIndex] += spent;
-      return updated;
+    setQuestionTime(t => {
+      const copy = [...t];
+      copy[currentQuestionIndex] += spent;
+      return copy;
     });
   }
 
-  
-
-  /* ===================== HANDLERS ===================== */
-  function handleAnswer(optionIndex) {
+  /* ================= HANDLERS ================= */
+  function handleAnswer(i) {
     if (isReview) return;
 
     const a = [...answers];
-    a[currentQuestionIndex] = optionIndex;
+    a[currentQuestionIndex] = i;
     setAnswers(a);
 
     const qs = [...questionStates];
@@ -136,6 +124,8 @@ const currentQuestion =
     qs[currentQuestionIndex] =
       qs[currentQuestionIndex] === 1 ? 3 : 2;
     setQuestionStates(qs);
+
+    goNext();
   }
 
   function handleClear() {
@@ -158,201 +148,91 @@ const currentQuestion =
     );
   }
 
-  function goPrev() {
+  function submitPayload() {
     saveTime();
-    setCurrentQuestionIndex(i => Math.max(i - 1, 0));
+
+    let correct = 0;
+    answers.forEach((a, i) => {
+      if (a === flatQuestions[i]?.correctIndex) correct++;
+    });
+
+    onSubmit?.({
+      passages,
+      questions: flatQuestions,
+      answers,
+      questionTime,
+      questionStates,
+      timestamp: Date.now(),
+      total: flatQuestions.length,
+      correct,
+      attempted: answers.filter(a => a !== null).length,
+      timeTaken: questionTime.reduce((a, b) => a + b, 0),
+    });
   }
 
-function submitPayload() {
-  saveTime();
-
-  const total = flatQuestions.length;
-
-  let correct = 0;
-  answers.forEach((ans, i) => {
-    if (ans === flatQuestions[i]?.correctIndex) {
-      correct++;
-    }
-  });
-
-  const timeTaken = questionTime.reduce((a, b) => a + (b || 0), 0);
-
-  onSubmit?.({
-    passages,
-    questions: flatQuestions,
-    answers,
-    questionTime,
-    questionStates,
-
-    // 🔒 REQUIRED FOR ANALYTICS
-    timestamp: Date.now(),   // number
-    total,                   // number
-    correct,                 // number
-    attempted: answers.filter(a => a !== null && a !== undefined).length,
-    timeTaken,               // seconds
-  });
-}
-
-
-
-/* ===================== RENDER ===================== */
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-return isMobile ? (
-  <MobileRCSectional
-    passage={currentPassage.text}
-    question={currentQuestion}
-    selectedOption={answers[currentQ]}
-
-    durationSeconds={30 * 60}
-    currentQuestionIndex={currentQ}
-    totalQuestions={totalQuestions}
-    questionStates={status}
-
-    onSelectOption={(i) =>
-      setAnswers(a => ({ ...a, [currentQ]: i }))
-    }
-
-    onNext={saveAndNext}
-    onMark={markForReview}
-    onClear={() =>
-      setAnswers(a => {
-        const copy = { ...a };
-        delete copy[currentQ];
-        return copy;
-      })
-    }
-
-    onJump={visitQuestion}
-    onSubmit={() => alert("SUBMIT MODAL LATER")}
-  />
-) : (
-  <>
-    {/* HEADER */}
-    <div style={headerStyle}>
-      <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
-
-      {isReview && (
-        <button onClick={submitPayload} style={backBtn}>
-          ← Back to Diagnosis
-        </button>
-      )}
-
-      {!isReview && (
-        <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
-      )}
-    </div>
-
-    {/* MAIN GRID */}
-    <div style={gridStyle}>
-      <PassagePanel
-        passages={passages}
-        currentQuestionIndex={currentQuestionIndex}
-        mode={mode}
-      />
-
-      <QuestionPanel
+  /* ================= MOBILE RENDER ================= */
+  if (isMobile && !isReview) {
+    return (
+      <MobileRCSectional
+        passage={currentPassage.text}
         question={currentQuestion}
-        qNumber={currentQuestionIndex + 1}
         selectedOption={answers[currentQuestionIndex]}
-        correctIndex={currentQuestion.correctIndex}
-        mode={mode}
-        onAnswer={handleAnswer}
-        onPrev={goPrev}
-        onNext={goNext}
-      />
-
-      <QuestionPalette
+        durationSeconds={30 * 60}
+        currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
-        currentQuestion={currentQuestionIndex}
         questionStates={questionStates}
+        onSelectOption={handleAnswer}
+        onNext={goNext}
+        onMark={handleMark}
+        onClear={handleClear}
         onJump={setCurrentQuestionIndex}
+        onSubmit={() => setShowSubmit(true)}
       />
-    </div>
+    );
+  }
 
-    {!isReview && (
-      <div style={footerStyle}>
-        <button style={ghostBtn} onClick={handleMark}>
-          Mark for Review
-        </button>
-        <button style={ghostBtn} onClick={handleClear}>
-          Clear Response
-        </button>
-        <button
-          style={submitBtn}
-          onClick={() => setShowSubmit(true)}
-        >
-          Submit Test
-        </button>
+  /* ================= DESKTOP ================= */
+  return (
+    <>
+      <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
+
+      <div style={gridStyle}>
+        <PassagePanel
+          passages={passages}
+          currentQuestionIndex={currentQuestionIndex}
+          mode={mode}
+        />
+
+        <QuestionPanel
+          question={currentQuestion}
+          qNumber={currentQuestionIndex + 1}
+          selectedOption={answers[currentQuestionIndex]}
+          correctIndex={currentQuestion.correctIndex}
+          mode={mode}
+          onAnswer={handleAnswer}
+        />
+
+        <QuestionPalette
+          totalQuestions={totalQuestions}
+          currentQuestion={currentQuestionIndex}
+          questionStates={questionStates}
+          onJump={setCurrentQuestionIndex}
+        />
       </div>
-    )}
 
-    <SubmitModal
-      open={showSubmit}
-      onCancel={() => setShowSubmit(false)}
-      onConfirm={submitPayload}
-    />
-  </>
-);
+      <SubmitModal
+        open={showSubmit}
+        onCancel={() => setShowSubmit(false)}
+        onConfirm={submitPayload}
+      />
+    </>
+  );
 }
 
-/* ===================== STYLES ===================== */
-
-const headerStyle = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  height: 56,
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "0 16px",
-  background: "#fff",
-  borderBottom: "1px solid #e5e7eb",
-  zIndex: 1000,
-};
-
+/* ================= STYLES ================= */
 const gridStyle = {
   display: "grid",
   gridTemplateColumns: "40% 35% 25%",
   paddingTop: 56,
-  paddingBottom: 64,
   minHeight: "100vh",
-};
-
-const footerStyle = {
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  height: 56,
-  display: "flex",
-  justifyContent: "center",
-  gap: 12,
-  alignItems: "center",
-  background: "#fff",
-  borderTop: "1px solid #e5e7eb",
-};
-
-const submitBtn = {
-  padding: "6px 14px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const ghostBtn = {
-  padding: "6px 12px",
-  border: "1px solid #9ca3af",
-  background: "#fff",
-  cursor: "pointer",
-};
-
-const backBtn = {
-  padding: "6px 12px",
-  border: "1px solid #2563eb",
-  background: "#eef2ff",
-  borderRadius: 6,
-  cursor: "pointer",
 };
