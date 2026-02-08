@@ -73,15 +73,22 @@ export default function CATArenaTestView({
   const [showSubmit, setShowSubmit] = useState(false);
 
   /* ================= DERIVED ================= */
-  const passageIndex = Math.floor(
-    currentQuestionIndex / QUESTIONS_PER_PASSAGE
-  );
-  const questionIndexInPassage =
-    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+  // ✅ SINGLE SOURCE OF TRUTH
+const currentQuestion = flatQuestions[currentQuestionIndex];
 
-  const currentPassage = passages[passageIndex];
-  const currentQuestion =
-    currentPassage.questions[questionIndexInPassage];
+// passage only for display
+const currentPassage = passages.find(p =>
+  p.questions.includes(currentQuestion)
+);
+
+  /* ===================== SAFETY GUARD ===================== */
+if (!currentQuestion) {
+  return (
+    <div style={{ padding: 40 }}>
+      <h3>Question loading…</h3>
+    </div>
+  );
+}
 
   /* ================= REVIEW REHYDRATION ================= */
   useEffect(() => {
