@@ -240,3 +240,46 @@ body {
   background: #fee2e2;
   color: #b91c1c;
 }
+/* ===================== CLICK FIX ===================== */
+
+/* Ensure mobile RC content can receive touches */
+.rc-mobile-root * {
+  pointer-events: auto;
+}
+
+/* Scroll container must NOT block clicks */
+.rc-content {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Passage should not eat touches meant for question */
+.rc-passage {
+  pointer-events: auto;
+}
+
+/* Options MUST receive touch */
+.rc-option,
+.rc-question,
+.rc-options {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+/* Action bar MUST be on top */
+.rc-palette {
+  z-index: 10001 !important;
+  pointer-events: auto;
+}
+
+/* Buttons MUST receive touch */
+.rc-palette button {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+/* Mobile bottom nav should NOT block above UI */
+.mobile-nav {
+  pointer-events: auto;
+}
