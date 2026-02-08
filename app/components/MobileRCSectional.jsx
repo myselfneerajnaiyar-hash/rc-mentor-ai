@@ -68,7 +68,11 @@ export default function MobileRCSectional({
 
         {/* QUESTION */}
         <section className="rc-question">
-          <h4>{question?.question}</h4>
+         <h4>
+  {typeof question === "string"
+    ? question
+    : question?.question || question?.text}
+</h4>
 
           <div className="rc-options">
             {options.map((opt, i) => {
