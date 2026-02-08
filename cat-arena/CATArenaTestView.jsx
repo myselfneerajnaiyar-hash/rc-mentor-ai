@@ -215,6 +215,7 @@ if (isMobile) {
   );
 }
 
+  return (
   <>
     {/* HEADER */}
     <div style={headerStyle}>
