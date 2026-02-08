@@ -18,16 +18,9 @@ export default function CATArenaTestView({
 }) {
   const isReview = mode === "review";
   const passages = testData.passages;
- const totalQuestions = QUESTIONS_PER_PASSAGE;
-  /* ================= MOBILE DETECTION ================= */
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  // ✅ CAT RC Sectional = 4 passages × 4 questions
+  const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
 
   /* ================= STATE ================= */
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -41,18 +34,22 @@ export default function CATArenaTestView({
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   const [showSubmit, setShowSubmit] = useState(false);
 
-  /* ================= DERIVED (🔥 SINGLE SOURCE) ================= */
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndex = currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+  /* ================= SINGLE SOURCE OF TRUTH ================= */
+  const passageIndex = Math.floor(
+    currentQuestionIndex / QUESTIONS_PER_PASSAGE
+  );
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
 
   const currentPassage = passages[passageIndex];
-  const currentQuestion = currentPassage?.questions?.[questionIndex];
+  const currentQuestion =
+    currentPassage?.questions?.[questionIndexInPassage];
 
   /* ================= HARD GUARD ================= */
   if (!currentPassage || !currentQuestion) {
     return (
       <div style={{ padding: 40 }}>
-        <h3>Loading question…</h3>
+        <h3>Question loading…</h3>
       </div>
     );
   }
@@ -75,6 +72,7 @@ export default function CATArenaTestView({
   /* ================= ACTIONS ================= */
   function handleAnswer(i) {
     if (isReview) return;
+
     const a = [...answers];
     a[currentQuestionIndex] = i;
     setAnswers(a);
@@ -95,6 +93,7 @@ export default function CATArenaTestView({
 
   function handleClear() {
     if (isReview) return;
+
     const a = [...answers];
     a[currentQuestionIndex] = null;
     setAnswers(a);
@@ -124,7 +123,9 @@ export default function CATArenaTestView({
   }
 
   /* ================= MOBILE ================= */
-  
+  const isMobile =
+    typeof window !== "undefined" && window.innerWidth <= 768;
+
   if (isMobile) {
     return (
       <MobileRCSectional
