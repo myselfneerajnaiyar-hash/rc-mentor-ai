@@ -39,7 +39,7 @@ export default function MobileRCSectional({
   }, []);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const secs = String(secondsLeft % 60)).padStart(2, "0");
+  const secs = String(secondsLeft % 60).padStart(2, "0");
 
   function getPaletteColor(state) {
     if (state === 1) return "#22c55e"; // answered
