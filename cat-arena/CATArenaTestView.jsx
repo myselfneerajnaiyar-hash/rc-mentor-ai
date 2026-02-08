@@ -201,7 +201,7 @@ const isMobileView = isMobile && !isReview;
 return isMobileView ? (
  <MobileRCSectional
   passage={currentPassage?.text || ""}
-  question={currentQuestion?.text || ""}
+  question={currentQuestion?.question || ""}
   options={currentQuestion?.options || []}
   durationSeconds={30 * 60}
 
