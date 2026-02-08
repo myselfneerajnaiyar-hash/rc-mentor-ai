@@ -24,20 +24,20 @@ export default function MobileRCSectional({
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
 
   /* ⏱ TIMER */
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          onSubmit();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+ useEffect(() => {
+  const timer = setInterval(() => {
+    setSecondsLeft(prev => {
+      if (prev <= 1) {
+        clearInterval(timer);
+        onSubmit?.();
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
 
-    return () => clearInterval(timer);
-  }, [onSubmit]);
+  return () => clearInterval(timer);
+}, []);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60)).padStart(2, "0");
