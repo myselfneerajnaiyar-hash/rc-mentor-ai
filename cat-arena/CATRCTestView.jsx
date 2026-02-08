@@ -87,15 +87,31 @@ export default function CATRCTestView({ testData }) {
 
       {/* MIDDLE — QUESTION */}
       <div style={{ padding: 16 }}>
-        <QuestionPanel
-          question={currentQuestion}
-          qNumber={currentQIndex + 1}
-          onAnswer={handleAnswer}
-          onMark={handleMark}
-          onNext={handleNext}
-          onPrev={handlePrev}
-        />
-      </div>
+  <h4 style={{ marginBottom: 12 }}>
+    {currentQuestion?.text || currentQuestion?.question}
+  </h4>
+
+  {currentQuestion?.options?.map((opt, i) => (
+    <button
+      key={i}
+      style={{
+        display: "block",
+        width: "100%",
+        padding: 12,
+        marginBottom: 8,
+        borderRadius: 8,
+        border: "1px solid #d1d5db",
+        background: "#fff",
+        textAlign: "left",
+      }}
+      onClick={() =>
+        setAnswers(a => ({ ...a, [currentQ]: i }))
+      }
+    >
+      {opt}
+    </button>
+  ))}
+</div>
 
       {/* RIGHT — PALETTE */}
       <div style={{ padding: 12, borderLeft: "1px solid #d1d5db" }}>
