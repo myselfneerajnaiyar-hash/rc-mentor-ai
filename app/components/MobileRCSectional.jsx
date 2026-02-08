@@ -164,30 +164,93 @@ export default function MobileRCSectional({
         </div>
       </div>
 
-      {/* ACTION BAR */}
-     <div className="rc-palette">
-  <button className="secondary" onClick={onClear}>
+     {/* ACTION BAR */}
+<div
+  className="rc-palette"
+  style={{
+    display: "flex",
+    gap: 10,
+    padding: "10px 12px",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: "#ffffff",
+    borderTop: "1px solid #e5e7eb",
+  }}
+>
+  <button
+    onClick={onClear}
+    style={{
+      padding: "10px 14px",
+      fontSize: 14,
+      borderRadius: 8,
+      border: "1px solid #d1d5db",
+      background: "#f9fafb",
+      minWidth: 72,
+    }}
+  >
     Clear
   </button>
 
-  <button className="secondary" onClick={onMark}>
+  <button
+    onClick={onMark}
+    style={{
+      padding: "10px 14px",
+      fontSize: 14,
+      borderRadius: 8,
+      border: "1px solid #d1d5db",
+      background: "#f9fafb",
+      minWidth: 72,
+    }}
+  >
     Mark
   </button>
 
   <button
-    className="secondary"
     onClick={() =>
-      currentQuestionIndex > 0 && onJump(currentQuestionIndex - 1)
+      currentQuestionIndex > 0 &&
+      onJump(currentQuestionIndex - 1)
     }
+    style={{
+      padding: "10px 14px",
+      fontSize: 14,
+      borderRadius: 8,
+      border: "1px solid #d1d5db",
+      background: "#f9fafb",
+      minWidth: 90,
+      opacity: currentQuestionIndex === 0 ? 0.5 : 1,
+    }}
   >
     Previous
   </button>
 
-  <button className="primary" onClick={onNext}>
+  <button
+    onClick={onNext}
+    style={{
+      padding: "12px 18px",
+      fontSize: 15,
+      fontWeight: 600,
+      borderRadius: 10,
+      background: "#2563eb",
+      color: "#ffffff",
+      border: "none",
+      minWidth: 120,
+    }}
+  >
     Save & Next
   </button>
 
-  <button className="danger" onClick={onSubmit}>
+  <button
+    onClick={onSubmit}
+    style={{
+      padding: "10px 16px",
+      fontSize: 14,
+      borderRadius: 8,
+      background: "#fee2e2",
+      color: "#991b1b",
+      border: "1px solid #fca5a5",
+      minWidth: 90,
+    }}
+  >
     Submit
   </button>
 </div>
