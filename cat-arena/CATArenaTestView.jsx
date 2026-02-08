@@ -193,7 +193,7 @@ function submitPayload() {
   });
 }
 
-  const isMobileView = isMobile && !isReview;
+
 
 /* ===================== RENDER ===================== */
 const isMobileView = isMobile && !isReview;
