@@ -31,28 +31,7 @@ useEffect(() => {
   return () => window.removeEventListener("resize", checkMobile);
 }, []);
 
-  /* ===================== DERIVED ===================== */
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndexInPassage =
-    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
 
-  const currentPassage = passages[passageIndex];
-  const currentQuestion =
-    currentPassage.questions[questionIndexInPassage];
-
-if (isMobile && testData && testData.passages) {
-  return (
-    <MobileRCSectional
-  passage={currentPassage.text}
-  question={currentQuestion.question}
-  options={currentQuestion.options}
-  timeLeft={30 * 60}
-  onSelectOption={handleAnswer}
-  onNext={goNext}
-  onSubmit={() => setShowSubmit(true)}
-/>
-  );
-}
   
   /* ===================== SAFETY ===================== */
   if (!testData || !testData.passages) {
@@ -93,6 +72,30 @@ if (isMobile && testData && testData.passages) {
 
   const [questionStartTime, setQuestionStartTime] = useState(0);
   const [showSubmit, setShowSubmit] = useState(false);
+
+  /* ===================== DERIVED ===================== */
+const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
+const questionIndexInPassage =
+  currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+
+const currentPassage = passages[passageIndex];
+const currentQuestion =
+  currentPassage.questions[questionIndexInPassage];
+
+/* ===================== MOBILE RENDER ===================== */
+if (isMobile) {
+  return (
+    <MobileRCSectional
+      passage={currentPassage?.text || ""}
+      question={currentQuestion?.question || ""}
+      options={currentQuestion?.options || []}
+      timeLeft={30 * 60}
+      onSelectOption={handleAnswer}
+      onNext={goNext}
+      onSubmit={() => setShowSubmit(true)}
+    />
+  );
+}
 
   /* ===================== 🔑 CRITICAL FIX ===================== */
   // Rehydrate state EVERY TIME we enter review mode
