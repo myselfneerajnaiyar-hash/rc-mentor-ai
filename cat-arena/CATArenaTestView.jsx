@@ -196,6 +196,7 @@ function submitPayload() {
 
 
 /* ===================== RENDER ===================== */
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 return isMobile ? (
   <MobileRCSectional
     passage={currentPassage.text}
