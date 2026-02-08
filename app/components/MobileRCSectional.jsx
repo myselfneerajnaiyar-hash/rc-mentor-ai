@@ -68,19 +68,39 @@ export default function MobileRCSectional({
           </p>
         </section>
 
-        {/* QUESTION */}
-        <section style={{ marginTop: 24 }}>
-          <QuestionPanel
-            question={question}
-            qNumber={currentQuestionIndex + 1}
-            selectedOption={selectedOption}
-            mode="test"
-            onAnswer={onSelectOption}
-            onNext={onNext}
-            onPrev={() => {}}
-          />
-        </section>
+        
+       {/* QUESTION */}
+<section style={{ marginTop: 24 }}>
+  <h4 style={{ marginBottom: 12 }}>
+    Question No. {currentQuestionIndex + 1}
+  </h4>
 
+  <div>
+    {question?.options?.map((opt, i) => {
+      const selected = selectedOption === i;
+
+      return (
+        <div
+          key={i}
+          onClick={() => onSelectOption(i)}
+          style={{
+            padding: 12,
+            marginBottom: 10,
+            borderRadius: 8,
+            border: selected
+              ? "2px solid #2563eb"
+              : "1px solid #d1d5db",
+            background: selected ? "#eff6ff" : "#fff",
+            cursor: "pointer",
+          }}
+        >
+          <strong>{String.fromCharCode(65 + i)}.</strong>{" "}
+          {opt}
+        </div>
+      );
+    })}
+  </div>
+</section>
         {/* QUESTION PALETTE */}
         <div style={{ marginTop: 24 }}>
           <div style={{ fontWeight: 600, marginBottom: 8 }}>
@@ -125,7 +145,7 @@ export default function MobileRCSectional({
       <div
         style={{
           position: "fixed",
-          bottom: 0,
+          bottom: 56,
           left: 0,
           right: 0,
           height: 56,
@@ -135,6 +155,7 @@ export default function MobileRCSectional({
           alignItems: "center",
           background: "#fff",
           borderTop: "1px solid #e5e7eb",
+          zIndex: 9999,
         }}
       >
         <button onClick={onClear} style={btnGhost}>Clear</button>
