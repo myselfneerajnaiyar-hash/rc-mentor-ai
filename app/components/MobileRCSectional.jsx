@@ -164,96 +164,105 @@ export default function MobileRCSectional({
         </div>
       </div>
 
-     {/* ACTION BAR */}
-<div
-  className="rc-palette"
-  style={{
-    display: "flex",
-    gap: 10,
-    padding: "10px 12px",
-    justifyContent: "space-between",
-    alignItems: "center",
-    background: "#ffffff",
-    borderTop: "1px solid #e5e7eb",
-  }}
->
-  <button
-    onClick={onClear}
-    style={{
-      padding: "10px 14px",
-      fontSize: 14,
-      borderRadius: 8,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-      minWidth: 72,
-    }}
-  >
-    Clear
-  </button>
+    {/* ACTION BAR */}
+      <div
+        className="rc-palette"
+        style={{
+          display: "flex",
+          gap: 8,
+          padding: "10px 12px",
+          background: "#ffffff",
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        <button
+          onClick={onClear}
+          style={{
+            flex: 1,
+            padding: "10px",
+            fontSize: 14,
+            borderRadius: 8,
+            border: "1px solid #d1d5db",
+            background: "#f9fafb",
+          }}
+        >
+          Clear
+        </button>
 
-  <button
-    onClick={onMark}
-    style={{
-      padding: "10px 14px",
-      fontSize: 14,
-      borderRadius: 8,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-      minWidth: 72,
-    }}
-  >
-    Mark
-  </button>
+        <button
+          onClick={onMark}
+          style={{
+            flex: 1,
+            padding: "10px",
+            fontSize: 14,
+            borderRadius: 8,
+            border: "1px solid #d1d5db",
+            background: "#f9fafb",
+          }}
+        >
+          Mark
+        </button>
 
-  <button
-    onClick={() =>
-      currentQuestionIndex > 0 &&
-      onJump(currentQuestionIndex - 1)
-    }
-    style={{
-      padding: "10px 14px",
-      fontSize: 14,
-      borderRadius: 8,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-      minWidth: 90,
-      opacity: currentQuestionIndex === 0 ? 0.5 : 1,
-    }}
-  >
-    Previous
-  </button>
+        <button
+          onClick={() =>
+            currentQuestionIndex > 0 &&
+            onJump(currentQuestionIndex - 1)
+          }
+          disabled={currentQuestionIndex === 0}
+          style={{
+            flex: 1,
+            padding: "10px",
+            fontSize: 14,
+            borderRadius: 8,
+            border: "1px solid #d1d5db",
+            background: "#f9fafb",
+            opacity: currentQuestionIndex === 0 ? 0.5 : 1,
+          }}
+        >
+          Previous
+        </button>
 
-  <button
-    onClick={onNext}
-    style={{
-      padding: "12px 18px",
-      fontSize: 15,
-      fontWeight: 600,
-      borderRadius: 10,
-      background: "#2563eb",
-      color: "#ffffff",
-      border: "none",
-      minWidth: 120,
-    }}
-  >
-    Save & Next
-  </button>
+        <button
+          onClick={onNext}
+          style={{
+            flex: 1.4,
+            padding: "12px",
+            fontSize: 15,
+            fontWeight: 600,
+            borderRadius: 10,
+            background: "#2563eb",
+            color: "#ffffff",
+            border: "none",
+          }}
+        >
+          Save & Next
+        </button>
+      </div>
 
-  <button
-    onClick={onSubmit}
-    style={{
-      padding: "10px 16px",
-      fontSize: 14,
-      borderRadius: 8,
-      background: "#fee2e2",
-      color: "#991b1b",
-      border: "1px solid #fca5a5",
-      minWidth: 90,
-    }}
-  >
-    Submit
-  </button>
-</div>
+      {/* SUBMIT BAR (ALWAYS VISIBLE) */}
+      <div
+        style={{
+          padding: "10px 12px",
+          background: "#ffffff",
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        <button
+          onClick={onSubmit}
+          style={{
+            width: "100%",
+            padding: "14px",
+            fontSize: 16,
+            fontWeight: 600,
+            borderRadius: 10,
+            background: "#dc2626",
+            color: "#ffffff",
+            border: "none",
+          }}
+        >
+          Submit Test
+        </button>
+      </div>
     </div>
   );
 }
