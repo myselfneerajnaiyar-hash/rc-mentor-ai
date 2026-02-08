@@ -57,9 +57,10 @@ export default function MobileRCSectional({
       <div className="rc-header">
         <div
   style={{
-    padding: "6px 12px",
-    fontSize: 12,
-    background: "#f9fafb",
+    padding: "4px 12px",
+    fontSize: 11,
+    color: "#374151",
+    background: "#f3f4f6",
     borderBottom: "1px solid #e5e7eb",
   }}
 >
