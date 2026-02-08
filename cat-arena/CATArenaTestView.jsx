@@ -6,7 +6,7 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
-import MobileRCSectional from "@/app/components/MobileRCSectional";
+import MobileRCSectional from "../app/components/MobileRCSectional";
 /*
 PROPS
 - testData
