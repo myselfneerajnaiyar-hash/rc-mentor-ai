@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QuestionPanel from "../cat-arena/components/QuestionPanel"; 
-// ⬆️ adjust path ONLY if needed
 
 export default function MobileRCSectional({
   passage,
   question,
+  options,
   selectedOption,
   durationSeconds,
 
@@ -23,24 +22,24 @@ export default function MobileRCSectional({
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
 
-  /* ⏱ TIMER */
- useEffect(() => {
-  const timer = setInterval(() => {
-    setSecondsLeft(prev => {
-      if (prev <= 1) {
-        clearInterval(timer);
-        onSubmit?.();
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
+  /* ================= TIMER (PROD SAFE) ================= */
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          onSubmit?.();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  return () => clearInterval(timer);
-}, []);
+    return () => clearInterval(timer);
+  }, []); // ⚠️ DO NOT ADD DEPENDENCIES
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const secs = String(secondsLeft % 60)).padStart(2, "0");
+  const secs = String(secondsLeft % 60).padStart(2, "0");
 
   function getPaletteColor(state) {
     if (state === 1) return "#22c55e"; // answered
@@ -49,9 +48,15 @@ export default function MobileRCSectional({
     return "#e5e7eb";
   }
 
+  /* ================= QUESTION TEXT (CRITICAL FIX) ================= */
+  const questionText =
+    typeof question === "string"
+      ? question
+      : question?.question || question?.text || "";
+
+  /* ================= RENDER ================= */
   return (
     <div className="rc-mobile-root">
-
       {/* HEADER */}
       <div className="rc-header">
         <span>CAT RC Sectional</span>
@@ -62,32 +67,43 @@ export default function MobileRCSectional({
 
       {/* CONTENT */}
       <div className="rc-content">
-
         {/* PASSAGE */}
         <section className="rc-passage">
           <h3>Passage</h3>
           <p>{passage}</p>
         </section>
 
-        {/* QUESTION — DESKTOP COMPONENT REUSED */}
+        {/* QUESTION */}
         <section className="rc-question">
-          <QuestionPanel
-            question={question}
-            qNumber={currentQuestionIndex + 1}
-            selectedOption={selectedOption}
-            correctIndex={null}
-            mode="test"
-            onAnswer={onSelectOption}
-            onPrev={() => {}}
-            onNext={onNext}
-          />
+          <h4>{questionText}</h4>
+
+          <div className="rc-options">
+            {options.map((opt, i) => {
+              const isSelected = selectedOption === i;
+
+              return (
+                <button
+                  key={i}
+                  className="rc-option"
+                  onClick={() => onSelectOption(i)}
+                  style={{
+                    background: isSelected ? "#2563eb" : "#f9fafb",
+                    color: isSelected ? "#fff" : "#111827",
+                    border: isSelected
+                      ? "2px solid #1e40af"
+                      : "1px solid #e5e7eb",
+                  }}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         {/* QUESTION PALETTE */}
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>
-            Questions
-          </div>
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>Questions</div>
 
           <div
             style={{
@@ -125,10 +141,18 @@ export default function MobileRCSectional({
 
       {/* ACTION BAR */}
       <div className="rc-palette">
-        <button className="secondary" onClick={onClear}>Clear</button>
-        <button className="secondary" onClick={onMark}>Mark</button>
-        <button className="primary" onClick={onNext}>Next</button>
-        <button className="danger" onClick={onSubmit}>Submit</button>
+        <button className="secondary" onClick={onClear}>
+          Clear
+        </button>
+        <button className="secondary" onClick={onMark}>
+          Mark
+        </button>
+        <button className="primary" onClick={onNext}>
+          Next
+        </button>
+        <button className="danger" onClick={onSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );
