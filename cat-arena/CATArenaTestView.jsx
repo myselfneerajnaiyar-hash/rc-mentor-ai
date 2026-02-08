@@ -195,15 +195,19 @@ function submitPayload() {
 
   const isMobileView = isMobile && !isReview;
 
- /* ===================== RENDER ===================== */
+/* ===================== RENDER ===================== */
+const isMobileView = isMobile && !isReview;
+
 return isMobileView ? (
   <MobileRCSectional
     passage={currentPassage?.text || ""}
     question={currentQuestion?.question || ""}
     options={currentQuestion?.options || []}
-    timeLeft={30 * 60}
+    durationSeconds={30 * 60}
     onSelectOption={handleAnswer}
     onNext={goNext}
+    onMark={handleMark}
+    onClear={handleClear}
     onSubmit={() => setShowSubmit(true)}
   />
 ) : (
@@ -258,7 +262,10 @@ return isMobileView ? (
         <button style={ghostBtn} onClick={handleClear}>
           Clear Response
         </button>
-        <button style={submitBtn} onClick={() => setShowSubmit(true)}>
+        <button
+          style={submitBtn}
+          onClick={() => setShowSubmit(true)}
+        >
           Submit Test
         </button>
       </div>
