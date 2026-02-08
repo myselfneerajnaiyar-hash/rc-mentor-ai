@@ -19,6 +19,15 @@ export default function CATArenaTestView({
   const isReview = mode === "review";
   const passages = testData.passages;
   const totalQuestions = passages.length * QUESTIONS_PER_PASSAGE;
+  /* ================= MOBILE DETECTION ================= */
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   /* ================= STATE ================= */
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -115,9 +124,7 @@ export default function CATArenaTestView({
   }
 
   /* ================= MOBILE ================= */
-  const isMobile =
-    typeof window !== "undefined" && window.innerWidth <= 768;
-
+  
   if (isMobile) {
     return (
       <MobileRCSectional
