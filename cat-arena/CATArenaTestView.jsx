@@ -31,6 +31,15 @@ useEffect(() => {
   return () => window.removeEventListener("resize", checkMobile);
 }, []);
 
+  /* ===================== DERIVED ===================== */
+  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
+  const questionIndexInPassage =
+    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
+
+  const currentPassage = passages[passageIndex];
+  const currentQuestion =
+    currentPassage.questions[questionIndexInPassage];
+
 if (isMobile && testData && testData.passages) {
   return (
     <MobileRCSectional
@@ -114,14 +123,7 @@ if (isMobile && testData && testData.passages) {
     });
   }
 
-  /* ===================== DERIVED ===================== */
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const questionIndexInPassage =
-    currentQuestionIndex % QUESTIONS_PER_PASSAGE;
-
-  const currentPassage = passages[passageIndex];
-  const currentQuestion =
-    currentPassage.questions[questionIndexInPassage];
+  
 
   /* ===================== HANDLERS ===================== */
   function handleAnswer(optionIndex) {
