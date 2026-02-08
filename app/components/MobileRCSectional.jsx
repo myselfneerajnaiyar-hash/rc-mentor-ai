@@ -153,20 +153,32 @@ export default function MobileRCSectional({
       </div>
 
       {/* ACTION BAR */}
-      <div className="rc-palette">
-        <button className="secondary" onClick={onClear}>
-          Clear
-        </button>
-        <button className="secondary" onClick={onMark}>
-          Mark
-        </button>
-        <button className="primary" onClick={onNext}>
-          Save & Next
-        </button>
-        <button className="danger" onClick={onSubmit}>
-          Submit
-        </button>
-      </div>
+     <div className="rc-palette">
+  <button className="secondary" onClick={onClear}>
+    Clear
+  </button>
+
+  <button className="secondary" onClick={onMark}>
+    Mark
+  </button>
+
+  <button
+    className="secondary"
+    onClick={() =>
+      currentQuestionIndex > 0 && onJump(currentQuestionIndex - 1)
+    }
+  >
+    Previous
+  </button>
+
+  <button className="primary" onClick={onNext}>
+    Save & Next
+  </button>
+
+  <button className="danger" onClick={onSubmit}>
+    Submit
+  </button>
+</div>
     </div>
   );
 }
