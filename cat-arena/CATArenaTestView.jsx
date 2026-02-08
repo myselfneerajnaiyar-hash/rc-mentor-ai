@@ -30,6 +30,20 @@ useEffect(() => {
   window.addEventListener("resize", checkMobile);
   return () => window.removeEventListener("resize", checkMobile);
 }, []);
+
+if (isMobile && testData && testData.passages) {
+  return (
+    <MobileRCSectional
+      passage={currentPassage.text}
+      question={currentQuestion.question}
+      options={currentQuestion.options}
+      timeLeft={timeLeft}
+      onSelectOption={handleAnswer}
+      onNext={handleNext}
+      onSubmit={() => setShowSubmit(true)}
+    />
+  );
+}
   
   /* ===================== SAFETY ===================== */
   if (!testData || !testData.passages) {
