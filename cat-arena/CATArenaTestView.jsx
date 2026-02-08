@@ -203,6 +203,7 @@ return isMobileView ? (
   passage={currentPassage?.text || ""}
   question={currentQuestion}
   options={currentQuestion?.options || []}
+  selectedOption={answers[currentQuestionIndex]}   // ✅ FIX
   durationSeconds={30 * 60}
 
   currentQuestionIndex={currentQuestionIndex}
