@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QuestionPanel from "../../cat-arena/components/QuestionPanel";
 
 export default function MobileRCSectional({
   passage,
@@ -22,7 +21,7 @@ export default function MobileRCSectional({
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
 
-  /* ⏱ TIMER */
+  /* ================= TIMER ================= */
   useEffect(() => {
     const timer = setInterval(() => {
       setSecondsLeft(prev => {
@@ -36,7 +35,7 @@ export default function MobileRCSectional({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [onSubmit]);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60).padStart(2, "0");
@@ -48,6 +47,7 @@ export default function MobileRCSectional({
     return "#e5e7eb"; // unvisited
   }
 
+  /* ================= RENDER ================= */
   return (
     <div className="rc-mobile-root">
 
@@ -57,52 +57,45 @@ export default function MobileRCSectional({
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
 
-      {/* SCROLLABLE CONTENT */}
-      <div style={{ padding: 16, paddingBottom: 120 }}>
+      {/* SCROLL AREA */}
+      <div className="rc-content">
 
         {/* PASSAGE */}
         <section className="rc-passage">
           <h3>Passage</h3>
-          <p style={{ whiteSpace: "pre-line", lineHeight: 1.6 }}>
-            {passage}
-          </p>
+          <p style={{ whiteSpace: "pre-line" }}>{passage}</p>
         </section>
 
-        
-       {/* QUESTION */}
-<section style={{ marginTop: 24 }}>
-  <h4 style={{ marginBottom: 12 }}>
-    Question No. {currentQuestionIndex + 1}
-  </h4>
+        {/* QUESTION */}
+        <section className="rc-question">
+          <h4>Question No. {currentQuestionIndex + 1}</h4>
 
-  <div>
-    {question?.options?.map((opt, i) => {
-      const selected = selectedOption === i;
+          <div className="rc-options">
+            {question?.options?.map((opt, i) => {
+              const selected = selectedOption === i;
 
-      return (
-        <div
-          key={i}
-          onClick={() => onSelectOption(i)}
-          style={{
-            padding: 12,
-            marginBottom: 10,
-            borderRadius: 8,
-            border: selected
-              ? "2px solid #2563eb"
-              : "1px solid #d1d5db",
-            background: selected ? "#eff6ff" : "#fff",
-            cursor: "pointer",
-          }}
-        >
-          <strong>{String.fromCharCode(65 + i)}.</strong>{" "}
-          {opt}
-        </div>
-      );
-    })}
-  </div>
-</section>
+              return (
+                <button
+                  key={i}
+                  className="rc-option"
+                  onClick={() => onSelectOption(i)}
+                  style={{
+                    background: selected ? "#eff6ff" : "#ffffff",
+                    border: selected
+                      ? "2px solid #2563eb"
+                      : "1px solid #d1d5db",
+                  }}
+                >
+                  <strong>{String.fromCharCode(65 + i)}.</strong>{" "}
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* QUESTION PALETTE */}
-        <div style={{ marginTop: 24 }}>
+        <div className="rc-question-palette">
           <div style={{ fontWeight: 600, marginBottom: 8 }}>
             Questions
           </div>
@@ -129,8 +122,9 @@ export default function MobileRCSectional({
                       currentQuestionIndex === idx
                         ? "2px solid #111827"
                         : "1px solid #d1d5db",
-                    color: state === 0 ? "#111827" : "#fff",
+                    color: state === 0 ? "#111827" : "#ffffff",
                     fontSize: 12,
+                    cursor: "pointer",
                   }}
                 >
                   {idx + 1}
@@ -142,55 +136,20 @@ export default function MobileRCSectional({
       </div>
 
       {/* ACTION BAR */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 56,
-          left: 0,
-          right: 0,
-          height: 56,
-          display: "flex",
-          gap: 8,
-          padding: "0 8px",
-          alignItems: "center",
-          background: "#fff",
-          borderTop: "1px solid #e5e7eb",
-          zIndex: 9999,
-        }}
-      >
-        <button onClick={onClear} style={btnGhost}>Clear</button>
-        <button onClick={onMark} style={btnGhost}>Mark</button>
-        <button onClick={onNext} style={btnPrimary}>Next</button>
-        <button onClick={onSubmit} style={btnDanger}>Submit</button>
+      <div className="rc-palette">
+        <button className="secondary" onClick={onClear}>
+          Clear
+        </button>
+        <button className="secondary" onClick={onMark}>
+          Mark
+        </button>
+        <button className="primary" onClick={onNext}>
+          Save & Next
+        </button>
+        <button className="danger" onClick={onSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );
 }
-
-/* ---------- BUTTON STYLES ---------- */
-
-const btnPrimary = {
-  flex: 1,
-  height: 40,
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 6,
-};
-
-const btnGhost = {
-  flex: 1,
-  height: 40,
-  background: "#f9fafb",
-  border: "1px solid #d1d5db",
-  borderRadius: 6,
-};
-
-const btnDanger = {
-  flex: 1,
-  height: 40,
-  background: "#fee2e2",
-  color: "#991b1b",
-  border: "1px solid #fecaca",
-  borderRadius: 6,
-};
