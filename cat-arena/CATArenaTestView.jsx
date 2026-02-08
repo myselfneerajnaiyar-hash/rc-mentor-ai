@@ -42,8 +42,15 @@ export default function CATArenaTestView({
     currentQuestionIndex % QUESTIONS_PER_PASSAGE;
 
   const currentPassage = passages[passageIndex];
-  const currentQuestion =
-    currentPassage?.questions?.[questionIndexInPassage];
+ const rawQuestion = currentPassage?.questions?.[questionIndex];
+
+const currentQuestion = rawQuestion
+  ? {
+      ...rawQuestion,
+      text: rawQuestion.text || rawQuestion.question || "",
+      options: rawQuestion.options || [],
+    }
+  : null;
 
   /* ================= HARD GUARD ================= */
   if (!currentPassage || !currentQuestion) {
