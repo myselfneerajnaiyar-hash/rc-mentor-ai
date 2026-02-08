@@ -1,33 +1,55 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export default function MobileRCSectional({
   passage,
   question,
   options,
-  timeLeft,
+  durationSeconds,
   onSelectOption,
   onNext,
+  onMark,
+  onClear,
   onSubmit
 }) {
+  const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
+
+  // ⏱ Mobile timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          onSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
+  const secs = String(secondsLeft % 60).padStart(2, "0");
+
   return (
     <div className="rc-mobile-root">
 
-      {/* TOP STICKY HEADER */}
+      {/* HEADER */}
       <div className="rc-header">
-        <span className="rc-title">CAT RC Sectional</span>
-        <span className="rc-timer">{timeLeft}</span>
+        <span>CAT RC Sectional</span>
+        <span className="rc-timer">{mins}:{secs}</span>
       </div>
 
-      {/* SCROLLABLE CONTENT */}
+      {/* CONTENT */}
       <div className="rc-content">
-
-        {/* PASSAGE (≈55%) */}
         <section className="rc-passage">
           <h3>Passage</h3>
           <p>{passage}</p>
         </section>
 
-        {/* QUESTION (≈25%) */}
         <section className="rc-question">
           <h4>{question}</h4>
 
@@ -45,14 +67,13 @@ export default function MobileRCSectional({
         </section>
       </div>
 
-      {/* FIXED ACTION PALETTE (≈20%) */}
+      {/* ACTION BAR */}
       <div className="rc-palette">
-        <button className="secondary">Clear</button>
-        <button className="secondary">Mark</button>
+        <button className="secondary" onClick={onClear}>Clear</button>
+        <button className="secondary" onClick={onMark}>Mark</button>
         <button className="primary" onClick={onNext}>Next</button>
         <button className="danger" onClick={onSubmit}>Submit</button>
       </div>
-
     </div>
   );
 }
