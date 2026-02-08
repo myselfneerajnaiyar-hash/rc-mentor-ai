@@ -6,6 +6,7 @@ import QuestionPanel from "./components/QuestionPanel";
 import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
+import MobileRCSectional from "./components/MobileRCSectional";
 
 /*
 PROPS
@@ -21,6 +22,16 @@ export default function CATArenaTestView({
   initialState = null,
   onSubmit,
 }) {
+  // 🔍 Mobile detection
+const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+  return () => window.removeEventListener("resize", checkMobile);
+}, []);
+  
   /* ===================== SAFETY ===================== */
   if (!testData || !testData.passages) {
     return (
