@@ -55,6 +55,17 @@ export default function MobileRCSectional({
 >
       {/* HEADER */}
       <div className="rc-header">
+        <div
+  style={{
+    padding: "6px 12px",
+    fontSize: 12,
+    background: "#f9fafb",
+    borderBottom: "1px solid #e5e7eb",
+  }}
+>
+  <strong>Mark:</strong> Review later &nbsp;|&nbsp;
+  <strong>Clear:</strong> Remove selected answer
+</div>
         <span>CAT RC Sectional</span>
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
