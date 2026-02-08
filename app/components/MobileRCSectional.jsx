@@ -71,6 +71,15 @@ export default function MobileRCSectional({
         {/* QUESTION */}
         <section className="rc-question">
           <h4>Question No. {currentQuestionIndex + 1}</h4>
+          <p
+  style={{
+    marginBottom: 12,
+    fontSize: 15,
+    lineHeight: 1.5,
+  }}
+>
+  {question?.text || question?.question}
+</p>
 
           <div className="rc-options">
             {question?.options?.map((opt, i) => {
