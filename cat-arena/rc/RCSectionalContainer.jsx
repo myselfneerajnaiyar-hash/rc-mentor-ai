@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
-import MobileRCSectional from "../../app/components/MobileRCSectional";
 
 /* ================= STORAGE ================= */
 
@@ -54,17 +53,7 @@ export default function RCSectionalContainer({ testData, onExit }) {
   const [attempts, setAttempts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
 
-  /* ---- Mobile detection ---- */
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  /* ---- Load attempts ---- */
+  /* ---- Load attempts once ---- */
   useEffect(() => {
     const list = loadAttempts(sectionalId);
     setAttempts(list);
@@ -86,40 +75,27 @@ export default function RCSectionalContainer({ testData, onExit }) {
 
   /* ---------------- INSTRUCTIONS ---------------- */
   if (phase === "instructions") {
-    return <CATInstructions onStart={() => setPhase("test")} />;
+    return (
+      <CATInstructions
+        onStart={() => setPhase("test")}
+      />
+    );
   }
 
-  /* ---------------- TEST ---------------- */
+  /* ---------------- TEST (DESKTOP + MOBILE INSIDE TestView) ---------------- */
   if (phase === "test") {
-    return isMobile ? (
-      <MobileRCSectional
-        passage={testData.passages[0]?.text || ""}
-        question={testData.passages[0]?.questions[0]}
-        options={testData.passages[0]?.questions[0]?.options || []}
-        durationSeconds={30 * 60}
-        currentQuestionIndex={0}
-        totalQuestions={testData.passages.length * 4}
-        questionStates={[]}
-        onSelectOption={() => {}}
-        onNext={() => {}}
-        onMark={() => {}}
-        onClear={() => {}}
-        onJump={() => {}}
-        onSubmit={() => {
-          saveAttempt(sectionalId, {});
-          setPhase("diagnosis");
-        }}
-      />
-    ) : (
+    return (
       <CATArenaTestView
         testData={testData}
         mode="test"
         onSubmit={(payload) => {
           saveAttempt(sectionalId, payload);
           window.dispatchEvent(new Event("CAT_ATTEMPT_SAVED"));
+
           const updated = loadAttempts(sectionalId);
           setAttempts(updated);
           setActiveIndex(updated.length - 1);
+
           setPhase("diagnosis");
         }}
       />
