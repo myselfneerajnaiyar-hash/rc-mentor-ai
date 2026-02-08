@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import MobileRCSectional from "../components/MobileRCSectional";
+import MobileRCSectional from "../app/components/MobileRCSectional";
 
 /* CAT RC rules */
 const QUESTIONS_PER_PASSAGE = 4;
