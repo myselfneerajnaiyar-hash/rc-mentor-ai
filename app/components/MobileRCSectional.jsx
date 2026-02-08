@@ -251,8 +251,7 @@ export default function MobileRCSectional({
         }}
       >
         <button
-         - onClick={onSubmit}
-+ onClick={() => setShowSubmit(true)}
+         onClick={onSubmit}
           style={{
             width: "100%",
             padding: "14px",
