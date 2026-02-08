@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 export default function MobileRCSectional({
   passage,
   question,
-  options = [],
-  durationSeconds = 1800,
+  options,
+  selectedOption,
+  durationSeconds,
 
-  currentQuestionIndex = 0,
-  totalQuestions = 0,
-  questionStates = [],
+  currentQuestionIndex,
+  totalQuestions,
+  questionStates,
 
   onSelectOption,
   onNext,
@@ -19,15 +20,15 @@ export default function MobileRCSectional({
   onJump,
   onSubmit,
 }) {
-  /* ================= TIMER ================= */
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
 
+  /* ⏱ TIMER */
   useEffect(() => {
     const timer = setInterval(() => {
       setSecondsLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          onSubmit?.();
+          onSubmit();
           return 0;
         }
         return prev - 1;
@@ -38,26 +39,25 @@ export default function MobileRCSectional({
   }, []);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const secs = String(secondsLeft % 60).padStart(2, "0");
+  const secs = String(secondsLeft % 60)).padStart(2, "0");
 
-  /* ================= COLOR HELPER ================= */
-  function getColor(state) {
+  function getPaletteColor(state) {
     if (state === 1) return "#22c55e"; // answered
     if (state === 2) return "#3b82f6"; // marked
     if (state === 3) return "#7c3aed"; // answered + marked
-    return "#e5e7eb"; // not visited
+    return "#e5e7eb";
   }
 
   return (
     <div className="rc-mobile-root">
 
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
       <div className="rc-header">
-        <span style={{ fontWeight: 600 }}>CAT RC Sectional</span>
+        <span>CAT RC Sectional</span>
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
 
-      {/* ================= SCROLLABLE CONTENT ================= */}
+      {/* CONTENT */}
       <div className="rc-content">
 
         {/* PASSAGE */}
@@ -68,81 +68,78 @@ export default function MobileRCSectional({
 
         {/* QUESTION */}
         <section className="rc-question">
-          <h4>
-            {typeof question === "string"
-              ? question
-              : question?.text}
-          </h4>
+          <h4>{question?.question}</h4>
 
           <div className="rc-options">
-            {options.map((opt, i) => (
-              <button
-                key={i}
-                className="rc-option"
-                onClick={() => onSelectOption?.(i)}
-              >
-                {opt}
-              </button>
-            ))}
+            {options.map((opt, i) => {
+              const isSelected = selectedOption === i;
+
+              return (
+                <button
+                  key={i}
+                  className="rc-option"
+                  onClick={() => onSelectOption(i)}
+                  style={{
+                    background: isSelected ? "#2563eb" : "#f9fafb",
+                    color: isSelected ? "#fff" : "#111827",
+                    border: isSelected
+                      ? "2px solid #1e40af"
+                      : "1px solid #e5e7eb",
+                  }}
+                >
+                  {opt}
+                </button>
+              );
+            })}
           </div>
         </section>
 
-        {/* ================= QUESTION PALETTE ================= */}
-        {totalQuestions > 0 && (
-          <div style={{ marginTop: 16 }}>
-            <div style={{ fontWeight: 600, marginBottom: 8 }}>
-              Questions
-            </div>
+        {/* QUESTION PALETTE */}
+        <div style={{ marginTop: 20 }}>
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>
+            Questions
+          </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(6, 1fr)",
-                gap: 8,
-              }}
-            >
-              {Array.from({ length: totalQuestions }).map((_, idx) => (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)",
+              gap: 8,
+            }}
+          >
+            {Array.from({ length: totalQuestions }).map((_, idx) => {
+              const state = questionStates[idx];
+
+              return (
                 <button
                   key={idx}
-                  onClick={() => onJump?.(idx)}
+                  onClick={() => onJump(idx)}
                   style={{
                     padding: "8px 0",
                     borderRadius: 6,
-                    background: getColor(questionStates[idx]),
+                    background: getPaletteColor(state),
                     border:
                       currentQuestionIndex === idx
                         ? "2px solid #111827"
                         : "none",
-                    color:
-                      questionStates[idx] === 0
-                        ? "#111827"
-                        : "#fff",
+                    color: state === 0 ? "#111827" : "#fff",
                     fontSize: 12,
                   }}
                 >
                   {idx + 1}
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
-
+        </div>
       </div>
 
-      {/* ================= FIXED ACTION BAR ================= */}
+      {/* ACTION BAR */}
       <div className="rc-palette">
-        <button className="secondary" onClick={onClear}>
-          Clear
-        </button>
-        <button className="secondary" onClick={onMark}>
-          Mark
-        </button>
-        <button className="primary" onClick={onNext}>
-          Next
-        </button>
-        <button className="danger" onClick={onSubmit}>
-          Submit
-        </button>
+        <button className="secondary" onClick={onClear}>Clear</button>
+        <button className="secondary" onClick={onMark}>Mark</button>
+        <button className="primary" onClick={onNext}>Next</button>
+        <button className="danger" onClick={onSubmit}>Submit</button>
       </div>
     </div>
   );
