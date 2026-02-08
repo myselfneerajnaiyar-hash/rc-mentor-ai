@@ -199,23 +199,23 @@ function submitPayload() {
 const isMobileView = isMobile && !isReview;
 
 return isMobileView ? (
-  <MobileRCSectional
-    passage={currentPassage?.text || ""}
-    question={currentQuestion}
-    options={currentQuestion?.options || []}
-    durationSeconds={30 * 60}
+ <MobileRCSectional
+  passage={currentPassage?.text || ""}
+  question={currentQuestion?.question || ""}
+  options={currentQuestion?.options || []}
+  durationSeconds={30 * 60}
 
-    currentQuestionIndex={currentQuestionIndex}
-    totalQuestions={totalQuestions}
-    questionStates={questionStates}
+  currentQuestionIndex={currentQuestionIndex}
+  totalQuestions={totalQuestions}
+  questionStates={questionStates}
 
-    onSelectOption={handleAnswer}
-    onNext={goNext}
-    onMark={handleMark}
-    onClear={handleClear}
-    onJump={setCurrentQuestionIndex}
-    onSubmit={() => setShowSubmit(true)}
-  />
+  onSelectOption={handleAnswer}
+  onNext={goNext}
+  onMark={handleMark}
+  onClear={handleClear}
+  onJump={setCurrentQuestionIndex}
+  onSubmit={() => setShowSubmit(true)}
+/>
 ) : (
   <>
     {/* HEADER */}
