@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import QuestionPanel from "../cat-arena/components/QuestionPanel"; 
+// ⬆️ adjust path ONLY if needed
 
 export default function MobileRCSectional({
   passage,
   question,
-  options,
   selectedOption,
   durationSeconds,
 
@@ -36,10 +37,10 @@ export default function MobileRCSectional({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [onSubmit]);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const secs = String(secondsLeft % 60).padStart(2, "0");
+  const secs = String(secondsLeft % 60)).padStart(2, "0");
 
   function getPaletteColor(state) {
     if (state === 1) return "#22c55e"; // answered
@@ -54,7 +55,9 @@ export default function MobileRCSectional({
       {/* HEADER */}
       <div className="rc-header">
         <span>CAT RC Sectional</span>
-        <span className="rc-timer">{mins}:{secs}</span>
+        <span className="rc-timer">
+          {mins}:{secs}
+        </span>
       </div>
 
       {/* CONTENT */}
@@ -66,33 +69,18 @@ export default function MobileRCSectional({
           <p>{passage}</p>
         </section>
 
-        {/* QUESTION */}
+        {/* QUESTION — DESKTOP COMPONENT REUSED */}
         <section className="rc-question">
-    <h4>
-  {question?.question || question?.text || ""}
-</h4>
-          <div className="rc-options">
-            {options.map((opt, i) => {
-              const isSelected = selectedOption === i;
-
-              return (
-                <button
-                  key={i}
-                  className="rc-option"
-                  onClick={() => onSelectOption(i)}
-                  style={{
-                    background: isSelected ? "#2563eb" : "#f9fafb",
-                    color: isSelected ? "#fff" : "#111827",
-                    border: isSelected
-                      ? "2px solid #1e40af"
-                      : "1px solid #e5e7eb",
-                  }}
-                >
-                  {opt}
-                </button>
-              );
-            })}
-          </div>
+          <QuestionPanel
+            question={question}
+            qNumber={currentQuestionIndex + 1}
+            selectedOption={selectedOption}
+            correctIndex={null}
+            mode="test"
+            onAnswer={onSelectOption}
+            onPrev={() => {}}
+            onNext={onNext}
+          />
         </section>
 
         {/* QUESTION PALETTE */}
