@@ -30,7 +30,7 @@ export default function MobileRCSectional({
       setSecondsLeft(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          onSubmit();
+          setShowSubmit(true);
           return 0;
         }
         return prev - 1;
@@ -250,21 +250,21 @@ export default function MobileRCSectional({
           borderTop: "1px solid #e5e7eb",
         }}
       >
-        <button
-         onClick={onSubmit}
-          style={{
-            width: "100%",
-            padding: "14px",
-            fontSize: 16,
-            fontWeight: 600,
-            borderRadius: 10,
-            background: "#dc2626",
-            color: "#ffffff",
-            border: "none",
-          }}
-        >
-          Submit Test
-        </button>
+       <button
+  onClick={() => setShowSubmit(true)}
+  style={{
+    width: "100%",
+    padding: "14px",
+    fontSize: 16,
+    fontWeight: 600,
+    borderRadius: 10,
+    background: "#dc2626",
+    color: "#ffffff",
+    border: "none",
+  }}
+>
+  Submit Test
+</button>
       </div>
     <SubmitModal
         open={showSubmit}
