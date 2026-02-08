@@ -49,8 +49,10 @@ export default function MobileRCSectional({
 
   /* ================= RENDER ================= */
   return (
-    <div className="rc-mobile-root">
-
+    <div
+  className="rc-mobile-root"
+  style={{ position: "relative", zIndex: 0 }}
+>
       {/* HEADER */}
       <div className="rc-header">
         <span>CAT RC Sectional</span>
