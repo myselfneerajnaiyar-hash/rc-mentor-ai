@@ -6,11 +6,15 @@ export default function MobileRCSectional({
   passage,
   question,
   options,
-  durationSeconds,
+  timeLeft,
+  currentQuestionIndex,
+  totalQuestions,
+  questionStates,
   onSelectOption,
   onNext,
   onMark,
   onClear,
+  onJump,
   onSubmit
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
@@ -51,7 +55,7 @@ export default function MobileRCSectional({
         </section>
 
         <section className="rc-question">
-          <h4>{question}</h4>
+         <h4>{typeof question === "string" ? question : question?.text}</h4>
 
           <div className="rc-options">
             {options.map((opt, i) => (
