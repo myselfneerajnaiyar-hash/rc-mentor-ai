@@ -82,20 +82,7 @@ const currentPassage = passages[passageIndex];
 const currentQuestion =
   currentPassage.questions[questionIndexInPassage];
 
-/* ===================== MOBILE RENDER ===================== */
-if (isMobile) {
-  return (
-    <MobileRCSectional
-      passage={currentPassage?.text || ""}
-      question={currentQuestion?.question || ""}
-      options={currentQuestion?.options || []}
-      timeLeft={30 * 60}
-      onSelectOption={handleAnswer}
-      onNext={goNext}
-      onSubmit={() => setShowSubmit(true)}
-    />
-  );
-}
+
 
   /* ===================== 🔑 CRITICAL FIX ===================== */
   // Rehydrate state EVERY TIME we enter review mode
@@ -206,76 +193,84 @@ function submitPayload() {
   });
 }
 
-  /* ===================== RENDER ===================== */
-  return (
-    <>
-      {/* HEADER */}
-      <div style={headerStyle}>
-        <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
+  const isMobileView = isMobile && !isReview;
 
-        {isReview && (
-          <button onClick={submitPayload} style={backBtn}>
-            ← Back to Diagnosis
-          </button>
-        )}
+ /* ===================== RENDER ===================== */
+return isMobileView ? (
+  <MobileRCSectional
+    passage={currentPassage?.text || ""}
+    question={currentQuestion?.question || ""}
+    options={currentQuestion?.options || []}
+    timeLeft={30 * 60}
+    onSelectOption={handleAnswer}
+    onNext={goNext}
+    onSubmit={() => setShowSubmit(true)}
+  />
+) : (
+  <>
+    {/* HEADER */}
+    <div style={headerStyle}>
+      <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
-        {!isReview && (
-          <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
-        )}
-      </div>
-
-      {/* MAIN GRID */}
-      <div style={gridStyle}>
-        <PassagePanel
-          passages={passages}
-          currentQuestionIndex={currentQuestionIndex}
-          mode={mode}
-        />
-
-        <QuestionPanel
-          question={currentQuestion}
-          qNumber={currentQuestionIndex + 1}
-          selectedOption={answers[currentQuestionIndex]}
-          correctIndex={currentQuestion.correctIndex}
-          mode={mode}
-          onAnswer={handleAnswer}
-          onPrev={goPrev}
-          onNext={goNext}
-        />
-
-        <QuestionPalette
-          totalQuestions={totalQuestions}
-          currentQuestion={currentQuestionIndex}
-          questionStates={questionStates}
-          onJump={setCurrentQuestionIndex}
-        />
-      </div>
-
-      {/* FOOTER */}
-      {!isReview && (
-        <div style={footerStyle}>
-          <button style={ghostBtn} onClick={handleMark}>
-            Mark for Review
-          </button>
-          <button style={ghostBtn} onClick={handleClear}>
-            Clear Response
-          </button>
-          <button
-            style={submitBtn}
-            onClick={() => setShowSubmit(true)}
-          >
-            Submit Test
-          </button>
-        </div>
+      {isReview && (
+        <button onClick={submitPayload} style={backBtn}>
+          ← Back to Diagnosis
+        </button>
       )}
 
-      <SubmitModal
-        open={showSubmit}
-        onCancel={() => setShowSubmit(false)}
-        onConfirm={submitPayload}
+      {!isReview && (
+        <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
+      )}
+    </div>
+
+    {/* MAIN GRID */}
+    <div style={gridStyle}>
+      <PassagePanel
+        passages={passages}
+        currentQuestionIndex={currentQuestionIndex}
+        mode={mode}
       />
-    </>
-  );
+
+      <QuestionPanel
+        question={currentQuestion}
+        qNumber={currentQuestionIndex + 1}
+        selectedOption={answers[currentQuestionIndex]}
+        correctIndex={currentQuestion.correctIndex}
+        mode={mode}
+        onAnswer={handleAnswer}
+        onPrev={goPrev}
+        onNext={goNext}
+      />
+
+      <QuestionPalette
+        totalQuestions={totalQuestions}
+        currentQuestion={currentQuestionIndex}
+        questionStates={questionStates}
+        onJump={setCurrentQuestionIndex}
+      />
+    </div>
+
+    {!isReview && (
+      <div style={footerStyle}>
+        <button style={ghostBtn} onClick={handleMark}>
+          Mark for Review
+        </button>
+        <button style={ghostBtn} onClick={handleClear}>
+          Clear Response
+        </button>
+        <button style={submitBtn} onClick={() => setShowSubmit(true)}>
+          Submit Test
+        </button>
+      </div>
+    )}
+
+    <SubmitModal
+      open={showSubmit}
+      onCancel={() => setShowSubmit(false)}
+      onConfirm={submitPayload}
+    />
+  </>
+);
 }
 
 /* ===================== STYLES ===================== */
