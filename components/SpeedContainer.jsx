@@ -8,7 +8,7 @@ export default function SpeedContainer() {
 
   return (
     <div style={page}>
-      {/* HEADER */}
+      {/* ================= HEADER ================= */}
       <div style={header}>
         <h1 style={title}>Speed Reading Gym</h1>
         <p style={subtitle}>
@@ -17,31 +17,68 @@ export default function SpeedContainer() {
 
         {/* TABS */}
         <div style={tabs}>
-          {["drill", "profile"].map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              style={{
-                ...tabBtn,
-                ...(tab === t ? tabActive : {})
-              }}
-            >
-              {t === "drill" ? "Speed Drill" : "Speed Profile"}
-            </button>
-          ))}
+          <button
+            onClick={() => setTab("drill")}
+            style={{ ...tabBtn, ...(tab === "drill" ? tabActive : {}) }}
+          >
+            Speed Drill
+          </button>
+          <button
+            onClick={() => setTab("profile")}
+            style={{ ...tabBtn, ...(tab === "profile" ? tabActive : {}) }}
+          >
+            Speed Profile
+          </button>
         </div>
 
         {/* INFO STRIP */}
         <div style={infoStrip}>
-          ⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked
+          ⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked automatically
         </div>
       </div>
 
-      {/* CONTENT AREA */}
-      <div style={content}>
-        {tab === "drill" && <SpeedGym />}
-        {tab === "profile" && <SpeedDashboard />}
-      </div>
+      {/* ================= CONTENT ================= */}
+      {tab === "drill" && (
+        <div style={drillCard}>
+          <h2 style={sectionTitle}>How the Speed Drill Works</h2>
+
+          <ul style={steps}>
+            <li>📄 You read a <b>long passage</b>, one paragraph at a time</li>
+            <li>❓ Each paragraph is followed by a <b>focus question</b></li>
+            <li>⏱️ You read under <b>gentle time pressure</b></li>
+            <li>🧠 This trains <b>eye-span, chunking, and recall</b></li>
+          </ul>
+
+          <div style={benefits}>
+            <div style={benefitBox}>
+              ⚡ Faster reading without panic
+            </div>
+            <div style={benefitBox}>
+              🎯 Better retention of key ideas
+            </div>
+            <div style={benefitBox}>
+              📈 Speed & accuracy tracked over time
+            </div>
+          </div>
+
+          <div style={ctaRow}>
+            <button style={startBtn} onClick={() => {}}>
+              Start Drill
+            </button>
+          </div>
+
+          {/* ACTUAL DRILL COMPONENT */}
+          <div style={{ marginTop: 20 }}>
+            <SpeedGym />
+          </div>
+        </div>
+      )}
+
+      {tab === "profile" && (
+        <div style={profileCard}>
+          <SpeedDashboard />
+        </div>
+      )}
     </div>
   );
 }
@@ -51,7 +88,7 @@ export default function SpeedContainer() {
 const page = {
   minHeight: "100vh",
   background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
-  padding: "16px 16px 80px",
+  padding: "16px 16px 90px",
 };
 
 const header = {
@@ -65,18 +102,18 @@ const title = {
   fontSize: 26,
   fontWeight: 800,
   color: "#0f172a",
-  marginBottom: 4,
 };
 
 const subtitle = {
   color: "#475569",
   fontSize: 14,
+  marginTop: 4,
   marginBottom: 14,
 };
 
 const tabs = {
   display: "flex",
-  gap: 10,
+  gap: 8,
   background: "#e5e7eb",
   padding: 6,
   borderRadius: 999,
@@ -107,6 +144,69 @@ const infoStrip = {
   padding: "10px 14px",
 };
 
-const content = {
+/* ================= DRILL CARD ================= */
+
+const drillCard = {
+  marginTop: 18,
+  background: "linear-gradient(180deg, #ecfeff, #ffffff)",
+  borderRadius: 22,
+  padding: 22,
+  boxShadow: "0 15px 30px rgba(0,0,0,0.08)",
+};
+
+const sectionTitle = {
+  fontSize: 20,
+  fontWeight: 800,
+  marginBottom: 12,
+  color: "#0f172a",
+};
+
+const steps = {
+  paddingLeft: 18,
+  color: "#334155",
+  fontSize: 14,
+  lineHeight: "1.8",
+};
+
+const benefits = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: 10,
   marginTop: 16,
+};
+
+const benefitBox = {
+  background: "#f1f5f9",
+  padding: 10,
+  borderRadius: 12,
+  fontSize: 13,
+  fontWeight: 600,
+  color: "#0f172a",
+};
+
+const ctaRow = {
+  marginTop: 18,
+  display: "flex",
+  justifyContent: "center",
+};
+
+const startBtn = {
+  background: "#22c55e",
+  color: "#ffffff",
+  border: "none",
+  padding: "12px 26px",
+  borderRadius: 14,
+  fontWeight: 800,
+  fontSize: 15,
+  cursor: "pointer",
+};
+
+/* ================= PROFILE ================= */
+
+const profileCard = {
+  marginTop: 18,
+  background: "#ffffff",
+  borderRadius: 22,
+  padding: 20,
+  boxShadow: "0 12px 28px rgba(0,0,0,0.08)",
 };
