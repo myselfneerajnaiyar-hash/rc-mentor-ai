@@ -313,16 +313,47 @@ function HeatRow({ label, ratio, tag }) {
 
 /* ===================== STYLES ===================== */
 
-const page = { background: "#f5f7fb", minHeight: "100vh", padding: "32px 20px" };
-const card = { maxWidth: 1100, margin: "0 auto", background: "#fff", borderRadius: 14, padding: 28 };
-const grid4 = { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 24 };
+const page = {
+  background: "#f5f7fb",
+  minHeight: "100vh",
+  padding: "16px 12px",
+};
+const card = {
+  maxWidth: 1100,
+  margin: "0 auto",
+  background: "#fff",
+  borderRadius: 14,
+  padding: 20,
+};
+const grid4 = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+  gap: 12,
+  marginTop: 20,
+};
 const stat = { background: "#eef2ff", padding: 16, borderRadius: 12 };
 
-const passageGrid = { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginTop: 12 };
+const passageGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+  gap: 14,
+  marginTop: 12,
+};
 const passageCard = { borderRadius: 14, padding: 16, color: "#fff" };
 
-const heatGrid = { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginTop: 12 };
-const heatCell = { borderRadius: 10, padding: 14, color: "#fff", textAlign: "center" };
+const heatGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(72px, 1fr))",
+  gap: 12,
+  marginTop: 12,
+};
+const heatCell = {
+  borderRadius: 12,
+  padding: 10,
+  minHeight: 70,
+  color: "#fff",
+  textAlign: "center",
+};
 
 const barBg = { height: 8, background: "#e5e7eb", borderRadius: 6, marginTop: 6 };
 const barFill = { height: "100%", borderRadius: 6 };
