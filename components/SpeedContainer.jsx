@@ -9,32 +9,33 @@ export default function SpeedContainer() {
   return (
     <div style={page}>
       {/* ===== HEADER ===== */}
-      <h1 style={title}>Speed Reading Gym</h1>
-      <p style={subtitle}>
-        Train how fast you read without losing meaning.
-      </p>
-
-      {/* ===== TABS ===== */}
-      <div style={tabs}>
-        {["drill", "profile"].map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            style={{
-              flex: 1,
-              padding: "10px 0",
-              borderRadius: 999,
-              border: "none",
-              background: tab === t ? "#2563eb" : "#e5e7eb",
-              color: tab === t ? "#ffffff" : "#334155",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            {t === "drill" ? "Speed Drill" : "Speed Profile"}
-          </button>
-        ))}
+      <div style={header}>
+        <h1 style={title}>Speed Reading Gym</h1>
+        <p style={subtitle}>
+          Train how fast you read without losing meaning.
+        </p>
       </div>
+
+      {/* ===== TAB BAR ===== */}
+      <div style={tabsWrapper}>
+        <div style={tabs}>
+          {["drill", "profile"].map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              style={{
+                ...tabBtn,
+                ...(tab === t ? tabActive : {}),
+              }}
+            >
+              {t === "drill" ? "Speed Drill" : "Speed Profile"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ===== DIVIDER ===== */}
+      <div style={divider} />
 
       {/* ===== CONTENT ===== */}
       <div style={contentCard}>
@@ -49,12 +50,16 @@ export default function SpeedContainer() {
 
 const page = {
   minHeight: "100vh",
-  background: "#f8fafc",
-  padding: "20px 16px 90px", // space for bottom nav
+  background: "linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)",
+  padding: "16px 14px 90px",
+};
+
+const header = {
+  marginBottom: 14,
 };
 
 const title = {
-  fontSize: 26,
+  fontSize: 24,
   fontWeight: 800,
   color: "#0f172a",
   marginBottom: 4,
@@ -63,21 +68,46 @@ const title = {
 const subtitle = {
   fontSize: 14,
   color: "#475569",
-  marginBottom: 16,
+};
+
+const tabsWrapper = {
+  marginTop: 12,
 };
 
 const tabs = {
   display: "flex",
-  gap: 10,
+  gap: 8,
   background: "#e5e7eb",
   padding: 6,
   borderRadius: 999,
-  marginBottom: 20,
+};
+
+const tabBtn = {
+  flex: 1,
+  padding: "10px 0",
+  borderRadius: 999,
+  border: "none",
+  background: "transparent",
+  color: "#334155",
+  fontWeight: 700,
+  cursor: "pointer",
+};
+
+const tabActive = {
+  background: "#2563eb",
+  color: "#ffffff",
+  boxShadow: "0 4px 10px rgba(37,99,235,0.35)",
+};
+
+const divider = {
+  height: 1,
+  background: "linear-gradient(to right, transparent, #c7d2fe, transparent)",
+  margin: "16px 0",
 };
 
 const contentCard = {
   background: "#ffffff",
-  borderRadius: 18,
+  borderRadius: 20,
   padding: 16,
-  boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
 };
