@@ -4,7 +4,7 @@ import SpeedGym from "./SpeedGym";
 import SpeedDashboard from "./SpeedDashboard";
 
 export default function SpeedContainer() {
-  const [tab, setTab] = useState("drill"); // drill | profile
+  const [tab, setTab] = useState("drill");
   const [started, setStarted] = useState(false);
 
   return (
@@ -41,46 +41,43 @@ export default function SpeedContainer() {
         </div>
       </div>
 
-      {/* ================= DRILL TAB ================= */}
-      {tab === "drill" && (
+      {/* ================= CONTENT ================= */}
+
+      {/* ---------- DRILL TAB ---------- */}
+      {tab === "drill" && !started && (
         <div style={drillCard}>
-          {!started && (
-            <>
-              <h2 style={sectionTitle}>How the Speed Drill Works</h2>
+          <h2 style={sectionTitle}>How the Speed Drill Works</h2>
 
-              <ul style={steps}>
-                <li>📄 You read a <b>long passage</b>, one paragraph at a time</li>
-                <li>❓ Each paragraph is followed by a <b>focus question</b></li>
-                <li>⏱️ You read under <b>gentle time pressure</b></li>
-                <li>🧠 This trains <b>eye-span, chunking, and recall</b></li>
-              </ul>
+          <ul style={steps}>
+            <li>📄 You read a <b>long passage</b>, one paragraph at a time</li>
+            <li>❓ Each paragraph is followed by a <b>focus question</b></li>
+            <li>⏱️ You read under <b>gentle time pressure</b></li>
+            <li>🧠 This trains <b>eye-span, chunking, and recall</b></li>
+          </ul>
 
-              <div style={benefits}>
-                <div style={benefitBox}>⚡ Faster reading without panic</div>
-                <div style={benefitBox}>🎯 Better retention of key ideas</div>
-                <div style={benefitBox}>📈 Speed & accuracy tracked over time</div>
-              </div>
+          <div style={benefits}>
+            <div style={benefitBox}>⚡ Faster reading without panic</div>
+            <div style={benefitBox}>🎯 Better retention of key ideas</div>
+            <div style={benefitBox}>📈 Speed & accuracy tracked over time</div>
+          </div>
 
-              <div style={ctaRow}>
-                <button
-                  style={startBtn}
-                  onClick={() => setStarted(true)}
-                >
-                  Start Drill
-                </button>
-              </div>
-            </>
-          )}
-
-          {started && (
-            <div style={{ marginTop: 18 }}>
-              <SpeedGym />
-            </div>
-          )}
+          <div style={ctaRow}>
+            <button
+              style={startBtn}
+              onClick={() => setStarted(true)}
+            >
+              Start Drill
+            </button>
+          </div>
         </div>
       )}
 
-      {/* ================= PROFILE TAB ================= */}
+      {/* ---------- ACTUAL DRILL ---------- */}
+      {tab === "drill" && started && (
+        <SpeedGym />
+      )}
+
+      {/* ---------- PROFILE TAB ---------- */}
       {tab === "profile" && (
         <div style={profileCard}>
           <SpeedDashboard />
