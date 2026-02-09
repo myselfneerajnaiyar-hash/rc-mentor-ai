@@ -210,7 +210,7 @@ if (isMobile) {
       onMark={handleMark}
       onClear={handleClear}
       onJump={setCurrentQuestionIndex}
-      onSubmit={() => setShowSubmit(true)}
+      onSubmit={submitPayload}
     />
   );
 }
