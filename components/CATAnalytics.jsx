@@ -537,7 +537,7 @@ return (
           }}
         >
           <span style={{ fontWeight: 600 }}>{skill.label}</span>
-          <span>{skill.value}%</span>
+         <span style={{ fontWeight: 600 }}>{skill.value}%</span>
         </div>
 
         <div
