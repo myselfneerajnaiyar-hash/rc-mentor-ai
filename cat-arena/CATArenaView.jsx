@@ -4,6 +4,7 @@ import { useState } from "react";
 import CATArenaLanding from "./CATArenaLanding";
 import RCSectionalRunner from "./rc/RCSectionalRunner";
 import DiagnosisView from "./rc/components/DiagnosisView";
+import CATAnalytics from "../components/CATAnalytics";
 
 /*
   Arena Modes:
@@ -21,6 +22,9 @@ export default function CATArenaView() {
 
   // persisted test result (in-memory for now)
   const [lastRCResult, setLastRCResult] = useState(null);
+
+  const [activeTab, setActiveTab] = useState("tests");
+// "tests" | "analytics"
 
   /* ------------------ ACTIONS ------------------ */
 
