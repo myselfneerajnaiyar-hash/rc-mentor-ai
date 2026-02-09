@@ -1,6 +1,6 @@
 import "./globals.css";
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
-
+import InstallAppButton from "./components/InstallAppButton";
 export const metadata = {
   title: "AuctorRC",
   description: "AuctorRC by Auctor Labs – CAT RC mastery platform",
