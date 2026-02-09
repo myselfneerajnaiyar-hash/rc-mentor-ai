@@ -241,9 +241,20 @@ export default function DiagnosisView({
           </ul>
         </Section>
 
-        <button onClick={onReview} style={btn}>
-          Review Questions
-        </button>
+       <button
+  onClick={onReview}
+  style={{
+    ...btn,
+    marginTop: 36,
+    width: "100%",
+    maxWidth: 320,
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+  }}
+>
+  Review Questions
+</button>
       </div>
     </div>
   );
