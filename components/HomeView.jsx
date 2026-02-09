@@ -76,10 +76,17 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
 function Card({ title, desc, label, color, onClick }) {
   return (
-    <div style={card}>
+    <div style={{ ...card, cursor: "pointer" }} onClick={onClick}>
       <h3>{title}</h3>
       <p>{desc}</p>
-      <button style={{ ...btn, background: color }} onClick={onClick}>
+     <button
+  style={{
+    ...btn,
+    background: color === "#f59e0b" ? "#fff" : color,
+    color: color === "#f59e0b" ? "#f59e0b" : "#fff",
+    border: color === "#f59e0b" ? "1.5px solid #f59e0b" : "none",
+  }}
+>
         {label} →
       </button>
     </div>
@@ -90,27 +97,29 @@ const wrap = {
   minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
+  alignItems: "flex-start",
+  paddingTop: 20,
   color: "#0f172a",
 };
 
 const panel = {
   width: "100%",
-  maxWidth: 1100,
-  padding: 32,
-  borderRadius: 24,
+  maxWidth: 720,
+  padding: "20px 16px 90px",
+  borderRadius: 0,
   background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
 };
 
-const title = { fontSize: 36, marginBottom: 6 };
-const subtitle = { color: "#475569", marginBottom: 30 };
+const title = { fontSize: 28, fontWeight: 800, marginBottom: 4 };
+const subtitle = { color: "#475569", marginBottom: 20, fontSize: 14 };
 
 const progressCard = {
-  background: "rgba(255,255,255,0.8)",
-  borderRadius: 16,
-  padding: 20,
-  marginBottom: 28,
+  background: "#ffffff",
+  borderRadius: 18,
+  padding: 16,
+  marginBottom: 20,
+  border: "1px solid #e5e7eb",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
 };
 
 const barOuter = {
@@ -130,7 +139,8 @@ const barInner = {
 const grid = {
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
-  gap: 20,
+  gap: 16,
+  marginBottom: 24,
 };
 
 const card = {
@@ -151,8 +161,10 @@ const btn = {
 };
 
 const why = {
-  marginTop: 30,
-  background: "rgba(255,255,255,0.75)",
-  borderRadius: 16,
-  padding: 20,
+  marginTop: 20,
+  background: "rgba(255,255,255,0.6)",
+  borderRadius: 14,
+  padding: 16,
+  fontSize: 14,
+  color: "#475569",
 };
