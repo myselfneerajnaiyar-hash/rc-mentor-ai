@@ -2,7 +2,7 @@
   "name": "AuctorRC",
   "short_name": "AuctorRC",
   "description": "AuctorRC by Auctor Labs — CAT Reading Comprehension Mentor",
-  "start_url": "/",
+  "start_url": "/?v=2"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
