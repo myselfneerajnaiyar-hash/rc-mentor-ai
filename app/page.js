@@ -652,139 +652,132 @@ return (
     {view === "vocab" && <VocabLab />}
 
 {/* ================= CAT ARENA ================= */}
-  {view === "cat" && (
-  <div
-    style={{
-      display: "flex",
-      gap: 8,
-      padding: 12,
-      background: "#fff",
-      borderBottom: "1px solid #e5e7eb",
-      position: "sticky",
-      top: 0,
-      zIndex: 20,
-    }}
-  >
-    <button
-      onClick={() => setCatTab("tests")}
+
+{view === "cat" && (
+  <>
+    {/* TOP TABS */}
+    <div
       style={{
-        flex: 1,
+        display: "flex",
+        gap: 8,
         padding: 12,
-        borderRadius: 10,
-        fontWeight: 600,
-        border: "none",
-        background: catTab === "tests" ? "#2563eb" : "#e5e7eb",
-        color: catTab === "tests" ? "#fff" : "#111",
+        background: "#fff",
+        borderBottom: "1px solid #e5e7eb",
+        position: "sticky",
+        top: 0,
+        zIndex: 20,
       }}
     >
-      Take Tests
-    </button>
+      <button
+        onClick={() => setCatTab("tests")}
+        style={{
+          flex: 1,
+          padding: 12,
+          borderRadius: 10,
+          fontWeight: 600,
+          border: "none",
+          background: catTab === "tests" ? "#2563eb" : "#e5e7eb",
+          color: catTab === "tests" ? "#fff" : "#111",
+        }}
+      >
+        Take Tests
+      </button>
 
-    <button
-      onClick={() => setCatTab("analytics")}
-      style={{
-        flex: 1,
-        padding: 12,
-        borderRadius: 10,
-        fontWeight: 600,
-        border: "none",
-        background: catTab === "analytics" ? "#2563eb" : "#e5e7eb",
-        color: catTab === "analytics" ? "#fff" : "#111",
-      }}
-    >
-      Analytics
-    </button>
-  </div>
+      <button
+        onClick={() => setCatTab("analytics")}
+        style={{
+          flex: 1,
+          padding: 12,
+          borderRadius: 10,
+          fontWeight: 600,
+          border: "none",
+          background: catTab === "analytics" ? "#2563eb" : "#e5e7eb",
+          color: catTab === "analytics" ? "#fff" : "#111",
+        }}
+      >
+        Analytics
+      </button>
+    </div>
+
+    {/* ===== ANALYTICS TAB ===== */}
+    {catTab === "analytics" && <CATAnalytics />}
+
+    {/* ===== TESTS TAB ===== */}
+    {catTab === "tests" && (
+      <>
+        {catPhase === "idle" && (
+          <CATArenaLanding
+            attemptedMap={sectionalAttemptMap}
+            onStartRC={async (sectionalId) => {
+              setCatPhase("generating");
+
+              const res = await fetch(/api/cat-sectionals/${sectionalId});
+              const data = await res.json();
+
+              if (!data.passages) {
+                alert("Invalid test file");
+                setCatPhase("idle");
+                return;
+              }
+
+              data.id = sectionalId;
+              setActiveRCTest(data);
+              setCatPhase("instructions");
+            }}
+            onViewDiagnosis={(sectionalId, attemptId) => {
+              const attempts = JSON.parse(
+                localStorage.getItem("catRCResults") || "{}"
+              );
+
+              if (!attempts[sectionalId]?.length) return;
+
+              setActiveRCTest({
+                id: sectionalId,
+                __startPhase: "diagnosis",
+                __attemptId: attemptId,
+              });
+
+              setCatPhase("test");
+            }}
+            onReviewTest={async (sectionalId) => {
+              if (!sectionalAttemptMap[sectionalId]) return;
+
+              setCatPhase("generating");
+              const res = await fetch(/api/cat-sectionals/${sectionalId});
+              const data = await res.json();
+
+              data.id = sectionalId;
+              data.__startPhase = "review";
+
+              setActiveRCTest(data);
+              setCatPhase("test");
+            }}
+          />
+        )}
+
+        {catPhase === "generating" && (
+          <div style={{ padding: 40, textAlign: "center" }}>
+            <h2>Generating CAT RC Sectional…</h2>
+            <p>Please wait.</p>
+          </div>
+        )}
+
+        {catPhase === "instructions" && (
+          <CATInstructions
+            onStart={() => setCatPhase("test")}
+          />
+        )}
+
+        {catPhase === "test" && activeRCTest && (
+          <RCSectionalContainer
+            testData={activeRCTest}
+            onExit={() => setCatPhase("idle")}
+          />
+        )}
+      </>
+    )}
+  </>
 )}
-
-{view === "cat" && catTab === "tests" && catPhase === "idle" && (
-  <CATArenaLanding
-  attemptedMap={sectionalAttemptMap}
-    onStartRC={async (sectionalId) => {
-      setCatPhase("generating");
-
-      const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
-      const data = await res.json();
-
-if (!data.passages) {
-  alert("Invalid test file. Check JSON structure.");
-  setCatPhase("idle");
-  return;
-}
-
-data.id = sectionalId;
-setActiveRCTest(data);
-setCatPhase("test");
-    }}
-
-  onViewDiagnosis={(sectionalId, attemptId) => {
-  const attempts = JSON.parse(
-    localStorage.getItem("catRCResults") || "{}"
-  );
-
-  // 🔒 HARD GUARD — no attempts, no diagnosis
-  if (!attempts[sectionalId]?.length) return;
-
-  setActiveRCTest({
-    id: sectionalId,
-    __startPhase: "diagnosis",
-    __attemptId: attemptId,
-  });
-
-  setCatPhase("test");
-}}
-
-  onReviewTest={async (sectionalId) => {
-  if (!sectionalAttemptMap[sectionalId]) return;
-
-  try {
-    setCatPhase("generating");
-
-    const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
-    if (!res.ok) {
-      alert("Failed to load sectional for review");
-      setCatPhase("idle");
-      return;
-    }
-
-    const data = await res.json();
-    data.id = sectionalId;
-    data.__startPhase = "review";
-
-    setActiveRCTest(data);
-    setCatPhase("test");
-  } catch (e) {
-    console.error(e);
-    setCatPhase("idle");
-  }
-}}
-  />
-)}
-
-{view === "cat" && catTab === "tests" && catPhase === "idle" && (
-  <div style={{ padding: 40, textAlign: "center" }}>
-    <h2>Generating CAT RC Sectional…</h2>
-    <p>Please wait. This may take 10–15 seconds.</p>
-  </div>
-)}
-
-{view === "cat" && catTab === "tests" && catPhase === "idle" && (
-  <CATInstructions
-    onStart={() => {
-      setCatPhase("test");
-    }}
-  />
-)}
-
-{view === "cat" && catTab === "tests" && catPhase === "idle" && (
-  <RCSectionalContainer
-  testData={activeRCTest}
-  onExit={() => {
-    setCatPhase("idle");
-  }}
-/>
-)}
-{view === "cat" && catTab === "analytics" && <CATAnalytics />}
   </main>
 {/* MOBILE BOTTOM NAV */}
 <div className="mobile-only">
