@@ -1,12 +1,10 @@
-const SW_VERSION = "rc-mentor-sw-v3"; // 🔥 CHANGE THIS EVERY DEPLOY
+// 🚨 HARD RESET SERVICE WORKER — DO NOT CACHE ANYTHING
 
-self.addEventListener("install", (event) => {
-  console.log("SW installing:", SW_VERSION);
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("SW activating:", SW_VERSION);
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.map((key) => caches.delete(key)))
@@ -16,5 +14,6 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // ALWAYS go to network — no cache
   event.respondWith(fetch(event.request));
 });
