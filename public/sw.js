@@ -1,7 +1,7 @@
-self.addEventListener("install", () => {
-  console.log("AuctorRC Service Worker installed");
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
 });
 
-self.addEventListener("activate", () => {
-  console.log("AuctorRC Service Worker activated");
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
 });
