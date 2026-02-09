@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 export default function SpeedGym({ onBack }) {
-  const [phase, setPhase] = useState("intro");
+  const [phase, setPhase] = useState("loading");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -48,10 +48,8 @@ if (!data.paragraphs || !data.questions) {
   console.error("API error:", data);
   throw new Error("Invalid API response");
 }
-      useEffect(() => {
-  if (phase === "intro") {
-    start();
-  }
+     useEffect(() => {
+  start();
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
