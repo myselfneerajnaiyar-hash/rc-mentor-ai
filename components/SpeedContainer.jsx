@@ -5,6 +5,7 @@ import SpeedDashboard from "./SpeedDashboard";
 
 export default function SpeedContainer() {
   const [tab, setTab] = useState("drill"); // drill | profile
+  const [started, setStarted] = useState(false);
 
   return (
     <div style={page}>
@@ -62,9 +63,12 @@ export default function SpeedContainer() {
           </div>
 
           <div style={ctaRow}>
-            <button style={startBtn} onClick={() => {}}>
-              Start Drill
-            </button>
+            <button
+  style={startBtn}
+  onClick={() => setStarted(true)}
+>
+  Start Drill
+</button>
           </div>
 
           {/* ACTUAL DRILL COMPONENT */}
