@@ -743,7 +743,7 @@ return (
               if (!sectionalAttemptMap[sectionalId]) return;
 
               setCatPhase("generating");
-              const res = await fetch(/api/cat-sectionals/${sectionalId});
+              const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
               const data = await res.json();
 
               data.id = sectionalId;
