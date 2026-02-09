@@ -79,7 +79,7 @@ export default function SpeedContainer() {
     <SpeedGym />
   </div>
 )}
- )}
+            </div>
         </>
       )}
 
