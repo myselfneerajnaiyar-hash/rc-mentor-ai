@@ -182,7 +182,8 @@ export default function MobileRCSectional({
         }}
       >
         <button
-          onClick={onClear}
+       - onClick={onClear}
++ onClick={() => !isReview && onClear()}
           style={{
             flex: 1,
             padding: "10px",
@@ -196,7 +197,8 @@ export default function MobileRCSectional({
         </button>
 
         <button
-          onClick={onMark}
+         - onClick={onMark}
++ onClick={() => !isReview && onMark()}
           style={{
             flex: 1,
             padding: "10px",
