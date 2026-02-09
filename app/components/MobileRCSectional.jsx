@@ -146,6 +146,21 @@ export default function MobileRCSectional({
               );
             })}
           </div>
+          {isReview && explanation && (
+  <div
+    style={{
+      marginTop: 12,
+      padding: 12,
+      background: "#f8fafc",
+      borderLeft: "4px solid #2563eb",
+      fontSize: 14,
+      lineHeight: 1.5,
+    }}
+  >
+    <b>Explanation:</b>
+    <div style={{ marginTop: 6 }}>{explanation}</div>
+  </div>
+)}
         </section>
 
         {/* QUESTION PALETTE */}
