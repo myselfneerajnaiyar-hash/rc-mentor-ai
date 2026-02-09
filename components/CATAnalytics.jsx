@@ -558,7 +558,7 @@ return (
           />
         </div>
 
-        <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
+        <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
           {skill.note}
         </div>
       </div>
