@@ -198,6 +198,7 @@ function submitPayload() {
 if (isMobile) {
   return (
     <MobileRCSectional
+      mode={mode}                         // ✅ ADD THIS
       passage={currentPassage.text || currentPassage.passage}
       question={currentQuestion}
       selectedOption={answers[currentQuestionIndex]}
@@ -210,7 +211,9 @@ if (isMobile) {
       onMark={handleMark}
       onClear={handleClear}
       onJump={setCurrentQuestionIndex}
-      onSubmit={submitPayload}
+      onSubmit={
+        isReview ? submitPayload : () => setShowSubmit(true)
+      }                                   // ✅ IMPORTANT
     />
   );
 }
