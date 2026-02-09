@@ -272,7 +272,7 @@ onClick={() => !isReview && onMark()}
   Submit Test
 </button>
       </div>
-  }}
+
     <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
