@@ -64,6 +64,25 @@ export default function MobileRCSectional({
 >
       {/* HEADER */}
       <div className="rc-header">
+        {isReview && (
+  <button
+    onClick={onSubmit}
+    style={{
+      position: "absolute",
+      left: 10,
+      top: 8,
+      padding: "6px 10px",
+      fontSize: 13,
+      borderRadius: 6,
+      border: "1px solid #2563eb",
+      background: "#eef2ff",
+      color: "#1e3a8a",
+      cursor: "pointer",
+    }}
+  >
+    ← Back
+  </button>
+)}
         <div
   style={{
     padding: "4px 12px",
