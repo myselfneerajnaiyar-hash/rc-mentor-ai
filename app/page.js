@@ -711,7 +711,7 @@ return (
             onStartRC={async (sectionalId) => {
               setCatPhase("generating");
 
-              const res = await fetch(/api/cat-sectionals/${sectionalId});
+              const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
               const data = await res.json();
 
               if (!data.passages) {
