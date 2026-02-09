@@ -542,8 +542,8 @@ return (
 
         <div
           style={{
-            height: 10,
-            borderRadius: 6,
+            height: 8,
+            borderRadius: 5,
             background: "#e5e7eb",
             overflow: "hidden",
           }}
