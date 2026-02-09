@@ -1,11 +1,10 @@
 {
   "name": "AuctorRC",
   "short_name": "AuctorRC",
-  "description": "AuctorRC by Auctor Labs — CAT Reading Comprehension Mentor",
-  "start_url": "https://rc-mentor.vercel.app/",
-  "scope": "https://rc-mentor.vercel.app/",
+  "description": "CAT Reading Comprehension Mentor",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone"],
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "icons": [
