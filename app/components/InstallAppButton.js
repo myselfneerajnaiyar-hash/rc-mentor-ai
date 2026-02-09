@@ -1,15 +1,42 @@
-"use client";
+[02:44, 10/2/2026] Neraj Naiyar: import "./globals.css";
+import InstallAppButton from "./components/InstallAppButton";
+
+export const metadata = {
+  title: "AuctorRC",
+  description: "CAT Reading Comprehension Mentor",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2563eb" />
+      </head>
+      <body>
+        {children}
+        <InstallAppButton />
+
+        {/* REQUIRED for PWA install eligibility */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                  navigator.serviceWorker.register('/sw.js'…
+[03:03, 10/2/2026] Neraj Naiyar: "use client";
+
 import { useEffect, useState } from "react";
 
-export default function InstallPWAButton() {
+export default function InstallAppButton() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      setVisible(true);
+      setShowButton(true);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
@@ -19,33 +46,48 @@ export default function InstallPWAButton() {
     };
   }, []);
 
-  const installApp = async () => {
-    if (!deferredPrompt) return;
+  const handleInstall = async () => {
+    if (!deferredPrompt) {
+      alert(
+        "To install:\n\nChrome menu (⋮) → Add to Home screen → Install"
+      );
+      return;
+    }
+
     deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
-    setVisible(false);
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      setShowButton(false);
+    }
   };
 
-  if (!visible) return null;
+  if (!showButton) return null;
 
   return (
-    <button
-      onClick={installApp}
-      style={{
-        position: "fixed",
-        bottom: "80px",
-        right: "16px",
-        zIndex: 9999,
-        padding: "12px 16px",
-        background: "#2563eb",
-        color: "#fff",
-        borderRadius: "12px",
-        border: "none",
-        fontWeight: "600",
-      }}
-    >
-      Install App
-    </button>
+    <div style={styles.wrapper}>
+      <button onClick={handleInstall} style={styles.button}>
+        📲 Install AuctorRC App
+      </button>
+    </div>
   );
 }
+
+const styles = {
+  wrapper: {
+    position: "sticky",
+    top: 0,
+    zIndex: 9999,
+    background: "#2563eb",
+    padding: "10px",
+    textAlign: "center",
+  },
+  button: {
+    background: "white",
+    color: "#2563eb",
+    border: "none",
+    padding: "10px 16px",
+    borderRadius: "8px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+};
