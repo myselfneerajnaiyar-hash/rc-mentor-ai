@@ -305,14 +305,15 @@ const [compareB, setCompareB] = useState("");
       </p>
 
       {/* ================= GRID ================= */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: 20,
-          marginBottom: 20,
-        }}
-      >
+     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      window.innerWidth < 768 ? "1fr" : "2fr 1fr",
+    gap: 16,
+    marginBottom: 20,
+  }}
+>
         {/* -------- Learning Overview -------- */}
         <div style={card}>
           <h3 style={cardTitle}>Learning Overview</h3>
