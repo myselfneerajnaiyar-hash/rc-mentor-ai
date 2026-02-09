@@ -1,14 +1,12 @@
 {
-  "id": "/rc-mentor-v2",
   "name": "AuctorRC",
   "short_name": "AuctorRC",
   "description": "CAT Reading Comprehension Mentor",
-  "start_url": "/?source=pwa_v2",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "/icon-192.png",
