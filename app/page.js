@@ -85,6 +85,8 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [learningWord, setLearningWord] = useState(null);
   const [catPhase, setCatPhase] = useState("idle");
 // idle | generating | instructions | test | diagnosis | review
+  const [catTab, setCatTab] = useState("tests"); 
+// tests | analytics
 
 useEffect(() => {
   function handler(e) {
@@ -650,8 +652,52 @@ return (
     {view === "vocab" && <VocabLab />}
 
 {/* ================= CAT ARENA ================= */}
+  {view === "cat" && (
+  <div
+    style={{
+      display: "flex",
+      gap: 8,
+      padding: 12,
+      background: "#fff",
+      borderBottom: "1px solid #e5e7eb",
+      position: "sticky",
+      top: 0,
+      zIndex: 20,
+    }}
+  >
+    <button
+      onClick={() => setCatTab("tests")}
+      style={{
+        flex: 1,
+        padding: 12,
+        borderRadius: 10,
+        fontWeight: 600,
+        border: "none",
+        background: catTab === "tests" ? "#2563eb" : "#e5e7eb",
+        color: catTab === "tests" ? "#fff" : "#111",
+      }}
+    >
+      Take Tests
+    </button>
 
-{view === "cat" && catPhase === "idle" && (
+    <button
+      onClick={() => setCatTab("analytics")}
+      style={{
+        flex: 1,
+        padding: 12,
+        borderRadius: 10,
+        fontWeight: 600,
+        border: "none",
+        background: catTab === "analytics" ? "#2563eb" : "#e5e7eb",
+        color: catTab === "analytics" ? "#fff" : "#111",
+      }}
+    >
+      Analytics
+    </button>
+  </div>
+)}
+
+{view === "cat" && catTab === "tests" && catPhase === "idle" && (
   <CATArenaLanding
   attemptedMap={sectionalAttemptMap}
     onStartRC={async (sectionalId) => {
@@ -715,14 +761,14 @@ setCatPhase("test");
   />
 )}
 
-{view === "cat" && catPhase === "generating" && (
+{view === "cat" && catTab === "tests" && catPhase === "idle" && (
   <div style={{ padding: 40, textAlign: "center" }}>
     <h2>Generating CAT RC Sectional…</h2>
     <p>Please wait. This may take 10–15 seconds.</p>
   </div>
 )}
 
-{view === "cat" && catPhase === "instructions" && (
+{view === "cat" && catTab === "tests" && catPhase === "idle" && (
   <CATInstructions
     onStart={() => {
       setCatPhase("test");
@@ -730,7 +776,7 @@ setCatPhase("test");
   />
 )}
 
-{view === "cat" && catPhase === "test" && activeRCTest && (
+{view === "cat" && catTab === "tests" && catPhase === "idle" && (
   <RCSectionalContainer
   testData={activeRCTest}
   onExit={() => {
@@ -738,7 +784,7 @@ setCatPhase("test");
   }}
 />
 )}
-{view === "analytics" && <CATAnalytics />}
+{view === "cat" && catTab === "analytics" && <CATAnalytics />}
   </main>
 {/* MOBILE BOTTOM NAV */}
 <div className="mobile-only">
