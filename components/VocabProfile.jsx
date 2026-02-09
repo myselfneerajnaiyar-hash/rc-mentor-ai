@@ -437,11 +437,12 @@ function MasteryOverTime({ data }) {
 /* ================= STYLES ================= */
 
 const styles = {
-  page: {
-    padding: 32,
-    background: "#f1f5f9",
-    minHeight: "100vh"
-  },
+ page: {
+  padding: "24px 16px",
+  background: "#f1f5f9",
+  minHeight: "100vh",
+  paddingBottom: 100, // 👈 mobile bottom nav safety
+},
   title: {
     fontSize: 30,
     fontWeight: 800,
