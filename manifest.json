@@ -1,22 +1,22 @@
 {
   "name": "AuctorRC",
   "short_name": "AuctorRC",
-  "description": "AuctorRC by Auctor Labs – CAT RC mastery platform",
-  "start_url": "/",
+  "description": "AuctorRC by Auctor Labs — CAT Reading Comprehension Mentor",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "/logo.jpeg",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "/logo.jpeg",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/png"
     }
   ]
 }
