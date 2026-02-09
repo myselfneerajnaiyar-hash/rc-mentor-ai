@@ -8,6 +8,8 @@ export default function MobileRCSectional({
   passage,
   question,
   selectedOption,
+  correctIndex,
+  explanation,
 
   durationSeconds,
   currentQuestionIndex,
@@ -117,11 +119,26 @@ export default function MobileRCSectional({
   disabled={isReview}
   onClick={() => !isReview && onSelectOption(i)}
                   style={{
-                    background: selected ? "#eff6ff" : "#ffffff",
-                    border: selected
-                      ? "2px solid #2563eb"
-                      : "1px solid #d1d5db",
-                  }}
+  background: isReview
+    ? i === correctIndex
+      ? "#dcfce7"        // green correct
+      : selected
+      ? "#fee2e2"        // red wrong
+      : "#ffffff"
+    : selected
+    ? "#eff6ff"
+    : "#ffffff",
+
+  border: isReview
+    ? i === correctIndex
+      ? "2px solid #16a34a"
+      : selected
+      ? "2px solid #dc2626"
+      : "1px solid #d1d5db"
+    : selected
+    ? "2px solid #2563eb"
+    : "1px solid #d1d5db",
+}}
                 >
                   <strong>{String.fromCharCode(65 + i)}.</strong>{" "}
                   {opt}
