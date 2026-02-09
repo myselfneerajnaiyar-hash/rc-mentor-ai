@@ -283,11 +283,23 @@ const [compareB, setCompareB] = useState("");
   <div style={pageWrapper}>
     <div style={pageInner}>
       {/* ================= HEADER ================= */}
-      <h1 style={{ fontSize: 28, marginBottom: 6 }}>
+      <h1
+  style={{
+    fontSize: 24,
+    fontWeight: 800,
+    marginBottom: 6,
+    letterSpacing: "-0.3px",
+  }}
+>
         📊 CAT Sectional Analytics
       </h1>
 
-      <p style={{ color: "#64748b", marginBottom: 28 }}>
+    <p style={{
+  fontSize: 14,
+  color: "#64748b",
+  lineHeight: 1.6,
+  maxWidth: 600,
+}}>
         This analytics page reflects only your performance in CAT RC sectional
         tests. Practice RC, SpeedGym, and Vocabulary are not included.
       </p>
