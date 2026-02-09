@@ -1,37 +1,25 @@
-import "./globals.css";
-import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
-import InstallAppButton from "./components/InstallAppButton";
-
-export const metadata = {
-  title: "AuctorRC",
-  description: "AuctorRC by Auctor Labs — CAT RC mastery platform",
-  manifest: "/manifest.json",
-  themeColor: "#2563eb",
-  appleWebApp: {
-    capable: true,
-    title: "AuctorRC",
-    statusBarStyle: "default",
-  },
-};
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <head>
-        {/* CRITICAL for Android PWA install */}
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#2563eb" />
-      </head>
-
-      <body>
-        {/* Registers service worker */}
-        <ServiceWorkerRegister />
-
-        {/* Shows install button when eligible */}
-        <InstallAppButton />
-
-        {children}
-      </body>
-    </html>
-  );
+{
+  "name": "AuctorRC",
+  "short_name": "AuctorRC",
+  "description": "AuctorRC by Auctor Labs — CAT Reading Comprehension Mentor",
+  "start_url": "https://rc-mentor.vercel.app/",
+  "scope": "https://rc-mentor.vercel.app/",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
