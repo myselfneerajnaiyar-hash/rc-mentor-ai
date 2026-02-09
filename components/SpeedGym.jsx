@@ -200,10 +200,6 @@ setParas(merged);
 
 const wrap = {
   width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "flex-start",
-  paddingTop: 20,
 };
 
 const panel = {
