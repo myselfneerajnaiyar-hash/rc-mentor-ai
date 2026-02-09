@@ -64,25 +64,7 @@ export default function MobileRCSectional({
 >
       {/* HEADER */}
       <div className="rc-header">
-        {isReview && (
-  <button
-    onClick={onSubmit}
-    style={{
-      position: "absolute",
-      left: 10,
-      top: 8,
-      padding: "6px 10px",
-      fontSize: 13,
-      borderRadius: 6,
-      border: "1px solid #2563eb",
-      background: "#eef2ff",
-      color: "#1e3a8a",
-      cursor: "pointer",
-    }}
-  >
-    ← Back
-  </button>
-)}
+       
         <div
   style={{
     padding: "4px 12px",
@@ -98,6 +80,29 @@ export default function MobileRCSectional({
         <span>CAT RC Sectional</span>
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
+      {isReview && (
+  <div
+    style={{
+      padding: "8px 12px",
+      background: "#f8fafc",
+      borderBottom: "1px solid #e5e7eb",
+    }}
+  >
+    <button
+      onClick={onSubmit}
+      style={{
+        padding: "6px 10px",
+        fontSize: 14,
+        borderRadius: 6,
+        border: "1px solid #2563eb",
+        background: "#eef2ff",
+        color: "#1e3a8a",
+      }}
+    >
+      ← Back to Diagnosis
+    </button>
+  </div>
+)}
 
       {/* SCROLL AREA */}
       <div className="rc-content">
