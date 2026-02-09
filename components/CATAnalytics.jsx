@@ -872,7 +872,8 @@ const card = {
   borderRadius: 14,
   padding: 20,
   border: "1px solid #e5e7eb",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+  transition: "transform 0.15s ease, box-shadow 0.15s ease"
 };
 
 const cardTitle = {
