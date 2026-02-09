@@ -21,7 +21,7 @@ export default function SpeedContainer() {
           <button
             onClick={() => {
               setTab("drill");
-              setStarted(false); // reset when coming back
+              setStarted(false);
             }}
             style={{ ...tabBtn, ...(tab === "drill" ? tabActive : {}) }}
           >
@@ -41,14 +41,11 @@ export default function SpeedContainer() {
         </div>
       </div>
 
-      {/* ================= CONTENT ================= */}
-
-      {/* ---------- DRILL TAB ---------- */}
+      {/* ================= DRILL TAB ================= */}
       {tab === "drill" && (
-        <>
-          {!started ? (
-            /* ===== INTRO CARD ===== */
-            <div style={drillCard}>
+        <div style={drillCard}>
+          {!started && (
+            <>
               <h2 style={sectionTitle}>How the Speed Drill Works</h2>
 
               <ul style={steps}>
@@ -64,27 +61,26 @@ export default function SpeedContainer() {
                 <div style={benefitBox}>📈 Speed & accuracy tracked over time</div>
               </div>
 
-             {/* CTA OR DRILL */}
-<div style={{ marginTop: 18 }}>
-  {!started && (
-    <div style={ctaRow}>
-      <button
-        style={startBtn}
-        onClick={() => setStarted(true)}
-      >
-        Start Drill
-      </button>
-    </div>
-  )}
+              <div style={ctaRow}>
+                <button
+                  style={startBtn}
+                  onClick={() => setStarted(true)}
+                >
+                  Start Drill
+                </button>
+              </div>
+            </>
+          )}
 
-  {started && (
-    <div style={{ marginTop: 18 }}>
-      <SpeedGym />
-    </div>
-  )}
-</div>
+          {started && (
+            <div style={{ marginTop: 18 }}>
+              <SpeedGym />
+            </div>
+          )}
+        </div>
+      )}
 
-      {/* ---------- PROFILE TAB ---------- */}
+      {/* ================= PROFILE TAB ================= */}
       {tab === "profile" && (
         <div style={profileCard}>
           <SpeedDashboard />
