@@ -248,6 +248,7 @@ onClick={() => !isReview && onMark()}
       </div>
 
       {/* SUBMIT BAR (ALWAYS VISIBLE) */}
+      {!isReview && (
       <div
         style={{
           padding: "10px 12px",
@@ -271,6 +272,7 @@ onClick={() => !isReview && onMark()}
   Submit Test
 </button>
       </div>
+  }}
     <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
