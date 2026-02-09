@@ -6,6 +6,4 @@ self.addEventListener("activate", () => {
   self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(fetch(event.request));
-});
+// NO fetch handler → NO caching
