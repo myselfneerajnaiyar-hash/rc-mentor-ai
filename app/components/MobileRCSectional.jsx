@@ -146,6 +146,37 @@ export default function MobileRCSectional({
               );
             })}
           </div>
+
+          {isReview && (
+  <div
+    style={{
+      marginTop: 10,
+      fontSize: 13,
+      color: "#374151",
+      lineHeight: 1.6,
+    }}
+  >
+    <div>
+      <b>Your Answer:</b>{" "}
+      {selectedOption !== null && selectedOption !== undefined
+        ? String.fromCharCode(65 + selectedOption)
+        : "Not Attempted"}
+    </div>
+
+    <div>
+      <b>Correct Answer:</b>{" "}
+      {question?.correctIndex !== undefined
+        ? String.fromCharCode(65 + question.correctIndex)
+        : "-"}
+    </div>
+
+    {question?.type && (
+      <div>
+        <b>Question Type:</b> {question.type}
+      </div>
+    )}
+  </div>
+)}
           {isReview && explanation && (
   <div
     style={{
@@ -161,6 +192,7 @@ export default function MobileRCSectional({
     <div style={{ marginTop: 6 }}>{explanation}</div>
   </div>
 )}
+          
         </section>
 
         {/* QUESTION PALETTE */}
