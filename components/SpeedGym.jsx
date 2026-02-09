@@ -77,6 +77,11 @@ setParas(merged);
       setPhase("question");
       return;
     }
+    useEffect(() => {
+  if (phase === "intro") {
+    start();
+  }
+}, []);
 
     const id = setInterval(() => {
       setTimeLeft(t => t - 1);
@@ -132,31 +137,11 @@ setParas(merged);
     setPhase("result");
   }
 
+  
+
   return (
     <div style={wrap}>
-      {phase === "intro" && (
-        <div style={panel}>
-          
-         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-  <button style={btn} onClick={start}>Start Drill</button>
-
-  <button
-    onClick={onBack}
-    style={{
-      background: "transparent",
-      border: "none",
-      color: "#0f766e",
-      fontWeight: 500,
-      cursor: "pointer",
-      padding: 0,
-      textDecoration: "underline",
-    }}
-  >
-    ← Back
-  </button>
-</div>
-        </div>
-      )}
+     
 
       {phase === "loading" && (
         <div style={panel}>
