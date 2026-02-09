@@ -928,5 +928,5 @@ const pageWrapper = {
 const pageInner = {
   maxWidth: 1200,
   margin: "0 auto",
-  padding: "32px 24px",
+  padding: "20px 14px",
 };
