@@ -454,8 +454,9 @@ const styles = {
   },
   tabs: {
     display: "flex",
-    gap: 12,
-    marginBottom: 28
+    gap: 8,
+    marginBottom: 28,
+    flexWrap: "wrap",
   },
   tab: {
     padding: "10px 18px",
@@ -471,39 +472,41 @@ const styles = {
     borderColor: "#f97316"
   },
   hero: {
-    background: "linear-gradient(135deg, #fff7ed, #ffffff)",
-    borderRadius: 18,
-    padding: 28,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 28
-    
-  },
+  background: "linear-gradient(135deg, #fff7ed, #ffffff)",
+  borderRadius: 18,
+  padding: 20,
+  display: "flex",
+  flexDirection: "column", // 👈 stack on mobile
+  gap: 20,
+  marginBottom: 24,
+},
   heroLabel: {
     color: "#f97316",
     fontWeight: 700,
     letterSpacing: 1
   },
  heroPercent: {
-  fontSize: 56,
+  fontSize: 44,
   fontWeight: 900,
 
 },
   heroInsight: {
-    color: "#475569",
-    maxWidth: 300
-  },
+  color: "#475569",
+  maxWidth: "100%",
+},
   statGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
-    gap: 20,
-    marginBottom: 28
+    gap: 12,
+    marginBottom: 24,
+    textAlign: "center",
   },
   card: {
     background: "#fff",
     borderRadius: 16,
-    padding: 20
+    padding: 18,
+    maxWidth: 480,
+    margin: "0 auto",
   },
   statLabel: {
     color: "#64748b"
