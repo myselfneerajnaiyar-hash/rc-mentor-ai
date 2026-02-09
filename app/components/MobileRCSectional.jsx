@@ -27,21 +27,22 @@ export default function MobileRCSectional({
   
 
   /* ================= TIMER ================= */
-  useEffect(() => {
-    if (isReview) return;
-    const timer = setInterval(() => {
-      setSecondsLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          setShowSubmit(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+ useEffect(() => {
+  if (isReview) return;
 
-    return () => clearInterval(timer);
-  }, [onSubmit]);
+  const timer = setInterval(() => {
+    setSecondsLeft(prev => {
+      if (prev <= 1) {
+        clearInterval(timer);
+        setShowSubmit(true);
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [isReview]);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60).padStart(2, "0");
