@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import SubmitModal from "../../cat-arena/components/SubmitModal";
 
 export default function MobileRCSectional({
+  mode = "test",
   passage,
   question,
   selectedOption,
@@ -22,6 +23,7 @@ export default function MobileRCSectional({
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
   const [showSubmit, setShowSubmit] = useState(false);
+  const isReview = mode === "review";
   
 
   /* ================= TIMER ================= */
