@@ -64,21 +64,21 @@ export default function SpeedContainer() {
                 <div style={benefitBox}>📈 Speed & accuracy tracked over time</div>
               </div>
 
-              <div style={ctaRow}>
-                <button
-                  style={startBtn}
-                  onClick={() => setStarted(true)}
-                >
-                  Start Drill
-                </button>
-              </div>
-            </div>
-          ) : (
-            /* ===== ACTUAL DRILL ===== */
-            <div style={{ marginTop: 18 }}>
-              <SpeedGym />
-            </div>
-          )}
+             {/* CTA OR DRILL */}
+{!started ? (
+  <div style={ctaRow}>
+    <button
+      style={startBtn}
+      onClick={() => setStarted(true)}
+    >
+      Start Drill
+    </button>
+  </div>
+) : (
+  <div style={{ marginTop: 20 }}>
+    <SpeedGym />
+  </div>
+)}
         </>
       )}
 
