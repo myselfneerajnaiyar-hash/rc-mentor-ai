@@ -28,6 +28,7 @@ export default function MobileRCSectional({
 
   /* ================= TIMER ================= */
   useEffect(() => {
+    if (isReview) return;
     const timer = setInterval(() => {
       setSecondsLeft(prev => {
         if (prev <= 1) {
