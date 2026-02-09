@@ -136,8 +136,7 @@ setParas(merged);
     <div style={wrap}>
       {phase === "intro" && (
         <div style={panel}>
-          <h2>Speed Reading Gym</h2>
-          <p>Train how fast you read without losing meaning.</p>
+          
          <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
   <button style={btn} onClick={start}>Start Drill</button>
 
