@@ -211,9 +211,7 @@ if (isMobile) {
       onMark={handleMark}
       onClear={handleClear}
       onJump={setCurrentQuestionIndex}
-      onSubmit={
-        isReview ? submitPayload : () => setShowSubmit(true)
-      }                                   // ✅ IMPORTANT
+       onSubmit={submitPayload}                               
     />
   );
 }
