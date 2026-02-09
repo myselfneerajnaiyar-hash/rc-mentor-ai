@@ -8,16 +8,14 @@ export default function SpeedContainer() {
 
   return (
     <div style={page}>
-      {/* ===== HEADER ===== */}
+      {/* HEADER */}
       <div style={header}>
         <h1 style={title}>Speed Reading Gym</h1>
         <p style={subtitle}>
           Train how fast you read without losing meaning.
         </p>
-      </div>
 
-      {/* ===== TAB BAR ===== */}
-      <div style={tabsWrapper}>
+        {/* TABS */}
         <div style={tabs}>
           {["drill", "profile"].map(t => (
             <button
@@ -25,20 +23,22 @@ export default function SpeedContainer() {
               onClick={() => setTab(t)}
               style={{
                 ...tabBtn,
-                ...(tab === t ? tabActive : {}),
+                ...(tab === t ? tabActive : {})
               }}
             >
               {t === "drill" ? "Speed Drill" : "Speed Profile"}
             </button>
           ))}
         </div>
+
+        {/* INFO STRIP */}
+        <div style={infoStrip}>
+          ⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked
+        </div>
       </div>
 
-      {/* ===== DIVIDER ===== */}
-      <div style={divider} />
-
-      {/* ===== CONTENT ===== */}
-      <div style={contentCard}>
+      {/* CONTENT AREA */}
+      <div style={content}>
         {tab === "drill" && <SpeedGym />}
         {tab === "profile" && <SpeedDashboard />}
       </div>
@@ -50,33 +50,33 @@ export default function SpeedContainer() {
 
 const page = {
   minHeight: "100vh",
-  background: "linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)",
-  padding: "16px 14px 90px",
+  background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
+  padding: "16px 16px 80px",
 };
 
 const header = {
-  marginBottom: 14,
+  background: "#ffffff",
+  borderRadius: 20,
+  padding: 18,
+  boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
 };
 
 const title = {
-  fontSize: 24,
+  fontSize: 26,
   fontWeight: 800,
   color: "#0f172a",
   marginBottom: 4,
 };
 
 const subtitle = {
-  fontSize: 14,
   color: "#475569",
-};
-
-const tabsWrapper = {
-  marginTop: 12,
+  fontSize: 14,
+  marginBottom: 14,
 };
 
 const tabs = {
   display: "flex",
-  gap: 8,
+  gap: 10,
   background: "#e5e7eb",
   padding: 6,
   borderRadius: 999,
@@ -88,26 +88,25 @@ const tabBtn = {
   borderRadius: 999,
   border: "none",
   background: "transparent",
-  color: "#334155",
   fontWeight: 700,
+  color: "#334155",
   cursor: "pointer",
 };
 
 const tabActive = {
   background: "#2563eb",
   color: "#ffffff",
-  boxShadow: "0 4px 10px rgba(37,99,235,0.35)",
 };
 
-const divider = {
-  height: 1,
-  background: "linear-gradient(to right, transparent, #c7d2fe, transparent)",
-  margin: "16px 0",
+const infoStrip = {
+  marginTop: 12,
+  fontSize: 13,
+  color: "#475569",
+  background: "#eef2ff",
+  borderRadius: 12,
+  padding: "10px 14px",
 };
 
-const contentCard = {
-  background: "#ffffff",
-  borderRadius: 20,
-  padding: 16,
-  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
+const content = {
+  marginTop: 16,
 };
