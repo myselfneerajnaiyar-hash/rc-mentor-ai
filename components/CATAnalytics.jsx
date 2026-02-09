@@ -525,13 +525,14 @@ return (
     ];
 
     return skills.map(skill => (
-      <div key={skill.label} style={{ marginBottom: 14 }}>
+      <div key={skill.label} style={{ marginBottom: 10 }}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            fontSize: 13,
-            marginBottom: 4,
+            fontSize: 11,
+            marginBottom: 3,
+            letterSpacing: "0.2px",
             color: "#334155",
           }}
         >
