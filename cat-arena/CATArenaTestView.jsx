@@ -202,6 +202,8 @@ if (isMobile) {
       passage={currentPassage.text || currentPassage.passage}
       question={currentQuestion}
       selectedOption={answers[currentQuestionIndex]}
+      correctIndex={currentQuestion.correctIndex}
+explanation={currentQuestion.explanation}
       durationSeconds={30 * 60}
       currentQuestionIndex={currentQuestionIndex}
       totalQuestions={totalQuestions}
