@@ -109,10 +109,11 @@ export default function MobileRCSectional({
               const selected = selectedOption === i;
 
               return (
-                <button
-                  key={i}
-                  className="rc-option"
-                  onClick={() => onSelectOption(i)}
+               <button
+  key={i}
+  className="rc-option"
+  disabled={isReview}
+  onClick={() => !isReview && onSelectOption(i)}
                   style={{
                     background: selected ? "#eff6ff" : "#ffffff",
                     border: selected
