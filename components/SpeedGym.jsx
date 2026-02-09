@@ -48,6 +48,12 @@ if (!data.paragraphs || !data.questions) {
   console.error("API error:", data);
   throw new Error("Invalid API response");
 }
+      useEffect(() => {
+  if (phase === "intro") {
+    start();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
 // Combine paragraph + question into one array
 const merged = data.paragraphs.map((p, i) => ({
@@ -77,11 +83,7 @@ setParas(merged);
       setPhase("question");
       return;
     }
-    useEffect(() => {
-  if (phase === "intro") {
-    start();
-  }
-}, []);
+   
 
     const id = setInterval(() => {
       setTimeLeft(t => t - 1);
