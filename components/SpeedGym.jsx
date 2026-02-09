@@ -199,10 +199,11 @@ setParas(merged);
 }
 
 const wrap = {
-  minHeight: "100vh",
+  width: "100%",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
+  alignItems: "flex-start",
+  paddingTop: 20,
 };
 
 const panel = {
