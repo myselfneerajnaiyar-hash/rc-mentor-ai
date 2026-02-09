@@ -11,6 +11,11 @@ export default function SpeedGym({ onBack }) {
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
 
+  useEffect(() => {
+  start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
  function computeTarget() {
   const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
 
@@ -48,10 +53,7 @@ if (!data.paragraphs || !data.questions) {
   console.error("API error:", data);
   throw new Error("Invalid API response");
 }
-     useEffect(() => {
-  start();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+     
 
 // Combine paragraph + question into one array
 const merged = data.paragraphs.map((p, i) => ({
