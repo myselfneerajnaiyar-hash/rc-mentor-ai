@@ -18,7 +18,7 @@ export default function MobileBottomNav({ view, setView }) {
   ];
 
   return (
-    <nav className="mobile-nav mobile-only">
+    <nav className="mobile-nav mobile-only safe-bottom-nav">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const active = view === tab.key;
@@ -30,7 +30,7 @@ export default function MobileBottomNav({ view, setView }) {
             onClick={() => setView(tab.key)}
             aria-label={tab.label}
           >
-            <Icon />
+            <Icon size={22} />
             <span>{tab.label}</span>
           </button>
         );
