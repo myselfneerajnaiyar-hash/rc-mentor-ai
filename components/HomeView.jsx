@@ -1,165 +1,224 @@
 "use client";
+
 import {
   BookOpen,
+  Brain,
   Timer,
-  ListChecks,
+  BarChart3,
   GraduationCap,
-  TrendingUp,
+  Target,
 } from "lucide-react";
 
 export default function HomeView({ setView, startAdaptiveRC }) {
   return (
     <div style={wrap}>
       <div style={panel}>
-        {/* HEADER */}
+        {/* Header */}
         <h1 style={title}>AuctorRC</h1>
         <p style={subtitle}>Train clarity. One RC at a time.</p>
 
-        {/* DAILY SNAPSHOT */}
-        <div style={snapshot}>
-          <div style={snapshotRow}>
-            <span>Today</span>
-            <b>1 / 3 RCs</b>
+        {/* Today’s Focus */}
+        <div style={focusCard}>
+          <div style={focusRow}>
+            <div>
+              <div style={focusTitle}>
+                <Target size={18} /> Today’s Focus
+              </div>
+              <p style={muted}>Adaptive RC – Passage 1</p>
+            </div>
+
+            <button
+              style={focusBtn}
+              onClick={() => {
+                setView("rc");
+                startAdaptiveRC();
+              }}
+            >
+              Start →
+            </button>
           </div>
 
           <div style={barOuter}>
             <div style={barInner} />
           </div>
 
-          <div style={snapshotRow}>
-            <span>Weekly Target</span>
-            <span>12 RCs</span>
-          </div>
-
-          <div style={snapshotRow}>
-            <span>Accuracy</span>
-            <span>72%</span>
-          </div>
+          <p style={smallMuted}>Progress: 1 / 3 RCs</p>
         </div>
 
-        {/* QUICK ACTIONS */}
-        <Section title="Practice">
-          <ActionCard
-            icon={<BookOpen />}
-            title="Adaptive RC"
-            desc="Practice weak RC areas intelligently"
-            action="Start RC"
+        {/* Training Modes */}
+        <h3 style={sectionTitle}>Training Modes</h3>
+
+        <div style={twoCol}>
+          <HorizontalCard
+            icon={<Brain size={22} />}
+            title="Adaptive RC Flow"
+            desc="Sharpen RC skills intelligently"
             color="#4f7cff"
+            cta="Start Adaptive RC"
             onClick={() => {
               setView("rc");
               startAdaptiveRC();
             }}
           />
 
-          <ActionCard
-            icon={<Timer />}
-            title="Speed Reading"
-            desc="Improve pace without losing meaning"
-            action="Start Drill"
-            color="#22c55e"
-            onClick={() => setView("speed")}
-          />
-        </Section>
-
-        <Section title="Build Skills">
-          <ActionCard
-            icon={<ListChecks />}
+          <HorizontalCard
+            icon={<BookOpen size={22} />}
             title="Vocabulary Lab"
             desc="Words that actually matter for CAT"
-            action="Practice Vocab"
             color="#f59e0b"
+            cta="Practice Vocabulary"
             onClick={() => setView("vocab")}
           />
+        </div>
 
-          <ActionCard
-            icon={<GraduationCap />}
+        <div style={twoCol}>
+          <HorizontalCard
+            icon={<Timer size={22} />}
+            title="Speed Reading Gym"
+            desc="Boost reading speed & focus"
+            color="#22c55e"
+            cta="Start Speed Drill"
+            onClick={() => setView("speed")}
+          />
+
+          <HorizontalCard
+            icon={<BarChart3 size={22} />}
+            title="Analytics"
+            desc="Track RC accuracy & patterns"
+            color="#6366f1"
+            cta="View Profile"
+            onClick={() => setView("rc-profile")}
+          />
+        </div>
+
+        {/* CAT Arena */}
+        <div style={{ marginTop: 20 }}>
+          <HorizontalCard
+            icon={<GraduationCap size={22} />}
             title="CAT RC Arena"
             desc="Full-length RC sectionals"
-            action="Take Test"
-            color="#6366f1"
+            color="#4f46e5"
+            cta="Take 40-Min Test"
+            full
             onClick={() => setView("cat")}
           />
-        </Section>
+        </div>
 
-        {/* INSIGHT TEASER */}
-        <div style={insight}>
-          <TrendingUp size={18} />
-          <span>
-            You’re strongest in <b>Inference questions</b>.  
-            Accuracy drops in <b>Tone-based RCs</b>.
-          </span>
+        {/* Why This Works */}
+        <div style={why}>
+          <h3>Why This Works</h3>
+          <ul>
+            <li>You don’t fail CAT because of vocabulary.</li>
+            <li>You fail by misreading logic and traps.</li>
+            <li>AuctorRC trains how you think.</li>
+          </ul>
         </div>
       </div>
     </div>
   );
 }
 
-/* ------------------ COMPONENTS ------------------ */
+/* ================= CARD ================= */
 
-function Section({ title, children }) {
+function HorizontalCard({ icon, title, desc, cta, color, onClick, full }) {
   return (
-    <div style={{ marginTop: 24 }}>
-      <h3 style={sectionTitle}>{title}</h3>
-      <div style={list}>{children}</div>
-    </div>
-  );
-}
-
-function ActionCard({ icon, title, desc, action, color, onClick }) {
-  return (
-    <div style={card} onClick={onClick}>
-      <div style={{ ...iconWrap, background: color }}>{icon}</div>
-
-      <div style={{ flex: 1 }}>
-        <b style={{ fontSize: 15 }}>{title}</b>
-        <p style={descText}>{desc}</p>
+    <div
+      style={{
+        ...hCard,
+        gridColumn: full ? "1 / -1" : "auto",
+      }}
+      onClick={onClick}
+    >
+      <div style={cardLeft}>
+        <div style={{ ...iconBox, background: color }}>{icon}</div>
+        <div>
+          <h4 style={{ margin: 0 }}>{title}</h4>
+          <p style={muted}>{desc}</p>
+        </div>
       </div>
 
-      <button style={{ ...btn, background: color }}>
-        {action}
+      <button
+        style={{
+          ...hBtn,
+          background: color,
+        }}
+      >
+        {cta} →
       </button>
     </div>
   );
 }
 
-/* ------------------ STYLES ------------------ */
+/* ================= STYLES ================= */
 
 const wrap = {
   minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
+  background: "#f0f9ff",
 };
 
 const panel = {
-  width: "100%",
   maxWidth: 720,
-  padding: "20px 16px 100px",
+  margin: "0 auto",
+  padding: "20px 16px 110px",
 };
 
-const title = { fontSize: 26, fontWeight: 800 };
-const subtitle = { fontSize: 14, color: "#475569", marginBottom: 16 };
+const title = { fontSize: 28, fontWeight: 800 };
+const subtitle = { color: "#475569", marginBottom: 20 };
 
-const snapshot = {
-  background: "#fff",
-  borderRadius: 16,
-  padding: 14,
-  marginBottom: 16,
-  border: "1px solid #e5e7eb",
+const sectionTitle = {
+  marginTop: 24,
+  marginBottom: 10,
+  color: "#334155",
 };
 
-const snapshotRow = {
+const muted = {
+  color: "#64748b",
+  fontSize: 14,
+  margin: "4px 0",
+};
+
+const smallMuted = {
+  fontSize: 12,
+  color: "#64748b",
+  marginTop: 6,
+};
+
+const focusCard = {
+  background: "#ffffff",
+  borderRadius: 18,
+  padding: 16,
+  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+  marginBottom: 24,
+};
+
+const focusRow = {
   display: "flex",
   justifyContent: "space-between",
-  fontSize: 13,
-  marginBottom: 6,
+  alignItems: "center",
+};
+
+const focusTitle = {
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  fontWeight: 600,
+};
+
+const focusBtn = {
+  background: "#f59e0b",
+  border: "none",
+  color: "#fff",
+  padding: "8px 14px",
+  borderRadius: 10,
+  fontWeight: 600,
+  cursor: "pointer",
 };
 
 const barOuter = {
   height: 8,
   background: "#e5e7eb",
   borderRadius: 6,
-  margin: "8px 0",
+  marginTop: 10,
 };
 
 const barInner = {
@@ -169,62 +228,53 @@ const barInner = {
   borderRadius: 6,
 };
 
-const sectionTitle = {
-  fontSize: 14,
-  fontWeight: 700,
-  color: "#334155",
-  marginBottom: 8,
+const twoCol = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: 14,
+  marginBottom: 14,
 };
 
-const list = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-};
-
-const card = {
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
-  padding: 14,
+const hCard = {
   background: "#ffffff",
-  borderRadius: 14,
-  border: "1px solid #e5e7eb",
+  borderRadius: 16,
+  padding: 16,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
   cursor: "pointer",
 };
 
-const iconWrap = {
+const cardLeft = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+};
+
+const iconBox = {
   width: 40,
   height: 40,
-  borderRadius: 10,
+  borderRadius: 12,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#fff",
 };
 
-const descText = {
-  fontSize: 12,
-  color: "#64748b",
-  marginTop: 2,
-};
-
-const btn = {
+const hBtn = {
   border: "none",
   color: "#fff",
   padding: "8px 12px",
   borderRadius: 10,
-  fontSize: 13,
   fontWeight: 600,
 };
 
-const insight = {
-  marginTop: 24,
-  padding: 14,
-  borderRadius: 14,
+const why = {
+  marginTop: 30,
   background: "rgba(255,255,255,0.7)",
-  fontSize: 13,
-  display: "flex",
-  gap: 8,
-  alignItems: "flex-start",
+  borderRadius: 14,
+  padding: 16,
+  fontSize: 14,
+  color: "#475569",
 };
