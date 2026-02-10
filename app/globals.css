@@ -278,3 +278,12 @@ body {
     padding-bottom: calc(var(--safe-bottom) + 72px);
   }
 }
+/* ===================== TOP ACTION BUTTON FIX ===================== */
+@media (max-width: 768px) {
+  .page-actions,
+  .top-actions,
+  .action-tabs {
+    margin-top: 12px !important;
+    padding-top: 8px;
+  }
+}
