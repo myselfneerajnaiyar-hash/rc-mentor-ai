@@ -264,3 +264,17 @@ body {
 .mobile-nav {
   pointer-events: auto;
 }
+/* ===================== SAFE AREA FIX (ANDROID / iOS) ===================== */
+
+:root {
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+/* Apply safe top padding ONLY on mobile */
+@media (max-width: 768px) {
+  body {
+    padding-top: calc(var(--safe-top) + 8px);
+    padding-bottom: calc(var(--safe-bottom) + 72px);
+  }
+}
