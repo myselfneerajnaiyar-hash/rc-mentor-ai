@@ -51,7 +51,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
         <h3 style={sectionTitle}>Training Modes</h3>
 
         <div style={grid}>
-          <VerticalCard
+          <CenteredCard
             icon={<Brain color="#fff" />}
             title="Adaptive RC Flow"
             desc="Sharpen RC skills intelligently"
@@ -63,7 +63,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
             }}
           />
 
-          <VerticalCard
+          <CenteredCard
             icon={<BookOpen color="#fff" />}
             title="Vocabulary Lab"
             desc="Improve vocabulary for CAT"
@@ -72,7 +72,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
             onClick={() => setView("vocab")}
           />
 
-          <VerticalCard
+          <CenteredCard
             icon={<Timer color="#fff" />}
             title="Speed Reading Gym"
             desc="Boost reading speed & focus"
@@ -81,7 +81,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
             onClick={() => setView("speed")}
           />
 
-          <VerticalCard
+          <CenteredCard
             icon={<BarChart3 color="#fff" />}
             title="Analytics"
             desc="Track RC accuracy & patterns"
@@ -120,9 +120,9 @@ export default function HomeView({ setView, startAdaptiveRC }) {
             Why This Works
           </h3>
           <ul>
-            <li>Most CAT aspirants misinterpret RC logic.</li>
-            <li>Builds logical thinking, not rote learning.</li>
-            <li>Tracks progress over time.</li>
+            <li>Guided RC flow — no random practice.</li>
+            <li>Daily completion targets keep momentum.</li>
+            <li>Skill progression tracked over time.</li>
           </ul>
         </div>
       </div>
@@ -132,18 +132,15 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
 /* ================= COMPONENT ================= */
 
-function VerticalCard({ icon, title, desc, cta, color, onClick }) {
+function CenteredCard({ icon, title, desc, cta, color, onClick }) {
   return (
-    <div style={vCard} onClick={onClick}>
-      <h4>{title}</h4>
+    <div style={cCard} onClick={onClick}>
+      <div style={{ ...iconCircle, background: color }}>{icon}</div>
 
-      <div style={{ ...iconBox, background: color }}>
-        {icon}
-      </div>
+      <h4 style={{ marginTop: 10 }}>{title}</h4>
+      <p style={cardDesc}>{desc}</p>
 
-      <p style={{ ...muted, fontSize: 13 }}>{desc}</p>
-
-      <button style={{ ...vBtn, background: color }}>
+      <button style={{ ...cardBtn, background: color }}>
         {cta} →
       </button>
     </div>
@@ -180,8 +177,8 @@ const focusCard = {
   background: "#fff",
   borderRadius: 18,
   padding: "12px 14px",
-  border: "2.5px solid #1e3a8a",
-  boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+  border: "3px solid #1e3a8a",
+  boxShadow: "0 10px 24px rgba(0,0,0,0.1)",
 };
 
 const barOuter = {
@@ -211,37 +208,42 @@ const grid = {
   gap: 14,
 };
 
-/* Cards */
-const vCard = {
+/* Centered Cards */
+const cCard = {
   background: "#fff",
   borderRadius: 18,
-  padding: 14,
+  padding: "18px 14px",
   boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
   display: "flex",
   flexDirection: "column",
-  gap: 6,
+  alignItems: "center",
+  minHeight: 220,
 };
 
-const iconBox = {
-  width: 42,
-  height: 42,
-  borderRadius: 12,
+const iconCircle = {
+  width: 48,
+  height: 48,
+  borderRadius: 14,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
 };
 
-const muted = {
+const cardDesc = {
+  fontSize: 13,
   color: "#64748b",
+  textAlign: "center",
+  marginTop: 6,
 };
 
-const vBtn = {
-  marginTop: 6,
-  padding: "10px 12px",
+const cardBtn = {
+  marginTop: "auto",
+  padding: "10px 14px",
   borderRadius: 10,
   color: "#fff",
   border: "none",
   fontWeight: 600,
+  width: "100%",
 };
 
 /* Arena */
@@ -264,11 +266,17 @@ const pillBtn = {
   fontWeight: 600,
 };
 
+const muted = {
+  color: "#64748b",
+};
+
 /* Why */
 const why = {
   marginTop: 26,
-  background: "#e0edff",
+  background: "#dbeafe",
   borderRadius: 18,
   padding: 18,
+  border: "2px solid #2563eb",
   color: "#1e3a8a",
+  boxShadow: "0 8px 20px rgba(37,99,235,0.25)",
 };
