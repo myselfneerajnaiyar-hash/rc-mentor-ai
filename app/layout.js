@@ -1,5 +1,5 @@
 import "./globals.css";
-import InstallAppButton from "./components/InstallAppButton";
+import ClientRoot from "./client-root";
 
 export const metadata = {
   title: "AuctorRC",
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
-        <InstallAppButton />
+        <ClientRoot />
       </body>
     </html>
   );
