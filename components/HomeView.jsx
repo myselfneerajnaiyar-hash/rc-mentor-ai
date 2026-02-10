@@ -20,109 +20,108 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
         {/* Today’s Focus */}
         <div style={focusCard}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <Target size={18} />
-                <b>Today’s Focus</b>
-              </div>
-              <div style={muted}>Adaptive RC – Passage 1</div>
+          <div style={focusHeader}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Target size={18} />
+              <b>Today’s Focus</b>
             </div>
-
-            <button
-              style={{ ...pillBtn, background: "#f59e0b" }}
-              onClick={() => {
-                setView("rc");
-                startAdaptiveRC();
-              }}
-            >
+            <button style={focusBtn} onClick={() => startAdaptiveRC()}>
               Start →
             </button>
           </div>
+
+          <p style={{ marginTop: 6, color: "#475569" }}>
+            Adaptive RC – Passage 1
+          </p>
 
           <div style={barOuter}>
             <div style={barInner} />
           </div>
 
-          <div style={smallMuted}>Progress: 1 / 3 RCs</div>
+          <p style={microFeedback}>You’re on track for today’s target</p>
         </div>
 
         {/* Training Modes */}
         <h3 style={sectionTitle}>Training Modes</h3>
 
         <div style={grid}>
-          <CenteredCard
-            icon={<Brain color="#fff" />}
+          <ModeCard
+            icon={<Brain />}
             title="Adaptive RC Flow"
             desc="Sharpen RC skills intelligently"
-            cta="Start Adaptive RC"
             color="#4f7cff"
+            button="Start Adaptive RC"
             onClick={() => {
               setView("rc");
               startAdaptiveRC();
             }}
           />
 
-          <CenteredCard
-            icon={<BookOpen color="#fff" />}
+          <ModeCard
+            icon={<BookOpen />}
             title="Vocabulary Lab"
             desc="Improve vocabulary for CAT"
-            cta="Practice Vocabulary"
             color="#f59e0b"
+            button="Practice Vocabulary"
             onClick={() => setView("vocab")}
           />
 
-          <CenteredCard
-            icon={<Timer color="#fff" />}
+          <ModeCard
+            icon={<Timer />}
             title="Speed Reading Gym"
             desc="Boost reading speed & focus"
-            cta="Start Speed Drill"
             color="#22c55e"
+            button="Start Speed Drill"
             onClick={() => setView("speed")}
           />
 
-          <CenteredCard
-            icon={<BarChart3 color="#fff" />}
+          <ModeCard
+            icon={<BarChart3 />}
             title="Analytics"
-            desc="Track RC accuracy & patterns"
-            cta="View RC Profile"
+            desc="Accuracy · Speed · Trends"
             color="#6366f1"
+            button="View RC Profile"
             onClick={() => setView("rc")}
           />
         </div>
 
         {/* CAT RC Arena */}
-        <div style={arenaCard}>
-          <div style={{ display: "flex", gap: 14 }}>
+        <div style={catCard}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ ...iconBox, background: "#6366f1" }}>
               <GraduationCap color="#fff" />
             </div>
             <div>
               <b>CAT RC Arena</b>
-              <div style={{ ...muted, fontSize: 13 }}>
-                Full-length RC sectionals
-              </div>
+              <p style={catSub}>Full-length RC sectionals</p>
             </div>
           </div>
 
           <button
-            style={{ ...pillBtn, background: "#6366f1" }}
+            style={{ ...primaryBtn, background: "#6366f1" }}
             onClick={() => setView("cat")}
           >
-            Take 40-Min Test →
+            Start CAT Sectional →
           </button>
         </div>
 
         {/* Why This Works */}
-        <div style={why}>
-          <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <Lightbulb size={20} />
-            Why This Works
-          </h3>
-          <ul>
-            <li>Guided RC flow — no random practice.</li>
-            <li>Daily completion targets keep momentum.</li>
-            <li>Skill progression tracked over time.</li>
+        <div style={whyCard}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Lightbulb />
+            <b>Why This Works</b>
+          </div>
+
+          <ul style={whyList}>
+            <li>
+              <b>Guided RC flow</b> — no random practice
+            </li>
+            <li>
+              <b>Daily completion targets</b> maintain momentum
+            </li>
+            <li>
+              <b>Skill progression</b> tracked over time
+            </li>
           </ul>
         </div>
       </div>
@@ -130,120 +129,89 @@ export default function HomeView({ setView, startAdaptiveRC }) {
   );
 }
 
-/* ================= COMPONENT ================= */
-
-function CenteredCard({ icon, title, desc, cta, color, onClick }) {
+/* ---------- Reusable Card ---------- */
+function ModeCard({ icon, title, desc, color, button, onClick }) {
   return (
-    <div style={cCard} onClick={onClick}>
-      <div style={{ ...iconCircle, background: color }}>{icon}</div>
-
-      <h4 style={{ marginTop: 10 }}>{title}</h4>
-      <p style={cardDesc}>{desc}</p>
-
-      <button style={{ ...cardBtn, background: color }}>
-        {cta} →
+    <div style={modeCard}>
+      <div style={{ ...iconBox, background: color }}>{icon}</div>
+      <h4>{title}</h4>
+      <p style={descText}>{desc}</p>
+      <button style={{ ...primaryBtn, background: color }} onClick={onClick}>
+        {button} →
       </button>
     </div>
   );
 }
 
-/* ================= STYLES ================= */
+/* ---------- Styles ---------- */
 
 const wrap = {
   minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  paddingTop: 16,
-  background: "linear-gradient(180deg,#f0f9ff,#e0f2fe)",
+  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
 };
 
 const panel = {
-  width: "100%",
   maxWidth: 720,
-  padding: "16px 16px 90px",
+  margin: "0 auto",
+  padding: "20px 16px 120px",
 };
 
-const title = { fontSize: 26, fontWeight: 800 };
-const subtitle = { color: "#475569", marginBottom: 18 };
+const title = { fontSize: 28, fontWeight: 800 };
+const subtitle = { color: "#475569", marginBottom: 20 };
 
 const sectionTitle = {
   marginTop: 24,
   marginBottom: 12,
-  color: "#334155",
+  fontSize: 18,
+  fontWeight: 700,
 };
 
 /* Focus Card */
 const focusCard = {
-  background: "#fff",
-  borderRadius: 18,
-  padding: "12px 14px",
   border: "3px solid #1e3a8a",
-  boxShadow: "0 10px 24px rgba(0,0,0,0.1)",
+  borderRadius: 20,
+  padding: 16,
+  background: "#fff",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
 };
 
-const barOuter = {
-  height: 7,
-  background: "#e5e7eb",
-  borderRadius: 6,
-  marginTop: 10,
+const focusHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
 };
 
-const barInner = {
-  height: "100%",
-  width: "33%",
+const focusBtn = {
   background: "#f59e0b",
-  borderRadius: 6,
+  color: "#fff",
+  border: "none",
+  padding: "8px 16px",
+  borderRadius: 999,
+  fontWeight: 600,
 };
 
-const smallMuted = {
-  fontSize: 12,
-  color: "#64748b",
-  marginTop: 4,
+const microFeedback = {
+  marginTop: 8,
+  fontSize: 13,
+  color: "#16a34a",
 };
 
 /* Grid */
 const grid = {
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
-  gap: 14,
+  gap: 16,
 };
 
-/* Centered Cards */
-const cCard = {
+const modeCard = {
   background: "#fff",
-  borderRadius: 18,
-  padding: "18px 14px",
-  boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
+  borderRadius: 20,
+  padding: 18,
+  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  minHeight: 220,
-};
-
-const iconCircle = {
-  width: 48,
-  height: 48,
-  borderRadius: 14,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const cardDesc = {
-  fontSize: 13,
-  color: "#64748b",
   textAlign: "center",
-  marginTop: 6,
-};
-
-const cardBtn = {
-  marginTop: "auto",
-  padding: "10px 14px",
-  borderRadius: 10,
-  color: "#fff",
-  border: "none",
-  fontWeight: 600,
-  width: "100%",
 };
 
 const iconBox = {
@@ -253,40 +221,68 @@ const iconBox = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  flexShrink: 0,
+  marginBottom: 10,
 };
 
-/* Arena */
-const arenaCard = {
-  marginTop: 24,
-  background: "#fff",
-  borderRadius: 20,
-  padding: "22px 18px",
-  boxShadow: "0 10px 24px rgba(0,0,0,0.1)",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
+const descText = {
+  color: "#475569",
+  fontSize: 14,
+  marginBottom: 12,
 };
 
-const pillBtn = {
-  padding: "10px 16px",
-  borderRadius: 999,
-  color: "#fff",
+/* Buttons */
+const primaryBtn = {
+  width: "100%",
+  padding: "10px 14px",
+  borderRadius: 12,
   border: "none",
+  color: "#fff",
   fontWeight: 600,
 };
 
-const muted = {
-  color: "#64748b",
+/* CAT */
+const catCard = {
+  marginTop: 24,
+  background: "#fff",
+  borderRadius: 22,
+  padding: 20,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  boxShadow: "0 12px 28px rgba(0,0,0,0.1)",
+};
+
+const catSub = {
+  fontSize: 13,
+  color: "#475569",
+};
+
+/* Progress Bar */
+const barOuter = {
+  height: 8,
+  background: "#e5e7eb",
+  borderRadius: 6,
+  marginTop: 10,
+};
+
+const barInner = {
+  width: "33%",
+  height: "100%",
+  background: "#f59e0b",
+  borderRadius: 6,
 };
 
 /* Why */
-const why = {
-  marginTop: 26,
+const whyCard = {
+  marginTop: 24,
   background: "#dbeafe",
-  borderRadius: 18,
+  border: "3px solid #2563eb",
+  borderRadius: 20,
   padding: 18,
-  border: "2px solid #2563eb",
-  color: "#1e3a8a",
-  boxShadow: "0 8px 20px rgba(37,99,235,0.25)",
+};
+
+const whyList = {
+  marginTop: 10,
+  paddingLeft: 18,
+  lineHeight: 1.6,
 };
