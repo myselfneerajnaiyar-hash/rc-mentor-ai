@@ -246,6 +246,16 @@ const cardBtn = {
   width: "100%",
 };
 
+const iconBox = {
+  width: 48,
+  height: 48,
+  borderRadius: 14,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+};
+
 /* Arena */
 const arenaCard = {
   marginTop: 24,
