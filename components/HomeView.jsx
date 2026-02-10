@@ -56,7 +56,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
             desc="Full-length RC practice tests."
             color="#6366f1"
             onClick={() => setView("cat")}
-            label="Start 40-Min Test"
+            label="Start 30-Min Test"
           />
         </div>
 
