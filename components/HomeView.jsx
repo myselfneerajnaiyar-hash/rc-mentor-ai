@@ -10,12 +10,23 @@ import {
   Lightbulb,
 } from "lucide-react";
 
+/* ---------- Time-based greeting ---------- */
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) return "Good morning 🌅";
+  if (h >= 12 && h < 17) return "Good afternoon ☀️";
+  if (h >= 17 && h < 22) return "Good evening 🌙";
+  return "Good night 🌌";
+}
+
 export default function HomeView({ setView, startAdaptiveRC }) {
   return (
     <div style={wrap}>
       <div style={panel}>
         {/* Header */}
-        <h1 style={title}>Good morning, Neeraj 👋</h1>
+        <h1 style={title}>
+          {getGreeting()}, Neeraj 👋
+        </h1>
         <p style={subtitle}>Ready for RC practice?</p>
 
         {/* Today’s Focus */}
@@ -25,7 +36,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
               <Target size={18} />
               <b>Today’s Focus</b>
             </div>
-            <button style={focusBtn} onClick={() => startAdaptiveRC()}>
+            <button style={focusBtn} onClick={startAdaptiveRC}>
               Start →
             </button>
           </div>
@@ -87,7 +98,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
         {/* CAT RC Arena */}
         <div style={catCard}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={catLeft}>
             <div style={{ ...iconBox, background: "#6366f1" }}>
               <GraduationCap color="#fff" />
             </div>
@@ -98,7 +109,7 @@ export default function HomeView({ setView, startAdaptiveRC }) {
           </div>
 
           <button
-            style={{ ...primaryBtn, background: "#6366f1" }}
+            style={{ ...primaryBtn, background: "#6366f1", width: 180 }}
             onClick={() => setView("cat")}
           >
             Start CAT Sectional →
@@ -129,14 +140,17 @@ export default function HomeView({ setView, startAdaptiveRC }) {
   );
 }
 
-/* ---------- Reusable Card ---------- */
+/* ---------- Reusable Mode Card ---------- */
 function ModeCard({ icon, title, desc, color, button, onClick }) {
   return (
     <div style={modeCard}>
       <div style={{ ...iconBox, background: color }}>{icon}</div>
       <h4>{title}</h4>
       <p style={descText}>{desc}</p>
-      <button style={{ ...primaryBtn, background: color }} onClick={onClick}>
+      <button
+        style={{ ...primaryBtn, background: color, marginTop: "auto" }}
+        onClick={onClick}
+      >
         {button} →
       </button>
     </div>
@@ -166,7 +180,7 @@ const sectionTitle = {
   fontWeight: 700,
 };
 
-/* Focus Card */
+/* Focus */
 const focusCard = {
   border: "3px solid #1e3a8a",
   borderRadius: 20,
@@ -212,6 +226,7 @@ const modeCard = {
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
+  minHeight: 220,
 };
 
 const iconBox = {
@@ -232,7 +247,6 @@ const descText = {
 
 /* Buttons */
 const primaryBtn = {
-  width: "100%",
   padding: "10px 14px",
   borderRadius: 12,
   border: "none",
@@ -249,7 +263,14 @@ const catCard = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  minHeight: 110,
   boxShadow: "0 12px 28px rgba(0,0,0,0.1)",
+};
+
+const catLeft = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
 };
 
 const catSub = {
@@ -257,7 +278,7 @@ const catSub = {
   color: "#475569",
 };
 
-/* Progress Bar */
+/* Progress bar */
 const barOuter = {
   height: 8,
   background: "#e5e7eb",
