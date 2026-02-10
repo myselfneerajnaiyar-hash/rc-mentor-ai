@@ -283,3 +283,11 @@ body {
 .mobile-nav {
   pointer-events: auto;
 }
+/* Android + iOS safe area handling */
+:root {
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
