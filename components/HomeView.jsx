@@ -75,8 +75,6 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 }
 
 function Card({ title, desc, label, color, onClick }) {
-  const isVocab = color === "#f59e0b";
-
   return (
     <div
       onClick={onClick}
@@ -89,19 +87,16 @@ function Card({ title, desc, label, color, onClick }) {
     >
       <h3>{title}</h3>
 
-      {/* FIX 1: equal text height */}
       <p style={{ minHeight: 48 }}>{desc}</p>
 
-      {/* Button wrapper */}
       <div style={{ marginTop: "auto" }}>
         <button
           style={{
             ...btn,
             width: "100%",
-            background: isVocab ? "#fff7ed" : color,
-            color: isVocab ? "#d97706" : "#fff",
-            border: isVocab ? "2px solid #f59e0b" : "none",
-            fontWeight: 600,
+            background: color,
+            color: "#fff",
+            border: "none",
           }}
         >
           {label} →
