@@ -16,19 +16,6 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <InstallAppButton />
-
-        {/* REQUIRED for PWA install eligibility */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function () {
-                  navigator.serviceWorker.register('/sw.js');
-                });
-              }
-            `,
-          }}
-        />
       </body>
     </html>
   );
