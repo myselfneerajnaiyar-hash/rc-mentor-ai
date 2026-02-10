@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 
 export default function InstallAppButton() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showButton, setShowButton] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      setShowButton(true);
+      setShow(true);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
@@ -20,39 +20,33 @@ export default function InstallAppButton() {
     };
   }, []);
 
-  const handleInstall = async () => {
+  const installApp = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     setDeferredPrompt(null);
-    setShowButton(false);
+    setShow(false);
   };
 
-  if (!showButton) return null;
+  if (!show) return null;
 
   return (
-    <div
+    <button
+      onClick={installApp}
       style={{
         position: "fixed",
         top: 12,
         right: 12,
         zIndex: 9999,
+        padding: "10px 14px",
+        borderRadius: "8px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        fontWeight: "600",
       }}
     >
-      <button
-        onClick={handleInstall}
-        style={{
-          padding: "10px 14px",
-          backgroundColor: "#2563eb",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "14px",
-          cursor: "pointer",
-        }}
-      >
-        📲 Install App
-      </button>
-    </div>
+      Install App
+    </button>
   );
 }
