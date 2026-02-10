@@ -1,26 +1,4 @@
-[09:14, 10/2/2026] Neraj Naiyar: import "./globals.css";
-import InstallAppButton from "./components/InstallAppButton";
-
-export const metadata = {
-  title: "AuctorRC",
-  description: "CAT Reading Comprehension Mentor",
-};
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#2563eb" />
-      </head>
-      <body>
-        {children}
-        <InstallAppButton />
-      </body>
-    </html>
-  );
-}
-[09:16, 10/2/2026] Neraj Naiyar: "use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
