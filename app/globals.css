@@ -95,6 +95,34 @@ body {
   }
 }
 
+/* ===================== DASHBOARD CARD ALIGN FIX ===================== */
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card .card-content {
+  flex: 1;
+}
+
+.dashboard-card .card-action {
+  margin-top: auto; /* 🔥 pushes button to bottom */
+}
+/* ===================== DASHBOARD PRIMARY BUTTON ===================== */
+.dashboard-card .btn-primary {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  border: none;
+}
+
 /* ===============================
    MOBILE RC SECTIONAL (FINAL)
 ================================ */
