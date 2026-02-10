@@ -1,145 +1,165 @@
+"use client";
+import {
+  BookOpen,
+  Timer,
+  ListChecks,
+  GraduationCap,
+  TrendingUp,
+} from "lucide-react";
+
 export default function HomeView({ setView, startAdaptiveRC }) {
   return (
     <div style={wrap}>
       <div style={panel}>
+        {/* HEADER */}
         <h1 style={title}>AuctorRC</h1>
-        <p style={subtitle}>Today, build clarity. One RC at a time.</p>
+        <p style={subtitle}>Train clarity. One RC at a time.</p>
 
-        {/* Progress Card */}
-        <div style={progressCard}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <b>Today’s Progress</b>
-            <span>1 / 3 RCs</span>
+        {/* DAILY SNAPSHOT */}
+        <div style={snapshot}>
+          <div style={snapshotRow}>
+            <span>Today</span>
+            <b>1 / 3 RCs</b>
           </div>
 
           <div style={barOuter}>
             <div style={barInner} />
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10 }}>
-            <span>Weekly Target: 12 RCs</span>
-            <span>Accuracy: 72%</span>
+          <div style={snapshotRow}>
+            <span>Weekly Target</span>
+            <span>12 RCs</span>
+          </div>
+
+          <div style={snapshotRow}>
+            <span>Accuracy</span>
+            <span>72%</span>
           </div>
         </div>
 
-        {/* Action Grid */}
-        <div style={grid}>
-          <Card
-            title="Adaptive RC Flow"
-            desc="Train your weakest RC skills."
+        {/* QUICK ACTIONS */}
+        <Section title="Practice">
+          <ActionCard
+            icon={<BookOpen />}
+            title="Adaptive RC"
+            desc="Practice weak RC areas intelligently"
+            action="Start RC"
             color="#4f7cff"
             onClick={() => {
               setView("rc");
               startAdaptiveRC();
             }}
-            label="Start Adaptive RC"
           />
 
-          <Card
-            title="Vocabulary Lab"
-            desc="Improve vocabulary for CAT passages."
-            color="#f59e0b"
-            onClick={() => setView("vocab")}
-            label="Practice Vocabulary"
-          />
-
-          <Card
-            title="Speed Reading Gym"
-            desc="Boost reading speed & retention."
+          <ActionCard
+            icon={<Timer />}
+            title="Speed Reading"
+            desc="Improve pace without losing meaning"
+            action="Start Drill"
             color="#22c55e"
             onClick={() => setView("speed")}
-            label="Start Speed Drill"
+          />
+        </Section>
+
+        <Section title="Build Skills">
+          <ActionCard
+            icon={<ListChecks />}
+            title="Vocabulary Lab"
+            desc="Words that actually matter for CAT"
+            action="Practice Vocab"
+            color="#f59e0b"
+            onClick={() => setView("vocab")}
           />
 
-          <Card
+          <ActionCard
+            icon={<GraduationCap />}
             title="CAT RC Arena"
-            desc="Full-length RC practice tests."
+            desc="Full-length RC sectionals"
+            action="Take Test"
             color="#6366f1"
             onClick={() => setView("cat")}
-            label="Start 30-Min Test"
           />
-        </div>
+        </Section>
 
-        {/* Why This Works */}
-        <div style={why}>
-          <h3>Why This Works</h3>
-          <ul>
-            <li>You don’t fail CAT because of weak vocabulary.</li>
-            <li>You fail by misreading logic and falling for traps.</li>
-            <li>AuctorRC trains how you think, not just what you read.</li>
-          </ul>
+        {/* INSIGHT TEASER */}
+        <div style={insight}>
+          <TrendingUp size={18} />
+          <span>
+            You’re strongest in <b>Inference questions</b>.  
+            Accuracy drops in <b>Tone-based RCs</b>.
+          </span>
         </div>
       </div>
     </div>
   );
 }
 
-function Card({ title, desc, label, color, onClick }) {
+/* ------------------ COMPONENTS ------------------ */
+
+function Section({ title, children }) {
   return (
-    <div
-      onClick={onClick}
-      style={{
-        ...card,
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <h3>{title}</h3>
-
-      <p style={{ minHeight: 48 }}>{desc}</p>
-
-      <div style={{ marginTop: "auto" }}>
-        <button
-          style={{
-            ...btn,
-            width: "100%",
-            background: color,
-            color: "#fff",
-            border: "none",
-          }}
-        >
-          {label} →
-        </button>
-      </div>
+    <div style={{ marginTop: 24 }}>
+      <h3 style={sectionTitle}>{title}</h3>
+      <div style={list}>{children}</div>
     </div>
   );
 }
+
+function ActionCard({ icon, title, desc, action, color, onClick }) {
+  return (
+    <div style={card} onClick={onClick}>
+      <div style={{ ...iconWrap, background: color }}>{icon}</div>
+
+      <div style={{ flex: 1 }}>
+        <b style={{ fontSize: 15 }}>{title}</b>
+        <p style={descText}>{desc}</p>
+      </div>
+
+      <button style={{ ...btn, background: color }}>
+        {action}
+      </button>
+    </div>
+  );
+}
+
+/* ------------------ STYLES ------------------ */
 
 const wrap = {
   minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
-  alignItems: "flex-start",
-  paddingTop: 20,
-  color: "#0f172a",
+  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
 };
 
 const panel = {
   width: "100%",
   maxWidth: 720,
-  padding: "20px 16px 90px",
-  borderRadius: 0,
-  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
+  padding: "20px 16px 100px",
 };
 
-const title = { fontSize: 28, fontWeight: 800, marginBottom: 4 };
-const subtitle = { color: "#475569", marginBottom: 20, fontSize: 14 };
+const title = { fontSize: 26, fontWeight: 800 };
+const subtitle = { fontSize: 14, color: "#475569", marginBottom: 16 };
 
-const progressCard = {
-  background: "#ffffff",
-  borderRadius: 18,
-  padding: 16,
-  marginBottom: 20,
+const snapshot = {
+  background: "#fff",
+  borderRadius: 16,
+  padding: 14,
+  marginBottom: 16,
   border: "1px solid #e5e7eb",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+};
+
+const snapshotRow = {
+  display: "flex",
+  justifyContent: "space-between",
+  fontSize: 13,
+  marginBottom: 6,
 };
 
 const barOuter = {
   height: 8,
   background: "#e5e7eb",
   borderRadius: 6,
-  marginTop: 8,
+  margin: "8px 0",
 };
 
 const barInner = {
@@ -149,35 +169,62 @@ const barInner = {
   borderRadius: 6,
 };
 
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: 16,
-  marginBottom: 24,
+const sectionTitle = {
+  fontSize: 14,
+  fontWeight: 700,
+  color: "#334155",
+  marginBottom: 8,
+};
+
+const list = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
 };
 
 const card = {
-  background: "rgba(255,255,255,0.85)",
-  borderRadius: 18,
-  padding: 22,
-  boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
-};
-
-const btn = {
-  marginTop: 12,
-  border: "none",
-  color: "#fff",
-  padding: "10px 16px",
-  borderRadius: 10,
-  fontWeight: 600,
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  padding: 14,
+  background: "#ffffff",
+  borderRadius: 14,
+  border: "1px solid #e5e7eb",
   cursor: "pointer",
 };
 
-const why = {
-  marginTop: 20,
-  background: "rgba(255,255,255,0.6)",
+const iconWrap = {
+  width: 40,
+  height: 40,
+  borderRadius: 10,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#fff",
+};
+
+const descText = {
+  fontSize: 12,
+  color: "#64748b",
+  marginTop: 2,
+};
+
+const btn = {
+  border: "none",
+  color: "#fff",
+  padding: "8px 12px",
+  borderRadius: 10,
+  fontSize: 13,
+  fontWeight: 600,
+};
+
+const insight = {
+  marginTop: 24,
+  padding: 14,
   borderRadius: 14,
-  padding: 16,
-  fontSize: 14,
-  color: "#475569",
+  background: "rgba(255,255,255,0.7)",
+  fontSize: 13,
+  display: "flex",
+  gap: 8,
+  alignItems: "flex-start",
 };
