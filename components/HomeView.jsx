@@ -76,19 +76,33 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
 function Card({ title, desc, label, color, onClick }) {
   return (
-    <div style={{ ...card, cursor: "pointer" }} onClick={onClick}>
+    <div
+      onClick={onClick}
+      style={{
+        ...card,
+        cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h3>{title}</h3>
       <p>{desc}</p>
-     <button
-  style={{
-    ...btn,
-    background: color === "#f59e0b" ? "#fff" : color,
-    color: color === "#f59e0b" ? "#f59e0b" : "#fff",
-    border: color === "#f59e0b" ? "1.5px solid #f59e0b" : "none",
-  }}
->
-        {label} →
-      </button>
+
+      {/* BUTTON WRAPPER PUSHES BUTTON DOWN */}
+      <div style={{ marginTop: "auto" }}>
+        <button
+          style={{
+            ...btn,
+            width: "100%",
+            background: color === "#f59e0b" ? "#fff" : color,
+            color: color === "#f59e0b" ? "#f59e0b" : "#fff",
+            border:
+              color === "#f59e0b" ? "1.5px solid #f59e0b" : "none",
+          }}
+        >
+          {label} →
+        </button>
+      </div>
     </div>
   );
 }
