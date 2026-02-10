@@ -1,6 +1,17 @@
-export const dynamic = "force-static";
 import fs from "fs";
 import path from "path";
+
+export async function generateStaticParams() {
+  const dirPath = path.join(process.cwd(), "data", "catrc");
+
+  const files = fs.readdirSync(dirPath);
+
+  return files
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => ({
+      id: f.replace(".json", ""),
+    }));
+}
 
 export async function GET(req, { params }) {
   const { id } = params;
