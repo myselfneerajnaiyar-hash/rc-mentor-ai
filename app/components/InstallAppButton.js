@@ -1,4 +1,4 @@
-[02:44, 10/2/2026] Neraj Naiyar: import "./globals.css";
+[09:14, 10/2/2026] Neraj Naiyar: import "./globals.css";
 import InstallAppButton from "./components/InstallAppButton";
 
 export const metadata = {
@@ -16,15 +16,11 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <InstallAppButton />
-
-        {/* REQUIRED for PWA install eligibility */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function () {
-                  navigator.serviceWorker.register('/sw.js'…
-[03:03, 10/2/2026] Neraj Naiyar: "use client";
+      </body>
+    </html>
+  );
+}
+[09:16, 10/2/2026] Neraj Naiyar: "use client";
 
 import { useEffect, useState } from "react";
 
@@ -47,47 +43,38 @@ export default function InstallAppButton() {
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) {
-      alert(
-        "To install:\n\nChrome menu (⋮) → Add to Home screen → Install"
-      );
-      return;
-    }
-
+    if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setShowButton(false);
-    }
+    await deferredPrompt.userChoice;
+    setDeferredPrompt(null);
+    setShowButton(false);
   };
 
   if (!showButton) return null;
 
   return (
-    <div style={styles.wrapper}>
-      <button onClick={handleInstall} style={styles.button}>
-        📲 Install AuctorRC App
+    <div
+      style={{
+        position: "fixed",
+        top: 12,
+        right: 12,
+        zIndex: 9999,
+      }}
+    >
+      <button
+        onClick={handleInstall}
+        style={{
+          padding: "10px 14px",
+          backgroundColor: "#2563eb",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          fontSize: "14px",
+          cursor: "pointer",
+        }}
+      >
+        📲 Install App
       </button>
     </div>
   );
 }
-
-const styles = {
-  wrapper: {
-    position: "sticky",
-    top: 0,
-    zIndex: 9999,
-    background: "#2563eb",
-    padding: "10px",
-    textAlign: "center",
-  },
-  button: {
-    background: "white",
-    color: "#2563eb",
-    border: "none",
-    padding: "10px 16px",
-    borderRadius: "8px",
-    fontWeight: "600",
-    cursor: "pointer",
-  },
-};
