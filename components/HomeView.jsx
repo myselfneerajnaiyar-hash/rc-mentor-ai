@@ -1,35 +1,36 @@
 "use client";
 
 import {
-  BookOpen,
   Brain,
+  BookOpen,
   Timer,
   BarChart3,
   GraduationCap,
   Target,
+  Lightbulb,
 } from "lucide-react";
 
 export default function HomeView({ setView, startAdaptiveRC }) {
   return (
     <div style={wrap}>
       <div style={panel}>
-        {/* Greeting */}
+        {/* Header */}
         <h1 style={title}>Good morning, Neeraj 👋</h1>
         <p style={subtitle}>Ready for RC practice?</p>
 
         {/* Today’s Focus */}
         <div style={focusCard}>
-          <div style={focusHeader}>
-            <div style={focusLeft}>
-              <Target size={20} />
-              <div>
-                <strong>Today’s Focus</strong>
-                <div style={muted}>Adaptive RC – Passage 1</div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Target size={18} />
+                <b>Today’s Focus</b>
               </div>
+              <div style={muted}>Adaptive RC – Passage 1</div>
             </div>
 
             <button
-              style={focusBtn}
+              style={{ ...pillBtn, background: "#f59e0b" }}
               onClick={() => {
                 setView("rc");
                 startAdaptiveRC();
@@ -51,11 +52,11 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
         <div style={grid}>
           <VerticalCard
-            icon={<Brain size={26} />}
+            icon={<Brain color="#fff" />}
             title="Adaptive RC Flow"
             desc="Sharpen RC skills intelligently"
-            color="#4f7cff"
             cta="Start Adaptive RC"
+            color="#4f7cff"
             onClick={() => {
               setView("rc");
               startAdaptiveRC();
@@ -63,47 +64,49 @@ export default function HomeView({ setView, startAdaptiveRC }) {
           />
 
           <VerticalCard
-            icon={<BookOpen size={26} />}
+            icon={<BookOpen color="#fff" />}
             title="Vocabulary Lab"
             desc="Improve vocabulary for CAT"
-            color="#f59e0b"
             cta="Practice Vocabulary"
+            color="#f59e0b"
             onClick={() => setView("vocab")}
           />
 
           <VerticalCard
-            icon={<Timer size={26} />}
+            icon={<Timer color="#fff" />}
             title="Speed Reading Gym"
             desc="Boost reading speed & focus"
-            color="#22c55e"
             cta="Start Speed Drill"
+            color="#22c55e"
             onClick={() => setView("speed")}
           />
 
           <VerticalCard
-            icon={<BarChart3 size={26} />}
+            icon={<BarChart3 color="#fff" />}
             title="Analytics"
             desc="Track RC accuracy & patterns"
-            color="#6366f1"
             cta="View RC Profile"
-            onClick={() => setView("rc-profile")}
+            color="#6366f1"
+            onClick={() => setView("rc")}
           />
         </div>
 
         {/* CAT RC Arena */}
         <div style={arenaCard}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ ...iconBox, background: "#4f46e5" }}>
-              <GraduationCap size={22} />
+          <div style={{ display: "flex", gap: 14 }}>
+            <div style={{ ...iconBox, background: "#6366f1" }}>
+              <GraduationCap color="#fff" />
             </div>
             <div>
-              <strong>CAT RC Arena</strong>
-              <div style={muted}>Take full-length RC sectionals</div>
+              <b>CAT RC Arena</b>
+              <div style={{ ...muted, fontSize: 13 }}>
+                Full-length RC sectionals
+              </div>
             </div>
           </div>
 
           <button
-            style={{ ...arenaBtn }}
+            style={{ ...pillBtn, background: "#6366f1" }}
             onClick={() => setView("cat")}
           >
             Take 40-Min Test →
@@ -112,7 +115,10 @@ export default function HomeView({ setView, startAdaptiveRC }) {
 
         {/* Why This Works */}
         <div style={why}>
-          <h3>Why This Works</h3>
+          <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Lightbulb size={20} />
+            Why This Works
+          </h3>
           <ul>
             <li>Most CAT aspirants misinterpret RC logic.</li>
             <li>Builds logical thinking, not rote learning.</li>
@@ -124,63 +130,62 @@ export default function HomeView({ setView, startAdaptiveRC }) {
   );
 }
 
-/* ================= COMPONENTS ================= */
+/* ================= COMPONENT ================= */
 
 function VerticalCard({ icon, title, desc, cta, color, onClick }) {
   return (
     <div style={vCard} onClick={onClick}>
-      <div style={{ ...iconBox, background: color }}>{icon}</div>
       <h4>{title}</h4>
-      <p style={muted}>{desc}</p>
-      <button style={{ ...vBtn, background: color }}>{cta} →</button>
+
+      <div style={{ ...iconBox, background: color }}>
+        {icon}
+      </div>
+
+      <p style={{ ...muted, fontSize: 13 }}>{desc}</p>
+
+      <button style={{ ...vBtn, background: color }}>
+        {cta} →
+      </button>
     </div>
   );
 }
 
 /* ================= STYLES ================= */
 
-const wrap = { background: "#f0f9ff", minHeight: "100vh" };
+const wrap = {
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  paddingTop: 16,
+  background: "linear-gradient(180deg,#f0f9ff,#e0f2fe)",
+};
 
 const panel = {
+  width: "100%",
   maxWidth: 720,
-  margin: "0 auto",
-  padding: "20px 16px 110px",
+  padding: "16px 16px 90px",
 };
 
 const title = { fontSize: 26, fontWeight: 800 };
-const subtitle = { color: "#475569", marginBottom: 16 };
+const subtitle = { color: "#475569", marginBottom: 18 };
 
-const sectionTitle = { margin: "24px 0 12px", color: "#334155" };
+const sectionTitle = {
+  marginTop: 24,
+  marginBottom: 12,
+  color: "#334155",
+};
 
-const muted = { color: "#64748b", fontSize: 14 };
-const smallMuted = { fontSize: 12, color: "#64748b", marginTop: 6 };
-
+/* Focus Card */
 const focusCard = {
   background: "#fff",
   borderRadius: 18,
-  padding: 16,
-  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-};
-
-const focusHeader = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const focusLeft = { display: "flex", gap: 10, alignItems: "center" };
-
-const focusBtn = {
-  background: "#f59e0b",
-  border: "none",
-  color: "#fff",
-  padding: "8px 14px",
-  borderRadius: 10,
-  fontWeight: 600,
+  padding: "12px 14px",
+  border: "2.5px solid #1e3a8a",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
 };
 
 const barOuter = {
-  height: 8,
+  height: 7,
   background: "#e5e7eb",
   borderRadius: 6,
   marginTop: 10,
@@ -193,29 +198,28 @@ const barInner = {
   borderRadius: 6,
 };
 
+const smallMuted = {
+  fontSize: 12,
+  color: "#64748b",
+  marginTop: 4,
+};
+
+/* Grid */
 const grid = {
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
-  gap: 16,
+  gap: 14,
 };
 
+/* Cards */
 const vCard = {
   background: "#fff",
   borderRadius: 18,
-  padding: 16,
+  padding: 14,
   boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
   display: "flex",
   flexDirection: "column",
-  gap: 8,
-};
-
-const vBtn = {
-  marginTop: "auto",
-  border: "none",
-  color: "#fff",
-  padding: "10px 12px",
-  borderRadius: 12,
-  fontWeight: 600,
+  gap: 6,
 };
 
 const iconBox = {
@@ -225,33 +229,46 @@ const iconBox = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "#fff",
 };
 
+const muted = {
+  color: "#64748b",
+};
+
+const vBtn = {
+  marginTop: 6,
+  padding: "10px 12px",
+  borderRadius: 10,
+  color: "#fff",
+  border: "none",
+  fontWeight: 600,
+};
+
+/* Arena */
 const arenaCard = {
-  marginTop: 20,
+  marginTop: 24,
   background: "#fff",
-  borderRadius: 18,
-  padding: 16,
-  boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
+  borderRadius: 20,
+  padding: "22px 18px",
+  boxShadow: "0 10px 24px rgba(0,0,0,0.1)",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
 };
 
-const arenaBtn = {
-  background: "#4f46e5",
-  border: "none",
+const pillBtn = {
+  padding: "10px 16px",
+  borderRadius: 999,
   color: "#fff",
-  padding: "10px 14px",
-  borderRadius: 12,
+  border: "none",
   fontWeight: 600,
 };
 
+/* Why */
 const why = {
-  marginTop: 24,
-  background: "rgba(255,255,255,0.7)",
-  borderRadius: 16,
-  padding: 16,
-  color: "#475569",
+  marginTop: 26,
+  background: "#e0edff",
+  borderRadius: 18,
+  padding: 18,
+  color: "#1e3a8a",
 };
