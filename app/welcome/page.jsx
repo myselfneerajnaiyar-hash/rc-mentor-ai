@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "../../lib/supabase"
-import "./welcome.css"
+import styles from "./welcome.module.css"
 
 export default function WelcomePage() {
   const router = useRouter()
@@ -72,17 +72,17 @@ export default function WelcomePage() {
 
  if (showProfileWizard) {
   return (
-    <div className="welcome-wrapper">
-      <div className="welcome-card">
+    <div className={styles["welcome-wrapper"]}>
+      <div className={styles["welcome-card"]}>
 
-        <h1 className="welcome-title">
+        <h1 className={styles["welcome-title"]}>
           Let’s Set Up Your Profile
         </h1>
 
         {/* STEP 1 - NAME */}
         {step === 1 && (
           <>
-            <p className="welcome-subtitle">
+            <p className={styles["welcome-subtitle"]}>
               What should we call you?
             </p>
 
@@ -94,7 +94,7 @@ export default function WelcomePage() {
             />
 
             <button
-              className="welcome-btn"
+              className={styles["welcome-btn"]}
               onClick={() => setStep(2)}
               disabled={!name.trim()}
             >
@@ -106,7 +106,7 @@ export default function WelcomePage() {
         {/* STEP 2 - EXAM */}
         {step === 2 && (
           <>
-            <p className="welcome-subtitle">
+            <p className={styles["welcome-subtitle"]}>
               Select Your Target Exam
             </p>
 
@@ -120,7 +120,7 @@ export default function WelcomePage() {
             </select>
 
             <button
-              className="welcome-btn"
+              className={styles["welcome-btn"]}
               onClick={() => setStep(3)}
             >
               Next →
@@ -131,7 +131,7 @@ export default function WelcomePage() {
         {/* STEP 3 - YEAR */}
         {step === 3 && (
           <>
-            <p className="welcome-subtitle">
+            <p className={styles["welcome-subtitle"]}>
               Attempt Year?
             </p>
 
@@ -145,7 +145,7 @@ export default function WelcomePage() {
             </select>
 
             <button
-              className="welcome-btn"
+              className={styles["welcome-btn"]}
               onClick={finishProfile}
             >
               Finish →
@@ -161,34 +161,34 @@ export default function WelcomePage() {
   /* ---------------- NORMAL WELCOME ---------------- */
 
   return (
-    <div className="welcome-wrapper">
-      <div className="welcome-card">
-        <h1 className="welcome-title">
+    <div className={styles["welcome-wrapper"]}>
+      <div className={styles["welcome-card"]}>
+        <h1 className={styles["welcome-title"]}>
           Welcome {name} 👋
         </h1>
 
-        <p className="welcome-subtitle">
+        <p className={styles["welcome-subtitle"]}>
           Ready to sharpen your reading intelligence?
         </p>
 
-        <p className="welcome-emotion">
+        <p className={styles["welcome-emotion"]}>
           This is your competitive edge zone.
         </p>
 
-        <ul className="welcome-points">
+        <ul className={styles["welcome-points"]}>
           <li>🧠 Adaptive RC Engine</li>
           <li>⚡ Speed Optimization Drills</li>
           <li>📊 Smart Performance Analytics</li>
         </ul>
 
         <button
-          className="welcome-btn"
+          className={styles["welcome-btn"]}
           onClick={() => router.push("/")}
         >
           Start Your RC Journey →
         </button>
 
-        <p className="welcome-footer">
+        <p className={styles["welcome-footer"]}>
           Not just practice. Precision training.
         </p>
       </div>
