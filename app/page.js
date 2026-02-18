@@ -640,7 +640,7 @@ return (
 
        {catPhase === "test" && activeRCTest && (
   <RCSectionalContainer
-    key={activeRCTest.id + "-" + activeRCTest.__startPhase}
+    
     testData={activeRCTest}
     forceDiagnosis={activeRCTest.__startPhase === "diagnosis"}
     onExit={() => setCatPhase("idle")}
