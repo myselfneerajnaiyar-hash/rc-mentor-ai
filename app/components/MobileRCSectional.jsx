@@ -26,11 +26,12 @@ export default function MobileRCSectional({
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
   const [showSubmit, setShowSubmit] = useState(false);
   const isReview = mode === "review";
+  const [submitted, setSubmitted] = useState(false);
   
 
   /* ================= TIMER ================= */
  useEffect(() => {
-  if (isReview) return;
+  if (isReview || submitted) return;
 
   const timer = setInterval(() => {
     setSecondsLeft(prev => {
@@ -44,7 +45,7 @@ export default function MobileRCSectional({
   }, 1000);
 
   return () => clearInterval(timer);
-}, [isReview]);
+}, [isReview, submitted]);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60).padStart(2, "0");
@@ -372,9 +373,10 @@ onClick={() => !isReview && onMark()}
     <SubmitModal
         open={showSubmit}
         onCancel={() => setShowSubmit(false)}
-       onConfirm={() => {
+      onConfirm={() => {
+  setSubmitted(true);
   setShowSubmit(false);
-  onSubmit && onSubmit();
+  onSubmit?.();
 }}
       />
     </div>
