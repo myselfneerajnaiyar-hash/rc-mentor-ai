@@ -204,6 +204,7 @@ function submitPayload() {
     attempted: answers.filter(a => a !== null && a !== undefined).length,
     timeTaken,               // seconds
   });
+  return true;
 }
 
 /* ===================== RENDER ===================== */
