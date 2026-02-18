@@ -95,10 +95,14 @@ export default function RCSectionalContainer({
   console.log("USER:", authData);
   console.log("USER ERROR:", userError);
 
-  if (!authData?.user) {
-    console.log("❌ No authenticated user — insert blocked by RLS");
-    return;
-  }
+ if (!authData?.user) {
+  console.log("⚠️ No authenticated user — skipping DB save");
+
+  // STILL MOVE TO DIAGNOSIS
+  setLastAttempt(payload);
+  setPhase("diagnosis");
+  return;
+}
 
  const attempted = payload.attempted;
 const correct = payload.correct;

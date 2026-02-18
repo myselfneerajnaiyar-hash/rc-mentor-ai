@@ -371,17 +371,13 @@ onClick={() => !isReview && onMark()}
 )}
 
     <SubmitModal
-        open={showSubmit}
-        onCancel={() => setShowSubmit(false)}
-     onConfirm={() => {
-  setShowSubmit(false);
-  if (onSubmit) {
-    setTimeout(() => {
-      onSubmit();
-    }, 0);
-  }
-}}
-      />
+  open={showSubmit}
+  onCancel={() => setShowSubmit(false)}
+  onConfirm={() => {
+    setShowSubmit(false);
+    onSubmit?.();
+  }}
+/>
     </div>
   );
 }
