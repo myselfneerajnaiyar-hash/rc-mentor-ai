@@ -504,7 +504,7 @@ return (
   <>
   <main>
    {/* Desktop Navbar */}
-<div className="desktop-only">
+<div className="desktop-navbar">
   <Navbar view={view} setView={setView} />
 </div>
 
