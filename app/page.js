@@ -652,7 +652,7 @@ return (
 )}
   </main>
 {/* MOBILE BOTTOM NAV */}
-<div className="mobile-only">
+<div className="mobile-nav">
   <MobileBottomNav view={view} setView={setView} />
 </div>
   </>
