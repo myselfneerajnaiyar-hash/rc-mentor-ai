@@ -337,32 +337,37 @@ onClick={() => !isReview && onMark()}
         </button>
       </div>
 
-      {/* SUBMIT BAR (ALWAYS VISIBLE) */}
-      {!isReview && (
-      <div
-        style={{
-          padding: "10px 12px",
-          background: "#ffffff",
-          borderTop: "1px solid #e5e7eb",
-        }}
-      >
-       <button
-  onClick={() => setShowSubmit(true)}
-  style={{
-    width: "100%",
-    padding: "14px",
-    fontSize: 16,
-    fontWeight: 600,
-    borderRadius: 10,
-    background: "#dc2626",
-    color: "#ffffff",
-    border: "none",
-  }}
->
-  Submit Test
-</button>
-      </div>
-  )}
+     {/* SUBMIT BAR (FIXED ABOVE BOTTOM NAV) */}
+{!isReview && (
+  <div
+    style={{
+      position: "fixed",
+      left: 0,
+      right: 0,
+      bottom: "calc(var(--bottom-nav-height) + var(--safe-bottom) + 72px)",
+      padding: "10px 12px",
+      background: "#ffffff",
+      borderTop: "1px solid #e5e7eb",
+      zIndex: 1200,
+    }}
+  >
+    <button
+      onClick={() => setShowSubmit(true)}
+      style={{
+        width: "100%",
+        padding: "14px",
+        fontSize: 16,
+        fontWeight: 700,
+        borderRadius: 12,
+        background: "#dc2626",
+        color: "#ffffff",
+        border: "none",
+      }}
+    >
+      Submit Test
+    </button>
+  </div>
+)}
 
     <SubmitModal
         open={showSubmit}
