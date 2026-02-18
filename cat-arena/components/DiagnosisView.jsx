@@ -9,11 +9,7 @@ export default function DiagnosisView({
   onBack,
 }) {
   /* ===================== 🔒 BACKWARD COMPATIBILITY FIX ===================== */
-  const resolvedQuestions =
-    questions && questions.length
-      ? questions
-      : passages.flatMap(p => p.questions || []);
-
+  const resolvedQuestions = questions || [];
   /* ===================== GLOBAL STATS ===================== */
   const total = resolvedQuestions.length;
   let attempted = 0;
@@ -63,43 +59,47 @@ export default function DiagnosisView({
   const slowCorrect = timeHeat.filter(q => q.label === "Slow & Correct").length;
 
   /* ===================== PASSAGE LEVEL HEAT MAP ===================== */
-  const passageHeat = passages.map((p, pIdx) => {
-    let correctQ = 0;
-    let timeSpent = 0;
+ const passageHeat = passages.map((p, pIdx) => {
+  let correctQ = 0;
+  let timeSpent = 0;
 
-    p.questions.forEach((q) => {
-      const idx = resolvedQuestions.findIndex(x => x.id === q.id);
-      if (idx >= 0) {
-        if (Number(answers[idx]) === Number(q.correctIndex)) correctQ++;
-        timeSpent += questionTime[idx] || 0;
-      }
-    });
+  const baseIndex = pIdx * p.questions.length;
 
-    const accuracyRatio = p.questions.length
-      ? correctQ / p.questions.length
-      : 0;
+  p.questions.forEach((q, qIdx) => {
+    const globalIndex = baseIndex + qIdx;
 
-    let tag = "Time Trap";
-    let color = "#dc2626";
-
-    if (accuracyRatio >= 0.8 && timeSpent <= 300) {
-      tag = "High ROI";
-      color = "#16a34a";
-    } else if (accuracyRatio >= 0.6) {
-      tag = "Selective Attempt";
-      color = "#f59e0b";
+    if (Number(answers[globalIndex]) === Number(q.correctIndex)) {
+      correctQ++;
     }
 
-    return {
-      title: `Passage ${pIdx + 1}`,
-      genre: p.genre,
-      correct: correctQ,
-      total: p.questions.length,
-      timeMin: Math.round(timeSpent / 60),
-      tag,
-      color,
-    };
+    timeSpent += questionTime[globalIndex] || 0;
   });
+
+  const accuracyRatio = p.questions.length
+    ? correctQ / p.questions.length
+    : 0;
+
+  let tag = "Time Trap";
+  let color = "#dc2626";
+
+  if (accuracyRatio >= 0.8 && timeSpent <= 300) {
+    tag = "High ROI";
+    color = "#16a34a";
+  } else if (accuracyRatio >= 0.6) {
+    tag = "Selective Attempt";
+    color = "#f59e0b";
+  }
+
+  return {
+    title: `Passage ${pIdx + 1}`,
+    genre: p.genre,
+    correct: correctQ,
+    total: p.questions.length,
+    timeMin: Math.round(timeSpent / 60),
+    tag,
+    color,
+  };
+});
 
   /* ===================== QUESTION TYPE MAP ===================== */
   const typeMap = {};
@@ -107,7 +107,10 @@ export default function DiagnosisView({
     const type = q.type || "Unknown";
     if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
     typeMap[type].total++;
-    if (Number(answers[i]) === Number(q.correctIndex)) {
+   if (
+  q.correctIndex !== undefined &&
+  Number(answers[i]) === Number(q.correctIndex)
+) {
       typeMap[type].correct++;
     }
   });
