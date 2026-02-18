@@ -227,7 +227,7 @@ explanation={currentQuestion.explanation}
       onMark={handleMark}
       onClear={handleClear}
       onJump={setCurrentQuestionIndex}
-       onSubmit={submitPayload}                               
+      onSubmit={() => submitPayload()}           
     />
   );
 }
