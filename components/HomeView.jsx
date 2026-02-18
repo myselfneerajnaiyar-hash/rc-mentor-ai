@@ -19,13 +19,13 @@ function getGreeting() {
   return "Good night 🌌";
 }
 
-export default function HomeView({ setView, startAdaptiveRC }) {
+export default function HomeView({ setView, startAdaptiveRC, userName }) {
   return (
     <div style={wrap}>
       <div style={panel}>
         {/* Header */}
         <h1 style={title}>
-          {getGreeting()}, Neeraj 👋
+         {getGreeting()}, {userName || "Champion"} 👋
         </h1>
         <p style={subtitle}>Ready for RC practice?</p>
 

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 export default function SpeedGym({ onBack }) {
   const [phase, setPhase] = useState("loading");
@@ -16,28 +17,40 @@ export default function SpeedGym({ onBack }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
- function computeTarget() {
-  const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
+ async function computeTarget() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return { wpm: 180, level: "easy" };
 
-  if (!history.length) {
+  const { data } = await supabase
+    .from("speed_sessions")
+    .select("effective_wpm, accuracy_percent")
+    .eq("user_id", authData.user.id)
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  if (!data || !data.length) {
     return { wpm: 180, level: "easy" };
   }
 
-  const last = history[history.length - 1];
+  const avgEff =
+    data.reduce((a, b) => a + b.effective_wpm, 0) / data.length;
 
-  // Use effective speed (raw * accuracy)
-  const eff = last.effective;
+  const avgAcc =
+    data.reduce((a, b) => a + b.accuracy_percent, 0) / data.length;
 
-  if (eff < 170) return { wpm: 160, level: "easy" };
-  if (eff < 210) return { wpm: 190, level: "easy+" };
-  if (eff < 240) return { wpm: 220, level: "moderate" };
-  if (eff < 270) return { wpm: 250, level: "moderate+" };
-  if (eff < 300) return { wpm: 280, level: "hard" };
-  return { wpm: 320, level: "elite" };
+  if (avgAcc < 60) {
+    return { wpm: Math.max(avgEff - 20, 150), level: "stabilize" };
+  }
+
+  if (avgAcc > 75) {
+    return { wpm: avgEff + 20, level: "upgrade" };
+  }
+
+  return { wpm: avgEff, level: "maintain" };
 }
   async function start() {
     try {
-      const target = computeTarget();
+      const target =await computeTarget();
       setMeta(target);
       setPhase("loading");
 
@@ -107,7 +120,7 @@ setParas(merged);
     setPhase("reading");
   }
 
-  function finish() {
+  async function finish() {
     const totalWords = paras.reduce(
       (s, p) => s + p.text.split(/\s+/).length,
       0
@@ -122,6 +135,7 @@ setParas(merged);
 
     const accuracy = Math.round((correct / paras.length) * 100);
     const effectiveWPM = Math.round(rawWPM * (accuracy / 100));
+    const timePerParagraph = Math.round(readSeconds / paras.length);
 
     const record = {
       date: Date.now(),
@@ -134,6 +148,38 @@ setParas(merged);
     const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
     history.push(record);
     localStorage.setItem("speedProfile", JSON.stringify(history));
+
+    // 🔐 Get logged in user
+const { data: authData, error: authError } = await supabase.auth.getUser();
+
+if (authError || !authData?.user) {
+  console.log("No logged in user for speed drill.");
+  return;
+}
+
+const userId = authData.user.id;
+
+console.log("Saving speed drill for:", userId);
+
+const { error: insertError } = await supabase
+  .from("speed_sessions")
+  .insert([
+    {
+      user_id: userId,
+      total_words: totalWords,
+      total_time_s: readSeconds,
+      raw_wpm: rawWPM,
+      total_questions: paras.length,
+      correct_answers: correct,
+      accuracy_percent: accuracy,
+      effective_wpm: effectiveWPM,
+      paragraph_count: paras.length,
+      time_per_paragraph_s: timePerParagraph,
+      difficulty_level: meta.level,
+    },
+  ]);
+
+console.log("Speed insert error:", insertError);
 
     setResult(record);
     setPhase("result");

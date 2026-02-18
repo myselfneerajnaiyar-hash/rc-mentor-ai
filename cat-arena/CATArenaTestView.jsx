@@ -20,6 +20,8 @@ export default function CATArenaTestView({
   mode = "test",
   initialState = null,
   onSubmit,
+  onBackToDiagnosis,
+  onExit,
 }) {
   // 🔍 Mobile detection
 const [isMobile, setIsMobile] = useState(false);
@@ -88,11 +90,22 @@ const currentQuestion =
   // Rehydrate state EVERY TIME we enter review mode
   useEffect(() => {
     if (isReview && initialState) {
-      setAnswers([...initialState.answers]);
-      setQuestionStates([...initialState.questionStates]);
-      setQuestionTime([...initialState.questionTime]);
-      setCurrentQuestionIndex(0);
-    }
+  setAnswers([...(initialState.answers || [])]);
+
+  setQuestionStates(
+    initialState.questionStates
+      ? [...initialState.questionStates]
+      : Array(initialState.answers?.length || 0).fill(0)
+  );
+
+  setQuestionTime(
+    initialState.questionTime
+      ? [...initialState.questionTime]
+      : Array(initialState.answers?.length || 0).fill(0)
+  );
+
+  setCurrentQuestionIndex(0);
+}
   }, [isReview, initialState]);
 
   /* ===================== TIME TRACKING ===================== */
@@ -225,10 +238,10 @@ explanation={currentQuestion.explanation}
       <div style={{ fontWeight: 600 }}>CAT RC Sectional</div>
 
       {isReview && (
-        <button onClick={submitPayload} style={backBtn}>
-          ← Back to Diagnosis
-        </button>
-      )}
+  <button onClick={onBackToDiagnosis} style={backBtn}>
+    ← Back to Diagnosis
+  </button>
+)}
 
       {!isReview && (
         <CATTimer durationMinutes={30} onTimeUp={submitPayload} />

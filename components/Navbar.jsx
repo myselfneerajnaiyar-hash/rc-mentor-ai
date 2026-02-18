@@ -1,192 +1,168 @@
 "use client";
-
-import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "catRCResults";
-
-/* ===== LOAD CAT DIAGNOSIS HISTORY ===== */
-function loadDiagnosisHistory() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-
-    return Object.entries(raw)
-      .filter(([_, arr]) => Array.isArray(arr) && arr.length > 0)
-      .map(([sectionalId, arr]) => {
-        const attempt = arr[0];
-        return {
-          sectionalId,
-          timestamp: attempt.timestamp,
-          attemptId: attempt.attemptId,
-        };
-      });
-  } catch {
-    return [];
-  }
-}
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 
 export default function Navbar({ view, setView }) {
+  const [profile, setProfile] = useState(null);
   const [open, setOpen] = useState(false);
-  const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    if (open) {
-      setHistory(loadDiagnosisHistory());
-    }
-  }, [open]);
+    async function loadProfile() {
+      const { data: authData } = await supabase.auth.getUser();
+      if (!authData?.user) return;
 
-  const tabs = [
-    { key: "home", label: "Home" },
-    { key: "rc", label: "Practice RC" },
-    { key: "vocab", label: "VocabularyLab" },
-    { key: "speed", label: "SpeedGym" },
-    { key: "cat", label: "CAT Arena" },
-    { key: "analytics", label: "Analytics" },
-  ];
+     const { data, error } = await supabase
+  .from("profiles")
+  .select("*")
+  .eq("user_id", authData.user.id)
+  .maybeSingle();
+
+if (!error && data) {
+  setProfile(data);
+}
+}
+    loadProfile();
+  }, []);
 
   return (
-   <div
-  className="desktop-navbar"
-      style={{
-        display: "flex",
-        gap: 16,
-        padding: "10px 20px",
-        borderBottom: "1px solid #e5e7eb",
-        background: "#ffffff",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        alignItems: "center",
-      }}
-    >
-      {/* ================= BRAND ================= */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          marginRight: 12,
-        }}
-      >
-        <img
-          src="/logo.jpeg"
-          alt="Auctor Labs"
-          style={{
-            height: 36,
-            width: 36,
-            objectFit: "contain",
-          }}
-        />
-        <div style={{ lineHeight: 1.1 }}>
-          <div style={{ fontWeight: 800, fontSize: 16 }}>
-            AuctorRC
-          </div>
-          <div style={{ fontSize: 11, color: "#64748b" }}>
-            by Auctor Labs
-          </div>
+    <div style={navWrap}>
+      <div style={leftSection}>
+        <h3 style={{ cursor: "pointer" }} onClick={() => setView("home")}>
+          AuctorRC
+        </h3>
+
+        <div style={tabs}>
+          <button onClick={() => setView("home")} style={tabStyle(view==="home")}>Home</button>
+          <button onClick={() => setView("rc")} style={tabStyle(view==="rc")}>RC</button>
+          <button onClick={() => setView("vocab")} style={tabStyle(view==="vocab")}>Vocab</button>
+          <button onClick={() => setView("speed")} style={tabStyle(view==="speed")}>Speed</button>
+          <button onClick={() => setView("cat")} style={tabStyle(view==="cat")}>CAT</button>
         </div>
       </div>
 
-      {/* ================= NAV TABS ================= */}
-      {tabs.map(t => (
-        <button
-          key={t.key}
-          onClick={() => {
-            setView(t.key);
-            setOpen(false);
-          }}
-          style={{
-            padding: "8px 14px",
-            borderRadius: 8,
-            border: "1px solid #d1d5db",
-            background: view === t.key ? "#2563eb" : "#f9fafb",
-            color: view === t.key ? "#fff" : "#111",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          {t.label}
-        </button>
-      ))}
+     {/* Profile Section */}
+<div style={{ position: "relative" }}>
+  <div
+    onClick={() => setOpen(!open)}
+    style={avatar}
+  >
+    {profile?.name?.charAt(0)?.toUpperCase() || "U"}
+  </div>
 
-      {/* SPACER */}
-      <div style={{ flex: 1 }} />
-
-      {/* ================= CAT DIAGNOSIS ================= */}
-      {view === "cat" && (
-        <div style={{ position: "relative" }}>
-          <button
-            onClick={() => setOpen(o => !o)}
-            style={{
-              background: "#f97316",
-              color: "#fff",
-              padding: "8px 14px",
-              borderRadius: 8,
-              border: "none",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            📊 Diagnosis History ▼
-          </button>
-
-          {open && (
-            <div
-              style={{
-                position: "absolute",
-                right: 0,
-                top: "110%",
-                background: "#fff",
-                border: "1px solid #e5e7eb",
-                borderRadius: 10,
-                width: 320,
-                padding: 10,
-                boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-                zIndex: 1000,
-              }}
-            >
-              {history.length === 0 && (
-                <div style={{ fontSize: 13, color: "#64748b" }}>
-                  No diagnosis available
-                </div>
-              )}
-
-              {history.map(h => (
-                <button
-                  key={h.sectionalId}
-                  onClick={() => {
-                    window.dispatchEvent(
-                      new CustomEvent("OPEN_DIAGNOSIS", {
-                        detail: {
-                          sectionalId: h.sectionalId,
-                          attemptId: h.attemptId,
-                        },
-                      })
-                    );
-                    setOpen(false);
-                  }}
-                  style={{
-                    width: "100%",
-                    textAlign: "left",
-                    padding: "10px",
-                    borderRadius: 8,
-                    border: "1px solid #e5e7eb",
-                    background: "#f8fafc",
-                    marginBottom: 8,
-                    cursor: "pointer",
-                  }}
-                >
-                  <div style={{ fontWeight: 600 }}>
-                    {h.sectionalId.replace(/-/g, " ").toUpperCase()}
-                  </div>
-                  <div style={{ fontSize: 12, color: "#64748b" }}>
-                    {new Date(h.timestamp).toLocaleString()}
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
+  {open && (
+    <div style={dropdown}>
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ fontWeight: 700 }}>
+          {profile?.name || "User"}
         </div>
-      )}
+        <div style={{ fontSize: 13, color: "#64748b" }}>
+          {profile?.exam} • {profile?.attempt_year}
+        </div>
+      </div>
+
+      <hr style={{ margin: "12px 0", border: "none", borderTop: "1px solid #e5e7eb" }} />
+
+     <button
+  style={{
+    width: "100%",
+    padding: "8px 10px",
+    borderRadius: 8,
+    border: "none",
+    background: "#f1f5f9",
+    cursor: "pointer",
+    fontWeight: 500,
+    marginBottom: 8
+  }}
+  onClick={() => {
+  setView("profile");
+  setOpen(false);
+}}
+>
+  View Profile
+</button>
+
+      <button
+        style={logoutBtn}
+        onClick={async () => {
+          await supabase.auth.signOut();
+          window.location.href = "/login";
+        }}
+      >
+        Logout
+      </button>
+    </div>
+  )}
+</div>
     </div>
   );
 }
+
+/* Styles */
+
+const navWrap = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "12px 20px",
+  background: "#fff",
+  borderBottom: "1px solid #e5e7eb",
+  position: "sticky",
+  top: 0,
+  zIndex: 50,
+};
+
+const leftSection = {
+  display: "flex",
+  alignItems: "center",
+  gap: 30,
+};
+
+const tabs = {
+  display: "flex",
+  gap: 15,
+};
+
+const tabStyle = (active) => ({
+  padding: "8px 14px",
+  borderRadius: 8,
+  border: "none",
+  background: active ? "#2563eb" : "#e5e7eb",
+  color: active ? "#fff" : "#111",
+  cursor: "pointer",
+  fontWeight: 600,
+});
+
+const avatar = {
+  width: 36,
+  height: 36,
+  borderRadius: "50%",
+  background: "#2563eb",
+  color: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: 600,
+  cursor: "pointer",
+};
+
+const dropdown = {
+  position: "absolute",
+  right: 0,
+  top: 45,
+  background: "#fff",
+  padding: 16,
+  borderRadius: 12,
+  width: 200,
+  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+  zIndex: 100,
+};
+
+const logoutBtn = {
+  width: "100%",
+  padding: 8,
+  borderRadius: 8,
+  border: "none",
+  background: "#ef4444",
+  color: "#fff",
+  cursor: "pointer",
+};

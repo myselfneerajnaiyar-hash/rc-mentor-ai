@@ -1,81 +1,146 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 import RadialProgress from "./analytics/RadialProgress";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
   const [showWeakWords, setShowWeakWords] = useState(false);
 
-  /* ================== DATA (DYNAMIC LATER) ================== */
- 
+ /* ================== DATA (SUPABASE DRIVEN) ================== */
 
-  // Retention Health (behavioural metric)
-  const retentionPercent = 0;
+const [words, setWords] = useState([]);
+const [sessions, setSessions] = useState([]);
 
- const masteryTimeline =
-  JSON.parse(localStorage.getItem("vocabTimeline") || "[]");
-  
-  const retentionColor =
-    retentionPercent < 40
-      ? "#ef4444"
-      : retentionPercent < 70
-      ? "#f97316"
-      : "#22c55e";
+useEffect(() => {
+  loadProfileData();
+}, []);
 
-  const bank =
-  JSON.parse(localStorage.getItem("vocabBank") || "[]");
+async function loadProfileData() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return;
 
-const totalWords = bank.length;
+  const userId = authData.user.id;
 
-const masteredWords = bank.filter(
-  w => (w.correctCount || 0) >= 2
-).length;
+  // Fetch words
+  const { data: wordsData } = await supabase
+    .from("user_words")
+    .select("*")
+    .eq("user_id", userId);
 
-const masteryPercent = totalWords
-  ? Math.round((masteredWords / totalWords) * 100)
-  : 0;
-  // ===== DERIVED DATA FROM vocabBank =====
+  if (wordsData) setWords(wordsData);
+
+  // Fetch vocab sessions
+  const { data: sessionData } = await supabase
+    .from("vocab_sessions")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
+
+  if (sessionData) setSessions(sessionData);
+}
+
+const totalWords = words.length;
+
+const sevenDaysAgo = new Date();
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+const recentSessions = sessions.filter(s =>
+  new Date(s.created_at) >= sevenDaysAgo
+);
+
+const totalAttempts = recentSessions.reduce(
+  (sum, s) => sum + (s.total_questions || 0),
+  0
+);
+
+const totalCorrect = recentSessions.reduce(
+  (sum, s) => sum + (s.correct_answers || 0),
+  0
+);
+const retentionPercent =
+  totalAttempts > 0
+    ? Math.round((totalCorrect / totalAttempts) * 100)
+    : 0;
+
+const retentionColor =
+  retentionPercent < 40
+    ? "#ef4444"
+    : retentionPercent < 70
+    ? "#f97316"
+    : "#22c55e";
+
+const masteredWords = words.filter(w => {
+  if (!w.total_attempts) return false;
+  return w.correct_attempts / w.total_attempts >= 0.8;
+}).length;
 
 // -------- STRENGTH --------
-const strength = { strong: 0, medium: 0, weak: 0 };
+const strength = {
+  strong: words.filter(w => {
+    if (!w.total_attempts) return false;
+    return w.correct_attempts / w.total_attempts >= 0.8;
+  }).length,
 
-bank.forEach(w => {
-  if (!w.attempts) return;
+  medium: words.filter(w => {
+    if (!w.total_attempts) return false;
+    const acc = w.correct_attempts / w.total_attempts;
+    return acc >= 0.5 && acc < 0.8;
+  }).length,
 
-  const acc = w.correctCount / w.attempts;
-
-  if (acc >= 0.8 && w.attempts >= 3) strength.strong++;
-  else if (acc >= 0.4) strength.medium++;
-  else strength.weak++;
-});
+  weak: words.filter(w => {
+    if (!w.total_attempts) return true;
+    return w.correct_attempts / w.total_attempts < 0.5;
+  }).length,
+};
 
 // -------- DISCIPLINE --------
-const now = Date.now();
-let active = 0, slipping = 0, cold = 0;
+const now = new Date();
 
-bank.forEach(w => {
-  if (!w.lastTested) {
-    cold++;
-    return;
-  }
+const active = words.filter(w => {
+  if (!w.last_reviewed_at) return false;
+  const diff =
+    (now - new Date(w.last_reviewed_at)) /
+    (1000 * 60 * 60 * 24);
+  return diff <= 2;
+}).length;
 
-  const days = (now - w.lastTested) / 86400000;
+const slipping = words.filter(w => {
+  if (!w.last_reviewed_at) return false;
+  const diff =
+    (now - new Date(w.last_reviewed_at)) /
+    (1000 * 60 * 60 * 24);
+  return diff > 2 && diff <= 6;
+}).length;
 
-  if (days <= 2) active++;
-  else if (days <= 6) slipping++;
-  else cold++;
-});
+const cold = words.filter(w => {
+  if (!w.last_reviewed_at) return true;
+  const diff =
+    (now - new Date(w.last_reviewed_at)) /
+    (1000 * 60 * 60 * 24);
+  return diff > 6;
+}).length;
 
 // -------- REVISION --------
-const revisionWords = bank.filter(w => {
-  if (!w.attempts) return false;
+const revisionWords = words.filter(w => {
+  if (!w.total_attempts) return true;
 
-  const acc = w.correctCount / w.attempts;
-  const days = w.lastTested
-    ? (Date.now() - w.lastTested) / 86400000
-    : 999;
+  const acc = w.correct_attempts / w.total_attempts;
 
-  return acc < 0.7 || days > 5;
+  if (acc < 0.6) return true;
+
+  if (!w.last_reviewed_at) return true;
+
+  const diff =
+    (now - new Date(w.last_reviewed_at)) /
+    (1000 * 60 * 60 * 24);
+
+  return diff > 5;
 });
+
+const masteryTimeline = sessions.map(s => ({
+  accuracy: s.accuracy,
+  date: new Date(s.created_at).toLocaleDateString(),
+}));
   /* ================== UI ================== */
   return (
     <div style={styles.page}>
@@ -228,7 +293,7 @@ const revisionWords = bank.filter(w => {
           <div
             style={{
               ...styles.barFill,
-              width: `${bank.length ? (row.value / bank.length) * 100 : 0}%`,
+              width: `${words.length ? (row.value / words.length) * 100 : 0}%`,
               background: row.color,
             }}
           />
@@ -242,9 +307,12 @@ const revisionWords = bank.filter(w => {
 
     {showWeakWords && (
       <div style={{ marginTop: 16 }}>
-        {bank.filter(
-          w => w.attempts && (w.correctCount / w.attempts) < 0.4
-        ).length === 0 ? (
+        {words.filter(
+  w =>
+    w.total_attempts &&
+    w.correct_attempts / w.total_attempts < 0.5
+).length === 0 ? (
+
           <p style={{ color: "#16a34a" }}>
             🎉 No weak words right now. Great job!
           </p>
@@ -254,7 +322,7 @@ const revisionWords = bank.filter(w => {
               Weak Words (Revise First)
             </h4>
 
-            {bank
+            {words
               .filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4)
               .map(w => (
                 <div
@@ -276,7 +344,7 @@ const revisionWords = bank.filter(w => {
                       marginLeft: 8,
                     }}
                   >
-                    {w.correctCount}/{w.attempts} correct
+                    {w.correct_attempts}/{w.total_attempts} correct
                   </span>
                 </div>
               ))}
@@ -326,7 +394,7 @@ const revisionWords = bank.filter(w => {
     </p>
   </div>
 )}
-     {activeTab === "revision" && (
+    {activeTab === "revision" && (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>Revision Queue</h3>
 
@@ -339,40 +407,46 @@ const revisionWords = bank.filter(w => {
         🎉 You’re all caught up! No urgent revisions.
       </p>
     ) : (
-      <div style={{ marginTop: 16 }}>
-        {revisionWords.map(w => {
-          const accuracy = Math.round(
-            (w.correctCount / w.attempts) * 100
-          );
+      <>
+        <div style={{ marginTop: 16 }}>
+          {revisionWords.map((w) => {
+            const accuracy = w.total_attempts
+              ? Math.round(
+                  (w.correct_attempts / w.total_attempts) * 100
+                )
+              : 0;
 
-          return (
-            <div
-              key={w.word}
-              style={{
-                padding: 10,
-                marginBottom: 8,
-                borderRadius: 8,
-                background: "#fff7ed",
-                border: "1px solid #fed7aa",
-              }}
-            >
-              <b>{w.word}</b>
-              <div style={{ fontSize: 12, color: "#6b7280" }}>
-                Accuracy: {accuracy}% · Attempts: {w.attempts}
+            return (
+              <div
+                key={w.word}
+                style={{
+                  padding: 10,
+                  marginBottom: 8,
+                  borderRadius: 8,
+                  background: "#fff7ed",
+                  border: "1px solid #fed7aa",
+                }}
+              >
+                <b>{w.word}</b>
+                <div style={{ fontSize: 12, color: "#6b7280" }}>
+                  Accuracy: {accuracy}% · Attempts:{" "}
+                  {w.total_attempts || 0}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-    )}
+            );
+          })}
+        </div>
 
-    <p style={{ ...styles.helperText, marginTop: 16 }}>
-      🔁 Revise these words to move them into <b>Strong</b> and <b>Active</b>.
-    </p>
+        <p style={{ ...styles.helperText, marginTop: 16 }}>
+          🔁 Revise these words to move them into{" "}
+          <b>Strong</b> and <b>Active</b>.
+        </p>
+      </>
+    )}
   </div>
 )}
-    </div>
-    );
+</div>
+  );
 }
       
 /* ================= COMPONENTS ================= */
@@ -469,7 +543,7 @@ const styles = {
   tabActive: {
     background: "#f97316",
     color: "#fff",
-    borderColor: "#f97316"
+   border: "1px solid #f97316",
   },
   hero: {
   background: "linear-gradient(135deg, #fff7ed, #ffffff)",

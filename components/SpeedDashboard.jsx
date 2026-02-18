@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 function LineChart({ data, color, label, unit }) {
   const w = 720;
@@ -50,8 +51,7 @@ function LineChart({ data, color, label, unit }) {
                 textAnchor="middle"
                 fill="#374151"
               >
-                {p.v}
-                {unit}
+                {p.v}{unit}
               </text>
             </g>
           ))}
@@ -65,43 +65,66 @@ function LineChart({ data, color, label, unit }) {
   );
 }
 
-function StatCard({ label, value }) {
+function StatCard({ label, value, sub }) {
   return (
     <div
       style={{
-        padding: 16,
-        borderRadius: 10,
+        padding: 20,
+        borderRadius: 16,
+        background: "linear-gradient(135deg, #f0f9ff, #eef2ff)",
         border: "1px solid #e5e7eb",
-        background: "#eef4ff",
         textAlign: "center",
+        transition: "0.2s",
       }}
     >
-      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
-      <div style={{ fontSize: 12, color: "#555" }}>{label}</div>
+      <div style={{ fontSize: 26, fontWeight: 800 }}>{value}</div>
+      <div style={{ fontSize: 13, color: "#475569" }}>{label}</div>
+      {sub && (
+        <div style={{ fontSize: 11, marginTop: 4, color: "#64748b" }}>
+          {sub}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function SpeedDashboard() {
-  const [active, setActive] = useState("overview");
   const [history, setHistory] = useState([]);
+  const [active, setActive] = useState("overview");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const raw = JSON.parse(localStorage.getItem("speedProfile") || "[]");
-    const clean = raw.filter(
-      r =>
-        Number.isFinite(r.rawWPM) &&
-        Number.isFinite(r.effectiveWPM) &&
-        Number.isFinite(r.accuracy)
-    );
-    setHistory(clean);
+    fetchSpeedHistory();
   }, []);
+
+  async function fetchSpeedHistory() {
+    const { data: authData } = await supabase.auth.getUser();
+
+    if (!authData?.user) {
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("speed_sessions")
+      .select("*")
+      .eq("user_id", authData.user.id)
+      .order("created_at", { ascending: true });
+
+    if (!error && data) {
+      setHistory(data);
+    }
+
+    setLoading(false);
+  }
+
+  if (loading) return <div style={{ padding: 24 }}>Loading...</div>;
 
   if (!history.length) {
     return (
       <div style={{ padding: 24 }}>
         <h2>Speed Profile</h2>
-        <p>No speed drills yet. Start Speed Reading Gym.</p>
+        <p>No drills yet. Start your first drill.</p>
       </div>
     );
   }
@@ -109,192 +132,158 @@ export default function SpeedDashboard() {
   const drills = history.length;
   const recent = history.slice(-15);
 
-  const effTimeline = recent.map(d => d.effectiveWPM);
-  const rawTimeline = recent.map(d => d.rawWPM);
-  const accTimeline = recent.map(d => d.accuracy);
+  const effTimeline = recent.map(d => d.effective_wpm);
+  const rawTimeline = recent.map(d => d.raw_wpm);
+  const accTimeline = recent.map(d => d.accuracy_percent);
 
   const avgEff = Math.round(
-    history.reduce((a, b) => a + b.effectiveWPM, 0) / drills
+    history.reduce((a, b) => a + b.effective_wpm, 0) / drills
   );
   const avgRaw = Math.round(
-    history.reduce((a, b) => a + b.rawWPM, 0) / drills
+    history.reduce((a, b) => a + b.raw_wpm, 0) / drills
   );
   const avgAcc = Math.round(
-    history.reduce((a, b) => a + b.accuracy, 0) / drills
+    history.reduce((a, b) => a + b.accuracy_percent, 0) / drills
   );
+  const lastDrill = history[history.length - 1];
+const difficulty = lastDrill?.difficulty_level;
+
+const avgTimePerPara = Math.round(
+  history.reduce((a, b) => a + (b.time_per_paragraph_s || 0), 0) / drills
+);
+
+const stability =
+  avgAcc >= 75
+    ? "Comprehension stable"
+    : avgAcc >= 60
+    ? "Developing control"
+    : "Speed overpowering accuracy";
 
   const last3 = history.slice(-3);
 
-  const last3Eff = last3.map(d => d.effectiveWPM);
-  const last3Acc = last3.map(d => d.accuracy);
+const effDelta =
+  effTimeline.length > 1
+    ? effTimeline[effTimeline.length - 1] - effTimeline[0]
+    : 0;
 
-  const effDelta =
-    effTimeline.length > 1
-      ? effTimeline.at(-1) - effTimeline[0]
-      : 0;
+const momentum =
+  effDelta > 15
+    ? "Acceleration phase — reading fluency compounding."
+    : effDelta < -15
+    ? "Drop detected — fatigue or rushing."
+    : "Stable base — consistency building.";
 
-  const momentum =
-    effDelta > 15
-      ? "Acceleration phase. Fluency is compounding."
-      : effDelta < -15
-      ? "Regression detected. Fatigue or rushing may be hurting comprehension."
-      : "Stable base. Consistency will convert this into growth.";
 
-  const readingMode =
-    avgAcc < 60
-      ? "You push speed before meaning stabilizes."
-      : avgEff < 220
-      ? "Careful but hesitant. Confidence must rise."
-      : "Speed and comprehension are aligning.";
+ return (
+ <div
+  style={{
+    marginTop: 30,
+    padding: 30,
+    borderRadius: 24,
+   background: "#ffffff",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
+  }}
+>
+    
+    
 
-  return (
-  <div
-    style={{
-      marginTop: 20,
-      background: "#f1f5fb",
-      padding: 20,
-      borderRadius: 16,
-    }}
-  >
-      <h2>Speed Profile</h2>
+      <h2
+  style={{
+    fontSize: 30,
+    fontWeight: 800,
+    marginBottom: 30,
+    color: "#0f172a",
+  }}
+>
+  Speed Profile
+</h2>
 
-      <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        {["overview", "speed", "accuracy", "today", "plan"].map(t => (
-          <button
-            key={t}
-            onClick={() => setActive(t)}
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "1px solid #ccc",
-              background: active === t ? "#2563eb" : "#f3f4f6",
-              color: active === t ? "#fff" : "#111",
-              fontWeight: 600,
-            }}
-          >
-            {t.toUpperCase()}
-          </button>
-        ))}
+     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(5, 1fr)",
+    gap: 14,
+    marginBottom: 30,
+  }}
+>
+  <StatCard label="Effective WPM" value={avgEff} sub="True reading speed" />
+  <StatCard label="Raw WPM" value={avgRaw} sub="Eye movement speed" />
+  <StatCard label="Avg Accuracy" value={avgAcc + "%"} sub={stability} />
+  <StatCard label="Avg Time / Para" value={avgTimePerPara + "s"} />
+ <StatCard
+  label="Current Level"
+  value={difficulty ? difficulty.toUpperCase() : "—"}
+/>
+</div>
+
+      <LineChart data={effTimeline} color="#22c55e" label="Effective Speed Trend" unit="" />
+<LineChart data={accTimeline} color="#3b82f6" label="Accuracy Trend" unit="%" />
+
+<div style={{ marginTop: 30 }}>
+  <h3>Performance Insight</h3>
+  <p style={{ color: "#475569", fontSize: 14 }}>
+    {momentum}
+  </p>
+</div>
+
+<h3 style={{ marginTop: 30 }}>Last 3 Drills</h3>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: 12,
+  }}
+>
+  {last3.map((d) => {
+    const accuracyColor =
+      d.accuracy_percent >= 75
+        ? "#16a34a"
+        : d.accuracy_percent >= 60
+        ? "#2563eb"
+        : "#dc2626";
+
+    const levelTint =
+      d.difficulty_level === "elite"
+        ? "#f0fdf4"
+        : d.difficulty_level === "hard"
+        ? "#eff6ff"
+        : "#fef2f2";
+
+    return (
+      <div
+        key={d.id}
+        style={{
+          padding: 20,
+          borderRadius: 18,
+          background: levelTint,
+          borderLeft: `6px solid ${accuracyColor}`,
+          boxShadow: "0 12px 28px rgba(0,0,0,0.08)",
+        }}
+      >
+        <div style={{ fontWeight: 700, marginBottom: 6 }}>
+          Effective: {d.effective_wpm} WPM
+        </div>
+
+        <div style={{ color: "#475569", fontSize: 14 }}>
+          Raw: {d.raw_wpm} WPM
+        </div>
+
+        <div style={{ color: accuracyColor, fontWeight: 600 }}>
+          Accuracy: {d.accuracy_percent}%
+        </div>
+
+        <div style={{ fontSize: 13, marginTop: 6 }}>
+          Level: {d.difficulty_level}
+        </div>
+
+        <div style={{ fontSize: 13 }}>
+          Time/Para: {d.time_per_paragraph_s}s
+        </div>
       </div>
-
-      {active === "overview" && (
-        <>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 12,
-              marginBottom: 20,
-            }}
-          >
-            <StatCard label="Effective WPM" value={avgEff} />
-            <StatCard label="Raw WPM" value={avgRaw} />
-            <StatCard label="Avg Accuracy" value={avgAcc + "%"} />
-            <StatCard label="Drills" value={drills} />
-          </div>
-
-          <LineChart
-            data={effTimeline}
-            color="#22c55e"
-            label="Effective Speed Trend"
-            unit=""
-          />
-
-          <LineChart
-            data={accTimeline}
-            color="#3b82f6"
-            label="Accuracy Trend"
-            unit="%"
-          />
-
-          <div style={{ marginTop: 24 }}>
-            <h4>Your Reading Mode</h4>
-            <p>{readingMode}</p>
-
-            <h4>Momentum</h4>
-            <p>{momentum}</p>
-          </div>
-        </>
-      )}
-
-      {active === "speed" && (
-        <>
-          <LineChart
-            data={rawTimeline}
-            color="#f59e0b"
-            label="Raw Speed"
-            unit=""
-          />
-          <LineChart
-            data={effTimeline}
-            color="#22c55e"
-            label="Effective Speed"
-            unit=""
-          />
-          <p style={{ color: "#555" }}>
-            The gap between Raw and Effective speed shows how much comprehension
-            you lose when pushing pace.
-          </p>
-        </>
-      )}
-
-      {active === "accuracy" && (
-        <>
-          <LineChart
-            data={accTimeline}
-            color="#3b82f6"
-            label="Accuracy Stability"
-            unit="%"
-          />
-          <p style={{ color: "#555" }}>
-            Stable accuracy above 70% is the signal that speed can safely rise.
-          </p>
-        </>
-      )}
-
-      {active === "today" && (
-        <>
-          <h3>Your Last 3 Drills</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 12,
-            }}
-          >
-            {last3.map((d, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 16,
-                  borderRadius: 12,
-                  border: "1px solid #e5e7eb",
-                  background: "#eef4ff",
-                }}
-              >
-                <div><b>Effective:</b> {d.effectiveWPM}</div>
-                <div><b>Raw:</b> {d.rawWPM}</div>
-                <div><b>Accuracy:</b> {d.accuracy}%</div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {active === "plan" && (
-        <>
-          <h3>Speed Growth Plan</h3>
-          <ol style={{ lineHeight: 1.8 }}>
-            <li>Stabilize accuracy above 70% at current speed.</li>
-            <li>Push Raw WPM by +20 for 5 drills.</li>
-            <li>Only upgrade level when Effective WPM crosses the band.</li>
-          </ol>
-          <p style={{ color: "#555" }}>
-            Your current effective baseline is <b>{avgEff} WPM</b>.  
-            Target next band: <b>{avgEff + 20}+</b>.
-          </p>
-        </>
-      )}
-    </div>
-  );
+    );
+  })}
+</div>
+</div>   // outer white card
+);
 }

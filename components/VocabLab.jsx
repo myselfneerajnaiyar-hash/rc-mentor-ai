@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 import VocabProfile from "../components/VocabProfile";
+import { supabase } from "../lib/supabase";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
@@ -12,10 +13,39 @@ export default function VocabLab() {
   const [mode, setMode] = useState("home"); // home | lesson | test | result
 
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-    setBank(saved);
-  }, []);
+ useEffect(() => {
+  fetchBank();
+}, []);
+
+async function fetchBank() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return;
+
+
+  const { data, error } = await supabase
+    .from("user_words")
+    .select("*")
+    .eq("user_id", authData.user.id)
+    .order("created_at", { ascending: false });
+
+ if (!error && data) {
+  const formatted = data.map(w => ({
+    ...w,
+    partOfSpeech: w.part_of_speech,
+    synonyms:
+  typeof w.synonyms === "string"
+    ? w.synonyms.split(",").map(s => s.trim())
+    : w.synonyms || [],
+
+antonyms:
+  typeof w.antonyms === "string"
+    ? w.antonyms.split(",").map(s => s.trim())
+    : w.antonyms || [],
+  }));
+
+  setBank(formatted);
+}
+}
 
   async function handleManualAdd(word) {
     setManualWord("");
@@ -31,59 +61,45 @@ export default function VocabLab() {
     const data = await res.json();
     setLoadingLookup(false);
 
-    const existing = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+    const { data: authData } = await supabase.auth.getUser();
+if (!authData?.user) return;
 
-    if (!existing.some(w => w.word.toLowerCase() === word.toLowerCase())) {
-      const updated = [
-        ...existing,
-        { word, ...data, correctCount: 0, enriched: true },
-      ];
-      localStorage.setItem("vocabBank", JSON.stringify(updated));
-      setBank(updated);
-    }
+// Check if word already exists
+const { data: existing } = await supabase
+  .from("user_words")
+  .select("id")
+  .eq("user_id", authData.user.id)
+  .eq("word", word);
 
-    setLookup({ word, ...data });
+if (!existing || existing.length === 0) {
+  await supabase.from("user_words").insert([
+    {
+      user_id: authData.user.id,
+      word,
+      meaning: data.meaning,
+      part_of_speech: data.partOfSpeech,
+      added_from: "manual",
+    },
+  ]);
+}
+
+// Refresh bank from database
+await fetchBank();
+  setLookup({
+  word,
+  ...data,
+});
   }
 
-  async function openWord(w) {
-    // If already enriched, just show it
-    if (w.partOfSpeech || w.enriched) {
-      setLookup(w);
-      return;
-    }
-
-    setLoadingLookup(true);
-
-    const res = await fetch("/api/enrich-word", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ word: w.word }),
-    });
-
-    const data = await res.json();
-    setLoadingLookup(false);
-
-    const upgraded = bank.map(item =>
-      item.word.toLowerCase() === w.word.toLowerCase()
-        ? { ...item, ...data, enriched: true }
-        : item
-    );
-
-    localStorage.setItem("vocabBank", JSON.stringify(upgraded));
-    setBank(upgraded);
-
-    const fresh = upgraded.find(x => x.word === w.word);
-    setLookup(fresh);
-  }
+  
 
   async function openWord(w) {
-  // If already enriched, just show
-  if (w.partOfSpeech) {
+  // If already enriched in DB, just show
+  if (w.part_of_speech && w.synonyms && w.synonyms.length) {
     setLookup(w);
     return;
   }
 
-  // Otherwise enrich
   setLoadingLookup(true);
 
   const res = await fetch("/api/enrich-word", {
@@ -95,17 +111,29 @@ export default function VocabLab() {
   const data = await res.json();
   setLoadingLookup(false);
 
-  const updated = bank.map(x =>
-    x.word.toLowerCase() === w.word.toLowerCase()
-      ? { ...x, ...data, enriched: true }
-      : x
-  );
+  // 🔥 UPDATE SUPABASE (NOT LOCALSTORAGE)
+ await supabase
+  .from("user_words")
+  .update({
+    part_of_speech: data.partOfSpeech || null,
+    usage: data.usage || null,
+    root: data.root || null,
+    synonyms: (data.synonyms || []).join(", "),
+    antonyms: (data.antonyms || []).join(", "),
+  })
+  .eq("id", w.id);
+  // Reload fresh data from DB
+  await fetchBank();
 
-  localStorage.setItem("vocabBank", JSON.stringify(updated));
-  setBank(updated);
-
-  setLookup({ ...w, ...data });
+  // Show enriched data
+  setLookup({
+    ...w,
+    ...data,
+  });
 }
+
+
+  
   return (
     <div
       style={{
@@ -290,10 +318,41 @@ function VocabDrill() {
   const [endTime, setEndTime] = useState(null);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("vocabBank") || "[]");
-    setBank(saved.filter(w => w.synonyms || w.antonyms || w.usage));
-  }, []);
+  loadDrillWords();
+}, []);
 
+async function loadDrillWords() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return;
+
+  const { data } = await supabase
+    .from("user_words")
+    .select("*")
+    .eq("user_id", authData.user.id);
+
+  if (!data) return;
+
+  const formatted = data.map(w => ({
+    ...w,
+    synonyms:
+      typeof w.synonyms === "string"
+        ? w.synonyms.split(",").map(s => s.trim())
+        : w.synonyms || [],
+    antonyms:
+      typeof w.antonyms === "string"
+        ? w.antonyms.split(",").map(s => s.trim())
+        : w.antonyms || [],
+  }));
+
+  const enriched = formatted.filter(
+    w =>
+      (w.synonyms && w.synonyms.length > 0) ||
+      (w.antonyms && w.antonyms.length > 0) ||
+      w.usage
+  );
+
+  setBank(enriched);
+}
   function makeSynonymQ(word) {
     const correct = word.synonyms?.[0];
     if (!correct) return null;
@@ -306,13 +365,14 @@ function VocabDrill() {
 
     if (distractors.length < 3) return null;
 
-    return {
-      type: "synonym",
-      prompt: `Closest meaning of`,
-      word: word.word,
-      correct,
-      options: [...distractors, correct].sort(() => Math.random() - 0.5),
-    };
+   return {
+  id: word.id,
+  type: "synonym",
+  prompt: `Closest meaning of`,
+  word: word.word,
+  correct,
+  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+};
   }
 
   function makeAntonymQ(word) {
@@ -328,12 +388,13 @@ function VocabDrill() {
     if (distractors.length < 3) return null;
 
     return {
-      type: "antonym",
-      prompt: `Opposite of`,
-      word: word.word,
-      correct,
-      options: [...distractors, correct].sort(() => Math.random() - 0.5),
-    };
+  id: word.id,
+  type: "antonym",
+  prompt: `Opposite of`,
+  word: word.word,
+  correct,
+  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+};
   }
 
   function makeFillBlankQ(word) {
@@ -351,12 +412,13 @@ function VocabDrill() {
     if (distractors.length < 3) return null;
 
     return {
-      type: "fill",
-      prompt: sentence,
-      word: null,
-      correct,
-      options: [...distractors, correct].sort(() => Math.random() - 0.5),
-    };
+  id: word.id,   // ← ADD THIS LINE
+  type: "fill",
+  prompt: sentence,
+  word: word.word,
+  correct,
+  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+};
   }
 
   function buildQuestion(word) {
@@ -370,93 +432,121 @@ function VocabDrill() {
     return null;
   }
 
-  function startDrill() {
-    if (bank.length < 6) {
-      alert("Add more enriched words to enable full drills.");
-      return;
-    }
-
-    const pool = [...bank].sort(() => Math.random() - 0.5);
-    const qs = [];
-
-    let i = 0;
-    while (qs.length < 10 && i < pool.length * 3) {
-      const w = pool[i % pool.length];
-      const q = buildQuestion(w);
-      if (q) qs.push(q);
-      i++;
-    }
-
-    if (qs.length < 10) {
-      alert("Not enough rich data yet to build 10 questions.");
-      return;
-    }
-
-    setQuestions(qs);
-    setIndex(0);
-    setScore(0);
-    setSelected(null);
-    setHistory([]);
-    setStartTime(Date.now());
-    setEndTime(null);
-    setStage("run");
+ function startDrill() {
+  if (bank.length < 10) {
+    alert("Add more enriched words to enable full drills.");
+    return;
   }
 
-  function choose(opt) {
-    if (selected) return;
-    const q = questions[index];
+  // Proper shuffle
+  const shuffled = [...bank]
+    .sort(() => 0.5 - Math.random());
 
-    setSelected(opt);
-   const correct = opt === q.correct;
+  const selectedWords = shuffled.slice(0, 10);
 
-const stored = JSON.parse(localStorage.getItem("vocabBank") || "[]");
+  const qs = selectedWords
+    .map(w => buildQuestion(w))
+    .filter(Boolean);
 
-const updated = stored.map(w => {
-  const testedWord = q.word || q.correct;
-
-if (w.word.toLowerCase() === testedWord.toLowerCase()) {
-    return {
-      ...w,
-      attempts: (w.attempts || 0) + 1,
-      correctCount: (w.correctCount || 0) + (correct ? 1 : 0),
-      lastTested: Date.now(),
-    };
+  if (qs.length < 10) {
+    alert("Not enough rich data yet.");
+    return;
   }
-  return w;
-});
 
-localStorage.setItem("vocabBank", JSON.stringify(updated));
-    if (correct) setScore(s => s + 1);
+  setQuestions(qs);
+  setIndex(0);
+  setScore(0);
+  setSelected(null);
+  setHistory([]);
+  setStartTime(Date.now());
+  setEndTime(null);
+  setStage("run");
+}
 
-    setHistory(h => [
-      ...h,
-      { ...q, chosen: opt, isCorrect: correct },
-    ]);
+  async function choose(opt) {
+  if (selected) return;
 
-    setTimeout(() => {
-      if (index + 1 < questions.length) {
-        setIndex(i => i + 1);
-        setSelected(null);
-     } else {
+  const q = questions[index];
+  const correct = opt === q.correct;
+
+  setSelected(opt);
+
+  // Update score immediately
+  if (correct) {
+    setScore(prev => prev + 1);
+  }
+
+  // Push to history immediately
+  setHistory(prev => [
+    ...prev,
+    { ...q, chosen: opt, isCorrect: correct }
+  ]);
+
+  // 🔥 Safe DB update (non-blocking)
+  try {
+    const { data: authData } = await supabase.auth.getUser();
+   if (authData?.user) {
+  await supabase.rpc("increment_word_progress", {
+    p_user_id: authData.user.id,
+    p_word_id: q.id,
+    p_correct: correct,
+  });
+}
+  } catch (e) {
+    console.log("Progress update skipped");
+  }
+
+  const isLastQuestion = index + 1 >= questions.length;
+
+if (isLastQuestion) {
   const end = Date.now();
   setEndTime(end);
 
-  // 🔥 SAVE DAILY PERFORMANCE SNAPSHOT
-  const timeline =
-    JSON.parse(localStorage.getItem("vocabTimeline") || "[]");
+  try {
+    const { data: authData } = await supabase.auth.getUser();
 
-  timeline.push({
-    date: new Date().toISOString().slice(0, 10),
-    accuracy: Math.round((score / questions.length) * 100),
-  });
+    if (authData?.user) {
+      const totalQuestions = questions.length;
 
-  localStorage.setItem("vocabTimeline", JSON.stringify(timeline));
+      const finalHistory = [
+        ...history,
+        { ...q, chosen: opt, isCorrect: correct }
+      ];
 
-  setStage("result");
-}
-    }, 700);
+      const correctAnswers = finalHistory.filter(h => h.isCorrect).length;
+
+      const accuracy = Math.round(
+        (correctAnswers / totalQuestions) * 100
+      );
+
+      const timeTaken = Math.round((end - startTime) / 1000);
+
+      await supabase.from("vocab_sessions").insert([
+        {
+          user_id: authData.user.id,
+          total_questions: totalQuestions,
+          correct_answers: correctAnswers,
+          accuracy: accuracy,
+          time_taken_s: timeTaken,
+          drill_type: "mixed",
+        },
+      ]);
+    }
+  } catch (e) {
+    console.log("Vocab session not saved");
   }
 
+  setTimeout(() => {
+    setStage("result");
+  }, 700);
+
+} else {
+  setTimeout(() => {
+    setIndex(prev => prev + 1);
+    setSelected(null);
+  }, 700);
+}
+}
   if (stage === "start") {
     return (
       <div>
@@ -482,8 +572,9 @@ localStorage.setItem("vocabBank", JSON.stringify(updated));
 
   if (stage === "result") {
     const timeTaken = Math.round((endTime - startTime) / 1000);
-    const accuracy = Math.round((score / questions.length) * 100);
-
+    const accuracy = Math.round(
+  (history.filter(h => h.isCorrect).length / questions.length) * 100
+);
     return (
       <div>
         <h2>Drill Complete</h2>
@@ -739,10 +830,45 @@ const qs = usable.slice(0, 5).map(w => {
     <div>
      <h2>Today’s Top Words</h2>
 
-<div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
-  <button onClick={() => setExamFilter("ALL")}>All</button>
-  <button onClick={() => setExamFilter("CAT")}>CAT RC</button>
-  <button onClick={() => setExamFilter("OMET")}>OMET</button>
+<div
+  style={{
+    display: "inline-flex",
+    background: "#f1f5f9",
+    padding: 4,
+    borderRadius: 12,
+    gap: 4,
+    marginBottom: 20,
+  }}
+>
+  {[
+    { key: "ALL", label: "All" },
+    { key: "CAT", label: "CAT RC" },
+    { key: "OMET", label: "OMET" },
+  ].map(item => (
+    <button
+      key={item.key}
+      onClick={() => setExamFilter(item.key)}
+      style={{
+        padding: "8px 18px",
+        borderRadius: 10,
+        border: "none",
+        fontWeight: 600,
+        fontSize: 14,
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        background:
+          examFilter === item.key ? "#4f46e5" : "transparent",
+        color:
+          examFilter === item.key ? "#ffffff" : "#475569",
+        boxShadow:
+          examFilter === item.key
+            ? "0 6px 14px rgba(79,70,229,0.35)"
+            : "none",
+      }}
+    >
+      {item.label}
+    </button>
+  ))}
 </div>
       
 
@@ -812,7 +938,7 @@ const qs = usable.slice(0, 5).map(w => {
         fontWeight: 600,
         cursor: "pointer",
         background: l.exam === "CAT" ? "#f97316" : "#22c55e",
-        color: "#fff",
+color: "#fff",
       }}
     >
       Start Lesson

@@ -88,19 +88,22 @@ export default function SpeedContainer() {
 
 const page = {
   minHeight: "100vh",
-  background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
-  padding: "16px 16px 90px",
+  background: "#dde7fb",
+  padding: "32px",
 };
 
 const header = {
   background: "#ffffff",
-  borderRadius: 20,
-  padding: 18,
-  boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+  borderRadius: 24,
+  padding: 28,
+  boxShadow: "0 20px 50px rgba(15,23,42,0.08)",
+  border: "1px solid #e2e8f0",
 };
 
 const title = {
-  fontSize: 26,
+  fontSize: 32,
+letterSpacing: "-0.5px",
+
   fontWeight: 800,
   color: "#0f172a",
 };
@@ -111,13 +114,7 @@ const subtitle = {
   marginBottom: 14,
 };
 
-const tabs = {
-  display: "flex",
-  gap: 8,
-  background: "#e5e7eb",
-  padding: 6,
-  borderRadius: 999,
-};
+
 
 const tabBtn = {
   flex: 1,
@@ -137,14 +134,18 @@ const tabActive = {
 const infoStrip = {
   marginTop: 12,
   fontSize: 13,
-  background: "#eef2ff",
+ background: "#f8fafc",
+border: "1px solid #e2e8f0",
+color: "#334155",
   borderRadius: 12,
   padding: "10px 14px",
 };
 
 const drillCard = {
   marginTop: 18,
-  background: "linear-gradient(180deg, #ecfeff, #ffffff)",
+ background: "#ffffff",
+boxShadow: "0 25px 60px rgba(15,23,42,0.06)",
+border: "1px solid #e2e8f0",
   borderRadius: 22,
   padding: 22,
 };
@@ -169,11 +170,13 @@ const benefits = {
 };
 
 const benefitBox = {
-  background: "#f1f5f9",
-  padding: 10,
-  borderRadius: 12,
+  background: "#ffffff",
+  padding: 14,
+  borderRadius: 14,
   fontSize: 13,
   fontWeight: 600,
+  border: "1px solid #e2e8f0",
+  boxShadow: "0 8px 20px rgba(15,23,42,0.04)",
 };
 
 const ctaRow = {
@@ -183,13 +186,15 @@ const ctaRow = {
 };
 
 const startBtn = {
-  background: "#22c55e",
+  background: "#16a34a",
   color: "#ffffff",
   border: "none",
-  padding: "12px 26px",
-  borderRadius: 14,
+  padding: "14px 34px",
+  borderRadius: 16,
   fontWeight: 800,
+  fontSize: 15,
   cursor: "pointer",
+  boxShadow: "0 12px 30px rgba(22,163,74,0.35)",
 };
 
 const profileCard = {
@@ -197,4 +202,12 @@ const profileCard = {
   background: "#ffffff",
   borderRadius: 22,
   padding: 20,
+};
+
+const tabs = {
+  display: "flex",
+  gap: 8,
+  background: "#e5e7eb",
+  padding: 6,
+  borderRadius: 999,
 };

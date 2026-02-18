@@ -2,80 +2,46 @@
 
 import { useState } from "react";
 import CATArenaLanding from "./CATArenaLanding";
-import RCSectionalRunner from "./rc/RCSectionalRunner";
-import DiagnosisView from "./rc/components/DiagnosisView";
+import RCSectionalContainer from "./rc/RCSectionalContainer";
 import CATAnalytics from "../components/CATAnalytics";
 
-/*
-  Arena Modes:
-  - landing
-  - rc-test
-  - rc-diagnosis
-  - rc-review
-*/
-
 export default function CATArenaView() {
-  /* ---------------- TABS ---------------- */
-  const [activeTab, setActiveTab] = useState("tests"); // tests | analytics
-
-  /* ---------------- ARENA STATE ---------------- */
+  const [activeTab, setActiveTab] = useState("tests");
   const [arenaMode, setArenaMode] = useState("landing");
   const [activeTestId, setActiveTestId] = useState(null);
-  const [lastRCResult, setLastRCResult] = useState(null);
-
-  /* ---------------- ACTIONS ---------------- */
+  const [forceDiagnosis, setForceDiagnosis] = useState(false);
 
   function startRCTest(testId) {
     setActiveTestId(testId);
+    setForceDiagnosis(false);
+    setArenaMode("rc-test");
+  }
+
+  function viewDiagnosis(testId) {
+    setActiveTestId(testId);
+    setForceDiagnosis(true);
     setArenaMode("rc-test");
   }
 
   function exitToArena() {
     setArenaMode("landing");
+    setForceDiagnosis(false);
   }
-
-  function onRCTestCompleted(resultPayload) {
-    setLastRCResult(resultPayload);
-    setArenaMode("rc-diagnosis");
-  }
-
-  function openDiagnosis() {
-    if (!lastRCResult) return;
-    setArenaMode("rc-diagnosis");
-  }
-
-  function openReview() {
-    if (!lastRCResult) return;
-    setArenaMode("rc-review");
-  }
-
-  /* ---------------- RENDER ---------------- */
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      {/* ================= TOP TABS ================= */}
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: 12,
-          background: "#ffffff",
-          borderBottom: "1px solid #e5e7eb",
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-        }}
-      >
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 8, padding: 12 }}>
         <button
           onClick={() => setActiveTab("tests")}
           style={{
             flex: 1,
-            padding: "12px",
+            padding: 12,
             borderRadius: 12,
-            fontWeight: 600,
             border: "none",
             background: activeTab === "tests" ? "#2563eb" : "#e5e7eb",
-            color: activeTab === "tests" ? "#ffffff" : "#111827",
+            color: activeTab === "tests" ? "#fff" : "#111827",
           }}
         >
           Take Tests
@@ -85,63 +51,37 @@ export default function CATArenaView() {
           onClick={() => setActiveTab("analytics")}
           style={{
             flex: 1,
-            padding: "12px",
+            padding: 12,
             borderRadius: 12,
-            fontWeight: 600,
             border: "none",
             background: activeTab === "analytics" ? "#2563eb" : "#e5e7eb",
-            color: activeTab === "analytics" ? "#ffffff" : "#111827",
+            color: activeTab === "analytics" ? "#fff" : "#111827",
           }}
         >
           Analytics
         </button>
       </div>
 
-      {/* ================= TAB CONTENT ================= */}
-
-      {/* -------- TAKE TESTS TAB -------- */}
       {activeTab === "tests" && (
         <>
           {arenaMode === "landing" && (
             <CATArenaLanding
-              onStartRC={() => startRCTest("rc-sectional-01")}
-              onViewDiagnosis={openDiagnosis}
-              onReviewTest={openReview}
-              hasAttemptedRC={!!lastRCResult}
+              onStartRC={startRCTest}
+              onViewDiagnosis={viewDiagnosis}
             />
           )}
 
-          {arenaMode === "rc-test" && (
-            <RCSectionalRunner
-              testId={activeTestId}
+          {arenaMode === "rc-test" && activeTestId && (
+            <RCSectionalContainer
+              key={activeTestId + "-" + forceDiagnosis}
+              testData={{ id: activeTestId }}
+              forceDiagnosis={forceDiagnosis}
               onExit={exitToArena}
-              onComplete={onRCTestCompleted}
-            />
-          )}
-
-          {arenaMode === "rc-diagnosis" && lastRCResult && (
-            <DiagnosisView
-              passages={lastRCResult.passages}
-              questions={lastRCResult.questions}
-              answers={lastRCResult.answers}
-              questionTime={lastRCResult.questionTime}
-              onReview={() => setArenaMode("rc-review")}
-              onExit={exitToArena}
-            />
-          )}
-
-          {arenaMode === "rc-review" && lastRCResult && (
-            <RCSectionalRunner
-              testId={activeTestId}
-              mode="review"
-              initialState={lastRCResult}
-              onExit={() => setArenaMode("rc-diagnosis")}
             />
           )}
         </>
       )}
 
-      {/* -------- ANALYTICS TAB -------- */}
       {activeTab === "analytics" && <CATAnalytics />}
     </div>
   );

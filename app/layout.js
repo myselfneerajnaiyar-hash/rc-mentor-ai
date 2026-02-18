@@ -1,5 +1,4 @@
 import "./globals.css";
-import InstallAppButton from "./components/InstallAppButton";
 
 export const metadata = {
   title: "AuctorRC",
@@ -14,7 +13,7 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#2563eb" />
       </head>
       <body>
-        <InstallAppButton />
+        
         {children}
       </body>
     </html>

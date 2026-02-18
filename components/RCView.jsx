@@ -3,10 +3,20 @@ import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
 import Navbar from "./Navbar";
 import RCProfile from "./RCProfile";
-
+import { supabase } from "../lib/supabase";
+import RCHistory from "./RCHistory";
 
 export default function RCView({view,setView }) {
   const [rcTab, setRcTab] = useState("paste");
+  useEffect(() => {
+  async function checkUser() {
+   const { data, error } = await supabase.auth.getUser();
+console.log("User check:", data, error);
+  }
+
+  checkUser();
+}, []);
+
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
@@ -102,6 +112,8 @@ useEffect(() => {
   window.addEventListener("start-plan-drill", handler);
   return () => window.removeEventListener("start-plan-drill", handler);
 }, [planGenreIndex]);
+
+
   
   useEffect(() => {
   if (rcMode === "plan" && showGenerator && phase === "mentor") {
@@ -215,11 +227,39 @@ const normalized = {
 };
 
 setData(normalized);
+// 🔹 AUTO SAVE DIFFICULT WORDS TO WORDBANK
+if (normalized.difficultWords && normalized.difficultWords.length > 0) {
+
+  const { data: authData } = await supabase.auth.getUser();
+
+  if (!authData?.user) {
+    console.log("No logged in user. Cannot save words.");
+    return;
+  }
+
+  const wordsToInsert = normalized.difficultWords.map(w => ({
+    user_id: authData.user.id,
+    word: typeof w === "string" ? w : w.word || w.term,
+    meaning: typeof w === "string" ? "" : w.meaning || w.definition || "",
+    added_from: "rc-guided",
+    difficulty_tag: "auto",
+  }));
+
+  const { error: saveError } = await supabase
+    .from("user_words")
+    .upsert(wordsToInsert, { onConflict: "user_id,word" });
+
+  if (saveError) {
+    console.log("WORD SAVE ERROR:", saveError);
+  } else {
+    console.log("Words saved successfully");
+  }
+}
 
 if (normalized.primaryQuestion) {
   setMode("showingPrimary");
 }
-setData(normalized);
+
 
 // Only enter question mode if a question exists
 if (normalized.primaryQuestion) {
@@ -335,6 +375,7 @@ async function startTest(passageOverride = null) {
 }
   
  async function submitTest() {
+  console.log("SUBMIT FUNCTION CALLED");
   // ⬇️ Capture time for the current active question
   if (currentQStart != null) {
     const spent = Math.round((Date.now() - currentQStart) / 1000);
@@ -361,14 +402,132 @@ async function startTest(passageOverride = null) {
   questions: testQuestions,
   answers: testAnswers,
   times: questionTimes,
+  difficulty:difficulty,
 }),
     });
 
     if (!res.ok) throw new Error();
 
     const json = await res.json();
+    console.log("FULL DIAGNOSE RESPONSE:", json);
     setResult(json);
     setPhase("result");
+    // 🔐 Get logged in user
+const { data: authData, error: authError } = await supabase.auth.getUser();
+console.log("Auth data inside submit:", authData);
+
+if (authError || !authData?.user) {
+  console.log("No logged in user.");
+  return;
+}
+const userId = authData.user.id;
+console.log("Saving for user:", userId);
+const totalQuestions = testQuestions.length;
+
+const correctAnswers = testQuestions.reduce(
+  (count, q, i) =>
+    count + (Number(testAnswers[i]) === Number(q.correctIndex) ? 1 : 0),
+  0
+);
+
+const totalTimeTaken = Math.round(
+  (Date.now() - testStartTime) / 1000
+);
+
+console.log("About to insert:", {
+  userId,
+  totalQuestions,
+  correctAnswers,
+  totalTimeTaken,
+});
+
+const { data: sessionData, error: sessionError } =
+  await supabase
+    .from("rc_sessions")
+    .insert([
+      {
+        user_id: userId,
+        passage_id: fullPassage.slice(0, 50), // keep this if you want short identifier
+        passage_text: full,                 // ⭐ THIS IS THE REAL FIX
+        total_questions: totalQuestions,
+        correct_answers: correctAnswers,
+        time_taken_sec: totalTimeTaken,
+        difficulty: difficulty,
+      },
+    ])
+    .select()
+    .single();
+    if (sessionError || !sessionData) {
+  console.log("Session insert failed:", sessionError);
+  return;
+}
+
+const sessionId = sessionData.id;
+console.log("Created session ID:", sessionId);
+
+// 🔹 1. Insert analytics (keep this)
+const analyticsRows = testQuestions.map((q, i) => ({
+  session_id: sessionId,
+  user_id: userId,
+  question_type: (q.type || "inference").trim().toLowerCase(),
+  is_correct: Number(testAnswers[i]) === Number(q.correctIndex),
+  time_taken_sec: questionTimes[i] || 0,
+}));
+
+await supabase
+  .from("rc_questions")
+  .insert(analyticsRows);
+
+
+// 🔹 2. Insert FULL QUESTION DATA (history table)
+const fullRows = testQuestions.map((q, i) => {
+ const qa = json.questionAnalysis?.find(x => x.qIndex === i);
+
+ return {
+  session_id: sessionId,
+
+  question_text: q.prompt,
+  options: q.options,
+
+  // CORRECT ANSWER
+  correct_answer: q.options[q.correctIndex],
+  correct_answer_index: q.correctIndex,
+
+  // USER ANSWER
+  user_answer: testAnswers[i] != null
+    ? q.options[testAnswers[i]]
+    : null,
+  user_answer_index: testAnswers[i] != null
+    ? Number(testAnswers[i])
+    : null,
+
+  explanation: qa?.correctExplanation || "",
+  temptation: qa?.temptation || "",
+  why_wrong: qa?.whyWrong || null,
+
+  question_type: (q.type || "inference").trim().toLowerCase(),
+  time_taken_sec: questionTimes[i] || 0,
+
+  is_correct:
+    testAnswers[i] != null &&
+    Number(testAnswers[i]) === Number(q.correctIndex),
+};
+});
+
+const { error: fullError } = await supabase
+  .from("rc_session_questions")
+  .insert(fullRows);
+
+if (fullError) {
+  console.log("Full question insert error:", fullError);
+}
+
+if (qError) {
+  console.log("Question insert error:", qError);
+}
+
+
+    
     // ---- Save RC Profile ----
 const existing = JSON.parse(localStorage.getItem("rcProfile") || "{}");
 
@@ -517,10 +676,11 @@ return (
       }}
     >
       {[
-        { key: "paste", label: "Paste your passage" },
-        { key: "generate", label: "Generate Passage" },
-        { key: "profile", label: "RC Profile" },
-      ].map(tab => (
+  { key: "paste", label: "Paste your passage" },
+  { key: "generate", label: "Generate Passage" },
+  { key: "profile", label: "RC Profile" },
+  { key: "history", label: "RC History" },
+].map(tab => (
         <button
           key={tab.key}
           onClick={() => {
@@ -885,6 +1045,12 @@ return (
   <RCProfile
     activeTab={activeProfileTab}
     setActiveTab={setActiveProfileTab}
+    onBack={() => setRcTab("paste")}
+  />
+)}
+
+{rcTab === "history" && (
+  <RCHistory
     onBack={() => setRcTab("paste")}
   />
 )}

@@ -14,24 +14,27 @@ import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
 import CATAnalytics from "../components/CATAnalytics";
 import MobileBottomNav from "./components/MobileBottomNav";
+import { supabase } from "../lib/supabase"
+import ProfileView from "../components/ProfileView";
 
-function loadSectionalAttemptMap() {
-  try {
-    const raw = JSON.parse(localStorage.getItem("catRCResults") || "{}");
-    const map = {};
+async function loadSectionalAttemptMapFromDB() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return {};
 
-    Object.keys(raw).forEach((sectionalId) => {
-      if (Array.isArray(raw[sectionalId]) && raw[sectionalId].length > 0) {
-        map[sectionalId] = true;
-      }
-    });
+  const { data } = await supabase
+    .from("sectional_tests")
+    .select("sectional_id")
+    .eq("user_id", authData.user.id);
 
-    return map;
-  } catch {
-    return {};
-  }
+  const map = {};
+  (data || []).forEach(row => {
+    map[row.sectional_id] = true;
+  });
+
+  return map;
 }
 
+    
 export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
@@ -74,15 +77,16 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
+  const [userName, setUserName] = useState("");
 
   // ---- VOCAB STATE ----
-  const [vocabDrill, setVocabDrill] = useState([]);
+  
   const [vocabIndex, setVocabIndex] = useState(0);
   const [vocabTimer, setVocabTimer] = useState(0);
   const [vocabRunning, setVocabRunning] = useState(false);
   const [showMeaning, setShowMeaning] = useState(false);
-  const [vocabBank, setVocabBank] = useState([]);
-  const [learningWord, setLearningWord] = useState(null);
+ 
+  
   const [catPhase, setCatPhase] = useState("idle");
 // idle | generating | instructions | test | diagnosis | review
   const [catTab, setCatTab] = useState("tests"); 
@@ -108,131 +112,15 @@ useEffect(() => {
   };
 }, []);
 
-
-  
-  function loadVocab() {
-    return JSON.parse(localStorage.getItem("vocabBank") || "[]");
-  }
-
-  function saveVocab(words) {
-    localStorage.setItem("vocabBank", JSON.stringify(words));
-  }
-
-  function addToVocab(d) {
-    const bank = loadVocab();
-    if (bank.some(w => w.word.toLowerCase() === d.word.toLowerCase())) return;
-
-    const stub = {
-      word: d.word,
-      meaning: d.meaning || "",
-      partOfSpeech: "",
-      usage: "",
-      synonyms: [],
-      antonyms: [],
-      root: "",
-      correctCount: 0,
-      enriched: false,
-    };
-
-    const updated = [...bank, stub];
-    saveVocab(updated);
-    refreshFromBank();
-    enrichWord(stub);
-  }
-
-  async function enrichWord(w) {
-    try {
-      const res = await fetch("/api/enrich-word", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ word: w.word, meaning: w.meaning }),
-      });
-
-      const data = await res.json();
-
-      const bank = loadVocab();
-      const updated = bank.map(x =>
-        x.word.toLowerCase() === w.word.toLowerCase()
-          ? {
-              ...x,
-              partOfSpeech: data.partOfSpeech || "",
-              usage: data.usage || "",
-              synonyms: data.synonyms || [],
-              antonyms: data.antonyms || [],
-              root: data.root || "",
-              enriched: true,
-            }
-          : x
-      );
-
-      saveVocab(updated);
-
-      setVocabDrill(prev =>
-        prev.map(x =>
-          x.word.toLowerCase() === w.word.toLowerCase()
-            ? {
-                ...x,
-                partOfSpeech: data.partOfSpeech || "",
-                usage: data.usage || "",
-                synonyms: data.synonyms || [],
-                antonyms: data.antonyms || [],
-                root: data.root || "",
-                enriched: true,
-              }
-            : x
-        )
-      );
-    } catch (e) {
-      console.error("Enrichment failed", e);
-    }
-  }
-
   function computeStatus(w) {
     if (w.correctCount >= 3) return "mastered";
     if (w.correctCount >= 1) return "learning";
     return "new";
   }
 
-  function refreshFromBank() {
-    const bank = loadVocab();
-    setVocabBank(bank);
-    setVocabDrill([]);
-    setVocabIndex(0);
-    setShowMeaning(false);
-    setVocabRunning(false);
-  }
+  
 
-  function startVocabDrill() {
-    const bank = loadVocab();
-    if (!bank || bank.length === 0) return;
-
-    const sorted = [...bank].sort((a, b) => {
-      const sa = computeStatus(a);
-      const sb = computeStatus(b);
-      const rank = { new: 0, learning: 1, mastered: 2 };
-      return rank[sa] - rank[sb];
-    });
-
-    const drill = sorted.slice(0, 10);
-    drill.forEach(w => {
-      if (!w.enriched) enrichWord(w);
-    });
-
-    setVocabDrill(drill);
-    setVocabIndex(0);
-    setVocabTimer(120);
-    setShowMeaning(false);
-    setVocabRunning(true);
-  }
-
-  useEffect(() => {
-    setVocabBank(loadVocab());
-  }, []);
-
-  useEffect(() => {
-    if (phase === "vocab") setShowMeaning(false);
-  }, [phase]);
-
+  
   useEffect(() => {
     if (phase === "test") {
       setTimeLeft(6 * 60);
@@ -252,60 +140,42 @@ useEffect(() => {
     return () => clearInterval(id);
   }, [timerRunning, timeLeft]);
 
-  useEffect(() => {
-    if (!vocabRunning) return;
-    if (vocabTimer <= 0) {
-      setVocabRunning(false);
-      return;
-    }
-    const id = setInterval(() => {
-      setVocabTimer(t => t - 1);
-    }, 1000);
-    return () => clearInterval(id);
-  }, [vocabRunning, vocabTimer]);
+ 
 
   useEffect(() => {
-  if (view === "cat") {
-    setSectionalAttemptMap(loadSectionalAttemptMap());
+  async function load() {
+    if (view === "cat") {
+      const map = await loadSectionalAttemptMapFromDB();
+      setSectionalAttemptMap(map);
+    }
   }
+  load();
 }, [view]);
 
-  useEffect(() => {
-  function refresh() {
-    setSectionalAttemptMap(loadSectionalAttemptMap());
-  }
-
-  window.addEventListener("CAT_ATTEMPT_SAVED", refresh);
-  return () => window.removeEventListener("CAT_ATTEMPT_SAVED", refresh);
-}, []);
+ 
 
   useEffect(() => {
-  function refresh() {
-    setSectionalAttemptMap(loadSectionalAttemptMap());
-  }
+  async function loadProfile() {
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) return;
 
-  window.addEventListener("CAT_ATTEMPT_SAVED", refresh);
-  return () => window.removeEventListener("CAT_ATTEMPT_SAVED", refresh);
-}, []);
-  
-  useEffect(() => {
-    const existing = loadVocab();
-    if (!existing.length) {
-      saveVocab([
-        {
-          word: "Obscure",
-          meaning: "Hard to understand",
-          partOfSpeech: "Adjective",
-          synonyms: ["unclear", "vague", "cryptic"],
-          antonyms: ["clear", "obvious"],
-          usage: "The author’s argument was obscure and difficult to follow.",
-          root: "Latin: obscurus (dark, hidden)",
-          correctCount: 0,
-        },
-      ]);
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("user_id", authData.user.id)
+      .maybeSingle();
+
+    if (profile?.name) {
+      // Capitalize properly
+      const formatted =
+        profile.name.charAt(0).toUpperCase() +
+        profile.name.slice(1);
+      setUserName(formatted);
     }
-    setVocabBank(loadVocab());
-  }, []);
+  }
+
+  loadProfile();
+}, []);
 
   function splitPassage() {
     const raw = text.trim();
@@ -638,18 +508,21 @@ return (
   <Navbar view={view} setView={setView} />
 </div>
 
-    {view === "home" && (
-      <HomeView
-        setView={setView}
-        startAdaptiveRC={() => setView("rc")}
-      />
-    )}
+   {view === "home" && (
+  <HomeView
+    setView={setView}
+    startAdaptiveRC={() => setView("rc")}
+    userName={userName}
+  />
+)}
 
     {view === "rc" && <RCView view={view} setView={setView} />}
 
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
+
+    {view === "profile" && <ProfileView setView={setView} />}
 
 {/* ================= CAT ARENA ================= */}
 
@@ -724,23 +597,20 @@ return (
               setActiveRCTest(data);
               setCatPhase("instructions");
             }}
+           
             onViewDiagnosis={(sectionalId, attemptId) => {
-              const attempts = JSON.parse(
-                localStorage.getItem("catRCResults") || "{}"
-              );
+  setActiveRCTest({
+    id: sectionalId,
+    __startPhase: "diagnosis",
+    __attemptId: attemptId,
+  });
 
-              if (!attempts[sectionalId]?.length) return;
+  setCatPhase("test");
+}}
 
-              setActiveRCTest({
-                id: sectionalId,
-                __startPhase: "diagnosis",
-                __attemptId: attemptId,
-              });
 
-              setCatPhase("test");
-            }}
             onReviewTest={async (sectionalId) => {
-              if (!sectionalAttemptMap[sectionalId]) return;
+             
 
               setCatPhase("generating");
               const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
@@ -768,12 +638,14 @@ return (
           />
         )}
 
-        {catPhase === "test" && activeRCTest && (
-          <RCSectionalContainer
-            testData={activeRCTest}
-            onExit={() => setCatPhase("idle")}
-          />
-        )}
+       {catPhase === "test" && activeRCTest && (
+  <RCSectionalContainer
+    key={activeRCTest.id + "-" + activeRCTest.__startPhase}
+    testData={activeRCTest}
+    forceDiagnosis={activeRCTest.__startPhase === "diagnosis"}
+    onExit={() => setCatPhase("idle")}
+  />
+)}
       </>
     )}
   </>

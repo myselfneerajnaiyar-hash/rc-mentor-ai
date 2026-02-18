@@ -1,231 +1,250 @@
 "use client";
 import { useState, useEffect } from "react";
-const STORAGE_KEY = "catRCResults";
+import { supabase } from "../lib/supabase";
 
 
-function getSectionalAccuracyTrend() {
-  try {
-    const data = JSON.parse(localStorage.getItem("catRCResults")) || {};
+function getSectionalAccuracyTrend(data) {
+  if (!data || !data.length) return [];
 
-    return Object.entries(data)
-      .map(([sectionalId, attempts]) => {
-        if (!Array.isArray(attempts) || attempts.length === 0) return null;
+  return data
+    .filter(d => d.sectional_tests?.sectional_id)
+    .map(d => {
+      const total = d.sectional_tests?.total_questions || 0;
+      const correct = d.total_correct || 0;
 
-        const a = attempts[0]; // locked attempt
-        if (!a.correct || !a.total) return null;
-
-        return {
-          label: sectionalId.toUpperCase(),
-          accuracy: Math.round((a.correct / a.total) * 100),
-          time: a.timestamp,
-        };
-      })
-      .filter(Boolean)
-      .sort((a, b) => a.time - b.time);
-  } catch {
-    return [];
-  }
-}
-function getAverageTimePerQuestion() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
-    let totalQuestions = 0;
-    let totalTime = 0;
-
-   Object.values(data).forEach(sectionAttempts => {
-  if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0) return;
-
-  const attempt = sectionAttempts[0];
-     if (!attempt.total || attempt.total === 0) return;
-
-  // 🔒 HARD GUARD: ignore corrupted / empty attempts
-  if (
-    typeof attempt.total !== "number" ||
-    attempt.total <= 0 ||
-    typeof attempt.timeTaken !== "number" ||
-    attempt.timeTaken <= 0
-  ) {
-    return;
-  }
-
-  totalQuestions += attempt.total;
-  totalTime += attempt.timeTaken;
-});
-
-    if (totalQuestions === 0) return null;
-
-    return Math.round(totalTime / totalQuestions);
-  } catch {
-    return null;
-  }
+      return {
+        label: d.sectional_tests.sectional_id.toUpperCase(),
+        accuracy: total
+          ? Math.round((correct / total) * 100)
+          : 0,
+        time: new Date(d.sectional_tests.created_at).getTime(),
+      };
+    })
+    .sort((a, b) => a.time - b.time);
 }
 
-function getOverallAccuracy() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+function getAverageTimePerQuestion(data) {
+  if (!data || !data.length) return null;
 
-    let totalCorrect = 0;
-    let totalAttempted = 0;
+  let totalTime = 0;
+  let totalQuestions = 0;
 
-    Object.values(data).forEach(sectionAttempts => {
-      if (!Array.isArray(sectionAttempts) || sectionAttempts.length === 0)
-        return;
+  data.forEach(d => {
+    const total = d.sectional_tests?.total_questions || 0;
+    totalTime += d.total_time_s || 0;
+    totalQuestions += total;
+  });
 
-      const a = sectionAttempts[0];
+  if (!totalQuestions) return null;
 
-      if (
-        typeof a.correct !== "number" ||
-        typeof a.attempted !== "number" ||
-        a.attempted === 0
-      ) {
-        return;
-      }
-
-      totalCorrect += a.correct;
-      totalAttempted += a.attempted;
-    });
-
-    if (totalAttempted === 0) return null;
-
-    return Math.round((totalCorrect / totalAttempted) * 100);
-  } catch {
-    return null;
-  }
+  return Math.round(totalTime / totalQuestions);
 }
 
-function getSectionWiseMarks() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+function getOverallAccuracy(data) {
+  if (!data || !data.length) return null;
 
-    return Object.entries(data)
-      .map(([sectionId, attempts]) => {
-        if (!Array.isArray(attempts) || attempts.length === 0) return null;
+  let totalCorrect = 0;
+  let totalQuestions = 0;
 
-        const a = attempts[0];
+  data.forEach(d => {
+    const total = d.sectional_tests?.total_questions || 0;
+    totalCorrect += d.total_correct || 0;
+    totalQuestions += total;
+  });
 
-        // 🔒 HARD GUARDS
-        if (!a.total || a.total === 0) return null;
-        if (typeof a.correct !== "number") return null;
+  if (!totalQuestions) return null;
 
-        const correct = a.correct;
-        if (typeof a.attempted !== "number") return null;
-
-        const attempted = a.attempted;
-        const wrong = Math.max(attempted - correct, 0);
-
-        const marks = correct * 3 - wrong * 1;
-
-        return {
-          label: sectionId.toUpperCase(),
-          marks,
-          correct,
-          wrong,
-        };
-      })
-      .filter(Boolean);
-  } catch {
-    return [];
-  }
+  return Math.round((totalCorrect / totalQuestions) * 100);
 }
 
-function getRCSkillMetrics() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    const attempts = Object.values(data)
-      .map(a => (Array.isArray(a) ? a[0] : null))
-      .filter(Boolean);
+function getSectionWiseMarks(data) {
+  if (!data || !data.length) return [];
 
-    if (attempts.length === 0) return null;
+  const grouped = {};
 
-    let correct = 0;
-    let total = 0;
-    let totalTime = 0;
+  data.forEach(d => {
+    const id = d.sectional_tests?.sectional_id;
+    if (!id) return;
 
-    attempts.forEach(a => {
-      correct += a.correct || 0;
-      total += a.total || 0;
-      totalTime += a.timeTaken || 0;
-    });
+    if (!grouped[id]) {
+      grouped[id] = {
+        correct: 0,
+        wrong: 0,
+        score: 0,
+      };
+    }
 
-    const accuracy = total ? Math.round((correct / total) * 100) : 0;
-    const avgTime = total ? Math.round(totalTime / total) : 0;
+    grouped[id].correct += d.total_correct || 0;
+    grouped[id].wrong += d.total_wrong || 0;
+    grouped[id].score += d.total_score || 0;
+  });
 
-    // Heuristic scores (CAT-style logic)
-    const speedScore =
-      avgTime <= 45 ? 80 :
-      avgTime <= 60 ? 65 :
-      avgTime <= 75 ? 50 : 35;
-
-    const selectionScore =
-      accuracy >= 75 ? 75 :
-      accuracy >= 65 ? 65 :
-      accuracy >= 55 ? 55 : 45;
-
-    const eliminationScore =
-      accuracy >= 70 ? 70 :
-      accuracy >= 60 ? 55 :
-      accuracy >= 50 ? 45 : 35;
-
-    const enduranceScore =
-      attempts.length >= 6 ? 70 :
-      attempts.length >= 4 ? 60 :
-      attempts.length >= 2 ? 50 : 40;
-
-    return {
-      accuracy,
-      speed: speedScore,
-      selection: selectionScore,
-      elimination: eliminationScore,
-      endurance: enduranceScore,
-    };
-  } catch {
-    return null;
-  }
+  return Object.entries(grouped).map(([id, values]) => ({
+    label: id.toUpperCase(),
+    marks: values.score,
+    correct: values.correct,
+    wrong: values.wrong,
+  }));
 }
 
-function getAttemptedSectionals() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    return Object.keys(data).filter(
-      k => Array.isArray(data[k]) && data[k].length > 0
-    );
-  } catch {
-    return [];
-  }
+function getRCSkillMetrics(data) {
+  if (!data || !data.length) return null;
+
+  let totalCorrect = 0;
+  let totalQuestions = 0;
+  let totalTime = 0;
+
+  data.forEach(d => {
+    const total = d.sectional_tests?.total_questions || 0;
+    totalCorrect += d.total_correct || 0;
+    totalQuestions += total;
+    totalTime += d.total_time_s || 0;
+  });
+
+  const accuracy = totalQuestions
+    ? Math.round((totalCorrect / totalQuestions) * 100)
+    : 0;
+
+  const avgTime = totalQuestions
+    ? Math.round(totalTime / totalQuestions)
+    : 0;
+
+  const speedScore =
+    avgTime <= 45 ? 80 :
+    avgTime <= 60 ? 65 :
+    avgTime <= 75 ? 50 : 35;
+
+  const selectionScore =
+    accuracy >= 75 ? 75 :
+    accuracy >= 65 ? 65 :
+    accuracy >= 55 ? 55 : 45;
+
+  const eliminationScore =
+    accuracy >= 70 ? 70 :
+    accuracy >= 60 ? 55 :
+    accuracy >= 50 ? 45 : 35;
+
+  const enduranceScore =
+    data.length >= 6 ? 70 :
+    data.length >= 4 ? 60 :
+    data.length >= 2 ? 50 : 40;
+
+  return {
+    accuracy,
+    speed: speedScore,
+    selection: selectionScore,
+    elimination: eliminationScore,
+    endurance: enduranceScore,
+  };
 }
 
-function extractMetrics(sectionId) {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    const a = data[sectionId]?.[0];
-    if (!a) return null;
 
-    const attempted = a.attempted || a.total || 0;
-    const correct = a.correct || 0;
-    const wrong = a.wrong ?? Math.max(attempted - correct, 0);
+function getAttemptedSectionals(data) {
+  if (!data || !data.length) return [];
 
-    const accuracy = attempted
-      ? Math.round((correct / attempted) * 100)
-      : 0;
+  const unique = new Set(
+    data.map(d => d.sectional_tests?.sectional_id)
+  );
 
-    const score = correct * 3 - wrong;
+  return Array.from(unique).filter(Boolean);
+}
 
-    const avgTime = attempted
-      ? Math.round((a.timeTaken || 0) / attempted)
-      : 0;
+function extractMetrics(sectionId, data) {
+  if (!data || !data.length) return null;
 
-    return {
-      accuracy,
-      score,
-      avgTime,
-      correct,
-      wrong,
-      attempted,
-    };
-  } catch {
-    return null;
-  }
+  const rows = data.filter(
+    d => d.sectional_tests?.sectional_id === sectionId
+  );
+
+  if (!rows.length) return null;
+
+  let totalCorrect = 0;
+  let totalWrong = 0;
+  let totalTime = 0;
+  let totalQuestions = 0;
+
+  rows.forEach(d => {
+    totalCorrect += d.total_correct || 0;
+    totalWrong += d.total_wrong || 0;
+    totalTime += d.total_time_s || 0;
+    totalQuestions += d.sectional_tests?.total_questions || 0;
+  });
+
+  const attempted = totalCorrect + totalWrong;
+
+  const accuracy = attempted
+    ? Math.round((totalCorrect / attempted) * 100)
+    : 0;
+
+  const avgTime = attempted
+    ? Math.round(totalTime / attempted)
+    : 0;
+
+  const score = totalCorrect * 3 - totalWrong;
+
+  return {
+    accuracy,
+    score,
+    avgTime,
+    correct: totalCorrect,
+    wrong: totalWrong,
+    attempted,
+  };
+}
+
+
+
+function getLastNSectionals(data, n = 3) {
+  if (!data?.length) return [];
+
+  // Sort by test created_at
+  const sorted = [...data].sort((a, b) => {
+    const tA = new Date(a.sectional_tests?.created_at).getTime();
+    const tB = new Date(b.sectional_tests?.created_at).getTime();
+    return tA - tB;
+  });
+
+  return sorted.slice(-n);
+}
+
+/* ================= CONFIDENCE ENGINE ================= */
+
+function calculateVolatility(trendData) {
+  if (!trendData || trendData.length < 2) return 0;
+
+  const mean =
+    trendData.reduce((sum, d) => sum + d.accuracy, 0) /
+    trendData.length;
+
+  const variance =
+    trendData.reduce((sum, d) => {
+      return sum + Math.pow(d.accuracy - mean, 2);
+    }, 0) / trendData.length;
+
+  return Math.sqrt(variance);
+}
+
+function calculateConfidenceScore({ accuracy, avgTime, volatility }) {
+  const stabilityScore = Math.max(0, 100 - volatility * 2);
+
+  const optimalTime = 75;
+  const timeDeviation = Math.abs(avgTime - optimalTime);
+  const timeScore = Math.max(0, 100 - timeDeviation);
+
+  const accuracyScore = accuracy;
+
+  return Math.round(
+    stabilityScore * 0.4 +
+    timeScore * 0.3 +
+    accuracyScore * 0.3
+  );
+}
+
+function getConfidenceLabel(score) {
+  if (score >= 75) return "Exam Ready Confidence";
+  if (score >= 55) return "Developing Stability";
+  if (score >= 35) return "Inconsistent Execution";
+  return "Low Decision Confidence";
 }
 
 /* ================= PLAN TEMPLATES ================= */
@@ -258,26 +277,142 @@ const PLAN_TEMPLATES = {
   }
 };
 
-function getPersonalizedPlan(metrics) {
-  if (!metrics) return null;
 
-  // High wrong answers → elimination problem
-  if (metrics.accuracy < 60) {
+function getPersonalizedPlan(metrics, sectionalData) {
+  if (!metrics || !sectionalData?.length) return null;
+
+  const lastThree = getLastNSectionals(sectionalData, 3);
+
+  if (!lastThree.length) return null;
+
+  // ----- RECENT METRICS -----
+  const recentAccuracy = lastThree.map(d => {
+    const total = d.sectional_tests?.total_questions || 0;
+    const correct = d.total_correct || 0;
+    return total ? (correct / total) * 100 : 0;
+  });
+
+  const recentTime = lastThree.map(d => {
+    const total = d.sectional_tests?.total_questions || 0;
+    return total ? (d.total_time_s / total) : 0;
+  });
+
+  const trend =
+    recentAccuracy.length >= 2
+      ? recentAccuracy[recentAccuracy.length - 1] -
+        recentAccuracy[recentAccuracy.length - 2]
+      : 0;
+
+  const latestAccuracy = recentAccuracy[recentAccuracy.length - 1];
+  const latestTime = recentTime[recentTime.length - 1];
+
+  // ----- DECISION LOGIC -----
+
+  // 1️⃣ Declining accuracy → stability fix
+  if (trend < -5) {
+    return {
+      title: "Stability Recovery Plan (10 Days)",
+      focus: ["Mental Stability", "Error Control", "Attempt Discipline"],
+      plan: [
+        "Day 1–2: Solve 1 sectional per day. Cap attempts at 8.",
+        "Day 3–4: Review only wrong answers deeply.",
+        "Day 5–6: Practice medium-difficulty RC only.",
+        "Day 7–8: Timed sectional but stop after 2 wrong.",
+        "Day 9–10: Controlled simulation under exam timing."
+      ]
+    };
+  }
+
+  // 2️⃣ Speed increasing but accuracy falling → rushing problem
+  if (trend < 0 && latestTime < 55) {
+    return {
+      title: "Anti-Rushing Calibration Plan",
+      focus: ["Pacing Control", "Option Evaluation"],
+      plan: [
+        "Day 1–2: Minimum 60 sec per question rule.",
+        "Day 3–4: Justify answer before marking.",
+        "Day 5–6: Practice inference questions only.",
+        "Day 7–8: Timed sectional with strict elimination method.",
+        "Day 9–10: Review all traps missed."
+      ]
+    };
+  }
+
+  // 3️⃣ High accuracy but slow → speed enhancement
+  if (latestAccuracy >= 70 && latestTime > 70) {
+    return {
+      title: "Speed Upgrade Protocol",
+      focus: ["Reading Speed", "Decision Speed"],
+      plan: [
+        "Day 1–2: 6 min per passage cap.",
+        "Day 3–4: 50 sec per question drills.",
+        "Day 5–6: Summary mapping under 2 minutes.",
+        "Day 7–8: Full sectional speed run.",
+        "Day 9–10: Redo slowest sectional."
+      ]
+    };
+  }
+
+  // 4️⃣ Accuracy below 60 consistently → elimination fix
+  if (latestAccuracy < 60) {
     return PLAN_TEMPLATES.ELIMINATION_FIX;
   }
 
-  // Over-attempting → selection problem
-  if (metrics.accuracy >= 60 && metrics.accuracy <= 70) {
-    return PLAN_TEMPLATES.SELECTION_RESET;
-  }
-
-  // Default
+  // 5️⃣ Default
   return PLAN_TEMPLATES.SELECTION_RESET;
 }
+
 export default function CATAnalytics() {
+
   const [compareA, setCompareA] = useState("");
-const [compareB, setCompareB] = useState("");
-  const metrics = getRCSkillMetrics();
+  const [compareB, setCompareB] = useState("");
+
+  const [sectionalData, setSectionalData] = useState([]);
+
+  useEffect(() => {
+    async function loadAnalytics() {
+      const { data: authData } = await supabase.auth.getUser();
+      if (!authData?.user) return;
+
+      const { data, error } = await supabase
+       .from("sectional_test_attempts")
+.select(`
+  total_correct,
+  total_wrong,
+  total_score,
+  total_time_s,
+  test_id,
+  sectional_tests:sectional_tests!inner (
+    sectional_id,
+    total_questions,
+    created_at
+  )
+`)
+        .eq("user_id", authData.user.id);
+
+      if (!error && data) {
+        setSectionalData(data);
+      }
+    }
+
+    loadAnalytics();
+  }, []);
+
+  const metrics = getRCSkillMetrics(sectionalData);
+  const trendData = getSectionalAccuracyTrend(sectionalData);
+const volatility = calculateVolatility(trendData);
+
+const overallAccuracy = getOverallAccuracy(sectionalData) || 0;
+const avgTime = getAverageTimePerQuestion(sectionalData) || 0;
+
+const confidenceScore = calculateConfidenceScore({
+  accuracy: overallAccuracy,
+  avgTime: avgTime,
+  volatility: volatility,
+});
+
+const confidenceLabel = getConfidenceLabel(confidenceScore);
+  
  
  return (
   <div style={pageWrapper}>
@@ -323,7 +458,7 @@ const [compareB, setCompareB] = useState("");
 
         <div style={{ width: "100%", height: 220 }}>
   {(() => {
-    const data = getSectionalAccuracyTrend();
+    const data = getSectionalAccuracyTrend(sectionalData);
 
     if (data.length === 0) {
       return <span style={{ color: "#64748b" }}>No data yet</span>;
@@ -340,7 +475,7 @@ const [compareB, setCompareB] = useState("");
   }}
 >
   {(() => {
-    const data = getSectionalAccuracyTrend();
+    const data = getSectionalAccuracyTrend(sectionalData);
 
     if (!data.length) {
       return (
@@ -350,9 +485,9 @@ const [compareB, setCompareB] = useState("");
       );
     }
 
-   const width = 500;
+   const width = data.length * 140;
 const height = 140;
-const padding = 30;
+const padding = 40;
 
 const points = data.map((d, i) => {
   const x =
@@ -367,7 +502,9 @@ const points = data.map((d, i) => {
 });
 
 return (
-  <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="100%">
+  <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="180">
+
+  
     {/* X axis */}
     <line
       x1={padding}
@@ -430,8 +567,15 @@ return (
   })()}
 </div>
           <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
-            <Stat label="Total Sectionals" value="—" />
-            <Stat label="Total Attempts" value="—" />
+           <Stat
+  label="Total Sectionals"
+  value={getAttemptedSectionals(sectionalData).length}
+/>
+
+<Stat
+  label="Total Attempts"
+  value={sectionalData.length}
+/>
           </div>
         </div>
 
@@ -449,7 +593,7 @@ return (
   }}
 >
   {(() => {
-    const accuracy = getOverallAccuracy();
+    const accuracy = getOverallAccuracy(sectionalData);
 
     if (!accuracy) {
       return <span style={{ color: "#64748b" }}>No data yet</span>;
@@ -512,7 +656,7 @@ return (
   <p style={cardSub}>Strengths & weaknesses across RC dimensions</p>
 
   {(() => {
-    const metrics = getRCSkillMetrics();
+    const metrics = getRCSkillMetrics(sectionalData);
     if (!metrics)
       return <div style={{ color: "#64748b" }}>No data yet</div>;
 
@@ -584,7 +728,7 @@ return (
   }}
 >
   {(() => {
-    const avg = getAverageTimePerQuestion();
+    const avg = getAverageTimePerQuestion(sectionalData);
 
     if (!avg) {
       return <span style={{ color: "#64748b" }}>No data yet</span>;
@@ -613,7 +757,7 @@ return (
   <p style={cardSub}>Exact CAT scoring (+3 correct, −1 wrong)</p>
 
   {(() => {
-    const data = getSectionWiseMarks();
+    const data = getSectionWiseMarks(sectionalData);
 
     if (!data.length) {
       return <span style={{ color: "#64748b" }}>No data yet</span>;
@@ -672,7 +816,7 @@ return (
   <p style={cardSub}>Compare performance between two sectionals</p>
 
   {(() => {
-    const sectionals = getAttemptedSectionals();
+    const sectionals = getAttemptedSectionals(sectionalData);
 
     if (sectionals.length < 2) {
       return (
@@ -682,8 +826,8 @@ return (
       );
     }
 
-    const A = extractMetrics(compareA);
-    const B = extractMetrics(compareB);
+    const A = extractMetrics(compareA,sectionalData);
+    const B = extractMetrics(compareB,sectionalData);
 
     return (
       <>
@@ -790,43 +934,101 @@ return (
 </div>
 
     {/* ================= PLAN OF ACTION ================= */}
-<div style={card}>
-  <h2 style={sectionTitle}>
-  🎯 Personalized 10-Day Plan
-</h2>
-  <p style={cardSub}>
-    What to focus on before your next CAT RC sectional
-  </p>
+{/* ================= PLAN + CONFIDENCE ROW ================= */}
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      window.innerWidth < 768 ? "1fr" : "2fr 1fr",
+    gap: 20,
+    marginTop: 20,
+  }}
+>
+  {/* -------- Personalized Plan (65%) -------- */}
+  <div style={card}>
+    <h2 style={sectionTitle}>🎯 Personalized 10-Day Plan</h2>
+    <p style={cardSub}>
+      What to focus on before your next CAT RC sectional
+    </p>
 
-  {(() => {
-    const plan = getPersonalizedPlan(metrics);
+    {(() => {
+      const plan = getPersonalizedPlan(metrics, sectionalData);
 
-    if (!plan) {
-      return <div style={{ color: "#64748b" }}>No data yet</div>;
-    }
+      if (!plan) {
+        return <div style={{ color: "#64748b" }}>No data yet</div>;
+      }
 
-    return (
-      <>
-        <h4 style={{ marginBottom: 6 }}>Focus Skills</h4>
-        <ul>
-          {plan.focus.map(f => (
-            <li key={f}>{f}</li>
-          ))}
-        </ul>
+      return (
+        <>
+          <h4 style={{ marginBottom: 6 }}>Focus Skills</h4>
+          <ul>
+            {plan.focus.map(f => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
 
-        <h3 style={{ marginTop: 12 }}>📅 {plan.title}</h3>
-        <ol>
-          {plan.plan.map((step, i) => (
-            <li key={i} style={{ marginBottom: 6 }}>
-              {step}
-            </li>
-          ))}
-        </ol>
-      </>
-    );
-  })()}
+          <h3 style={{ marginTop: 12 }}>📅 {plan.title}</h3>
+          <ol>
+            {plan.plan.map((step, i) => (
+              <li key={i} style={{ marginBottom: 6 }}>
+                {step}
+              </li>
+            ))}
+          </ol>
+        </>
+      );
+    })()}
+  </div>
+
+  {/* -------- Confidence Index (35%) -------- */}
+  <div style={card}>
+    <h3 style={cardTitle}>Confidence Index</h3>
+    <p style={cardSub}>Decision stability under test pressure</p>
+
+    <div
+      style={{
+        fontSize: 48,
+        fontWeight: 800,
+        marginTop: 10,
+        marginBottom: 8,
+        color:
+          confidenceScore >= 75
+            ? "#16a34a"
+            : confidenceScore >= 55
+            ? "#f59e0b"
+            : "#dc2626",
+      }}
+    >
+      {confidenceScore}
+    </div>
+
+    <div
+      style={{
+        fontSize: 14,
+        color: "#64748b",
+        marginBottom: 12,
+      }}
+    >
+      {confidenceLabel}
+    </div>
+
+    <div
+      style={{
+        fontSize: 12,
+        color: "#94a3b8",
+        lineHeight: 1.5,
+      }}
+    >
+      This score combines:
+      <br />
+      • Accuracy stability  
+      <br />
+      • Time consistency  
+      <br />
+      • Volatility trend
+    </div>
+  </div>
 </div>
-
       
       {/* ================= INSIGHT ROW ================= */}
 <div

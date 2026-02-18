@@ -1,0 +1,126 @@
+.welcome-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Soft floating glow animation */
+.welcome-wrapper::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(-20px); }
+  50% { transform: translateY(20px); }
+  100% { transform: translateY(-20px); }
+}
+
+.welcome-card {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
+  width: 450px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  animation: fadeSlide 0.8s ease forwards;
+  transform: translateY(20px);
+  opacity: 0;
+
+  /* 🔥 ADD THIS */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@keyframes fadeSlide {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.welcome-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #1e3a8a;
+}
+
+.welcome-subtitle {
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.welcome-points {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+  color: #444;
+  text-align: left;
+}
+
+.welcome-points li {
+  margin-bottom: 10px;
+}
+
+.welcome-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.welcome-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4);
+}
+
+.welcome-footer {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.welcome-emotion {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.welcome-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #1e3a8a;
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+  .welcome-card input,
+.welcome-card select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+}
