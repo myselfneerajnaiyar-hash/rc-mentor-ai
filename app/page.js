@@ -643,7 +643,10 @@ return (
     
     testData={activeRCTest}
     forceDiagnosis={activeRCTest.__startPhase === "diagnosis"}
-    onExit={() => setCatPhase("idle")}
+    onExit={() => {
+  setCatPhase("idle");
+  setActiveRCTest(null);
+}}
   />
 )}
       </>
