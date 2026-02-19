@@ -20,7 +20,11 @@ export default function DiagnosisView({
   resolvedQuestions.forEach((q, i) => {
     if (answers[i] !== null && answers[i] !== undefined) {
       attempted++;
-      if (Number(answers[i]) === Number(q.correctIndex)) {
+     if (
+  answers[i] !== null &&
+  answers[i] !== undefined &&
+  Number(answers[i]) === Number(q.correctIndex)
+) {
         correct++;
       }
     }
@@ -70,7 +74,11 @@ const passageHeat = passages.map((p, pIdx) => {
   p.questions.forEach((q, qIdx) => {
     const globalIndex = runningIndex;
 
-    if (Number(answers[globalIndex]) === Number(q.correctIndex)) {
+    if (
+  answers[globalIndex] !== null &&
+  answers[globalIndex] !== undefined &&
+  Number(answers[globalIndex]) === Number(q.correctIndex)
+) {
       correctQ++;
     }
 
@@ -112,6 +120,8 @@ const passageHeat = passages.map((p, pIdx) => {
     if (!typeMap[type]) typeMap[type] = { correct: 0, total: 0 };
     typeMap[type].total++;
    if (
+  answers[i] !== null &&
+  answers[i] !== undefined &&
   q.correctIndex !== undefined &&
   Number(answers[i]) === Number(q.correctIndex)
 ) {
