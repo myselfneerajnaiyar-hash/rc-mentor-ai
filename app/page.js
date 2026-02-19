@@ -16,6 +16,7 @@ import CATAnalytics from "../components/CATAnalytics";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
+import LoginPage from "./login/page";
 
 async function loadSectionalAttemptMapFromDB() {
   const { data: authData } = await supabase.auth.getUser();
@@ -44,6 +45,7 @@ export default function Page() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
 
   const [mode, setMode] = useState("idle");
   // idle | showingPrimary | showingEasier | solved
@@ -152,7 +154,25 @@ useEffect(() => {
   load();
 }, [view]);
 
- 
+useEffect(() => {
+  async function getUser() {
+    const { data } = await supabase.auth.getUser();
+    setUser(data?.user || null);
+  }
+
+  getUser();
+
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      setUser(session?.user || null);
+    }
+  );
+
+  return () => {
+    listener.subscription.unsubscribe();
+  };
+}, []);
+
 
   useEffect(() => {
   async function loadProfile() {
@@ -524,6 +544,8 @@ return (
 
     {view === "profile" && <ProfileView setView={setView} />}
 
+    {view === "login" && <LoginPage />}
+
 {/* ================= CAT ARENA ================= */}
 
 {view === "cat" && (
@@ -653,23 +675,54 @@ return (
     )}
   </>
 )}
-{/* MOBILE LOGIN BUTTON */}
-<div className="mobile-login-bar">
-  <button
-    onClick={() => (window.location.href = "/login")}
-    style={{
-      padding: "8px 14px",
-      borderRadius: 8,
-      border: "none",
-      background: "#2563eb",
-      color: "#fff",
-      fontWeight: 600,
-    }}
-  >
-    Login
-  </button>
-</div>
+
   </main>
+  {/* MOBILE AUTH BUTTON */}
+<div
+  style={{
+    position: "fixed",
+    bottom: 80,   // above bottom nav
+    right: 16,
+    zIndex: 1000,
+  }}
+>
+  {!user ? (
+    <button
+      onClick={() => setView("login")}
+      style={{
+        padding: "10px 16px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 12,
+        fontWeight: 600,
+        cursor: "pointer",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+      }}
+    >
+      Login
+    </button>
+  ) : (
+    <div
+      onClick={() => setView("profile")}
+      style={{
+        width: 42,
+        height: 42,
+        borderRadius: "50%",
+        background: "#2563eb",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 700,
+        cursor: "pointer",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+      }}
+    >
+      {user.email?.charAt(0).toUpperCase()}
+    </div>
+  )}
+</div>
 {/* MOBILE BOTTOM NAV */}
 <div className="mobile-nav">
   <MobileBottomNav view={view} setView={setView} />
