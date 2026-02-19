@@ -653,6 +653,22 @@ return (
     )}
   </>
 )}
+{/* MOBILE LOGIN BUTTON */}
+<div className="mobile-login-bar">
+  <button
+    onClick={() => (window.location.href = "/login")}
+    style={{
+      padding: "8px 14px",
+      borderRadius: 8,
+      border: "none",
+      background: "#2563eb",
+      color: "#fff",
+      fontWeight: 600,
+    }}
+  >
+    Login
+  </button>
+</div>
   </main>
 {/* MOBILE BOTTOM NAV */}
 <div className="mobile-nav">

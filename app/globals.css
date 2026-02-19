@@ -315,3 +315,21 @@ body {
     padding-top: 8px;
   }
 }
+
+.mobile-login-bar {
+  display: none;
+  padding: 10px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .mobile-login-bar {
+    display: block;
+  }
+
+  .desktop-navbar {
+    display: none;
+  }
+}
