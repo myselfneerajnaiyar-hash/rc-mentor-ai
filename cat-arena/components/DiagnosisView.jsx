@@ -9,10 +9,9 @@ export default function DiagnosisView({
   onBack,
 }) {
   /* ===================== 🔒 BACKWARD COMPATIBILITY FIX ===================== */
-  const resolvedQuestions =
-  questions && questions.length
-    ? questions
-    : passages.flatMap(p => p.questions || []);
+ const resolvedQuestions = passages.flatMap(
+  p => p.questions || []
+);
   /* ===================== GLOBAL STATS ===================== */
   const total = resolvedQuestions.length;
   let attempted = 0;
