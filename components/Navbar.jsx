@@ -1,126 +1,79 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
-export default function Navbar() {
-  const router = useRouter();
-  const pathname = usePathname();
-
+export default function Navbar({ view, setView }) {
   const [profile, setProfile] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  /* ================= LOAD PROFILE ================= */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   useEffect(() => {
     async function loadProfile() {
-      const { data: authData } = await supabase.auth.getUser();
-      if (!authData?.user) {
-        setProfile(null);
-        return;
-      }
-
-      const { data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", authData.user.id)
-        .maybeSingle();
-
-      if (data) setProfile(data);
+      const { data } = await supabase.auth.getUser();
+      if (!data?.user) return;
+      setProfile(data.user);
     }
-
     loadProfile();
   }, []);
 
-  const isActive = (path) => pathname === path;
+  // 🔥 MOBILE VIEW
+  if (isMobile) {
+    if (!profile) {
+      return (
+        <div style={mobileBar}>
+          <button
+            style={loginBtn}
+            onClick={() => (window.location.href = "/login")}
+          >
+            Login
+          </button>
+        </div>
+      );
+    }
 
+    return null; // Logged in mobile → no top navbar
+  }
+
+  // 💻 DESKTOP VIEW
   return (
     <div style={navWrap}>
-      {/* LEFT SIDE */}
       <div style={leftSection}>
-        <h3 style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+        <h3 style={{ cursor: "pointer" }} onClick={() => setView("home")}>
           AuctorRC
         </h3>
 
         <div style={tabs}>
-          <button onClick={() => router.push("/")} style={tabStyle(isActive("/"))}>
-            Home
-          </button>
-          <button onClick={() => router.push("/rc")} style={tabStyle(isActive("/rc"))}>
-            RC
-          </button>
-          <button onClick={() => router.push("/vocab")} style={tabStyle(isActive("/vocab"))}>
-            Vocab
-          </button>
-          <button onClick={() => router.push("/speed")} style={tabStyle(isActive("/speed"))}>
-            Speed
-          </button>
-          <button onClick={() => router.push("/cat")} style={tabStyle(isActive("/cat"))}>
-            CAT
-          </button>
+          <button onClick={() => setView("home")} style={tabStyle(view==="home")}>Home</button>
+          <button onClick={() => setView("rc")} style={tabStyle(view==="rc")}>RC</button>
+          <button onClick={() => setView("vocab")} style={tabStyle(view==="vocab")}>Vocab</button>
+          <button onClick={() => setView("speed")} style={tabStyle(view==="speed")}>Speed</button>
+          <button onClick={() => setView("cat")} style={tabStyle(view==="cat")}>CAT</button>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div style={{ position: "relative" }}>
-        {profile ? (
-          <>
-            <div
-              onClick={() => setOpen(!open)}
-              style={avatar}
-            >
-              {profile?.name?.charAt(0)?.toUpperCase() || "U"}
-            </div>
-
-            {open && (
-              <div style={dropdown}>
-                <div style={{ marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700 }}>
-                    {profile?.name || "User"}
-                  </div>
-                  <div style={{ fontSize: 13, color: "#64748b" }}>
-                    {profile?.exam} • {profile?.attempt_year}
-                  </div>
-                </div>
-
-                <hr style={{ margin: "12px 0", border: "none", borderTop: "1px solid #e5e7eb" }} />
-
-                <button
-                  style={profileBtn}
-                  onClick={() => {
-                    router.push("/profile");
-                    setOpen(false);
-                  }}
-                >
-                  View Profile
-                </button>
-
-                <button
-                  style={logoutBtn}
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    router.push("/login");
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <button
-            style={loginBtn}
-            onClick={() => router.push("/login")}
-          >
-            Login
-          </button>
-        )}
-      </div>
+      {!profile ? (
+        <button
+          style={loginBtn}
+          onClick={() => (window.location.href = "/login")}
+        >
+          Login
+        </button>
+      ) : (
+        <div style={avatar}>
+          {profile.email?.charAt(0).toUpperCase()}
+        </div>
+      )}
     </div>
   );
 }
 
-/* ================= STYLES ================= */
+/* Styles */
 
 const navWrap = {
   display: "flex",
@@ -129,9 +82,6 @@ const navWrap = {
   padding: "12px 20px",
   background: "#fff",
   borderBottom: "1px solid #e5e7eb",
-  position: "sticky",
-  top: 0,
-  zIndex: 50,
 };
 
 const leftSection = {
@@ -165,40 +115,6 @@ const avatar = {
   alignItems: "center",
   justifyContent: "center",
   fontWeight: 600,
-  cursor: "pointer",
-};
-
-const dropdown = {
-  position: "absolute",
-  right: 0,
-  top: 45,
-  background: "#fff",
-  padding: 16,
-  borderRadius: 12,
-  width: 200,
-  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-  zIndex: 100,
-};
-
-const profileBtn = {
-  width: "100%",
-  padding: "8px 10px",
-  borderRadius: 8,
-  border: "none",
-  background: "#f1f5f9",
-  cursor: "pointer",
-  fontWeight: 500,
-  marginBottom: 8,
-};
-
-const logoutBtn = {
-  width: "100%",
-  padding: 8,
-  borderRadius: 8,
-  border: "none",
-  background: "#ef4444",
-  color: "#fff",
-  cursor: "pointer",
 };
 
 const loginBtn = {
@@ -208,5 +124,12 @@ const loginBtn = {
   background: "#2563eb",
   color: "#fff",
   cursor: "pointer",
-  fontWeight: 600,
+};
+
+const mobileBar = {
+  display: "flex",
+  justifyContent: "flex-end",
+  padding: 10,
+  background: "#fff",
+  borderBottom: "1px solid #e5e7eb",
 };
