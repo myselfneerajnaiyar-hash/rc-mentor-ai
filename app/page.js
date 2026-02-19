@@ -533,6 +533,7 @@ return (
     setView={setView}
     startAdaptiveRC={() => setView("rc")}
     userName={userName}
+    user={user}
   />
 )}
 
@@ -677,52 +678,8 @@ return (
 )}
 
   </main>
-  {/* MOBILE AUTH BUTTON */}
-<div
-  style={{
-    position: "fixed",
-    bottom: 80,   // above bottom nav
-    right: 16,
-    zIndex: 1000,
-  }}
->
-  {!user ? (
-    <button
-      onClick={() => setView("login")}
-      style={{
-        padding: "10px 16px",
-        background: "#2563eb",
-        color: "#fff",
-        border: "none",
-        borderRadius: 12,
-        fontWeight: 600,
-        cursor: "pointer",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-      }}
-    >
-      Login
-    </button>
-  ) : (
-    <div
-      onClick={() => setView("profile")}
-      style={{
-        width: 42,
-        height: 42,
-        borderRadius: "50%",
-        background: "#2563eb",
-        color: "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: 700,
-        cursor: "pointer",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-      }}
-    >
-      {user.email?.charAt(0).toUpperCase()}
-    </div>
-  )}
-</div>
+ 
+  
 {/* MOBILE BOTTOM NAV */}
 <div className="mobile-nav">
   <MobileBottomNav view={view} setView={setView} />

@@ -19,15 +19,61 @@ function getGreeting() {
   return "Good night 🌌";
 }
 
-export default function HomeView({ setView, startAdaptiveRC, userName }) {
+export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   return (
     <div style={wrap}>
       <div style={panel}>
-        {/* Header */}
-        <h1 style={title}>
-         {getGreeting()}, {userName || "Champion"} 👋
-        </h1>
-        <p style={subtitle}>Ready for RC practice?</p>
+       {/* Header with Auth */}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  }}
+>
+  <div>
+    <h1 style={title}>
+      {getGreeting()}, {userName || "Champion"} 👋
+    </h1>
+    <p style={subtitle}>Ready for RC practice?</p>
+  </div>
+
+  {!user ? (
+    <button
+      onClick={() => setView("login")}
+      style={{
+        padding: "8px 14px",
+        background: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: 10,
+        fontWeight: 600,
+        cursor: "pointer",
+      }}
+    >
+      Login
+    </button>
+  ) : (
+    <div
+      onClick={() => setView("profile")}
+      style={{
+        width: 42,
+        height: 42,
+        borderRadius: "50%",
+        background: "#2563eb",
+        color: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 700,
+        cursor: "pointer",
+      }}
+    >
+      {user.email?.charAt(0).toUpperCase()}
+    </div>
+  )}
+</div>
 
         {/* Today’s Focus */}
         <div style={focusCard}>
