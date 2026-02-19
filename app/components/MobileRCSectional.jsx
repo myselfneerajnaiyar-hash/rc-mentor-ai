@@ -82,25 +82,29 @@ export default function MobileRCSectional({
         <span>CAT RC Sectional</span>
         <span className="rc-timer">{mins}:{secs}</span>
       </div>
-      {isReview && (
+     {isReview && (
   <div
     style={{
       padding: "8px 12px",
       background: "#f8fafc",
       borderBottom: "1px solid #e5e7eb",
+      position: "relative",
+      zIndex: 2000,
     }}
   >
     <button
-      onClick={onBackToDiagnosis}
-      style={{
-        padding: "6px 10px",
-        fontSize: 14,
-        borderRadius: 6,
-        border: "1px solid #2563eb",
-        background: "#eef2ff",
-        color: "#1e3a8a",
-      }}
-    >
+  onClick={onBackToDiagnosis}
+  style={{
+    padding: "6px 10px",
+    fontSize: 14,
+    borderRadius: 6,
+    border: "1px solid #2563eb",
+    background: "#eef2ff",
+    color: "#1e3a8a",
+    position: "relative",
+    zIndex: 2100,
+  }}
+>
       ← Back to Diagnosis
     </button>
   </div>
@@ -350,7 +354,7 @@ onClick={() => !isReview && onMark()}
       padding: "10px 12px",
       background: "#ffffff",
       borderTop: "1px solid #e5e7eb",
-      zIndex: 1200,
+      zIndex: 10,
     }}
   >
     <button
