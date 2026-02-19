@@ -9,7 +9,10 @@ export default function DiagnosisView({
   onBack,
 }) {
   /* ===================== 🔒 BACKWARD COMPATIBILITY FIX ===================== */
-  const resolvedQuestions = questions || [];
+  const resolvedQuestions =
+  questions && questions.length
+    ? questions
+    : passages.flatMap(p => p.questions || []);
   /* ===================== GLOBAL STATS ===================== */
   const total = resolvedQuestions.length;
   let attempted = 0;
@@ -59,20 +62,22 @@ export default function DiagnosisView({
   const slowCorrect = timeHeat.filter(q => q.label === "Slow & Correct").length;
 
   /* ===================== PASSAGE LEVEL HEAT MAP ===================== */
- const passageHeat = passages.map((p, pIdx) => {
+ let runningIndex = 0;
+
+const passageHeat = passages.map((p, pIdx) => {
   let correctQ = 0;
   let timeSpent = 0;
 
-  const baseIndex = pIdx * p.questions.length;
-
   p.questions.forEach((q, qIdx) => {
-    const globalIndex = baseIndex + qIdx;
+    const globalIndex = runningIndex;
 
     if (Number(answers[globalIndex]) === Number(q.correctIndex)) {
       correctQ++;
     }
 
     timeSpent += questionTime[globalIndex] || 0;
+
+    runningIndex++;
   });
 
   const accuracyRatio = p.questions.length
