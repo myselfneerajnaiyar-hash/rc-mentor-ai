@@ -22,6 +22,7 @@ export default function MobileRCSectional({
   onClear,
   onJump,
   onSubmit,
+  onBackToDiagnosis,
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
   const [showSubmit, setShowSubmit] = useState(false);
@@ -90,7 +91,7 @@ export default function MobileRCSectional({
     }}
   >
     <button
-      onClick={onSubmit}
+      onClick={onBackToDiagnosis}
       style={{
         padding: "6px 10px",
         fontSize: 14,
