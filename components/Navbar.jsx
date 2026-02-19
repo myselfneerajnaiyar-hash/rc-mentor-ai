@@ -1,103 +1,126 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
-export default function Navbar({ view, setView }) {
+export default function Navbar() {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [profile, setProfile] = useState(null);
   const [open, setOpen] = useState(false);
 
+  /* ================= LOAD PROFILE ================= */
   useEffect(() => {
     async function loadProfile() {
       const { data: authData } = await supabase.auth.getUser();
-      if (!authData?.user) return;
+      if (!authData?.user) {
+        setProfile(null);
+        return;
+      }
 
-     const { data, error } = await supabase
-  .from("profiles")
-  .select("*")
-  .eq("user_id", authData.user.id)
-  .maybeSingle();
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", authData.user.id)
+        .maybeSingle();
 
-if (!error && data) {
-  setProfile(data);
-}
-}
+      if (data) setProfile(data);
+    }
+
     loadProfile();
   }, []);
 
+  const isActive = (path) => pathname === path;
+
   return (
     <div style={navWrap}>
+      {/* LEFT SIDE */}
       <div style={leftSection}>
-        <h3 style={{ cursor: "pointer" }} onClick={() => setView("home")}>
+        <h3 style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
           AuctorRC
         </h3>
 
         <div style={tabs}>
-          <button onClick={() => setView("home")} style={tabStyle(view==="home")}>Home</button>
-          <button onClick={() => setView("rc")} style={tabStyle(view==="rc")}>RC</button>
-          <button onClick={() => setView("vocab")} style={tabStyle(view==="vocab")}>Vocab</button>
-          <button onClick={() => setView("speed")} style={tabStyle(view==="speed")}>Speed</button>
-          <button onClick={() => setView("cat")} style={tabStyle(view==="cat")}>CAT</button>
+          <button onClick={() => router.push("/")} style={tabStyle(isActive("/"))}>
+            Home
+          </button>
+          <button onClick={() => router.push("/rc")} style={tabStyle(isActive("/rc"))}>
+            RC
+          </button>
+          <button onClick={() => router.push("/vocab")} style={tabStyle(isActive("/vocab"))}>
+            Vocab
+          </button>
+          <button onClick={() => router.push("/speed")} style={tabStyle(isActive("/speed"))}>
+            Speed
+          </button>
+          <button onClick={() => router.push("/cat")} style={tabStyle(isActive("/cat"))}>
+            CAT
+          </button>
         </div>
       </div>
 
-     {/* Profile Section */}
-<div style={{ position: "relative" }}>
-  <div
-    onClick={() => setOpen(!open)}
-    style={avatar}
-  >
-    {profile?.name?.charAt(0)?.toUpperCase() || "U"}
-  </div>
+      {/* RIGHT SIDE */}
+      <div style={{ position: "relative" }}>
+        {profile ? (
+          <>
+            <div
+              onClick={() => setOpen(!open)}
+              style={avatar}
+            >
+              {profile?.name?.charAt(0)?.toUpperCase() || "U"}
+            </div>
 
-  {open && (
-    <div style={dropdown}>
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ fontWeight: 700 }}>
-          {profile?.name || "User"}
-        </div>
-        <div style={{ fontSize: 13, color: "#64748b" }}>
-          {profile?.exam} • {profile?.attempt_year}
-        </div>
+            {open && (
+              <div style={dropdown}>
+                <div style={{ marginBottom: 8 }}>
+                  <div style={{ fontWeight: 700 }}>
+                    {profile?.name || "User"}
+                  </div>
+                  <div style={{ fontSize: 13, color: "#64748b" }}>
+                    {profile?.exam} • {profile?.attempt_year}
+                  </div>
+                </div>
+
+                <hr style={{ margin: "12px 0", border: "none", borderTop: "1px solid #e5e7eb" }} />
+
+                <button
+                  style={profileBtn}
+                  onClick={() => {
+                    router.push("/profile");
+                    setOpen(false);
+                  }}
+                >
+                  View Profile
+                </button>
+
+                <button
+                  style={logoutBtn}
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    router.push("/login");
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <button
+            style={loginBtn}
+            onClick={() => router.push("/login")}
+          >
+            Login
+          </button>
+        )}
       </div>
-
-      <hr style={{ margin: "12px 0", border: "none", borderTop: "1px solid #e5e7eb" }} />
-
-     <button
-  style={{
-    width: "100%",
-    padding: "8px 10px",
-    borderRadius: 8,
-    border: "none",
-    background: "#f1f5f9",
-    cursor: "pointer",
-    fontWeight: 500,
-    marginBottom: 8
-  }}
-  onClick={() => {
-  setView("profile");
-  setOpen(false);
-}}
->
-  View Profile
-</button>
-
-      <button
-        style={logoutBtn}
-        onClick={async () => {
-          await supabase.auth.signOut();
-          window.location.href = "/login";
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  )}
-</div>
     </div>
   );
 }
 
-/* Styles */
+/* ================= STYLES ================= */
 
 const navWrap = {
   display: "flex",
@@ -157,6 +180,17 @@ const dropdown = {
   zIndex: 100,
 };
 
+const profileBtn = {
+  width: "100%",
+  padding: "8px 10px",
+  borderRadius: 8,
+  border: "none",
+  background: "#f1f5f9",
+  cursor: "pointer",
+  fontWeight: 500,
+  marginBottom: 8,
+};
+
 const logoutBtn = {
   width: "100%",
   padding: 8,
@@ -165,4 +199,14 @@ const logoutBtn = {
   background: "#ef4444",
   color: "#fff",
   cursor: "pointer",
+};
+
+const loginBtn = {
+  padding: "8px 14px",
+  borderRadius: 8,
+  border: "none",
+  background: "#2563eb",
+  color: "#fff",
+  cursor: "pointer",
+  fontWeight: 600,
 };

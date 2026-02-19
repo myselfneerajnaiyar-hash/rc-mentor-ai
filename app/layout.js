@@ -1,4 +1,5 @@
 import "./globals.css";
+import Navbar from "../components/Navbar"; // adjust path if needed
 
 export const metadata = {
   title: "AuctorRC",
@@ -13,7 +14,7 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#2563eb" />
       </head>
       <body>
-        
+        <Navbar />   {/* 🔥 ADD THIS */}
         {children}
       </body>
     </html>
