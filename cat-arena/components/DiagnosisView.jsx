@@ -36,28 +36,40 @@ export default function DiagnosisView({
 
   /* ===================== QUESTION TIME HEATMAP ===================== */
   const timeHeat = resolvedQuestions.map((q, i) => {
-    const t = questionTime[i] || 0;
-    const isCorrect = Number(answers[i]) === Number(q.correctIndex);
+  const answer = answers[i];
 
-    let label = "Slow & Wrong";
-    let color = "#dc2626";
+  // 🚨 If not attempted → special state
+  if (answer === null || answer === undefined) {
+    return {
+      t: 0,
+      label: "Not Attempted",
+      color: "#d1d5db", // neutral gray
+    };
+  }
 
-    if (t <= 45 && isCorrect) {
-      label = "Fast & Correct";
-      color = "#16a34a";
-    } else if (t <= 45 && !isCorrect) {
-      label = "Fast & Wrong";
-      color = "#f97316";
-    } else if (t <= 90 && isCorrect) {
-      label = "Optimal";
-      color = "#22c55e";
-    } else if (t > 90 && isCorrect) {
-      label = "Slow & Correct";
-      color = "#eab308";
-    }
+  const t = questionTime[i] || 0;
+  const isCorrect =
+    Number(answer) === Number(q.correctIndex);
 
-    return { t, label, color };
-  });
+  let label = "Slow & Wrong";
+  let color = "#dc2626";
+
+  if (t <= 45 && isCorrect) {
+    label = "Fast & Correct";
+    color = "#16a34a";
+  } else if (t <= 45 && !isCorrect) {
+    label = "Fast & Wrong";
+    color = "#f97316";
+  } else if (t <= 90 && isCorrect) {
+    label = "Optimal";
+    color = "#22c55e";
+  } else if (t > 90 && isCorrect) {
+    label = "Slow & Correct";
+    color = "#eab308";
+  }
+
+  return { t, label, color };
+});
 
   /* ===================== TIME INSIGHT COUNTS ===================== */
   const slowWrong = timeHeat.filter(q => q.label === "Slow & Wrong").length;
