@@ -47,22 +47,49 @@ antonyms:
 }
 }
 
+async function enrichAllWords() {
+  const { data: authData } = await supabase.auth.getUser();
+  if (!authData?.user) return;
+
+  const unenriched = bank.filter(
+    w => !w.meaning || !w.synonyms || w.synonyms.length === 0
+  );
+
+  if (unenriched.length === 0) return;
+
+  await fetch("/api/enrich-bulk", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      words: unenriched.map(w => w.word),
+      userId: authData.user.id,
+    }),
+  });
+
+  await fetchBank(); // reload updated words
+}
+
   async function handleManualAdd(word) {
     setManualWord("");
     setLookup(null);
     setLoadingLookup(true);
 
-    const res = await fetch("/api/enrich-word", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ word }),
-    });
+   const { data: authData } = await supabase.auth.getUser();
+if (!authData?.user) return;
+
+const res = await fetch("/api/enrich-word", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    word,
+    userId: authData.user.id,
+  }),
+});
 
     const data = await res.json();
     setLoadingLookup(false);
 
-    const { data: authData } = await supabase.auth.getUser();
-if (!authData?.user) return;
+    
 
 // Check if word already exists
 const { data: existing } = await supabase
@@ -102,11 +129,17 @@ await fetchBank();
 
   setLoadingLookup(true);
 
-  const res = await fetch("/api/enrich-word", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ word: w.word }),
-  });
+ const { data: authData } = await supabase.auth.getUser();
+if (!authData?.user) return;
+
+const res = await fetch("/api/enrich-word", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    word: w.word,
+    userId: authData.user.id,
+  }),
+});
 
   const data = await res.json();
   setLoadingLookup(false);
@@ -181,15 +214,16 @@ await fetchBank();
           }}
         >
           {tab === "bank" && (
-            <WordBank
-              manualWord={manualWord}
-              setManualWord={setManualWord}
-              lookup={lookup}
-              loading={loadingLookup}
-              handleManualAdd={handleManualAdd}
-              bank={bank}
-              openWord={openWord}
-            />
+           <WordBank
+  manualWord={manualWord}
+  setManualWord={setManualWord}
+  lookup={lookup}
+  loading={loadingLookup}
+  handleManualAdd={handleManualAdd}
+  bank={bank}
+  openWord={openWord}
+  enrichAllWords={enrichAllWords}
+/>
           )}
           {tab === "drill" && <VocabDrill />}
           {tab === "learn" && <VocabLearn />}
@@ -210,10 +244,56 @@ function WordBank({
   handleManualAdd,
   bank,
   openWord,
+  enrichAllWords
 }) {
+  const [bulkLoading, setBulkLoading] = useState(false);
+
+   const unenrichedCount = bank.filter(
+  w => !w.meaning || !w.synonyms || w.synonyms.length === 0
+).length;
   return (
     <div>
       <h2>WordBank</h2>
+      {unenrichedCount > 0 && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 12,
+      background: "#fff7ed",
+      border: "1px solid #fdba74",
+    }}
+  >
+    <p style={{ fontWeight: 600 }}>
+      ⚡ To unlock full vocab drills, enrich your saved words.
+    </p>
+    <p style={{ fontSize: 13, color: "#7c2d12" }}>
+      {unenrichedCount} word(s) need enrichment.
+    </p>
+
+   <button
+  onClick={async () => {
+    setBulkLoading(true);
+    await enrichAllWords();
+    setBulkLoading(false);
+  }}
+  disabled={bulkLoading}
+      style={{
+        marginTop: 10,
+        padding: "8px 14px",
+        borderRadius: 8,
+        border: "none",
+        background: "#ea580c",
+        color: "#fff",
+        fontWeight: 600,
+        cursor: bulkLoading ? "not-allowed" : "pointer",
+opacity: bulkLoading ? 0.7 : 1,
+      }}
+    >
+     {bulkLoading ? "Enriching your wordbank..." : "Enrich All Words"}
+    </button>
+  </div>
+)}
       <p style={{ color: "#555" }}>
         Your personal vocabulary memory. Words appear here automatically from RC,
         Speed Gym, or when you add them manually.
@@ -268,6 +348,8 @@ function WordBank({
             <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ") || "—"}</p>
           </div>
         )}
+
+       
 
         {bank.length > 0 && (
           <div style={{ marginTop: 24 }}>
@@ -335,13 +417,18 @@ async function loadDrillWords() {
   const formatted = data.map(w => ({
     ...w,
     synonyms:
-      typeof w.synonyms === "string"
-        ? w.synonyms.split(",").map(s => s.trim())
-        : w.synonyms || [],
-    antonyms:
-      typeof w.antonyms === "string"
-        ? w.antonyms.split(",").map(s => s.trim())
-        : w.antonyms || [],
+  typeof w.synonyms === "string"
+    ? w.synonyms.replace(/[\[\]"]/g, "").split(",").map(s => s.trim())
+    : Array.isArray(w.synonyms)
+      ? w.synonyms
+      : [],
+
+antonyms:
+  typeof w.antonyms === "string"
+    ? w.antonyms.replace(/[\[\]"]/g, "").split(",").map(s => s.trim())
+    : Array.isArray(w.antonyms)
+      ? w.antonyms
+      : [],
   }));
 
   const enriched = formatted.filter(
@@ -352,6 +439,15 @@ async function loadDrillWords() {
   );
 
   setBank(enriched);
+}
+
+function cleanOptions(arr) {
+  const cleaned = arr
+    .flat()
+    .map(o => Array.isArray(o) ? o[0] : o)
+    .filter(Boolean);
+
+  return [...new Set(cleaned)];
 }
   function makeSynonymQ(word) {
     const correct = word.synonyms?.[0];
@@ -365,13 +461,17 @@ async function loadDrillWords() {
 
     if (distractors.length < 3) return null;
 
-   return {
+   const options = cleanOptions([...distractors, correct]);
+
+if (options.length < 4) return null;
+
+return {
   id: word.id,
   type: "synonym",
   prompt: `Closest meaning of`,
   word: word.word,
   correct,
-  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+  options: options.sort(() => Math.random() - 0.5),
 };
   }
 
@@ -387,13 +487,17 @@ async function loadDrillWords() {
 
     if (distractors.length < 3) return null;
 
-    return {
+   const options = cleanOptions([...distractors, correct]);
+
+if (options.length < 4) return null;
+
+return {
   id: word.id,
   type: "antonym",
   prompt: `Opposite of`,
   word: word.word,
   correct,
-  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+  options: options.sort(() => Math.random() - 0.5),
 };
   }
 
@@ -411,13 +515,17 @@ async function loadDrillWords() {
 
     if (distractors.length < 3) return null;
 
-    return {
-  id: word.id,   // ← ADD THIS LINE
+   const options = cleanOptions([...distractors, correct]);
+
+if (options.length < 4) return null;
+
+return {
+  id: word.id,
   type: "fill",
   prompt: sentence,
   word: word.word,
   correct,
-  options: [...distractors, correct].sort(() => Math.random() - 0.5),
+  options: options.sort(() => Math.random() - 0.5),
 };
   }
 
@@ -434,7 +542,7 @@ async function loadDrillWords() {
 
  function startDrill() {
   if (bank.length < 10) {
-    alert("Add more enriched words to enable full drills.");
+    alert("Please enrich your words from WordBank first.");
     return;
   }
 
@@ -448,12 +556,12 @@ async function loadDrillWords() {
     .map(w => buildQuestion(w))
     .filter(Boolean);
 
-  if (qs.length < 10) {
-    alert("Not enough rich data yet.");
-    return;
-  }
+ if (qs.length === 0) {
+  alert("Not enough enriched words yet.");
+  return;
+}
 
-  setQuestions(qs);
+  setQuestions(qs.slice(0, 10));
   setIndex(0);
   setScore(0);
   setSelected(null);

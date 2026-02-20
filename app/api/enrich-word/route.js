@@ -1,57 +1,55 @@
 import { NextResponse } from "next/server";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req) {
   try {
     const { word } = await req.json();
 
-    const prompt = `
-You are a vocabulary coach for CAT-level English.
-
-Given a word, return ONLY valid JSON with these fields:
-- meaning (clear, concise definition)
-- partOfSpeech
-- usage (one natural example sentence)
-- synonyms (array of 3–5)
-- antonyms (array of 2–4)
-- root (1-line etymology)
-
-Word: ${word}
-
-Return ONLY JSON. No explanation. No markdown.
-`;
-
-    const openaiRes = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4.1-mini",
-        input: prompt,
-        temperature: 0.3,
-      }),
-    });
-
-    const raw = await openaiRes.json();
-
-    let text = "{}";
-    try {
-      text =
-        raw.output?.[0]?.content?.find(c => c.type === "output_text")?.text ||
-        "{}";
-    } catch {}
-
-    let parsed;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      parsed = {};
+    if (!word) {
+      return NextResponse.json({ error: "Missing word" }, { status: 400 });
     }
 
-    return NextResponse.json(parsed);
-  } catch (e) {
-    console.error("API enrich error", e);
-    return NextResponse.json({ error: "Failed to enrich" }, { status: 500 });
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "Return strictly valid JSON. No markdown. No backticks."
+        },
+        {
+          role: "user",
+          content: `
+Provide meaning, partOfSpeech, word root (if known), 2 synonyms, 2 antonyms, and one usage sentence.
+Word: ${word}
+
+Return STRICT JSON only:
+{
+  "meaning": "",
+  "partOfSpeech": "",
+  "root": "",
+  "synonyms": [],
+  "antonyms": [],
+  "usage": ""
+}
+`
+        }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.4,
+    });
+
+    const data = JSON.parse(
+      completion.choices[0].message.content
+    );
+
+    return NextResponse.json(data);
+
+  } catch (err) {
+    console.log("Enrich error:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

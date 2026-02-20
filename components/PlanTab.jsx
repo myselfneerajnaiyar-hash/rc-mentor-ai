@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function PlanTab() {
+  const router = useRouter();
   const WEEKLY_SKILLS = [
     ["main-idea", "detail"],
     ["inference", "function"],
@@ -177,7 +178,7 @@ WebkitOverflowScrolling: "touch",
                 return;
               }
 
-              window.dispatchEvent(new CustomEvent("start-plan-drill"));
+          router.push("/rc/drill");
             }}
             style={{
               padding: "14px 22px",
