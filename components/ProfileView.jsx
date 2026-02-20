@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../lib/supabase";
 
 export default function ProfileView({ setView }) {
   const [profile, setProfile] = useState(null);
+  const detailRef = useRef(null);
   const [stats, setStats] = useState({
     rcTests: 0,
     accuracy: 0,
@@ -68,6 +69,17 @@ const [editData, setEditData] = useState({
 
     loadProfile();
   }, []);
+
+  useEffect(() => {
+  if (profileTab !== "overview" && detailRef.current) {
+    setTimeout(() => {
+      detailRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+}, [profileTab]);
 
   if (!profile) return null;
 
@@ -184,6 +196,8 @@ const [editData, setEditData] = useState({
 />
   </div>
 </div>
+
+<div ref={detailRef}>
 {profileTab === "trends" && (
   <div style={section}>
     <h3>Performance Trends</h3>
@@ -278,6 +292,8 @@ const [editData, setEditData] = useState({
 </button>
   </div>
 )}
+
+</div>
 {showEdit && (
   <div style={modalOverlay}>
     <div style={modalBox}>
