@@ -151,7 +151,14 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
   ];
 
   return (
-    <div style={{ padding: 40, maxWidth: 1200 }}>
+   <div
+  style={{
+    padding: "24px 16px",
+    maxWidth: 1100,
+    margin: "0 auto",
+    width: "100%",
+  }}
+>
       <h2 style={{ marginBottom: 20 }}>RC Performance Dashboard</h2>
 
       {/* Tabs */}
@@ -332,7 +339,7 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
     {/* PERFORMANCE BREAKDOWN */}
     <div style={{
       display: "grid",
-      gridTemplateColumns: "1fr 1fr",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"
       gap: 30,
       marginBottom: 40
     }}>
