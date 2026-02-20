@@ -89,10 +89,13 @@ export default function PlanTab() {
         {/* Week Grid */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            gap: 10,
-            marginBottom: 28,
+           display: "flex",
+gap: 12,
+marginBottom: 28,
+overflowX: "auto",
+paddingBottom: 6,
+WebkitOverflowScrolling: "touch",
+
           }}
         >
           {current.days.map((d, i) => {
@@ -103,6 +106,8 @@ export default function PlanTab() {
               <div
                 key={i}
                 style={{
+                  minWidth: 90,
+                  flexShrink: 0,
                   padding: 12,
                   borderRadius: 12,
                   textAlign: "center",
