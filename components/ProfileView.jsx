@@ -83,6 +83,11 @@ const [editData, setEditData] = useState({
 
   if (!profile) return null;
 
+  async function handleLogout() {
+  await supabase.auth.signOut();
+  setView("home");
+}
+
   return (
   <div style={page}>
   <div style={container}></div>
@@ -355,6 +360,23 @@ const [editData, setEditData] = useState({
     </div>
   </div>
 )}
+<div style={{ textAlign: "center", marginTop: 40 }}>
+  <button
+    onClick={handleLogout}
+    style={{
+      padding: "10px 20px",
+      background: "#ef4444",
+      color: "#fff",
+      border: "none",
+      borderRadius: 10,
+      fontWeight: 600,
+      cursor: "pointer",
+    }}
+  >
+    Logout
+  </button>
+</div>
+
     </div>
     
   );
