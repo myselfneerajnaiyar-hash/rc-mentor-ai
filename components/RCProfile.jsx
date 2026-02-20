@@ -339,7 +339,7 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
     {/* PERFORMANCE BREAKDOWN */}
     <div style={{
       display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
       gap: 30,
       marginBottom: 40
     }}>
