@@ -64,7 +64,7 @@ export default function PlanTab() {
     todayData.rcDone >= rcTarget && todayData.skillQs >= skillTarget;
 
   return (
-    <div style={{ marginTop: 24, maxWidth: 1000 }}>
+    <div style={{ marginTop: 24, Width: "100%"}}>
       <h2 style={{ marginBottom: 12 }}>This Week’s Plan</h2>
 
       <div
