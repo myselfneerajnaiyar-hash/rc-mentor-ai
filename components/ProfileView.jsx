@@ -420,7 +420,7 @@ function ActionCard({ title, desc, onClick }) {
 const page = {
   minHeight: "100vh",
   background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
-  padding: "40px 20px",
+  padding: "40px 20px 140px", // extra bottom space for mobile nav
 };
 
 const container = {
