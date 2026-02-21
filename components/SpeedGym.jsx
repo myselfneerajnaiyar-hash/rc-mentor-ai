@@ -49,6 +49,7 @@ export default function SpeedGym({ onBack }) {
   return { wpm: avgEff, level: "maintain" };
 }
   async function start() {
+    setResult(null);
     try {
       const target =await computeTarget();
       setMeta(target);
@@ -237,9 +238,9 @@ console.log("Speed insert error:", insertError);
           <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
           <p><b>Effective Speed:</b> {result.effectiveWPM} WPM</p>
-          <button style={btn} onClick={() => setPhase("intro")}>
-            Next Drill
-          </button>
+         <button style={btn} onClick={start}>
+  Next Drill
+</button>
         </div>
       )}
     </div>
