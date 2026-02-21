@@ -22,43 +22,47 @@ const [editData, setEditData] = useState({
 
 
   useEffect(() => {
-    async function loadProfile() {
-      const { data: authData } = await supabase.auth.getUser();
-      if (!authData?.user) return;
+  async function loadProfile() {
 
-      const { data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", authData.user.id)
-        .maybeSingle();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) return;
 
-      setProfile(data);
-      setEditData({
-  name: data?.name || "",
-  exam: data?.exam || "",
-  attempt_year: data?.attempt_year || "",
-});
+    const userId = authData.user.id;
 
-      // ===== Local Storage RC Stats =====
-      const rcProfile = JSON.parse(localStorage.getItem("rcProfile") || "{}");
-      const tests = rcProfile.tests || [];
+    // 1️⃣ Fetch profile info
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
 
-      let totalQ = 0;
-      let correctQ = 0;
+    setProfile(data);
+    setEditData({
+      name: data?.name || "",
+      exam: data?.exam || "",
+      attempt_year: data?.attempt_year || "",
+    });
 
-      tests.forEach(t => {
-        t.questions.forEach(q => {
-          totalQ++;
-          if (q.correct) correctQ++;
-        });
-      });
+    // 2️⃣ 🔥 ADD THIS ENTIRE BLOCK HERE 🔥
 
-      
+    const { data: questions } = await supabase
+      .from("rc_questions")
+      .select("*")
+      .eq("user_id", userId);
+
+    if (questions) {
+      const totalQ = questions.length;
+      const correctQ = questions.filter(q => q.is_correct).length;
+
       const accuracy =
         totalQ > 0 ? Math.round((correctQ / totalQ) * 100) : 0;
 
+      const sessions = new Set(
+        questions.map(q => q.session_id)
+      );
+
       setStats({
-        rcTests: tests.length,
+        rcTests: sessions.size,
         accuracy,
         vocab: JSON.parse(localStorage.getItem("vocabBank") || "[]").length,
         sectionals: Object.keys(
@@ -66,9 +70,10 @@ const [editData, setEditData] = useState({
         ).length,
       });
     }
+  }
 
-    loadProfile();
-  }, []);
+  loadProfile();
+}, []);
 
   useEffect(() => {
   if (profileTab !== "overview" && detailRef.current) {

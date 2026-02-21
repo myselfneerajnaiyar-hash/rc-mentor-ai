@@ -1,0 +1,10 @@
+{
+  "appId": "com.auctor.rc",
+  "appName": "Auctor RC",
+  "webDir": "public",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://rc.auctorlabs.in",
+    "cleartext": true
+  }
+}
