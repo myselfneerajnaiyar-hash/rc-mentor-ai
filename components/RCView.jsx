@@ -683,8 +683,12 @@ return (
 ].map(tab => (
         <button
           key={tab.key}
-          onClick={() => {
+        onClick={() => {
   setRcTab(tab.key);
+
+  // ✅ CRITICAL FIX
+  setPhase("mentor");
+  setResult(null);
 
   if (tab.key === "generate") {
     setShowGenerator(true);
