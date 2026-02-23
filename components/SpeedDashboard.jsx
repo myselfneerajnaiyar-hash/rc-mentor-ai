@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 function LineChart({ data, color, label, unit }) {
-  const w = 720;
   const h = 220;
   const pad = 28;
 
@@ -13,16 +12,6 @@ function LineChart({ data, color, label, unit }) {
   const min = Math.min(...data);
 
   if (!isFinite(max) || !isFinite(min) || max === min) return null;
-
-  const points = data.map((v, i) => {
-    const x = pad + (i / (data.length - 1 || 1)) * (w - pad * 2);
-    const y = h - pad - ((v - min) / (max - min)) * (h - pad * 2);
-    return { x, y, v };
-  });
-
-  const path = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x},${p.y}`)
-    .join(" ");
 
   return (
     <div style={{ marginBottom: 36 }}>
@@ -37,34 +26,81 @@ function LineChart({ data, color, label, unit }) {
           borderRadius: 12,
           border: "1px solid #e5e7eb",
           boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        <svg width={w} height={h}>
-          <path d={path} fill="none" stroke={color} strokeWidth="3" />
-          {points.map((p, i) => (
-            <g key={i}>
-              <circle cx={p.x} cy={p.y} r="4" fill={color} />
-              <text
-                x={p.x}
-                y={p.y - 10}
-                fontSize="11"
-                textAnchor="middle"
-                fill="#374151"
-              >
-                {p.v}{unit}
-              </text>
-            </g>
-          ))}
+        <svg
+          viewBox="0 0 720 220"
+          width="100%"
+          height={h}
+          preserveAspectRatio="none"
+        >
+          {(() => {
+            const w = 720;
+
+            const points = data.map((v, i) => {
+              const x =
+                pad + (i / (data.length - 1 || 1)) * (w - pad * 2);
+              const y =
+                h -
+                pad -
+                ((v - min) / (max - min)) * (h - pad * 2);
+              return { x, y, v };
+            });
+
+            const path = points
+              .map((p, i) =>
+                `${i === 0 ? "M" : "L"} ${p.x},${p.y}`
+              )
+              .join(" ");
+
+            return (
+              <>
+                <path
+                  d={path}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth="3"
+                />
+                {points.map((p, i) => (
+                  <g key={i}>
+                    <circle
+                      cx={p.x}
+                      cy={p.y}
+                      r="4"
+                      fill={color}
+                    />
+                    <text
+                      x={p.x}
+                      y={p.y - 10}
+                      fontSize="11"
+                      textAnchor="middle"
+                      fill="#374151"
+                    >
+                      {p.v}
+                      {unit}
+                    </text>
+                  </g>
+                ))}
+              </>
+            );
+          })()}
         </svg>
 
-        <div style={{ fontSize: 12, color: "#6b7280", marginTop: 6 }}>
+        <div
+          style={{
+            fontSize: 12,
+            color: "#6b7280",
+            marginTop: 6,
+          }}
+        >
           Last {data.length} drills
         </div>
       </div>
     </div>
   );
 }
-
 function StatCard({ label, value, sub }) {
   return (
     <div
@@ -178,7 +214,7 @@ const momentum =
  <div
   style={{
     marginTop: 30,
-    padding: 30,
+    padding: "clamp(16px, 4vw, 30px)",
     borderRadius: 24,
    background: "#ffffff",
     boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
@@ -201,7 +237,7 @@ const momentum =
      <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(5, 1fr)",
+    gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
     gap: 14,
     marginBottom: 30,
   }}
@@ -231,7 +267,7 @@ const momentum =
 <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
+   gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: 12,
   }}
 >
