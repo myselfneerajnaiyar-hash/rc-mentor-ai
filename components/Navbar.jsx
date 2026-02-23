@@ -87,7 +87,7 @@ const navWrap = {
 const leftSection = {
   display: "flex",
   alignItems: "center",
-  gap: 30,
+  gap: 40,   // increased
 };
 
 const tabs = {
@@ -106,6 +106,7 @@ const tabStyle = (active) => ({
 });
 
 const avatar = {
+  marginLeft: 20,
   width: 36,
   height: 36,
   borderRadius: "50%",
