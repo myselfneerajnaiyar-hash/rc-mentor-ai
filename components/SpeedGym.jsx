@@ -153,34 +153,33 @@ setParas(merged);
     // 🔐 Get logged in user
 const { data: authData, error: authError } = await supabase.auth.getUser();
 
-if (authError || !authData?.user) {
+if (!authData?.user) {
   console.log("No logged in user for speed drill.");
-  return;
+} else {
+  const userId = authData.user.id;
+
+  console.log("Saving speed drill for:", userId);
+
+  const { error: insertError } = await supabase
+    .from("speed_sessions")
+    .insert([
+      {
+        user_id: userId,
+        total_words: totalWords,
+        total_time_s: readSeconds,
+        raw_wpm: rawWPM,
+        total_questions: paras.length,
+        correct_answers: correct,
+        accuracy_percent: accuracy,
+        effective_wpm: effectiveWPM,
+        paragraph_count: paras.length,
+        time_per_paragraph_s: timePerParagraph,
+        difficulty_level: meta.level,
+      },
+    ]);
+
+  console.log("Speed insert error:", insertError);
 }
-
-const userId = authData.user.id;
-
-console.log("Saving speed drill for:", userId);
-
-const { error: insertError } = await supabase
-  .from("speed_sessions")
-  .insert([
-    {
-      user_id: userId,
-      total_words: totalWords,
-      total_time_s: readSeconds,
-      raw_wpm: rawWPM,
-      total_questions: paras.length,
-      correct_answers: correct,
-      accuracy_percent: accuracy,
-      effective_wpm: effectiveWPM,
-      paragraph_count: paras.length,
-      time_per_paragraph_s: timePerParagraph,
-      difficulty_level: meta.level,
-    },
-  ]);
-
-console.log("Speed insert error:", insertError);
 
     setResult(record);
     setPhase("result");
@@ -232,7 +231,7 @@ console.log("Speed insert error:", insertError);
         </div>
       )}
 
-      {phase === "result" && (
+     {phase === "result" && result && (
         <div style={panel}>
           <h2>Drill Result</h2>
           <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
