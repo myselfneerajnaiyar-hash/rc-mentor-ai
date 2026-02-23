@@ -89,13 +89,15 @@ export default function SpeedContainer() {
 const page = {
   minHeight: "100vh",
   background: "#dde7fb",
-  padding: "32px",
+  padding: "clamp(16px, 4vw, 32px)",
+  boxSizing: "border-box",
+  overflowX: "hidden",
 };
 
 const header = {
   background: "#ffffff",
   borderRadius: 24,
-  padding: 28,
+ padding: "clamp(16px, 4vw, 28px)",
   boxShadow: "0 20px 50px rgba(15,23,42,0.08)",
   border: "1px solid #e2e8f0",
 };
@@ -147,7 +149,7 @@ const drillCard = {
 boxShadow: "0 25px 60px rgba(15,23,42,0.06)",
 border: "1px solid #e2e8f0",
   borderRadius: 22,
-  padding: 22,
+  padding: "clamp(16px, 4vw, 22px)",
 };
 
 const sectionTitle = {
@@ -164,8 +166,8 @@ const steps = {
 
 const benefits = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: 10,
+  gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+  gap: 12,
   marginTop: 16,
 };
 
@@ -201,7 +203,7 @@ const profileCard = {
   marginTop: 18,
   background: "#ffffff",
   borderRadius: 22,
-  padding: 20,
+  padding: "clamp(16px, 4vw, 20px)",
 };
 
 const tabs = {
