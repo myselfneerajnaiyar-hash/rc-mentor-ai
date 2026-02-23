@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 
-export default function RCProfile() {
+export default function RCProfile({ setView }) {
   const [tests, setTests] = useState([]);
   const [active, setActive] = useState("overview");
 
@@ -656,7 +656,7 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
   </div>
 )}
 
-      {active === "plan" && <PlanTab />}
+     {active === "plan" && <PlanTab setView={setView} />}
     </div>
   );
 }

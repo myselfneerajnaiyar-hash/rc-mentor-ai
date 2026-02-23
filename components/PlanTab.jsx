@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { useRouter } from "next/navigation";
 
-export default function PlanTab() {
+export default function PlanTab({ setView }) {
   const [plan, setPlan] = useState(null);
   const [stats, setStats] = useState(null);
   const [weeklyProgress, setWeeklyProgress] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [todayProgress, setTodayProgress] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     init();
@@ -77,6 +80,15 @@ export default function PlanTab() {
 
     setWeeklyProgress(completedDays);
 
+    const { data: todaySessions } = await supabase
+  .from("rc_sessions")
+  .select("created_at")
+  .eq("user_id", authData.user.id)
+  .gte("created_at", new Date().toISOString().slice(0, 10));
+
+const todayCount = todaySessions?.length || 0;
+setTodayProgress(Math.min(todayCount, 3));
+
     setPlan(generatePlan(avgAccuracy));
     setLoading(false);
   }
@@ -85,6 +97,12 @@ export default function PlanTab() {
   if (!plan) return null;
 
   const progressPercent = Math.min(100, (weeklyProgress / 6) * 100);
+
+  const todayIndex = (() => {
+  const day = new Date().getDay();
+  // Convert Sunday (0) to 6, Monday=0 ... Saturday=5
+  return day === 0 ? 6 : day - 1;
+})();
 
   return (
     <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
@@ -144,44 +162,102 @@ export default function PlanTab() {
       </div>
 
       {/* DAILY PLAN */}
-      {plan.days.map((day, i) => (
-        <div
-          key={i}
-          style={{
-            background: "#fff",
-            borderRadius: 18,
-            padding: 20,
-            marginBottom: 18,
-            boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-            borderLeft: `5px solid ${plan.primary}`,
-          }}
-        >
-          <div style={{ fontWeight: 700, marginBottom: 12 }}>
-            Day {i + 1}
+    {plan.days.map((day, i) => {
+  const isToday = i === todayIndex;
+  const dailyPercent = isToday ? (todayProgress / 3) * 100 : 0;
+
+  return (
+    <div
+      key={i}
+      style={{
+        background: "#fff",
+        borderRadius: 18,
+        padding: 20,
+        marginBottom: 18,
+        boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
+        borderLeft: `5px solid ${plan.primary}`,
+      }}
+    >
+      <div style={{ fontWeight: 700, marginBottom: 12 }}>
+        Day {i + 1}
+      </div>
+
+      {/* DAILY PROGRESS BAR */}
+      {day.type === "practice" && (
+        <div style={{ marginBottom: 14 }}>
+          <div
+            style={{
+              height: 10,
+              background: "#e5e7eb",
+              borderRadius: 999,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: dailyPercent + "%",
+                height: "100%",
+                background: plan.primary,
+                transition: "width 0.3s ease",
+              }}
+            />
           </div>
-
-          {day.type === "practice" &&
-            day.passages.map((p, idx) => (
-              <div key={idx} style={{ fontSize: 14, marginBottom: 6 }}>
-                • {p.genre} – {p.difficulty} – {p.words}
-              </div>
-            ))}
-
-          {day.type === "practice" && (
-            <div style={{ marginTop: 8, fontSize: 13 }}>
-              🎯 Focus: {day.focus}
+          {isToday && (
+            <div style={{ fontSize: 12, marginTop: 6 }}>
+              {todayProgress} / 3 passages completed
             </div>
           )}
-
-          {day.type === "simulation" && (
-            <div>🔥 Full Sectional Simulation</div>
-          )}
-
-          {day.type === "review" && (
-            <div>📊 Review mistakes & update error log</div>
-          )}
         </div>
-      ))}
+      )}
+
+      {day.type === "practice" &&
+        day.passages.map((p, idx) => (
+          <div key={idx} style={{ fontSize: 14, marginBottom: 6 }}>
+            • {p.genre} – {p.difficulty} – {p.words}
+          </div>
+        ))}
+
+      {day.type === "practice" && (
+        <div style={{ marginTop: 8, fontSize: 13 }}>
+          🎯 Focus: {day.focus}
+        </div>
+      )}
+
+      {day.type === "simulation" && (
+        <div>🔥 Full Sectional Simulation</div>
+      )}
+
+      {day.type === "review" && (
+        <div>📊 Review mistakes & update error log</div>
+      )}
+
+      {/* START PRACTICE BUTTON */}
+      {isToday && day.type === "practice" && (
+        <button
+         onClick={() => {
+  window.dispatchEvent(new Event("open-rc-generate"));
+
+  setTimeout(() => {
+    window.dispatchEvent(new Event("start-plan-drill"));
+  }, 100);
+}}
+          style={{
+            marginTop: 14,
+            padding: "10px 16px",
+            borderRadius: 10,
+            background: plan.primary,
+            color: "#fff",
+            border: "none",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Start Today’s Practice
+        </button>
+      )}
+    </div>
+  );
+    })}
     </div>
   );
 }

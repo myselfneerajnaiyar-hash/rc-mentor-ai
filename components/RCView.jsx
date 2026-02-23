@@ -59,6 +59,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [planRCCount, setPlanRCCount] = useState(0);
   const [rcMode, setRcMode] = useState("free"); 
+  const [autoPlanMode, setAutoPlanMode] = useState(false);
   const [planGenreIndex, setPlanGenreIndex] = useState(0);
 // "free" | "plan"
 
@@ -105,8 +106,10 @@ useEffect(() => {
     setLengthRange("500-600");
 
     setPlanGenreIndex(i => i + 1); // move to next genre for next RC
-    setShowGenerator(true);
-    setPhase("plan-loading");
+    setAutoPlanMode(false);   // important
+setRcTab("generate");     // switch tab
+setShowGenerator(true);
+setPhase("mentor");       // prevent loading screen
   }
 
   window.addEventListener("start-plan-drill", handler);
@@ -115,11 +118,16 @@ useEffect(() => {
 
 
   
-  useEffect(() => {
-  if (rcMode === "plan" && showGenerator && phase === "mentor") {
+ useEffect(() => {
+  if (
+    autoPlanMode &&
+    rcMode === "plan" &&
+    showGenerator &&
+    phase === "mentor"
+  ) {
     generateNewRC();
   }
-}, [rcMode, showGenerator, phase]);
+}, [autoPlanMode, rcMode, showGenerator, phase]);
   
   useEffect(() => {
   if (phase === "test" && testQuestions.length > 0) {
@@ -127,11 +135,26 @@ useEffect(() => {
   }
 }, [phase, testQuestions]);
 
-  useEffect(() => {
-  if (rcMode === "plan" && showGenerator && phase === "plan-loading") {
-    generateNewRC(); // auto-generate without showing UI
+ useEffect(() => {
+  if (
+    autoPlanMode &&
+    rcMode === "plan" &&
+    showGenerator &&
+    phase === "plan-loading"
+  ) {
+    generateNewRC();
   }
-}, [rcMode, showGenerator, phase]);
+}, [autoPlanMode, rcMode, showGenerator, phase]);
+
+useEffect(() => {
+  function openRC() {
+    setRcTab("generate");
+  }
+
+  window.addEventListener("open-rc-generate", openRC);
+  return () =>
+    window.removeEventListener("open-rc-generate", openRC);
+}, []);
   
   function splitPassage() {
   const raw = text.trim();
@@ -836,7 +859,7 @@ return (
     )}
   </div>
 )}
-   {rcTab === "generate" && showGenerator && rcMode !=="plan" && (
+  {rcTab === "generate" && showGenerator && (
   <div
     style={{
       marginTop: 16,
@@ -1045,11 +1068,12 @@ return (
   </div>
 )}
    
-    {rcTab === "profile" && (
+   {rcTab === "profile" && (
   <RCProfile
     activeTab={activeProfileTab}
     setActiveTab={setActiveProfileTab}
     onBack={() => setRcTab("paste")}
+    setView={setView}   // ✅ ADD THIS
   />
 )}
 
