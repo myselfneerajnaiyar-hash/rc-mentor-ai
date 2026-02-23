@@ -1,239 +1,292 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { supabase } from "../lib/supabase";
+
 export default function PlanTab() {
-  const router = useRouter();
-  const WEEKLY_SKILLS = [
-    ["main-idea", "detail"],
-    ["inference", "function"],
-    ["tone", "author-agreement"],
-    ["purpose", "application"],
-    ["assumption", "strengthen"],
-    ["weaken", "next-paragraph"],
-    ["mixed", "mixed"],
-  ];
-
-  const today = new Date();
-
-  function getWeekId(d) {
-    const start = new Date(d.getFullYear(), 0, 1);
-    const diff = (d - start) / 86400000;
-    return d.getFullYear() + "-W" + Math.ceil((diff + start.getDay() + 1) / 7);
-  }
-
-  const weekId = getWeekId(today);
-  const [weeks, setWeeks] = useState({});
+  const [plan, setPlan] = useState(null);
+  const [stats, setStats] = useState(null);
+  const [weeklyProgress, setWeeklyProgress] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const raw = JSON.parse(localStorage.getItem("rcWeeklyPlan") || "{}");
-
-    if (!raw[weekId]) {
-      const index = Object.keys(raw).length % WEEKLY_SKILLS.length;
-      const [a, b] = WEEKLY_SKILLS[index];
-
-      raw[weekId] = {
-        created: Date.now(),
-        skills: [a, b],
-        days: Array.from({ length: 7 }).map(() => ({
-          rcDone: 0,
-          skillQs: 0,
-        })),
-      };
-
-      localStorage.setItem("rcWeeklyPlan", JSON.stringify(raw));
-    }
-
-    setWeeks(raw);
+    init();
   }, []);
 
-  const current = weeks[weekId];
-  if (!current) return null;
+  function getWeekRange() {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(now.setDate(diff));
+    monday.setHours(0, 0, 0, 0);
+    return monday;
+  }
 
-  const dayIndex = (today.getDay() + 6) % 7;
-  const todayData = current.days[dayIndex];
+  async function init() {
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) return;
 
-  const rcTarget = 3;
-  const skillTarget = 10;
+    const weekStart = getWeekRange();
 
-  const rcPct = Math.min(100, Math.round((todayData.rcDone / rcTarget) * 100));
-  const skillPct = Math.min(
-    100,
-    Math.round((todayData.skillQs / skillTarget) * 100)
-  );
+    const { data: sessions } = await supabase
+      .from("rc_sessions")
+      .select("*")
+      .eq("user_id", authData.user.id)
+      .order("created_at", { ascending: false })
+      .limit(10);
 
-  const completed =
-    todayData.rcDone >= rcTarget && todayData.skillQs >= skillTarget;
+    let avgAccuracy = 0;
+    let avgTimePerQ = 0;
+
+    if (sessions && sessions.length > 0) {
+      avgAccuracy =
+        sessions.reduce(
+          (sum, d) =>
+            sum + (d.correct_answers / d.total_questions) * 100,
+          0
+        ) / sessions.length;
+
+      avgTimePerQ =
+        sessions.reduce(
+          (sum, d) => sum + d.time_taken_sec / d.total_questions,
+          0
+        ) / sessions.length;
+    }
+
+    setStats({
+      accuracy: Math.round(avgAccuracy),
+      time: Math.round(avgTimePerQ),
+      sessions: sessions?.length || 0,
+    });
+
+    // WEEKLY COMPLETION
+    const { data: weekSessions } = await supabase
+      .from("rc_sessions")
+      .select("created_at")
+      .eq("user_id", authData.user.id)
+      .gte("created_at", weekStart.toISOString());
+
+    const dayCounts = {};
+    weekSessions?.forEach((s) => {
+      const d = new Date(s.created_at).toISOString().slice(0, 10);
+      dayCounts[d] = (dayCounts[d] || 0) + 1;
+    });
+
+    const completedDays = Object.values(dayCounts).filter(
+      (count) => count >= 3
+    ).length;
+
+    setWeeklyProgress(completedDays);
+
+    setPlan(generatePlan(avgAccuracy));
+    setLoading(false);
+  }
+
+  if (loading) return <div style={{ padding: 30 }}>Loading...</div>;
+  if (!plan) return null;
+
+  const progressPercent = Math.min(100, (weeklyProgress / 6) * 100);
 
   return (
-    <div style={{ marginTop: 24, Width: "100%"}}>
-      <h2 style={{ marginBottom: 12 }}>This Week’s Plan</h2>
-
+    <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
+      {/* PHASE HERO */}
       <div
         style={{
-          background: "#ffffff",
-          borderRadius: 20,
           padding: 28,
-          boxShadow: "0 12px 30px rgba(0,0,0,0.06)",
-          border: "1px solid #e5e7eb",
+          borderRadius: 20,
+          background: plan.gradient,
+          color: "#fff",
+          marginBottom: 24,
         }}
       >
-        {/* Focus Skills */}
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 13, color: "#6b7280" }}>Focus Skills</div>
-          <div style={{ fontSize: 24, fontWeight: 800 }}>
-            {current.skills[0].toUpperCase()}{" "}
-            <span style={{ color: "#94a3b8" }}>+</span>{" "}
-            {current.skills[1].toUpperCase()}
-          </div>
+        <div style={{ fontSize: 13, opacity: 0.8 }}>
+          Weekly Training Phase
+        </div>
+        <div style={{ fontSize: 28, fontWeight: 800 }}>{plan.zone}</div>
+        <div style={{ marginTop: 8 }}>{plan.objective}</div>
+      </div>
+
+      {/* PERFORMANCE SNAPSHOT */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))",
+          gap: 16,
+          marginBottom: 24,
+        }}
+      >
+        <Metric label="Accuracy" value={stats.accuracy + "%"} />
+        <Metric label="Avg Time/Q" value={stats.time + "s"} />
+        <Metric label="Sessions" value={stats.sessions} />
+      </div>
+
+      {/* WEEKLY PROGRESS */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 8, fontWeight: 600 }}>
+          Weekly Completion: {weeklyProgress} / 6 Days
         </div>
 
-        {/* Week Grid */}
         <div
           style={{
-           display: "flex",
-gap: 12,
-marginBottom: 28,
-overflowX: "auto",
-paddingBottom: 6,
-WebkitOverflowScrolling: "touch",
-
+            height: 14,
+            background: "#e5e7eb",
+            borderRadius: 999,
+            overflow: "hidden",
           }}
         >
-          {current.days.map((d, i) => {
-            const done = d.rcDone >= rcTarget && d.skillQs >= skillTarget;
-            const isToday = i === dayIndex;
-
-            return (
-              <div
-                key={i}
-                style={{
-                  minWidth: 90,
-                  flexShrink: 0,
-                  padding: 12,
-                  borderRadius: 12,
-                  textAlign: "center",
-                  background: done ? "#dcfce7" : "#f8fafc",
-                  border: isToday
-                    ? "2px solid #2563eb"
-                    : "1px solid #e5e7eb",
-                  opacity: i > dayIndex ? 0.4 : 1,
-                }}
-              >
-                <div style={{ fontSize: 12, color: "#6b7280" }}>
-                  Day {i + 1}
-                </div>
-                <div style={{ fontSize: 12, fontWeight: 600 }}>
-                  {d.rcDone}/{rcTarget} RC
-                </div>
-                <div style={{ fontSize: 12 }}>
-                  {d.skillQs}/{skillTarget} Q
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Today’s Mission */}
-        <div
-          style={{
-            padding: 20,
-            borderRadius: 16,
-            background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <h3 style={{ marginTop: 0 }}>🎯 Today’s Mission</h3>
-
-          <div style={{ fontWeight: 600, marginBottom: 6 }}>
-            RCs: {todayData.rcDone}/{rcTarget}
-          </div>
-
           <div
             style={{
-              height: 10,
-              background: "#e5e7eb",
-              borderRadius: 999,
-              overflow: "hidden",
-              marginBottom: 14,
+              width: progressPercent + "%",
+              height: "100%",
+              background: plan.primary,
             }}
-          >
-            <div
-              style={{
-                width: rcPct + "%",
-                height: "100%",
-                background: "linear-gradient(90deg, #22c55e, #16a34a)",
-              }}
-            />
-          </div>
-
-          <button
-            onClick={() => {
-              const todayKey = new Date().toISOString().slice(0, 10);
-              const done = localStorage.getItem("rcPlanDone-" + todayKey);
-
-              if (done) {
-                alert(
-                  "You have already completed today’s drill. Come back tomorrow."
-                );
-                return;
-              }
-
-          router.push("/rc/drill");
-            }}
-            style={{
-              padding: "14px 22px",
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
-              color: "#fff",
-              border: "none",
-              fontWeight: 700,
-              fontSize: 15,
-              boxShadow: "0 8px 20px rgba(37,99,235,0.35)",
-              cursor: "pointer",
-            }}
-          >
-            Start Today’s Drill
-          </button>
-
-          <div style={{ marginTop: 14, fontWeight: 600 }}>
-            {current.skills.join(" + ")} Questions:{" "}
-            {todayData.skillQs}/{skillTarget}
-          </div>
-
-          <div
-            style={{
-              height: 10,
-              background: "#e5e7eb",
-              borderRadius: 999,
-              overflow: "hidden",
-              marginTop: 6,
-            }}
-          >
-            <div
-              style={{
-                width: skillPct + "%",
-                height: "100%",
-                background: "linear-gradient(90deg, #3b82f6, #1d4ed8)",
-              }}
-            />
-          </div>
-
-          {completed && (
-            <div
-              style={{
-                marginTop: 18,
-                padding: 14,
-                borderRadius: 12,
-                background: "#ecfeff",
-                border: "1px solid #67e8f9",
-                fontWeight: 600,
-              }}
-            >
-              🎉 Bravo! You’ve completed today’s plan.
-            </div>
-          )}
+          />
         </div>
       </div>
+
+      {/* DAILY PLAN */}
+      {plan.days.map((day, i) => (
+        <div
+          key={i}
+          style={{
+            background: "#fff",
+            borderRadius: 18,
+            padding: 20,
+            marginBottom: 18,
+            boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
+            borderLeft: `5px solid ${plan.primary}`,
+          }}
+        >
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>
+            Day {i + 1}
+          </div>
+
+          {day.type === "practice" &&
+            day.passages.map((p, idx) => (
+              <div key={idx} style={{ fontSize: 14, marginBottom: 6 }}>
+                • {p.genre} – {p.difficulty} – {p.words}
+              </div>
+            ))}
+
+          {day.type === "practice" && (
+            <div style={{ marginTop: 8, fontSize: 13 }}>
+              🎯 Focus: {day.focus}
+            </div>
+          )}
+
+          {day.type === "simulation" && (
+            <div>🔥 Full Sectional Simulation</div>
+          )}
+
+          {day.type === "review" && (
+            <div>📊 Review mistakes & update error log</div>
+          )}
+        </div>
+      ))}
     </div>
   );
+}
+
+function Metric({ label, value }) {
+  return (
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 16,
+        background: "#fff",
+        textAlign: "center",
+        boxShadow: "0 6px 15px rgba(0,0,0,0.05)",
+      }}
+    >
+      <div style={{ fontSize: 22, fontWeight: 800 }}>{value}</div>
+      <div style={{ fontSize: 12, color: "#6b7280" }}>{label}</div>
+    </div>
+  );
+}
+
+function generatePlan(avgAccuracy) {
+  let zone, difficulty, words, primary, gradient, objective;
+
+  if (avgAccuracy < 60) {
+    zone = "Structural Phase";
+    difficulty = "Moderate";
+    words = "400–500";
+    primary = "#dc2626";
+    gradient = "linear-gradient(135deg,#dc2626,#7f1d1d)";
+    objective = "Rebuild core comprehension accuracy.";
+  } else if (avgAccuracy < 75) {
+    zone = "Precision Phase";
+    difficulty = "Advanced";
+    words = "400–500";
+    primary = "#f59e0b";
+    gradient = "linear-gradient(135deg,#f59e0b,#b45309)";
+    objective = "Stabilise inference & tone control.";
+  } else if (avgAccuracy < 85) {
+    zone = "Control Phase";
+    difficulty = "Advanced";
+    words = "500–600";
+    primary = "#2563eb";
+    gradient = "linear-gradient(135deg,#2563eb,#1e3a8a)";
+    objective = "Strengthen logical reasoning.";
+  } else {
+    zone = "Simulation Phase";
+    difficulty = "Pro";
+    words = "600–700";
+    primary = "#16a34a";
+    gradient = "linear-gradient(135deg,#16a34a,#14532d)";
+    objective = "Elite CAT simulation readiness.";
+  }
+
+  const genres = [
+  "Philosophy",
+  "Psychology",
+  "Economics",
+  "Sociology",
+  "History",
+  "Political Theory",
+  "Environmental Studies",
+  "Technology & Society",
+  "Ethics",
+  "Literary Criticism",
+  "Education",
+  "Anthropology",
+  "Behavioral Science",
+  "Neuroscience",
+  "Public Policy",
+  "Culture Studies",
+  "Media Studies",
+  "Gender Studies",
+  "Urban Studies",
+  "Globalization",
+  "Mixed (CAT-style)"
+];
+  const practiceDays = Array.from({ length: 5 }).map((_, i) => ({
+    type: "practice",
+    focus:
+      zone === "Structural Phase"
+        ? "Main Idea + Paragraph Function"
+        : zone === "Precision Phase"
+        ? "Inference + Tone"
+        : zone === "Control Phase"
+        ? "Assumption + Strengthen/Weaken"
+        : "Mixed CAT-style Control",
+    passages: [
+      { genre: genres[i], difficulty, words },
+      { genre: genres[(i + 1) % genres.length], difficulty, words },
+      { genre: genres[(i + 2) % genres.length], difficulty, words },
+    ],
+  }));
+
+  return {
+    zone,
+    difficulty,
+    words,
+    primary,
+    gradient,
+    objective,
+    days: [
+      ...practiceDays,
+      { type: "simulation" },
+      { type: "review" },
+    ],
+  };
 }
