@@ -1,4 +1,7 @@
 /* ===================== CSS VARIABLES ===================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
   --bottom-nav-height: 64px;
   --palette-height: 72px;

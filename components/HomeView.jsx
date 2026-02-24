@@ -20,8 +20,9 @@ function getGreeting() {
 }
 
 export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
-  return (
-    <div style={wrap}>
+ return (
+  <div style={wrap}>
+   
       <div style={panel}>
        {/* Header with Auth */}
 <div
