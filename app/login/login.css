@@ -5,6 +5,9 @@
   align-items: center;
   background: linear-gradient(135deg, #eef2ff, #f8fafc);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-top: 80px;
+  padding-bottom: 120px,
+  
 }
 
 .auth-card {

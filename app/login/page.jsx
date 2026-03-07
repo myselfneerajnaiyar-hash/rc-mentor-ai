@@ -32,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-wrapper">
+    <div className="auth-wrapper pb-32">
       <div className="auth-card">
         <h1 className="auth-title">Welcome Back</h1>
         <p className="auth-subtitle">Login to continue your RC journey</p>

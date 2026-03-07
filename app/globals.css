@@ -438,3 +438,12 @@ display:none;
 }
 
 }
+
+input, select, textarea {
+  color: #111827;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
