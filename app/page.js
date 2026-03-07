@@ -592,7 +592,7 @@ if (typeof window !== "undefined") {
   
 return (
  <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex relative">
-<div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
+<div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
  <aside className="hidden md:flex w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
