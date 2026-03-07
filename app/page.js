@@ -1,4 +1,19 @@
 "use client";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const originalParse = JSON.parse;
+
+JSON.parse = function (...args) {
+  try {
+    return originalParse(...args);
+  } catch (e) {
+    console.error("JSON PARSE CRASHED ON:", args[0]);
+    throw e;
+  }
+};
+
 import { useState, useEffect } from "react";
 import HomeView from "../components/HomeView";
 import MentorView from "../components/MentorView";
@@ -26,25 +41,40 @@ import TabGroup from "../components/TabGroup";
 import ChatMentor from "../components/ChatMentor"
 import PracticeSwitcher from "@/components/PracticeSwitcher";
 
-async function loadSectionalAttemptMapFromDB() {
-  const { data: authData } = await supabase.auth.getUser();
-  if (!authData?.user) return {};
 
-  const { data } = await supabase
-    .from("sectional_tests")
-    .select("sectional_id")
-    .eq("user_id", authData.user.id);
-
-  const map = {};
-  (data || []).forEach(row => {
-    map[row.sectional_id] = true;
-  });
-
-  return map;
+function safeParse(value, fallback = {}) {
+  try {
+    if (!value || value === "undefined") return fallback;
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
 }
 
+async function loadSectionalAttemptMapFromDB() {
+  try {
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) return {};
+
+    const { data } = await supabase
+      .from("sectional_tests")
+      .select("sectional_id")
+      .eq("user_id", authData.user.id);
+
+    const map = {};
+    (data || []).forEach(row => {
+      map[row.sectional_id] = true;
+    });
+
+    return map;
+  } catch (e) {
+    return {};
+  }
+}
     
 export default function Page() {
+
+
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
@@ -103,6 +133,8 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
 // tests | analytics
 
 useEffect(() => {
+  if (typeof window === "undefined") return;
+
   function handler(e) {
     const { sectionalId, attemptId } = e.detail || {};
 
@@ -110,13 +142,14 @@ useEffect(() => {
     setCatPhase("test");
 
     setActiveRCTest({
-      id: sectionalId || "_history_", // fallback safety
+      id: sectionalId || "history",
       __startPhase: "diagnosis",
       __attemptId: attemptId,
     });
   }
 
   window.addEventListener("OPEN_DIAGNOSIS", handler);
+
   return () => {
     window.removeEventListener("OPEN_DIAGNOSIS", handler);
   };
@@ -374,7 +407,10 @@ useEffect(() => {
       setResult(json);
       setPhase("result");
 
-      const existing = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+  let existing = {};
+if (typeof window !== "undefined") {
+  existing = safeParse(localStorage.getItem("rcProfile"));
+}
 
       const record = {
         date: Date.now(),
@@ -386,12 +422,19 @@ useEffect(() => {
       };
 
       existing.tests = existing.tests || [];
-      existing.tests.push(record);
-      localStorage.setItem("rcProfile", JSON.stringify(existing));
+existing.tests.push(record);
+
+if (typeof window !== "undefined") {
+  localStorage.setItem("rcProfile", JSON.stringify(existing));
+}
       // ---- Auto-update today's plan progress ----
 try {
   const weekKey = "rcWeeklyPlan";
-  const saved = JSON.parse(localStorage.getItem(weekKey) || "{}");
+ let saved = {};
+
+if (typeof window !== "undefined") {
+  saved = safeParse(localStorage.getItem(weekKey));
+}
 
   const now = new Date();
   const weekId =
@@ -415,7 +458,9 @@ try {
     if (plan.days[dayIndex]) {
       plan.days[dayIndex].done += 1;
       saved[weekId] = plan;
-      localStorage.setItem(weekKey, JSON.stringify(saved));
+      if (typeof window !== "undefined") {
+  localStorage.setItem(weekKey, JSON.stringify(saved));
+}
     }
   }
 } catch (e) {
@@ -465,7 +510,11 @@ try {
 
       setPhase("loading-adaptive");
 
-      const raw = JSON.parse(localStorage.getItem("rcProfile") || "{}");
+  let raw = {};
+
+if (typeof window !== "undefined") {
+  raw = safeParse(localStorage.getItem("rcProfile"));
+}
       const tests = raw.tests || [];
 
       if (!tests.length) {
@@ -508,7 +557,12 @@ try {
 
 function updateTodayRCProgress() {
   const weekKey = "rcWeeklyPlan";
-  const saved = JSON.parse(localStorage.getItem(weekKey) || "{}");
+ 
+  let saved = {};
+
+if (typeof window !== "undefined") {
+  saved = safeParse(localStorage.getItem(weekKey));
+}
 
   const now = new Date();
   const weekId =
@@ -530,7 +584,10 @@ function updateTodayRCProgress() {
   plan.days[dayIndex].done += 1; // allow overflow
 
   saved[weekId] = plan;
+
+if (typeof window !== "undefined") {
   localStorage.setItem(weekKey, JSON.stringify(saved));
+}
 }
   
 return (
