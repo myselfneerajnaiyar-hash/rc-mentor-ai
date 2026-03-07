@@ -19,6 +19,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const bottomRef = useRef(null)
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
+  const inputRef = useRef(null)
 
  useEffect(() => {
   lastMessageRef.current?.scrollIntoView({
@@ -39,6 +40,10 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
 
   getUser()
 
+}, [])
+
+useEffect(() => {
+  inputRef.current?.focus()
 }, [])
 
  async function sendMessage() {
@@ -73,14 +78,32 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
 
   setThinking(false)
 
+ await typeMessage(data.reply, updated)
+}
+
+async function typeMessage(text, updatedMessages) {
+  let currentText = ""
+
   setMessages([
-    ...updated,
+    ...updatedMessages,
     {
       role: "assistant",
-      content: data.reply,
+      content: "",
       time: new Date()
     }
   ])
+
+  for (let i = 0; i < text.length; i++) {
+    currentText += text[i]
+
+    setMessages(prev => {
+      const copy = [...prev]
+      copy[copy.length - 1].content = currentText
+      return copy
+    })
+
+    await new Promise(resolve => setTimeout(resolve, 8))
+  }
 }
 
   function quickPrompt(text) {
@@ -97,7 +120,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
 
   return (
 
-    <div className="max-w-3xl mx-auto flex flex-col h-[80vh] bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl">
+    <div className="max-w-2xl mx-auto flex flex-col h-[80vh] bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl">
 
       {/* Header */}
 
@@ -137,7 +160,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
           <button
             key={i}
             onClick={() => quickPrompt(p)}
-            className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-full"
+            className="text-xs bg-slate-800/80 hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-full"
           >
             {p}
           </button>
@@ -170,10 +193,10 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   />
 )}
 
-<div className="max-w-[60%]">
+<div className="max-w-[calc(100%-60px)]">
 
   <div
-    className={`px-4 py-3 rounded-xl text-[15px] leading-7 ${
+    className={`px-4 py-3 rounded-xl text-[15px] leading-relaxed ${
       m.role === "user"
         ? "bg-indigo-600 text-white"
         : "bg-slate-800 text-slate-200"
@@ -207,7 +230,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
       className="w-7 h-7 rounded-full mt-1"
     />
 
-    <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl text-sm">
+    <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl text-sm animate-pulse">
       Birbal is thinking...
     </div>
 
@@ -221,11 +244,18 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
 
       {/* Input */}
 
-      <div className="p-3 border-t border-slate-800 flex gap-2">
+    <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-slate-900">
 
         <input
+        ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+       onKeyDown={(e) => {
+  if (e.key === "Enter" && input.trim()) {
+    e.preventDefault()
+    sendMessage()
+  }
+}}
          placeholder="Ask Birbal about RC..."
           className="flex-1 bg-slate-800 border border-slate-700 text-white px-4 py-2 rounded-xl outline-none"
         />
