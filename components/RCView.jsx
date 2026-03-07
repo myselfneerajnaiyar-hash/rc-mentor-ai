@@ -5,6 +5,9 @@ import Navbar from "./Navbar";
 import RCProfile from "./RCProfile";
 import { supabase } from "../lib/supabase";
 import RCHistory from "./RCHistory";
+import TabGroup from "./TabGroup";
+import BirbalMessage from "./BirbalMessage";
+import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 
 export default function RCView({view,setView }) {
   const [rcTab, setRcTab] = useState("paste");
@@ -31,6 +34,10 @@ console.log("User check:", data, error);
  const [genre, setGenre] = useState("Psychology");
   const [difficulty, setDifficulty] = useState("moderate");
   const [lengthRange, setLengthRange] = useState("400-500");
+  const [birbalMessage, setBirbalMessage] = useState("");
+  const [birbalChatQ, setBirbalChatQ] = useState(null);
+const [birbalChatMessages, setBirbalChatMessages] = useState([]);
+const [birbalInput, setBirbalInput] = useState("");
 
   // ---- TEST STATE ----
 
@@ -250,6 +257,9 @@ const normalized = {
 };
 
 setData(normalized);
+setBirbalMessage(
+  "Let's think through this paragraph carefully. Focus on what the author is trying to argue, not just what is being described."
+);
 // 🔹 AUTO SAVE DIFFICULT WORDS TO WORDBANK
 if (normalized.difficultWords && normalized.difficultWords.length > 0) {
 
@@ -311,10 +321,16 @@ if (normalized.primaryQuestion) {
 
     if (mode === "showingPrimary") {
       if (i === data.primaryQuestion.correctIndex) {
-        setFeedback("Correct. You're reading this paragraph the right way.");
+     setBirbalMessage(
+  "Good. You caught the author's logic. Strong RC readers track the argument, not individual sentences."
+);
         setMode("solved");
       } else {
-        setFeedback("Not quite. Let’s try a simpler question on the same idea.");
+       setFeedback("Not quite.");
+
+setBirbalMessage(
+  "Notice what the author is really emphasizing here. The trap option usually repeats words from the passage but misses the author's intent."
+);
         setMode("showingEasier");
         setQuestionStartTime(Date.now());
       }
@@ -336,6 +352,18 @@ if (normalized.primaryQuestion) {
     setMode("idle");
     setFeedback("");
   }
+
+  function openBirbalChat(qIndex) {
+  setBirbalChatQ(qIndex);
+
+  setBirbalChatMessages([
+    {
+      role: "assistant",
+      content:
+        "I’m Birbal. Ask me anything about this question or the author's reasoning."
+    }
+  ]);
+}
 
 async function startTest(passageOverride = null) {
   setPhase("test-loading");
@@ -373,7 +401,9 @@ async function startTest(passageOverride = null) {
 
     const normalized = (json.questions || []).map(q => ({
       ...q,
-      type: q.type ? q.type.trim().toLowerCase() : "unknown",
+     type: q.type
+  ? q.type.trim().toLowerCase().replace(/\s+/g, "-")
+  : "unknown"
     }));
 
     setTestQuestions(normalized);
@@ -676,66 +706,129 @@ const bandCounts = {
   slow: timeStats.filter(t => timeBand(t) === "slow").length,
 };
 
+const birbalHints = {
+  inference:
+    "The author rarely states the answer directly. Ask yourself: what must logically follow from the passage?",
+
+  "main-idea":
+    "Ignore the details and focus on the author's central claim. What is the passage trying to prove?",
+
+  tone:
+    "Tone questions depend on attitude. Look for subtle approval, criticism, or skepticism in the language.",
+
+  detail:
+    "Detail questions are not about memory alone. Revisit the exact part of the passage where this idea appears.",
+
+  purpose:
+    "Ask why the author introduced this idea or example. What role does it play in the argument?",
+
+  assumption:
+    "An assumption is something the argument depends on but does not explicitly state. What must be true for the author's reasoning to work?",
+
+  strengthen:
+    "A strengthening option adds support to the author's claim. Look for evidence that makes the argument more convincing.",
+
+  weaken:
+    "A weakening option introduces doubt in the author's reasoning or evidence.",
+
+  paradox:
+    "Paradox questions involve two facts that seem contradictory. The correct answer resolves the tension between them.",
+
+  application:
+    "Application questions ask you to extend the author's logic to a new situation.",
+
+  default:
+    "Look closely at what the author is trying to prove rather than focusing only on isolated facts."
+};
+
+async function sendBirbalMessage() {
+
+  if (!birbalInput.trim()) return;
+
+  const q = testQuestions[birbalChatQ];
+  console.log("Birbal question:", q);
+
+  const newMessages = [
+    ...birbalChatMessages,
+    { role: "user", content: birbalInput }
+  ];
+
+  setBirbalChatMessages(newMessages);
+  setBirbalInput("");
+
+  const res = await fetch("/api/birbal-question", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+ body: JSON.stringify({
+  passage: fullPassage,
+
+  question: {
+    prompt: q.prompt,
+    options: q.options,
+    correctIndex: q.correctIndex
+  },
+
+  chat: newMessages
+})
+});
+  const json = await res.json();
+
+  setBirbalChatMessages([
+    ...newMessages,
+    { role: "assistant", content: json.reply }
+  ]);
+}
+
+function formatBirbal(text) {
+  if (!text) return text;
+
+  return text
+    .replace(/Correct Logic:/gi, "\n\n🧠 Correct Logic\n")
+    .replace(/Trap Logic:/gi, "\n\n⚠ Trap Logic\n")
+    .replace(/Passage Proof:/gi, "\n\n📖 Passage Proof\n")
+    .replace(/Quick Lesson:/gi, "\n\n🎯 Quick Lesson\n");
+}
+
 return (
-  <div
-    style={{
-      minHeight: "100vh",
-      fontFamily: "system-ui",
-      background: "linear-gradient(180deg, #eef2ff, #f8fafc)",
-      color: "#1f2937",
-    }}
-  >
- 
+  <div className="min-h-screen text-white">
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
     {view === "rc" && (
   <div style={{ marginTop: 16, marginBottom: 16 }}>
-    <div
-      style={{
-        display: "flex",
-        gap: 12,
-        borderBottom: "1px solid #e5e7eb",
-        paddingBottom: 8,
-      }}
-    >
-      {[
-  { key: "paste", label: "Paste your passage" },
-  { key: "generate", label: "Generate Passage" },
-  { key: "profile", label: "RC Profile" },
-  { key: "history", label: "RC History" },
-].map(tab => (
-        <button
-          key={tab.key}
-        onClick={() => {
-  setRcTab(tab.key);
+    <div style={{ marginBottom: 32 }}>
+  <TabGroup
+    tabs={[
+      { label: "Paste your passage", value: "paste" },
+      { label: "Generate Passage", value: "generate" },
+      { label: "RC Profile", value: "profile" },
+      { label: "RC History", value: "history" },
+    ]}
+    active={rcTab}
+    onChange={(value) => {
+  setRcTab(value);
 
-  // ✅ CRITICAL FIX
-  setPhase("mentor");
+  // RESET RC STATE
+  setParas([]);
+  setIndex(0);
+  setData(null);
+  setFeedback("");
+  setMode("idle");
+
+  setGeneratedRC(null);
+  setTestQuestions([]);
+  setTestAnswers({});
   setResult(null);
 
-  if (tab.key === "generate") {
-    setShowGenerator(true);
-  } else {
-    setShowGenerator(false);
-  }
+  setDirectTestMode(false);
+  setFullPassage("");
+
+  setPhase("mentor");
 }}
-          style={{
-  padding: "8px 14px",
-  borderRadius: 6,
-  border: rcTab === tab.key
-    ? "1px solid #2563eb"
-    : "1px solid #d1d5db",
-  fontWeight: 600,
-  cursor: "pointer",
-  background: rcTab === tab.key ? "#2563eb" : "#ffffff",
-  color: rcTab === tab.key ? "#fff" : "#374151",
-}}
-        >
-          {tab.label}
-        </button>
-      ))}
-    </div>
+  />
   </div>
+</div>
 )}
  
        
@@ -754,27 +847,46 @@ return (
 />
 )}
   {paras.length > 0 && phase === "mentor" && (
-  <div style={{ marginTop: 20, background: "#fff", padding: 20, borderRadius: 12 }}>
+ <div className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6">
 
-    <h3>Paragraph {index + 1}</h3>
-    <div style={{ marginBottom: 12 }}>{paras[index]}</div>
+    <h3 className="text-xl font-semibold mb-4">
+  Paragraph {index + 1}
+</h3>
+    <div className="mb-4 text-slate-300 leading-relaxed">
+  {paras[index]}
+</div>
 
     {!data && (
-      <button onClick={explain} disabled={loading}>
-        {loading ? "Thinking..." : "Explain this paragraph"}
-      </button>
+      <button
+  onClick={explain}
+  disabled={loading}
+  className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white"
+>
+  {loading ? "Thinking..." : "Explain this paragraph"}
+</button>
     )}
 
    {data && (
   <div style={{ marginTop: 16 }}>
-    <h4>In simple words</h4>
-    <p style={{ color: "#374151" }}>
-      {data.simpleExplanation || data.summary}
-    </p>
+   <h4 className="text-lg font-semibold mt-6 mb-2">
+  In simple words
+</h4>
+<p className="text-slate-300 leading-relaxed mb-6">
+  {data.simpleExplanation || data.summary}
+</p>
+
+{birbalMessage && (
+  <div className="mb-6">
+    <BirbalMessage text={birbalMessage} />
+  </div>
+)}
+
   {(data.difficultWords || data.vocab) && (data.difficultWords || data.vocab).length > 0 && (
   <>
-    <h4>Difficult Words</h4>
-    <ul style={{ paddingLeft: 20, color: "#374151" }}>
+    <h4 className="mt-6 mb-2 font-semibold text-slate-200">
+  Difficult Words
+</h4>
+   <ul className="pl-6 text-slate-300 space-y-1 mb-6">
       {(data.difficultWords || data.vocab).map((w, i) => (
         <li key={i}>
           {typeof w === "string" ? (
@@ -790,31 +902,21 @@ return (
   </>
 )}
 
-    <h4>Main Idea</h4>
-    <p><b>{data.summary}</b></p>
+   
 
         {mode === "showingPrimary" && (
           <>
-           <p style={{ fontWeight: 600 }}>
+          <p className="font-semibold text-lg mt-6 mb-3">
   {data.primaryQuestion.question ||
    data.primaryQuestion.prompt ||
    "Choose the correct option:"}
 </p>
            {data.primaryQuestion.options.map((o, i) => (
-  <button
-    key={i}
-    onClick={() => choose(i)}
-    style={{
-      display: "block",
-      width: "100%",
-      textAlign: "left",
-      marginBottom: 8,
-      padding: "10px 12px",
-      borderRadius: 6,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-    }}
-  >
+ <button
+  key={i}
+  onClick={() => choose(i)}
+  className="w-full text-left mb-2 px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-all"
+>
     {o}
   </button>
 ))}
@@ -832,16 +934,11 @@ return (
   <button
     key={i}
     onClick={() => choose(i)}
-    style={{
-      display: "block",
-      width: "100%",
-      textAlign: "left",
-      marginBottom: 8,
-      padding: "10px 12px",
-      borderRadius: 6,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-    }}
+   className={`block w-full text-left mb-2 px-3 py-2 rounded-lg border border-slate-700 transition ${
+ i === data.easierQuestion.correctIndex
+    ? "bg-indigo-900"
+    : "bg-slate-800 hover:bg-slate-700"
+}`}
   >
     {o}
   </button>
@@ -852,28 +949,79 @@ return (
         {mode === "solved" && (
           <>
             <p>{feedback}</p>
-            <button onClick={nextParagraph}>Next Paragraph</button>
+           <button
+  onClick={nextParagraph}
+  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-semibold text-white mt-4"
+>
+  Next Paragraph
+</button>
           </>
         )}
       </div>
     )}
   </div>
 )}
-  {rcTab === "generate" && showGenerator && (
-  <div
-    style={{
-      marginTop: 16,
-      padding: 20,
-      background: "#ffffff",
-      border: "1px solid #e5e7eb",
-      borderRadius: 12,
-      boxShadow: "0 8px 20px rgba(0,0,0,0.04)",
-    }}
-  >
-    <h3>Generate a CAT-style RC Passage</h3>
+  {rcTab === "generate" && paras.length === 0 && !generatedRC && (
+  <div className="mt-6">
+    {/* INTRO SECTION */}
+    <div className="max-w-3xl">
+      <h2 className="text-3xl font-bold mb-4">
+        CAT-Level Reading Comprehension Generator
+      </h2>
 
-    <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
-      <select value={genre} onChange={e => setGenre(e.target.value)}>
+      <p className="text-slate-400 text-lg leading-relaxed">
+        Train on AI-generated passages designed to simulate real CAT difficulty.
+        Each passage is structured to test inference depth, logical clarity,
+        and conceptual understanding — not surface reading.
+      </p>
+
+     <div className="mt-6">
+        <h4 className="font-semibold mb-3 text-slate-200">
+          What you get:
+        </h4>
+
+       <ul className="space-y-4 mt-4">
+
+  <li className="flex items-start gap-3 text-slate-300">
+    <FileText className="w-5 h-5 text-indigo-400 mt-1" />
+    <span><b>4 structured paragraphs</b> — layered, argument-driven content</span>
+  </li>
+
+  <li className="flex items-start gap-3 text-slate-300">
+    <HelpCircle className="w-5 h-5 text-emerald-400 mt-1" />
+    <span><b>4 CAT-style questions</b> — inference-heavy and trap-based</span>
+  </li>
+
+  <li className="flex items-start gap-3 text-slate-300">
+    <Brain className="w-5 h-5 text-purple-400 mt-1" />
+    <span><b>Detailed mentor explanations</b> — conceptual clarity + traps decoded</span>
+  </li>
+
+  <li className="flex items-start gap-3 text-slate-300">
+    <Clock className="w-5 h-5 text-amber-400 mt-1" />
+    <span><b>Accuracy + time diagnosis</b> — speed vs comprehension insights</span>
+  </li>
+
+</ul>
+      </div>
+    </div>
+
+    {/* GENERATOR CARD */}
+   {/* GENERATOR SECTION */}
+<div className="max-w-3xl">
+<h3 className="text-xl font-semibold text-white mt-10 mb-4">
+  Generate a CAT-style RC Passage
+</h3>
+
+<div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+
+    <div className="flex gap-4 mb-4 flex-wrap">
+     <select
+  value={genre}
+  onChange={e => setGenre(e.target.value)}
+ className="appearance-none bg-slate-800 border border-slate-700 text-slate-200 rounded-xl px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+>
         <option>Philosophy</option>
         <option>Psychology</option>
         <option>Economics</option>
@@ -897,14 +1045,22 @@ return (
         <option>Mixed (CAT-style)</option>
       </select>
 
-      <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+      <select
+  value={difficulty}
+  onChange={e => setDifficulty(e.target.value)}
+ className="appearance-none bg-slate-800 border border-slate-700 text-slate-200 rounded-xl px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+>
         <option value="beginner">Beginner</option>
         <option value="moderate">Moderate</option>
         <option value="advanced">Advanced</option>
         <option value="pro">Pro (CAT Killer)</option>
       </select>
 
-      <select value={lengthRange} onChange={e => setLengthRange(e.target.value)}>
+     <select
+  value={lengthRange}
+  onChange={e => setLengthRange(e.target.value)}
+  className="appearance-none bg-slate-800 border border-slate-700 text-slate-200 rounded-xl px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+>
         <option value="300-400">300–400</option>
         <option value="400-500">400–500</option>
         <option value="500-600">500–600</option>
@@ -912,34 +1068,20 @@ return (
       </select>
     </div>
 
-    <button
-      onClick={generateNewRC}
-      style={{
-        padding: "10px 16px",
-        background: "#2563eb",
-        color: "#fff",
-        border: "none",
-        borderRadius: 6,
-        fontWeight: 600,
-      }}
-    >
+   <button
+  onClick={generateNewRC}
+  className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white mt-4"
+>
       {genLoading ? "Generating…" : "Generate Passage"}
     </button>
   </div>
+  </div>
+  </div>
 )}
     {phase === "newRC" && generatedRC && (
-  <div
-    style={{
-      marginTop: 24,
-      padding: 24,
-      borderRadius: 12,
-      background: "#f8fafc",
-      border: "1px solid #e5e7eb",
-      textAlign: "center",
-    }}
-  >
+  <div className="mt-8 bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center">
     <h2>Your passage is ready.</h2>
-    <p style={{ color: "#555" }}>
+    <p className="text-slate-400">
       How would you like to approach it?
     </p>
 
@@ -961,14 +1103,7 @@ return (
   setMode("idle");
   setPhase("mentor");
 }}
-        style={{
-          padding: "12px 18px",
-          background: "#2563eb",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-          fontWeight: 600,
-        }}
+       className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white"
       >
         Guided Explanation Mode
       </button>
@@ -984,14 +1119,7 @@ return (
     // DO NOT setPhase here
     startTest(generatedRC.passage);   // pass directly
   }}
-  style={{
-    padding: "12px 18px",
-    background: "green",
-    color: "#fff",
-    border: "none",
-    borderRadius: 6,
-    fontWeight: 600,
-  }}
+ className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-semibold text-white"
 >
   Take it as a Test
 </button>
@@ -1038,15 +1166,7 @@ return (
         setPhase("mentor");
         setShowGenerator(false);
       }}
-      style={{
-        marginTop: 12,
-        padding: "12px 18px",
-        background: "#2563eb",
-        color: "#fff",
-        border: "none",
-        borderRadius: 6,
-        fontWeight: 600,
-      }}
+      className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white"
     >
       Continue in Free Mode
     </button>
@@ -1101,13 +1221,7 @@ return (
     </div>
 
     <div
-      style={{
-        background: "#fff",
-        padding: 16,
-        borderRadius: 10,
-        marginBottom: 20,
-        lineHeight: 1.6,
-      }}
+      className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6"
     >
       <h4>Passage</h4>
       <p style={{ whiteSpace: "pre-wrap" }}>{fullPassage}</p>
@@ -1119,16 +1233,11 @@ return (
 
       return (
         <div
-          style={{
-            background: "#fff",
-            padding: 16,
-            borderRadius: 10,
-            marginBottom: 16,
-          }}
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6"
         >
-          <p style={{ fontWeight: 600 }}>
-            Q{currentQIndex + 1}. {q.prompt}
-          </p>
+         <p className="font-semibold text-lg mb-2">
+  Q{currentQIndex + 1}. {q.prompt}
+</p>
 
           {q.options.map((o, oi) => (
             <button
@@ -1136,17 +1245,12 @@ return (
               onClick={() =>
                 setTestAnswers(a => ({ ...a, [currentQIndex]: oi }))
               }
-              style={{
-                display: "block",
-                width: "100%",
-                textAlign: "left",
-                marginBottom: 8,
-                padding: "10px 12px",
-                borderRadius: 6,
-                border: "1px solid #d1d5db",
-                background:
-                  testAnswers[currentQIndex] === oi ? "#dbeafe" : "#f9fafb",
-              }}
+             className={`block w-full text-left mb-2 px-4 py-3 rounded-xl border transition-all
+  ${
+    testAnswers[currentQIndex] === oi
+      ? "bg-indigo-600 border-indigo-500 text-white"
+      : "bg-slate-800 border-slate-700 hover:bg-slate-700"
+  }`}
             >
               {o}
             </button>
@@ -1181,36 +1285,45 @@ return (
 
     <button
       onClick={submitTest}
-      style={{
-        padding: "12px 20px",
-        background: "#2563eb",
-        color: "#fff",
-        border: "none",
-        borderRadius: 8,
-        fontWeight: 600,
-      }}
+      className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white"
     >
       Submit Test
     </button>
   </div>
 )}
    {phase === "result" && result && (
-  <div style={{ marginTop: 24 }}>
-    <h2>Test Summary</h2>
+  <div className="mt-10 space-y-8">
+    <h2 className="text-2xl font-bold mb-4">
+  Test Summary
+</h2>
 
-    <p><b>Score:</b> {score}/{testQuestions.length}</p>
-    <p>
-      <b>Accuracy:</b>{" "}
+
+
+   <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+  <div className="text-lg">
+    <span className="text-slate-400">Score:</span>{" "}
+    <span className="font-semibold">
+      {score}/{testQuestions.length}
+    </span>
+  </div>
+
+  <div className="text-lg mt-2">
+    <span className="text-slate-400">Accuracy:</span>{" "}
+    <span className="font-semibold">
       {Math.round((score / testQuestions.length) * 100)}%
-    </p>
-    <div style={{ marginTop: 16, padding: 12, background: "#f1f5f9", borderRadius: 8 }}>
-  <h4>⏱ Time Analysis</h4>
+    </span>
+  </div>
+</div>
+   <div className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+ <h4 className="text-lg font-semibold mb-3">
+  ⏱ Time Analysis
+</h4>
 
   <p><b>Average time / question:</b> {avgTime}s</p>
   <p><b>Total time:</b> {totalTime}s</p>
   <p style={{ color: "#555" }}>CAT benchmark: 40–45s per RC question</p>
 
-  <ul>
+  <ul className="space-y-1 mt-3 text-slate-300">
     <li>⚡ Rushed (&lt;15s): {bandCounts.rushed}</li>
     <li>🎯 Optimal (15–45s): {bandCounts.optimal}</li>
     <li>🐢 Overthinking (&gt;45s): {bandCounts.slow}</li>
@@ -1218,29 +1331,52 @@ return (
 </div>
 
    {result && (
-  <div style={{ marginTop: 16 }}>
-    <h4>Mentor’s Diagnosis</h4>
-    <p>{result.summary}</p>
-    <p style={{ marginTop: 10 }}>
-  <b>Mentor’s Time Diagnosis:</b><br />
-  {generateTimeDiagnosis(result.questionAnalysis)}
-</p>
+  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-6 space-y-4">
+   <h4 className="text-lg font-semibold mb-3">
+  Mentor’s Diagnosis
+</h4>
+
+<div className="mb-6">
+  <BirbalMessage text={result.summary} />
+</div>
+   <div>
+  <h5 className="font-semibold mb-1">
+    Mentor’s Time Diagnosis
+  </h5>
+  <p className="text-slate-400 leading-relaxed">
+    {generateTimeDiagnosis(result.questionAnalysis)}
+  </p>
+</div>
 
     {result.strengths && (
       <>
         <h4>Strengths</h4>
-        <ul>
-          {result.strengths.map((s, i) => <li key={i}>{s}</li>)}
-        </ul>
+        <ul className="space-y-2 mt-2">
+  {result.strengths.map((s, i) => (
+    <li
+      key={i}
+      className="bg-green-900/30 border border-green-800 rounded-lg px-4 py-2 text-green-200"
+    >
+      ✓ {s}
+    </li>
+  ))}
+</ul>
       </>
     )}
 
     {result.weaknesses && (
       <>
         <h4>Weaknesses</h4>
-        <ul>
-          {result.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
-        </ul>
+        <ul className="space-y-2 mt-2">
+  {result.weaknesses.map((w, i) => (
+    <li
+      key={i}
+      className="bg-red-900/30 border border-red-800 rounded-lg px-4 py-2 text-red-200"
+    >
+      ⚠ {w}
+    </li>
+  ))}
+</ul>
       </>
     )}
 
@@ -1255,14 +1391,7 @@ return (
 <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
   <button
     onClick={() => setPhase("detailed")}
-    style={{
-      padding: "10px 16px",
-      borderRadius: 6,
-      border: "1px solid #2563eb",
-      background: "#2563eb",
-      color: "#fff",
-      fontWeight: 600,
-    }}
+   className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-semibold text-white"
   >
     View Detailed Review
   </button>
@@ -1328,14 +1457,9 @@ return (
 
       return (
         <div
-          key={i}
-          style={{
-            background: "#fff",
-            padding: 16,
-            borderRadius: 10,
-            marginBottom: 16,
-          }}
-        >
+  key={i}
+  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6"
+>
         <p style={{ fontWeight: 600 }}>
   Q{i + 1}. {q.prompt}
 </p>
@@ -1349,30 +1473,30 @@ return (
   Type: {q.type || "inference"}
 </p>
 
-          {q.options.map((o, oi) => {
-            const isCorrect = oi === q.correctIndex;
-            const isUser = oi === userAns;
+        {q.options.map((o, oi) => {
+  const isCorrect = oi === q.correctIndex;
+  const isUser = oi === userAns;
 
-            let bg = "#f9fafb";
-            if (isCorrect) bg = "#dcfce7";
-            if (isUser && !isCorrect) bg = "#fee2e2";
+  let classes =
+    "px-4 py-3 rounded-xl mb-2 border transition-all ";
 
-            return (
-              <div
-                key={oi}
-                style={{
-                  padding: "8px 10px",
-                  borderRadius: 6,
-                  marginBottom: 6,
-                  background: bg,
-                  border: "1px solid #e5e7eb",
-                }}
-              >
-                {o}
-              </div>
-            );
-          })}
+  if (isCorrect) {
+    classes +=
+      "bg-emerald-900/40 border-emerald-600 text-emerald-200";
+  } else if (isUser && !isCorrect) {
+    classes +=
+      "bg-red-900/40 border-red-600 text-red-200";
+  } else {
+    classes +=
+      "bg-slate-800 border-slate-700 text-slate-200";
+  }
 
+  return (
+    <div key={oi} className={classes}>
+      {o}
+    </div>
+  );
+})}
           <p style={{ marginTop: 8 }}>
             <b>Your Answer:</b>{" "}
             {userAns != null ? q.options[userAns] : "Not Attempted"}
@@ -1385,27 +1509,46 @@ return (
          {qa && (
   <div style={{ marginTop: 10 }}>
     <b>Mentor’s Explanation:</b>
-    <p>{qa.correctExplanation}</p>
+   <p className="mb-4">{qa.correctExplanation}</p>
 
-    {qa.temptation && qa.temptation.trim() !== "" && (
-      <>
-        <b>Why your choice felt right:</b>
-        <p style={{ color: "#7c2d12" }}>{qa.temptation}</p>
-      </>
-    )}
+<div className="mb-6">
+  <BirbalMessage
+    text={birbalHints[q.type] || birbalHints.default}
+  />
+</div>
 
-    {qa.whyWrong && (
-      <>
-        <b>Why the other options fail:</b>
-        <ul>
-          {Object.entries(qa.whyWrong).map(([k, v]) => (
-            <li key={k}>
-              <b>Option {String.fromCharCode(65 + Number(k))}:</b> {v}
-            </li>
-          ))}
-        </ul>
-      </>
-    )}
+<button
+  onClick={() => openBirbalChat(i)}
+  className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm"
+>
+  Still confused? Ask Birbal
+</button>
+
+   {qa?.temptation && qa.temptation.trim() !== "" && (
+  <>
+    <h5 className="font-semibold text-amber-300 mt-4 mb-1">
+      Why this option looked tempting
+    </h5>
+    <p className="text-amber-200 leading-relaxed">
+      {qa.temptation}
+    </p>
+  </>
+)}
+
+    {qa?.whyWrong && Object.keys(qa.whyWrong).length > 0 && (
+  <>
+    <h5 className="font-semibold text-slate-200 mt-4 mb-2">
+      Why the other options fail
+    </h5>
+    <ul className="space-y-2 text-slate-300">
+      {Object.entries(qa.whyWrong).map(([k, v]) => (
+        <li key={k}>
+          <b>Option {String.fromCharCode(65 + Number(k))}:</b> {v}
+        </li>
+      ))}
+    </ul>
+  </>
+)}
   </div>
 )}
         </div>
@@ -1418,6 +1561,59 @@ return (
   </div>
 )}
   </>
+)}
+
+{birbalChatQ !== null && (
+  <div className="fixed bottom-6 right-6 w-[420px] bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-xl">
+    <div className="flex justify-between items-center mb-3">
+      <h4 className="font-semibold">Ask Birbal</h4>
+
+      <button
+        onClick={() => setBirbalChatQ(null)}
+        className="text-slate-400 hover:text-white"
+      >
+        ✕
+      </button>
+    </div>
+    
+    <h4 className="font-semibold mb-3">Ask Birbal</h4>
+
+    <div className="h-64 overflow-y-auto text-sm mb-3 space-y-4 pr-2">
+  {birbalChatMessages.map((m, i) => (
+    <div
+      key={i}
+      className={`mb-3 flex ${
+        m.role === "user" ? "justify-end" : "justify-start"
+      }`}
+    >
+      <div
+        className={`max-w-[85%] px-3 py-2 rounded-lg leading-relaxed whitespace-pre-wrap ${
+          m.role === "user"
+            ? "bg-indigo-600 text-white"
+            : "bg-slate-800 text-slate-200"
+        }`}
+      >
+      {formatBirbal(m.content)}
+      </div>
+    </div>
+  ))}
+</div>
+
+   <input
+  value={birbalInput}
+  onChange={(e) => setBirbalInput(e.target.value)}
+  className="w-full p-2 bg-slate-800 rounded text-sm border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  placeholder="Ask Birbal..."
+/>
+
+    <button
+      onClick={sendBirbalMessage}
+      className="mt-2 px-3 py-1 bg-indigo-600 rounded text-sm"
+    >
+      Ask
+    </button>
+
+  </div>
 )}
     </div>
   );

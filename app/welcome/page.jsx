@@ -8,8 +8,11 @@ import styles from "./welcome.module.css"
 export default function WelcomePage() {
   const router = useRouter()
 
+
   const [name, setName] = useState("Champion")
   const [showProfileWizard, setShowProfileWizard] = useState(false)
+  
+const [loading, setLoading] = useState(true)
 
   const [profileName, setProfileName] = useState("")
   const [exam, setExam] = useState("CAT")
@@ -17,39 +20,40 @@ export default function WelcomePage() {
 
   const [step, setStep] = useState(1)
 
-  useEffect(() => {
-    checkUser()
-  }, [])
+ useEffect(() => {
+  checkUser()
+}, [])
 
-  async function checkUser() {
-    const { data: authData } = await supabase.auth.getUser()
+async function checkUser() {
 
-    if (!authData?.user) {
-      router.push("/login")
-      return
-    }
+  const { data: authData } = await supabase.auth.getUser()
 
-    const user = authData.user
-
-    // Auto name from email
-    const emailName = user.email?.split("@")[0] || "Champion"
-    const clean = emailName.replace(/[0-9]/g, "")
-    const formatted =
-      clean.charAt(0).toUpperCase() + clean.slice(1)
-
-    setName(formatted)
-
-    // Check profile
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("user_id", user.id)
-      .maybeSingle()
-
-    if (!profile) {
-      setShowProfileWizard(true)
-    }
+  if (!authData?.user) {
+    router.push("/login")
+    return
   }
+
+  const user = authData.user
+
+  const emailName = user.email?.split("@")[0] || "Champion"
+  const clean = emailName.replace(/[0-9]/g, "")
+  const formatted =
+    clean.charAt(0).toUpperCase() + clean.slice(1)
+
+  setName(formatted)
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle()
+
+  if (!profile) {
+    setShowProfileWizard(true)
+  }
+
+  setLoading(false)   // ✅ MOVE IT HERE
+}
 
   async function finishProfile() {
     const { data: authData } = await supabase.auth.getUser()
@@ -58,7 +62,7 @@ export default function WelcomePage() {
     await supabase.from("profiles").insert([
       {
         user_id: authData.user.id,
-        name: profileName,
+        name: name,
         exam: exam,
         attempt_year: attemptYear,
       }
@@ -67,6 +71,10 @@ export default function WelcomePage() {
     setShowProfileWizard(false)
     router.push("/")
   }
+
+  if (loading) {
+  return null
+}
 
   /* ---------------- PROFILE WIZARD ---------------- */
 
@@ -88,7 +96,7 @@ export default function WelcomePage() {
 
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder="Enter your Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -168,11 +176,11 @@ export default function WelcomePage() {
         </h1>
 
         <p className={styles["welcome-subtitle"]}>
-          Ready to sharpen your reading intelligence?
+         Your RC training engine is ready.
         </p>
 
         <p className={styles["welcome-emotion"]}>
-          This is your competitive edge zone.
+          Let's build your reading intelligence.
         </p>
 
         <ul className={styles["welcome-points"]}>

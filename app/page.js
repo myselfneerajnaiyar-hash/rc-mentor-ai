@@ -9,6 +9,7 @@ import SpeedDashboard from "../components/SpeedDashboard";
 import SpeedContainer from "../components/SpeedContainer";
 import VocabLab from "../components/VocabLab";
 import CATArenaLanding from "../cat-arena/CATArenaLanding";
+import CATArenaView from "../cat-arena/CATArenaView";
 import CATArenaTestView from "../cat-arena/CATArenaTestView";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
@@ -17,6 +18,12 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare } from "lucide-react";
+import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
+import Leaderboard from "../components/Leaderboard"
+import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
+import TabGroup from "../components/TabGroup";
+import ChatMentor from "../components/ChatMentor"
 
 async function loadSectionalAttemptMapFromDB() {
   const { data: authData } = await supabase.auth.getUser();
@@ -68,7 +75,7 @@ export default function Page() {
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setView] = useState("home"); 
-// home | rc | vocab | speed | cat
+// home | rc | vocab | speed | cat | workout
  const [activeRCTest, setActiveRCTest] = useState(null);
 const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
 
@@ -155,38 +162,43 @@ useEffect(() => {
 }, [view]);
 
 useEffect(() => {
+  let mounted = true;
+
   async function getUser() {
     const { data } = await supabase.auth.getUser();
-    setUser(data?.user || null);
+    if (mounted) {
+      setUser(data?.user || null);
+    }
   }
 
   getUser();
 
-  const { data: listener } = supabase.auth.onAuthStateChange(
+  const { data: authListener } = supabase.auth.onAuthStateChange(
     (_event, session) => {
-      setUser(session?.user || null);
+      if (mounted) {
+        setUser(session?.user || null);
+      }
     }
   );
 
   return () => {
-    listener.subscription.unsubscribe();
+    mounted = false;
+    authListener?.subscription?.unsubscribe();
   };
 }, []);
 
 
-  useEffect(() => {
-  async function loadProfile() {
-    const { data: authData } = await supabase.auth.getUser();
-    if (!authData?.user) return;
+ useEffect(() => {
+  if (!user) return;
 
+  async function loadProfile() {
     const { data: profile } = await supabase
       .from("profiles")
       .select("name")
-      .eq("user_id", authData.user.id)
+      .eq("user_id", user.id)
       .maybeSingle();
 
     if (profile?.name) {
-      // Capitalize properly
       const formatted =
         profile.name.charAt(0).toUpperCase() +
         profile.name.slice(1);
@@ -195,7 +207,7 @@ useEffect(() => {
   }
 
   loadProfile();
-}, []);
+}, [user]);
 
   function splitPassage() {
     const raw = text.trim();
@@ -521,21 +533,86 @@ function updateTodayRCProgress() {
 }
   
 return (
-  <>
-  <main>
+ <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex relative">
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)] pointer-events-none" />
+
+    {/* Desktop Sidebar */}
+ <aside className="w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex flex-col">
+    <div className="mb-8">
+  <h2 className="text-xl font-semibold text-white tracking-tight">
+    Auctor RC
+  </h2>
+  <p className="text-xs text-slate-500 mt-1">
+    Powered by Birbal
+  </p>
+  <div className="h-px bg-slate-800 mt-6" />
+</div>
+
+<p className="text-xs uppercase text-slate-500 tracking-wider mb-3 mt-6">
+  Navigation
+</p>
+
+
+     <nav className="flex flex-col gap-2 mt-6">
+ {[
+  { id: "home", label: "Home", icon: Home },
+  { id: "mentor",label: "Ask Birbal", icon: MessageSquare},
+  { id: "workout", label: "Daily Workout", icon: Flame },
+  { id: "daily", label: "Analytics", icon: BarChart3 },
+  { id: "rc", label: "RC", icon: Brain },
+  { id: "vocab", label: "Vocab", icon: BookOpen },
+  { id: "speed", label: "Speed", icon: Timer },
+  { id: "cat", label: "CAT", icon: GraduationCap },
+  { id: "profile", label: "Profile", icon: User },
+].map((item) => {
+  const Icon = item.icon;
+  return (
+    <button
+      key={item.id}
+      onClick={() => setView(item.id)}
+   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+${
+ view === item.id
+  ? item.id === "mentor"
+    ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
+    : "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
+  : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
+}`}
+    >
+    <Icon size={18} className="shrink-0" />
+      {item.label}
+    </button>
+  );
+})}
+</nav>
+
+    </aside>
+
+    {/* Main Content */}
+  <main className="flex-1 overflow-y-auto bg-slate-900/30">
+  <div className="max-w-6xl mx-auto px-8 py-10">
+      <div className="w-full">
    {/* Desktop Navbar */}
 <div className="desktop-navbar">
-  <Navbar view={view} setView={setView} />
+ {/* <Navbar view={view} setView={setView} /> */}
 </div>
 
    {view === "home" && (
   <HomeView
-    setView={setView}
-    startAdaptiveRC={() => setView("rc")}
-    userName={userName}
-    user={user}
-  />
+  setView={setView}
+  startAdaptiveRC={() => setView("rc")}
+  userName={userName}
+  user={user}
+/>
 )}
+
+{view === "mentor" && <ChatMentor />}
+
+{view === "workout" && (
+  <DailyWorkoutContainer user={user} />
+)}
+
+
 
     {view === "rc" && <RCView view={view} setView={setView} />}
 
@@ -551,49 +628,17 @@ return (
 
 {view === "cat" && (
   <>
-    {/* TOP TABS */}
-    <div
-      style={{
-        display: "flex",
-        gap: 8,
-        padding: 12,
-        background: "#fff",
-        borderBottom: "1px solid #e5e7eb",
-        position: "sticky",
-        top: 0,
-        zIndex: 20,
-      }}
-    >
-      <button
-        onClick={() => setCatTab("tests")}
-        style={{
-          flex: 1,
-          padding: 12,
-          borderRadius: 10,
-          fontWeight: 600,
-          border: "none",
-          background: catTab === "tests" ? "#2563eb" : "#e5e7eb",
-          color: catTab === "tests" ? "#fff" : "#111",
-        }}
-      >
-        Take Tests
-      </button>
-
-      <button
-        onClick={() => setCatTab("analytics")}
-        style={{
-          flex: 1,
-          padding: 12,
-          borderRadius: 10,
-          fontWeight: 600,
-          border: "none",
-          background: catTab === "analytics" ? "#2563eb" : "#e5e7eb",
-          color: catTab === "analytics" ? "#fff" : "#111",
-        }}
-      >
-        Analytics
-      </button>
-    </div>
+  <div className="max-w-5xl mx-auto px-6">
+   <div className="p-4 sticky top-0 z-20 bg-slate-900">
+  <TabGroup
+    tabs={[
+      { value: "tests", label: "Take Tests" },
+      { value: "analytics", label: "Analytics" },
+    ]}
+    active={catTab}
+    onChange={setCatTab}
+  />
+</div>
 
     {/* ===== ANALYTICS TAB ===== */}
     {catTab === "analytics" && <CATAnalytics />}
@@ -672,19 +717,22 @@ return (
 }}
   />
 )}
+
       </>
     )}
+    </div>
   </>
 )}
-
-  </main>
- 
-  
-{/* MOBILE BOTTOM NAV */}
-<div className="mobile-nav">
-  <MobileBottomNav view={view} setView={setView} />
 </div>
-  </>
+
+  {/* MOBILE BOTTOM NAV (Mobile only) */}
+      <div className="md:hidden">
+        <MobileBottomNav view={view} setView={setView} />
+      </div>
+</div>
+    </main>
+    </div>
+  
 
 );
 }

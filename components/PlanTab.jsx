@@ -111,8 +111,9 @@ setTodayProgress(Math.min(todayCount, 3));
         style={{
           padding: 28,
           borderRadius: 20,
-          background: plan.gradient,
-          color: "#fff",
+         background: plan.gradient,
+color: "#fff",
+border: "1px solid rgba(255,255,255,0.08)",
           marginBottom: 24,
         }}
       >
@@ -139,14 +140,14 @@ setTodayProgress(Math.min(todayCount, 3));
 
       {/* WEEKLY PROGRESS */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ marginBottom: 8, fontWeight: 600 }}>
+        <div style={{ marginBottom: 8, fontWeight: 700, color: "#fff" }}>
           Weekly Completion: {weeklyProgress} / 6 Days
         </div>
 
         <div
           style={{
             height: 14,
-            background: "#e5e7eb",
+            background: "#1f2937",
             borderRadius: 999,
             overflow: "hidden",
           }}
@@ -169,14 +170,16 @@ setTodayProgress(Math.min(todayCount, 3));
   return (
     <div
       key={i}
-      style={{
-        background: "#fff",
-        borderRadius: 18,
-        padding: 20,
-        marginBottom: 18,
-        boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-        borderLeft: `5px solid ${plan.primary}`,
-      }}
+     style={{
+  background: "linear-gradient(145deg, #111827, #0f172a)",
+  borderRadius: 18,
+  padding: 20,
+  marginBottom: 20,
+  border: "1px solid #1f2937",
+  borderLeft: `4px solid ${plan.primary}`,
+  color: "#fff",
+  transition: "all 0.2s ease"
+}}
     >
       <div style={{ fontWeight: 700, marginBottom: 12 }}>
         Day {i + 1}
@@ -188,7 +191,7 @@ setTodayProgress(Math.min(todayCount, 3));
           <div
             style={{
               height: 10,
-              background: "#e5e7eb",
+              background: "#0f172a",
               borderRadius: 999,
               overflow: "hidden",
             }}
@@ -218,7 +221,7 @@ setTodayProgress(Math.min(todayCount, 3));
         ))}
 
       {day.type === "practice" && (
-        <div style={{ marginTop: 8, fontSize: 13 }}>
+       <div style={{ marginTop: 10, fontSize: 13, opacity: 0.85 }}>
           🎯 Focus: {day.focus}
         </div>
       )}
@@ -242,15 +245,17 @@ setTodayProgress(Math.min(todayCount, 3));
   }, 100);
 }}
           style={{
-            marginTop: 14,
-            padding: "10px 16px",
-            borderRadius: 10,
-            background: plan.primary,
-            color: "#fff",
-            border: "none",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
+  marginTop: 16,
+  padding: "12px 18px",
+  borderRadius: 12,
+  background: plan.gradient,
+  color: "#fff",
+  border: "none",
+  fontWeight: 700,
+  cursor: "pointer",
+  boxShadow: "0 0 18px rgba(255,255,255,0.05)",
+  transition: "all 0.2s ease"
+}}
         >
           Start Today’s Practice
         </button>
@@ -266,12 +271,13 @@ function Metric({ label, value }) {
   return (
     <div
       style={{
-        padding: 16,
-        borderRadius: 16,
-        background: "#fff",
-        textAlign: "center",
-        boxShadow: "0 6px 15px rgba(0,0,0,0.05)",
-      }}
+  padding: 16,
+  borderRadius: 16,
+  background: "linear-gradient(145deg, #111827, #0f172a)",
+  border: "1px solid #1f2937",
+  textAlign: "center",
+  color: "#fff"
+}}
     >
       <div style={{ fontSize: 22, fontWeight: 800 }}>{value}</div>
       <div style={{ fontSize: 12, color: "#6b7280" }}>{label}</div>

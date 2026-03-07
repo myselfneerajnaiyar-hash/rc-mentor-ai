@@ -1,619 +1,514 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import RadialProgress from "./analytics/RadialProgress";
+import TabGroup from "./TabGroup";
+
+import {
+  ResponsiveContainer,
+  RadialBarChart,
+  RadialBar,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  CartesianGrid
+} from "recharts";
 
 export default function VocabProfile() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [words, setWords] = useState([]);
+  const [sessions, setSessions] = useState([]);
   const [showWeakWords, setShowWeakWords] = useState(false);
+  const [expandedWord, setExpandedWord] = useState(null);
 
- /* ================== DATA (SUPABASE DRIVEN) ================== */
+  useEffect(() => {
+    loadProfileData();
+  }, []);
 
-const [words, setWords] = useState([]);
-const [sessions, setSessions] = useState([]);
+  async function loadProfileData() {
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) return;
 
-useEffect(() => {
-  loadProfileData();
-}, []);
+    const userId = authData.user.id;
 
-async function loadProfileData() {
-  const { data: authData } = await supabase.auth.getUser();
-  if (!authData?.user) return;
+    const { data: wordsData } = await supabase
+      .from("user_words")
+      .select("*")
+      .eq("user_id", userId);
 
-  const userId = authData.user.id;
+    const { data: sessionData } = await supabase
+      .from("vocab_sessions")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true });
 
-  // Fetch words
-  const { data: wordsData } = await supabase
-    .from("user_words")
-    .select("*")
-    .eq("user_id", userId);
+    if (wordsData) setWords(wordsData);
+    if (sessionData) setSessions(sessionData);
+  }
 
-  if (wordsData) setWords(wordsData);
+  /* ================= METRICS ================= */
 
-  // Fetch vocab sessions
-  const { data: sessionData } = await supabase
-    .from("vocab_sessions")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: true });
+  const totalWords = words.length;
 
-  if (sessionData) setSessions(sessionData);
-}
+  const masteredWords = words.filter(w =>
+    w.total_attempts &&
+    w.correct_attempts / w.total_attempts >= 0.8
+  ).length;
 
-const totalWords = words.length;
+  const weakWords = words.filter(w =>
+    !w.total_attempts ||
+    w.correct_attempts / w.total_attempts < 0.5
+  );
 
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-const recentSessions = sessions.filter(s =>
-  new Date(s.created_at) >= sevenDaysAgo
-);
-
-const totalAttempts = recentSessions.reduce(
-  (sum, s) => sum + (s.total_questions || 0),
-  0
-);
-
-const totalCorrect = recentSessions.reduce(
-  (sum, s) => sum + (s.correct_answers || 0),
-  0
-);
-const retentionPercent =
-  totalAttempts > 0
-    ? Math.round((totalCorrect / totalAttempts) * 100)
+  const strongPercent = totalWords
+    ? Math.round((masteredWords / totalWords) * 100)
     : 0;
 
-const retentionColor =
-  retentionPercent < 40
-    ? "#ef4444"
-    : retentionPercent < 70
-    ? "#f97316"
-    : "#22c55e";
+  const weakPercent = totalWords
+    ? 100 - strongPercent
+    : 0;
 
-const masteredWords = words.filter(w => {
-  if (!w.total_attempts) return false;
-  return w.correct_attempts / w.total_attempts >= 0.8;
-}).length;
+  /* RETENTION (7 DAY) */
 
-// -------- STRENGTH --------
-const strength = {
-  strong: words.filter(w => {
-    if (!w.total_attempts) return false;
-    return w.correct_attempts / w.total_attempts >= 0.8;
-  }).length,
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  medium: words.filter(w => {
-    if (!w.total_attempts) return false;
-    const acc = w.correct_attempts / w.total_attempts;
-    return acc >= 0.5 && acc < 0.8;
-  }).length,
+  const recentSessions = sessions.filter(
+    s => new Date(s.created_at) >= sevenDaysAgo
+  );
 
-  weak: words.filter(w => {
-    if (!w.total_attempts) return true;
-    return w.correct_attempts / w.total_attempts < 0.5;
-  }).length,
-};
+  const totalAttempts = recentSessions.reduce(
+    (sum, s) => sum + (s.total_questions || 0),
+    0
+  );
 
-// -------- DISCIPLINE --------
+  const totalCorrect = recentSessions.reduce(
+    (sum, s) => sum + (s.correct_answers || 0),
+    0
+  );
+
+  const retentionPercent =
+    totalAttempts > 0
+      ? Math.round((totalCorrect / totalAttempts) * 100)
+      : 0;
+
+      /* ================= DISCIPLINE CALCULATIONS ================= */
+
 const now = new Date();
 
 const active = words.filter(w => {
   if (!w.last_reviewed_at) return false;
-  const diff =
-    (now - new Date(w.last_reviewed_at)) /
-    (1000 * 60 * 60 * 24);
+  const diff = (now - new Date(w.last_reviewed_at)) / (1000 * 60 * 60 * 24);
   return diff <= 2;
 }).length;
 
 const slipping = words.filter(w => {
   if (!w.last_reviewed_at) return false;
-  const diff =
-    (now - new Date(w.last_reviewed_at)) /
-    (1000 * 60 * 60 * 24);
+  const diff = (now - new Date(w.last_reviewed_at)) / (1000 * 60 * 60 * 24);
   return diff > 2 && diff <= 6;
 }).length;
 
 const cold = words.filter(w => {
   if (!w.last_reviewed_at) return true;
-  const diff =
-    (now - new Date(w.last_reviewed_at)) /
-    (1000 * 60 * 60 * 24);
+  const diff = (now - new Date(w.last_reviewed_at)) / (1000 * 60 * 60 * 24);
   return diff > 6;
 }).length;
 
-// -------- REVISION --------
-const revisionWords = words.filter(w => {
-  if (!w.total_attempts) return true;
+      /* ================= MENTOR INSIGHTS ================= */
 
-  const acc = w.correct_attempts / w.total_attempts;
+let retentionMessage = "";
 
-  if (acc < 0.6) return true;
+if (retentionPercent === 0) {
+  retentionMessage = "Start practising to activate your retention engine.";
+} else if (retentionPercent < 40) {
+  retentionMessage = "Your retention is weak. Focus on revising old words before learning new ones.";
+} else if (retentionPercent < 70) {
+  retentionMessage = "Good progress. Improve consistency to push beyond 80%.";
+} else {
+  retentionMessage = "Excellent retention. Maintain this momentum.";
+}
 
-  if (!w.last_reviewed_at) return true;
+const weakCount = weakWords.length;
 
-  const diff =
-    (now - new Date(w.last_reviewed_at)) /
-    (1000 * 60 * 60 * 24);
+let strengthMessage = "";
 
-  return diff > 5;
-});
+if (weakCount === 0) {
+  strengthMessage = "You have no weak words. Strong foundation built.";
+} else if (weakCount > totalWords * 0.6) {
+  strengthMessage = "Majority of words are weak. You need a revision cycle immediately.";
+} else {
+  strengthMessage = "Convert weak words into strong ones to improve performance.";
+}
 
-const masteryTimeline = sessions.map(s => ({
-  accuracy: s.accuracy,
-  date: new Date(s.created_at).toLocaleDateString(),
-}));
-  /* ================== UI ================== */
+let disciplineMessage = "";
+
+if (cold > active) {
+  disciplineMessage = "Most words are cold. You are losing recall strength.";
+} else if (active > cold) {
+  disciplineMessage = "Good consistency. Keep revising every 48 hours.";
+} else {
+  disciplineMessage = "Revision rhythm needs tightening.";
+}
+
+  const retentionData = [
+    { name: "Retention", value: retentionPercent }
+  ];
+
+  /* WEEKLY BAR DATA */
+
+  const weeklyData = sessions.slice(-7).map(s => ({
+    date: new Date(s.created_at).toLocaleDateString().slice(0,5),
+    accuracy: s.accuracy || 0
+  }));
+
+  /* STRENGTH PIE DATA */
+
+  const strengthData = [
+    { name: "Strong", value: strongPercent },
+    { name: "Weak", value: weakPercent }
+  ];
+
+  const COLORS = ["#22c55e", "#ef4444"];
+
+  /* ================= UI ================= */
+
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>Vocab Profile</h1>
-      <p style={styles.subtitle}>Your vocabulary performance dashboard</p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 px-8 py-10 text-slate-100">
 
-      {/* ---------- TABS ---------- */}
-      <div style={styles.tabs}>
-        {["overview", "strength", "discipline", "revision"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              ...styles.tab,
-              ...(activeTab === tab ? styles.tabActive : {})
-            }}
-          >
-            {tab.toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <h1 className="text-3xl font-bold">Vocab Profile</h1>
+      <p className="text-slate-400 mt-2 mb-6">
+        Your vocabulary performance dashboard
+      </p>
+
+      <TabGroup
+        tabs={[
+          { label: "Overview", value: "overview" },
+          { label: "Strength", value: "strength" },
+          { label: "Discipline", value: "discipline" },
+          { label: "Revision", value: "revision" },
+        ]}
+        active={activeTab}
+        onChange={setActiveTab}
+      />
 
       {/* ================= OVERVIEW ================= */}
       {activeTab === "overview" && (
-        <>
-          {/* HERO */}
-          <div style={styles.hero}>
-            <div>
-              <p style={styles.heroLabel}>RETENTION HEALTH</p>
-             <h1
-  style={{
-    ...styles.heroPercent,
-    color: retentionColor
-  }}
->
-  {retentionPercent}%
-</h1>
-              <p style={styles.heroInsight}>
-                Based on your last 7 days of vocabulary practice
-              </p>
-              <p
-  style={{
-    marginTop: 8,
-    fontSize: 14,
-    color: retentionPercent < 40 ? "#ef4444" : "#475569",
-    fontWeight: 500
-  }}
->
-  {retentionPercent === 0
-    ? "Start practising to build your retention score."
-    : retentionPercent < 40
-    ? "Your retention is low — focused revision will help."
-    : retentionPercent < 70
-    ? "Good progress. Consistency will improve retention."
-    : "Excellent retention. Keep this momentum!"}
-</p>
-            </div>
+        <div className="mt-8 grid md:grid-cols-2 gap-8">
 
-            {/* SINGLE RADIAL — SOURCE OF TRUTH */}
-            <RadialProgress
-             percent={Math.max(retentionPercent, 3)}
-              label="Retention"
-              color={retentionColor}
-            />
+          {/* RETENTION RADIAL */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center">
+            <h3 className="text-lg font-semibold mb-6">
+              Retention Health
+            </h3>
+
+            <ResponsiveContainer width="100%" height={250}>
+              <RadialBarChart
+                innerRadius="70%"
+                outerRadius="100%"
+                data={retentionData}
+                startAngle={90}
+                endAngle={-270}
+              >
+                <RadialBar
+  dataKey="value"
+  cornerRadius={10}
+  fill={
+    retentionPercent < 40
+      ? "#ef4444"
+      : retentionPercent < 70
+      ? "#f97316"
+      : "#22c55e"
+  }
+/>
+              </RadialBarChart>
+            </ResponsiveContainer>
+
+            <p className="text-3xl font-bold mt-4">
+              {retentionPercent}%
+            </p>
+
+            <p className="text-slate-400 text-sm mt-3 text-center max-w-xs">
+  {retentionMessage}
+</p>
           </div>
 
-          {/* STATS */}
-          <div style={styles.statGrid}>
-            <StatCard title="Words Seen" value={totalWords} accent="#3b82f6" />
-            <StatCard title="Mastered Words" value={masteredWords} accent="#22c55e" />
-            <StatCard
-            title="Needs Revision"
-            value={totalWords - masteredWords}
-            accent="#ef4444"
-            />
-          </div>
-          <p style={{ marginTop: 12, color: "#475569", fontWeight: 500 }}>
-  👉 Focus on revising{" "}
-  <b style={{ color: "#ef4444" }}>
-    {totalWords - masteredWords}
-  </b>{" "}
-  weak words to improve retention.
+          {/* WEEKLY BAR CHART */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8">
+            <h3 className="text-lg font-semibold mb-6">
+              Weekly Accuracy
+            </h3>
+
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={weeklyData}>
+                <CartesianGrid stroke="#1e293b" />
+                <XAxis dataKey="date" stroke="#94a3b8" />
+                <YAxis stroke="#94a3b8" />
+                <Tooltip />
+                <Bar dataKey="accuracy" radius={[6,6,0,0]}>
+  {weeklyData.map((entry, index) => (
+    <Cell
+      key={index}
+      fill={
+        entry.accuracy < 40
+          ? "#ef4444"
+          : entry.accuracy < 70
+          ? "#f97316"
+          : "#22c55e"
+      }
+    />
+  ))}
+</Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <p className="text-slate-400 text-sm mt-4">
+  {weeklyData.length >= 2 &&
+    weeklyData[weeklyData.length - 1].accuracy >
+      weeklyData[weeklyData.length - 2].accuracy
+      ? "Your accuracy is improving this week."
+      : "Your weekly accuracy needs more consistency."}
 </p>
+          </div>
 
-          {/* LINE GRAPH */}
-         <div style={styles.graphCard}>
-  <h3 style={styles.cardTitle}>Mastery Over Time</h3>
-
- {masteryTimeline.length >= 2 ? (
-  <MasteryOverTime data={masteryTimeline} />
-) : (
-  <p style={{ color: "#64748b" }}>
-    Complete more drills to see progress over time
-  </p>
-)}
-</div>
-        </>
+        </div>
       )}
 
-{activeTab === "strength" && (
- <div style={styles.card}>
-    <h3 style={styles.cardTitle}>Strength Distribution</h3>
+      {/* ================= STRENGTH ================= */}
+      {activeTab === "strength" && (
+        <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-8">
 
-    <p style={styles.helperText}>
-      This shows how well you remember words based on past test accuracy.
-    </p>
+          <h3 className="text-xl font-semibold mb-6">
+            Strength Distribution
+          </h3>
 
-    {[
-      {
-        label: "Strong (Exam-ready words)",
-        value: strength.strong,
-        color: "#22c55e",
-      },
-      {
-        label: "Medium (Need revision)",
-        value: strength.medium,
-        color: "#eab308",
-      },
-      {
-        label: "Weak (High priority)",
-        value: strength.weak,
-        color: "#ef4444",
-      },
-    ].map(row => (
-      <div key={row.label} style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span>{row.label}</span>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={strengthData}
+                dataKey="value"
+                outerRadius={120}
+                label
+              >
+                
+                {strengthData.map((entry, index) => (
+                  <Cell key={index} fill={COLORS[index]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+           
+          </ResponsiveContainer>
+           <p className="text-slate-400 text-sm mt-6 text-center">
+  {strengthMessage}
+</p>
 
-          {row.label.startsWith("Weak") && row.value > 0 && (
+          {weakWords.length > 0 && (
             <button
               onClick={() => setShowWeakWords(v => !v)}
-              style={{
-                fontSize: 12,
-                padding: "2px 8px",
-                borderRadius: 6,
-                border: "1px solid #ef4444",
-                background: "#fff",
-                color: "#ef4444",
-                cursor: "pointer",
-              }}
+              className="mt-6 px-4 py-2 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30 transition"
             >
-              {showWeakWords ? "Hide" : "View"}
+              {showWeakWords ? "Hide Weak Words" : "View Weak Words"}
             </button>
           )}
 
-          <span>{row.value}</span>
-        </div>
-
-        <div style={styles.barBg}>
-          <div
-            style={{
-              ...styles.barFill,
-              width: `${words.length ? (row.value / words.length) * 100 : 0}%`,
-              background: row.color,
-            }}
-          />
-        </div>
-      </div>
-    ))}
-
-    <p style={styles.helperText}>
-      Focus first on <b>Weak</b> words, then convert <b>Medium</b> into <b>Strong</b>.
-    </p>
-
-    {showWeakWords && (
-      <div style={{ marginTop: 16 }}>
-        {words.filter(
-  w =>
-    w.total_attempts &&
-    w.correct_attempts / w.total_attempts < 0.5
-).length === 0 ? (
-
-          <p style={{ color: "#16a34a" }}>
-            🎉 No weak words right now. Great job!
-          </p>
-        ) : (
-          <div>
-            <h4 style={{ marginBottom: 8 }}>
-              Weak Words (Revise First)
-            </h4>
-
-            {words
-              .filter(w => w.attempts && (w.correctCount / w.attempts) < 0.4)
-              .map(w => (
+          {showWeakWords && (
+            <div className="mt-6 space-y-2">
+              {weakWords.map(w => (
                 <div
                   key={w.word}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: 8,
-                    border: "1px solid #fee2e2",
-                    background: "#fff7f7",
-                    marginBottom: 6,
-                    cursor: "pointer",
-                  }}
+                  className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm"
                 >
-                  <b>{w.word}</b>
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: "#6b7280",
-                      marginLeft: 8,
-                    }}
-                  >
-                    {w.correct_attempts}/{w.total_attempts} correct
-                  </span>
+                  <b>{w.word}</b> — {w.correct_attempts || 0}/{w.total_attempts || 0}
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ================= DISCIPLINE ================= */}
+      {activeTab === "discipline" && (
+        <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-8 grid grid-cols-3 gap-6">
+
+          <StatBox label="Active (0–2 days)" value={
+            words.filter(w => {
+              if (!w.last_reviewed_at) return false;
+              const diff = (new Date() - new Date(w.last_reviewed_at)) / (1000*60*60*24);
+              return diff <= 2;
+            }).length
+          } />
+
+          <StatBox label="Slipping (3–6 days)" value={
+            words.filter(w => {
+              if (!w.last_reviewed_at) return false;
+              const diff = (new Date() - new Date(w.last_reviewed_at)) / (1000*60*60*24);
+              return diff > 2 && diff <= 6;
+            }).length
+          } />
+
+          <StatBox label="Cold (7+ days)" value={
+            words.filter(w => {
+              if (!w.last_reviewed_at) return true;
+              const diff = (new Date() - new Date(w.last_reviewed_at)) / (1000*60*60*24);
+              return diff > 6;
+            }).length
+          } />
+
+          <p className="text-slate-400 text-sm mt-6 col-span-3 text-center">
+  {disciplineMessage}
+</p>
+
+        </div>
+      )}
+
+     {/* ================= REVISION ================= */}
+      {activeTab === "revision" && (
+        <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-8">
+
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold">
+              Revision Queue
+            </h3>
+
+            <span className="text-sm text-slate-400">
+              {weakWords.length} weak words
+            </span>
           </div>
-        )}
+
+          {weakWords.length === 0 ? (
+            <p className="text-emerald-400">
+              🎉 No urgent revision needed.
+            </p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+              {weakWords
+                .sort((a, b) => {
+                  const aAcc = a.total_attempts
+                    ? a.correct_attempts / a.total_attempts
+                    : 0;
+                  const bAcc = b.total_attempts
+                    ? b.correct_attempts / b.total_attempts
+                    : 0;
+                  return aAcc - bAcc; // Most weak first
+                })
+                .map(w => {
+                  const attempts = w.total_attempts || 0;
+                  const correct = w.correct_attempts || 0;
+                  const percent = attempts
+                    ? Math.round((correct / attempts) * 100)
+                    : 0;
+
+                  return (
+  <div
+    key={w.word}
+    className="bg-slate-800 border border-slate-700 rounded-2xl p-5 hover:border-red-500/60 transition"
+  >
+
+    <div className="flex justify-between items-center mb-3">
+      <h4 className="text-lg font-semibold">
+        {w.word}
+      </h4>
+
+      {percent < 40 && (
+        <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">
+          Critical
+        </span>
+      )}
+    </div>
+
+    {/* Progress */}
+    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+      <div
+        className="h-full transition-all duration-500"
+        style={{
+          width: `${percent}%`,
+          background:
+            percent < 40
+              ? "#ef4444"
+              : percent < 70
+              ? "#f97316"
+              : "#22c55e"
+        }}
+      />
+    </div>
+
+    <div className="flex justify-between text-xs text-slate-400 mt-3">
+      <span>{correct}/{attempts}</span>
+      <span>{percent}% accuracy</span>
+    </div>
+
+    {/* REVIEW TOGGLE */}
+    <button
+      onClick={() =>
+        setExpandedWord(
+          expandedWord === w.word ? null : w.word
+        )
+      }
+      className="mt-4 w-full bg-blue-500/20 text-blue-400 border border-blue-500/40 rounded-xl py-2 text-sm hover:bg-blue-500/30 transition"
+    >
+      {expandedWord === w.word ? "Hide" : "Review"}
+    </button>
+
+    {/* EXPANDED CONTENT */}
+    {expandedWord === w.word && (
+      <div className="mt-5 pt-4 border-t border-slate-700 space-y-3 text-sm">
+
+        <p>
+          <span className="text-slate-400">Meaning:</span>{" "}
+          {w.meaning || "Not available"}
+        </p>
+
+        <p>
+          <span className="text-slate-400">Usage:</span>{" "}
+          {w.usage || "Not available"}
+        </p>
+
+        <p>
+          <span className="text-slate-400">Root:</span>{" "}
+          {w.root || "Not available"}
+        </p>
+
+        <p>
+          <span className="text-slate-400">Synonyms:</span>{" "}
+         {Array.isArray(w.synonyms)
+  ? w.synonyms.join(", ")
+  : w.synonyms || "—"}
+        </p>
+
+        <p>
+          <span className="text-slate-400">Antonyms:</span>{" "}
+         {Array.isArray(w.antonyms)
+  ? w.antonyms.join(", ")
+  : w.antonyms || "—"}
+        </p>
+
       </div>
     )}
+
   </div>
-)}
-     {activeTab === "discipline" && (
-  <div style={styles.card}>
-    <h3 style={styles.cardTitle}>Practice Discipline</h3>
+);
+                })}
 
-    <p style={styles.helperText}>
-      This shows how regularly you revise vocabulary words.
-    </p>
-
-    <div style={{ marginTop: 16 }}>
-      <p>
-        🟢 <b>Active</b> (revised in last 2 days): <b>{active}</b>
-      </p>
-      <p style={styles.helperText}>
-        These words are fresh in your memory.
-      </p>
-    </div>
-
-    <div style={{ marginTop: 16 }}>
-      <p>
-        🟡 <b>Slipping</b> (3–6 days gap): <b>{slipping}</b>
-      </p>
-      <p style={styles.helperText}>
-        These words are starting to fade — revise soon.
-      </p>
-    </div>
-
-    <div style={{ marginTop: 16 }}>
-      <p>
-        🔴 <b>Cold</b> (not revised for 7+ days): <b>{cold}</b>
-      </p>
-      <p style={styles.helperText}>
-        High risk of forgetting. Prioritise these.
-      </p>
-    </div>
-
-    <p style={{ ...styles.helperText, marginTop: 20 }}>
-      🎯 Goal: keep most words in <b>Active</b>, minimise <b>Cold</b>.
-    </p>
-  </div>
-)}
-    {activeTab === "revision" && (
-  <div style={styles.card}>
-    <h3 style={styles.cardTitle}>Revision Queue</h3>
-
-    <p style={styles.helperText}>
-      These words need immediate revision due to low accuracy or long gaps.
-    </p>
-
-    {revisionWords.length === 0 ? (
-      <p style={{ color: "#16a34a", marginTop: 12 }}>
-        🎉 You’re all caught up! No urgent revisions.
-      </p>
-    ) : (
-      <>
-        <div style={{ marginTop: 16 }}>
-          {revisionWords.map((w) => {
-            const accuracy = w.total_attempts
-              ? Math.round(
-                  (w.correct_attempts / w.total_attempts) * 100
-                )
-              : 0;
-
-            return (
-              <div
-                key={w.word}
-                style={{
-                  padding: 10,
-                  marginBottom: 8,
-                  borderRadius: 8,
-                  background: "#fff7ed",
-                  border: "1px solid #fed7aa",
-                }}
-              >
-                <b>{w.word}</b>
-                <div style={{ fontSize: 12, color: "#6b7280" }}>
-                  Accuracy: {accuracy}% · Attempts:{" "}
-                  {w.total_attempts || 0}
-                </div>
-              </div>
-            );
-          })}
+            </div>
+          )}
         </div>
+      )}
 
-        <p style={{ ...styles.helperText, marginTop: 16 }}>
-          🔁 Revise these words to move them into{" "}
-          <b>Strong</b> and <b>Active</b>.
-        </p>
-      </>
-    )}
-  </div>
-)}
-</div>
-  );
-}
-      
-/* ================= COMPONENTS ================= */
-
-function StatCard({ title, value, accent = "#64748b" }) {
-  return (
-    <div
-      style={{
-        ...styles.card,
-        borderLeft: `6px solid ${accent}`,
-      }}
-    >
-      <p style={{ ...styles.statLabel, color: accent }}>
-        {title}
-      </p>
-      <h2 style={styles.statValue}>{value}</h2>
     </div>
   );
 }
+/* SMALL STAT COMPONENT */
 
-function MasteryOverTime({ data }) {
-  const max = Math.max(...data.map(d => d.accuracy), 1);
-
+function StatBox({ label, value }) {
   return (
-    <svg width="100%" height="130">
-      <line x1="40" y1="100" x2="95%" y2="100" stroke="#cbd5e1" />
-
-      {data.map((p, i) => {
-        if (i === 0) return null;
-        const prev = data[i - 1];
-
-        const x1 = 40 + (i - 1) * 120;
-        const y1 = 90 - (prev.accuracy / max) * 60;
-        const x2 = 40 + i * 120;
-        const y2 = 90 - (p.accuracy / max) * 60;
-
-        return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#f97316"
-            strokeWidth="3"
-          />
-        );
-      })}
-
-      {data.map((p, i) => {
-        const x = 40 + i * 120;
-        const y = 90 - (p.accuracy / max) * 60;
-
-        return (
-          <circle key={i} cx={x} cy={y} r="5" fill="#f97316" />
-        );
-      })}
-    </svg>
+    <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center">
+      <p className="text-slate-400 text-sm">{label}</p>
+      <p className="text-3xl font-bold mt-2">{value}</p>
+    </div>
   );
 }
-
-/* ================= STYLES ================= */
-
-const styles = {
- page: {
-  padding: "24px 16px",
-  background: "#f1f5f9",
-  minHeight: "100vh",
-  paddingBottom: 100, // 👈 mobile bottom nav safety
-},
-  title: {
-    fontSize: 30,
-    fontWeight: 800,
-    color: "#0f172a"
-  },
-  subtitle: {
-    color: "#475569",
-    marginBottom: 24
-  },
-  tabs: {
-    display: "flex",
-    gap: 8,
-    marginBottom: 28,
-    flexWrap: "wrap",
-  },
-  tab: {
-    padding: "10px 18px",
-    borderRadius: 999,
-    border: "1px solid #e5e7eb",
-    background: "#fff",
-    cursor: "pointer",
-    fontWeight: 600
-  },
-  tabActive: {
-    background: "#f97316",
-    color: "#fff",
-   border: "1px solid #f97316",
-  },
-  hero: {
-  background: "linear-gradient(135deg, #fff7ed, #ffffff)",
-  borderRadius: 18,
-  padding: 20,
-  display: "flex",
-  flexDirection: "column", // 👈 stack on mobile
-  gap: 20,
-  marginBottom: 24,
-},
-  heroLabel: {
-    color: "#f97316",
-    fontWeight: 700,
-    letterSpacing: 1
-  },
- heroPercent: {
-  fontSize: 44,
-  fontWeight: 900,
-
-},
-  heroInsight: {
-  color: "#475569",
-  maxWidth: "100%",
-},
-  statGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: 12,
-    marginBottom: 24,
-    textAlign: "center",
-  },
-  card: {
-    background: "#fff",
-    borderRadius: 16,
-    padding: 18,
-    maxWidth: 480,
-    margin: "0 auto",
-  },
-  statLabel: {
-    color: "#64748b"
-  },
-  statValue: {
-    fontSize: 32,
-    fontWeight: 800
-  },
- graphCard: {
-  background: "#fff",
-  borderRadius: 18,
-  padding: 24,
-  border: "1px solid #fed7aa"
-},
- cardTitle: {
-  fontWeight: 700,
-  marginBottom: 12,
-  color: "#ea580c"
-},
-  placeholder: {
-    padding: 40,
-    color: "#64748b",
-    background: "#fff",
-    borderRadius: 16
-  },
-  barBg: {
-  height: 10,
-  background: "#e5e7eb",
-  borderRadius: 999,
-  marginTop: 6,
-},
-barFill: {
-  height: "100%",
-  borderRadius: 999,
-},
-};

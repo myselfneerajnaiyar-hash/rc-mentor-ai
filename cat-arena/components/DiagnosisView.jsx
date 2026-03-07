@@ -141,6 +141,36 @@ const passageHeat = passages.map((p, pIdx) => {
     }
   });
 
+  /* ===================== MENTOR SUMMARY ===================== */
+
+let mentorMessage = "";
+let mentorTone = "#16a34a";
+
+if (accuracy >= 75 && attempted <= total * 0.6) {
+  mentorMessage =
+    "Strong selection discipline. You are choosing passages intelligently and protecting accuracy.";
+} 
+else if (accuracy >= 75 && attempted > total * 0.75) {
+  mentorTone = "#f59e0b";
+  mentorMessage =
+    "Accuracy is strong, but you may be over-attempting. CAT rewards selective aggression, not volume.";
+} 
+else if (accuracy < 60 && slowWrong > 0) {
+  mentorTone = "#dc2626";
+  mentorMessage =
+    "You are investing time without clarity. Depth reading without a question framework is costing you.";
+} 
+else if (fastWrong > 0) {
+  mentorTone = "#f97316";
+  mentorMessage =
+    "You are eliminating options too quickly. Slow down your first reading pass.";
+} 
+else {
+  mentorTone = "#38bdf8";
+  mentorMessage =
+    "Your performance shows mixed signals. Focus on improving passage selection before speed.";
+}
+
   /* ===================== RENDER ===================== */
   return (
     <div style={page}>
@@ -167,6 +197,30 @@ const passageHeat = passages.map((p, pIdx) => {
           <Stat label="Incorrect" value={attempted - correct} />
           <Stat label="Accuracy" value={`${accuracy}%`} />
         </div>
+        {/* ===== MENTOR SUMMARY ===== */}
+
+<div
+  style={{
+    marginTop: 32,
+    padding: 24,
+    borderRadius: 18,
+    background: "linear-gradient(135deg, #0f172a, #111827)",
+    border: `1px solid ${mentorTone}`,
+    boxShadow: `0 0 18px ${mentorTone}33`,
+  }}
+>
+  <h3
+  style={{
+    marginBottom: 12,
+    fontSize: 18,
+    color: mentorTone,
+    fontWeight: 600,
+  }}
+>
+  🧠 Strategic Mentor Insight
+</h3>
+  <p style={{ color: "#cbd5e1" }}>{mentorMessage}</p>
+</div>
 
         {/* ===== PASSAGE HEAT MAP ===== */}
         <Section title="🔥 Passage-Level Selection Intelligence (MOST IMPORTANT)">
@@ -294,16 +348,22 @@ const passageHeat = passages.map((p, pIdx) => {
 function Stat({ label, value }) {
   return (
     <div style={stat}>
-      <div style={{ color: "#6b7280", fontSize: 13 }}>{label}</div>
-      <div style={{ fontSize: 20, fontWeight: 600 }}>{value}</div>
+      <div style={{ color: "#94a3b8", fontSize: 13, marginBottom: 6 }}>
+        {label}
+      </div>
+      <div style={{ fontSize: 28, fontWeight: 700 }}>
+        {value}
+      </div>
     </div>
   );
 }
 
 function Section({ title, children }) {
   return (
-    <div style={{ marginTop: 28 }}>
-      <h3>{title}</h3>
+    <div style={{ marginTop: 36 }}>
+      <h3 style={{ fontSize: 20, marginBottom: 12 }}>
+        {title}
+      </h3>
       {children}
     </div>
   );
@@ -311,7 +371,7 @@ function Section({ title, children }) {
 
 function Explain({ children }) {
   return (
-    <p style={{ fontSize: 14, color: "#4b5563", marginBottom: 10 }}>
+    <p style={{ fontSize: 14, color: "#94a3b8", marginBottom: 14 }}>
       {children}
     </p>
   );
@@ -338,6 +398,8 @@ function HeatRow({ label, ratio, tag }) {
       ? "#f59e0b"
       : "#dc2626";
 
+      
+
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -354,24 +416,36 @@ function HeatRow({ label, ratio, tag }) {
 /* ===================== STYLES ===================== */
 
 const page = {
-  background: "#f5f7fb",
+  background: "#0f172a",
   minHeight: "100vh",
-  padding: "16px 12px",
+  padding: "24px 16px",
 };
+
+
 const card = {
   maxWidth: 1100,
   margin: "0 auto",
-  background: "#fff",
-  borderRadius: 14,
-  padding: 20,
+  background: "#1e293b",
+  borderRadius: 20,
+  padding: 28,
+  border: "1px solid #334155",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+  color: "#e2e8f0",
 };
+
 const grid4 = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
   gap: 12,
   marginTop: 20,
 };
-const stat = { background: "#eef2ff", padding: 16, borderRadius: 12 };
+
+const stat = {
+  background: "#0f172a",
+  padding: 18,
+  borderRadius: 14,
+  border: "1px solid #334155",
+};
 
 const passageGrid = {
   display: "grid",
@@ -379,7 +453,14 @@ const passageGrid = {
   gap: 14,
   marginTop: 12,
 };
-const passageCard = { borderRadius: 14, padding: 16, color: "#fff" };
+
+const passageCard = {
+  borderRadius: 18,
+  padding: 18,
+  color: "#fff",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
+  border: "1px solid rgba(255,255,255,0.08)",
+};
 
 const heatGrid = {
   display: "grid",
@@ -387,31 +468,36 @@ const heatGrid = {
   gap: 12,
   marginTop: 12,
 };
+
 const heatCell = {
-  borderRadius: 12,
-  padding: 10,
-  minHeight: 70,
+  borderRadius: 16,
+  padding: 12,
+  minHeight: 82,
   color: "#fff",
   textAlign: "center",
+  boxShadow: "0 6px 14px rgba(0,0,0,0.35)",
+  border: "1px solid rgba(255,255,255,0.08)",
 };
 
 const barBg = { height: 8, background: "#e5e7eb", borderRadius: 6, marginTop: 6 };
 const barFill = { height: "100%", borderRadius: 6 };
 
 const btn = {
-  marginTop: 30,
-  padding: "10px 18px",
-  background: "#2563eb",
+  marginTop: 36,
+  padding: "14px 20px",
+  background: "linear-gradient(to right, #2563eb, #1d4ed8)",
   color: "#fff",
-  borderRadius: 8,
+  borderRadius: 14,
   border: "none",
   cursor: "pointer",
+  fontWeight: 600,
 };
 
 const ghostBtn = {
-  padding: "6px 12px",
-  border: "1px solid #9ca3af",
-  background: "#fff",
-  borderRadius: 6,
+  padding: "8px 14px",
+  border: "1px solid #334155",
+  background: "transparent",
+  borderRadius: 10,
+  color: "#cbd5e1",
   cursor: "pointer",
 };

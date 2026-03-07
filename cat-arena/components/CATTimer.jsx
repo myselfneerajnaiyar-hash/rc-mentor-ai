@@ -25,7 +25,7 @@ export default function CATTimer({ durationMinutes, onTimeUp }) {
   const secs = String(secondsLeft % 60).padStart(2, "0");
 
   return (
-    <div style={{ fontWeight: 600 }}>
+    <div style={{ fontWeight: 600, color: "#f87171" }}>
       ⏱ {mins}:{secs}
     </div>
   );

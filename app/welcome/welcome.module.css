@@ -114,6 +114,7 @@
   to {
     opacity: 1;
   }
+}
   .welcome-card input,
 .welcome-card select {
   width: 100%;
@@ -122,5 +123,4 @@
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-}
 }

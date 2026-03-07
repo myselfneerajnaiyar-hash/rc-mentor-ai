@@ -10,14 +10,16 @@ export default function QuestionPalette({
     if (state === 1) return "#22c55e"; // answered
     if (state === 2) return "#3b82f6"; // marked
     if (state === 3) return "#7c3aed"; // answered + marked
-    return "#e5e7eb"; // not visited
+    return "#1f2937";
   }
 
   return (
     <div
       style={{
         padding: 16,
-        borderLeft: "1px solid #e5e7eb",
+        borderLeft: "1px solid #1f2937",
+background: "#0b1220",
+color: "#e5e7eb",
       }}
     >
       <div style={{ fontSize: 13, marginBottom: 12 }}>
@@ -51,7 +53,7 @@ export default function QuestionPalette({
                   ? "2px solid #111827"
                   : "none",
               color:
-                questionStates[idx] === 0 ? "#111827" : "white",
+  questionStates[idx] === 0 ? "#cbd5e1" : "white",
             }}
           >
             {idx + 1}

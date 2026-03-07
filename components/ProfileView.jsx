@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../lib/supabase";
 
+
 export default function ProfileView({ setView }) {
   const [profile, setProfile] = useState(null);
   const detailRef = useRef(null);
@@ -95,7 +96,7 @@ const [editData, setEditData] = useState({
 
   return (
   <div style={page}>
-  <div style={container}></div>
+  <div style={container}>
       <button onClick={() => setView("home")} style={backBtn}>
         ← Back to Home
       </button>
@@ -137,6 +138,7 @@ const [editData, setEditData] = useState({
           
         </div>
       </div>
+      
 
       {/* PERFORMANCE CARDS */}
       <div style={grid}>
@@ -160,13 +162,13 @@ const [editData, setEditData] = useState({
       <div style={section}>
   <h3>Overall Snapshot</h3>
 
-  <p style={{ color: "#475569", lineHeight: 1.6 }}>
+  <p style={{ color: "#cbd5e1", lineHeight: 1.6 }}>
     You have attempted <b>{stats.rcTests}</b> RC tests with an average
     accuracy of <b>{stats.accuracy}%</b>. Your vocabulary bank contains
     <b> {stats.vocab} words</b>.
   </p>
 
-  <p style={{ color: "#475569", marginTop: 10 }}>
+  <p style={{ color: "#cbd5e1", marginTop: 10 }}>
     Focus Area:{" "}
     <b>
       {stats.accuracy < 50
@@ -225,7 +227,7 @@ const [editData, setEditData] = useState({
   />
 </div>
 
-<p style={{ fontSize: 13, marginTop: 10, color: "#64748b" }}>
+<p style={{ fontSize: 13, marginTop: 10, color: "#94a3b8" }}>
   Aim to consistently cross 70% for CAT-level readiness.
 </p>
   </div>
@@ -267,7 +269,7 @@ const [editData, setEditData] = useState({
 </p>
 
 {stats.sectionals === 0 && (
-  <p style={{ color: "#64748b", marginTop: 10 }}>
+  <p style={{ color: "#94a3b8", marginTop: 10 }}>
     Start your first sectional to unlock analytics.
   </p>
 )}
@@ -281,7 +283,7 @@ const [editData, setEditData] = useState({
   Current Plan: <strong>Free</strong>
 </p>
 
-<p style={{ color: "#64748b" }}>
+<p style={{ color: "#94a3b8" }}>
   Upgrade to Pro for advanced analytics, AI diagnosis,
   and full sectional sync.
 </p>
@@ -383,6 +385,7 @@ const [editData, setEditData] = useState({
 </div>
 
     </div>
+    </div>
     
   );
 }
@@ -392,8 +395,10 @@ const [editData, setEditData] = useState({
 function StatCard({ label, value }) {
   return (
     <div style={card}>
-      <p style={{ color: "#64748b", fontSize: 13 }}>{label}</p>
-     <h2 style={{ margin: "6px 0", fontSize: 28 }}>{value}</h2>
+      <p style={{ color: "#94a3b8", fontSize: 13 }}>{label}</p>
+    <h2 style={{ margin: "6px 0", fontSize: 34, fontWeight: 700 }}>
+  {value}
+</h2>
     </div>
   );
 }
@@ -413,7 +418,7 @@ function ActionCard({ title, desc, onClick }) {
   return (
     <div style={actionCard}>
       <h4 style={{ margin: "0 0 6px 0" }}>{title}</h4>
-      <p style={{ fontSize: 13, color: "#64748b" }}>{desc}</p>
+      <p style={{ fontSize: 13, color: "#94a3b8" }}>{desc}</p>
       <button style={actionBtn} onClick={onClick}>
         Explore →
       </button>
@@ -424,8 +429,8 @@ function ActionCard({ title, desc, onClick }) {
 
 const page = {
   minHeight: "100vh",
-  background: "linear-gradient(180deg, #f0f9ff, #e0f2fe)",
-  padding: "40px 20px 140px", // extra bottom space for mobile nav
+  background: "#020617",
+  padding: "40px 20px 140px",
 };
 
 const container = {
@@ -434,23 +439,25 @@ const container = {
 };
 
 const backBtn = {
-  marginBottom: 20,
+  marginBottom: 24,
   background: "none",
   border: "none",
-  color: "#2563eb",
+  color: "#38bdf8",
   fontWeight: 600,
   cursor: "pointer",
+  fontSize: 15,
 };
 
 const hero = {
   display: "flex",
-  gap: 20,
+  gap: 24,
   alignItems: "center",
-  padding: 30,
-  background: "#fff",
-  borderRadius: 20,
-  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-  marginBottom: 30,
+  padding: 32,
+  background: "#0f172a",
+  borderRadius: 22,
+  border: "1px solid #1e293b",
+  boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
+  marginBottom: 32,
 };
 
 const avatar = {
@@ -467,7 +474,7 @@ const avatar = {
 };
 
 const subText = {
-  color: "#64748b",
+  color: "#94a3b8",
   margin: "4px 0",
 };
 
@@ -484,15 +491,16 @@ const grid = {
 };
 
 const card = {
-  background: "#ffffffcc",
-  backdropFilter: "blur(8px)",
-  padding: 20,
+  background: "#0f172a",
+  padding: 22,
   borderRadius: 18,
-  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+  border: "1px solid #e2e8f0",
+  boxShadow: "0 6px 18px rgba(0,0,0,0.06)",
+  textAlign: "center",
 };
 
 const section = {
-  background: "#fff",
+  background: "#0f172a",
   padding: 30,
   borderRadius: 20,
   boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
@@ -538,10 +546,11 @@ const actionGrid = {
 };
 
 const actionCard = {
-  background: "#f8fafc",
-  padding: 20,
+  background: "#020617",
+  padding: 22,
   borderRadius: 16,
   border: "1px solid #e2e8f0",
+  boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
   transition: "all 0.2s ease",
 };
 
@@ -570,11 +579,13 @@ const modalOverlay = {
 };
 
 const modalBox = {
-  background: "#fff",
-  padding: 30,
+  background: "#0f172a",
+  padding: 32,
   borderRadius: 16,
   width: 400,
-  boxShadow: "0 20px 50px rgba(0,0,0,0.2)",
+  border: "1px solid #1e293b",
+  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
+  color: "#e2e8f0",
 };
 
 const input = {
@@ -582,7 +593,9 @@ const input = {
   padding: 10,
   marginBottom: 12,
   borderRadius: 8,
-  border: "1px solid #ddd",
+  border: "1px solid #334155",
+  background: "#020617",
+  color: "#e2e8f0",
 };
 
 const saveBtn = {
@@ -597,8 +610,9 @@ const saveBtn = {
 
 const cancelBtn = {
   padding: "10px 18px",
-  background: "#e5e7eb",
+  background: "#1e293b",
   border: "none",
   borderRadius: 8,
+  color: "#e2e8f0",
   cursor: "pointer",
 };

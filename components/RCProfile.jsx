@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import TabGroup from "../components/TabGroup";
 import PlanTab from "./PlanTab";
 import { AreaChart, Area } from "recharts";
 
@@ -162,25 +163,13 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
       <h2 style={{ marginBottom: 20 }}>RC Performance Dashboard</h2>
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 12, marginBottom: 30 }}>
-        {["overview", "skills", "speed", "plan"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActive(tab)}
-            style={{
-              padding: "10px 18px",
-              borderRadius: 10,
-              border: "1px solid #e5e7eb",
-              background: active === tab ? "#2563eb" : "#f3f4f6",
-              color: active === tab ? "#fff" : "#111827",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
-            {tab.toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <div style={{ marginBottom: 30 }}>
+  <TabGroup
+    tabs={["overview", "skills", "speed", "plan"]}
+    active={active}
+    onChange={setActive}
+  />
+</div>
 
      {active === "overview" && (
   <div style={{ marginTop: 40 }}>
@@ -346,8 +335,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
       <div style={{
         padding: 24,
         borderRadius: 18,
-        background: "#f0fdf4",
-        border: "1px solid #bbf7d0"
+       background: "#111827",
+border: "1px solid #1f2937",
+color: "#fff"
       }}>
         <h4>Strength Signal</h4>
         <p>
@@ -360,12 +350,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
       <div style={{
         padding: 24,
         borderRadius: 18,
-        background: improving
-          ? "#ecfdf5"
-          : "#fef2f2",
-        border: improving
-          ? "1px solid #86efac"
-          : "1px solid #fecaca"
+       background: "#111827",
+border: "1px solid #1f2937",
+color: "#fff"
       }}>
         <h4>Trend Alert</h4>
         <p>
@@ -403,8 +390,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
     <div style={{
       padding: 30,
       borderRadius: 20,
-      background: "#f8fafc",
-      border: "1px solid #e2e8f0"
+     background: "#111827",
+border: "1px solid #1f2937",
+color: "#fff"
     }}>
       <h3 style={{ marginBottom: 14 }}>
         AI Mentor Summary
@@ -459,9 +447,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
               padding: 16,
               marginBottom: 10,
               borderRadius: 14,
-              background: "#ffffff",
-              border: "1px solid #e5e7eb",
-              boxShadow: "0 6px 12px rgba(0,0,0,0.05)"
+             background: "#111827",
+border: "1px solid #1f2937",
+color: "#fff"
             }}
           >
             <strong>{s.type.toUpperCase()}</strong><br />
@@ -480,8 +468,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
         marginTop: 30,
         padding: 20,
         borderRadius: 16,
-        background: "#fef2f2",
-        border: "1px solid #fecaca"
+       background: "#111827",
+border: "1px solid #7f1d1d",
+color: "#fff"
       }}>
         <strong>Mentor Insight:</strong><br />
         Your weakest area is{" "}
@@ -512,8 +501,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
       <div style={{
         padding: 24,
         borderRadius: 18,
-        background: "#fff1f2",
-        border: "1px solid #fecdd3",
+       background: "#1f1a1a",
+border: "1px solid #7f1d1d",
+color: "#fff",
         boxShadow: "0 8px 18px rgba(0,0,0,0.06)"
       }}>
         <h4>⚡ Rushed (&lt;15s)</h4>
@@ -544,8 +534,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
       <div style={{
         padding: 24,
         borderRadius: 18,
-        background: "#eff6ff",
-        border: "1px solid #bfdbfe",
+       background: "#1a1f2e",
+border: "1px solid #1e40af",
+color: "#fff",
         boxShadow: "0 8px 18px rgba(0,0,0,0.06)"
       }}>
         <h4>🧠 Overthinking (&gt;45s)</h4>
@@ -577,8 +568,9 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
     <div style={{
       padding: 28,
       borderRadius: 20,
-      background: "#f8fafc",
-      border: "1px solid #e2e8f0",
+      background: "#111827",
+border: "1px solid #1f2937",
+color: "#fff",
       marginBottom: 40
     }}>
       <h4 style={{ marginBottom: 16 }}>Behavior Balance</h4>
@@ -613,19 +605,14 @@ const skillData = Object.entries(skillMap).map(([type, stats]) => ({
     <div style={{
       padding: 28,
       borderRadius: 20,
-      background:
-        rushed > slow
-          ? "#fef2f2"
-          : slow > rushed
-          ? "#eff6ff"
-          : "#ecfdf5",
-      border:
-        rushed > slow
-          ? "1px solid #fecaca"
-          : slow > rushed
-          ? "1px solid #bfdbfe"
-          : "1px solid #bbf7d0",
-      boxShadow: "0 10px 20px rgba(0,0,0,0.05)"
+      background: "#111827",
+border:
+  rushed > slow
+    ? "1px solid #7f1d1d"
+    : slow > rushed
+    ? "1px solid #1e40af"
+    : "1px solid #14532d",
+color: "#fff"
     }}>
       <h4 style={{ marginBottom: 12 }}>Mentor Insight</h4>
 

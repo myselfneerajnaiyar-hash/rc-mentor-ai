@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 import VocabProfile from "../components/VocabProfile";
 import { supabase } from "../lib/supabase";
+import TabGroup from "../components/TabGroup";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
@@ -168,51 +169,22 @@ const res = await fetch("/api/enrich-word", {
 
   
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(180deg, #eef2ff, #f8fafc)",
-        color: "#1f2937",
-        padding: "24px 16px",
-      }}
-    >
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <div className="min-h-screen bg-slate-950 text-slate-100 px-6 py-8">
+      <div className="max-w-6xl mx-auto">
         <h1 style={{ marginBottom: 12 }}>Vocabulary Lab</h1>
 
-        <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
-          {[
-            { key: "bank", label: "WordBank" },
-            { key: "drill", label: "Vocab Drills" },
-            { key: "learn", label: "Learn" },
-            { key: "profile", label: "Profile" },
-          ].map(t => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              style={{
-                padding: "8px 14px",
-                borderRadius: 8,
-                border: "1px solid #c7d2fe",
-                background: tab === t.key ? "#4f46e5" : "#eef2ff",
-                color: tab === t.key ? "#fff" : "#1e293b",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+       <TabGroup
+  active={tab}
+  onChange={setTab}
+  tabs={[
+    { value: "bank", label: "WordBank" },
+    { value: "drill", label: "Vocab Drills" },
+    { value: "learn", label: "Learn" },
+    { value: "profile", label: "Profile" },
+  ]}
+/>
 
-        <div
-          style={{
-            background: "#ffffff",
-            borderRadius: 16,
-            padding: 20,
-            minHeight: 420,
-            boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
-          }}
-        >
+       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 min-h-[420px]">
           {tab === "bank" && (
            <WordBank
   manualWord={manualWord}
@@ -253,21 +225,15 @@ function WordBank({
 ).length;
   return (
     <div>
-      <h2>WordBank</h2>
+     <h2 className="text-2xl font-semibold text-slate-100">
+  WordBank
+</h2>
       {unenrichedCount > 0 && (
-  <div
-    style={{
-      marginTop: 16,
-      padding: 16,
-      borderRadius: 12,
-      background: "#fff7ed",
-      border: "1px solid #fdba74",
-    }}
-  >
+ <div className="mt-6 p-4 rounded-xl bg-slate-800 border border-slate-700">
     <p style={{ fontWeight: 600 }}>
       ⚡ To unlock full vocab drills, enrich your saved words.
     </p>
-    <p style={{ fontSize: 13, color: "#7c2d12" }}>
+   <p className="text-sm text-slate-400">
       {unenrichedCount} word(s) need enrichment.
     </p>
 
@@ -278,36 +244,18 @@ function WordBank({
     setBulkLoading(false);
   }}
   disabled={bulkLoading}
-      style={{
-        marginTop: 10,
-        padding: "8px 14px",
-        borderRadius: 8,
-        border: "none",
-        background: "#ea580c",
-        color: "#fff",
-        fontWeight: 600,
-        cursor: bulkLoading ? "not-allowed" : "pointer",
-opacity: bulkLoading ? 0.7 : 1,
-      }}
+      className="mt-3 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold transition disabled:opacity-50"
     >
      {bulkLoading ? "Enriching your wordbank..." : "Enrich All Words"}
     </button>
   </div>
 )}
-      <p style={{ color: "#555" }}>
+      <p className="text-slate-400">
         Your personal vocabulary memory. Words appear here automatically from RC,
         Speed Gym, or when you add them manually.
       </p>
 
-      <div
-        style={{
-          marginTop: 16,
-          padding: 16,
-          borderRadius: 12,
-          border: "1px dashed #c7d2fe",
-          background: "#f8fafc",
-        }}
-      >
+     <div className="mt-6 p-4 rounded-xl border border-slate-700 bg-slate-800">
         <input
           placeholder="Type a word and press Enter"
           value={manualWord}
@@ -317,28 +265,13 @@ opacity: bulkLoading ? 0.7 : 1,
               handleManualAdd(manualWord.trim());
             }
           }}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 8,
-            border: "1px solid #d1d5db",
-            fontSize: 16,
-          }}
+          className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
         />
 
         {loading && <p style={{ marginTop: 12 }}>Looking up word…</p>}
 
        {lookup && (
-  <div
-    style={{
-      marginTop: 16,
-      padding: 18,
-      borderRadius: 14,
-      border: "1px solid #fed7aa",
-      background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
-      boxShadow: "0 10px 24px rgba(251, 146, 60, 0.25)",
-    }}
-  >
+ <div className="mt-6 p-5 rounded-2xl bg-slate-900 border border-slate-700">
             <h3>{lookup.word}</h3>
             <p><b>Meaning:</b> {lookup.meaning || "—"}</p>
             <p><b>Part of Speech:</b> {lookup.partOfSpeech || "—"}</p>
@@ -365,14 +298,7 @@ opacity: bulkLoading ? 0.7 : 1,
                 <button
                   key={i}
                   onClick={() => openWord(w)}
-                  style={{
-                    padding: "8px 10px",
-                    borderRadius: 8,
-                    border: "1px solid #e5e7eb",
-                    background: "#ffffff",
-                    textAlign: "left",
-                    cursor: "pointer",
-                  }}
+                  className="px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-left hover:bg-slate-700 transition"
                 >
                   <b>{w.word}</b>
                   <div style={{ fontSize: 12, color: "#6b7280" }}>
@@ -658,20 +584,22 @@ if (isLastQuestion) {
   if (stage === "start") {
     return (
       <div>
-        <h2>Vocab Drills</h2>
-        <p>10 mixed MCQs: meaning, opposite, usage.</p>
+  <h2 className="text-2xl font-semibold text-slate-100">
+    Vocab Drills
+  </h2>
+  <p className="text-slate-400 mt-2">
+    10 mixed MCQs: meaning, opposite, usage.
+  </p>
         <button
           onClick={startDrill}
-          style={{
-            padding: "12px 18px",
-            borderRadius: 10,
-            border: "none",
-            background: "#f97316",
-            color: "#fff",
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
+          className="mt-8 w-full sm:w-auto px-8 py-3 rounded-2xl 
+bg-gradient-to-r from-orange-500 to-orange-600 
+hover:from-orange-400 hover:to-orange-500
+text-white font-semibold tracking-wide
+shadow-lg shadow-orange-900/30
+transition-all duration-200
+active:scale-[0.98]"
+>
           Start Drill
         </button>
       </div>
@@ -684,29 +612,61 @@ if (isLastQuestion) {
   (history.filter(h => h.isCorrect).length / questions.length) * 100
 );
     return (
-      <div>
-        <h2>Drill Complete</h2>
-        <p>
-          Score: <b>{score}</b> / {questions.length} &nbsp;|&nbsp;
-          Accuracy: <b>{accuracy}%</b> &nbsp;|&nbsp;
-          Time: <b>{timeTaken}s</b>
-        </p>
 
-        <div style={{ marginTop: 20 }}>
+      <div className="space-y-6">
+        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+  <h2 className="text-2xl font-semibold text-slate-100">
+    Drill Complete
+  </h2>
+
+  <div className="mt-4 flex flex-wrap gap-6 text-slate-300 text-sm">
+    <div>
+      <span className="text-slate-400">Score</span>
+      <div className="text-lg font-semibold text-slate-100">
+        {score} / {questions.length}
+      </div>
+    </div>
+
+    <div>
+      <span className="text-slate-400">Accuracy</span>
+      <div className="text-lg font-semibold text-orange-400">
+        {accuracy}%
+      </div>
+    </div>
+
+    <div>
+      <span className="text-slate-400">Time</span>
+      <div className="text-lg font-semibold text-slate-100">
+        {timeTaken}s
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div className="space-y-3">
           {history.map((h, i) => (
-            <div
-              key={i}
-              style={{
-                marginBottom: 12,
-                padding: 12,
-                borderRadius: 8,
-                background: h.isCorrect ? "#dcfce7" : "#fee2e2",
-              }}
-            >
-              <b>{i + 1}. {h.word || "Fill in the blank"}</b>
-              <div>Your answer: {h.chosen}</div>
-              {!h.isCorrect && <div>Correct: {h.correct}</div>}
-            </div>
+           <div
+  key={i}
+  className={`p-4 rounded-xl border ${
+    h.isCorrect
+      ? "bg-emerald-900/30 border-emerald-700"
+      : "bg-red-900/30 border-red-700"
+  }`}
+>
+  <div className="font-semibold text-slate-100">
+    {i + 1}. {h.word || "Fill in the blank"}
+  </div>
+
+  <div className="mt-2 text-sm text-slate-300">
+    Your answer: <span className="font-medium">{h.chosen}</span>
+  </div>
+
+  {!h.isCorrect && (
+    <div className="text-sm text-red-300">
+      Correct answer: <span className="font-medium">{h.correct}</span>
+    </div>
+  )}
+</div>
           ))}
         </div>
 
@@ -733,43 +693,39 @@ if (isLastQuestion) {
 
   return (
     <div>
-      <div style={{ marginBottom: 12, color: "#6b7280" }}>
+      <div className="mb-4 text-slate-400">
         Q {index + 1} / {questions.length}
       </div>
 
       {q.type === "fill" ? (
         <h3 style={{ marginBottom: 16 }}>{q.prompt}</h3>
       ) : (
-        <h3 style={{ marginBottom: 16 }}>
+       <h3 className="mb-4 text-lg font-semibold text-slate-100">
           {q.prompt} <span style={{ color: "#f97316" }}>{q.word}</span>
         </h3>
       )}
 
-      <div style={{ display: "grid", gap: 10 }}>
+      <div className="grid gap-3">
         {q.options.map((opt, i) => {
-          let bg = "#ffffff";
-          if (selected) {
-            if (opt === q.correct) bg = "#dcfce7";
-            else if (opt === selected) bg = "#fee2e2";
-          }
+          
 
-          return (
-            <button
-              key={i}
-              onClick={() => choose(opt)}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 8,
-                border: "1px solid #e5e7eb",
-                background: bg,
-                textAlign: "left",
-                cursor: "pointer",
-                fontSize: 15,
-              }}
-            >
-              {opt}
-            </button>
-          );
+         return (
+  <button
+    key={i}
+    onClick={() => choose(opt)}
+    className={`px-4 py-3 rounded-xl border transition text-left ${
+      selected
+        ? opt === q.correct
+          ? "bg-emerald-900/40 border-emerald-600 text-emerald-200"
+          : opt === selected
+          ? "bg-red-900/40 border-red-600 text-red-200"
+          : "bg-slate-800 border-slate-700 text-slate-300"
+        : "bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200"
+    }`}
+  >
+    {opt}
+  </button>
+);
         })}
       </div>
     </div>
@@ -792,49 +748,65 @@ const [testScore, setTestScore] = useState(0);
     const L = activeLesson;
     return (
       <div>
-        <button onClick={() => setMode("home")}>← Back</button>
+       <button
+  onClick={() => setMode("home")}
+  className="text-slate-400 hover:text-slate-200 text-sm mb-4 transition"
+>
+  ← Back
+</button>
 
         <h2 style={{ marginTop: 12 }}>{L.title}</h2>
         <p style={{ color: "#555", whiteSpace: "pre-wrap" }}>{L.concept}</p>
 
         <h3 style={{ marginTop: 20 }}>Word Cards</h3>
 
-        {L.words.map((w, i) => (
-          <div
-            key={i}
-            style={{
-              marginTop: 12,
-              padding: 14,
-              borderRadius: 12,
-              border: "1px solid #fed7aa",
-              background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
-            }}
-          >
-            <h4>{w.word}</h4>
-            <p><b>Meaning:</b> {w.meaning}</p>
-            <p><b>Usage:</b> {w.usage}</p>
-            <p><b>Root:</b> {w.root}</p>
-            <p><b>Synonyms:</b> {(w.synonyms || []).join(", ")}</p>
-            <p><b>Antonyms:</b> {(w.antonyms || []).join(", ")}</p>
-          </div>
-        ))}
-        <button
-        onClick={() => startLessonTest(L)}
-        style={{
-          marginTop: 20,
-          padding: "10px 16px",
-          borderRadius: 8,
-          background: "#f97316",
-          color: "#fff",
-          border: "none",
-          fontWeight: 600,
-        }}
-      >
-        Take Mini Test
-      </button>
-      </div>
+     <div className="space-y-4 mt-6">
+  {L.words.map((w, i) => (
+    <div
+      key={i}
+      className="p-6 rounded-2xl bg-slate-900 border border-slate-800"
+    >
+      <h4 className="text-lg font-semibold text-slate-100">
+        {w.word}
+      </h4>
+
+      <p className="text-slate-300 text-sm mt-3">
+        <span className="text-slate-400 font-medium">Meaning:</span> {w.meaning}
+      </p>
+
+      <p className="text-slate-300 text-sm mt-2">
+        <span className="text-slate-400 font-medium">Usage:</span> {w.usage}
+      </p>
+
+      <p className="text-slate-300 text-sm mt-2">
+        <span className="text-slate-400 font-medium">Root:</span> {w.root}
+      </p>
+
+      <p className="text-slate-300 text-sm mt-2">
+        <span className="text-slate-400 font-medium">Synonyms:</span>{" "}
+        {(w.synonyms || []).join(", ")}
+      </p>
+
+      <p className="text-slate-300 text-sm mt-2">
+        <span className="text-slate-400 font-medium">Antonyms:</span>{" "}
+        {(w.antonyms || []).join(", ")}
+      </p>
+    </div>
+  ))}
+
+  <div className="pt-4">
+    <button
+      onClick={() => startLessonTest(L)}
+      className="mt-4 px-6 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition"
+    >
+      Take Mini Test
+    </button>
+  </div>
+</div>
+</div>
     );
   }
+  
 
   function startLessonTest(lesson) {
     const words = lesson.words;
@@ -864,12 +836,12 @@ const qs = usable.slice(0, 5).map(w => {
   if (mode === "test") {
     const q = testQs[testIndex];
 
-    return (
-      <div>
-        <h3>
-          Closest meaning of{" "}
-          <span style={{ color: "#f97316" }}>{q.word}</span>
-        </h3>
+   return (
+  <div className="max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl p-8">
+       <h3 className="text-xl font-semibold text-slate-100 mb-6">
+  Closest meaning of{" "}
+  <span className="text-orange-400">{q.word}</span>
+</h3>
 
         {q.options.map((o, i) => (
           <button
@@ -883,15 +855,7 @@ const qs = usable.slice(0, 5).map(w => {
                 setMode("result");
               }
             }}
-            style={{
-              display: "block",
-              width: "100%",
-              marginTop: 8,
-              padding: 10,
-              borderRadius: 8,
-              border: "1px solid #e5e7eb",
-              background: "#fff",
-            }}
+            className="w-full text-left px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition"
           >
             {o}
           </button>
@@ -903,7 +867,9 @@ const qs = usable.slice(0, 5).map(w => {
   if (mode === "result") {
     return (
       <div>
-        <h2>Lesson Test Complete</h2>
+       <h2 className="text-2xl font-semibold text-slate-100">
+  Lesson Test Complete
+</h2>
         <p>
           Score: <b>{testScore}</b> / {testQs.length}
         </p>
@@ -920,14 +886,7 @@ const qs = usable.slice(0, 5).map(w => {
             setProgress(updated);
             setMode("home");
           }}
-          style={{
-            padding: "10px 16px",
-            borderRadius: 8,
-            background: "#22c55e",
-            color: "#fff",
-            border: "none",
-            fontWeight: 600,
-          }}
+         className="mt-6 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition"
         >
           Mark Complete
         </button>
@@ -936,18 +895,11 @@ const qs = usable.slice(0, 5).map(w => {
   }
   return (
     <div>
-     <h2>Today’s Top Words</h2>
+    <h2 className="text-xl font-semibold text-slate-100 mb-4">
+  Today’s Top Words
+</h2>
 
-<div
-  style={{
-    display: "inline-flex",
-    background: "#f1f5f9",
-    padding: 4,
-    borderRadius: 12,
-    gap: 4,
-    marginBottom: 20,
-  }}
->
+<div className="inline-flex bg-slate-800 border border-slate-700 p-1 rounded-xl gap-1 mb-6">
   {[
     { key: "ALL", label: "All" },
     { key: "CAT", label: "CAT RC" },
@@ -956,23 +908,11 @@ const qs = usable.slice(0, 5).map(w => {
     <button
       key={item.key}
       onClick={() => setExamFilter(item.key)}
-      style={{
-        padding: "8px 18px",
-        borderRadius: 10,
-        border: "none",
-        fontWeight: 600,
-        fontSize: 14,
-        cursor: "pointer",
-        transition: "all 0.2s ease",
-        background:
-          examFilter === item.key ? "#4f46e5" : "transparent",
-        color:
-          examFilter === item.key ? "#ffffff" : "#475569",
-        boxShadow:
-          examFilter === item.key
-            ? "0 6px 14px rgba(79,70,229,0.35)"
-            : "none",
-      }}
+      className={`px-4 py-2 rounded-lg font-medium text-sm transition ${
+  examFilter === item.key
+    ? "bg-blue-600 text-white"
+    : "text-slate-400 hover:text-slate-200"
+}`}
     >
       {item.label}
     </button>
@@ -991,18 +931,11 @@ const qs = usable.slice(0, 5).map(w => {
        {getTodayWords().map((w, i) => (
           <div
             key={i}
-            style={{
-              minWidth: 220,
-              padding: 14,
-              borderRadius: 14,
-              background: "linear-gradient(180deg, #fff7ed, #ffedd5)",
-              border: "1px solid #fed7aa",
-              boxShadow: "0 6px 14px rgba(251,146,60,0.25)",
-            }}
+           className="min-w-[220px] p-4 rounded-2xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition"
           >
             <h4>{w.word}</h4>
-            <p style={{ fontSize: 13 }}>{w.meaning}</p>
-            <p style={{ fontSize: 12, color: "#7c2d12" }}>
+       <p className="text-sm text-slate-300">
+           <p className="text-xs text-slate-400"></p>
              {(w.synonyms || []).join(", ")}
             </p>
           </div>
@@ -1023,13 +956,7 @@ const qs = usable.slice(0, 5).map(w => {
 ).map(l => (
   <div
     key={l.id}
-    style={{
-      marginTop: 12,
-      padding: 16,
-      borderRadius: 12,
-      border: "1px solid #e5e7eb",
-      background: "#f8fafc",
-    }}
+    className="mt-4 p-6 rounded-2xl bg-slate-900 border border-slate-800"
   >
     <h3>{l.title}</h3>
     <p style={{ color: "#555" }}>{l.goal}</p>
@@ -1039,15 +966,7 @@ const qs = usable.slice(0, 5).map(w => {
         setActiveLesson(l);
         setMode("lesson");
       }}
-      style={{
-        padding: "8px 14px",
-        borderRadius: 8,
-        border: "none",
-        fontWeight: 600,
-        cursor: "pointer",
-        background: l.exam === "CAT" ? "#f97316" : "#22c55e",
-color: "#fff",
-      }}
+     className="mt-4 px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition"
     >
       Start Lesson
     </button>

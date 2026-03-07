@@ -11,10 +11,11 @@ export default function CATInstructions({ onStart }) {
         maxWidth: 900,
         margin: "40px auto",
         padding: "24px 28px",
-        background: "#ffffff",
-        border: "1px solid #e5e7eb",
+        background: "#111827",
+        border: "1px solid #1f2937",
         borderRadius: 10,
         lineHeight: 1.6,
+        color: "e5e7eb",
       }}
     >
       <h2 style={{ marginBottom: 16 }}>CAT RC Sectional – Instructions</h2>
@@ -96,7 +97,7 @@ export default function CATInstructions({ onStart }) {
         onClick={onStart}
         style={{
           padding: "12px 22px",
-          background: confirmed ? "#2563eb" : "#94a3b8",
+          background: confirmed ? "#2563eb" : "#334155",
           color: "#fff",
           border: "none",
           borderRadius: 6,

@@ -19,7 +19,7 @@ export default function QuestionPanel({
   if (!question) return null;
 
   return (
-    <div style={{ padding: "8px 16px" }}>
+    <div style={{ padding: "8px 16px", color: "#e5e7eb" }}>
       {/* ================= QUESTION HEADER ================= */}
       <div style={{ fontWeight: 600, marginBottom: 8 }}>
         Question No. {qNumber}
@@ -39,29 +39,30 @@ export default function QuestionPanel({
           return (
             <label
               key={idx}
-              style={{
-                display: "flex",
-                gap: 10,
-                padding: "8px 10px",
-                borderRadius: 4,
-                cursor: mode === "review" ? "default" : "pointer",
-                border:
-                  mode === "review"
-                    ? isCorrect
-                      ? "2px solid #16a34a"
-                      : isSelected
-                      ? "2px solid #dc2626"
-                      : "1px solid #d1d5db"
-                    : "1px solid #d1d5db",
-                background:
-                  mode === "review"
-                    ? isCorrect
-                      ? "#dcfce7"
-                      : isSelected
-                      ? "#fee2e2"
-                      : "#fff"
-                    : "#fff",
-              }}
+             style={{
+  display: "flex",
+  gap: 10,
+  padding: "10px 12px",
+  borderRadius: 6,
+  cursor: mode === "review" ? "default" : "pointer",
+  border:
+    mode === "review"
+      ? isCorrect
+        ? "2px solid #22c55e"
+        : isSelected
+        ? "2px solid #ef4444"
+        : "1px solid #334155"
+      : "1px solid #334155",
+  background:
+    mode === "review"
+      ? isCorrect
+        ? "#052e16"
+        : isSelected
+        ? "#3f1d1d"
+        : "#1f2937"
+      : "#1f2937",
+  color: "#e5e7eb",
+}}
             >
               <input
                 type="radio"
@@ -84,11 +85,11 @@ export default function QuestionPanel({
           style={{
             marginTop: 16,
             padding: 10,
-            background: "#f9fafb",
-            border: "1px solid #e5e7eb",
+            background: "#1f2937",
+            border: "1px solid #334155",
             borderRadius: 4,
             fontSize: 14,
-            color: "#374151",
+            color: "#e5e7eb",
           }}
         >
           <div>
@@ -134,11 +135,11 @@ export default function QuestionPanel({
           style={{
             marginTop: 12,
             padding: 12,
-            background: "#f8fafc",
-            border: "1px solid #cbd5f5",
+            background: "#0f172a",
+            border: "1px solid #334155",
             borderRadius: 4,
             lineHeight: 1.65,
-            color: "#1f2937",
+            color: "#e5e7eb",
           }}
         >
           <strong>Explanation:</strong>
@@ -165,9 +166,10 @@ export default function QuestionPanel({
           onClick={onPrev}
           style={{
             padding: "6px 12px",
-            border: "1px solid #9ca3af",
-            background: "#fff",
+            border: "1px solid #334155",
+            background: "#1f2937",
             cursor: "pointer",
+            color: "#e5e7eb",
           }}
         >
           Previous

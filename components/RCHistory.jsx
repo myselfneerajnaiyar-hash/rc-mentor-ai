@@ -6,6 +6,8 @@ export default function RCHistory() {
   const [selectedSession, setSelectedSession] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+const sessionsPerPage = 5;
 
   useEffect(() => {
     fetchHistory();
@@ -52,24 +54,24 @@ export default function RCHistory() {
     return <div style={{ padding: 20 }}>Loading history...</div>;
   }
 
+  const totalPages = Math.ceil(sessions.length / sessionsPerPage);
+
+const startIndex = (currentPage - 1) * sessionsPerPage;
+const paginatedSessions = sessions.slice(
+  startIndex,
+  startIndex + sessionsPerPage
+);
+
   return (
-    <div style={{ padding: 20 }}>
+  <div className="mt-6 space-y-8">
       <h2>RC History</h2>
 
       {!selectedSession && (
         <>
-          {sessions.map((session) => (
-           <div
+       {paginatedSessions.map((session) => (
+          <div
   key={session.id}
-  style={{
-    marginBottom: 25,
-    padding: 20,
-    border: "1px solid #e5e7eb",
-    borderRadius: 14,
-    background: "white",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.04)",
-    transition: "all 0.2s ease"
-  }}
+ className="bg-slate-900 border border-slate-800 rounded-2xl px-6 py-5 transition-all hover:border-slate-700"
 >
   {/* Top Row */}
   <div style={{
@@ -84,24 +86,14 @@ export default function RCHistory() {
       </p>
     </div>
 
-    <div
-      style={{
-        padding: "6px 12px",
-        borderRadius: 20,
-        fontSize: 13,
-        fontWeight: 600,
-        background:
-          session.total_questions &&
-          (session.correct_answers / session.total_questions) * 100 >= 60
-            ? "#dcfce7"
-            : "#fee2e2",
-        color:
-          session.total_questions &&
-          (session.correct_answers / session.total_questions) * 100 >= 60
-            ? "#166534"
-            : "#991b1b"
-      }}
-    >
+   <div
+  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+    session.total_questions &&
+    (session.correct_answers / session.total_questions) * 100 >= 60
+      ? "bg-emerald-900/40 text-emerald-300 border border-emerald-700"
+      : "bg-red-900/40 text-red-300 border border-red-700"
+  }`}
+>
       {session.total_questions
         ? Math.round(
             (session.correct_answers / session.total_questions) * 100
@@ -118,79 +110,87 @@ export default function RCHistory() {
     alignItems: "center",
     marginBottom: 15
   }}>
-    <div style={{ fontSize: 16 }}>
-      <b>Score:</b> {session.correct_answers} / {session.total_questions}
-    </div>
+  <div className="text-slate-300 text-sm">
+  <span className="font-semibold text-white">
+    {session.correct_answers} / {session.total_questions}
+  </span>
+  <span className="text-slate-500 ml-2">Score</span>
+</div>
 
-    <div style={{
-      padding: "4px 10px",
-      background: "#f3f4f6",
-      borderRadius: 8,
-      fontSize: 13,
-      color: "#374151"
-    }}>
-      {session.difficulty}
-    </div>
+    <div className="text-xs px-2 py-1 bg-slate-800 border border-slate-700 rounded-md text-slate-400">
+  {session.difficulty}
+</div>
   </div>
 
   {/* Button */}
-  <button
-    onClick={() => loadSessionDetails(session)}
-    style={{
-      width: "100%",
-      backgroundColor: "#2563eb",
-      color: "white",
-      padding: "10px",
-      borderRadius: 8,
-      border: "none",
-      cursor: "pointer",
-      fontWeight: 600,
-      fontSize: 14,
-      transition: "all 0.2s ease"
-    }}
-    onMouseOver={(e) =>
-      (e.target.style.backgroundColor = "#1d4ed8")
-    }
-    onMouseOut={(e) =>
-      (e.target.style.backgroundColor = "#2563eb")
-    }
-  >
+ <button
+  onClick={() => loadSessionDetails(session)}
+ className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold text-sm text-white transition-all"
+>
     View Detailed Review
   </button>
 </div>
           ))}
+
+         {totalPages > 1 && (
+  <div className="mt-12 mb-16 flex justify-center">
+    <div className="flex items-center gap-8 px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl shadow-sm text-slate-400 text-sm">
+      
+      <button
+        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+        disabled={currentPage === 1}
+        className={`transition ${
+          currentPage === 1
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:text-white"
+        }`}
+      >
+        Prev
+      </button>
+
+      <span>
+        Page {currentPage} of {totalPages}
+      </span>
+
+      <button
+        onClick={() =>
+          setCurrentPage(p => Math.min(totalPages, p + 1))
+        }
+        disabled={currentPage === totalPages}
+        className={`transition ${
+          currentPage === totalPages
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:text-white"
+        }`}
+      >
+        Next
+      </button>
+
+    </div>
+  </div>
+)}
         </>
       )}
 
       {selectedSession && (
         <>
-          <button
-            onClick={() => {
-              setSelectedSession(null);
-              setQuestions([]);
-            }}
-            style={{
-              marginBottom: 20,
-              backgroundColor: "#e5e7eb",
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "none",
-              cursor: "pointer"
-            }}
-          >
-            ← Back
-          </button>
-
+         <div className="mb-6">
+  <button
+    onClick={() => {
+      setSelectedSession(null);
+      setQuestions([]);
+      setCurrentPage(1);
+    }}
+    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-200 text-sm font-medium transition-all"
+  >
+    ← Back
+  </button>
+</div>
           <h3>Detailed Review</h3>
 
           {/* PASSAGE */}
           <div
-            style={{
-              marginBottom: 25,
-              padding: 15,
-              background: "#f3f4f6",
-              borderRadius: 8
-            }}
+           className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8"
           >
             <h4>Passage</h4>
             <p style={{ whiteSpace: "pre-wrap" }}>
@@ -201,12 +201,7 @@ export default function RCHistory() {
           {questions.map((q, i) => (
             <div
               key={i}
-              style={{
-                marginBottom: 30,
-                padding: 15,
-                border: "1px solid #ddd",
-                borderRadius: 8
-              }}
+             className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8"
             >
              <p><b>Question:</b> {q.question_text}</p>
              <div style={{ marginTop: 6, fontSize: 13, color: "#6b7280" }}>
@@ -240,23 +235,13 @@ export default function RCHistory() {
   return (
     <div
       key={idx}
-      style={{
-        padding: "8px 12px",
-        marginTop: 8,
-        borderRadius: 8,
-        backgroundColor: isCorrect
-          ? "#22c55e22"
-          : isUser
-          ? "#ef444422"
-          : "#f3f4f6",
-        border: isCorrect
-          ? "2px solid #16a34a"
-          : isUser
-          ? "2px solid #dc2626"
-          : "1px solid #e5e7eb",
-        fontWeight: isCorrect || isUser ? "600" : "400",
-        transition: "all 0.2s ease"
-      }}
+     className={`px-4 py-3 rounded-xl mb-2 border transition-all ${
+  isCorrect
+    ? "bg-emerald-900/40 border-emerald-600 text-emerald-200"
+    : isUser
+    ? "bg-red-900/40 border-red-600 text-red-200"
+    : "bg-slate-800 border-slate-700 text-slate-200"
+}`}
     >
       <b>{letter}.</b> {opt}
     </div>

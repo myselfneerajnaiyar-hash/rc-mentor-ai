@@ -2,6 +2,7 @@
 import { useState } from "react";
 import SpeedGym from "./SpeedGym";
 import SpeedDashboard from "./SpeedDashboard";
+import TabGroup from "./TabGroup";
 
 export default function SpeedContainer() {
   const [tab, setTab] = useState("drill");
@@ -16,24 +17,17 @@ export default function SpeedContainer() {
           Train how fast you read without losing meaning.
         </p>
 
-        <div style={tabs}>
-          <button
-            style={{ ...tabBtn, ...(tab === "drill" ? tabActive : {}) }}
-            onClick={() => {
-              setTab("drill");
-              setStarted(false);
-            }}
-          >
-            Speed Drill
-          </button>
-
-          <button
-            style={{ ...tabBtn, ...(tab === "profile" ? tabActive : {}) }}
-            onClick={() => setTab("profile")}
-          >
-            Speed Profile
-          </button>
-        </div>
+       <TabGroup
+  tabs={[
+    { label: "Speed Drill", value: "drill" },
+    { label: "Speed Profile", value: "profile" },
+  ]}
+  active={tab}
+  onChange={(val) => {
+    setTab(val);
+    if (val === "drill") setStarted(false);
+  }}
+/>
 
         <div style={infoStrip}>
           ⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked automatically
@@ -62,11 +56,11 @@ export default function SpeedContainer() {
 
               <div style={ctaRow}>
                 <button
-                  style={startBtn}
-                  onClick={() => setStarted(true)}
-                >
-                  Start Drill
-                </button>
+  onClick={() => setStarted(true)}
+  className="mt-6 px-8 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20"
+>
+  Start Drill
+</button>
               </div>
             </>
           ) : (
@@ -86,68 +80,56 @@ export default function SpeedContainer() {
 
 /* ================= STYLES ================= */
 
+/* ================= DARK PERFORMANCE THEME ================= */
+
 const page = {
   minHeight: "100vh",
-  background: "#dde7fb",
+  background: "linear-gradient(180deg, #0f172a, #0b1220)",
   padding: "clamp(16px, 4vw, 32px)",
   boxSizing: "border-box",
   overflowX: "hidden",
+  color: "#e2e8f0",
 };
 
 const header = {
-  background: "#ffffff",
+  background: "#111827",
   borderRadius: 24,
- padding: "clamp(16px, 4vw, 28px)",
-  boxShadow: "0 20px 50px rgba(15,23,42,0.08)",
-  border: "1px solid #e2e8f0",
+  padding: "clamp(16px, 4vw, 28px)",
+  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
+  border: "1px solid #1f2937",
 };
 
 const title = {
   fontSize: 32,
-letterSpacing: "-0.5px",
-
+  letterSpacing: "-0.5px",
   fontWeight: 800,
-  color: "#0f172a",
+  color: "#f8fafc",
 };
 
 const subtitle = {
-  color: "#475569",
+  color: "#94a3b8",
   fontSize: 14,
   marginBottom: 14,
 };
 
 
 
-const tabBtn = {
-  flex: 1,
-  padding: "10px 0",
-  borderRadius: 999,
-  border: "none",
-  background: "transparent",
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const tabActive = {
-  background: "#2563eb",
-  color: "#ffffff",
-};
 
 const infoStrip = {
   marginTop: 12,
   fontSize: 13,
- background: "#f8fafc",
-border: "1px solid #e2e8f0",
-color: "#334155",
+  background: "#0b1220",
+  border: "1px solid #1e293b",
+  color: "#94a3b8",
   borderRadius: 12,
   padding: "10px 14px",
 };
 
 const drillCard = {
   marginTop: 18,
- background: "#ffffff",
-boxShadow: "0 25px 60px rgba(15,23,42,0.06)",
-border: "1px solid #e2e8f0",
+  background: "#111827",
+  boxShadow: "0 25px 60px rgba(0,0,0,0.7)",
+  border: "1px solid #1f2937",
   borderRadius: 22,
   padding: "clamp(16px, 4vw, 22px)",
 };
@@ -156,12 +138,14 @@ const sectionTitle = {
   fontSize: 20,
   fontWeight: 800,
   marginBottom: 12,
+  color: "#f8fafc",
 };
 
 const steps = {
   paddingLeft: 18,
   fontSize: 14,
   lineHeight: "1.8",
+  color: "#cbd5e1",
 };
 
 const benefits = {
@@ -172,13 +156,13 @@ const benefits = {
 };
 
 const benefitBox = {
-  background: "#ffffff",
+  background: "#0f172a",
   padding: 14,
   borderRadius: 14,
   fontSize: 13,
   fontWeight: 600,
-  border: "1px solid #e2e8f0",
-  boxShadow: "0 8px 20px rgba(15,23,42,0.04)",
+  border: "1px solid #1e293b",
+  color: "#e2e8f0",
 };
 
 const ctaRow = {
@@ -187,29 +171,12 @@ const ctaRow = {
   justifyContent: "center",
 };
 
-const startBtn = {
-  background: "#16a34a",
-  color: "#ffffff",
-  border: "none",
-  padding: "14px 34px",
-  borderRadius: 16,
-  fontWeight: 800,
-  fontSize: 15,
-  cursor: "pointer",
-  boxShadow: "0 12px 30px rgba(22,163,74,0.35)",
-};
 
 const profileCard = {
   marginTop: 18,
-  background: "#ffffff",
+  background: "#111827",
   borderRadius: 22,
   padding: "clamp(16px, 4vw, 20px)",
+  border: "1px solid #1f2937",
 };
 
-const tabs = {
-  display: "flex",
-  gap: 8,
-  background: "#e5e7eb",
-  padding: 6,
-  borderRadius: 999,
-};

@@ -22,8 +22,9 @@ export default function PassagePanel({
         height: "calc(100vh - 120px)",
         overflowY: "auto",
         padding: "16px 18px",
-        borderRight: "1px solid #e5e7eb",
-        background: "#ffffff",
+       background: "#111827",
+borderRight: "1px solid #1f2937",
+color: "#e5e7eb",
       }}
     >
       {/* ===== REVIEW MODE: PASSAGE PERFORMANCE ===== */}
@@ -32,8 +33,9 @@ export default function PassagePanel({
           style={{
             marginBottom: 12,
             fontSize: 13,
-            color: "#374151",
-            background: "#f9fafb",
+            background: "#1f2937",
+            color: "#e5e7eb",
+            border: "1px solid #334155",
             padding: "8px 10px",
             borderRadius: 4,
           }}
@@ -49,7 +51,7 @@ export default function PassagePanel({
           whiteSpace: "pre-wrap",
           lineHeight: 1.65,
           fontSize: 15,
-          color: "#374151",
+          color: "#e5e7eb",
         }}
       >
         {passage.text}

@@ -176,7 +176,7 @@ const currentQuestion =
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
-function submitPayload() {
+async function submitPayload() {
   saveTime();
 
   const total = flatQuestions.length;
@@ -190,7 +190,7 @@ function submitPayload() {
 
   const timeTaken = questionTime.reduce((a, b) => a + (b || 0), 0);
 
-  onSubmit?.({
+  await onSubmit?.({
     passages,
     questions: flatQuestions,
     answers,
@@ -204,7 +204,7 @@ function submitPayload() {
     attempted: answers.filter(a => a !== null && a !== undefined).length,
     timeTaken,               // seconds
   });
-  return true;
+  
 }
 
 /* ===================== RENDER ===================== */
@@ -315,11 +315,11 @@ const headerStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   padding: "0 16px",
-  background: "#fff",
-  borderBottom: "1px solid #e5e7eb",
+  background: "#0f172a",
+  borderBottom: "1px solid #1f2937",
+  color: "#e5e7eb",
   zIndex: 1000,
 };
-
 const gridStyle = {
   display: "grid",
   gridTemplateColumns: "40% 35% 25%",
@@ -338,8 +338,8 @@ const footerStyle = {
   justifyContent: "center",
   gap: 12,
   alignItems: "center",
-  background: "#fff",
-  borderTop: "1px solid #e5e7eb",
+  background: "#0f172a",
+  borderTop: "1px solid #1f2937",
 };
 
 const submitBtn = {
@@ -352,15 +352,17 @@ const submitBtn = {
 
 const ghostBtn = {
   padding: "6px 12px",
-  border: "1px solid #9ca3af",
-  background: "#fff",
+  border: "1px solid #334155",
+  background: "#1f2937",
+  color: "#e5e7eb",
   cursor: "pointer",
 };
 
 const backBtn = {
   padding: "6px 12px",
-  border: "1px solid #2563eb",
-  background: "#eef2ff",
+  border: "1px solid #3b82f6",
+  background: "#1e293b",
+  color: "#93c5fd",
   borderRadius: 6,
   cursor: "pointer",
-};
+}

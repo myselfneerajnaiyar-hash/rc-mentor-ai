@@ -39,14 +39,23 @@ export default function SpeedGym({ onBack }) {
     data.reduce((a, b) => a + b.accuracy_percent, 0) / data.length;
 
   if (avgAcc < 60) {
-    return { wpm: Math.max(avgEff - 20, 150), level: "stabilize" };
-  }
+  return { 
+    wpm: Math.round(Math.max(avgEff - 20, 150)), 
+    level: "stabilize" 
+  };
+}
 
-  if (avgAcc > 75) {
-    return { wpm: avgEff + 20, level: "upgrade" };
-  }
+if (avgAcc > 75) {
+  return { 
+    wpm: Math.round(avgEff + 20), 
+    level: "upgrade" 
+  };
+}
 
-  return { wpm: avgEff, level: "maintain" };
+return { 
+  wpm: Math.round(avgEff), 
+  level: "maintain" 
+};
 }
   async function start() {
     setResult(null);
@@ -121,6 +130,30 @@ setParas(merged);
     setPhase("reading");
   }
 
+  // ===== Pace Status Logic =====
+const totalAllowed = readSeconds + timeLeft;
+const elapsedRatio =
+  totalAllowed > 0 ? readSeconds / totalAllowed : 0;
+
+let paceStatus = "";
+let paceColor = "#22c55e";
+
+if (phase === "reading") {
+  if (elapsedRatio < 0.3) {
+    paceStatus = "Push Faster";
+    paceColor = "#facc15";
+  } else if (elapsedRatio < 0.7) {
+    paceStatus = "Good Momentum";
+    paceColor = "#22c55e";
+  } else if (elapsedRatio < 0.9) {
+    paceStatus = "Speed Up Now";
+    paceColor = "#f97316";
+  } else {
+    paceStatus = "Final Burst";
+    paceColor = "#ef4444";
+  }
+}
+
   async function finish() {
     const totalWords = paras.reduce(
       (s, p) => s + p.text.split(/\s+/).length,
@@ -137,6 +170,8 @@ setParas(merged);
     const accuracy = Math.round((correct / paras.length) * 100);
     const effectiveWPM = Math.round(rawWPM * (accuracy / 100));
     const timePerParagraph = Math.round(readSeconds / paras.length);
+
+
 
     const record = {
       date: Date.now(),
@@ -200,10 +235,81 @@ if (!authData?.user) {
 
       {phase === "reading" && (
         <div style={panel}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <b>Paragraph {index + 1}/4</b>
-            <b>{timeLeft}s</b>
-          </div>
+          <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+  }}
+>
+  {/* LEFT SIDE */}
+  <div>
+    <div
+      style={{
+        fontSize: 18,
+        fontWeight: 700,
+        color: "#f1f5f9",
+      }}
+    >
+      Paragraph {index + 1}/4
+    </div>
+
+    <div
+      style={{
+        marginTop: 6,
+        fontSize: 14,
+        fontWeight: 600,
+        color: "#38bdf8",
+      }}
+    >
+      🎯 Target: {meta?.wpm} WPM
+    </div>
+  </div>
+
+  {/* RIGHT SIDE */}
+  <div style={{ textAlign: "right" }}>
+    <div
+      style={{
+        fontSize: 30,
+        fontWeight: 800,
+        color: "#22c55e",
+      }}
+    >
+      {timeLeft}s
+    </div>
+
+    <div
+  style={{
+    marginTop: 6,
+    fontSize: 14,
+    fontWeight: 700,
+    color: paceColor,
+  }}
+>
+  🔥 Pace: {paceStatus}
+</div>
+  </div>
+</div>
+
+<div
+  style={{
+    height: 6,
+    background: "#1f2937",
+    borderRadius: 999,
+    overflow: "hidden",
+    marginBottom: 20,
+  }}
+>
+  <div
+    style={{
+      width: `${(timeLeft / (timeLeft + readSeconds)) * 100}%`,
+      height: "100%",
+      background: "#22c55e",
+      transition: "width 1s linear",
+    }}
+  />
+</div>
           <p style={text}>{paras[index]?.text}</p>
         </div>
       )}
@@ -211,20 +317,31 @@ if (!authData?.user) {
       {phase === "question" && (
         <div style={panel}>
           <b>{paras[index].question.q}</b>
-          {paras[index].question.options.map((o, oi) => (
-            <div key={oi}>
-              <label>
-                <input
-                  type="radio"
-                  name={"q" + index}
-                  onChange={() =>
-                    setAnswers(a => ({ ...a, [index]: oi }))
-                  }
-                />{" "}
-                {o}
-              </label>
-            </div>
-          ))}
+         {paras[index].question.options.map((o, oi) => (
+  <label
+    key={oi}
+    style={{
+      display: "block",
+      marginTop: 10,
+      padding: 12,
+      borderRadius: 12,
+      border: "1px solid #1f2937",
+      background: "#0f172a",
+      cursor: "pointer",
+      transition: "0.2s",
+    }}
+  >
+    <input
+      type="radio"
+      name={"q" + index}
+      style={{ marginRight: 8 }}
+      onChange={() =>
+        setAnswers(a => ({ ...a, [index]: oi }))
+      }
+    />
+    {o}
+  </label>
+))}
           <button style={{ ...btn, marginTop: 12 }} onClick={nextPara}>
             Continue
           </button>
@@ -237,7 +354,28 @@ if (!authData?.user) {
           <p><b>Raw Speed:</b> {result.rawWPM} WPM</p>
           <p><b>Accuracy:</b> {result.accuracy}%</p>
           <p><b>Effective Speed:</b> {result.effectiveWPM} WPM</p>
-         <button style={btn} onClick={start}>
+
+          <p style={{ 
+            marginTop: 16, 
+            fontWeight: 600,
+            color:
+              result.accuracy < 60
+                ? "#dc2626"
+                : result.effectiveWPM > meta.wpm
+                ? "#16a34a"
+                : "#2563eb"
+          }}>
+            {result.accuracy < 60
+              ? "You rushed. Control first, speed later."
+              : result.effectiveWPM > meta.wpm
+              ? "Strong control. You're adapting upward."
+              : "Stable base. Now push slightly beyond comfort."}
+          </p>
+
+          <button
+  onClick={start}
+  className="mt-6 px-8 py-3 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-semibold transition-all duration-300 shadow-lg shadow-blue-500/20"
+>
   Next Drill
 </button>
         </div>
@@ -253,24 +391,29 @@ const wrap = {
 const panel = {
   width: "100%",
   maxWidth: 820,
-  padding: 28,
-  borderRadius: 20,
-  background: "linear-gradient(180deg, #ecfeff, #f0fdfa)",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+  padding: 32,
+  borderRadius: 24,
+  background: "#111827",
+  border: "1px solid #1f2937",
+  boxShadow: "0 25px 60px rgba(0,0,0,0.7)",
+  color: "#e2e8f0",
 };
 
 const btn = {
-  padding: "12px 18px",
-  borderRadius: 10,
-  background: "#22c55e",
-  color: "#fff",
+  padding: "12px 22px",
+  borderRadius: 12,
+  background: "#2563eb",
+  color: "#ffffff",
   border: "none",
-  fontWeight: 600,
+  fontWeight: 700,
   cursor: "pointer",
+  marginTop: 16,
 };
 
 const text = {
-  marginTop: 14,
-  lineHeight: 1.8,
-  fontSize: 16,
+  marginTop: 18,
+  lineHeight: 1.9,
+  fontSize: 17,
+  color: "#e5e7eb",
+  letterSpacing: "0.2px",
 };

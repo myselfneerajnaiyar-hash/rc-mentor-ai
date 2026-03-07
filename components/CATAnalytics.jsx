@@ -1,6 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  RadialBarChart,
+  RadialBar,
+  PolarAngleAxis,
+} from "recharts";
 
 
 function getSectionalAccuracyTrend(data) {
@@ -431,7 +445,7 @@ const confidenceLabel = getConfidenceLabel(confidenceScore);
 
     <p style={{
   fontSize: 14,
-  color: "#64748b",
+  color: "#94a3b8",
   lineHeight: 1.6,
   maxWidth: 600,
 }}>
@@ -443,8 +457,7 @@ const confidenceLabel = getConfidenceLabel(confidenceScore);
      <div
   style={{
     display: "grid",
-    gridTemplateColumns:
-      window.innerWidth < 768 ? "1fr" : "2fr 1fr",
+    gridTemplateColumns: "2fr 1fr",
     gap: 16,
     marginBottom: 20,
   }}
@@ -455,116 +468,38 @@ const confidenceLabel = getConfidenceLabel(confidenceScore);
           <p style={cardSub}>
             Tracks your sectional test performance over time
           </p>
-
-        <div style={{ width: "100%", height: 220 }}>
-  {(() => {
-    const data = getSectionalAccuracyTrend(sectionalData);
-
-    if (data.length === 0) {
-      return <span style={{ color: "#64748b" }}>No data yet</span>;
-    }
-
-    return (
-    <div
-  style={{
-    height: 180,
-    background: "#f8fafc",
-    border: "1px solid #e5e7eb",
-    borderRadius: 12,
-    padding: 12,
-  }}
->
-  {(() => {
-    const data = getSectionalAccuracyTrend(sectionalData);
-
-    if (!data.length) {
-      return (
-        <div style={{ color: "#64748b", textAlign: "center", marginTop: 60 }}>
-          No data yet
-        </div>
-      );
-    }
-
-   const width = data.length * 140;
-const height = 140;
-const padding = 40;
-
-const points = data.map((d, i) => {
-  const x =
-    padding +
-    (i * (width - padding * 2)) / (data.length - 1 || 1);
-
-  const y =
-    padding +
-    ((100 - d.accuracy) * (height - padding * 2)) / 100;
-
-  return { x, y, label: d.label, accuracy: d.accuracy };
-});
-
-return (
-  <svg viewBox={`0 0 ${width} ${height}`} width="100%" height="180">
-
-  
-    {/* X axis */}
-    <line
-      x1={padding}
-      y1={height - padding}
-      x2={width - padding}
-      y2={height - padding}
-      stroke="#cbd5e1"
-    />
-
-    {/* Y axis */}
-    <line
-      x1={padding}
-      y1={padding}
-      x2={padding}
-      y2={height - padding}
-      stroke="#cbd5e1"
-    />
-
-    {/* Line */}
-    <polyline
-      fill="none"
-      stroke="#2563eb"
-      strokeWidth="3"
-      points={points.map(p => `${p.x},${p.y}`).join(" ")}
-    />
-
-    {/* Dots + values */}
-    {points.map((p, i) => (
-      <g key={i}>
-       <circle cx={p.x} cy={p.y} r="4" fill="#2563eb">
-  <title>{p.label} – {p.accuracy}% accuracy</title>
-</circle>
-        <text
-          x={p.x}
-          y={p.y - 8}
-          textAnchor="middle"
-          fontSize="11"
-          fill="#2563eb"
-        >
-          {p.accuracy}%
-        </text>
-
-        {/* X-axis label */}
-        <text
-          x={p.x}
-          y={height - 8}
-          textAnchor="middle"
-          fontSize="11"
-          fill="#334155"
-        >
-          {p.label}
-        </text>
-      </g>
-    ))}
-  </svg>
-);
-  })()}
-</div>
-    );
-  })()}
+<div style={{ width: "100%", height: 260 }}>
+  {trendData.length === 0 ? (
+    <div style={{ color: "#94a3b8" }}>No data yet</div>
+  ) : (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={trendData}>
+        <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
+        <XAxis 
+          dataKey="label" 
+          stroke="#94a3b8"
+        />
+        <YAxis 
+          domain={[0, 100]} 
+          stroke="#94a3b8"
+        />
+        <Tooltip 
+          contentStyle={{
+            backgroundColor: "#111827",
+            border: "1px solid #1f2937",
+            color: "#e5e7eb"
+          }}
+        />
+        <Line
+          type="monotone"
+          dataKey="accuracy"
+          stroke="#3b82f6"
+          strokeWidth={3}
+          dot={{ r: 4 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  )}
 </div>
           <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
            <Stat
@@ -599,57 +534,55 @@ return (
       return <span style={{ color: "#64748b" }}>No data yet</span>;
     }
 
-    return (
-      <div
-        style={{
-          width: 160,
-          height: 160,
-          borderRadius: "50%",
-          background: `conic-gradient(
-            #3b82f6 ${accuracy * 3.6}deg,
-            #e5e7eb 0deg
-          )`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+   const chartData = [{ name: "Accuracy", value: accuracy }];
+
+return (
+  <ResponsiveContainer width="100%" height={220}>
+    <RadialBarChart
+      innerRadius="70%"
+      outerRadius="100%"
+      data={chartData}
+      startAngle={90}
+      endAngle={-270}
+    >
+      <PolarAngleAxis
+        type="number"
+        domain={[0, 100]}
+        tick={false}
+      />
+      <RadialBar
+        background
+        dataKey="value"
+        fill="#3b82f6"
+        cornerRadius={10}
+      />
+      <text
+        x="50%"
+        y="50%"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill="#e5e7eb"
+        style={{ fontSize: 26, fontWeight: 700 }}
       >
-        <div
-          style={{
-            width: 110,
-            height: 110,
-            borderRadius: "50%",
-            background: "#ffffff",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-          }}
-        >
-          <div style={{ fontSize: 26, fontWeight: 700 }}>
-            {accuracy}%
-          </div>
-          <div style={{ fontSize: 12, color: "#64748b" }}>
-            Accuracy
-          </div>
-        </div>
-      </div>
-    );
+        {accuracy}%
+      </text>
+    </RadialBarChart>
+  </ResponsiveContainer>
+);
   })()}
 </div>
         </div>
       </div>
 
       {/* ================= SECOND ROW ================= */}
-      <div
-        style={{
-          display: "grid",
-         gridTemplateColumns:
-  window.innerWidth < 768 ? "1fr" : "1fr 1fr 1fr",
-          gap: 20,
-        }}
-      >
+     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr",
+    gap: 20,
+    marginBottom: 28,
+  }}
+>
        {/* -------- Skill Breakdown -------- */}
 <div style={card}>
   <h3 style={cardTitle}>RC Skill Profile</h3>
@@ -715,12 +648,12 @@ return (
           <h3 style={cardTitle}>Time Analysis</h3>
           <p style={cardSub}>Average time per question</p>
 
-         <div
+        <div
   style={{
-    height: 160,
-    borderRadius: 12,
-    background: "#f1f5f9",
-    border: "1px solid #cbd5e1",
+    height: 180,
+    borderRadius: 14,
+    background: "#0f172a",
+    border: "1px solid #1f2937",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -731,7 +664,7 @@ return (
     const avg = getAverageTimePerQuestion(sectionalData);
 
     if (!avg) {
-      return <span style={{ color: "#64748b" }}>No data yet</span>;
+      return <span style={{ color: "#94a3b8" }}>No data yet</span>;
     }
 
     const min = Math.floor(avg / 60);
@@ -739,10 +672,10 @@ return (
 
     return (
       <>
-        <div style={{ fontSize: 26, fontWeight: 700 }}>
+        <div style={{ fontSize: 34, fontWeight: 800, color: "#e5e7eb" }}>
           {min}m {sec}s
         </div>
-        <div style={{ fontSize: 13, color: "#64748b" }}>
+        <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 6 }}>
           Avg time per question
         </div>
       </>
@@ -769,42 +702,27 @@ return (
     );
 
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          gap: 16,
-          height: 180,
-          marginTop: 12,
+      <div style={{ width: "100%", height: 260, marginTop: 10 }}>
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={data}>
+      <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
+      <XAxis dataKey="label" stroke="#94a3b8" />
+      <YAxis stroke="#94a3b8" />
+      <Tooltip
+        contentStyle={{
+          backgroundColor: "#111827",
+          border: "1px solid #1f2937",
+          color: "#e5e7eb",
         }}
-      >
-        {data.map(d => (
-          <div
-            key={d.label}
-            style={{
-              flex: 1,
-              textAlign: "center",
-              fontSize: 12,
-              color: "#334155",
-            }}
-          >
-            <div
-              title={`${d.marks} marks (${d.correct}C, ${d.wrong}W)`}
-              style={{
-                height: `${(Math.abs(d.marks) / maxAbsMarks) * 120}px`,
-                background: d.marks >= 0 ? "#22c55e" : "#ef4444",
-                borderRadius: 6,
-                marginBottom: 6,
-                transition: "height 0.3s",
-              }}
-            />
-            <div style={{ fontWeight: 600 }}>{d.marks}</div>
-            <div style={{ fontSize: 11, color: "#64748b" }}>
-              {d.label}
-            </div>
-          </div>
-        ))}
-      </div>
+      />
+      <Bar
+        dataKey="marks"
+        fill="#22c55e"
+        radius={[6, 6, 0, 0]}
+      />
+    </BarChart>
+  </ResponsiveContainer>
+</div>
     );
   })()}
 </div>
@@ -876,10 +794,10 @@ return (
         const worsened = higherBetter ? diff < 0 : diff > 0;
 
         const color = improved
-          ? "#16a34a"
-          : worsened
-          ? "#dc2626"
-          : "#64748b";
+  ? "#22c55e"
+  : worsened
+  ? "#ef4444"
+  : "#94a3b8";
 
         const arrow = improved ? "⬆" : worsened ? "⬇" : "➜";
 
@@ -887,15 +805,16 @@ return (
           <div
             key={label}
             style={{
-              display: "grid",
-              gridTemplateColumns: "1.4fr 1fr 1fr 0.8fr",
-              alignItems: "center",
-              padding: "10px 12px",
-              borderRadius: 10,
-              background: "#f8fafc",
-              border: "1px solid #e5e7eb",
-              fontSize: 13,
-            }}
+  display: "grid",
+  gridTemplateColumns: "1.4fr 1fr 1fr 0.8fr",
+  alignItems: "center",
+  padding: "12px 14px",
+  borderRadius: 12,
+  background: "#0f172a",
+  border: "1px solid #1f2937",
+  fontSize: 13,
+  color: "#e5e7eb",
+}}
           >
             <strong>{label}</strong>
             <div>{a}</div>
@@ -938,8 +857,8 @@ return (
 <div
   style={{
     display: "grid",
-    gridTemplateColumns:
-      window.innerWidth < 768 ? "1fr" : "2fr 1fr",
+   gridTemplateColumns:
+  window.innerWidth < 768 ? "1fr" : "4fr 1.2fr",
     gap: 20,
     marginTop: 20,
   }}
@@ -947,9 +866,16 @@ return (
   {/* -------- Personalized Plan (65%) -------- */}
   <div style={card}>
     <h2 style={sectionTitle}>🎯 Personalized 10-Day Plan</h2>
-    <p style={cardSub}>
-      What to focus on before your next CAT RC sectional
-    </p>
+   <p
+  style={{
+    fontSize: 14,
+    color: "#94a3b8",
+    marginBottom: 22,
+    lineHeight: 1.6,
+  }}
+>
+  What to focus on before your next CAT RC sectional
+</p>
 
     {(() => {
       const plan = getPersonalizedPlan(metrics, sectionalData);
@@ -960,21 +886,95 @@ return (
 
       return (
         <>
-          <h4 style={{ marginBottom: 6 }}>Focus Skills</h4>
-          <ul>
-            {plan.focus.map(f => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
+        <h4
+  style={{
+    fontSize: 16,
+    fontWeight: 600,
+    letterSpacing: "0.4px",
+    textTransform: "uppercase",
+    color: "#64748b",
+    marginBottom: 14,
+  }}
+>
+  Focus Skills
+</h4>
+         <ul
+  style={{
+    marginBottom: 24,
+    lineHeight: 1.9,
+    paddingLeft: 18,
+  }}
+>
+  {plan.focus.map(f => (
+    <li
+      key={f}
+      style={{
+        marginBottom: 8,
+        color: "#cbd5e1",
+        fontSize: 15,
+      }}
+    >
+      {f}
+    </li>
+  ))}
+</ul>
 
-          <h3 style={{ marginTop: 12 }}>📅 {plan.title}</h3>
-          <ol>
-            {plan.plan.map((step, i) => (
-              <li key={i} style={{ marginBottom: 6 }}>
-                {step}
-              </li>
-            ))}
-          </ol>
+          <h3
+  style={{
+    fontSize: 24,
+    fontWeight: 900,
+    marginTop: 18,
+    marginBottom: 20,
+    color: "#f1f5f9",
+    letterSpacing: "-0.3px",
+  }}
+>
+  📅 {plan.title}
+</h3>
+        <div style={{ marginTop: 10 }}>
+  {plan.plan.map((step, i) => {
+    const parts = step.split(":");
+
+  
+    return (
+      <div
+        key={i}
+        style={{
+          marginBottom: 18,
+          padding: "14px 16px",
+          borderRadius: 12,
+          background: "#0f172a",
+          border: "1px solid #1f2937",
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 700,
+            marginBottom: 6,
+            color: "#22c55e",
+fontSize: 13,
+letterSpacing: "0.8px",
+textTransform: "uppercase",
+            letterSpacing: "0.3px",
+          }}
+        >
+          {parts[0]}
+        </div>
+
+        <div
+          style={{
+            color: "#cbd5e1",
+            fontSize: 15,
+            fontWeight: 400,
+            lineHeight: 1.7,
+          }}
+        >
+          {parts[1]}
+        </div>
+      </div>
+    );
+  })}
+</div>
         </>
       );
     })()}
@@ -982,30 +982,51 @@ return (
 
   {/* -------- Confidence Index (35%) -------- */}
   <div style={card}>
-    <h3 style={cardTitle}>Confidence Index</h3>
-    <p style={cardSub}>Decision stability under test pressure</p>
+   <h3
+  style={{
+    fontSize: 22,
+    fontWeight: 800,
+    marginBottom: 8,
+    color: "#f8fafc",
+    letterSpacing: "-0.3px",
+  }}
+>
+  Confidence Index
+</h3>
+    <p
+  style={{
+    fontSize: 15,
+    color: "#94a3b8",
+    marginBottom: 28,
+    lineHeight: 1.5,
+  }}
+>
+  Decision stability under test pressure
+</p>
 
-    <div
-      style={{
-        fontSize: 48,
-        fontWeight: 800,
-        marginTop: 10,
-        marginBottom: 8,
-        color:
-          confidenceScore >= 75
-            ? "#16a34a"
-            : confidenceScore >= 55
-            ? "#f59e0b"
-            : "#dc2626",
-      }}
-    >
-      {confidenceScore}
-    </div>
+   <div
+  style={{
+    fontSize: 64,
+    fontWeight: 900,
+    marginTop: 16,
+    marginBottom: 10,
+    background:
+      confidenceScore >= 75
+        ? "linear-gradient(90deg,#22c55e,#16a34a)"
+        : confidenceScore >= 55
+        ? "linear-gradient(90deg,#f59e0b,#d97706)"
+        : "linear-gradient(90deg,#ef4444,#dc2626)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  }}
+>
+  {confidenceScore}
+</div>
 
     <div
       style={{
         fontSize: 14,
-        color: "#64748b",
+        color: "#94a3b8",
         marginBottom: 12,
       }}
     >
@@ -1016,6 +1037,7 @@ return (
       style={{
         fontSize: 12,
         color: "#94a3b8",
+      
         lineHeight: 1.5,
       }}
     >
@@ -1036,9 +1058,9 @@ return (
     marginTop: 24,
     padding: "16px 20px",
     borderRadius: 14,
-    background: "#ffffff",
-    border: "1px solid #c7d2fe",
-    color: "#1e3a8a",
+    background: "#111827",
+border: "1px solid #1f2937",
+color: "#e5e7eb",
     fontSize: 14,
     lineHeight: 1.6,
   }}
@@ -1071,24 +1093,24 @@ function Stat({ label, value }) {
 /* ================= STYLES ================= */
 
 const card = {
-  background: "#ffffff",
-  borderRadius: 14,
-  padding: 20,
-  border: "1px solid #e5e7eb",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
-  transition: "transform 0.15s ease, box-shadow 0.15s ease"
+  background: "#111827",
+  borderRadius: 16,
+  padding: 28,
+  border: "1px solid #1f2937",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
 };
 
 const cardTitle = {
   fontSize: 16,
   fontWeight: 700,
-  marginBottom: 4,
+  marginBottom: 6,
+  color: "#e5e7eb",
 };
 
 const cardSub = {
   fontSize: 13,
-  color: "#64748b",
-  marginBottom: 16,
+  color: "#94a3b8",
+  marginBottom: 18,
 };
 
 const placeholderBox = {
@@ -1104,10 +1126,11 @@ const placeholderBox = {
 };
 const selectStyle = {
   flex: 1,
-  padding: 8,
-  borderRadius: 8,
-  border: "1px solid #cbd5e1",
-  background: "#fff",
+  padding: 10,
+  borderRadius: 10,
+  border: "1px solid #1f2937",
+  background: "#0f172a",
+  color: "#e5e7eb",
 };
 
 const tableStyle = {
@@ -1117,12 +1140,13 @@ const tableStyle = {
 };
 
 const insightBox = {
-  marginTop: 14,
-  padding: 12,
-  borderRadius: 10,
-  background: "#f1f5f9",
-  border: "1px solid #cbd5e1",
+  marginTop: 16,
+  padding: 16,
+  borderRadius: 14,
+  background: "#111827",
+  border: "1px solid #1f2937",
   fontSize: 13,
+  color: "#e5e7eb",
 };
 const sectionTitle = {
   fontSize: 22,
@@ -1140,11 +1164,12 @@ const planTitle = {
 };
 const pageWrapper = {
   minHeight: "100vh",
-  background: "#f1f5fb", // light blue / grey-blue
+  background: "#0f172a",
 };
 
 const pageInner = {
   maxWidth: 1200,
   margin: "0 auto",
-  padding: "20px 14px",
+  padding: "30px 18px",
+  fontFamily: "Inter, system-ui, -apple-system, sans-serif",
 };
