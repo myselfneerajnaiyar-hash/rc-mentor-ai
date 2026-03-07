@@ -55,7 +55,7 @@ export default function MobileRCSectional({
     if (state === 1) return "#22c55e"; // answered
     if (state === 2) return "#3b82f6"; // marked
     if (state === 3) return "#7c3aed"; // answered + marked
-    return "#e5e7eb"; // unvisited
+  return "#1e293b";
   }
 
   /* ================= RENDER ================= */
@@ -68,13 +68,13 @@ export default function MobileRCSectional({
       <div className="rc-header">
        
         <div
-  style={{
-    padding: "4px 12px",
-    fontSize: 11,
-    color: "#374151",
-    background: "#f3f4f6",
-    borderBottom: "1px solid #e5e7eb",
-  }}
+ style={{
+  padding: "4px 12px",
+  fontSize: 11,
+  color: "#cbd5f5",
+  background: "#020617",
+  borderBottom: "1px solid #1e293b",
+}}
 >
   <strong>Mark:</strong> Review later &nbsp;|&nbsp;
   <strong>Clear:</strong> Remove selected answer
@@ -86,8 +86,8 @@ export default function MobileRCSectional({
   <div
     style={{
       padding: "8px 12px",
-      background: "#f8fafc",
-      borderBottom: "1px solid #e5e7eb",
+     background: "#020617",
+borderBottom: "1px solid #1e293b",
       position: "relative",
       zIndex: 2000,
     }}
@@ -111,16 +111,36 @@ export default function MobileRCSectional({
 )}
 
       {/* SCROLL AREA */}
-      <div className="rc-content">
+    <div
+  className="rc-content"
+  style={{
+    background: "#020617",
+    color: "#e5e7eb",
+  }}
+>
 
         {/* PASSAGE */}
-        <section className="rc-passage">
+      <section
+  className="rc-passage"
+  style={{
+    maxHeight: "40vh",
+    overflowY: "auto",
+    background: "#020617",
+    color: "#e5e7eb",
+  }}
+>
           <h3>Passage</h3>
           <p style={{ whiteSpace: "pre-line" }}>{passage}</p>
         </section>
 
         {/* QUESTION */}
-        <section className="rc-question">
+        <section
+  className="rc-question"
+  style={{
+    background: "#020617",
+    color: "#e5e7eb",
+  }}
+>
           <h4>Question No. {currentQuestionIndex + 1}</h4>
           <p
   style={{
@@ -151,17 +171,17 @@ export default function MobileRCSectional({
                   style={{
   background: isReview
     ? i === correctIndex
-      ? "#dcfce7"        // green correct
+      ? "#052e16"        // green correct
       : selected
-      ? "#fee2e2"        // red wrong
-      : "#ffffff"
+      ? "#3f1d1d"        // red wrong
+      : "#020617"
     : selected
     ? "#eff6ff"
-    : "#ffffff",
+    : "#020617",
 
   border: isReview
     ? i === correctIndex
-      ? "2px solid #16a34a"
+      ? "2px solid #22c55e"
       : selected
       ? "2px solid #dc2626"
       : "1px solid #d1d5db"
@@ -182,7 +202,7 @@ export default function MobileRCSectional({
     style={{
       marginTop: 10,
       fontSize: 13,
-      color: "#374151",
+      color: "#e5e7eb",
       lineHeight: 1.6,
     }}
   >
@@ -212,7 +232,7 @@ export default function MobileRCSectional({
     style={{
       marginTop: 12,
       padding: 12,
-      background: "#f8fafc",
+      background: "#0f172a",
       borderLeft: "4px solid #2563eb",
       fontSize: 14,
       lineHeight: 1.5,
@@ -253,7 +273,7 @@ export default function MobileRCSectional({
                       currentQuestionIndex === idx
                         ? "2px solid #111827"
                         : "1px solid #d1d5db",
-                    color: state === 0 ? "#111827" : "#ffffff",
+               color: "#ffffff",
                     fontSize: 12,
                     cursor: "pointer",
                   }}
@@ -269,25 +289,26 @@ export default function MobileRCSectional({
     {/* ACTION BAR */}
       <div
         className="rc-palette"
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: "10px 12px",
-          background: "#ffffff",
-          borderTop: "1px solid #e5e7eb",
-        }}
+       style={{
+  display: "flex",
+  gap: 8,
+  padding: "10px 12px",
+  background: "#020617",
+  borderTop: "1px solid #1e293b",
+}}
       >
         <button
        
  onClick={() => !isReview && onClear()}
-          style={{
-            flex: 1,
-            padding: "10px",
-            fontSize: 14,
-            borderRadius: 8,
-            border: "1px solid #d1d5db",
-            background: "#f9fafb",
-          }}
+         style={{
+  flex: 1,
+  padding: "10px",
+  fontSize: 14,
+  borderRadius: 8,
+  border: "1px solid #334155",
+  background: "#1e293b",
+  color: "#e5e7eb",
+}}
         >
           Clear
         </button>
@@ -296,13 +317,14 @@ export default function MobileRCSectional({
         
 onClick={() => !isReview && onMark()}
           style={{
-            flex: 1,
-            padding: "10px",
-            fontSize: 14,
-            borderRadius: 8,
-            border: "1px solid #d1d5db",
-            background: "#f9fafb",
-          }}
+  flex: 1,
+  padding: "10px",
+  fontSize: 14,
+  borderRadius: 8,
+  border: "1px solid #334155",
+  background: "#1e293b",
+  color: "#e5e7eb",
+}}
         >
           Mark
         </button>
@@ -314,14 +336,14 @@ onClick={() => !isReview && onMark()}
           }
           disabled={currentQuestionIndex === 0}
           style={{
-            flex: 1,
-            padding: "10px",
-            fontSize: 14,
-            borderRadius: 8,
-            border: "1px solid #d1d5db",
-            background: "#f9fafb",
-            opacity: currentQuestionIndex === 0 ? 0.5 : 1,
-          }}
+  flex: 1,
+  padding: "10px",
+  fontSize: 14,
+  borderRadius: 8,
+  border: "1px solid #334155",
+  background: "#1e293b",
+  color: "#e5e7eb",
+}}
         >
           Previous
         </button>
@@ -352,8 +374,8 @@ onClick={() => !isReview && onMark()}
       right: 0,
       bottom: "calc(var(--bottom-nav-height) + var(--safe-bottom) + 72px)",
       padding: "10px 12px",
-      background: "#ffffff",
-      borderTop: "1px solid #e5e7eb",
+     background: "#020617",
+borderTop: "1px solid #1e293b",
       zIndex: 10,
     }}
   >

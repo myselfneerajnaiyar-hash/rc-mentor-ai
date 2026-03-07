@@ -457,7 +457,10 @@ const confidenceLabel = getConfidenceLabel(confidenceScore);
      <div
   style={{
     display: "grid",
-    gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "1fr"
+    : "2fr 1fr",
     gap: 16,
     marginBottom: 20,
   }}
@@ -468,7 +471,7 @@ const confidenceLabel = getConfidenceLabel(confidenceScore);
           <p style={cardSub}>
             Tracks your sectional test performance over time
           </p>
-<div style={{ width: "100%", height: 260 }}>
+<div style={{ width: "100%", height: window.innerWidth < 768 ? 300 : 260 }}>
   {trendData.length === 0 ? (
     <div style={{ color: "#94a3b8" }}>No data yet</div>
   ) : (
@@ -578,7 +581,10 @@ return (
      <div
   style={{
     display: "grid",
-    gridTemplateColumns: "2fr 1fr",
+   gridTemplateColumns:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "1fr"
+    : "2fr 1fr",
     gap: 20,
     marginBottom: 28,
   }}
@@ -610,7 +616,7 @@ return (
             fontSize: 11,
             marginBottom: 3,
             letterSpacing: "0.2px",
-            color: "#334155",
+            color: "#e5e7eb",
           }}
         >
           <span style={{ fontWeight: 600 }}>{skill.label}</span>
@@ -702,7 +708,7 @@ return (
     );
 
     return (
-      <div style={{ width: "100%", height: 260, marginTop: 10 }}>
+      <div style={{ width: "100%", height: window.innerWidth < 768 ? 300 : 260, marginTop: 10 }}>
   <ResponsiveContainer width="100%" height="100%">
     <BarChart data={data}>
       <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
@@ -750,17 +756,29 @@ return (
     return (
       <>
         {/* Dropdowns */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+      <div
+  style={{
+    display: "flex",
+    flexDirection:
+      typeof window !== "undefined" && window.innerWidth < 768
+        ? "column"
+        : "row",
+    gap: 12,
+    marginBottom: 16,
+  }}
+>
           <select
             value={compareA}
             onChange={e => setCompareA(e.target.value)}
             style={selectStyle}
           >
-            <option value="">Select Sectional</option>
+          <option value="" style={{ fontSize: 13 }}>
+  Select Sectional
+</option>
             {sectionals.map(s => (
-              <option key={s} value={s}>
-                {s.toUpperCase()}
-              </option>
+             <option key={s} value={s} style={{ fontSize: 13 }}>
+  {s.toUpperCase()}
+</option>
             ))}
           </select>
 
@@ -769,11 +787,13 @@ return (
             onChange={e => setCompareB(e.target.value)}
             style={selectStyle}
           >
-            <option value="">Select Sectional</option>
+            <option value="" style={{ fontSize: 13 }}>
+  Select Sectional
+</option>
             {sectionals.map(s => (
-              <option key={s} value={s}>
-                {s.toUpperCase()}
-              </option>
+              <option key={s} value={s} style={{ fontSize: 13 }}>
+  {s.toUpperCase()}
+</option>
             ))}
           </select>
         </div>
@@ -1095,7 +1115,7 @@ function Stat({ label, value }) {
 const card = {
   background: "#111827",
   borderRadius: 16,
-  padding: 28,
+   padding: window.innerWidth < 768 ? 18 : 28,
   border: "1px solid #1f2937",
   boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
 };
@@ -1126,11 +1146,14 @@ const placeholderBox = {
 };
 const selectStyle = {
   flex: 1,
-  padding: 10,
+  padding: "10px 12px",
   borderRadius: 10,
   border: "1px solid #1f2937",
   background: "#0f172a",
   color: "#e5e7eb",
+  fontSize: 13,
+  fontWeight: 500,
+  letterSpacing: "0.2px",
 };
 
 const tableStyle = {
@@ -1152,7 +1175,7 @@ const sectionTitle = {
   fontSize: 22,
   fontWeight: 800,
   marginBottom: 6,
-  color: "#0f172a",
+  color: "#e5e7eb",
 };
 
 const planTitle = {

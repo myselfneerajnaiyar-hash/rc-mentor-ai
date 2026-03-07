@@ -4,6 +4,7 @@ import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 import VocabProfile from "../components/VocabProfile";
 import { supabase } from "../lib/supabase";
 import TabGroup from "../components/TabGroup";
+import PracticeSwitcher from "./PracticeSwitcher";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");

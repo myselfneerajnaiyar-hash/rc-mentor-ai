@@ -300,12 +300,12 @@ if (user?.id) {
 
 
   return (
-    <div className="flex flex-col gap-12 pb-20">
+   <div className="flex flex-col gap-10 pb-28">
 
       {/* ================= HEADER ================= */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-4xl font-bold text-white">
+          <h1 className="text-2xl md:text-4xl font-bold text-white">
             {getGreeting()}, {userName || "Champion"} 👋
           </h1>
           <p className="text-slate-400 mt-1">
@@ -375,7 +375,7 @@ AI
           </div>
 
           {/* Workout Breakdown */}
-          <div className="grid md:grid-cols-5 gap-4 mt-4">
+         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
 
             <WorkoutBlock icon={<Timer size={18} />} time="5 min" label="Speed Drill" />
             <WorkoutBlock icon={<BookOpen size={18} />} time="5 min" label="Vocabulary" />
@@ -580,8 +580,7 @@ Skill Balance
         <h2 className="text-xl font-semibold text-white">
           Training Modes
         </h2>
-
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
           <ModeCard
             icon={<Brain />}

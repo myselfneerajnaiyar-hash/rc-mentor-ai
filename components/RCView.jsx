@@ -8,6 +8,7 @@ import RCHistory from "./RCHistory";
 import TabGroup from "./TabGroup";
 import BirbalMessage from "./BirbalMessage";
 import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
+import PracticeSwitcher from "./PracticeSwitcher";
 
 export default function RCView({view,setView }) {
   const [rcTab, setRcTab] = useState("paste");
@@ -795,6 +796,11 @@ return (
   <div className="min-h-screen text-white">
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
+
+{/* MOBILE PRACTICE SWITCHER */}
+<div className="flex gap-2 md:hidden mb-4">
+
+</div>
     {view === "rc" && (
   <div style={{ marginTop: 16, marginBottom: 16 }}>
     <div style={{ marginBottom: 32 }}>
@@ -1564,7 +1570,17 @@ return (
 )}
 
 {birbalChatQ !== null && (
-  <div className="fixed bottom-6 right-6 w-[420px] bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-xl">
+ <div className="
+fixed bottom-0 left-0 right-0
+md:bottom-6 md:right-6 md:left-auto md:w-[420px]
+
+bg-slate-900 border-t border-slate-700
+md:border md:rounded-xl
+
+p-4 shadow-xl
+h-[60vh] md:h-auto
+overflow-y-auto
+">
     <div className="flex justify-between items-center mb-3">
       <h4 className="font-semibold">Ask Birbal</h4>
 
@@ -1576,7 +1592,7 @@ return (
       </button>
     </div>
     
-    <h4 className="font-semibold mb-3">Ask Birbal</h4>
+   
 
     <div className="h-64 overflow-y-auto text-sm mb-3 space-y-4 pr-2">
   {birbalChatMessages.map((m, i) => (

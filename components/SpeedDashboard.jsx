@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import TabGroup from "../components/TabGroup";
+import PracticeSwitcher from "./PracticeSwitcher";
 import {
   LineChart,
   Line,

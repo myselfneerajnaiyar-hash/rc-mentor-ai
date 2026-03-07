@@ -335,19 +335,28 @@ if (viewMode === "explanation") {
 }
   className="cursor-pointer p-5 font-semibold bg-slate-700 hover:bg-slate-600 transition"
 >
-  <div className="flex justify-between items-center">
-  <span>Q{i + 1}. {q.question}</span>
-  <div className="text-xs text-slate-400 mt-1 uppercase tracking-wide">
-  Skill: {q.skill?.replaceAll("_", " ")}
-</div>
+ <div className="space-y-2">
 
-  {userAnswer === undefined ? (
-    <span className="text-yellow-400 text-sm">Unattempted</span>
-  ) : userAnswer === q.correctIndex ? (
-    <span className="text-green-400 text-sm">Correct</span>
-  ) : (
-    <span className="text-red-400 text-sm">Incorrect</span>
-  )}
+  <div className="font-medium">
+    Q{i + 1}. {q.question}
+  </div>
+
+  <div className="flex items-center gap-3 text-xs">
+
+    <div className="px-2 py-1 bg-indigo-600/20 text-indigo-300 rounded-md uppercase tracking-wide text-slate-300">
+      {q.skill?.replaceAll("_", " ")}
+    </div>
+
+    {userAnswer === undefined ? (
+      <span className="text-yellow-400">Unattempted</span>
+    ) : userAnswer === q.correctIndex ? (
+      <span className="text-green-400">Correct</span>
+    ) : (
+      <span className="text-red-400">Incorrect</span>
+    )}
+
+  </div>
+
 </div>
 {openQuestion === `${section}-${i}` && (
 
@@ -393,6 +402,12 @@ if (viewMode === "explanation") {
         {q.options[q.correctIndex]}
       </span>
     </div>
+
+    {detectThinkingTrap(q, userAnswer) && (
+  <div className="mb-3 text-orange-400 text-sm">
+    Thinking Trap: {detectThinkingTrap(q, userAnswer)}
+  </div>
+)}
 
     <div className="text-slate-300 leading-relaxed">
       {q.explanation || "Explanation not available."}
@@ -616,14 +631,15 @@ if (phase === "rc1" || phase === "rc2") {
       </div>
 
       {/* Passage */}
-      <div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line">
-        {section.passage}
-      </div>
-
-      {/* Paragraph */}
-<div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line">
-  {question.paragraph}
+      <div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line max-h-[280px] overflow-y-auto">
+  {section.passage}
 </div>
+
+     {question.paragraph && (
+  <div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line">
+    {question.paragraph}
+  </div>
+)}
 
 {/* Question */}
 <div className="bg-slate-700 p-6 rounded-xl mb-4">
@@ -903,7 +919,7 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
         Your Workout Report
       </h1>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
 
   <div className="bg-slate-800 p-6 rounded-2xl shadow-lg text-center">
     <div className="text-slate-400 text-sm">Overall Accuracy</div>
@@ -918,20 +934,27 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
 
   <div className="bg-slate-800 p-6 rounded-2xl shadow-lg text-center">
     <div className="text-slate-400 text-sm">Attempt Rate</div>
-    <div className="text-3xl font-bold mt-2">
-      {(
-        Object.values(skillMap).reduce((acc, s) => acc + s.total, 0) /
-        (
-          workout.speed.questions.length +
-          workout.vocab.questions.length +
-          workout.rc1.questions.length +
-          workout.rc2.questions.length +
-          workout.micro.questions.length
-        ) *
-        100
-      ).toFixed(1)}%
-    </div>
-  </div>
+   <div className="text-3xl font-bold mt-2">
+  {(() => {
+    const attempted =
+      Object.values(skillMap).reduce(
+        (acc, s) => acc + s.correct + s.wrong,
+        0
+      )
+
+    const totalQuestions =
+      workout.speed.questions.length +
+      workout.vocab.questions.length +
+      workout.rc1.questions.length +
+      workout.rc2.questions.length +
+      workout.micro.questions.length
+
+    const attemptRate = (attempted / totalQuestions) * 100
+
+    return attemptRate.toFixed(1) + "%"
+  })()}
+</div>
+</div>
 
   <div className="bg-slate-800 p-6 rounded-2xl shadow-lg text-center">
     <div className="text-slate-400 text-sm">Performance Tier</div>
@@ -957,7 +980,7 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         {/* Skill Diagnosis */}
-        <div className="bg-slate-800 p-6 rounded-2xl shadow-lg">
+        <div className="bg-slate-800 p-5 rounded-2xl shadow-lg space-y-2">
           <h2 className="text-2xl font-semibold mb-6">
             Skill Diagnosis
           </h2>
@@ -1012,7 +1035,7 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
 
         {Object.entries(result).map(([section, data]) => (
-          <div key={section} className="bg-slate-800 p-6 rounded-2xl shadow-lg">
+          <div key={section} className="bg-slate-800 p-4 md:p-6 rounded-2xl shadow-lg space-y-1">
 
             <h2 className="text-xl capitalize mb-3">
               {section}
@@ -1032,8 +1055,7 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
   <span>Unattempted</span>
   <span className="text-yellow-400">{data.unattempted}</span>
 </div>
-            <div>Wrong: {data.wrong}</div>
-            <div>Unattempted: {data.unattempted}</div>
+           
 
             <div className="mt-2 font-semibold">
               Section Score: {data.score.toFixed(2)}
@@ -1051,9 +1073,9 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
     Score Impact Analysis
   </h2>
 
-  <div style={{ width: "100%", height: 320 }}>
+  <div style={{ width: "100%", height: 380 }}>
 
-    <div className="flex justify-between mb-4 text-sm">
+    <div className="flex flex-col md:flex-row md:justify-between gap-2 mb-4 text-xs md:text-sm">
   <div className="text-green-400">
     🔥 Strongest: {strongest.skill.replaceAll("_", " ")}
   </div>
@@ -1066,7 +1088,7 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
       <BarChart
         data={scoreImpactData}
         layout="vertical"
-        margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
+        margin={{ top: 10, right: 10, left: 0, bottom: 40 }}
       >
        <CartesianGrid
   stroke="#334155"
@@ -1079,10 +1101,11 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
   domain={[minImpact - 2, maxImpact + 2]}
 />
         <ReferenceLine x={0} stroke="#475569" strokeWidth={2} />
-        <YAxis
+      <YAxis
   dataKey="skill"
   type="category"
-  width={120}
+  width={90}
+  tick={{ fontSize: 12 }}
   stroke="#94a3b8"
 />
      <Tooltip
@@ -1095,12 +1118,12 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
   }}
   labelStyle={{ color: "#e2e8f0" }}
   itemStyle={{ color: "#22c55e" }}
-  formatter={(value) => [
-    <span style={{ color: value < 0 ? "#ef4444" : "#22c55e" }}>
-      {value}
-    </span>,
-    "Score"
-  ]}
+ formatter={(value) => [
+  <span style={{ color: value < 0 ? "#ef4444" : "#22c55e" }}>
+    {Number(value).toFixed(2)}
+  </span>,
+  "Score"
+]}
 />
      <Bar
   dataKey="score"
@@ -1130,19 +1153,19 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
       </BarChart>
     </ResponsiveContainer>
   </div>
-  <div className="mt-4 text-sm text-slate-400">
+  <div className="mt-8 text-sm text-slate-400 leading-relaxed">
   Net Score Driver:{" "}
   <span className="text-green-400 font-semibold">
     {strongest.skill.replaceAll("_", " ")}
   </span>{" "}
-  contributed {strongest.score} marks.
+ contributed {strongest.score.toFixed(2)} marks
   {weakest.score < 0 && (
     <>
       {" "}Loss due to{" "}
       <span className="text-red-400 font-semibold">
         {weakest.skill.replaceAll("_", " ")}
       </span>{" "}
-      was {weakest.score}.
+     was {weakest.score.toFixed(2)}
     </>
   )}
 </div>
@@ -1158,6 +1181,51 @@ const weakest = sortedImpactData[sortedImpactData.length - 1]
 </div>
     </div>
   )
+}
+
+function detectThinkingTrap(q, userAnswer) {
+
+  if (userAnswer === undefined) return null
+  if (userAnswer === q.correctIndex) return null
+
+  const userOption = q.options[userAnswer]
+  const correctOption = q.options[q.correctIndex]
+
+  const lowerUser = userOption.toLowerCase()
+  const lowerCorrect = correctOption.toLowerCase()
+
+  // Extreme language trap
+  if (
+    lowerUser.includes("always") ||
+    lowerUser.includes("never") ||
+    lowerUser.includes("completely") ||
+    lowerUser.includes("entirely")
+  ) {
+    return "Extreme Language Trap"
+  }
+
+  // Scope expansion
+  if (userOption.length > correctOption.length + 40) {
+    return "Scope Expansion"
+  }
+
+  // Reversal trap
+  if (
+    lowerUser.includes("opposite") ||
+    lowerUser.includes("contradict")
+  ) {
+    return "Reversal Trap"
+  }
+
+  // Overgeneralisation
+  if (
+    lowerUser.includes("all") ||
+    lowerUser.includes("every")
+  ) {
+    return "Overgeneralisation Trap"
+  }
+
+  return "Interpretation Drift"
 }
 
 function calculateScore() {

@@ -28,57 +28,59 @@ export default function DailyWorkoutContainer({ user }) {
       {/* Tabs */}
       <Tabs defaultValue="start" className="w-full">
 
-       <TabsList className="flex gap-2 p-1 bg-slate-900/60 backdrop-blur-xl 
-                     border border-slate-800 rounded-2xl w-fit">
+    <TabsList
+className="
+flex gap-2 p-1
+bg-slate-900/60
+backdrop-blur-xl
+border border-slate-800
+rounded-2xl
+w-full
+overflow-x-auto
+px-1
+"
+>
 
           <TabsTrigger
             value="start"
-           className="px-6 py-2.5 rounded-xl
-           text-sm font-medium
-           text-slate-400
-           hover:text-white
-           data-[state=active]:bg-indigo-600
-           data-[state=active]:text-white
-           transition-all duration-200"
+           className="px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap
+text-slate-400 hover:text-white
+data-[state=active]:bg-indigo-600
+data-[state=active]:text-white
+transition-all duration-200"
           >
             Start
           </TabsTrigger>
 
           <TabsTrigger
             value="analytics"
-           className="px-6 py-2.5 rounded-xl
-           text-sm font-medium
-           text-slate-400
-           hover:text-white
-           data-[state=active]:bg-indigo-600
-           data-[state=active]:text-white
-           transition-all duration-200"
+          className="px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap
+text-slate-400 hover:text-white
+data-[state=active]:bg-indigo-600
+data-[state=active]:text-white
+transition-all duration-200"
           >
             Analytics
           </TabsTrigger>
 
           <TabsTrigger
             value="history"
-            className="px-6 py-2.5 rounded-xl
-           text-sm font-medium
-           text-slate-400
-           hover:text-white
-           data-[state=active]:bg-indigo-600
-           data-[state=active]:text-white
-           transition-all duration-200"
+           className="px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap
+text-slate-400 hover:text-white
+data-[state=active]:bg-indigo-600
+data-[state=active]:text-white
+transition-all duration-200"
           >
             History
           </TabsTrigger>
 
           <TabsTrigger
             value="performance"
-           className="px-6 py-2.5 rounded-xl
-           text-sm font-medium
-           text-slate-400
-           hover:text-white
-           data-[state=active]:bg-indigo-600
-           data-[state=active]:text-white
-           transition-all duration-200"
+           className="px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap
+text-slate-400 hover:text-white
+data-[state=active]:bg-indigo-600
+data-[state=active]:text-white
+transition-all duration-200"
           >
             Performance
           </TabsTrigger>

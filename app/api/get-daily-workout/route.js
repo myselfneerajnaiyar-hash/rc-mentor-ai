@@ -255,7 +255,7 @@ IMPORTANT
     model: "gpt-4o",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
-    
+    max_tokens: 8000
   })
 
   const content = completion.choices[0].message.content
@@ -285,21 +285,45 @@ IMPORTANT
   parsed.rc2.passage = formatPassage(parsed.rc2.passage)
 
   // ===== ENSURE MICRO HAS PARAGRAPH FIELD =====
-  parsed.micro.questions = parsed.micro.questions.map(q => {
-    if (!q.paragraph) {
-      return {
-        paragraph: "Read the following paragraph carefully before answering.",
-        ...q
-      }
+parsed.micro.questions = parsed.micro.questions.map(q => {
+  if (!q.paragraph) {
+    return {
+      paragraph: "Read the following paragraph carefully before answering.",
+      ...q
     }
-    return q
-  })
-  console.log("MICRO SAMPLE:", parsed.micro.questions[0])
+  }
+  return q
+})
 
-  return parsed
+console.log("MICRO SAMPLE:", parsed.micro.questions[0])
+
+function validateWorkout(parsed) {
+
+  if (!parsed.speed?.questions || parsed.speed.questions.length !== 10)
+    throw new Error("Speed undergenerated")
+
+  if (!parsed.vocab?.questions || parsed.vocab.questions.length !== 10)
+    throw new Error("Vocab undergenerated")
+
+  if (!parsed.rc1?.questions || parsed.rc1.questions.length !== 4)
+    throw new Error("RC1 undergenerated")
+
+  if (!parsed.rc2?.questions || parsed.rc2.questions.length !== 4)
+    throw new Error("RC2 undergenerated")
+
+  if (!parsed.micro?.questions || parsed.micro.questions.length !== 5)
+    throw new Error("Micro undergenerated")
+
+}
+
+validateWorkout(parsed)
+
+return parsed
 
 } catch (err) {
-  console.error("Invalid JSON from OpenAI:", content)
-  throw new Error("OpenAI returned invalid JSON")
+  console.error("Workout generation failed:", err)
+  console.error("OpenAI raw response:", content)
+  throw new Error("Workout generation failed")
 }
+
 }

@@ -24,6 +24,7 @@ import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
 import TabGroup from "../components/TabGroup";
 import ChatMentor from "../components/ChatMentor"
+import PracticeSwitcher from "@/components/PracticeSwitcher";
 
 async function loadSectionalAttemptMapFromDB() {
   const { data: authData } = await supabase.auth.getUser();
@@ -537,7 +538,7 @@ return (
   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)] pointer-events-none" />
 
     {/* Desktop Sidebar */}
- <aside className="w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex flex-col">
+ <aside className="hidden md:flex w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
   <h2 className="text-xl font-semibold text-white tracking-tight">
     Auctor RC
@@ -590,17 +591,20 @@ ${
 
     {/* Main Content */}
   <main className="flex-1 overflow-y-auto bg-slate-900/30">
-  <div className="max-w-6xl mx-auto px-8 py-10">
+ <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
+        {(view === "rc" || view === "vocab" || view === "speed") && (
+  <PracticeSwitcher view={view} setView={setView} />
+)}
    {/* Desktop Navbar */}
 <div className="desktop-navbar">
  {/* <Navbar view={view} setView={setView} /> */}
 </div>
 
    {view === "home" && (
-  <HomeView
+<HomeView
   setView={setView}
-  startAdaptiveRC={() => setView("rc")}
+  startAdaptiveRC={() => setView("workout")}
   userName={userName}
   user={user}
 />
