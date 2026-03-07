@@ -36,6 +36,7 @@
   border-radius: 10px;
   font-size: 14px;
   transition: all 0.2s ease;
+  color: #111827;
 }
 
 .auth-input:focus {
@@ -80,4 +81,8 @@
 
 .auth-footer a:hover {
   text-decoration: underline;
+}
+
+.auth-input::placeholder {
+  color: #9ca3af;
 }
