@@ -22,10 +22,9 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const inputRef = useRef(null)
 
  useEffect(() => {
-  lastMessageRef.current?.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  })
+bottomRef.current?.scrollIntoView({
+  behavior: "smooth"
+})
 }, [messages])
 
   useEffect(() => {
@@ -93,17 +92,19 @@ async function typeMessage(text, updatedMessages) {
     }
   ])
 
-  for (let i = 0; i < text.length; i++) {
-    currentText += text[i]
+ for (let i = 0; i < text.length; i++) {
+  currentText += text[i]
 
-    setMessages(prev => {
-      const copy = [...prev]
-      copy[copy.length - 1].content = currentText
-      return copy
-    })
+  setMessages(prev => {
+    const copy = [...prev]
+    copy[copy.length - 1].content = currentText
+    return copy
+  })
 
-    await new Promise(resolve => setTimeout(resolve, 8))
-  }
+  bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+
+  await new Promise(resolve => setTimeout(resolve, 10))
+}
 }
 
   function quickPrompt(text) {
@@ -237,6 +238,7 @@ async function typeMessage(text, updatedMessages) {
   </div>
 )}
 
+<div ref={bottomRef}></div>
         
 
       </div>
