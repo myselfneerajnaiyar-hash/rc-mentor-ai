@@ -133,7 +133,7 @@ async function sendVoiceMessage(text) {
 
   await typeMessage(data.reply, updated)
 
-  speakResponse(data.reply)
+ 
 }
 
 async function typeMessage(text, updatedMessages) {
@@ -247,25 +247,23 @@ async function speakResponse(text) {
 
   const fullText = text
 
-  // If running inside Capacitor (Android APK)
-  if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+  if (window.Capacitor) {
 
     await TextToSpeech.speak({
       text: fullText,
-      lang: "en-US",
-      rate: 0.9,
-      pitch: 0.8
+      lang: "en-IN",
+      rate: 0.85,
+      pitch: 0.65
     })
 
     return
   }
 
-  // Browser fallback
   if (!window.speechSynthesis) return
 
   const speech = new SpeechSynthesisUtterance(fullText)
 
-  speech.lang = "en-US"
+  speech.lang = "en-IN"
   speech.rate = 0.92
   speech.pitch = 0.75
 
