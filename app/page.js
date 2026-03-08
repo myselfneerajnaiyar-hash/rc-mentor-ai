@@ -132,6 +132,15 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [catTab, setCatTab] = useState("tests"); 
 // tests | analytics
 
+const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 900);
+  check();
+  window.addEventListener("resize", check);
+  return () => window.removeEventListener("resize", check);
+}, []);
+
 useEffect(() => {
   if (typeof window === "undefined") return;
 
@@ -591,11 +600,12 @@ if (typeof window !== "undefined") {
 }
   
 return (
- <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex relative">
+<div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col md:flex-row relative">
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
-<aside className="flex w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
+{!isMobile && (
+<aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
   <h2 className="text-xl font-semibold text-white tracking-tight">
     Auctor RC
@@ -645,10 +655,11 @@ ${
 </nav>
 
     </aside>
+)}
 
     {/* Main Content */}
-  <main className="flex-1 overflow-y-auto bg-slate-900/30">
- <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-10">
+  <main className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
+ <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
         {(view === "rc" || view === "vocab" || view === "speed") && (
   <PracticeSwitcher view={view} setView={setView} />
