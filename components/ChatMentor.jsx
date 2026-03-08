@@ -245,9 +245,25 @@ async function startVoiceConversation() {
 
 async function speakResponse(text) {
 
+  const fullText = text
+
+  // If running inside Capacitor (Android APK)
+  if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+
+    await TextToSpeech.speak({
+      text: fullText,
+      lang: "en-US",
+      rate: 0.9,
+      pitch: 0.8
+    })
+
+    return
+  }
+
+  // Browser fallback
   if (!window.speechSynthesis) return
 
-  const speech = new SpeechSynthesisUtterance(text)
+  const speech = new SpeechSynthesisUtterance(fullText)
 
   speech.lang = "en-US"
   speech.rate = 0.92
