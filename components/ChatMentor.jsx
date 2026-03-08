@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Send, Brain } from "lucide-react"
+import { Send, Brain, Mic, Volume2 } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 
 export default function ChatMentor() {
@@ -20,6 +20,8 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
   const inputRef = useRef(null)
+  const [listening, setListening] = useState(false)
+const [voiceMode, setVoiceMode] = useState(false)
 
  useEffect(() => {
 bottomRef.current?.scrollIntoView({
@@ -43,6 +45,10 @@ bottomRef.current?.scrollIntoView({
 
 useEffect(() => {
   inputRef.current?.focus()
+}, [])
+
+useEffect(() => {
+  window.speechSynthesis.getVoices()
 }, [])
 
  async function sendMessage() {
@@ -78,6 +84,40 @@ useEffect(() => {
   setThinking(false)
 
  await typeMessage(data.reply, updated)
+}
+
+async function sendVoiceMessage(text) {
+
+  const userMessage = {
+    role: "user",
+    content: text,
+    time: new Date()
+  }
+
+  const updated = [...messages, userMessage]
+
+  setMessages(updated)
+
+  setThinking(true)
+
+  const res = await fetch("/api/chat-mentor", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      messages: updated,
+      userId: user?.id
+    })
+  })
+
+  const data = await res.json()
+
+  setThinking(false)
+
+  await typeMessage(data.reply, updated)
+
+  speakResponse(data.reply)
 }
 
 async function typeMessage(text, updatedMessages) {
@@ -118,6 +158,72 @@ async function typeMessage(text, updatedMessages) {
     minute: "2-digit"
   })
 }
+
+function startVoiceConversation() {
+
+  if (!("webkitSpeechRecognition" in window)) {
+    alert("Voice not supported on this browser")
+    return
+  }
+
+  const recognition = new window.webkitSpeechRecognition()
+
+  recognition.lang = "en-US"
+  recognition.continuous = false
+  recognition.interimResults = false
+
+  recognition.onstart = () => {
+    setListening(true)
+  }
+
+  recognition.onresult = async (event) => {
+
+    const transcript = event.results[0][0].transcript
+
+    setInput(transcript)
+
+    setListening(false)
+
+    await sendVoiceMessage(transcript)
+
+  }
+
+  recognition.onend = () => {
+    setListening(false)
+  }
+
+  recognition.start()
+}
+
+function speakResponse(text) {
+
+  window.speechSynthesis.cancel()
+
+  const shortText = text.slice(0, 500)
+
+  const speech = new SpeechSynthesisUtterance(shortText)
+
+  speech.lang = "en-US"
+  speech.rate = 0.95
+  speech.pitch = 0.85   // slightly deeper voice
+
+  const voices = window.speechSynthesis.getVoices()
+
+  const maleVoice = voices.find(v =>
+    v.name.toLowerCase().includes("male") ||
+    v.name.includes("Google UK English Male") ||
+    v.name.includes("Microsoft David") ||
+    v.name.includes("Google US English")
+  )
+
+  if (maleVoice) {
+    speech.voice = maleVoice
+  }
+
+  window.speechSynthesis.speak(speech)
+
+}
+  
 
   return (
 
@@ -197,16 +303,28 @@ async function typeMessage(text, updatedMessages) {
 <div className="max-w-[calc(100%-60px)]">
 
   <div
-    className={`px-4 py-3 rounded-xl text-[15px] leading-relaxed ${
-      m.role === "user"
-        ? "bg-indigo-600 text-white"
-        : "bg-slate-800 text-slate-200"
-    }`}
-  >
-    <div className="whitespace-pre-line">
-      {m.content}
-    </div>
+  className={`px-4 py-3 rounded-2xl text-[15px] leading-relaxed flex items-start gap-2 shadow-md ${
+    m.role === "user"
+      ? "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white"
+      : "bg-slate-800/80 backdrop-blur border border-slate-700 text-slate-200"
+  }`}
+>
+
+  <div className="whitespace-pre-line flex-1">
+    {m.content}
   </div>
+
+  {m.role === "assistant" && (
+    <button
+      onClick={() => speakResponse(m.content)}
+      title="Replay voice"
+      className="text-slate-400 hover:text-white opacity-70"
+    >
+      <Volume2 size={16} />
+    </button>
+  )}
+
+</div>
 
   <div
     className={`text-xs mt-1 text-slate-500 ${
@@ -228,7 +346,7 @@ async function typeMessage(text, updatedMessages) {
     <img
       src="/birbal.png"
       alt="Birbal"
-      className="w-7 h-7 rounded-full mt-1"
+     className="w-8 h-8 rounded-full mt-1 border border-slate-700"
     />
 
     <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl text-sm animate-pulse">
@@ -246,7 +364,7 @@ async function typeMessage(text, updatedMessages) {
 
       {/* Input */}
 
-    <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-slate-900">
+  <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-slate-900/95 backdrop-blur">
 
         <input
         ref={inputRef}
@@ -263,11 +381,22 @@ async function typeMessage(text, updatedMessages) {
         />
 
         <button
-          onClick={sendMessage}
-          className="bg-indigo-600 hover:bg-indigo-500 px-4 rounded-xl flex items-center justify-center"
-        >
-          <Send size={18} />
-        </button>
+  onClick={startVoiceConversation}
+ className={`px-3 rounded-xl flex items-center justify-center transition ${
+  listening
+    ? "bg-red-500 animate-pulse"
+    : "bg-slate-700 hover:bg-slate-600"
+}`}
+>
+  <Mic size={18} />
+</button>
+
+<button
+  onClick={sendMessage}
+  className="bg-indigo-600 hover:bg-indigo-500 px-4 rounded-xl flex items-center justify-center"
+>
+  <Send size={18} />
+</button>
 
       </div>
 
