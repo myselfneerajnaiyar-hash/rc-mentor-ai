@@ -27,7 +27,7 @@ export async function GET() {
     }
 
     // 2️⃣ Generate new workout
-    const generatedWorkout = await generateWorkout()
+   const generatedWorkout = await generateWorkoutWithRetry()
 
     // 3️⃣ Store in Supabase
     await supabase.from("daily_workout_templates").insert({
@@ -45,6 +45,34 @@ export async function GET() {
       { status: 500 }
     )
   }
+}
+
+async function generateWorkoutWithRetry() {
+
+  const MAX_TRIES = 3
+
+  for (let attempt = 1; attempt <= MAX_TRIES; attempt++) {
+
+    try {
+
+      console.log("Workout generation attempt:", attempt)
+
+      const workout = await generateWorkout()
+
+      return workout
+
+    } catch (err) {
+
+      console.error("Generation attempt failed:", attempt, err.message)
+
+      if (attempt === MAX_TRIES) {
+        throw err
+      }
+
+    }
+
+  }
+
 }
 
 async function generateWorkout() {
@@ -255,7 +283,7 @@ IMPORTANT
     model: "gpt-4o",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
-    max_tokens: 8000
+    max_tokens: 14000
   })
 
   const content = completion.choices[0].message.content
@@ -271,7 +299,7 @@ IMPORTANT
       const words = passage.split(" ")
       const chunks = []
 
-      for (let i = 0; i < words.length; i += 120) {
+      for (let i = 0; i < words.length; i += 100) {
         chunks.push(words.slice(i, i + 120).join(" "))
       }
 
@@ -314,7 +342,20 @@ function validateWorkout(parsed) {
   if (!parsed.micro?.questions || parsed.micro.questions.length !== 5)
     throw new Error("Micro undergenerated")
 
+  // 🔴 NEW VALIDATION FOR PASSAGE LENGTH
+
+  function wordCount(text) {
+    return text.split(/\s+/).length
+  }
+
+  if (!parsed.rc1?.passage || wordCount(parsed.rc1.passage) < 420)
+    throw new Error("RC1 passage too short")
+
+  if (!parsed.rc2?.passage || wordCount(parsed.rc2.passage) < 420)
+    throw new Error("RC2 passage too short")
+
 }
+
 
 validateWorkout(parsed)
 

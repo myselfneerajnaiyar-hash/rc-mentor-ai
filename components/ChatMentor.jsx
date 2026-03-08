@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Send, Brain, Mic, Volume2 } from "lucide-react"
 import { supabase } from "@/lib/supabase"
+import { SpeechRecognition } from "@capacitor-community/speech-recognition"
+import { TextToSpeech } from "@capacitor-community/text-to-speech"
 
 export default function ChatMentor() {
 
@@ -22,9 +24,10 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const inputRef = useRef(null)
   const [listening, setListening] = useState(false)
 const [voiceMode, setVoiceMode] = useState(false)
+
 const voiceSupported =
   typeof window !== "undefined" &&
-  (window.webkitSpeechRecognition || window.SpeechRecognition)
+  "webkitSpeechRecognition" in window
 
  useEffect(() => {
 bottomRef.current?.scrollIntoView({
@@ -51,9 +54,17 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  if (typeof window !== "undefined" && window.speechSynthesis) {
+
+  if (!window.speechSynthesis) return
+
+  const loadVoices = () => {
     window.speechSynthesis.getVoices()
   }
+
+  loadVoices()
+
+  window.speechSynthesis.onvoiceschanged = loadVoices
+
 }, [])
 
  async function sendMessage() {
@@ -164,29 +175,56 @@ async function typeMessage(text, updatedMessages) {
   })
 }
 
-function startVoiceConversation() {
+async function startVoiceConversation() {
 
- if (
-  typeof window === "undefined" ||
-  (!window.webkitSpeechRecognition && !window.SpeechRecognition)
-) {
-  alert("Voice input not supported on this device")
-  return
-}
+  // If running inside Capacitor (APK)
+  if (window.Capacitor) {
 
+    const available = await SpeechRecognition.available()
 
-  const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!available.available) {
+      alert("Speech recognition not available")
+      return
+    }
 
-const recognition = new SpeechRecognition()
+    await SpeechRecognition.requestPermissions()
+
+    setListening(true)
+
+    const result = await SpeechRecognition.start({
+      language: "en-US",
+      maxResults: 1
+    })
+
+    setListening(false)
+
+    if (result.matches && result.matches.length > 0) {
+
+      const transcript = result.matches[0]
+
+      setInput(transcript)
+
+      await sendVoiceMessage(transcript)
+
+    }
+
+    return
+  }
+
+  // Browser fallback (your existing code)
+
+  if (!("webkitSpeechRecognition" in window)) {
+    alert("Voice input not supported")
+    return
+  }
+
+  const recognition = new window.webkitSpeechRecognition()
 
   recognition.lang = "en-US"
   recognition.continuous = false
   recognition.interimResults = false
 
-  recognition.onstart = () => {
-    setListening(true)
-  }
+  recognition.onstart = () => setListening(true)
 
   recognition.onresult = async (event) => {
 
@@ -200,43 +238,42 @@ const recognition = new SpeechRecognition()
 
   }
 
-  recognition.onend = () => {
-    setListening(false)
-  }
+  recognition.onend = () => setListening(false)
 
   recognition.start()
 }
-function speakResponse(text) {
 
-  if (!window.speechSynthesis) return
-
-  window.speechSynthesis.cancel()
+async function speakResponse(text) {
 
   const shortText = text.slice(0, 500)
+
+  // APK native TTS
+  if (window.Capacitor) {
+
+    await TextToSpeech.speak({
+      text: shortText,
+      lang: "en-US",
+      rate: 0.9,
+      pitch: 0.8
+    })
+
+    return
+  }
+
+  // Browser fallback
+  if (!window.speechSynthesis) return
 
   const speech = new SpeechSynthesisUtterance(shortText)
 
   speech.lang = "en-US"
   speech.rate = 0.95
-  speech.pitch = 0.85   // slightly deeper voice
+  speech.pitch = 0.85
 
-  const voices = window.speechSynthesis.getVoices()
-
-  const maleVoice = voices.find(v =>
-    v.name.toLowerCase().includes("male") ||
-    v.name.includes("Google UK English Male") ||
-    v.name.includes("Microsoft David") ||
-    v.name.includes("Google US English")
-  )
-
-  if (maleVoice) {
-    speech.voice = maleVoice
-  }
-
-  window.speechSynthesis.speak(speech)
+  setTimeout(() => {
+    window.speechSynthesis.speak(speech)
+  }, 100)
 
 }
-  
 
   return (
 
