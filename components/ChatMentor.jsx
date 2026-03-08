@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Send, Brain, Mic, Volume2 } from "lucide-react"
+import { Send, Brain, Mic, } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { SpeechRecognition } from "@capacitor-community/speech-recognition"
-import { TextToSpeech } from "@capacitor-community/text-to-speech"
+
 
 export default function ChatMentor() {
 
@@ -243,43 +243,7 @@ async function startVoiceConversation() {
   recognition.start()
 }
 
-async function speakResponse(text) {
 
-  const fullText = text
-
-  if (window.Capacitor) {
-
-    await TextToSpeech.speak({
-      text: fullText,
-      lang: "en-IN",
-      rate: 0.85,
-      pitch: 0.65
-    })
-
-    return
-  }
-
-  if (!window.speechSynthesis) return
-
-  const speech = new SpeechSynthesisUtterance(fullText)
-
-  speech.lang = "en-IN"
-  speech.rate = 0.92
-  speech.pitch = 0.75
-
-  const voices = window.speechSynthesis.getVoices()
-
-  const preferredVoice =
-    voices.find(v => v.name.includes("Google UK English Male")) ||
-    voices.find(v => v.name.includes("Microsoft David")) ||
-    voices.find(v => v.name.includes("Google US English")) ||
-    voices[0]
-
-  speech.voice = preferredVoice
-
-  window.speechSynthesis.cancel()
-  window.speechSynthesis.speak(speech)
-}
 
   return (
 
@@ -370,15 +334,7 @@ async function speakResponse(text) {
     {m.content}
   </div>
 
-  {m.role === "assistant" && (
-    <button
-      onClick={() => speakResponse(m.content)}
-      title="Replay voice"
-      className="text-slate-400 hover:text-white opacity-70"
-    >
-      <Volume2 size={16} />
-    </button>
-  )}
+  
 
 </div>
 
