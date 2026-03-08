@@ -22,6 +22,9 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const inputRef = useRef(null)
   const [listening, setListening] = useState(false)
 const [voiceMode, setVoiceMode] = useState(false)
+const voiceSupported =
+  typeof window !== "undefined" &&
+  (window.webkitSpeechRecognition || window.SpeechRecognition)
 
  useEffect(() => {
 bottomRef.current?.scrollIntoView({
@@ -48,7 +51,9 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  window.speechSynthesis.getVoices()
+  if (typeof window !== "undefined" && window.speechSynthesis) {
+    window.speechSynthesis.getVoices()
+  }
 }, [])
 
  async function sendMessage() {
@@ -161,12 +166,19 @@ async function typeMessage(text, updatedMessages) {
 
 function startVoiceConversation() {
 
-  if (!("webkitSpeechRecognition" in window)) {
-    alert("Voice not supported on this browser")
-    return
-  }
+ if (
+  typeof window === "undefined" ||
+  (!window.webkitSpeechRecognition && !window.SpeechRecognition)
+) {
+  alert("Voice input not supported on this device")
+  return
+}
 
-  const recognition = new window.webkitSpeechRecognition()
+
+  const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition
+
+const recognition = new SpeechRecognition()
 
   recognition.lang = "en-US"
   recognition.continuous = false
@@ -194,8 +206,9 @@ function startVoiceConversation() {
 
   recognition.start()
 }
-
 function speakResponse(text) {
+
+  if (!window.speechSynthesis) return
 
   window.speechSynthesis.cancel()
 
@@ -382,11 +395,10 @@ function speakResponse(text) {
 
         <button
   onClick={startVoiceConversation}
- className={`px-3 rounded-xl flex items-center justify-center transition ${
-  listening
-    ? "bg-red-500 animate-pulse"
-    : "bg-slate-700 hover:bg-slate-600"
-}`}
+  disabled={!voiceSupported}
+  className={`px-3 rounded-xl flex items-center justify-center ${
+    listening ? "bg-red-500" : "bg-slate-700"
+  } ${!voiceSupported ? "opacity-40 cursor-not-allowed" : ""}`}
 >
   <Mic size={18} />
 </button>
