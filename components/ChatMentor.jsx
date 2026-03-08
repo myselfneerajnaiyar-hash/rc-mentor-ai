@@ -245,34 +245,26 @@ async function startVoiceConversation() {
 
 async function speakResponse(text) {
 
-  const shortText = text.slice(0, 500)
-
-  // APK native TTS
-  if (window.Capacitor) {
-
-    await TextToSpeech.speak({
-      text: shortText,
-      lang: "en-US",
-      rate: 0.9,
-      pitch: 0.8
-    })
-
-    return
-  }
-
-  // Browser fallback
   if (!window.speechSynthesis) return
 
-  const speech = new SpeechSynthesisUtterance(shortText)
+  const speech = new SpeechSynthesisUtterance(text)
 
   speech.lang = "en-US"
-  speech.rate = 0.95
-  speech.pitch = 0.85
+  speech.rate = 0.92
+  speech.pitch = 0.75
 
-  setTimeout(() => {
-    window.speechSynthesis.speak(speech)
-  }, 100)
+  const voices = window.speechSynthesis.getVoices()
 
+  const preferredVoice =
+    voices.find(v => v.name.includes("Google UK English Male")) ||
+    voices.find(v => v.name.includes("Microsoft David")) ||
+    voices.find(v => v.name.includes("Google US English")) ||
+    voices[0]
+
+  speech.voice = preferredVoice
+
+  window.speechSynthesis.cancel()
+  window.speechSynthesis.speak(speech)
 }
 
   return (
