@@ -595,7 +595,7 @@ return (
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
- <aside className="hidden md:flex w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
+<aside className="flex w-64 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
   <h2 className="text-xl font-semibold text-white tracking-tight">
     Auctor RC
