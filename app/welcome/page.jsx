@@ -17,6 +17,7 @@ const [loading, setLoading] = useState(true)
   const [profileName, setProfileName] = useState("")
   const [exam, setExam] = useState("CAT")
   const [attemptYear, setAttemptYear] = useState("2026")
+  const [phone, setPhone] = useState("")
 
   const [step, setStep] = useState(1)
 
@@ -65,6 +66,7 @@ async function checkUser() {
         name: name,
         exam: exam,
         attempt_year: attemptYear,
+        phone: phone
       }
     ])
 
@@ -152,12 +154,36 @@ async function checkUser() {
               <option value="2027">2027</option>
             </select>
 
-            <button
-              className={styles["welcome-btn"]}
-              onClick={finishProfile}
-            >
-              Finish →
-            </button>
+           <button
+  className={styles["welcome-btn"]}
+  onClick={() => setStep(4)}
+>
+  Next →
+</button>
+
+{/* STEP 4 - PHONE */}
+{step === 4 && (
+  <>
+    <p className={styles["welcome-subtitle"]}>
+      Get daily RC reminders on WhatsApp 📱
+    </p>
+
+    <input
+      type="tel"
+      placeholder="+91 9876543210"
+      value={phone}
+      onChange={(e) => setPhone(e.target.value)}
+    />
+
+    <button
+      className={styles["welcome-btn"]}
+      onClick={finishProfile}
+      disabled={!phone.trim()}
+    >
+      Finish →
+    </button>
+  </>
+)}
           </>
         )}
 
