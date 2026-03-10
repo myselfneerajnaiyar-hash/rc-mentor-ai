@@ -126,3 +126,13 @@ justify-content:center;
 align-items:center;
 background:#020617;
 }
+
+@media (max-width: 768px) {
+  .auth-left {
+    display: none;
+  }
+
+  .auth-card {
+    width: 100%;
+  }
+}

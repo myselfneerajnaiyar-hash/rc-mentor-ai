@@ -138,28 +138,30 @@ async function checkUser() {
           </>
         )}
 
-        {/* STEP 3 - YEAR */}
-        {step === 3 && (
-          <>
-            <p className={styles["welcome-subtitle"]}>
-              Attempt Year?
-            </p>
+      {/* STEP 3 - YEAR */}
+{step === 3 && (
+  <>
+    <p className={styles["welcome-subtitle"]}>
+      Attempt Year?
+    </p>
 
-            <select
-              value={attemptYear}
-              onChange={(e) => setAttemptYear(e.target.value)}
-            >
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-            </select>
+    <select
+      value={attemptYear}
+      onChange={(e) => setAttemptYear(e.target.value)}
+    >
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+    </select>
 
-           <button
-  className={styles["welcome-btn"]}
-  onClick={() => setStep(4)}
->
-  Next →
-</button>
+    <button
+      className={styles["welcome-btn"]}
+      onClick={() => setStep(4)}
+    >
+      Next →
+    </button>
+  </>
+)}
 
 {/* STEP 4 - PHONE */}
 {step === 4 && (
@@ -184,8 +186,7 @@ async function checkUser() {
     </button>
   </>
 )}
-          </>
-        )}
+         
 
       </div>
     </div>

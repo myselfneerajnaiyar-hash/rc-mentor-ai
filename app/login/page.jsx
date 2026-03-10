@@ -35,7 +35,7 @@ export default function LoginPage() {
   <div className="auth-layout">
 
     {/* LEFT SIDE */}
-    <div className="auth-left">
+    <div className="auth-left hidden md:flex">
       <h1>Auctor RC</h1>
 
       <p className="tagline">
@@ -54,7 +54,7 @@ export default function LoginPage() {
     {/* RIGHT SIDE */}
     <div className="auth-right">
 
-      <div className="auth-card">
+     <div className="auth-card w-full md:w-1/2">
         <h1 className="auth-title">Welcome Back</h1>
 
         <form onSubmit={handleLogin}>

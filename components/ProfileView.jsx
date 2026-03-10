@@ -19,6 +19,7 @@ const [editData, setEditData] = useState({
   name: "",
   exam: "",
   attempt_year: "",
+  phone: "",
 });
 
 
@@ -38,11 +39,12 @@ const [editData, setEditData] = useState({
       .maybeSingle();
 
     setProfile(data);
-    setEditData({
-      name: data?.name || "",
-      exam: data?.exam || "",
-      attempt_year: data?.attempt_year || "",
-    });
+   setEditData({
+  name: data?.name || "",
+  exam: data?.exam || "",
+  attempt_year: data?.attempt_year || "",
+  phone: data?.phone || "",
+});
 
     // 2️⃣ 🔥 ADD THIS ENTIRE BLOCK HERE 🔥
 
@@ -112,6 +114,10 @@ const [editData, setEditData] = useState({
           <p style={subText}>
             {profile.exam} • {profile.attempt_year}
           </p>
+
+          <p style={{ color: "#94a3b8", fontSize: 14 }}>
+  📱 {profile.phone || "Phone not added"}
+</p>
           <p style={joined}>
             Joined{" "}
             {new Date(profile.created_at).toLocaleDateString("en-IN", {
@@ -337,6 +343,14 @@ const [editData, setEditData] = useState({
         }
         style={input}
       />
+      <input
+  placeholder="Phone Number"
+  value={editData.phone}
+  onChange={(e) =>
+    setEditData({ ...editData, phone: e.target.value })
+  }
+  style={input}
+/>
 
       <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
         <button
