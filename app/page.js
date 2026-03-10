@@ -217,13 +217,18 @@ useEffect(() => {
   getUser();
 
   const { data: authListener } = supabase.auth.onAuthStateChange(
-    (_event, session) => {
-      if (mounted) {
-        setUser(session?.user || null);
-      }
-    }
-  );
+  (_event, session) => {
 
+    if (!session?.user) {
+      window.location.href = "/login"
+      return
+    }
+
+    if (mounted) {
+      setUser(session.user)
+    }
+  }
+);
   return () => {
     mounted = false;
     authListener?.subscription?.unsubscribe();

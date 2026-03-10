@@ -50,7 +50,7 @@ color: "#e5e7eb",
               background: getColor(questionStates[idx]),
               border:
                 currentQuestion === idx
-                  ? "2px solid #111827"
+                  ? "2px solid #60a5fa"
                   : "none",
               color:
   questionStates[idx] === 0 ? "#cbd5e1" : "white",

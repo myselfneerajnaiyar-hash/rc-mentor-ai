@@ -32,19 +32,39 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-wrapper pb-32">
+  <div className="auth-layout">
+
+    {/* LEFT SIDE */}
+    <div className="auth-left">
+      <h1>Auctor RC</h1>
+
+      <p className="tagline">
+        Build elite reading intelligence for CAT.
+      </p>
+
+      <ul className="feature-list">
+        <li>🧠 AI Mentor Birbal</li>
+        <li>⚡ Daily RC Workouts</li>
+        <li>📊 Deep Performance Analytics</li>
+        <li>🏆 Global Leaderboard</li>
+        <li>📚 Unlimited RC Generator</li>
+      </ul>
+    </div>
+
+    {/* RIGHT SIDE */}
+    <div className="auth-right">
+
       <div className="auth-card">
         <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">Login to continue your RC journey</p>
 
         <form onSubmit={handleLogin}>
+
           <input
             type="email"
             placeholder="Email"
             className="auth-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
 
           <input
@@ -53,20 +73,24 @@ export default function LoginPage() {
             className="auth-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
 
           {error && <p className="auth-error">{error}</p>}
 
-          <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <button type="submit" className="auth-button">
+            Login
           </button>
+
         </form>
 
         <p className="auth-footer">
-          Don’t have an account? <a href="/signup">Sign Up</a>
+          Don’t have an account? <a href="/signup">Sign up</a>
         </p>
+
       </div>
+
     </div>
-  )
+
+  </div>
+)
 }

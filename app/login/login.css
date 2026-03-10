@@ -89,3 +89,40 @@
 .auth-input::placeholder {
   color: #9ca3af;
 }
+
+.auth-layout{
+display:flex;
+min-height:100vh;
+}
+
+.auth-left{
+flex:1;
+background:#0f172a;
+color:white;
+padding:80px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.auth-left h1{
+font-size:40px;
+margin-bottom:20px;
+}
+
+.tagline{
+opacity:0.8;
+margin-bottom:30px;
+}
+
+.feature-list li{
+margin-bottom:12px;
+}
+
+.auth-right{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#020617;
+}
