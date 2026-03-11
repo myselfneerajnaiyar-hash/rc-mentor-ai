@@ -631,7 +631,7 @@ return (
   { id: "home", label: "Home", icon: Home },
   { id: "mentor",label: "Ask Birbal", icon: MessageSquare},
   { id: "workout", label: "Daily Workout", icon: Flame },
-  { id: "daily", label: "Analytics", icon: BarChart3 },
+ 
   { id: "rc", label: "RC", icon: Brain },
   { id: "vocab", label: "Vocab", icon: BookOpen },
   { id: "speed", label: "Speed", icon: Timer },

@@ -301,24 +301,45 @@ if (user?.id) {
 
   return (
    <div className="flex flex-col gap-10 pb-28">
+{/* ================= HEADER ================= */}
 
-      {/* ================= HEADER ================= */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-2xl md:text-4xl font-bold text-white">
-            {getGreeting()}, {userName || "Champion"} 👋
-          </h1>
-          <p className="text-slate-400 mt-1">
-            Your structured RC training system
-          </p>
-        </div>
+<div className="space-y-3">
 
-        {!user && (
-          <Button onClick={() => setView("login")}>
-            Login
-          </Button>
-        )}
+  {/* Brand (visible especially on mobile) */}
+  <div className="flex items-center gap-2 md:hidden">
+    <img src="/logo.png" className="w-6 h-6" />
+
+    <div className="leading-tight">
+      <div className="text-sm font-semibold text-white">
+        Auctor RC
       </div>
+
+      <div className="text-xs text-slate-400">
+        by Auctor Labs
+      </div>
+    </div>
+  </div>
+
+  {/* Greeting */}
+  <div className="flex justify-between items-start">
+    <div>
+      <h1 className="text-2xl md:text-4xl font-bold text-white">
+        {getGreeting()}, {userName || "Champion"} 👋
+      </h1>
+
+      <p className="text-slate-400 mt-1">
+        Your structured RC training system
+      </p>
+    </div>
+
+    {!user && (
+      <Button onClick={() => setView("login")}>
+        Login
+      </Button>
+    )}
+  </div>
+
+</div>
 
       {/* ================= BIRBAL ================= */}
 
