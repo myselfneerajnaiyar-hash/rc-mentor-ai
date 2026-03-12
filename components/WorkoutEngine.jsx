@@ -23,8 +23,16 @@ export default function WorkoutEngine({
   initialAnswers = null,
   initialPhase = null
 }) {
-    console.log("SPEED FIRST QUESTION:", workout?.speed?.questions?.[0]);
+   const speedQuestions = workout?.speed?.questions || [];
 
+console.log(
+  "SPEED FIRST QUESTION:",
+  workout?.speed?.questions?.[0]
+)
+
+if (speedQuestions.length === 0) {
+  return <div className="p-8 text-white">Preparing speed drill...</div>;
+}
   console.log("WORKOUT DATA:", workout)
 
  const [phase, setPhase] = useState(initialPhase || "speed")
@@ -431,9 +439,16 @@ if (viewMode === "explanation") {
   )
 }
 
-  if (!workout) {
-    return <div className="p-8 text-white">Loading workout...</div>
-  }
+ if (
+  !workout ||
+  !workout.speed?.questions ||
+  !workout.vocab?.questions ||
+  !workout.rc1?.questions ||
+  !workout.rc2?.questions ||
+  !workout.micro?.questions
+) {
+  return <div className="p-8 text-white">Preparing workout...</div>
+}
     
   const { result, totalScore, skillMap } = calculateScore()
 
@@ -487,16 +502,15 @@ if (viewMode === "explanation") {
               {question.question}
             </div>
 
-          {question.options.map((opt, i) => (
+          {question?.options?.map((opt, i) => (
   <button
     key={i}
     onClick={() => handleSpeedAnswer(i)}
-    className={`block w-full text-left p-4 rounded-lg
-      ${
-        answers.speed[speedIndex] === i
-          ? "bg-indigo-600"
-          : "bg-slate-700 hover:bg-slate-600"
-      }`}
+    className={`block w-full text-left p-4 rounded-lg ${
+      answers.speed[speedIndex] === i
+        ? "bg-indigo-600"
+        : "bg-slate-700 hover:bg-slate-600"
+    }`}
   >
     {opt}
   </button>
@@ -520,6 +534,9 @@ if (viewMode === "explanation") {
     }
 
     const question = workout.vocab.questions[vocabIndex]
+    if (!question?.options) {
+  return <div>Loading...</div>
+}
 
     return (
       <div className="p-8 text-white">
@@ -746,7 +763,7 @@ if (phase === "micro") {
 </div>
 
       <div className="space-y-3">
-        {question.options.map((opt, i) => (
+       {(question.options || []).map((opt, i) => (
           <button
             key={i}
             onClick={() => handleMicroAnswer(i)}

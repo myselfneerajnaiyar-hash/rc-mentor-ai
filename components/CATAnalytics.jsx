@@ -1115,7 +1115,7 @@ function Stat({ label, value }) {
 const card = {
   background: "#111827",
   borderRadius: 16,
-   padding: window.innerWidth < 768 ? 18 : 28,
+   padding: typeof window !== "undefined" && window.innerWidth < 768 ? 18 : 28,
   border: "1px solid #1f2937",
   boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
 };

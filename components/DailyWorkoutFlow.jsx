@@ -53,7 +53,16 @@ useEffect(() => {
     }
 
     const data = await res.json()
-    setWorkout(data)
+
+const normalizedWorkout = {
+  speed: data?.speed || { questions: [] },
+  vocab: data?.vocab || { questions: [] },
+  rc1: data?.rc1 || { passage: "", questions: [] },
+  rc2: data?.rc2 || { passage: "", questions: [] },
+  micro: data?.micro || { questions: [] }
+}
+
+setWorkout(normalizedWorkout)
 
     // Animate steps
     for (let i = 0; i < steps.length; i++) {
