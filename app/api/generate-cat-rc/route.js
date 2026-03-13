@@ -135,6 +135,16 @@ QUESTION RULES
 - DO NOT repeat the same question type within a passage
 - Questions must require reasoning, not line lifting
 
+TRAP DESIGN PRINCIPLE
+
+Good CAT options are not obviously incorrect.
+They typically fail because they:
+
+* overextend the author's claim
+* misapply the argument
+* omit a critical qualification
+* interpret tone incorrectly
+
 REASONING DEPTH RULE
 
 Questions must require reasoning rather than locating a sentence.
@@ -153,29 +163,45 @@ Good CAT questions typically require:
 OPTIONS & EXPLANATIONS
 ====================
 
-OPTION DESIGN STANDARD
+OPTION CONSTRUCTION PROCESS
 
-Step 1: Write the correct answer first.
+Step 1.
+Write the CORRECT option first.
+It must capture the author's reasoning precisely but concisely.
 
-Step 2: Create three trap options by modifying the correct answer using CAT-style distortions:
+Step 2.
+Create THREE distractor options by modifying the correct option using these transformations:
 
-* Overstatement – exaggerates the author's claim beyond what the passage supports  
-* Narrowing – restricts the author's broader claim to a smaller scope  
-* Reversal – subtly flips the author's reasoning  
-* Misapplied inference – appears logical but is not supported by the passage  
+1. Distortion Trap
+   Slightly alter the author's reasoning so that the claim becomes subtly inaccurate.
 
-OPTION BALANCE RULE
+2. Partial Truth Trap
+   Preserve part of the author's argument but remove an essential qualification.
 
-* All four options must appear equally plausible.
-* Options must be similar in length (8–18 words).
-* Avoid obviously wrong options.
-* Avoid extreme wording like "always", "never", "completely" unless used intentionally as a trap.
-* The correct option must NOT be longer, clearer, or more nuanced than the traps.
+3. Unsupported Inference Trap
+   Present a conclusion that seems logically plausible but is not supported by the passage.
 
-OPTION CONTENT RULE
+Step 3.
+Ensure that ALL FOUR options appear equally plausible to a careful reader.
 
-* Options must express interpretations of the passage rather than repeating sentences from it.
-* Do NOT copy phrases directly from the passage.
+OPTION SIMILARITY RULE
+
+All options must:
+
+* be similar in length (10–18 words)
+* use similar vocabulary and tone
+* avoid obvious contradictions with the passage
+* avoid absolute words like "always", "never", "completely" unless justified
+
+The correct answer must NOT be noticeably longer, clearer, or more balanced than the distractors.
+
+DISTRACTOR QUALITY CHECK
+
+Before finalizing the options, internally verify that:
+
+* At least TWO distractors could appear correct to a strong reader.
+* A student must eliminate options through reasoning, not surface reading.
+* No option is obviously irrelevant to the passage.
 
 EXPLANATION RULES
 
@@ -206,13 +232,28 @@ let attempts = 0;
 while (!completion && attempts < 2) {
   try {
     completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
-    });
+  model: "gpt-4o",
+  messages: [
+    {
+      role: "system",
+      content:
+        "Return ONLY valid JSON. No markdown. No comments. No text outside JSON.",
+    },
+    { role: "user", content: prompt }
+  ],
+  temperature: 0.7,
+  response_format: { type: "json_object" }
+});
   } catch {
     attempts++;
   }
+}
+
+if (!completion) {
+  return NextResponse.json(
+    { error: "OpenAI request failed after retry." },
+    { status: 500 }
+  );
 }
 
   const content = completion.choices[0].message.content;
@@ -234,6 +275,22 @@ while (!completion && attempts < 2) {
   );
 }
 
+function shuffleQuestion(q) {
+
+  if (!Array.isArray(q.options)) return q;
+
+  const correct = q.options[q.correctIndex];
+
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  const newIndex = shuffled.indexOf(correct);
+
+  q.options = shuffled;
+  q.correctIndex = newIndex;
+
+  return q;
+}
+
   // HARD SAFETY CHECK (prevents blank questions in UI)
   if (
     !data.passages ||
@@ -242,9 +299,12 @@ while (!completion && attempts < 2) {
       p.questions &&
       p.questions.length === 4 &&
       p.questions.every(q =>
-        q.stem &&
-        Array.isArray(q.options) &&
-        q.options.length === 4
+       q.stem &&
+Array.isArray(q.options) &&
+q.options.length === 4 &&
+typeof q.correctIndex === "number" &&
+q.correctIndex >= 0 &&
+q.correctIndex <= 3
       )
     )
   ) {
@@ -253,6 +313,11 @@ while (!completion && attempts < 2) {
       { status: 500 }
     );
   }
+
+  data.passages = data.passages.map(p => {
+  p.questions = p.questions.map(shuffleQuestion);
+  return p;
+});
 
   return NextResponse.json(data);
 }

@@ -139,6 +139,44 @@ Examples of traps:
 
 At least one incorrect option must look very attractive.
 
+OPTION CONSTRUCTION STANDARD
+
+To ensure CAT-level difficulty, options must be constructed using the following process.
+
+Step 1.
+Write the CORRECT option first.
+
+Step 2.
+Create THREE distractor options by modifying the correct option using the following transformations:
+
+* Distortion Trap  
+Slightly alter the author's reasoning so that the statement becomes subtly inaccurate.
+
+* Partial Truth Trap  
+Preserve part of the author's argument but remove an important qualification.
+
+* Unsupported Inference Trap  
+Present a conclusion that seems logically plausible but is not supported by the passage.
+
+OPTION BALANCE RULE
+
+All options must:
+
+* be similar in length (10–18 words)  
+* use similar tone and vocabulary  
+* avoid obviously wrong statements  
+* avoid extreme wording like "always", "never", "completely" unless used deliberately as a trap  
+
+The correct option must NOT be noticeably longer, clearer, or more balanced than the distractors.
+
+DISTRACTOR QUALITY CHECK
+
+Before finalizing each question:
+
+* At least TWO distractors should appear plausible to a strong reader.  
+* A student should need reasoning to eliminate options.  
+* No option should be obviously irrelevant.
+
 Every question must contain:
 
 question  
@@ -153,7 +191,8 @@ Correct Answer Explanation:
 Explain clearly why the correct option matches the author's reasoning.
 
 Trap Explanation:
-Explain why one attractive option is wrong.
+Identify the specific trap type used in the most attractive incorrect option
+(distortion / partial truth / unsupported inference) and explain why it fails.
 
 Why Other Options Are Incorrect:
 Briefly explain why the remaining options fail logically.
@@ -226,6 +265,39 @@ Each passage:
 each paragraph 90-120 words  
 total 450-550 words
 
+PASSAGE LOGIC STRUCTURE
+
+Each passage must follow a reasoning progression similar to real CAT passages.
+
+Paragraph structure guideline:
+
+Paragraph 1  
+Introduce a widely accepted assumption, theory, or belief.
+
+Paragraph 2  
+Present an alternative perspective, criticism, or complication.
+
+Paragraph 3  
+Deepen the tension by introducing evidence, implications, or counterarguments.
+
+Paragraph 4  
+Offer a nuanced evaluation, partial reconciliation, or unresolved tension.
+
+The passage must NOT be a simple explanation of a topic.
+It must revolve around an argument, critique, or conceptual tension.
+
+VIEWPOINT DISTINCTION RULE
+
+Passages should sometimes reference ideas from different thinkers, schools, or perspectives.
+
+However, the author’s own stance must remain subtly distinguishable from the views described.
+
+Questions may test whether the reader can distinguish:
+
+* the author's position  
+* positions described in the passage  
+* positions the author critiques
+
 Each RC must include the following question types:
 
 1 Main Idea question  
@@ -263,7 +335,34 @@ Avoid storytelling.
 Avoid narrative style.
 Avoid simple explanatory passages.
 
+ANSWER HIDING RULE
+
+The passage must NEVER explicitly state the answer to any question.
+
+Questions must require:
+
+* interpretation of the author's reasoning  
+* combining ideas from multiple paragraphs  
+* identifying implicit assumptions  
+* distinguishing between author stance and referenced viewpoints
+
 Each passage must contain 4 questions.
+
+RC OPTION DESIGN RULE
+
+For reading comprehension questions:
+
+* At least two options must appear plausible after the first reading.
+* Distractors should reflect common misinterpretations of the passage.
+* Avoid options that contradict the passage directly.
+* Avoid options that are obviously unrelated.
+
+Incorrect options should typically fail because they:
+
+* overextend the author's claim  
+* ignore an important qualification  
+* misinterpret the author's tone  
+* confuse the author's view with a view mentioned in the passage
 
 Before finalizing the question set, check:
 
@@ -387,7 +486,12 @@ if(workout.micro?.questions){
   workout.micro.questions = workout.micro.questions.map(q => ({
     ...q,
     options: q.options || ["Option A","Option B","Option C","Option D"],
-    correctIndex: q.correctIndex ?? 0
+    correctIndex:
+      typeof q.correctIndex === "number" &&
+      q.correctIndex >= 0 &&
+      q.correctIndex <= 3
+        ? q.correctIndex
+        : 0
   }))
 }
 
@@ -410,8 +514,51 @@ return q
 
 }
 
+if(workout.speed?.questions){
+  workout.speed.questions =
+    workout.speed.questions.map(shuffleQuestion)
+}
+
+if(workout.vocab?.questions){
+  workout.vocab.questions =
+    workout.vocab.questions.map(shuffleQuestion)
+}
+
+if(workout.micro?.questions){
+  workout.micro.questions =
+    workout.micro.questions.map(shuffleQuestion)
+}
+
+if(workout.rc1?.questions){
+  workout.rc1.questions =
+    workout.rc1.questions.map(shuffleQuestion)
+}
+
+if(workout.rc2?.questions){
+  workout.rc2.questions =
+    workout.rc2.questions.map(shuffleQuestion)
+}
+
 return workout
 
+}
+
+function shuffleQuestion(q) {
+
+  if (!Array.isArray(q.options)) return q;
+
+  const options = [...q.options]
+  const correctValue = options[q.correctIndex]
+
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[options[i], options[j]] = [options[j], options[i]]
+  }
+
+  q.options = options
+  q.correctIndex = options.indexOf(correctValue)
+
+  return q
 }
 
 function enforceParagraphs(text){
