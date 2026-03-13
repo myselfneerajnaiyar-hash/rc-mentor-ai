@@ -102,6 +102,14 @@ PASSAGE RULES
 - NO factual recall passages
 - NO storytelling
 - NO examples that directly give away answers
+ARGUMENT STRUCTURE RULE
+
+Each passage should contain at least one of the following:
+
+* competing viewpoints
+* critique of a dominant theory
+* tension between empirical evidence and theory
+* reinterpretation of an established concept
 
 DIFFICULTY DISTRIBUTION:
 - Passage 1 & 2: Medium (doable but indirect)
@@ -127,22 +135,62 @@ QUESTION RULES
 - DO NOT repeat the same question type within a passage
 - Questions must require reasoning, not line lifting
 
+REASONING DEPTH RULE
+
+Questions must require reasoning rather than locating a sentence.
+
+Avoid questions that can be answered by directly lifting information.
+
+Good CAT questions typically require:
+
+* combining ideas from multiple paragraphs
+* identifying implicit assumptions
+* interpreting author's tone or intention
+* applying the passage idea to a new scenario
+
 ====================
+
 OPTIONS & EXPLANATIONS
 ====================
-- Each question must have EXACTLY 4 options
-- Options must be close and elimination-based
-- correctIndex must be between 0 and 3
-- Explanation must:
-- Begin with a 2–3 sentence summary of the author’s reasoning relevant to the question
-- Explicitly state why the correct option aligns with the passage’s argument or tone
-- For EACH incorrect option:
-  - Clearly state the specific flaw (distortion, extremity, irrelevance, contradiction, or unsupported inference)
-  - Reference the passage idea (not line numbers) that makes it incorrect
-- Use CAT coaching style language, as used by top CAT mentors
-- Do NOT use option numbers like “Option 0” — use A, B, C, D
-- Explanation length must be at least 120–150 words
--Never refer to options as Option 0 / Option 1. Always use Option A, B, C, D.
+
+OPTION DESIGN STANDARD
+
+Step 1: Write the correct answer first.
+
+Step 2: Create three trap options by modifying the correct answer using CAT-style distortions:
+
+* Overstatement – exaggerates the author's claim beyond what the passage supports  
+* Narrowing – restricts the author's broader claim to a smaller scope  
+* Reversal – subtly flips the author's reasoning  
+* Misapplied inference – appears logical but is not supported by the passage  
+
+OPTION BALANCE RULE
+
+* All four options must appear equally plausible.
+* Options must be similar in length (8–18 words).
+* Avoid obviously wrong options.
+* Avoid extreme wording like "always", "never", "completely" unless used intentionally as a trap.
+* The correct option must NOT be longer, clearer, or more nuanced than the traps.
+
+OPTION CONTENT RULE
+
+* Options must express interpretations of the passage rather than repeating sentences from it.
+* Do NOT copy phrases directly from the passage.
+
+EXPLANATION RULES
+
+Explanation must:
+
+1. Begin with a 2–3 sentence explanation of the author's reasoning relevant to the question.
+2. Explain why the correct option aligns with the passage's argument or tone.
+3. For EACH incorrect option:
+   - identify the trap type (overstatement / narrowing / reversal / unsupported inference)
+   - explain why the option is incorrect based on the passage’s reasoning.
+
+Never refer to options as Option 0 / Option 1.
+Always refer to them as Option A, Option B, Option C, Option D.
+
+Explanation length: 120–150 words minimum.
 ====================
 VOCABULARY RULES
 ====================
@@ -151,11 +199,21 @@ VOCABULARY RULES
 - Provide concise meaning and usage context
 `;
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.7,
-  });
+
+  let completion;
+let attempts = 0;
+
+while (!completion && attempts < 2) {
+  try {
+    completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+    });
+  } catch {
+    attempts++;
+  }
+}
 
   const content = completion.choices[0].message.content;
 

@@ -33,13 +33,14 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
 import TabGroup from "../components/TabGroup";
 import ChatMentor from "../components/ChatMentor"
 import PracticeSwitcher from "@/components/PracticeSwitcher";
+import PrecisionTraining from "../components/PrecisionTraining"
 
 
 function safeParse(value, fallback = {}) {
@@ -631,19 +632,22 @@ return (
   { id: "home", label: "Home", icon: Home },
   { id: "mentor",label: "Ask Birbal", icon: MessageSquare},
   { id: "workout", label: "Daily Workout", icon: Flame },
+   { id: "precision", label: "Precision Training", icon: Target },
  
   { id: "rc", label: "RC", icon: Brain },
   { id: "vocab", label: "Vocab", icon: BookOpen },
   { id: "speed", label: "Speed", icon: Timer },
+ 
+
   { id: "cat", label: "CAT", icon: GraduationCap },
   { id: "profile", label: "Profile", icon: User },
 ].map((item) => {
   const Icon = item.icon;
   return (
-    <button
-      key={item.id}
-      onClick={() => setView(item.id)}
-   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+   <button
+  key={item.id}
+  onClick={() => setView(item.id)}
+  className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl transition-all duration-200
 ${
  view === item.id
   ? item.id === "mentor"
@@ -651,10 +655,14 @@ ${
     : "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
   : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
 }`}
-    >
-    <Icon size={18} className="shrink-0" />
-      {item.label}
-    </button>
+>
+  <Icon size={20} className="shrink-0" />
+
+  
+    <span className="text-left leading-tight">
+  {item.label}
+</span>
+</button>
   );
 })}
 </nav>
@@ -696,6 +704,10 @@ ${
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
+
+    {view === "precision" && (
+  <PrecisionTraining user={user} userName={userName} />
+)}
 
     {view === "profile" && <ProfileView setView={setView} />}
 
