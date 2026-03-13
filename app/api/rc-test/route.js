@@ -6,6 +6,18 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+function extractJSON(text) {
+  const first = text.indexOf("{");
+  const last = text.lastIndexOf("}");
+
+  if (first === -1 || last === -1) {
+    throw new Error("No JSON found in model output");
+  }
+
+  const jsonString = text.slice(first, last + 1);
+  return JSON.parse(jsonString);
+}
+
 export async function POST(req) {
   try {
     const { passage } = await req.json();
@@ -43,14 +55,35 @@ Rules:
 - Every question must feel CAT-authentic.
 
 For every question:
-- Exactly ONE option must be correct.
-- At least TWO wrong options must be:
-  - Partially true
-  - Aligned with some line or idea in the passage
-  - But incorrect in scope, emphasis, or implication
+
+Exactly ONE option must be correct.
+
+Design the other THREE options using CAT-style traps:
+
+1. A *scope distortion*: an option that uses correct ideas but shifts their scope.
+2. A *partial truth*: an option that reflects part of the passage but misrepresents the conclusion.
+3. A *plausible paraphrase*: an option that sounds close to the author's view but subtly reverses emphasis.
+
+Important:
+
+- At least TWO wrong options must feel equally plausible as the correct one.
+- Options must be similar in length and tone.
+- Avoid extreme words like "always", "never", "completely".
+- The correct answer must NOT be the most balanced sounding option.
 - These two must feel equally tempting on a first read.
 - The final wrong option may be obviously wrong.
 - The correct option must be defensible only by careful reading.
+Option similarity rule:
+
+All four options should look stylistically similar:
+- similar sentence length
+- similar vocabulary level
+- no option should stand out as longer or more nuanced
+
+Two incorrect options must appear almost correct and survive initial elimination. 
+They should differ from the correct answer only in scope, emphasis, or logical implication.
+All four options must be similar in length, tone, and complexity.
+The correct option must not appear more nuanced or balanced than the others.
 
 Each question object MUST contain:
 - "prompt"
@@ -83,26 +116,63 @@ ${passage}
 `;
 
     const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4.1",
       messages: [
         { role: "system", content: "You are an expert CAT RC question setter. Output valid JSON only." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.35,
+      temperature: 0.45,
     });
 
     const raw = completion.choices[0].message.content || "";
 
-    const start = raw.indexOf("{");
-    const end = raw.lastIndexOf("}") + 1;
+   const parsed = extractJSON(raw);
+   if (!parsed.questions || !Array.isArray(parsed.questions)) {
+  throw new Error("Model output missing questions array");
+}
+    const reviewPrompt = `
+You are a CAT exam reviewer.
 
-    if (start === -1 || end === -1) {
-      throw new Error("Model did not return JSON");
-    }
+Your job is to improve the quality of these MCQs.
 
-    const parsed = JSON.parse(raw.slice(start, end));
+Ensure:
+- Exactly 4 questions remain.
+- Each question has 4 options.
+- At least TWO options should appear plausible and survive elimination.
+- Distractors should be subtle, not obviously wrong.
+- Maintain the same correct answer index if possible.
+- Improve traps if they are too easy.
 
-    const questions = (parsed.questions || []).map(q => {
+Return ONLY JSON in the same format.
+
+Questions:
+${JSON.stringify(parsed.questions)}
+`;
+
+const reviewCompletion = await client.chat.completions.create({
+  model: "gpt-4.1",
+  messages: [
+    { role: "system", content: "You are an expert CAT RC reviewer. Output valid JSON only." },
+    { role: "user", content: reviewPrompt },
+  ],
+  temperature: 0.4,
+});
+
+const reviewRaw = reviewCompletion.choices[0].message.content || "";
+
+
+
+let reviewedQuestions = parsed.questions;
+
+try {
+  const reviewed = extractJSON(reviewRaw);
+  reviewedQuestions = reviewed.questions || parsed.questions;
+} catch (err) {
+  console.error("Reviewer JSON failed, using original questions");
+  reviewedQuestions = parsed.questions;
+}
+
+   const questions = (reviewedQuestions || []).map(q => {
       const rawType = (q.type || "").toLowerCase();
 
       const map = {
@@ -135,6 +205,10 @@ ${passage}
         type,
       };
     });
+
+    if (questions.length !== 4) {
+  throw new Error("RC generator did not produce 4 questions");
+}
 
     return NextResponse.json({ questions });
   } catch (e) {

@@ -130,10 +130,27 @@ Do not include any extra commentary outside the JSON.
 
     const orderedTypes = ["main-idea", "tone", "inference", "detail"];
 
-    const questions = (json.questions || []).map((q, i) => ({
-      ...q,
-      type: orderedTypes[i] || "inference",
-    }));
+let questions = json.questions || [];
+
+// If AI gives more than 4 → keep first 4
+if (questions.length > 4) {
+  questions = questions.slice(0, 4);
+}
+
+// If AI gives less than 4 → add placeholders
+while (questions.length < 4) {
+  questions.push({
+    prompt: "Question unavailable. Please regenerate.",
+    options: ["A", "B", "C", "D"],
+    correctIndex: 0,
+  });
+}
+
+// Add question type
+questions = questions.map((q, i) => ({
+  ...q,
+  type: orderedTypes[i],
+}));
 
     return NextResponse.json({
       passage: json.passage,

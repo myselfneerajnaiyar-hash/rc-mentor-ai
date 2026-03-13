@@ -576,9 +576,7 @@ if (fullError) {
   console.log("Full question insert error:", fullError);
 }
 
-if (qError) {
-  console.log("Question insert error:", qError);
-}
+
 
 
     
@@ -1453,9 +1451,14 @@ return (
   </div>
 )}
 
-   {phase === "detailed" && result && (
+  {phase === "detailed" && result && (
   <div style={{ marginTop: 24 }}>
     <h3>Detailed Review</h3>
+
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
+      <h4 className="font-semibold mb-2">Passage</h4>
+      <p style={{ whiteSpace: "pre-wrap" }}>{fullPassage}</p>
+    </div>
 
     {testQuestions.map((q, i) => {
      const qa = result.questionAnalysis?.find(x => x.qIndex === i);
@@ -1615,16 +1618,16 @@ overflow-y-auto
   ))}
 </div>
 
-   <input
+  <input
   value={birbalInput}
   onChange={(e) => setBirbalInput(e.target.value)}
-  className="w-full p-2 bg-slate-800 rounded text-sm border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  className="w-full p-2 bg-slate-800 rounded text-sm border border-slate-700 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
   placeholder="Ask Birbal..."
 />
 
     <button
       onClick={sendBirbalMessage}
-      className="mt-2 px-3 py-1 bg-indigo-600 rounded text-sm"
+      className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm text-white"
     >
       Ask
     </button>

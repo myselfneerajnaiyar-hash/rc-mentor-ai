@@ -14,7 +14,7 @@ const [showExplanation, setShowExplanation] = useState(false)
 const [finished, setFinished] = useState(false)
   const [weakSkills, setWeakSkills] = useState([]);
   const [skillStats, setSkillStats] = useState({})
-  const [timeLeft, setTimeLeft] = useState(720)
+  const [timeLeft, setTimeLeft] = useState(480)
 
 
    function formatSkill(skill) {
@@ -54,7 +54,7 @@ function getSkillExplanation(skill) {
     const skillMap = {};
 
     data.forEach(q => {
-      const type = q.question_type || "Unknown";
+      const type = (q.question_type || "unknown").toLowerCase();
 
       if (!skillMap[type]) {
         skillMap[type] = { total: 0, correct: 0 };
@@ -178,6 +178,67 @@ function formatTime(seconds) {
 
   }
 
+  async function savePrecisionResults() {
+
+ if (!user || !drill) return
+
+ const questions = [
+   ...(drill?.micro || []),
+   ...(drill?.mini_rc?.questions || [])
+ ]
+
+ // 1️⃣ CREATE SESSION FIRST
+ const { data: sessionData, error: sessionError } =
+   await supabase
+     .from("rc_sessions")
+     .insert([
+       {
+         user_id: user.id,
+         passage_id: "precision-drill",
+         passage_text: "Precision reasoning drill",
+         total_questions: questions.length,
+         correct_answers: questions.filter(
+           (q, i) => answers[i] === q.correctIndex
+         ).length,
+         time_taken_sec: 0,
+         difficulty: "precision",
+       },
+     ])
+     .select()
+     .single()
+
+ if (sessionError || !sessionData) {
+   console.log("Precision session error", sessionError)
+   return
+ }
+
+ const sessionId = sessionData.id
+
+ // 2️⃣ SAVE QUESTIONS
+ const rows = questions.map((q, i) => ({
+   user_id: user.id,
+   session_id: sessionId,
+   question_type: (q.skill || "general")
+     .trim()
+     .toLowerCase()
+     .replace(/\s+/g, "-"),
+   is_correct: answers[i] === q.correctIndex,
+   source: "precision_drill",
+   created_at: new Date().toISOString(),
+ }))
+
+ const { error } = await supabase
+   .from("rc_questions")
+   .insert(rows)
+
+ if (error) {
+   console.error("Precision save error:", error)
+ } else {
+   console.log("Precision drill saved successfully")
+ }
+
+}
+
   if (phase === "intro") {
 
     return (
@@ -221,7 +282,7 @@ Your weakest areas appear to be{" "}
 )}
 
 <p className="mb-6 text-slate-300">
-I have created a 10-question precision drill to strengthen these skills.
+I have created a focused 8-question precision drill to strengthen these skills.
 </p>
 
         <button
@@ -261,6 +322,7 @@ I have created a 10-question precision drill to strengthen these skills.
     }
 
   })
+
 
 
 
@@ -369,7 +431,32 @@ answer choices.
 > 
 View Detailed Explanations
 </button>
+<div className="mt-10 bg-slate-800 p-6 rounded-xl flex gap-4">
 
+<img
+  src="/birbal.png"
+  className="w-12 h-12 rounded-full"
+/>
+
+<div>
+
+<div className="font-semibold mb-1">
+Birbal
+</div>
+
+<div className="text-slate-300 text-sm mb-3">
+Nice work. Precision improves through repetition.  
+Ready for another drill? Let's keep sharpening your reasoning.
+</div>
+
+<button
+  onClick={startDrill}
+  className="px-5 py-2 bg-indigo-600 rounded-lg"
+> 
+StartAnother Drill
+</button>
+</div>
+</div>
 </div>
 </div>
 
@@ -425,11 +512,11 @@ if (phase === "review") {
               </div>
             )}
 
-            {i >= 8 && (
-              <div className="mb-4 text-slate-300">
-                {drill.mini_rc.passage}
-              </div>
-            )}
+            {i >= drill.micro.length && (
+  <div className="mb-4 text-slate-300">
+    {drill.mini_rc.passage}
+  </div>
+)}
 
             <div className="mb-4 font-semibold">
               {q.question}
@@ -585,7 +672,7 @@ Question {currentQ + 1} / {questions.length}
   </div>
 )}
 
-{currentQ >= 8 && (
+{currentQ >= drill.micro.length && (
   <div className="mb-4 text-slate-300">
     {drill.mini_rc.passage}
   </div>
@@ -631,14 +718,21 @@ Previous
 </button>
 
 <button
-  onClick={() => {
-    if (currentQ < questions.length - 1) {
-      setCurrentQ(currentQ + 1)
-      setShowExplanation(false)
-    } else {
-      setPhase("finished")
-    }
-  }}
+ onClick={async () => {
+  if (currentQ < questions.length - 1) {
+    setCurrentQ(currentQ + 1)
+    setShowExplanation(false)
+  } else {
+
+    console.log("Saving precision results...")
+
+    await savePrecisionResults()
+
+    console.log("Save finished")
+
+    setPhase("finished")
+  }
+}}
   className="px-4 py-2 bg-indigo-600 rounded-lg"
 > 
 Next

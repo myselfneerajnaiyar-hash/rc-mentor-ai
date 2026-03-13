@@ -33,7 +33,7 @@ export async function POST(req) {
     let attemptCount = attempts?.attempt_count || 0
 
     // Assume free user for now
-    const limit = 1
+    const limit = 5
 
     if (attemptCount >= limit) {
 
@@ -46,98 +46,173 @@ export async function POST(req) {
 
     // ===== GENERATE DRILL =====
 const prompt = `
-You are a senior CAT VARC examiner designing difficult RC reasoning drills.
+You are a senior CAT VARC examiner designing high-quality reasoning drills similar to the CAT exam.
 
 Weak skills to target:
 ${weakSkills.join(", ")}
 
-IMPORTANT EXAM RULES
+Your goal is to create questions that require careful reasoning. The correct answer must NOT be identifiable through obvious elimination.
 
-1. The correct answer must NEVER be explicitly stated in the passage.
-2. The passage must contain ambiguity so that the student must infer the answer.
-3. Do NOT include sentences that directly reveal the answer such as:
-   - "the author's tone is..."
-   - "this shows the author agrees..."
-   - "this paragraph functions to..."
-4. The passage should only contain evidence. The student must reason to reach the answer.
+The difficulty must resemble CAT 2021–2023 VARC.
 
+--------------------------------------------------
+PASSAGE WRITING RULES
+--------------------------------------------------
+
+Write argumentative passages (80–120 words).
+
+The passage must:
+
+* present a claim or commonly held belief  
+* introduce a competing viewpoint or critique  
+* end with a nuanced position  
+
+IMPORTANT:
+
+Do NOT refer to the author directly.
+
+Avoid phrases like:
+- "the author argues"
+- "the author suggests"
+- "the author critiques"
+- "this passage shows"
+
+Instead present the ideas naturally as part of the discussion.
+
+The passage should resemble an academic editorial paragraph.
+
+The passage must NOT directly reveal the answer.
+
+--------------------------------------------------
 QUESTION DESIGN RULES
+--------------------------------------------------
 
-Questions must test real CAT reasoning patterns such as:
-- inference
-- author agreement
-- function
-- tone
-- assumption
-- next paragraph prediction
+Questions must test real CAT reasoning patterns:
 
-Do NOT generate grammar questions.
+* inference  
+* author agreement  
+* paragraph function  
+* tone / author attitude  
+* implicit assumption  
+* next paragraph prediction  
 
-Do NOT create questions on:
-- subject verb agreement
-- sentence correction
-- punctuation
-- grammar errors
+Students must interpret the argument to answer.
 
-OPTION DESIGN (VERY IMPORTANT)
+Avoid factual recall or line-matching questions.
 
-Each question must have:
+--------------------------------------------------
+OPTION DESIGN METHOD (CRITICAL)
+--------------------------------------------------
 
-1 correct answer
-3 trap answers
+Before writing options, follow this internal reasoning process:
 
-Trap answers should mimic real CAT traps such as:
-- extreme interpretation
-- outside scope
-- partially correct but distorted
-- reverse logic
+Step 1  
+Determine the correct answer based on the author's reasoning.
 
-Avoid obviously wrong options.
+Step 2  
+Create three distractors using specific reasoning traps.
 
- explanation object containing:
+Use EXACTLY these trap types:
+
+1. PASSAGE RESTATEMENT TRAP  
+A statement that is true in the passage but does NOT answer the question.
+
+2. QUALIFICATION REMOVAL TRAP  
+Remove an important qualifier from the author's claim.
+
+3. VIEWPOINT CONFUSION TRAP  
+Use a viewpoint mentioned in the passage but not the author's stance.
+
+Distractors must be logically related to the passage.
+
+--------------------------------------------------
+OPTION QUALITY RULES
+--------------------------------------------------
+
+All four options must:
+
+* be similar in length (8–16 words)  
+* use similar vocabulary  
+* appear equally plausible  
+* avoid extreme wording
+
+Do NOT use words like:
+
+always  
+never  
+completely  
+entirely  
+solely  
+only  
+
+At least TWO distractors must appear reasonable to a careful reader.
+
+The correct answer must NOT look more nuanced or balanced than the others.
+
+The correct answer should only be identifiable after careful reasoning.
+
+--------------------------------------------------
+FINAL OPTION CHECK
+--------------------------------------------------
+
+Before finalizing the options verify:
+
+* No option is obviously wrong  
+* No option contradicts the passage directly  
+* The correct answer cannot be identified through quick elimination  
+
+If the correct answer is obvious, rewrite the options.
+
+--------------------------------------------------
+SESSION STRUCTURE
+--------------------------------------------------
+
+Generate 6 MICRO DRILLS.
+
+Each drill must contain:
+
+paragraph  
+question  
+options (4)  
+correctIndex  
+skill  
+
+explanation:
 
 {
- "reasoning": "step-by-step explanation of how the correct answer is derived",
- "why_correct": "why the correct option matches the author's reasoning",
- "trap_analysis": [
+ "reasoning": "step-by-step reasoning explaining the correct answer",
+ "why_correct": "why the correct option matches the author's argument",
+ "traps": [
    {
-     "option": "A",
-     "trap_type": "extreme statement / outside scope / distortion",
-     "reason": "why students commonly fall for this trap"
+     "optionIndex": 0,
+     "trap_type": "",
+     "reason": ""
    }
  ]
 }
 
-
-SESSION STRUCTURE
-
-Generate 8 micro drills.
-
-Each drill must contain:
-
-paragraph
-question
-options (4)
-correctIndex
-skill
-
-explanation: {
-  reasoning: "",
-  why_correct: "",
-  traps: [
-    {
-      optionIndex: 0,
-      trap_type: "",
-      reason: ""
-    }
-  ]
-}
+--------------------------------------------------
 
 Then generate:
 
-1 mini RC passage (250–300 words)
+1 MINI RC PASSAGE (250–300 words)
 
-Create 2 questions testing inference,tone or function.
+The passage must contain:
+
+* competing viewpoints  
+* conceptual tension  
+* a nuanced position  
+
+Create 2 questions testing:
+
+* inference  
+* tone OR paragraph function  
+
+Answers must require combining ideas across the passage.
+
+Avoid obvious summary questions.
+
+--------------------------------------------------
 
 Return JSON exactly in this format:
 
@@ -150,8 +225,8 @@ Return JSON exactly in this format:
 }
 
 Return ONLY valid JSON.
-`
-
+`;
+console.log("Generating precision drill...")
     const completion = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
@@ -173,23 +248,28 @@ Rules:
       ],
       temperature: 0.2,
       response_format: { type: "json_object" },
-      max_tokens: 3500
+      max_tokens: 4000
     })
+
+    console.log("OpenAI response received")
 
     let drill
 
-try {
+const raw = completion.choices[0].message.content
 
-  const raw = completion.choices[0].message.content
+console.log("RAW AI RESPONSE LENGTH:", raw.length)
+
+try {
 
   drill = JSON.parse(raw)
 
 } catch (err) {
 
-  console.error("AI returned invalid JSON:", completion.choices[0].message.content)
+  console.error("INVALID JSON FROM AI:")
+  console.error(raw)
 
   return NextResponse.json(
-    { error: "AI generation failed. Please retry." },
+    { error: "AI returned incomplete JSON. Please retry." },
     { status: 500 }
   )
 

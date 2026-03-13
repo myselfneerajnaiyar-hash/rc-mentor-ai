@@ -39,6 +39,8 @@ export default function RCProfile({ setView }) {
       const bySession = {};
 
       data.forEach(q => {
+
+ if (!q.session_id) return
         if (!bySession[q.session_id]) {
           bySession[q.session_id] = [];
         }
