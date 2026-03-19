@@ -14,10 +14,16 @@ export async function GET() {
 
     // check if workout already exists
     const { data: existing } = await supabase
-      .from("daily_workout_templates")
-      .select("*")
-      .eq("workout_date", today)
-      .single()
+  .from("daily_workout_templates")
+  .select("*")
+  .eq("workout_date", today)
+
+if (existing && existing.length > 0) {
+  return NextResponse.json({
+    status: "Workout already exists",
+    data: existing[0]
+  })
+}
 
     if (existing) {
       return NextResponse.json({
@@ -27,12 +33,16 @@ export async function GET() {
     }
 
     // generate workout
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/get-daily-workout`,
-      { cache: "no-store" }
-    )
+  const res = await fetch(
+  `${process.env.NEXT_PUBLIC_SITE_URL}/api/get-daily-workout`,
+  { cache: "no-store" }
+)
 
-    const workout = await res.json()
+if (!res.ok) {
+  throw new Error("Failed to generate workout")
+}
+
+const workout = await res.json()
 
     // save to supabase
     await supabase
@@ -49,6 +59,7 @@ export async function GET() {
     })
 
   } catch (err) {
+    console.error("CRON ERROR:", err)
 
     return NextResponse.json({
       status: "error",

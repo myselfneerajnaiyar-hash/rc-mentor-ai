@@ -61,11 +61,17 @@ PASSAGE WRITING RULES
 
 Write argumentative passages (80–120 words).
 
-The passage must:
+The passage must contain a clear reasoning structure, not merely a balanced opinion.
 
-* present a claim or commonly held belief  
-* introduce a competing viewpoint or critique  
-* end with a nuanced position  
+Use one of the following logical patterns:
+
+* A commonly held belief followed by a critique or limitation  
+* An observed phenomenon followed by a deeper explanation  
+* A claim followed by a qualification that changes its implications  
+
+Avoid symmetrical “both sides are equally valid” conclusions.
+
+The paragraph should subtly lean toward a specific interpretation or insight.
 
 IMPORTANT:
 
@@ -82,6 +88,16 @@ Instead present the ideas naturally as part of the discussion.
 The passage should resemble an academic editorial paragraph.
 
 The passage must NOT directly reveal the answer.
+
+PASSAGE COMPLEXITY RULE
+
+The passage should include at least one of the following:
+
+* a qualification that limits the main claim
+* a contrast between two related ideas
+* a subtle shift in argument in the final sentence
+
+Avoid overly clean "balanced conclusion" structures.
 
 --------------------------------------------------
 QUESTION DESIGN RULES
@@ -101,30 +117,60 @@ Students must interpret the argument to answer.
 Avoid factual recall or line-matching questions.
 
 --------------------------------------------------
-OPTION DESIGN METHOD (CRITICAL)
+--------------------------------------------------
+OPTION DESIGN METHOD (CAT STYLE)
 --------------------------------------------------
 
-Before writing options, follow this internal reasoning process:
-
 Step 1  
-Determine the correct answer based on the author's reasoning.
+Identify the author's precise claim.
 
 Step 2  
-Create three distractors using specific reasoning traps.
+Write the correct option as a higher-level interpretation of the author's reasoning, not a paraphrase of any sentence in the passage.
 
-Use EXACTLY these trap types:
+Step 3  
+Create three distractors using CAT-style traps:
 
-1. PASSAGE RESTATEMENT TRAP  
-A statement that is true in the passage but does NOT answer the question.
+* ONE strong trap that appears almost correct but subtly misinterprets the author's logic.
+* ONE scope-shift trap that slightly broadens or narrows the author's claim.
+* ONE weaker trap that exaggerates or oversimplifies the author's reasoning.
 
-2. QUALIFICATION REMOVAL TRAP  
-Remove an important qualifier from the author's claim.
+IMPORTANT:
 
-3. VIEWPOINT CONFUSION TRAP  
-Use a viewpoint mentioned in the passage but not the author's stance.
+At least TWO incorrect options must appear nearly as plausible as the correct answer.
 
-Distractors must be logically related to the passage.
+The difference between the correct answer and the strongest distractor should depend on subtle reasoning rather than obvious wording differences.
 
+IMPORTANT:
+
+Distractors must NOT be obviously wrong.
+
+CRITICAL WORDING RULE:
+
+Avoid absolute or extreme terms such as:
+
+always  
+never  
+inevitably  
+entirely  
+solely  
+completely  
+
+Options containing extreme wording are easy to eliminate and reduce question difficulty.
+
+Prefer moderate language such as:
+
+often  
+generally  
+tends to  
+largely  
+may  
+in many cases
+
+
+
+All options must appear equally plausible.
+
+The correct answer must capture the author's underlying reasoning, not simply restate a sentence from the passage.
 --------------------------------------------------
 OPTION QUALITY RULES
 --------------------------------------------------
@@ -138,16 +184,12 @@ All four options must:
 
 Do NOT use words like:
 
-always  
-never  
-completely  
-entirely  
-solely  
-only  
+Avoid excessive use of extreme words such as always or never unless they logically follow from the passage.
 
 At least TWO distractors must appear reasonable to a careful reader.
 
-The correct answer must NOT look more nuanced or balanced than the others.
+The correct answer must blend with the distractors and not appear clearly superior.
+At least TWO incorrect options must appear nearly as plausible as the correct answer.
 
 The correct answer should only be identifiable after careful reasoning.
 
@@ -155,14 +197,35 @@ The correct answer should only be identifiable after careful reasoning.
 FINAL OPTION CHECK
 --------------------------------------------------
 
-Before finalizing the options verify:
+FINAL OPTION CHECK (CRITICAL)
 
-* No option is obviously wrong  
-* No option contradicts the passage directly  
-* The correct answer cannot be identified through quick elimination  
+Before returning the question, perform this internal test:
 
-If the correct answer is obvious, rewrite the options.
+Step 1
+Pretend you are a strong CAT aspirant solving the question.
 
+Step 2
+Attempt to eliminate options quickly.
+
+Step 3
+If two options can be eliminated immediately because they are clearly weaker,
+rewrite the options.
+
+Step 4
+The final options must satisfy:
+
+* At least THREE options appear plausible after the first reading.
+* The correct answer should only become clear after analyzing the passage carefully.
+
+If the correct answer resembles a sentence in the passage, rewrite it at a more abstract reasoning level.
+
+Additional CAT Quality Check:
+
+Before returning the question verify:
+
+* None of the options can be eliminated immediately due to extreme wording.
+* At least three options appear reasonable after first reading.
+* The correct answer should only become clear after analyzing the author's logic.
 --------------------------------------------------
 SESSION STRUCTURE
 --------------------------------------------------
@@ -228,7 +291,7 @@ Return ONLY valid JSON.
 `;
 console.log("Generating precision drill...")
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4.1",
       messages: [
      {
   role: "system",
@@ -246,7 +309,7 @@ Rules:
 },
         { role: "user", content: prompt }
       ],
-      temperature: 0.2,
+      temperature: 0.45,
       response_format: { type: "json_object" },
       max_tokens: 4000
     })
