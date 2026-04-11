@@ -33,7 +33,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -41,6 +41,8 @@ import TabGroup from "../components/TabGroup";
 import ChatMentor from "../components/ChatMentor"
 import PracticeSwitcher from "@/components/PracticeSwitcher";
 import PrecisionTraining from "../components/PrecisionTraining"
+import HangmanView from "../components/HangmanView";
+
 
 
 function safeParse(value, fallback = {}) {
@@ -107,7 +109,7 @@ export default function Page() {
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setView] = useState("home"); 
-// home | rc | vocab | speed | cat | workout
+// home | rc | vocab | speed | cat | workout| crossword
  const [activeRCTest, setActiveRCTest] = useState(null);
 const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
 
@@ -637,6 +639,7 @@ return (
   { id: "rc", label: "RC", icon: Brain },
   { id: "vocab", label: "Vocab", icon: BookOpen },
   { id: "speed", label: "Speed", icon: Timer },
+  { id: "hangman", label: "Word Hunt", icon: Puzzle },
  
 
   { id: "cat", label: "CAT", icon: GraduationCap },
@@ -696,6 +699,8 @@ ${
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />
 )}
+
+{view === "hangman" && <HangmanView user={user} />}
 
 
 

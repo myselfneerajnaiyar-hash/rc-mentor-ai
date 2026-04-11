@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Leaderboard from "./Leaderboard"
 import SubscribeButton from "@/components/SubscribeButton"
+import WordHuntLeaderboard from "./WordHuntLeaderboard"
 import {
   Brain,
   BookOpen,
@@ -450,17 +451,32 @@ AI
 
 {/* ================= LEADERBOARD ================= */}
 <div className="space-y-4">
+
   <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-  <span>🏆</span>
-  Daily Workout Leaderboard
-  <span className="text-xs bg-indigo-600/20 text-indigo-400 px-2 py-1 rounded-full">
-    Today
-  </span>
-</h2>
+    🏆 Leaderboards
+  </h2>
 
-  <Leaderboard />
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    {/* LEFT */}
+    <div>
+      <h3 className="text-sm text-indigo-400 mb-2">
+        Daily Workout
+      </h3>
+      <Leaderboard />
+    </div>
+
+    {/* RIGHT */}
+    <div>
+      <h3 className="text-sm text-green-400 mb-2">
+        Word Hunt 🔤
+      </h3>
+      <WordHuntLeaderboard />
+    </div>
+
+  </div>
+
 </div>
-
  {/* ================= PREMIUM ================= */}
 
 <Card className="bg-slate-900 border-slate-800 rounded-2xl">
