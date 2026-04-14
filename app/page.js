@@ -608,6 +608,8 @@ if (typeof window !== "undefined") {
 }
   
 return (
+  <>
+<h1 style={{ display: "none" }}>Auctor RC</h1>
 <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col md:flex-row relative">
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
@@ -826,6 +828,7 @@ ${
 </div>
     </main>
     </div>
+    </>
   
 
 );
