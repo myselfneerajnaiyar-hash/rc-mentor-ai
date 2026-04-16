@@ -35,6 +35,8 @@ function getGreeting() {
 export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   const router = useRouter()
   const [streak, setStreak] = useState(0)
+  const [wordHuntStreak, setWordHuntStreak] = useState(0)
+const [playedToday, setPlayedToday] = useState(false)
  const [stats, setStats] = useState({
   accuracy: 0,
   speed: 0,
@@ -88,6 +90,24 @@ useEffect(() => {
 
   loadStreak()
 }, [user])
+
+useEffect(() => {
+  async function loadWordHuntStreak() {
+    if (!user?.id) return;
+
+    const res = await fetch("/api/hangman-streak", {
+      method: "POST",
+      body: JSON.stringify({ user_id: user.id }),
+    });
+
+    const data = await res.json();
+
+    setWordHuntStreak(data.streak || 0);
+    setPlayedToday(data.isActiveToday || false);
+  }
+
+  loadWordHuntStreak();
+}, [user]);
 
 useEffect(() => {
 
@@ -410,6 +430,58 @@ AI
         </CardContent>
       </Card>
 
+  {/* ================= WORD HUNT ================= */}
+
+<Card
+  onClick={() => setView("hangman")}
+  className="mt-8 rounded-3xl border border-purple-400/20 
+  bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 
+  hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+>
+  <CardContent className="p-4 md:p-6 grid grid-cols-3 gap-4">
+
+    {/* BLOCK 1 */}
+    <div className="bg-white/10 backdrop-blur-md border border-white/20 
+    rounded-2xl p-4 text-center space-y-1">
+
+      <div className="text-xs text-purple-200">
+        ⚡ Quick Practice
+      </div>
+
+      <div className="text-lg md:text-xl font-bold text-white">
+        🧩 Word Hunt
+      </div>
+
+      <div className="text-sm text-purple-100">
+        Modern hangman
+      </div>
+    </div>
+
+    {/* BLOCK 2 */}
+    <div className="bg-white/10 backdrop-blur-md border border-white/20 
+    rounded-2xl p-4 text-center space-y-1">
+
+      <div className="text-3xl font-bold text-white">
+        🔥 {wordHuntStreak || 0}
+      </div>
+
+     <div className="text-sm text-purple-200">
+  {playedToday ? "Streak Active ✅" : "Play today to continue"}
+</div>
+    </div>
+
+    {/* BLOCK 3 */}
+    <div className="bg-white/10 backdrop-blur-md border border-white/20 
+    rounded-2xl p-4 flex items-center justify-center">
+
+      <div className="bg-white text-indigo-700 px-6 py-3 rounded-full 
+      font-semibold text-base shadow-md hover:scale-105 transition">
+        Play →
+      </div>
+    </div>
+
+  </CardContent>
+</Card>
       {/* ================= PERFORMANCE SNAPSHOT ================= */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-white">

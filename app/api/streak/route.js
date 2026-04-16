@@ -10,45 +10,76 @@ export async function POST(req) {
     const { user_id } = await req.json();
 
     if (!user_id) {
-      return Response.json({ streak: 0 });
+      return Response.json({ streak: 0, isActiveToday: false });
     }
 
-    // 📅 Get all attempt dates (latest first)
-    const { data } = await supabase
+    // 📥 Fetch all attempts (latest first)
+    const { data, error } = await supabase
       .from("hangman_attempts")
       .select("attempt_date")
       .eq("user_id", user_id)
       .order("attempt_date", { ascending: false });
 
-    if (!data || data.length === 0) {
-      return Response.json({ streak: 0 });
+    if (error || !data || data.length === 0) {
+      return Response.json({ streak: 0, isActiveToday: false });
     }
 
-   let streak = 0;
-let expectedDate = new Date();
+    // 🧠 Step 1: Normalize dates (YYYY-MM-DD) & remove duplicates
+    const uniqueDates = [
+      ...new Set(
+        data.map((d) =>
+          new Date(d.attempt_date).toISOString().split("T")[0]
+        )
+      ),
+    ];
 
-for (let i = 0; i < data.length; i++) {
-  const attemptDate = new Date(data[i].attempt_date);
+    let streak = 0;
 
-  const diff = Math.floor(
-    (expectedDate - attemptDate) / (1000 * 60 * 60 * 24)
-  );
+    // 📅 Today & Yesterday (normalized)
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
 
-  if (diff === 0) {
-    // same day
-    streak++;
-  } else if (diff === 1) {
-    // yesterday
-    streak++;
-    expectedDate = attemptDate;
-  } else {
-    break;
-  }
-}
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split("T")[0];
 
-    return Response.json({ streak });
+    const latestActivity = uniqueDates[0];
+
+    // 🧠 Step 2: Check if streak is still valid
+    if (latestActivity !== todayStr && latestActivity !== yesterdayStr) {
+      return Response.json({
+        streak: 0,
+        isActiveToday: false,
+      });
+    }
+
+    // 🧠 Step 3: Count streak
+    let currentDate = new Date(latestActivity);
+
+    for (let i = 0; i < uniqueDates.length; i++) {
+      const dateStr = uniqueDates[i];
+      const expectedStr = currentDate.toISOString().split("T")[0];
+
+      if (dateStr === expectedStr) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    // 🎯 Step 4: Check if user played today
+    const isActiveToday = latestActivity === todayStr;
+
+    return Response.json({
+      streak,
+      isActiveToday,
+    });
 
   } catch (err) {
-    return Response.json({ streak: 0 });
+    return Response.json({
+      streak: 0,
+      isActiveToday: false,
+    });
   }
 }
