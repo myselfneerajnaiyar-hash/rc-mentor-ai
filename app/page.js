@@ -144,6 +144,8 @@ useEffect(() => {
   return () => window.removeEventListener("resize", check);
 }, []);
 
+
+
 useEffect(() => {
   if (typeof window === "undefined") return;
 
@@ -615,7 +617,7 @@ return (
 
     {/* Desktop Sidebar */}
 {!isMobile && (
-<aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
+  <aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
   <h2 className="text-xl font-semibold text-white tracking-tight">
     Auctor RC

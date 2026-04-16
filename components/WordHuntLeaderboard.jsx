@@ -21,7 +21,7 @@ try {
   if (!userId) {
     setStreak(0);
   } else {
-    const streakRes = await fetch("/api/streak", {
+    const streakRes = await fetch("/api/hangman-streak", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

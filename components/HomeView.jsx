@@ -430,57 +430,51 @@ AI
         </CardContent>
       </Card>
 
-  {/* ================= WORD HUNT ================= */}
+ {/* ================= WORD HUNT ================= */}
 
 <Card
   onClick={() => setView("hangman")}
-  className="mt-8 rounded-3xl border border-purple-400/20 
+  className="mt-6 rounded-2xl border border-purple-400/20 
   bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 
-  hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+  active:scale-[0.98] transition-all cursor-pointer"
 >
-  <CardContent className="p-4 md:p-6 grid grid-cols-3 gap-4">
+  <CardContent className="p-4 space-y-4">
 
-    {/* BLOCK 1 */}
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 
-    rounded-2xl p-4 text-center space-y-1">
+  {/* TOP */}
+  <div className="space-y-1">
+    <div className="text-xs text-purple-200">
+      ⚡ Quick Practice
+    </div>
 
-      <div className="text-xs text-purple-200">
-        ⚡ Quick Practice
+    <div className="text-lg font-bold text-white">
+      🧩 Word Hunt
+    </div>
+
+    <div className="text-xs text-purple-100">
+      Modern hangman
+    </div>
+  </div>
+
+  {/* MIDDLE */}
+  <div className="flex items-center justify-between">
+
+    <div className="text-left">
+      <div className="text-xl font-bold text-white">
+        🔥 {wordHuntStreak}
       </div>
 
-      <div className="text-lg md:text-xl font-bold text-white">
-        🧩 Word Hunt
-      </div>
-
-      <div className="text-sm text-purple-100">
-        Modern hangman
+      <div className="text-[11px] text-purple-200">
+        {playedToday ? "Active today" : "Play today"}
       </div>
     </div>
 
-    {/* BLOCK 2 */}
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 
-    rounded-2xl p-4 text-center space-y-1">
-
-      <div className="text-3xl font-bold text-white">
-        🔥 {wordHuntStreak || 0}
-      </div>
-
-     <div className="text-sm text-purple-200">
-  {playedToday ? "Streak Active ✅" : "Play today to continue"}
-</div>
+    <div className="bg-white text-indigo-700 px-4 py-2 rounded-full text-sm font-semibold shadow">
+      Play →
     </div>
 
-    {/* BLOCK 3 */}
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 
-    rounded-2xl p-4 flex items-center justify-center">
+  </div>
 
-      <div className="bg-white text-indigo-700 px-6 py-3 rounded-full 
-      font-semibold text-base shadow-md hover:scale-105 transition">
-        Play →
-      </div>
-    </div>
-
-  </CardContent>
+</CardContent>
 </Card>
       {/* ================= PERFORMANCE SNAPSHOT ================= */}
       <div className="space-y-4">

@@ -9,18 +9,16 @@ export const metadata = {
     "Auctor RC is an AI-powered CAT VARC practice platform for reading comprehension and reasoning.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="beforeInteractive"
-        />
-
         {children}
-
       </body>
     </html>
   );
