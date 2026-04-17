@@ -681,7 +681,7 @@ ${
   <main className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
-        {(view === "rc" || view === "vocab" || view === "speed") && (
+       {(["rc", "vocab", "speed", "precision"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
    {/* Desktop Navbar */}
