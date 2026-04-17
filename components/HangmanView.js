@@ -35,7 +35,7 @@ useEffect(() => {
 
     if (!userId) return;
 
-    const res = await fetch("/api/streak", {
+    const res = await fetch("/api/hangman-streak", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ user_id: userId }),
