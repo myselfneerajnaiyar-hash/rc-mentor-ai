@@ -49,31 +49,69 @@ async function checkUser() {
     .eq("user_id", user.id)
     .maybeSingle()
 
-  if (!profile) {
-    setShowProfileWizard(true)
-  }
+ if (!profile || !profile.profile_completed) {
+  setShowProfileWizard(true)
+}
 
   setLoading(false)   // ✅ MOVE IT HERE
 }
 
-  async function finishProfile() {
-    const { data: authData } = await supabase.auth.getUser()
-    if (!authData?.user) return
+ async function finishProfile() {
+  const { data: authData } = await supabase.auth.getUser()
 
-    await supabase.from("profiles").insert([
-      {
-        user_id: authData.user.id,
+  if (!authData?.user) return
+
+  const user = authData.user
+
+  // 🔥 check if profile already exists
+  const { data: existingProfile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("user_id", user.id)
+    .maybeSingle()
+
+  // =========================
+  // IF PROFILE EXISTS → UPDATE
+  // =========================
+
+  if (existingProfile) {
+    await supabase
+      .from("profiles")
+      .update({
         name: name,
         exam: exam,
         attempt_year: attemptYear,
-        phone: phone
-      }
-    ])
-
-    setShowProfileWizard(false)
-    router.push("/")
+        phone: phone,
+        profile_completed: true,
+      })
+      .eq("user_id", user.id)
   }
 
+  // =========================
+  // IF PROFILE DOES NOT EXIST → INSERT
+  // =========================
+
+  else {
+    await supabase
+      .from("profiles")
+      .insert([
+        {
+          user_id: user.id,
+          email: user.email,
+          name: name,
+          exam: exam,
+          attempt_year: attemptYear,
+          phone: phone,
+          role: "student",
+          profile_completed: true,
+        },
+      ])
+  }
+
+  setShowProfileWizard(false)
+
+  router.push("/")
+}
   if (loading) {
   return null
 }
