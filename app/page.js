@@ -147,21 +147,7 @@ useEffect(() => {
   return () => window.removeEventListener("resize", check);
 }, []);
 
-useEffect(() => {
 
-  async function checkAuth() {
-
-    const { data } = await supabase.auth.getUser();
-
-    if (!data?.user) {
-      router.replace("/preview");
-    }
-
-  }
-
-  checkAuth();
-
-}, []);
 
 
 useEffect(() => {
@@ -242,11 +228,10 @@ useEffect(() => {
   const { data: authListener } = supabase.auth.onAuthStateChange(
   (_event, session) => {
 
-    if (!session?.user) {
-      window.location.href = "/preview"
-      return
-    }
-
+   if (_event === "SIGNED_OUT") {
+  window.location.href = "/preview";
+  return;
+}
     if (mounted) {
       setUser(session.user)
     }
