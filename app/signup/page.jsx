@@ -4,11 +4,13 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import "../login/login.css"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function SignupPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -63,9 +65,9 @@ export default function SignupPage() {
 
         <h1 className="auth-title">Create Account</h1>
 
-        <p className="auth-subtitle">
-          Start your RC mastery journey
-        </p>
+       <p className="auth-subtitle">
+  New here? Sign up using your email and password.
+</p>
 
         <form onSubmit={handleSignup}>
 
@@ -78,14 +80,30 @@ export default function SignupPage() {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="auth-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className="relative">
+
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    className="auth-input pr-12"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-4 top-1/2 -translate-y-1/2 z-50"
+  >
+    {showPassword ? (
+      <EyeOff size={20} color="black" strokeWidth={2.5} />
+    ) : (
+      <Eye size={20} color="black" strokeWidth={2.5} />
+    )}
+  </button>
+
+</div>
 
           {error && <p className="auth-error">{error}</p>}
 

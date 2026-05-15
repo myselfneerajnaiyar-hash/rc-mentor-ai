@@ -15,6 +15,7 @@ JSON.parse = function (...args) {
 };
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import HomeView from "../components/HomeView";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
@@ -76,6 +77,8 @@ async function loadSectionalAttemptMapFromDB() {
 }
     
 export default function Page() {
+
+  const router = useRouter();
 
 
   const [text, setText] = useState("");
@@ -144,6 +147,21 @@ useEffect(() => {
   return () => window.removeEventListener("resize", check);
 }, []);
 
+useEffect(() => {
+
+  async function checkAuth() {
+
+    const { data } = await supabase.auth.getUser();
+
+    if (!data?.user) {
+      router.replace("/preview");
+    }
+
+  }
+
+  checkAuth();
+
+}, []);
 
 
 useEffect(() => {
@@ -225,7 +243,7 @@ useEffect(() => {
   (_event, session) => {
 
     if (!session?.user) {
-      window.location.href = "/login"
+      window.location.href = "/preview"
       return
     }
 
