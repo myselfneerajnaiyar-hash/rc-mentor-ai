@@ -90,6 +90,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   const [mode, setMode] = useState("idle");
   // idle | showingPrimary | showingEasier | solved
@@ -214,33 +215,50 @@ useEffect(() => {
 }, [view]);
 
 useEffect(() => {
+
   let mounted = true;
 
-  async function getUser() {
-    const { data } = await supabase.auth.getUser();
-    if (mounted) {
-      setUser(data?.user || null);
+  async function loadSession() {
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!mounted) return;
+
+    if (!session?.user) {
+      router.replace("/preview");
+      return;
     }
+
+    setUser(session.user);
+    setAuthLoading(false);
   }
 
-  getUser();
+  loadSession();
 
-  const { data: authListener } = supabase.auth.onAuthStateChange(
-  (_event, session) => {
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
 
-   if (_event === "SIGNED_OUT") {
-  window.location.href = "/preview";
-  return;
-}
-    if (mounted) {
-      setUser(session.user)
+      if (_event === "SIGNED_OUT") {
+        window.location.href = "/preview";
+        return;
+      }
+
+      if (session?.user) {
+        setUser(session.user);
+        setAuthLoading(false);
+      }
     }
-  }
-);
+  );
+
   return () => {
     mounted = false;
-    authListener?.subscription?.unsubscribe();
+    subscription.unsubscribe();
   };
+
 }, []);
 
 
@@ -610,6 +628,10 @@ if (typeof window !== "undefined") {
 if (typeof window !== "undefined") {
   localStorage.setItem(weekKey, JSON.stringify(saved));
 }
+}
+
+if (authLoading) {
+  return null;
 }
   
 return (

@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
+
   const { pathname } = request.nextUrl;
 
-  const hasAuth =
-    request.cookies.has("sb-access-token") ||
-    request.cookies.has("supabase-auth-token");
-
-  // Only guests should go to preview
-  if (pathname === "/" && !hasAuth) {
-    return NextResponse.redirect(new URL("/preview", request.url));
+  // Allow public routes
+  if (
+    pathname.startsWith("/preview") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/welcome") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
   }
 
   return NextResponse.next();
