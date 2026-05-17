@@ -46,7 +46,7 @@ export default function PreviewFooter() {
              onClick={() => router.push("/login")}
             className="mt-10 rounded-2xl bg-orange-500 px-8 py-4 font-semibold text-white transition hover:scale-[1.02] hover:bg-orange-400">
 
-              Start Free Preview
+              Start Free 3 Days Trial
 
             </button>
 

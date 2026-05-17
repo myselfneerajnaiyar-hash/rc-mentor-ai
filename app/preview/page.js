@@ -170,7 +170,7 @@ transition={{
              onClick={() => router.push("/login")}
             className="group flex items-center gap-2 rounded-2xl bg-orange-500 px-8 py-4 font-semibold text-white transition hover:bg-orange-600 hover:scale-[1.02]">
 
-  <span>Start Free Preview</span>
+  <span>Start Free 3 Day Trial</span>
 
   <ArrowRight
     size={18}
