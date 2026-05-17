@@ -49,6 +49,14 @@ export async function POST(req) {
     expires_at: expiry
   })
 
+  await supabase
+  .from("profiles")
+  .update({
+    is_premium: true,
+    premium_expires_at: expiry
+  })
+  .eq("user_id", user_id)
+
   return Response.json({
     success: true
   })

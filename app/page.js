@@ -34,7 +34,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -125,6 +125,7 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [userName, setUserName] = useState("");
+  const [hasPremiumAccess, setHasPremiumAccess] = useState(false)
 
   // ---- VOCAB STATE ----
   
@@ -261,6 +262,65 @@ useEffect(() => {
 
 }, []);
 
+
+useEffect(() => {
+
+  if (!user?.id) return
+
+  async function checkAccess() {
+
+    // STEP 1 → premium subscription check
+    const { data: subscription } = await supabase
+      .from("subscriptions")
+      .select("*")
+      .eq("user_id", user.id)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle()
+
+    if (subscription) {
+      setHasPremiumAccess(true)
+      return
+    }
+
+    // STEP 2 → trial check
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("trial_expires_at")
+      .eq("user_id", user.id)
+      .maybeSingle()
+
+    if (!profile?.trial_expires_at) {
+      setHasPremiumAccess(false)
+      return
+    }
+
+    const now = new Date()
+    const expiry = new Date(profile.trial_expires_at)
+
+    if (now < expiry) {
+      setHasPremiumAccess(true)
+    } else {
+      setHasPremiumAccess(false)
+    }
+  }
+
+  checkAccess()
+
+}, [user])
+
+useEffect(() => {
+
+  const freeViews = ["home", "workout", "hangman", "profile"]
+
+  const lockedView =
+    !freeViews.includes(view) &&
+    !hasPremiumAccess
+
+  if (lockedView) {
+    setView("home")
+  }
+
+}, [view, hasPremiumAccess])
 
  useEffect(() => {
   if (!user) return;
@@ -634,6 +694,7 @@ if (authLoading) {
   return null;
 }
   
+
 return (
   <>
 <h1 style={{ display: "none" }}>Auctor RC</h1>
@@ -675,25 +736,58 @@ return (
   { id: "profile", label: "Profile", icon: User },
 ].map((item) => {
   const Icon = item.icon;
+
+  const freeViews = ["home", "workout", "hangman", "profile"]
+
+const locked =
+  !freeViews.includes(item.id) &&
+  !hasPremiumAccess
   return (
    <button
   key={item.id}
-  onClick={() => setView(item.id)}
+  onClick={() => {
+
+  const freeViews = ["home", "workout", "hangman", "profile"]
+
+  const locked =
+    !freeViews.includes(item.id) &&
+    !hasPremiumAccess
+
+  if (locked) {
+    router.push("/pricing")
+    return
+  }
+
+  setView(item.id)
+}}
   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl transition-all duration-200
 ${
  view === item.id
   ? item.id === "mentor"
     ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
     : "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
-  : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
+ : locked
+? "text-slate-500 opacity-70 hover:bg-slate-800/40"
+: "text-slate-400 hover:bg-slate-800/60 hover:text-white"
 }`}
 >
   <Icon size={20} className="shrink-0" />
 
   
-    <span className="text-left leading-tight">
-  {item.label}
-</span>
+   <div className="flex items-center gap-2">
+
+  <span className="text-left leading-tight">
+    {item.label}
+  </span>
+
+  {locked && (
+    <span className="ml-1 text-[10px] opacity-50">
+      🔒
+    </span>
+  )}
+
+</div>
+
 </button>
   );
 })}

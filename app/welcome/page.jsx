@@ -62,6 +62,9 @@ async function checkUser() {
   if (!authData?.user) return
 
   const user = authData.user
+  const expiry = new Date()
+
+expiry.setDate(expiry.getDate() + 3)
 
   // 🔥 check if profile already exists
   const { data: existingProfile } = await supabase
@@ -104,6 +107,8 @@ async function checkUser() {
           phone: phone,
           role: "student",
           profile_completed: true,
+          trial_days: 3,
+          trial_expires_at: expiry
         },
       ])
   }

@@ -1,4 +1,5 @@
 "use client"
+import Script from "next/script"
 
 export default function SubscribeButton({ amount, label, user, variant = "primary" }) {
 
@@ -92,7 +93,12 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
   }
 
   return (
+
+    <>
+  <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+
   <button
+
   onClick={startPayment}
   className={`w-full font-semibold py-4 text-lg rounded-xl transition shadow-lg hover:shadow-xl
   ${
@@ -103,5 +109,6 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
 >
   {label}
 </button>
+</>
   )
 }

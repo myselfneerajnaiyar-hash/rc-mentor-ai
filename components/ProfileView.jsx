@@ -13,6 +13,7 @@ export default function ProfileView({ setView }) {
     sectionals: 0,
   });
   const [profileTab, setProfileTab] = useState("overview");
+  const [subscription, setSubscription] = useState(null)
 
   const [showEdit, setShowEdit] = useState(false);
 const [editData, setEditData] = useState({
@@ -39,6 +40,18 @@ const [editData, setEditData] = useState({
       .maybeSingle();
 
     setProfile(data);
+
+    // Load active subscription
+
+const { data: sub } = await supabase
+  .from("subscriptions")
+  .select("*")
+  .eq("user_id", userId)
+  .gt("expires_at", new Date().toISOString())
+  .order("expires_at", { ascending: false })
+  .maybeSingle()
+
+setSubscription(sub)
    setEditData({
   name: data?.name || "",
   exam: data?.exam || "",
@@ -118,6 +131,26 @@ const [editData, setEditData] = useState({
           <p style={{ color: "#94a3b8", fontSize: 14 }}>
   📱 {profile.phone || "Phone not added"}
 </p>
+
+{subscription && (
+  <p
+    style={{
+      color: "#22c55e",
+      fontSize: 14,
+      marginTop: 6,
+      fontWeight: 600,
+    }}
+  >
+    ⭐ Pro {subscription.plan === "monthly" ? "Monthly" : "Yearly"} Active
+    <br />
+    Expires on{" "}
+    {new Date(subscription.expires_at).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })}
+  </p>
+)}
           <p style={joined}>
             Joined{" "}
             {new Date(profile.created_at).toLocaleDateString("en-IN", {
@@ -285,8 +318,17 @@ const [editData, setEditData] = useState({
 {profileTab === "subscription" && (
   <div style={section}>
     <h3>Subscription</h3>
-    <p style={{ marginBottom: 10 }}>
-  Current Plan: <strong>Free</strong>
+   <p style={{ marginBottom: 10 }}>
+  Current Plan:{" "}
+  <strong>
+    {subscription
+      ? `Pro ${
+          subscription.plan === "monthly"
+            ? "Monthly"
+            : "Yearly"
+        }`
+      : "Free"}
+  </strong>
 </p>
 
 <p style={{ color: "#94a3b8" }}>
@@ -294,20 +336,22 @@ const [editData, setEditData] = useState({
   and full sectional sync.
 </p>
 
-<button
-  style={{
-    marginTop: 15,
-    padding: "10px 18px",
-    background: "#2563eb",
-    border: "none",
-    borderRadius: 8,
-    color: "#fff",
-    fontWeight: 600,
-    cursor: "pointer",
-  }}
->
-  Upgrade Plan
-</button>
+{!subscription && (
+  <button
+    style={{
+      marginTop: 15,
+      padding: "10px 18px",
+      background: "#2563eb",
+      border: "none",
+      borderRadius: 8,
+      color: "#fff",
+      fontWeight: 600,
+      cursor: "pointer",
+    }}
+  >
+    Upgrade Plan
+  </button>
+)}
   </div>
 )}
 

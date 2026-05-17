@@ -1,13 +1,27 @@
-import PreviewNavbar from "../../components/PreviewNavbar"
-import PreviewFooter from "../../components/PreviewFooter"
+"use client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import SubscribeButton from "@/components/SubscribeButton"
+import { useEffect, useState } from "react"
+import { supabase } from "../../lib/supabase"
+import { useRouter } from "next/navigation"
 
 export default function Pricing() {
+const [user, setUser] = useState(null)
 
+const router = useRouter()
+
+useEffect(() => {
+  async function loadUser() {
+    const { data } = await supabase.auth.getUser()
+    setUser(data?.user || null)
+  }
+
+  loadUser()
+}, [])
 return (
 <>
-<PreviewNavbar />
+
 
 <main className="relative min-h-screen bg-[#0b0f2a] text-white overflow-hidden">
 
@@ -17,7 +31,7 @@ return (
 
 {/* HERO */}
 
-<section className="max-w-6xl mt-20 mx-auto px-6 py-28 text-center">
+<section className="max-w-6xl mt-20 mx-auto px-6 pt-28 pb-40 text-center">
 
 <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight mb-8">
 Train Like a
@@ -25,8 +39,8 @@ Train Like a
 </h1>
 
 <p className="text-gray-300 text-xl leading-relaxed max-w-3xl mx-auto">
-Train your reading intelligence with structured RC workouts,
-AI mentorship and performance analytics.
+Choose your plan and unlock the complete Auctor RC experience —
+structured training, AI mentorship, analytics, and unlimited practice.
 </p>
 
 </section>
@@ -34,59 +48,22 @@ AI mentorship and performance analytics.
 
 {/* PRICING */}
 
-<section className="max-w-6xl mx-auto px-6 pb-32">
+<section className="max-w-6xl mt-20 mx-auto px-6 pb-32">
 
-<div className="grid md:grid-cols-3 gap-8 items-stretch">
+<div className="grid md:grid-cols-2 gap-8 items-stretch max-w-4xl mx-auto">
 
 
-{/* FREE TRIAL */}
-
-<Card className="bg-slate-900 border-slate-800 rounded-3xl hover:border-green-500/40 transition-all duration-300">
-
-  <CardContent className="p-10 text-center">
-
-    <h3 className="text-2xl font-semibold text-white mb-6">
-      Free Trial
-    </h3>
-
-    <p className="text-6xl font-bold text-white mb-3">
-      ₹0
-    </p>
-
-    <p className="text-slate-400 mb-8">
-      Full access for 7 days
-    </p>
-
-    <ul className="space-y-4 text-slate-300 text-left max-w-[220px] mx-auto mb-10">
-
-      <li>✔️ Daily RC workouts</li>
-      <li>✔️ Speed reading gym</li>
-      <li>✔️ Birbal AI mentor</li>
-      <li>✔️ Analytics dashboard</li>
-      <li>✔️ Unlimited RC practice</li>
-
-    </ul>
-
-    <Button
-      className="w-full rounded-2xl bg-green-500 hover:bg-green-600 h-12 text-base font-semibold"
-    >
-      Start Free Trial
-    </Button>
-
-  </CardContent>
-
-</Card>
 
 {/* MONTHLY */}
 
 {/* MONTHLY */}
 
-<Card className="bg-slate-900 border-slate-800 rounded-3xl hover:border-indigo-500/40 transition-all duration-300">
+<Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-slate-700/70 ring-1 ring-white/10 shadow-2xl shadow-blue-500/10 rounded-3xl hover:border-indigo-400/60 hover:-translate-y-1 transition-all duration-300 backdrop-blur-xl">
 
   <CardContent className="p-10 text-center">
 
     <h3 className="text-2xl font-semibold text-white mb-6">
-      Monthly
+      Pro Monthly
     </h3>
 
     <p className="text-6xl font-bold text-white mb-3">
@@ -107,12 +84,11 @@ AI mentorship and performance analytics.
 
     </ul>
 
-    <a
-      href="https://rzp.io/rzp/8dUAksb"
-      className="w-full inline-flex items-center justify-center rounded-2xl bg-indigo-600 hover:bg-indigo-500 h-12 text-base font-semibold transition-all duration-300"
-    >
-      Start Monthly Plan
-    </a>
+   <SubscribeButton
+  amount={399}
+  label="Start Monthly Plan"
+  user={user}
+/>
 
   </CardContent>
 
@@ -120,7 +96,7 @@ AI mentorship and performance analytics.
 
 {/* YEARLY */}
 
-<Card className="relative bg-gradient-to-b from-orange-500/10 to-slate-900 border-orange-500/40 rounded-3xl hover:border-orange-400 transition-all duration-300 scale-105">
+<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 ring-1 ring-white/10 shadow-2xl shadow-orange-500/10 rounded-3xl hover:border-orange-300 hover:-translate-y-1 transition-all duration-300 scale-105 backdrop-blur-xl">
 
   <div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
     MOST POPULAR
@@ -129,7 +105,7 @@ AI mentorship and performance analytics.
   <CardContent className="p-10 text-center">
 
     <h3 className="text-2xl font-semibold text-white mb-6">
-      Yearly
+      Elite Yearly
     </h3>
 
     <p className="text-6xl font-bold text-white mb-2">
@@ -150,12 +126,12 @@ AI mentorship and performance analytics.
 
     </ul>
 
-    <a
-      href="https://rzp.io/rzp/g0Nxkgl"
-      className="w-full inline-flex items-center justify-center rounded-2xl bg-orange-500 hover:bg-orange-400 h-12 text-base font-semibold transition-all duration-300"
-    >
-      Unlock Premium
-    </a>
+    <SubscribeButton
+  amount={1999}
+  label="Unlock Premium"
+  user={user}
+  variant="premium"
+/>
 
   </CardContent>
 
@@ -178,11 +154,23 @@ Cancel anytime • No hidden charges
 
 </div>
 
+<div className="flex justify-center mt-10">
+
+  <Button
+    variant="outline"
+    onClick={() => router.push("/")}
+    className="rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white px-8 h-12 transition-all duration-300"
+  >
+    ← Back to Dashboard
+  </Button>
+
+</div>
+
 </section>
 
 </main>
 
-<PreviewFooter />
+
 
 </>
 )
