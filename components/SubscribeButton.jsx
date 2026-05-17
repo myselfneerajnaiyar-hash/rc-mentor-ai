@@ -4,6 +4,11 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
 
   async function startPayment() {
 
+    if (!user?.id) {
+  alert("Please login first")
+  return
+}
+
     const res = await fetch("/api/create-order", {
       method: "POST",
       headers: {
@@ -24,28 +29,56 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
       description: "RC Intelligence Subscription",
       order_id: order.id,
 
-     handler: async function (response) {
+    handler: async function (response) {
+
+  console.log("PAYMENT RESPONSE", response)
+
+  console.log("USER", user)
 
   const verify = await fetch("/api/verify-payment", {
+
     method: "POST",
+
     headers: {
       "Content-Type": "application/json"
     },
-   body: JSON.stringify({
-  razorpay_order_id: response.razorpay_order_id,
-  razorpay_payment_id: response.razorpay_payment_id,
-  razorpay_signature: response.razorpay_signature,
-  user_id: user.id,
-  plan: amount === 399 ? "monthly" : "yearly"
-})
+
+    body: JSON.stringify({
+
+      razorpay_order_id:
+        response.razorpay_order_id,
+
+      razorpay_payment_id:
+        response.razorpay_payment_id,
+
+      razorpay_signature:
+        response.razorpay_signature,
+
+      user_id: user?.id,
+
+      plan:
+        amount === 399
+          ? "monthly"
+          : "yearly"
+
+    })
+
   })
 
   const result = await verify.json()
 
+  console.log("VERIFY RESULT", result)
+
   if (result.success) {
+
     alert("Payment verified 🎉 Premium unlocked")
+
+    window.location.href = "/payment-success"
+
   } else {
+
     alert("Payment verification failed")
+
   }
 
 },
