@@ -13,6 +13,19 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const handleGoogleLogin = async () => {
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "https://rc.auctorlabs.in/auth/callback"
+    }
+  })
+
+  if (error) {
+    alert(error.message)
+  }
+}
 
   const handleSignup = async (e) => {
     e.preventDefault()
@@ -68,6 +81,24 @@ export default function SignupPage() {
        <p className="auth-subtitle">
   New here? Sign up using your email and password.
 </p>
+
+<button
+  onClick={handleGoogleLogin}
+  type="button"
+  className="w-full flex items-center justify-center gap-3 py-4 rounded-xl mb-4 border border-gray-300 bg-white hover:bg-gray-100 transition shadow-sm"
+>
+
+  <img
+    src="https://developers.google.com/identity/images/g-logo.png"
+    alt="Google"
+    className="w-5 h-5"
+  />
+
+  <span style={{ color: "#111827", fontWeight: 600 }}>
+    Continue with Google
+  </span>
+
+</button>
 
         <form onSubmit={handleSignup}>
 
