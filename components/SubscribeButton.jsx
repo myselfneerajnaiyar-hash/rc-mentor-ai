@@ -28,6 +28,13 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
       currency: "INR",
       name: "AuctorRC",
       description: "RC Intelligence Subscription",
+
+      method: {
+  upi: true,
+  card: true,
+  netbanking: true,
+  wallet: true,
+},
       order_id: order.id,
 
     handler: async function (response) {
@@ -88,14 +95,19 @@ export default function SubscribeButton({ amount, label, user, variant = "primar
       }
     }
 
-    const rzp = new window.Razorpay(options)
-    rzp.open()
+    setTimeout(() => {
+  const rzp = new window.Razorpay(options)
+  rzp.open()
+}, 300)
   }
 
   return (
 
     <>
-  <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+ <Script
+  src="https://checkout.razorpay.com/v1/checkout.js"
+  strategy="afterInteractive"
+/>
 
   <button
 
