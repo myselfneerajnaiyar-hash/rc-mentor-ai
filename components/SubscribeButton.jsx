@@ -108,11 +108,7 @@ export default function SubscribeButton({
 
   return (
     <>
-      <Script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="beforeInteractive"
-      />
-
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <button
         onClick={startPayment}
         className={`w-full font-semibold py-4 text-lg rounded-xl transition shadow-lg hover:shadow-xl
