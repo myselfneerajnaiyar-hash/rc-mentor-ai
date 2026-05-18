@@ -10,7 +10,11 @@ import {
 
 import { useRouter } from "next/navigation";
 
-export default function MobileBottomNav({ view, setView }) {
+export default function MobileBottomNav({
+  view,
+  setView,
+  hasPremiumAccess,
+}) {
 
   const router = useRouter();
 
@@ -55,6 +59,11 @@ export default function MobileBottomNav({ view, setView }) {
     <nav className="mobile-nav mobile-only safe-bottom-nav">
 
       {tabs.map((tab) => {
+        const freeViews = ["home", "workout", "hangman", "profile"]
+
+const locked =
+  !freeViews.includes(tab.key) &&
+  !hasPremiumAccess
 
         const Icon = tab.icon;
 
@@ -71,21 +80,19 @@ export default function MobileBottomNav({ view, setView }) {
             key={tab.key}
             className={`mobile-tab ${active ? "active" : ""}`}
             aria-label={tab.label}
-            onClick={() => {
+           onClick={() => {
 
-              // LOCKED FLOW
-              if (tab.locked) {
-                router.push("/pricing");
-                return;
-              }
+  if (locked) {
+    window.location.href = "/pricing"
+    return
+  }
 
-              // NORMAL FLOW
-              if (tab.key === "practice") {
-                setView("rc");
-              } else {
-                setView(tab.key);
-              }
-            }}
+  if (tab.key === "practice") {
+    setView("rc")
+  } else {
+    setView(tab.key)
+  }
+}}
           >
 
             <div className="relative">

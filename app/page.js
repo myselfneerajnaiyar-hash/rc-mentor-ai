@@ -944,7 +944,11 @@ ${
 
   {/* MOBILE BOTTOM NAV (Mobile only) */}
       <div className="md:hidden">
-        <MobileBottomNav view={view} setView={setView} />
+        <MobileBottomNav
+  view={view}
+  setView={setView}
+  hasPremiumAccess={hasPremiumAccess}
+/>
       </div>
 </div>
     </main>
