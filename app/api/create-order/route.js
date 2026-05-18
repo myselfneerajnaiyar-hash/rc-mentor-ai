@@ -2,28 +2,36 @@ import Razorpay from "razorpay"
 
 export async function POST(req) {
 
-  const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  })
-
-  const body = await req.json()
-
-  const options = {
-    amount: body.amount * 100, 
-    currency: "INR",
-    receipt: "receipt_" + Date.now(),
-  }
-
   try {
+
+    const body = await req.json()
+
+    const razorpay = new Razorpay({
+      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    })
+
+    const options = {
+      amount: body.amount * 100,
+      currency: "INR",
+      receipt: "receipt_" + Date.now(),
+    }
 
     const order = await razorpay.orders.create(options)
 
     return Response.json(order)
 
-  } catch (error) {
+  } catch (err) {
 
-    return Response.json({ error: "Payment order failed" }, { status: 500 })
+    console.error("RAZORPAY ORDER ERROR:", err)
 
+    return Response.json(
+      {
+        error: err.message,
+      },
+      {
+        status: 500,
+      }
+    )
   }
 }
