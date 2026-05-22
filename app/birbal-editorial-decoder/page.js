@@ -35,7 +35,15 @@ const [visibleSections, setVisibleSections] = useState({
 
 function handleFiles(e) {
 
-  const selectedFiles = Array.from(e.target.files)
+ const selectedFiles =
+  Array.from(e.target.files).slice(0, 2)
+
+if (e.target.files.length > 2) {
+
+  alert(
+    "Please upload maximum 2 screenshots for now."
+  )
+}
 
   if (!selectedFiles.length) return
 
@@ -134,6 +142,21 @@ const response = await fetch(
   }
 )
 
+if (!response.ok) {
+
+  const errorText = await response.text()
+
+  console.error("API ERROR:", errorText)
+
+  alert(
+    "Birbal servers are overloaded. Please retry with 1-2 screenshots."
+  )
+
+  setPhase("idle")
+
+  return
+}
+
 const data = await response.json()
 clearInterval(messageInterval)
 setPhase("streaming")
@@ -226,11 +249,17 @@ setExtractedPassage(
 
 } catch (err) {
 
-  console.error(err)
+  console.error(
+    "BIRBAL FAILURE:",
+    err
+  )
 
-  setPhase("idle")
+  alert(
+    "Analysis failed. Please retry with clearer or fewer screenshots."
+  )
+
+  setPhase("complete")
 }
-
 }
 
 const fullText = extractedPassage
