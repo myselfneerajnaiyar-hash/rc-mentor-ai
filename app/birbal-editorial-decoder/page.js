@@ -337,7 +337,7 @@ setTimeout(() => {
 
 setTimeout(() => {
 
-  setPhase("idle")
+  setPhase("complete")
 
   setTimeout(() => {
 
@@ -349,7 +349,6 @@ setTimeout(() => {
   }, 400)
 
 }, 8200)
-
 setExtractedPassage(
   data.cleanedPassage || []
 )
@@ -367,7 +366,7 @@ setExtractedPassage(
     "Analysis failed. Please retry with clearer or fewer screenshots."
   )
 
-  setPhase("idle")
+  setPhase("complete")
 }
 }
 
