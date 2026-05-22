@@ -41,21 +41,36 @@ export async function POST(req) {
     expiry.setFullYear(expiry.getFullYear() + 1)
   }
 
+  // ---------- get profile ----------
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user_id)
+    .single()
+
   /* ---------- save subscription ---------- */
 
   await supabase.from("subscriptions").insert({
     user_id,
+    name: profile?.name || "",
+    email: profile?.email || "",
+    phone: profile?.phone || "",
+    exam: profile?.exam || "",
+    attempt_year: profile?.attempt_year || "",
     plan,
     expires_at: expiry
   })
 
+  // ---------- update profile ----------
+
   await supabase
-  .from("profiles")
-  .update({
-    is_premium: true,
-    premium_expires_at: expiry
-  })
-  .eq("user_id", user_id)
+    .from("profiles")
+    .update({
+      is_premium: true,
+      premium_expires_at: expiry
+    })
+    .eq("user_id", user_id)
 
   return Response.json({
     success: true

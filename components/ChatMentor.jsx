@@ -7,7 +7,10 @@ import { supabase } from "@/lib/supabase"
 import { SpeechRecognition } from "@capacitor-community/speech-recognition"
 
 
-export default function ChatMentor() {
+export default function ChatMentor({
+  passage = "",
+  contextual = false
+}) {
 
   const [messages, setMessages] = useState([
    {
@@ -21,7 +24,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const bottomRef = useRef(null)
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
-  const inputRef = useRef(null)
+  
   const [listening, setListening] = useState(false)
 const [voiceMode, setVoiceMode] = useState(false)
 
@@ -49,9 +52,7 @@ bottomRef.current?.scrollIntoView({
 
 }, [])
 
-useEffect(() => {
-  inputRef.current?.focus()
-}, [])
+
 
 useEffect(() => {
 
@@ -91,7 +92,9 @@ useEffect(() => {
     },
    body: JSON.stringify({
   messages: updated,
-  userId: user?.id
+  userId: user?.id,
+  passage,
+  contextual
 })
   })
 
@@ -379,7 +382,7 @@ async function startVoiceConversation() {
   <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-slate-900/95 backdrop-blur">
 
         <input
-        ref={inputRef}
+        
           value={input}
           onChange={(e) => setInput(e.target.value)}
        onKeyDown={(e) => {

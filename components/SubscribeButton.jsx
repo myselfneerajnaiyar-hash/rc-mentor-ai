@@ -1,6 +1,6 @@
 "use client"
 
-import Script from "next/script"
+
 
 export default function SubscribeButton({
   amount,
@@ -8,6 +8,33 @@ export default function SubscribeButton({
   user,
   variant = "primary",
 }) {
+
+  async function initializeRazorpay() {
+
+  if (window.Razorpay) {
+    return true
+  }
+
+  return new Promise((resolve) => {
+
+    const script =
+      document.createElement("script")
+
+    script.src =
+      "https://checkout.razorpay.com/v1/checkout.js"
+
+    script.onload = () => {
+      resolve(true)
+    }
+
+    script.onerror = () => {
+      resolve(false)
+    }
+
+    document.body.appendChild(script)
+
+  })
+}
 
   async function startPayment() {
 
@@ -18,10 +45,17 @@ export default function SubscribeButton({
         return
       }
 
-      if (!window.Razorpay) {
-        alert("Razorpay SDK failed to load")
-        return
-      }
+      const razorpayLoaded =
+  await initializeRazorpay()
+
+if (!razorpayLoaded) {
+
+  alert(
+    "Secure payment gateway could not initialize. Please try again."
+  )
+
+  return
+}
 
       const res = await fetch("/api/create-order", {
         method: "POST",
@@ -108,7 +142,7 @@ export default function SubscribeButton({
 
   return (
     <>
-      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
       <button
         onClick={startPayment}
         className={`w-full font-semibold py-4 text-lg rounded-xl transition shadow-lg hover:shadow-xl

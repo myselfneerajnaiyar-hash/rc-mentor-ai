@@ -25,10 +25,37 @@ const messages = body.messages || []
 const userId = body.userId
 
 const passage = body.passage || ""
+const contextual = body.contextual || false
 const question = body.question || ""
 const options = body.options || []
 const correctIndex = body.correctIndex
 
+
+let contextualPrompt = ""
+
+if (contextual && passage) {
+
+  contextualPrompt = `
+CURRENT ARTICLE CONTEXT
+
+The student is currently discussing this article:
+
+${passage}
+
+You already understand this article thoroughly.
+
+Answer specifically using this article.
+
+Help the student:
+- understand arguments
+- decode confusing paragraphs
+- identify author tone
+- understand structure and inference
+- clarify hidden meaning
+
+Behave like you have already carefully read the article.
+`
+}
 let history = []
 
 // SAVE USER MESSAGE
@@ -306,6 +333,8 @@ Always start by briefly interpreting the student's statistics before giving advi
         
 content: `
 You are Auctor RC Mentor — an expert CAT Reading Comprehension coach.
+
+${contextualPrompt}
 
 About the AuctorRC platform:
 

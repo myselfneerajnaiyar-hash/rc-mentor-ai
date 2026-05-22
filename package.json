@@ -29,7 +29,8 @@
     "recharts": "^3.7.0",
     "swiper": "^12.1.4",
     "tailwind-merge": "^3.5.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@types/react": "19.2.14",

@@ -397,6 +397,59 @@ AI
 
 </div>
 
+<Card
+  onClick={() => router.push("/birbal-editorial-decoder")}
+  className="cursor-pointer bg-gradient-to-br from-indigo-600 via-purple-600 to-slate-900 border-0 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-all duration-300"
+>
+  <CardContent className="p-8 md:p-10 space-y-6">
+
+    <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 px-4 py-2 rounded-full text-sm text-indigo-100 w-fit">
+      🧠 Birbal Intelligence Lab
+    </div>
+
+    <div className="space-y-4">
+
+      <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+        Birbal Editorial Decoder™
+      </h2>
+
+      <p className="text-indigo-100 text-lg max-w-3xl leading-relaxed">
+        Upload screenshots from Aeon, Economist,
+        The Hindu or any editorial and let Birbal decode:
+        tone, inference, author psychology and CAT trap logic.
+      </p>
+
+    </div>
+
+    <div className="flex flex-wrap gap-3">
+
+      {[
+        "Tone Detection",
+        "Inference Mapping",
+        "Vocabulary Intelligence",
+        "Trap Analysis",
+      ].map((tag) => (
+
+        <div
+          key={tag}
+          className="px-4 py-2 rounded-full bg-white/10 text-white text-sm"
+        >
+          {tag}
+        </div>
+
+      ))}
+
+    </div>
+
+    <div>
+      <button className="mt-4 px-8 py-4 rounded-2xl bg-white text-indigo-700 font-semibold text-lg hover:bg-slate-100 transition">
+        Launch Decoder →
+      </button>
+    </div>
+
+  </CardContent>
+</Card>
+
       {/* ================= DAILY WORKOUT ================= */}
       <Card className="bg-gradient-to-br from-indigo-600 to-indigo-500 text-white border-0 shadow-2xl rounded-3xl">
         <CardContent className="p-8 space-y-6">
