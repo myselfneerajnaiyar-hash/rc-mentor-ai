@@ -398,7 +398,7 @@ AI
 </div>
 
 <Card
-  onClick={() => router.push("/birbal-editorial-decoder")}
+  onClick={() => router.push("/birbal-v2")}
   className="cursor-pointer bg-gradient-to-br from-indigo-600 via-purple-600 to-slate-900 border-0 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-all duration-300"
 >
   <CardContent className="p-8 md:p-10 space-y-6">
