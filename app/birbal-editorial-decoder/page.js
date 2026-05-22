@@ -1299,29 +1299,34 @@ className="bg-slate-900 border border-slate-800 rounded-3xl p-8 animate-in fade-
 
 )}
      
-     {analysis && extractedPassage.length > 0 && (
+     {analysis &&
+ extractedPassage.length > 0 &&
+ fullText &&
+ fullText.trim().length > 100 && (
 
-  <div 
-  ref={chatRef}
-  className="max-w-5xl mx-auto mt-14">
+  <div
+    ref={chatRef}
+    className="max-w-5xl mx-auto mt-14"
+  >
 
     <div className="mb-6">
 
       <div className="text-center mb-8">
 
-  <h2 className="text-4xl font-extrabold text-yellow-300 drop-shadow-[0_0_12px_rgba(253,224,71,0.7)]">
-    Still confused?
-  </h2>
+        <h2 className="text-4xl font-extrabold text-yellow-300 drop-shadow-[0_0_12px_rgba(253,224,71,0.7)]">
+          Still confused?
+        </h2>
 
-  <p className="text-white/80 text-lg mt-3">
-    Ask Birbal anything about this article.
-  </p>
+        <p className="text-white/80 text-lg mt-3">
+          Ask Birbal anything about this article.
+        </p>
 
-</div>
+      </div>
 
     </div>
 
     <ChatMentor
+      key={fullText}
       passage={fullText}
       contextual={true}
     />
@@ -1329,7 +1334,6 @@ className="bg-slate-900 border border-slate-800 rounded-3xl p-8 animate-in fade-
   </div>
 
 )}
-
     </div>
 
   )

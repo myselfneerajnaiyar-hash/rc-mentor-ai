@@ -126,7 +126,9 @@ async function sendVoiceMessage(text) {
     },
     body: JSON.stringify({
       messages: updated,
-      userId: user?.id
+      userId: user?.id,
+      passage,
+      contextual
     })
   })
 
