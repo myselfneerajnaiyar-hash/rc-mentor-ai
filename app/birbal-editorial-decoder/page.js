@@ -56,7 +56,7 @@ async function compressImage(file) {
         const canvas =
           document.createElement("canvas")
 
-        const MAX_WIDTH = 1400
+        const MAX_WIDTH = 1600
 
         let width = img.width
         let height = img.height
@@ -118,12 +118,12 @@ async function handleFiles(e) {
 
   // total limit
   const remainingSlots =
-    2 - files.length
+    3 - files.length
 
   if (remainingSlots <= 0) {
 
     alert(
-      "Maximum 2 screenshots allowed."
+      "Maximum 3 screenshots allowed."
     )
 
     return
@@ -575,7 +575,6 @@ function highlightDirectionalWords(text) {
   type="file"
   accept="image/*"
   capture="environment"
-  multiple
   className="hidden"
   onChange={handleFiles}
 />
