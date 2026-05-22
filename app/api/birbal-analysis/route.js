@@ -18,6 +18,13 @@ export async function POST(req) {
 
         const bytes = await file.arrayBuffer()
 
+        console.log(
+  "FILE SIZE:",
+  file.name,
+  Math.round(file.size / 1024),
+  "KB"
+)
+
         const base64 = Buffer.from(bytes).toString("base64")
 
         return {

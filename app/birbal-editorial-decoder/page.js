@@ -31,38 +31,147 @@ const [visibleSections, setVisibleSections] = useState({
   vocab: false,
 })
 
+async function compressImage(file) {
 
+  return new Promise((resolve) => {
 
-function handleFiles(e) {
+    // If PDF, don't compress
+    if (file.type === "application/pdf") {
+      resolve(file)
+      return
+    }
 
- const selectedFiles =
-  Array.from(e.target.files).slice(0, 2)
+    const reader = new FileReader()
 
-if (e.target.files.length > 2) {
+    reader.readAsDataURL(file)
 
-  alert(
-    "Please upload maximum 2 screenshots for now."
-  )
+    reader.onload = (event) => {
+
+      const img = new window.Image()
+
+      img.src = event.target.result
+
+      img.onload = () => {
+
+        const canvas =
+          document.createElement("canvas")
+
+        const MAX_WIDTH = 1400
+
+        let width = img.width
+        let height = img.height
+
+        // scale down
+        if (width > MAX_WIDTH) {
+
+          height =
+            (height * MAX_WIDTH) / width
+
+          width = MAX_WIDTH
+        }
+
+        canvas.width = width
+        canvas.height = height
+
+        const ctx =
+          canvas.getContext("2d")
+
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
+        )
+
+        canvas.toBlob(
+          (blob) => {
+
+            const compressedFile =
+              new File(
+                [blob],
+                file.name,
+                {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                }
+              )
+
+            resolve(compressedFile)
+
+          },
+          "image/jpeg",
+          0.7
+        )
+      }
+    }
+  })
 }
 
-  if (!selectedFiles.length) return
 
-  // append new files instead of replacing
-  setFiles(prev => [...prev, ...selectedFiles])
+async function handleFiles(e) {
 
-  // generate previews
-  const imageUrls = selectedFiles.map(file =>
-    URL.createObjectURL(file)
-  )
+  const incomingFiles =
+    Array.from(e.target.files)
 
-  // append previews too
-  setPreviews(prev => [...prev, ...imageUrls])
+  if (!incomingFiles.length) return
 
-  // IMPORTANT:
-  // reset input value so same file can be selected again
-  e.target.value = null
+  // total limit
+  const remainingSlots =
+    2 - files.length
+
+  if (remainingSlots <= 0) {
+
+    alert(
+      "Maximum 2 screenshots allowed."
+    )
+
+    return
+  }
+
+  const selectedFiles =
+    incomingFiles.slice(0, remainingSlots)
+
+  try {
+
+    const compressedFiles =
+      await Promise.all(
+
+        selectedFiles.map(file =>
+          compressImage(file)
+        )
+      )
+
+    setFiles(prev => [
+      ...prev,
+      ...compressedFiles
+    ])
+
+    const imageUrls =
+      compressedFiles.map(file =>
+        URL.createObjectURL(file)
+      )
+
+    setPreviews(prev => [
+      ...prev,
+      ...imageUrls
+    ])
+
+  } catch (err) {
+
+    console.error(
+      "IMAGE PROCESSING ERROR:",
+      err
+    )
+
+    alert(
+      "Failed to process images."
+    )
+  }
+
+  // IMPORTANT RESET
+  e.target.value = ""
 }
-
 function removeImage(index) {
 
   setFiles(prev => prev.filter((_, i) => i !== index))
@@ -228,7 +337,7 @@ setTimeout(() => {
 
 setTimeout(() => {
 
-  setPhase("complete")
+  setPhase("idle")
 
   setTimeout(() => {
 
@@ -258,7 +367,7 @@ setExtractedPassage(
     "Analysis failed. Please retry with clearer or fewer screenshots."
   )
 
-  setPhase("complete")
+  setPhase("idle")
 }
 }
 
