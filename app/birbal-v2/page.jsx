@@ -1,7 +1,7 @@
 "use client"
 
 import { Upload, Brain, Sparkles, Camera, ImageIcon } from "lucide-react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import ChatMentor from "@/components/ChatMentor"
 
 
@@ -15,6 +15,7 @@ const [loadingMessage, setLoadingMessage] = useState(
   "Birbal is analyzing editorial psychology..."
 )
 const [analysis, setAnalysis] = useState(null)
+const [sessionId, setSessionId] = useState(null)
 
 const [openParagraphs, setOpenParagraphs] = useState({})
 const [extractedPassage, setExtractedPassage] = useState([])
@@ -31,6 +32,65 @@ const [visibleSections, setVisibleSections] = useState({
   vocab: false,
 })
 
+useEffect(() => {
+
+  async function loadSession() {
+
+    const params = new URLSearchParams(
+      window.location.search
+    )
+
+    const session = params.get("session")
+
+    if (!session) return
+
+    try {
+
+      const res = await fetch(
+        `/api/get-birbal-session?id=${session}`
+      )
+
+      const data = await res.json()
+      if (data.error) {
+
+  console.log("API RESPONSE:", data)
+
+  alert(data.error)
+
+  setPhase("idle")
+
+  return
+}
+
+      if (!data?.analysis) return
+
+      setSessionId(session)
+
+      setAnalysis(data.analysis)
+
+      setExtractedPassage(
+        data.analysis.cleanedPassage || []
+      )
+
+      setVisibleSections({
+        flow: true,
+        cognitive: true,
+        paragraphs: true,
+        vocab: true,
+      })
+
+      setPhase("complete")
+
+    } catch (err) {
+
+      console.log(err)
+
+    }
+  }
+
+  loadSession()
+
+}, [])
 async function compressImage(file) {
 
   return new Promise((resolve) => {
@@ -267,10 +327,20 @@ if (!response.ok) {
 }
 
 const data = await response.json()
+console.log("API RESPONSE:", data)
+
 clearInterval(messageInterval)
 setPhase("streaming")
 
-setAnalysis(data)
+setAnalysis(data.analysis)
+
+setSessionId(data.sessionId)
+
+window.history.replaceState(
+  {},
+  "",
+  `/birbal-v2/${data.sessionId}`
+)
 setTimeout(() => {
 
   setVisibleSections(prev => ({
@@ -350,7 +420,7 @@ setTimeout(() => {
 
 }, 8200)
 setExtractedPassage(
-  data.cleanedPassage || []
+  data.analysis.cleanedPassage || []
 )
 
 
@@ -476,6 +546,38 @@ function highlightDirectionalWords(text) {
   return (
 
     <div className="min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6">
+
+      <div className="max-w-5xl mx-auto mb-10">
+
+  <div className="inline-flex bg-slate-900 border border-slate-800 rounded-2xl p-1">
+
+    <button
+      onClick={() => window.location.href = "/birbal-v2"}
+      className={`px-6 py-3 rounded-xl font-semibold transition ${
+        typeof window !== "undefined" &&
+window.location.pathname === "/birbal-v2"
+          ? "bg-cyan-500 text-black"
+          : "text-slate-300"
+      }`}
+    >
+      Analyze
+    </button>
+
+    <button
+      onClick={() => window.location.href = "/history"}
+      className={`px-6 py-3 rounded-xl font-semibold transition ${
+       typeof window !== "undefined" &&
+window.location.pathname === "/history"
+          ? "bg-cyan-500 text-black"
+          : "text-slate-300"
+      }`}
+    >
+      History
+    </button>
+
+  </div>
+
+</div>
 
       {/* HERO */}
       <div className="max-w-4xl mx-auto space-y-4 text-center md:text-left">
@@ -1247,6 +1349,7 @@ className="bg-slate-900 border border-slate-800 rounded-3xl p-8 animate-in fade-
       contextual={true}
     />
 
+    
   </div>
 
 )}

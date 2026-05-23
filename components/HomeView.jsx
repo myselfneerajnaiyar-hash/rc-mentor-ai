@@ -37,6 +37,7 @@ export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   const [streak, setStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
 const [playedToday, setPlayedToday] = useState(false)
+const [isPremium, setIsPremium] = useState(false)
  const [stats, setStats] = useState({
   accuracy: 0,
   speed: 0,
@@ -89,6 +90,25 @@ useEffect(() => {
   }
 
   loadStreak()
+}, [user])
+
+useEffect(() => {
+
+  async function loadPremium() {
+
+    if (!user?.id) return
+
+    const { data } = await supabase
+      .from("profiles")
+      .select("is_premium")
+      .eq("user_id", user.id)
+      .single()
+
+    setIsPremium(data?.is_premium || false)
+  }
+
+  loadPremium()
+
 }, [user])
 
 useEffect(() => {
@@ -738,37 +758,76 @@ Skill Balance
         </h2>
 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-          <ModeCard
-            icon={<Brain />}
-            title="Adaptive RC"
-            desc="AI-driven passage selection"
-            onClick={() => {
-              setView("rc")
-              startAdaptiveRC()
-            }}
-          />
+         {
+  isPremium ? (
 
-          <ModeCard
-            icon={<BookOpen />}
-            title="Vocabulary Lab"
-            desc="Smart spaced repetition"
-            onClick={() => setView("vocab")}
-          />
+    <>
 
-          <ModeCard
-            icon={<Timer />}
-            title="Speed Gym"
-            desc="Reading acceleration drills"
-            onClick={() => setView("speed")}
-          />
+      <ModeCard
+        icon={<Brain />}
+        title="Adaptive RC"
+        desc="AI-driven passage selection"
+        onClick={() => {
+          setView("rc")
+          startAdaptiveRC()
+        }}
+      />
 
-          <ModeCard
-            icon={<GraduationCap />}
-            title="CAT Sectionals"
-            desc="Full-length timed tests"
-            onClick={() => setView("cat")}
-          />
+      <ModeCard
+        icon={<BookOpen />}
+        title="Vocabulary Lab"
+        desc="Smart spaced repetition"
+        onClick={() => setView("vocab")}
+      />
 
+      <ModeCard
+        icon={<Timer />}
+        title="Speed Gym"
+        desc="Reading acceleration drills"
+        onClick={() => setView("speed")}
+      />
+
+      <ModeCard
+        icon={<GraduationCap />}
+        title="CAT Sectionals"
+        desc="Full-length timed tests"
+        onClick={() => setView("cat")}
+      />
+
+    </>
+
+  ) : (
+
+    <>
+
+      <LockedCard
+        icon={<Brain />}
+        title="Adaptive RC"
+        desc="Premium required"
+      />
+
+      <LockedCard
+        icon={<BookOpen />}
+        title="Vocabulary Lab"
+        desc="Premium required"
+      />
+
+      <LockedCard
+        icon={<Timer />}
+        title="Speed Gym"
+        desc="Premium required"
+      />
+
+      <LockedCard
+        icon={<GraduationCap />}
+        title="CAT Sectionals"
+        desc="Premium required"
+      />
+
+    </>
+
+  )
+}
         </div>
       </div>
 
