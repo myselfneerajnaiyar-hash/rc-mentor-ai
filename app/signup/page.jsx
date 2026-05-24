@@ -43,8 +43,11 @@ export default function SignupPage() {
       return
     }
 
-    alert("Check your email to confirm your account.")
-    router.push("/login")
+   
+
+alert("Check your email to confirm your account.")
+
+router.push("/login")
   }
 
   return (

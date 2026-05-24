@@ -114,6 +114,18 @@ expiry.setDate(expiry.getDate() + 3)
   }
 
   setShowProfileWizard(false)
+  await fetch("/api/send-welcome-email", {
+  method: "POST",
+
+  headers: {
+    "Content-Type": "application/json",
+  },
+
+  body: JSON.stringify({
+    email: user.email,
+    name: name,
+  }),
+})
 
   router.push("/")
 }

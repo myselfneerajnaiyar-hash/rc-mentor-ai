@@ -72,6 +72,35 @@ export async function POST(req) {
     })
     .eq("user_id", user_id)
 
+    await fetch("https://rc.auctorlabs.in/api/send-payment-email", {
+
+  method: "POST",
+
+  headers: {
+    "Content-Type": "application/json",
+  },
+
+  body: JSON.stringify({
+
+    email: profile?.email,
+
+    name: profile?.name || "Champion",
+
+    plan:
+      plan === "monthly"
+        ? "Monthly Premium"
+        : "Yearly Premium",
+
+    amount:
+      plan === "monthly"
+        ? 399
+        : 1999,
+
+    expiry: new Date(expiry).toDateString(),
+
+  }),
+})
+
   return Response.json({
     success: true
   })
