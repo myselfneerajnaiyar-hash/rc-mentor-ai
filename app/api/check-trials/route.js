@@ -7,110 +7,50 @@ const supabase = createClient(
 
 export async function GET() {
 
-  try {
+  const tomorrow = new Date()
 
-    // -----------------------------
-    // TOMORROW DATE
-    // -----------------------------
+  tomorrow.setDate(
+    tomorrow.getDate() + 1
+  )
 
-    const tomorrow = new Date()
+  const tomorrowISO =
+    tomorrow.toISOString().split("T")[0]
 
-    tomorrow.setDate(
-      tomorrow.getDate() + 1
-    )
+  const { data: users } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("is_premium", false)
 
-    const tomorrowISO =
-      tomorrow.toISOString().split("T")[0]
+  for (const user of users || []) {
 
-    // -----------------------------
-    // FETCH USERS
-    // -----------------------------
+    if (!user.trial_expires_at) continue
 
-    const { data: users, error } =
-      await supabase
-        .from("profiles")
-        .select("*")
+    const expiryDate =
+      new Date(user.trial_expires_at)
+        .toISOString()
+        .split("T")[0]
 
-    if (error) {
+    if (expiryDate === tomorrowISO) {
 
-      console.error(error)
+      await fetch(
+        "https://rc.auctorlabs.in/api/send-trial-ending-email",
+        {
+          method: "POST",
 
-      return Response.json({
-        success: false,
-        error: error.message,
-      })
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            email: user.email,
+            name: user.name || "Champion",
+          }),
+        }
+      )
     }
-
-    // -----------------------------
-    // LOOP USERS
-    // -----------------------------
-
-    for (const user of users || []) {
-
-      // skip premium users
-      if (user.is_premium === true) {
-        continue
-      }
-
-      // skip missing trial
-      if (!user.trial_expires_at) {
-        continue
-      }
-
-      const expiryDate =
-        new Date(user.trial_expires_at)
-          .toISOString()
-          .split("T")[0]
-
-      // -----------------------------
-      // IF TRIAL ENDS TOMORROW
-      // -----------------------------
-
-      if (expiryDate === tomorrowISO) {
-
-        console.log(
-          "Sending trial ending email to:",
-          user.email
-        )
-
-        // -----------------------------
-        // SEND EMAIL
-        // -----------------------------
-
-        await fetch(
-          "https://rc.auctorlabs.in/api/send-trial-ending-email",
-          {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({
-
-              email: user.email,
-
-              name:
-                user.name || "Champion",
-
-            }),
-          }
-        )
-      }
-    }
-
-    return Response.json({
-      success: true,
-    })
-
-  } catch (error) {
-
-    console.error(error)
-
-    return Response.json({
-      success: false,
-      error: error.message,
-    })
   }
+
+  return Response.json({
+    success: true,
+  })
 }
