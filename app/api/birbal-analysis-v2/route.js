@@ -11,9 +11,106 @@ const supabase = createClient(
 )
 
 export async function POST(req) {
-    console.log("ROUTE HIT")
+
+  console.log("ROUTE HIT")
 
   try {
+
+    // ================= AUTH =================
+
+    const authHeader =
+      req.headers.get("authorization")
+
+    if (!authHeader) {
+
+      return Response.json({
+        error: "Unauthorized"
+      })
+    }
+
+    const token =
+      authHeader.replace("Bearer ", "")
+
+    const {
+      data: { user },
+      error: authError
+    } = await supabase.auth.getUser(token)
+
+    if (authError || !user) {
+
+      return Response.json({
+        error: "Invalid user"
+      })
+    }
+
+    // ================= PROFILE =================
+
+    const { data: profile } =
+      await supabase
+        .from("profiles")
+        .select(`
+          is_premium,
+          birbal_credits,
+          birbal_credit_month,
+          trial_expires_at
+        `)
+        .eq("user_id", user.id)
+        .single()
+
+    const currentMonth =
+      `${new Date().getFullYear()}-${new Date().getMonth()+1}`
+
+    let credits =
+      profile?.birbal_credits || 0
+
+    // ================= MONTH RESET =================
+
+    if (
+      profile.birbal_credit_month !==
+      currentMonth
+    ) {
+
+      credits =
+        profile.is_premium ? 30 : 1
+
+      await supabase
+        .from("profiles")
+        .update({
+          birbal_credits: credits,
+          birbal_credit_month: currentMonth
+        })
+        .eq("user_id", user.id)
+    }
+
+    // ================= TRIAL CHECK =================
+
+    const trialExpired =
+      !profile.trial_expires_at ||
+      new Date() >
+        new Date(profile.trial_expires_at)
+
+    if (
+      !profile.is_premium &&
+      trialExpired
+    ) {
+
+      return Response.json({
+        error:
+          "Trial expired. Upgrade required."
+      })
+    }
+
+    // ================= CREDIT CHECK =================
+
+    if (credits <= 0) {
+
+      return Response.json({
+        error:
+          profile.is_premium
+            ? "Monthly credits exhausted"
+            : "Daily free limit exhausted"
+      })
+    }
 
     const formData = await req.formData()
 
@@ -335,6 +432,12 @@ if (error) {
 }
 
 console.log("FINAL SESSION:", savedSession)
+await supabase
+  .from("profiles")
+  .update({
+    birbal_credits: credits - 1
+  })
+  .eq("user_id", user.id)
 return Response.json({
   analysis: parsed,
   sessionId: savedSession.id || null

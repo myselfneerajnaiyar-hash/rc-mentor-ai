@@ -3,6 +3,12 @@
 import { Upload, Brain, Sparkles, Camera, ImageIcon } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import ChatMentor from "@/components/ChatMentor"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 
 export default function BirbalEditorialDecoder() {
@@ -16,6 +22,8 @@ const [loadingMessage, setLoadingMessage] = useState(
 )
 const [analysis, setAnalysis] = useState(null)
 const [sessionId, setSessionId] = useState(null)
+const [birbalCredits, setBirbalCredits] = useState(0)
+const [isPremium, setIsPremium] = useState(false)
 
 const [openParagraphs, setOpenParagraphs] = useState({})
 const [extractedPassage, setExtractedPassage] = useState([])
@@ -33,6 +41,9 @@ const [visibleSections, setVisibleSections] = useState({
 })
 
 useEffect(() => {
+ setTimeout(() => {
+  loadPremium()
+}, 1000)
 
   async function loadSession() {
 
@@ -91,6 +102,45 @@ useEffect(() => {
   loadSession()
 
 }, [])
+
+async function loadPremium() {
+
+  // wait a little for session hydration
+  await new Promise(resolve =>
+    setTimeout(resolve, 800)
+  )
+
+  const {
+    data: { session },
+    error: sessionError
+  } = await supabase.auth.getSession()
+
+  console.log("SESSION:", session)
+  console.log("SESSION ERROR:", sessionError)
+
+  if (!session?.user) {
+
+    console.log("NO SESSION FOUND")
+    return
+  }
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select(`
+      is_premium,
+      birbal_credits
+    `)
+    .eq("user_id", session.user.id)
+    .single()
+
+  console.log("PROFILE:", data)
+  console.log("PROFILE ERROR:", error)
+
+  if (!data) return
+
+  setIsPremium(data.is_premium)
+  setBirbalCredits(data.birbal_credits || 0)
+}
 async function compressImage(file) {
 
   return new Promise((resolve) => {
@@ -303,14 +353,23 @@ files.forEach((file) => {
   formData.append("files", file)
 })
 
+const {
+  data: { session }
+} = await supabase.auth.getSession()
+
 const response = await fetch(
   "/api/birbal-analysis-v2",
   {
     method: "POST",
+
+    headers: {
+      Authorization:
+        `Bearer ${session.access_token}`
+    },
+
     body: formData,
   }
 )
-
 if (!response.ok) {
 
   const errorText = await response.text()
@@ -335,6 +394,7 @@ setPhase("streaming")
 setAnalysis(data.analysis)
 
 setSessionId(data.sessionId)
+await loadPremium()
 
 window.history.replaceState(
   {},
@@ -611,6 +671,8 @@ window.location.pathname === "/history"
   "CAT Trap Decoder",
 ].map((item) => (
 
+  
+
             <div
               key={item}
               className="px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-sm text-slate-300"
@@ -619,6 +681,12 @@ window.location.pathname === "/history"
             </div>
 
           ))}
+
+          {isPremium && (
+  <div className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm text-white">
+    {birbalCredits}/30 Monthly Credits Left
+  </div>
+)}
 
         </div>
 

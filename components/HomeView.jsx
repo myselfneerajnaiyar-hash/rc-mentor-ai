@@ -38,6 +38,8 @@ export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
 const [playedToday, setPlayedToday] = useState(false)
 const [isPremium, setIsPremium] = useState(false)
+const [birbalCredits, setBirbalCredits] = useState(0)
+const [trialExpired, setTrialExpired] = useState(false)
  const [stats, setStats] = useState({
   accuracy: 0,
   speed: 0,
@@ -74,6 +76,8 @@ const [dna, setDNA] = useState({
   description: ""
 })
 
+
+
 useEffect(() => {
   async function loadStreak() {
     if (!user) return
@@ -100,17 +104,55 @@ useEffect(() => {
 
     const { data } = await supabase
       .from("profiles")
-      .select("is_premium")
+      .select(`
+        is_premium,
+        birbal_credits,
+        birbal_credit_month,
+        trial_expires_at
+      `)
       .eq("user_id", user.id)
       .single()
 
+    if (!data) return
+
+    const currentMonth =
+      `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+
+    let credits = data.birbal_credits || 0
+
+    // MONTH RESET
+    if (
+      data.birbal_credit_month !== currentMonth
+    ) {
+
+      credits = data.is_premium ? 30 : 1
+
+      await supabase
+        .from("profiles")
+        .update({
+          birbal_credits: credits,
+          birbal_credit_month: currentMonth
+        })
+        .eq("user_id", user.id)
+    }
+
+    setBirbalCredits(credits)
+
     setIsPremium(data?.is_premium || false)
+
+    // TRIAL CHECK
+    const expired =
+      data.trial_expires_at
+        ? new Date() >
+          new Date(data.trial_expires_at)
+        : true
+
+    setTrialExpired(expired)
   }
 
   loadPremium()
 
 }, [user])
-
 useEffect(() => {
   async function loadWordHuntStreak() {
     if (!user?.id) return;
@@ -418,7 +460,24 @@ AI
 </div>
 
 <Card
-  onClick={() => router.push("/birbal-v2")}
+  onClick={() => {
+
+    // FREE USER + trial expired
+    if (!isPremium && trialExpired) {
+
+      router.push("/pricing")
+      return
+    }
+
+    // no credits left
+    if (birbalCredits <= 0) {
+
+      router.push("/pricing")
+      return
+    }
+
+    router.push("/birbal-v2")
+  }}
   className="cursor-pointer bg-gradient-to-br from-indigo-600 via-purple-600 to-slate-900 border-0 rounded-3xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-all duration-300"
 >
   <CardContent className="p-8 md:p-10 space-y-6">
@@ -438,6 +497,25 @@ AI
         The Hindu or any editorial and let Birbal decode:
         tone, inference, author psychology and CAT trap logic.
       </p>
+      <div className="mt-4 flex items-center gap-3 flex-wrap">
+
+  {isPremium ? (
+
+    <div className="px-4 py-2 rounded-full bg-white/10 text-white text-sm">
+      {birbalCredits}/30 Monthly Credits Left
+    </div>
+
+  ) : (
+
+    <div className="px-4 py-2 rounded-full bg-white/10 text-white text-sm">
+      {trialExpired
+        ? "Trial Expired"
+        : `${birbalCredits}/1 Free Daily Decode`}
+    </div>
+
+  )}
+
+</div>
 
     </div>
 
