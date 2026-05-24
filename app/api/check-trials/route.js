@@ -1,113 +1,115 @@
-import { Resend } from "resend"
+import { createClient } from "@supabase/supabase-js"
 
-const resend = new Resend(
-  process.env.RESEND_API_KEY
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-export async function POST(req) {
+export async function GET() {
 
   try {
 
-    const body = await req.json()
+    // -----------------------------
+    // TOMORROW DATE
+    // -----------------------------
 
-    const { email, name } = body
+    const tomorrow = new Date()
 
-    const data = await resend.emails.send({
+    tomorrow.setDate(
+      tomorrow.getDate() + 1
+    )
 
-      from: "Auctor <hello@auctorlabs.in>",
+    const tomorrowISO =
+      tomorrow.toISOString().split("T")[0]
 
-      to: email,
+    // -----------------------------
+    // FETCH USERS
+    // -----------------------------
 
-      subject: "Your AuctorRC trial ends tomorrow ⏳",
+    const { data: users, error } =
+      await supabase
+        .from("profiles")
+        .select("*")
 
-      html: `
-      
-      <div style="
-        font-family: Arial;
-        padding: 32px;
-        background: #f8fafc;
-      ">
+    if (error) {
 
-        <div style="
-          max-width: 600px;
-          margin: auto;
-          background: white;
-          border-radius: 16px;
-          padding: 40px;
-        ">
+      console.error(error)
 
-          <h1 style="
-            font-size: 32px;
-            margin-bottom: 20px;
-          ">
-            Your Trial Ends Tomorrow ⏳
-          </h1>
+      return Response.json({
+        success: false,
+        error: error.message,
+      })
+    }
 
-          <p style="font-size:18px;">
-            Hey ${name},
-          </p>
+    // -----------------------------
+    // LOOP USERS
+    // -----------------------------
 
-          <p style="
-            font-size:16px;
-            line-height:1.8;
-          ">
-            Your AuctorRC free trial will expire tomorrow.
-          </p>
+    for (const user of users || []) {
 
-          <p style="
-            font-size:16px;
-            line-height:1.8;
-          ">
-            You've already unlocked:
-          </p>
+      // skip premium users
+      if (user.is_premium === true) {
+        continue
+      }
 
-          <ul style="
-            line-height:2;
-            font-size:16px;
-          ">
-            <li>🧠 Birbal AI RC Mentor</li>
-            <li>⚡ Speed Drills</li>
-            <li>📊 RC Analytics</li>
-            <li>📚 Vocabulary Workflows</li>
-            <li>🏆 Streaks & Leaderboards</li>
-          </ul>
+      // skip missing trial
+      if (!user.trial_expires_at) {
+        continue
+      }
 
-          <p style="
-            font-size:16px;
-            line-height:1.8;
-          ">
-            Continue building elite RC intelligence.
-          </p>
+      const expiryDate =
+        new Date(user.trial_expires_at)
+          .toISOString()
+          .split("T")[0]
 
-          <a
-            href="https://rc.auctorlabs.in/pricing"
-            style="
-              display:inline-block;
-              margin-top:24px;
-              background:#7c3aed;
-              color:white;
-              padding:14px 24px;
-              border-radius:10px;
-              text-decoration:none;
-              font-weight:bold;
-            "
-          >
-            Upgrade Now 🚀
-          </a>
+      // -----------------------------
+      // IF TRIAL ENDS TOMORROW
+      // -----------------------------
 
-        </div>
+      if (expiryDate === tomorrowISO) {
 
-      </div>
-      `,
+        console.log(
+          "Sending trial ending email to:",
+          user.email
+        )
+
+        // -----------------------------
+        // SEND EMAIL
+        // -----------------------------
+
+        await fetch(
+          "https://rc.auctorlabs.in/api/send-trial-ending-email",
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+
+              email: user.email,
+
+              name:
+                user.name || "Champion",
+
+            }),
+          }
+        )
+      }
+    }
+
+    return Response.json({
+      success: true,
     })
-
-    return Response.json(data)
 
   } catch (error) {
 
     console.error(error)
 
     return Response.json({
+      success: false,
       error: error.message,
     })
   }
