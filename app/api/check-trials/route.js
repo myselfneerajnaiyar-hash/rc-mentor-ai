@@ -19,7 +19,8 @@ export async function GET() {
   const { data: users } = await supabase
     .from("profiles")
     .select("*")
-    .eq("is_premium", false)
+
+  console.log(users)
 
   for (const user of users || []) {
 
@@ -30,7 +31,18 @@ export async function GET() {
         .toISOString()
         .split("T")[0]
 
+    console.log(
+      user.email,
+      expiryDate,
+      tomorrowISO
+    )
+
     if (expiryDate === tomorrowISO) {
+
+      console.log(
+        "Sending trial email to:",
+        user.email
+      )
 
       await fetch(
         "https://rc.auctorlabs.in/api/send-trial-ending-email",
