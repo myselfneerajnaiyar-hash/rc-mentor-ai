@@ -1,69 +1,114 @@
-import { createClient } from "@supabase/supabase-js"
+import { Resend } from "resend"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+const resend = new Resend(
+  process.env.RESEND_API_KEY
 )
 
-export async function GET() {
+export async function POST(req) {
 
-  const tomorrow = new Date()
+  try {
 
-  tomorrow.setDate(
-    tomorrow.getDate() + 1
-  )
+    const body = await req.json()
 
-  const tomorrowISO =
-    tomorrow.toISOString().split("T")[0]
+    const { email, name } = body
 
-  const { data: users } = await supabase
-    .from("profiles")
-    .select("*")
+    const data = await resend.emails.send({
 
-  console.log(users)
+      from: "Auctor <hello@auctorlabs.in>",
 
-  for (const user of users || []) {
+      to: email,
 
-    if (!user.trial_expires_at) continue
+      subject: "Your AuctorRC trial ends tomorrow ⏳",
 
-    const expiryDate =
-      new Date(user.trial_expires_at)
-        .toISOString()
-        .split("T")[0]
+      html: `
+      
+      <div style="
+        font-family: Arial;
+        padding: 32px;
+        background: #f8fafc;
+      ">
 
-    console.log(
-      user.email,
-      expiryDate,
-      tomorrowISO
-    )
+        <div style="
+          max-width: 600px;
+          margin: auto;
+          background: white;
+          border-radius: 16px;
+          padding: 40px;
+        ">
 
-    if (expiryDate === tomorrowISO) {
+          <h1 style="
+            font-size: 32px;
+            margin-bottom: 20px;
+          ">
+            Your Trial Ends Tomorrow ⏳
+          </h1>
 
-      console.log(
-        "Sending trial email to:",
-        user.email
-      )
+          <p style="font-size:18px;">
+            Hey ${name},
+          </p>
 
-      await fetch(
-        "https://rc.auctorlabs.in/api/send-trial-ending-email",
-        {
+          <p style="
+            font-size:16px;
+            line-height:1.8;
+          ">
+            Your AuctorRC free trial will expire tomorrow.
+          </p>
 
-          method: "POST",
+          <p style="
+            font-size:16px;
+            line-height:1.8;
+          ">
+            You've already unlocked:
+          </p>
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+          <ul style="
+            line-height:2;
+            font-size:16px;
+          ">
+            <li>🧠 Birbal AI RC Mentor</li>
+            <li>⚡ Speed Drills</li>
+            <li>📊 RC Analytics</li>
+            <li>📚 Vocabulary Workflows</li>
+            <li>🏆 Streaks & Leaderboards</li>
+          </ul>
 
-          body: JSON.stringify({
-            email: user.email,
-            name: user.name || "Champion",
-          }),
-        }
-      )
-    }
+          <p style="
+            font-size:16px;
+            line-height:1.8;
+          ">
+            Continue building elite RC intelligence.
+          </p>
+
+          <a
+            href="https://rc.auctorlabs.in/pricing"
+            style="
+              display:inline-block;
+              margin-top:24px;
+              background:#7c3aed;
+              color:white;
+              padding:14px 24px;
+              border-radius:10px;
+              text-decoration:none;
+              font-weight:bold;
+            "
+          >
+            Upgrade Now 🚀
+          </a>
+
+        </div>
+
+      </div>
+      `,
+    })
+
+    return Response.json(data)
+
+  } catch (error) {
+
+    console.error(error)
+
+    return Response.json({
+      error: error.message,
+    })
   }
-
-  return Response.json({
-    success: true,
-  })
 }
