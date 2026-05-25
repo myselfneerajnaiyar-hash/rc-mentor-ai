@@ -14,94 +14,97 @@ export async function POST(req) {
 
     const data = await resend.emails.send({
 
-      from: "AuctorRC Team <hello@auctorlabs.in>",
+      from: "AuctorRC <hello@auctorlabs.in>",
 
       to: email,
 
-      subject: "Your AuctorRC trial ends tomorrow",
-
-      text: `
-Hey ${name},
-
-Your AuctorRC free trial ends tomorrow.
-
-You can continue your RC preparation here:
-
-https://rc.auctorlabs.in/pricing
-
-Inside AuctorRC you still have access to:
-
-- Birbal AI Mentor
-- RC analytics
-- Speed drills
-- Editorial Decoder
-- Unlimited RC practice
-
-Consistency matters more than motivation in RC preparation.
-
-See you inside,
-AuctorRC Team
-      `,
+      subject: "Your AuctorRC Trial Ends Soon ⏳",
 
       html: `
+        <div style="font-family: Arial, sans-serif; background:#f5f7fb; padding:40px;">
 
-      <div style="font-family: Arial, sans-serif; padding: 32px; color:#222;">
+          <div style="max-width:600px; margin:auto; background:white; border-radius:18px; padding:40px;">
 
-        <h2>
-          Your AuctorRC trial ends tomorrow
-        </h2>
+            <h1 style="font-size:34px; color:#111827;">
+              Your Trial Ends Soon ⏳
+            </h1>
 
-        <p>
-          Hey ${name},
-        </p>
+            <p style="font-size:18px; color:#374151;">
+              Hey ${name},
+            </p>
 
-        <p>
-          Your AuctorRC free trial ends tomorrow.
-        </p>
+            <p style="font-size:18px; line-height:1.8; color:#374151;">
+              Your AuctorRC free trial is ending soon.
+            </p>
 
-        <p>
-          You can continue your RC preparation here:
-        </p>
+            <p style="font-size:18px; line-height:1.8; color:#374151;">
+              You've already started improving:
+            </p>
 
-        <p>
-          <a href="https://rc.auctorlabs.in/pricing">
-            https://rc.auctorlabs.in/pricing
-          </a>
-        </p>
+            <ul style="font-size:18px; line-height:2; color:#374151; padding-left:20px;">
+              <li>Faster reading speed</li>
+              <li>Better RC accuracy</li>
+              <li>Stronger inference skills</li>
+              <li>Structured reading habits</li>
+            </ul>
 
-        <p>
-          Inside AuctorRC you still have access to:
-        </p>
+            <p style="font-size:18px; line-height:1.8; color:#374151; margin-top:30px;">
+              Continue your momentum with:
+            </p>
 
-        <ul>
-          <li>Birbal AI Mentor</li>
-          <li>RC analytics</li>
-          <li>Speed drills</li>
-          <li>Editorial Decoder</li>
-          <li>Unlimited RC practice</li>
-        </ul>
+            <ul style="font-size:18px; line-height:2; color:#374151; padding-left:20px;">
+              <li>Birbal AI Mentor</li>
+              <li>Speed Drills</li>
+              <li>Deep RC Analytics</li>
+              <li>Editorial Decoder</li>
+              <li>Unlimited RC Practice</li>
+            </ul>
 
-        <p>
-          Consistency matters more than motivation in RC preparation.
-        </p>
+            <div style="margin-top:40px; text-align:center;">
 
-        <p>
-          See you inside,<br/>
-          AuctorRC Team
-        </p>
+              <a
+                href="https://rc.auctorlabs.in/pricing"
+                style="
+                  background:#2563eb;
+                  color:white;
+                  padding:16px 28px;
+                  border-radius:12px;
+                  text-decoration:none;
+                  font-weight:bold;
+                  display:inline-block;
+                "
+              >
+                Upgrade to Premium →
+              </a>
 
-      </div>
+            </div>
 
+            <p style="margin-top:40px; font-size:16px; color:#6b7280; line-height:1.8;">
+              RC improvement comes from consistency,
+              not random bursts of motivation.
+            </p>
+
+            <p style="font-size:16px; color:#6b7280;">
+              See you inside 🚀
+            </p>
+
+          </div>
+
+        </div>
       `,
     })
 
-    return Response.json(data)
+    return Response.json({
+      success: true,
+      data,
+    })
 
   } catch (error) {
 
     console.error(error)
 
     return Response.json({
+      success: false,
       error: error.message,
     })
   }
