@@ -14,86 +14,81 @@ export async function POST(req) {
 
     const data = await resend.emails.send({
 
-      from: "AuctorRC <hello@auctorlabs.in>",
+      from: "AuctorRC Team <hello@auctorlabs.in>",
 
       to: email,
 
-      subject: "Your AuctorRC Trial Ends Soon ⏳",
+      subject: "Your AuctorRC trial ends tomorrow",
+
+      text: `
+Hey ${name},
+
+Your AuctorRC free trial ends tomorrow.
+
+You can continue your RC preparation here:
+
+https://rc.auctorlabs.in/pricing
+
+Inside AuctorRC you still have access to:
+
+- Birbal AI Mentor
+- RC analytics
+- Speed drills
+- Editorial Decoder
+- Unlimited RC practice
+
+Consistency matters more than motivation in RC preparation.
+
+See you inside,
+AuctorRC Team
+      `,
 
       html: `
 
-      <div style="font-family: Arial, sans-serif; background:#f5f7fb; padding:40px;">
+      <div style="font-family: Arial, sans-serif; padding: 32px; color:#222;">
 
-        <div style="max-width:600px; margin:auto; background:white; border-radius:18px; padding:40px;">
+        <h2>
+          Your AuctorRC trial ends tomorrow
+        </h2>
 
-          <h1 style="font-size:34px; margin-bottom:20px;">
-            Your Trial Ends Soon ⏳
-          </h1>
+        <p>
+          Hey ${name},
+        </p>
 
-          <p style="font-size:18px; color:#444;">
-            Hey ${name},
-          </p>
+        <p>
+          Your AuctorRC free trial ends tomorrow.
+        </p>
 
-          <p style="font-size:18px; line-height:1.7; color:#444;">
-            Your AuctorRC free trial is ending soon.
-          </p>
+        <p>
+          You can continue your RC preparation here:
+        </p>
 
-          <p style="font-size:18px; line-height:1.7; color:#444;">
-            Over the past few days, you’ve already started building:
-          </p>
+        <p>
+          <a href="https://rc.auctorlabs.in/pricing">
+            https://rc.auctorlabs.in/pricing
+          </a>
+        </p>
 
-          <div style="margin-top:20px; line-height:2; color:#333;">
+        <p>
+          Inside AuctorRC you still have access to:
+        </p>
 
-            ✅ Faster reading speed<br/>
-            ✅ Better RC accuracy<br/>
-            ✅ Stronger inference skills<br/>
-            ✅ Structured reading habits
+        <ul>
+          <li>Birbal AI Mentor</li>
+          <li>RC analytics</li>
+          <li>Speed drills</li>
+          <li>Editorial Decoder</li>
+          <li>Unlimited RC practice</li>
+        </ul>
 
-          </div>
+        <p>
+          Consistency matters more than motivation in RC preparation.
+        </p>
 
-          <p style="margin-top:30px; font-size:18px; line-height:1.7; color:#444;">
-            Don’t let the momentum break now.
-          </p>
-
-          <div style="margin-top:30px; line-height:2; color:#333;">
-
-            🧠 Birbal AI Mentor<br/>
-            ⚡ Speed Drills<br/>
-            📊 Deep RC Analytics<br/>
-            📰 Editorial Decoder<br/>
-            📚 Unlimited RC Practice
-
-          </div>
-
-          <div style="margin-top:40px; text-align:center;">
-
-            <a
-              href="https://rc.auctorlabs.in/pricing"
-              style="
-                background:#2563eb;
-                color:white;
-                padding:16px 28px;
-                border-radius:12px;
-                text-decoration:none;
-                font-weight:bold;
-                display:inline-block;
-              "
-            >
-              Upgrade to Premium →
-            </a>
-
-          </div>
-
-          <p style="margin-top:40px; color:#666; line-height:1.7;">
-            CAT RC improvement comes from consistency,
-            not random bursts of motivation.
-          </p>
-
-          <p style="color:#666;">
-            See you inside 🚀
-          </p>
-
-        </div>
+        <p>
+          See you inside,<br/>
+          AuctorRC Team
+        </p>
 
       </div>
 
@@ -109,7 +104,5 @@ export async function POST(req) {
     return Response.json({
       error: error.message,
     })
-
   }
-
 }
