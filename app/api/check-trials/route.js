@@ -13,24 +13,38 @@ export async function GET() {
     tomorrow.getDate() + 1
   )
 
-  const tomorrowISO =
+  const tomorrowDate =
     tomorrow.toISOString().split("T")[0]
 
-  const { data: users } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("is_premium", false)
+  const { data: users, error } =
+    await supabase
+      .from("profiles")
+      .select("*")
+
+  console.log(users)
 
   for (const user of users || []) {
 
     if (!user.trial_expires_at) continue
 
-    const expiryDate =
+    const expiry =
       new Date(user.trial_expires_at)
-        .toISOString()
-        .split("T")[0]
 
-    if (expiryDate === tomorrowISO) {
+    const expiryDate =
+      expiry.toISOString().split("T")[0]
+
+    console.log(
+      user.email,
+      expiryDate,
+      tomorrowDate
+    )
+
+    if (expiryDate === tomorrowDate) {
+
+      console.log(
+        "SENDING EMAIL TO:",
+        user.email
+      )
 
       await fetch(
         "https://rc.auctorlabs.in/api/send-trial-ending-email",
@@ -38,12 +52,14 @@ export async function GET() {
           method: "POST",
 
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type":
+              "application/json",
           },
 
           body: JSON.stringify({
             email: user.email,
-            name: user.name || "Champion",
+            name:
+              user.name || "Champion",
           }),
         }
       )
