@@ -9,7 +9,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Leaderboard from "./Leaderboard"
 import SubscribeButton from "@/components/SubscribeButton"
+import RCLeaderboard from "./RCLeaderboard"
 import WordHuntLeaderboard from "./WordHuntLeaderboard"
+import RCArenaChampion from "./RCArenaChampion"
 import {
   Brain,
   BookOpen,
@@ -35,6 +37,7 @@ function getGreeting() {
 export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   const router = useRouter()
   const [streak, setStreak] = useState(0)
+  const [dailyRCStreak, setDailyRCStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
 const [playedToday, setPlayedToday] = useState(false)
 const [isPremium, setIsPremium] = useState(false)
@@ -81,15 +84,18 @@ const [dna, setDNA] = useState({
 useEffect(() => {
   async function loadStreak() {
     if (!user) return
-
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("streak_count")
-      .eq("user_id", user.id)
-      .single()
+const { data, error } = await supabase
+  .from("profiles")
+  .select("streak_count,daily_rc_streak")
+  .eq("user_id", user.id)
+  .single()
 
     if (!error && data) {
       setStreak(data.streak_count || 0)
+
+setDailyRCStreak(
+  data.daily_rc_streak || 0
+)
     }
   }
 
@@ -424,6 +430,60 @@ if (user?.id) {
 
 </div>
 
+<Card
+  onClick={() => router.push("/daily-challenge")}
+  className="
+    cursor-pointer
+    bg-gradient-to-br
+    from-cyan-600
+    via-blue-600
+    to-slate-900
+    border-0
+    rounded-3xl
+    overflow-hidden
+    shadow-2xl
+    hover:scale-[1.01]
+    transition-all
+  "
+>
+  <CardContent className="p-8">
+
+    <div className="text-cyan-100 text-sm font-bold">
+      🔥 DAILY RC ARENA
+    </div>
+
+    <h2 className="text-3xl font-black text-white mt-3">
+      Today's CAT PYQ Challenge
+    </h2>
+
+    <div className="mt-3 inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+  ⏳ Available for 24 Hours
+</div>
+
+    <p className="text-cyan-100 mt-3">
+      4 Questions • 8 Minutes • Detailed Review
+    </p>
+    <p className="text-cyan-50/90 mt-2 text-sm">
+  Attempt → Get Detailed Review + Cognitive Diagnosis + Leaderboard Ranking
+</p>
+
+    <button
+      className="
+        mt-6
+        px-6
+        py-3
+        rounded-xl
+        bg-white
+        text-blue-700
+        font-bold
+      "
+    >
+      Enter Arena →
+    </button>
+
+  </CardContent>
+</Card>
+
       {/* ================= BIRBAL ================= */}
 
 <div
@@ -458,6 +518,8 @@ AI
   </div>
 
 </div>
+
+
 
 <Card
   onClick={() => {
@@ -633,15 +695,28 @@ AI
           Performance Snapshot
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 
           <StatCard label="Accuracy" value={`${stats.accuracy}%`} />
 
 <StatCard label="Avg Speed" value={`${stats.speed} wpm`} />
 
 <StatCard
-  label="Streak"
-  value={streak > 0 ? `🔥 ${streak} days` : "Start 🔥"}
+  label="Workout Streak"
+  value={
+    streak > 0
+      ? `🔥 ${streak} days`
+      : "Start 🔥"
+  }
+/>
+
+<StatCard
+  label="RC Arena"
+  value={
+    dailyRCStreak > 0
+      ? `🏆 ${dailyRCStreak} days`
+      : "Start 🏆"
+  }
 />
 
 <StatCard label="RC Score" value={`${stats.score}/100`} />
@@ -673,27 +748,42 @@ AI
     🏆 Leaderboards
   </h2>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div className="space-y-6">
 
-    {/* LEFT */}
-    <div>
-      <h3 className="text-sm text-indigo-400 mb-2">
-        Daily Workout
-      </h3>
-      <Leaderboard />
-    </div>
+  {/* RC LEADERBOARD */}
 
-    {/* RIGHT */}
-    <div>
-      <h3 className="text-sm text-green-400 mb-2">
-        Word Hunt 🔤
-      </h3>
-      <WordHuntLeaderboard />
-    </div>
+  <div>
+    <h3 className="text-sm text-cyan-400 mb-2">
+      Daily RC Arena
+    </h3>
 
+    <RCLeaderboard />
+  </div>
+
+  {/* DAILY WORKOUT */}
+
+  <div>
+    <h3 className="text-sm text-indigo-400 mb-2">
+      Daily Workout
+    </h3>
+
+    <Leaderboard />
+  </div>
+
+  {/* WORD HUNT */}
+
+  <div>
+    <h3 className="text-sm text-green-400 mb-2">
+      Word Hunt 🔤
+    </h3>
+
+    <WordHuntLeaderboard />
   </div>
 
 </div>
+</div>
+
+<RCArenaChampion />
  {/* ================= PREMIUM ================= */}
 
 <Card className="bg-slate-900 border-slate-800 rounded-2xl">

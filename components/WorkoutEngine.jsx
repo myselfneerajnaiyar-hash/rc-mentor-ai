@@ -489,7 +489,7 @@ if (viewMode === "explanation") {
         }}
         className="mt-4 px-4 py-2 bg-indigo-600 rounded-lg"
       >
-        Skip Paragraph (DEV)
+        Skip Paragraph 
       </button>
     )}
   </div>
