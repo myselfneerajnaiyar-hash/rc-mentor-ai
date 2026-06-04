@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
+import posthog from "posthog-js"
 
 export default function WelcomePage() {
   const router = useRouter()
@@ -48,6 +49,11 @@ async function checkUser() {
     .select("*")
     .eq("user_id", user.id)
     .maybeSingle()
+
+    posthog.identify(user.id, {
+  email: user.email,
+  name: profile?.name || formatted,
+})
 
  if (!profile || !profile.profile_completed) {
   setShowProfileWizard(true)
@@ -182,6 +188,10 @@ expiry.setDate(expiry.getDate() + 3)
               <option value="CAT">CAT</option>
               <option value="XAT">XAT</option>
               <option value="GMAT">GMAT</option>
+               <option value="CLAT">CLAT</option>
+                <option value="Bank PO">Bank PO</option>
+                 <option value="CUET">CUET</option>
+                  <option value="IPMAT">IPMAT</option>
             </select>
 
             <button
