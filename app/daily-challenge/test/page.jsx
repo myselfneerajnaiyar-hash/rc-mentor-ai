@@ -21,6 +21,7 @@ import {
   CheckCircle2,
   Flag,
   Brain,
+  X
 } from "lucide-react";
 
 export default function DailyChallengeTestPage() {
@@ -194,7 +195,8 @@ useEffect(() => {
    
    return (
 
-      <div className="min-h-screen bg-[#071120] flex items-center justify-center text-white">
+     <div className="min-h-screen bg-[#071120] text-white">
+      
 
         <div className="text-3xl font-black animate-pulse">
           Loading RC Arena...
@@ -321,6 +323,20 @@ useEffect(() => {
       [currentQuestion]: index,
     }));
   }
+
+  function clearResponse() {
+
+  setAnswers(prev => {
+
+    const updated = { ...prev };
+
+    delete updated[currentQuestion];
+
+    return updated;
+
+  });
+
+}
 
  async function submitTest() {
 
@@ -591,146 +607,177 @@ router.push("/daily-challenge/result");
 
  return (
 
-  <div className="h-screen bg-[#071120] text-white overflow-hidden">
+ <div className="min-h-screen bg-[#071120] text-white">
+     <div
+  className="
+    fixed
+    top-6
+    right-6
+    z-[999]
+    px-5
+    py-3
+    rounded-2xl
+    border
+    backdrop-blur-xl
+    shadow-xl
+    min-w-[140px]
+    bg-cyan-500/10
+    border-cyan-400/20
+    text-cyan-200
+  "
+>
+  <div className="flex items-center gap-2 font-bold">
+    <Clock3 className="w-5 h-5" />
+    {formattedTime}
+  </div>
+</div>
 
-   <div className="h-full flex flex-col px-2 py-2 overflow-hidden">
+ <div className="h-full flex flex-col px-2 py-2  gap-3">
 
       {/* ================= TOP BAR ================= */}
 
-      <Card className="rounded-3xl border border-white/5 bg-[#0d1726]/95 backdrop-blur-xl shadow-2xl overflow-hidden shrink-0">
-
-        <CardContent className="px-5 py-4">
-
-<div className="flex items-start justify-between gap-4 overflow-hidden">
-
-            {/* LEFT */}
-
-            <div>
-
-              <div className="text-xs uppercase tracking-[0.25em] text-cyan-300 font-bold">
-                Daily RC Arena
-              </div>
-
-              <h1 className="text-2xl font-black text-white mt-2">
-
-                {challenge.title || "CAT 2023 Slot 3 RC"}
-
-              </h1>
-
-              <div className="flex items-center gap-3 mt-4">
-
-                <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-200 text-sm">
-                  CAT-Level Simulation
-                </div>
-
-              <div className="px-3 py-1 rounded-full bg-orange-500/20 border border-orange-400 text-sm font-bold shadow-sm">
-  <span style={{ color: "#fdba74" }}>
-    {questions.length} Questions
-  </span>
-</div>
-
-                <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-200 text-sm">
-                  {challenge.source_year || "CAT 2023"}
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* RIGHT */}
-
-            <div className="flex items-start gap-3 shrink-0">
-
-              {/* QUESTION NAV */}
-
-              
-             
-
-              {/* TIMER */}
-
-              <div
-  className={`px-5 py-3 rounded-2xl border ${timerClasses}`}
+   <Card
+className="
+rounded-none
+border-b
+border-white/5
+bg-[#0d1726]
+"
 >
 
-  <div className="flex items-center gap-3 font-bold text-lg">
+<CardContent className="px-5 py-4">
 
-    <Clock3 className="w-5 h-5" />
+<div
+  className="
+  flex
+  flex-col
+  lg:flex-row
+  lg:justify-between
+  lg:items-center
+  gap-4
+  w-full
+  "
+>
 
-    {formattedTime}
+  {/* LEFT */}
+  <div>
 
-  </div>
+    <div className="text-xs uppercase tracking-[0.25em] text-cyan-300 font-bold">
+      Daily RC Arena
+    </div>
 
-  {timeLeft <= 60 && (
+    <h1 className="text-2xl font-black text-white mt-2">
+      {challenge.title}
+    </h1>
 
-    <div className="text-xs mt-1 text-red-300 font-bold">
+    <div className="flex flex-wrap items-center gap-2 mt-4">
 
-      ⚠️ Less than 1 minute remaining
+      <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-200 text-sm">
+        CAT-Level Simulation
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-orange-500/20 border border-orange-400 text-sm text-white font-bold">
+        {questions.length} Questions
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-200 text-sm">
+        {challenge.source_year}
+      </div>
+
+     
 
     </div>
 
-  )}
-
-</div>
-
-               
-
-              {/* SUBMIT */}
-
-            <Button
-  onClick={() => {
-
-    const unanswered =
-      questions.length -
-      Object.keys(answers).length;
-
-    if (unanswered > 0) {
-
-      const proceed = window.confirm(
-        `You still have ${unanswered} unanswered question(s). Submit anyway?`
-      );
-
-      if (!proceed) return;
-    }
-
-    submitTest();
-
-  }}
-  className="rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
->
-  Submit Test
-</Button>
-
-            </div>
-
-          </div>
-
-        </CardContent>
-
-      </Card>
-    <div className="flex mt-3 justify-center pr-10">
-
-  <div className="w-[220px] px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-400/20 bacdrop-blur-xl">
-
-   <div className="text-[10px] uppercase tracking-[0.2em] text-emerald-200 font-bold">
-  Progress
-</div>
-
-<div className="text-lg font-black text-white mt-1">
-  {answeredCount} Attempted
-</div>
-
-<div className="text-sm text-slate-400">
-  {questions.length - answeredCount} Remaining
-</div>
-
   </div>
 
+  
+  <div
+  className="
+  flex
+  flex-wrap
+  items-center
+  gap-3
+  mt-4
+  lg:mt-0
+  lg:ml-auto
+  "
+>
+
+<div className="w-[180px] px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-400/20 shrink-0">
+
+  <div className="text-[10px] uppercase tracking-[0.2em] text-emerald-200 font-bold">
+    Progress
+  </div>
+
+  <>
+  <div className="text-lg font-black text-white">
+    {answeredCount} Attempted
+  </div>
+
+  <div className="text-sm text-slate-400">
+    {questions.length - answeredCount} Remaining
+  </div>
+</>
+
 </div>
 
+ 
+
+  <Button
+    onClick={() => {
+      const unanswered =
+        questions.length -
+        Object.keys(answers).length;
+
+      if (unanswered > 0) {
+        const proceed = window.confirm(
+          `You still have ${unanswered} unanswered question(s). Submit anyway?`
+        );
+
+        if (!proceed) return;
+      }
+
+      submitTest();
+    }}
+    className="
+    h-[52px]
+    px-8
+    rounded-2xl
+    bg-emerald-600
+    hover:bg-emerald-500
+    text-white
+    font-bold
+    "
+  >
+    Submit Test
+  </Button>
+
+</div>
+
+  
+
+</div>
+</CardContent>
+
+       </Card>
+
+       
+    
+
+
+
       {/* ================= MAIN ================= */}
-
-     <div className="mt-6 grid h-[calc(100vh-180px)] md:grid-cols-2 grid-cols-1 gap-6 overflow-hidden">
-
+<div
+  className="
+  mt-0
+  grid
+  grid-cols-1
+  md:grid-cols-2
+  gap-6
+  flex-1
+  min-h-0
+  "
+>
         {/* ================= PASSAGE PANEL ================= */}
 
        <Card className="h-full rounded-[32px] border border-white/5 bg-[#0d1726] overflow-hidden">
@@ -828,6 +875,23 @@ router.push("/daily-challenge/result");
                   <div className="text-2xl font-black text-white mt-2">
 
                     Q{currentQuestion + 1}
+                    <div className="mt-2">
+
+  {answers[currentQuestion] !== undefined ? (
+
+    <span className="text-emerald-400 text-sm font-bold">
+      ● Answered
+    </span>
+
+  ) : (
+
+    <span className="text-amber-400 text-sm font-bold">
+      ● Not Answered
+    </span>
+
+  )}
+
+</div>
 
                   </div>
 
@@ -987,6 +1051,24 @@ router.push("/daily-challenge/result");
 
               </Button>
 
+              <Button
+  onClick={clearResponse}
+  disabled={
+    answers[currentQuestion] === undefined
+  }
+  className="
+    rounded-2xl
+    bg-cyan-500/15
+    border
+    border-cyan-400/30
+    text-cyan-300
+    hover:bg-cyan-500/25
+    hover:text-cyan-200
+  "
+>
+  ✕ Clear Response
+</Button>
+
               
 
               <Button
@@ -1017,8 +1099,9 @@ router.push("/daily-challenge/result");
       </div>
 
     </div>
+    </div>
 
-  </div>
+  
 
 );
 }

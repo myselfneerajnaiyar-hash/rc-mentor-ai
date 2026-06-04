@@ -124,6 +124,22 @@ setRcSet(data);
 
     });
 
+    console.log("QUESTIONS", questions);
+console.log("ATTEMPTS", attempts);
+console.log("WRONG QUESTIONS", wrongQuestions);
+console.log(
+  "WRONG COUNT",
+  wrongQuestions.length
+);
+
+wrongQuestions.forEach((q, index) => {
+  console.log(
+    "QUESTION",
+    index + 1,
+    q.question_enrichment
+  );
+});
+
   const firstWrong =
     wrongQuestions[0];
 
@@ -156,7 +172,7 @@ setRcSet(data);
 
     <div className="min-h-screen bg-[#071120] text-white">
 
-      <div className="max-w-6xl mx-auto px-8 py-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
 
        <div className="flex items-center justify-between mb-8">
 
@@ -251,9 +267,19 @@ setRcSet(data);
 
         </div>
 
-        <div className="text-5xl font-black text-white mt-6">
-          {diagnosis}
-        </div>
+        <div
+  className="
+  text-3xl
+  md:text-5xl
+  font-black
+  text-white
+  mt-6
+  leading-tight
+  break-words
+  "
+>
+  {diagnosis}
+</div>
 
         <p className="mt-6 text-slate-300 leading-8 text-lg">
           {whyFail}
@@ -429,9 +455,19 @@ setRcSet(data);
       Tomorrow's Mission
     </div>
 
-    <div className="text-5xl font-black text-white mt-2">
-      {mission}
-    </div>
+    <div
+  className="
+  text-3xl
+  md:text-5xl
+  font-black
+  text-white
+  mt-2
+  leading-tight
+  break-words
+  "
+>
+  {mission}
+</div>
 
   </div>
 

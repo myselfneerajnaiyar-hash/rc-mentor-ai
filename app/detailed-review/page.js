@@ -289,6 +289,68 @@ const enrichment =
       
 </div>
 
+{/* ACTUAL PASSAGE */}
+
+<div className="mt-16">
+
+  <div className="text-cyan-300 text-sm uppercase tracking-[0.35em] font-black">
+    Actual Passage
+  </div>
+
+  <Card
+    className="
+      mt-6
+      bg-slate-900/60
+      border-cyan-500/20
+    "
+  >
+
+    <CardContent className="p-8">
+
+      {(rcSet.passage_json || []).length > 0 ? (
+
+        <div className="space-y-6">
+
+          {rcSet.passage_json.map(
+            (paragraph, index) => (
+
+              <p
+                key={index}
+                className="
+                  text-slate-300
+                  leading-8
+                  text-base md:text-lg
+                "
+              >
+                {paragraph}
+              </p>
+
+            )
+          )}
+
+        </div>
+
+      ) : (
+
+        <p
+          className="
+            text-slate-300
+            leading-8
+            text-base md:text-lg
+            whitespace-pre-wrap
+          "
+        >
+          {rcSet.passage}
+        </p>
+
+      )}
+
+    </CardContent>
+
+  </Card>
+
+</div>
+
 <div className="mt-16">
 
  <div className="text-cyan-300 text-sm uppercase tracking-[0.35em] font-black">
@@ -744,15 +806,15 @@ const enrichment =
         "
       >
 
-        <CardContent className="p-8">
+        <CardContent className="p-4 md:p-8">
 
           {/* HEADER */}
 
-          <div className="flex justify-between">
+       <div className="flex flex-col md:flex-row md:justify-between gap-4">
 
             <div>
 
-              <h2 className="text-3xl font-black text-cyan-300">
+            <h2 className="text-2xl md:text-3xl font-black text-cyan-300">
 
                 Question
                 {" "}
@@ -1031,7 +1093,14 @@ const isCorrect =
 
             <div className="mt-6 rounded-2xl border border-emerald-500/20 p-6">
 
-  <h3 className="text-emerald-300 font-black">
+  <h3
+  className="
+    text-emerald-300
+    font-black
+    text-lg
+    leading-tight
+  "
+>
     One Sentence To Remember
   </h3>
 
@@ -1052,7 +1121,7 @@ const isCorrect =
     Option Autopsy
   </h3>
 
-  <div className="grid md:grid-cols-2 gap-4 mt-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
 
     {["A", "B", "C", "D"].map((letter) => {
 

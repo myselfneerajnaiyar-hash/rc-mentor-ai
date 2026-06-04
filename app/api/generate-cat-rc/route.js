@@ -244,6 +244,8 @@ while (!completion && attempts < 2) {
   temperature: 0.7,
   response_format: { type: "json_object" }
 });
+
+console.log("Token Usage:",completion.usage)
   } catch {
     attempts++;
   }

@@ -46,6 +46,8 @@ export default function RCSessionPage() {
 
       setAttempt(attemptData);
 
+     
+
     const { data: questionData } =
   await supabase
     .from("daily_rc_question_attempts")
@@ -80,6 +82,7 @@ export default function RCSessionPage() {
 
   if (loading) {
 
+    
     return (
 
       <div className="min-h-screen bg-[#071120] text-white flex items-center justify-center">
@@ -90,6 +93,13 @@ export default function RCSessionPage() {
 
     );
   }
+
+   const passageEnrichment =
+  attempt?.daily_rc_sets?.passage_enrichment || {};
+
+const passageFlow =
+  passageEnrichment.passageFlow || [];
+
 
   return (
 
@@ -236,50 +246,66 @@ export default function RCSessionPage() {
 
   <div className="space-y-6">
 
-    {passageEnrichment?.passageFlow?.map(
-      (step, index) => (
+   {passageFlow.map((step, index) => (
+  <div
+    key={index}
+    className="
+      border border-cyan-500/20
+      rounded-2xl
+      p-5
+      bg-slate-900
+    "
+  >
+    <div className="text-cyan-300 font-black">
+      Paragraph {step.paragraph}
+    </div>
 
-      <div
-        key={index}
-        className="border border-slate-700 rounded-2xl p-6"
-      >
+    <div className="text-slate-400 mt-2">
+      {step.transitionType}
+    </div>
 
-        <div className="text-cyan-300 font-bold">
-          Paragraph {step.paragraph}
-        </div>
-
-        <div className="mt-3">
-          <span className="font-bold">
-            Actual Meaning:
-          </span>
-          <div>
-            {step.actualMeaning}
-          </div>
-        </div>
-
-        <div className="mt-3">
-          <span className="font-bold">
-            Simple Explanation:
-          </span>
-          <div>
-            {step.simpleExplanation}
-          </div>
-        </div>
-
-        <div className="mt-3">
-          <span className="font-bold">
-            Why This Paragraph Exists:
-          </span>
-          <div>
-            {step.whyThisParagraphExists}
-          </div>
-        </div>
-
+    <div className="mt-4">
+      <div className="text-emerald-300 font-bold">
+        Actual Meaning
       </div>
 
-    ))}
-  </div>
+      <p className="text-slate-300 mt-2">
+        {step.actualMeaning}
+      </p>
+    </div>
 
+    <div className="mt-4">
+      <div className="text-purple-300 font-bold">
+        Simple Explanation
+      </div>
+
+      <p className="text-slate-300 mt-2">
+        {step.simpleExplanation}
+      </p>
+    </div>
+
+    <div className="mt-4">
+      <div className="text-amber-300 font-bold">
+        Why This Paragraph Exists
+      </div>
+
+      <p className="text-slate-300 mt-2">
+        {step.whyThisParagraphExists}
+      </p>
+    </div>
+
+    <div className="mt-4 rounded-xl bg-red-500/10 border border-red-500/20 p-4">
+      <div className="text-red-300 font-bold">
+        CAT Reading Danger
+      </div>
+
+      <p className="text-slate-300 mt-2">
+        {step.catReadingDanger}
+      </p>
+    </div>
+  </div>
+))}
+</div>
 </div>
 
    <div className="mt-10">
@@ -597,5 +623,5 @@ export default function RCSessionPage() {
 
 </div>
 
-)
+);
 }

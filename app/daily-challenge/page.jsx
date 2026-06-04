@@ -221,25 +221,48 @@ export default function DailyChallengePage() {
 
   </div>
 
-  <div className="flex flex-col items-end gap-4 w-auto">
+  <div
+  className="
+  flex
+  flex-col
+  items-stretch
+  md:items-end
+  gap-6
+  w-full
+  md:w-auto
+  "
+>
 
 {
   alreadyAttempted ? (
 
-   <div className="flex gap-3">
+   <div
+  className="
+  flex
+  flex-col
+  sm:flex-row
+  gap-3
+  w-full
+  md:w-auto
+  "
+>
 
   <Link href="/daily-challenge/result">
 
     <button
       className="
-      h-20
-      px-10
-      rounded-2xl
-      bg-emerald-600
-      text-white
-      font-black
-      text-2xl
-      "
+h-16
+md:h-20
+w-full
+sm:w-auto
+px-8
+rounded-2xl
+bg-emerald-600
+text-white
+font-black
+text-xl
+md:text-2xl
+"
     >
       View Report →
     </button>
@@ -249,17 +272,21 @@ export default function DailyChallengePage() {
   <Link href="/rc-history">
 
     <button
-      className="
-      h-20
-      px-8
-      rounded-2xl
-      border
-      border-cyan-400/30
-      bg-cyan-500/10
-      text-cyan-300
-      font-black
-      text-xl
-      "
+    className="
+h-16
+md:h-20
+w-full
+sm:w-auto
+px-8
+rounded-2xl
+border
+border-cyan-400/30
+bg-cyan-500/10
+text-cyan-300
+font-black
+text-lg
+md:text-xl
+"
     >
       📚 History
     </button>
@@ -302,7 +329,18 @@ export default function DailyChallengePage() {
 
   )
 }
-    <div className="text-right">
+    <div
+  className="
+  rounded-2xl
+  bg-white/5
+  border
+  border-white/10
+  px-5
+  py-4
+  text-center
+  md:text-right
+  "
+>
       <div className="text-lg font-bold text-white">
         Inference-heavy RC challenge
       </div>
