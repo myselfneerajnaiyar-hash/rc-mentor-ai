@@ -1,5 +1,6 @@
 import "./globals.css"
 import Script from "next/script"
+import PostHogProvider from "../components/PostHogProvider"
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <PostHogProvider />
         {children}
       </body>
     </html>
