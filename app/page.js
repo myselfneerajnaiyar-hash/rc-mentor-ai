@@ -14,7 +14,7 @@ JSON.parse = function (...args) {
   }
 };
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import HomeView from "../components/HomeView";
 import MentorView from "../components/MentorView";
@@ -79,6 +79,7 @@ async function loadSectionalAttemptMapFromDB() {
 export default function Page() {
 
   const router = useRouter();
+  const mainRef = useRef(null);
 
 
   const [text, setText] = useState("");
@@ -148,6 +149,19 @@ useEffect(() => {
   window.addEventListener("resize", check);
   return () => window.removeEventListener("resize", check);
 }, []);
+
+useEffect(() => {
+  if (
+    view === "rc" ||
+    view === "vocab" ||
+    view === "speed" ||
+    view === "precision"
+  ) {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }
+}, [view]);
 
 
 
@@ -797,7 +811,9 @@ ${
 )}
 
     {/* Main Content */}
-  <main className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
+  <main 
+  ref={mainRef}
+  className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
        {(["rc", "vocab", "speed", "precision"].includes(view)) && (

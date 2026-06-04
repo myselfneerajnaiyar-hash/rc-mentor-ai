@@ -11,7 +11,7 @@ import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 import PracticeSwitcher from "./PracticeSwitcher";
 
 export default function RCView({view,setView }) {
-  const [rcTab, setRcTab] = useState("paste");
+  const [rcTab, setRcTab] = useState("generate");
   useEffect(() => {
   async function checkUser() {
    const { data, error } = await supabase.auth.getUser();
@@ -103,6 +103,20 @@ const [currentQStart, setCurrentQStart] = useState(null);
 
   return () => clearInterval(t);
 }, [timerRunning, timeLeft]);
+
+useEffect(() => {
+
+  const main = document.querySelector("main");
+
+  if (main) {
+    main.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant"
+    });
+  }
+
+}, []);
   
 useEffect(() => {
   function handler() {
@@ -804,8 +818,8 @@ return (
     <div style={{ marginBottom: 32 }}>
   <TabGroup
     tabs={[
-      { label: "Paste your passage", value: "paste" },
       { label: "Generate Passage", value: "generate" },
+      { label: "Paste your passage", value: "paste" },
       { label: "RC Profile", value: "profile" },
       { label: "RC History", value: "history" },
     ]}
