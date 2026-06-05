@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import DailyRCResult from "@/components/DailyRCResult";
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import posthog from "posthog-js";
 
 import {
   Card,
@@ -522,6 +523,16 @@ if (attemptError) {
   console.error(attemptError);
   return;
 }
+
+posthog.capture("daily_rc_completed", {
+  challenge_id: challenge.id,
+  challenge_title: challenge.title,
+  score: catScore,
+  accuracy: accuracy,
+  time_used: timeUsed,
+  correct: correct,
+  incorrect: incorrect,
+});
 
 const questionRows =
   questions.map((q, index) => {
