@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 
 import { createClient }
@@ -10,12 +11,13 @@ const supabase = createClient(
 
 export async function GET() {
 
- const today = new Intl.DateTimeFormat(
-  "en-CA",
-  {
-    timeZone: "Asia/Kolkata",
-  }
-).format(new Date());
+const today = new Date(
+  Date.now() + 5.5 * 60 * 60 * 1000
+)
+  .toISOString()
+  .split("T")[0];
+
+console.log("IST DATE:", today);
 
   const { data, error } =
     await supabase
