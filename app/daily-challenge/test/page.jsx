@@ -1018,11 +1018,13 @@ bg-[#0d1726]
   {String.fromCharCode(65 + index)}
 </div>
 
-                          <div className="flex-1 min-w-0 break-words text-[16px] leading-7 text-white pt-1">
-
-                            {option.text}
-
-                          </div>
+                        <div className="flex-1 min-w-0 break-words text-[16px] leading-7 text-white pt-1">
+  {String(
+    typeof option === "string"
+      ? option
+      : option?.text || option?.option || ""
+  )}
+</div>
 
                           {selected && (
 
