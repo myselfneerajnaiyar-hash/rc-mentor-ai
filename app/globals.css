@@ -503,3 +503,50 @@ textarea::placeholder {
 .animate-fade {
   animation: fadeIn 0.5s ease;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn .4s ease forwards;
+}
+
+@keyframes modalEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-modalEnter {
+  animation: modalEnter .45s ease-out forwards;
+}
+
+@keyframes floatBirbal {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.float-birbal {
+  animation: floatBirbal 2s ease-in-out infinite;
+}

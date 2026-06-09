@@ -12,6 +12,12 @@ import SubscribeButton from "@/components/SubscribeButton"
 import RCLeaderboard from "./RCLeaderboard"
 import WordHuntLeaderboard from "./WordHuntLeaderboard"
 import RCArenaChampion from "./RCArenaChampion"
+import BirbalCoachCard
+from "@/components/BirbalCoachCard";
+import { generateCoachPlan }
+from "@/lib/birbal/generateCoachPlan";
+import BirbalWelcomeModal
+from "@/components/BirbalWelcomeModal";
 import {
   Brain,
   BookOpen,
@@ -37,9 +43,20 @@ function getGreeting() {
 export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
   const router = useRouter()
   const [streak, setStreak] = useState(0)
+  const [coach, setCoach] = useState(null);
   const [dailyRCStreak, setDailyRCStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
+  const [todayMission, setTodayMission] =
+  useState(null);
+  const [showBirbalWelcome,
+setShowBirbalWelcome] =
+useState(false);
 const [playedToday, setPlayedToday] = useState(false)
+const [completedArenaToday, setCompletedArenaToday] =
+useState(false)
+
+const [completedWorkoutToday, setCompletedWorkoutToday] =
+useState(false)
 const [isPremium, setIsPremium] = useState(false)
 const [birbalCredits, setBirbalCredits] = useState(0)
 const [trialExpired, setTrialExpired] = useState(false)
@@ -61,6 +78,8 @@ const [insight, setInsight] = useState({
   advice: "",
 });
 
+
+
 const ALL_RC_TYPES = [
   "main-idea",
   "detail",
@@ -78,6 +97,7 @@ const [dna, setDNA] = useState({
   type: "",
   description: ""
 })
+
 
 
 
@@ -102,6 +122,111 @@ setDailyRCStreak(
   loadStreak()
 }, [user])
 
+useEffect(() => {
+
+  if (!user?.id) return;
+
+  async function loadCoach() {
+
+    const res =
+      await fetch(
+        `/api/birbal-mission?userId=${user.id}`
+      );
+
+    const data =
+      await res.json();
+
+    console.log("BIRBAL", data);
+
+    setCoach(data.coach);
+  }
+
+  loadCoach();
+
+}, [user]);
+
+useEffect(() => {
+
+  if (!user?.id) return;
+
+  const tasks = [];
+
+  let missionText = "";
+
+  // New user
+  if (
+    streak === 0 &&
+    dailyRCStreak === 0 &&
+    wordHuntStreak === 0
+  ) {
+
+    missionText =
+      "Welcome to Auctor RC. Complete your first Daily RC Arena, play one Word Hunt and finish one Daily Workout.";
+
+    tasks.push({
+  title: "Daily RC Arena",
+  completed: false
+});
+
+tasks.push({
+  title: "Word Hunt",
+  completed: false
+});
+
+tasks.push({
+  title: "Daily Workout",
+  completed: false
+});
+  }
+
+  else {
+
+    if (dailyRCStreak === 0) {
+      tasks.push({
+ title: "Daily RC Arena",
+ completed: dailyRCStreak > 0
+});
+    }
+
+    if (wordHuntStreak === 0) {
+     tasks.push({
+ title: "Word Hunt",
+ completed: playedToday
+});
+    }
+
+    if (streak < 3) {
+     tasks.push({
+ title: "Daily Workout",
+ completed: streak > 0
+});
+    }
+
+    if (stats.accuracy < 60) {
+      tasks.push({
+  title: `Practice ${insight.weakness}`,
+  completed: false
+});
+    }
+
+    missionText =
+      `Your current accuracy is ${stats.accuracy}%.
+Focus on ${insight.weakness}.
+Today's goal is consistency and improvement.`;
+  }
+
+  setTodayMission({
+    text: missionText,
+    tasks,
+  });
+
+}, [
+  stats,
+  streak,
+  dailyRCStreak,
+  wordHuntStreak,
+  insight
+]);
 useEffect(() => {
 
   async function loadPremium() {
@@ -159,6 +284,34 @@ useEffect(() => {
   loadPremium()
 
 }, [user])
+
+useEffect(() => {
+
+  async function checkOnboarding() {
+
+    if (!user?.id) return;
+
+    const { data } =
+      await supabase
+        .from("profiles")
+        .select("birbal_onboarded")
+        .eq("user_id", user.id)
+        .single();
+
+    if (!data?.birbal_onboarded) {
+
+  setTimeout(() => {
+
+    setShowBirbalWelcome(true);
+
+  }, 3000);
+
+}
+  }
+
+  checkOnboarding();
+
+}, [user]);
 useEffect(() => {
   async function loadWordHuntStreak() {
     if (!user?.id) return;
@@ -175,6 +328,50 @@ useEffect(() => {
   }
 
   loadWordHuntStreak();
+}, [user]);
+
+useEffect(() => {
+
+  async function loadTodayActivity() {
+
+    if (!user?.id) return;
+
+    const today =
+      new Date().toISOString().split("T")[0];
+
+    const { data: arena } =
+      await supabase
+        .from("daily_rc_attempts")
+        .select("id")
+        .eq("user_id", user.id)
+        .gte(
+          "completed_at",
+          `${today}T00:00:00`
+        )
+        .limit(1);
+
+    const { data: workout } =
+      await supabase
+        .from("workout_attempts")
+        .select("id")
+        .eq("user_id", user.id)
+        .gte(
+          "completed_at",
+          `${today}T00:00:00`
+        )
+        .limit(1);
+
+    setCompletedArenaToday(
+      arena?.length > 0
+    );
+
+    setCompletedWorkoutToday(
+      workout?.length > 0
+    );
+  }
+
+  loadTodayActivity();
+
 }, [user]);
 
 useEffect(() => {
@@ -389,6 +586,16 @@ if (user?.id) {
 
 
   return (
+    <>
+
+ {showBirbalWelcome && (
+  <BirbalWelcomeModal
+    user={user}
+    onStart={() => {
+      setShowBirbalWelcome(false);
+    }}
+  />
+)}
    <div className="flex flex-col gap-10 pb-28">
 {/* ================= HEADER ================= */}
 
@@ -419,7 +626,10 @@ if (user?.id) {
       <p className="text-slate-400 mt-1">
         Your structured RC training system
       </p>
+
+   
     </div>
+   
 
     {!user && (
       <Button onClick={() => setView("login")}>
@@ -427,8 +637,12 @@ if (user?.id) {
       </Button>
     )}
   </div>
-
+ 
 </div>
+
+ {coach && (
+  <BirbalCoachCard coach={coach} />
+)}
 
 <Card
   onClick={() => router.push("/daily-challenge")}
@@ -484,43 +698,7 @@ if (user?.id) {
   </CardContent>
 </Card>
 
-      {/* ================= BIRBAL ================= */}
-
-<div
-  onClick={() => setView("mentor")}
- className="mb-10 cursor-pointer rounded-2xl border border-indigo-500/30 bg-slate-900/20 hover:bg-slate-800 transition p-5 flex items-center justify-between shadow-lg"
->
-
-  <div className="flex items-center gap-4">
-
-    <img
-      src="/birbal.png"
-      className="w-12 h-12 rounded-full"
-    />
-
-    <div>
-      <div className="text-lg font-semibold text-white">
-        Ask Birbal
-      </div>
-      <span className="ml-2 text-xs bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">
-AI
-</span>
-
-      <div className="text-sm text-slate-400">
-        Ask Birbal about RC mistakes, inference traps, or author logic
-      </div>
-    </div>
-
-  </div>
-
-  <div className="text-indigo-400 text-sm">
-    Start →
-  </div>
-
-</div>
-
-
-
+     
 
 
       {/* ================= DAILY WORKOUT ================= */}
@@ -1007,6 +1185,7 @@ Skill Balance
 
      
     </div>
+    </>
   )
 }
 
@@ -1114,6 +1293,7 @@ function SkillBar({ label, value, total }) {
       </div>
 
     </div>
-
-  )
+  );
 }
+  
+ 
