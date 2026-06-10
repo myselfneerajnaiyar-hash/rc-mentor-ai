@@ -34,7 +34,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -746,8 +746,9 @@ return (
   { id: "hangman", label: "Word Hunt", icon: Puzzle },
  
 
-  { id: "cat", label: "CAT", icon: GraduationCap },
-  { id: "profile", label: "Profile", icon: User },
+ { id: "cat", label: "CAT", icon: GraduationCap },
+{ id: "premium", label: "Premium", icon: Trophy },
+{ id: "profile", label: "Profile", icon: User },
 ].map((item) => {
   const Icon = item.icon;
 
@@ -767,12 +768,17 @@ const locked =
     !freeViews.includes(item.id) &&
     !hasPremiumAccess
 
-  if (locked) {
-    router.push("/pricing")
-    return
-  }
+if (item.id === "premium") {
+  router.push("/pricing")
+  return
+}
 
-  setView(item.id)
+if (locked) {
+  router.push("/pricing")
+  return
+}
+
+setView(item.id)
 }}
   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl transition-all duration-200
 ${

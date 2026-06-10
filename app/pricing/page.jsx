@@ -50,7 +50,7 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 <section className="max-w-6xl mt-20 mx-auto px-6 pb-32">
 
-<div className="grid md:grid-cols-2 gap-8 items-stretch max-w-4xl mx-auto">
+<div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6 items-stretch max-w-[1400px] mx-auto">
 
 
 
@@ -94,12 +94,84 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 </Card>
 
+<Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-indigo-500/40 rounded-3xl">
+
+<CardContent className="p-10 text-center">
+
+<h3 className="text-2xl font-semibold text-white mb-6">
+3 Month Plan
+</h3>
+
+<p className="text-5xl font-bold text-white mb-3">
+₹999
+</p>
+
+<p className="text-indigo-400 mb-8">
+₹333/month
+</p>
+
+<ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
+<li>✔️ Daily RC workouts</li>
+<li>✔️ Speed reading gym</li>
+<li>✔️ Birbal AI mentor</li>
+<li>✔️ Performance analytics</li>
+<li>✔️ Unlimited RC practice</li>
+</ul>
+
+<SubscribeButton
+amount={999}
+label="Start 3 Month Plan"
+user={user}
+/>
+
+</CardContent>
+</Card>
+
+<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 rounded-3xl ring-2 ring-orange-500">
+
+<div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+BEST VALUE
+</div>
+
+<CardContent className="p-10 text-center">
+
+<h3 className="text-2xl font-semibold text-white mb-6">
+Half Yearly Plan
+</h3>
+
+<p className="text-6xl font-bold text-white mb-2">
+₹1299
+</p>
+
+<p className="text-orange-400 font-medium mb-8">
+Only ₹216/month
+</p>
+
+<ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
+<li>✔️ Everything in Monthly</li>
+<li>✔️ Unlimited RC practice</li>
+<li>✔️ AI RC Generator</li>
+<li>✔️ Birbal explanations</li>
+<li>✔️ Full analytics dashboard</li>
+</ul>
+
+<SubscribeButton
+amount={1299}
+label="Start 6 Month Plan"
+user={user}
+variant="premium"
+/>
+
+</CardContent>
+
+</Card>
+
 {/* YEARLY */}
 
-<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 ring-1 ring-white/10 shadow-2xl shadow-orange-500/10 rounded-3xl hover:border-orange-300 hover:-translate-y-1 transition-all duration-300 scale-105 backdrop-blur-xl">
+<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 ring-1 ring-white/10 shadow-2xl shadow-orange-500/10 rounded-3xl hover:border-orange-300 hover:-translate-y-1 transition-all duration-300 backdrop-blur-xl">
 
   <div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-    MOST POPULAR
+    ANNUAL SAVER
   </div>
 
   <CardContent className="p-10 text-center">

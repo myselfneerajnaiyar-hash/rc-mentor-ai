@@ -27,7 +27,7 @@ export default function PreviewPricingPage() {
         <div className="absolute top-[500px] right-[-100px] w-[500px] h-[500px] bg-orange-500/10 blur-[160px] rounded-full pointer-events-none" />
 
         {/* HERO */}
-        <section className="max-w-6xl mt-10 mx-auto px-6 pt-28 pb-24 text-center">
+        <section className="max-w-6xl mt-20 mx-auto px-6 pt-28 pb-24 text-center">
 
           <h1 className="text-5xl md:text-7xl font-black leading-tight tracking-tight mb-8">
             Train Like a
@@ -44,12 +44,12 @@ export default function PreviewPricingPage() {
         {/* PRICING CARDS */}
         <section className="max-w-6xl mt-10 mx-auto px-6 pb-28">
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 items-stretch">
 
             {/* FREE TRIAL */}
             <Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-green-500/30 rounded-3xl shadow-2xl shadow-green-500/10 hover:-translate-y-1 transition-all duration-300">
 
-              <CardContent className="p-10 text-center">
+              <CardContent className="p-10 text-center text-white">
 
                 <h3 className="text-2xl font-semibold text-white mb-6">
                   Free Trial
@@ -85,7 +85,7 @@ export default function PreviewPricingPage() {
             {/* MONTHLY */}
             <Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-slate-700/70 rounded-3xl shadow-2xl shadow-blue-500/10 hover:border-indigo-400/60 hover:-translate-y-1 transition-all duration-300">
 
-              <CardContent className="p-10 text-center">
+              <CardContent className="p-10 text-center text-white">
 
                 <h3 className="text-2xl font-semibold text-white mb-6">
                   Pro Monthly
@@ -118,6 +118,78 @@ export default function PreviewPricingPage() {
 
             </Card>
 
+            <Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-indigo-500/40 rounded-3xl">
+
+<CardContent className="p-10 text-center text-white">
+
+<h3 className="text-2xl font-semibold mb-6">
+3 Month Plan
+</h3>
+
+<p className="text-5xl font-bold mb-3">
+₹999
+</p>
+
+<p className="text-indigo-400 mb-8">
+₹333/month
+</p>
+
+<ul className="space-y-4 text-left max-w-[240px] mx-auto mb-10">
+<li>✔️ Daily RC workouts</li>
+<li>✔️ Speed reading gym</li>
+<li>✔️ Birbal AI mentor</li>
+<li>✔️ Performance analytics</li>
+<li>✔️ Unlimited RC practice</li>
+</ul>
+
+<Button
+  onClick={goToLogin}
+  className="w-full rounded-2xl bg-indigo-500 hover:bg-indigo-600 h-12 text-base font-semibold"
+>
+  Start 3 Month Plan
+</Button>
+
+</CardContent>
+</Card>
+
+<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 rounded-3xl scale-105">
+
+<div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+BEST VALUE
+</div>
+
+<CardContent className="p-10 text-center text-white">
+
+<h3 className="text-2xl font-semibold mb-6">
+Half Yearly Plan
+</h3>
+
+<p className="text-5xl font-bold text-white mb-2">
+₹1299
+</p>
+
+<p className="text-orange-400 mb-8">
+Only ₹216/month
+</p>
+
+<ul className="space-y-4 text-left max-w-[240px] mx-auto mb-10">
+<li>✔️ Everything in Monthly</li>
+<li>✔️ Unlimited RC practice</li>
+<li>✔️ AI RC Generator</li>
+<li>✔️ Birbal explanations</li>
+<li>✔️ Full analytics dashboard</li>
+</ul>
+
+<Button
+  onClick={goToLogin}
+  className="w-full rounded-2xl bg-orange-500 hover:bg-orange-600 h-12 text-base font-semibold"
+>
+  Start 6 Month Plan
+</Button>
+
+</CardContent>
+</Card>
+
             {/* YEARLY */}
             <Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/40 rounded-3xl shadow-2xl shadow-orange-500/10 hover:border-orange-300 hover:-translate-y-1 transition-all duration-300 scale-105">
 
@@ -126,7 +198,7 @@ export default function PreviewPricingPage() {
                 MOST POPULAR
               </div>
 
-              <CardContent className="p-10 text-center">
+              <CardContent className="p-10 text-center text-white">
 
                 <h3 className="text-2xl font-semibold text-white mb-6">
                   Elite Yearly

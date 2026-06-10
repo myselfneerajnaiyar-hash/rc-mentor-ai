@@ -112,7 +112,218 @@ const TOPIC_POOL = [
   "bureaucratic systems",
   "history of measurement",
   "attention economy",
-  "moral psychology"
+  "moral psychology",
+  "theory of evolution",
+  "ancient navigation systems",
+  "urban farming",
+  "behavioral economics",
+  "history of cryptography",
+  "microplastics in oceans",
+  "language extinction",
+  "dark matter research",
+  "renewable energy storage",
+  "coffee cultivation",
+  "medieval trade routes",
+  "architecture of temples",
+  "history of vaccination",
+  "animal migration",
+  "forensic science",
+  "origins of money",
+  "psychology of habit formation",
+  "space debris",
+  "arctic exploration",
+  "evolution of maps",
+  "history of clocks",
+  "sustainable fashion",
+  "coral reef ecosystems",
+  "artificial intelligence ethics",
+  "crowdsourcing",
+  "bird communication",
+  "history of libraries",
+  "cultural anthropology",
+  "human memory",
+  "urban planning",
+  "ocean currents",
+  "volcanic eruptions",
+  "history of taxation",
+  "science of sleep",
+  "digital privacy",
+  "renewable architecture",
+  "bee colonies",
+  "history of printing",
+  "supply chain networks",
+  "astronomical observatories",
+  "desert ecosystems",
+  "history of museums",
+  "blockchain applications",
+  "economic inequality",
+  "language acquisition",
+  "scientific peer review",
+  "marine archaeology",
+  "future of transportation",
+  "cognitive biases",
+  "history of tea",
+  "polar ecosystems",
+  "quantum computing",
+  "history of democracy",
+  "public health systems",
+  "food preservation",
+  "social media psychology",
+  "agricultural innovation",
+  "renewable fuels",
+  "history of paper",
+  "machine learning",
+  "ancient engineering",
+  "wildlife conservation",
+  "urban migration",
+  "history of astronomy",
+  "human evolution",
+  "economic bubbles",
+  "robotics in industry",
+  "renewable materials",
+  "water scarcity",
+  "history of language families",
+  "cultural diffusion",
+  "ethics of genetic engineering",
+  "history of railways",
+  "fungal networks",
+  "scientific revolutions",
+  "history of insurance",
+  "future of work",
+  "deep sea exploration",
+  "collective intelligence",
+  "history of calendars",
+  "archaeological dating methods",
+  "circular economy",
+  "renewable agriculture",
+  "history of measurement",
+  "science communication",
+  "internet governance",
+  "animal intelligence",
+  "history of exploration",
+  "ecosystem restoration",
+  "economic globalization",
+  "history of education",
+  "biomimicry",
+  "history of currencies",
+  "planetary geology",
+  "human cooperation",
+  "history of transportation",
+  "scientific skepticism",
+  "urban resilience",
+  "future energy systems",
+  "decision making under uncertainty",
+  "history of scientific instruments",
+   "history of glassmaking",
+  "ancient irrigation systems",
+  "evolution of banking",
+  "science of color perception",
+  "history of perfume",
+  "renewable desalination",
+  "behavior of crowds",
+  "history of postal systems",
+  "scientific fraud detection",
+  "economics of piracy",
+
+  "history of lighthouses",
+  "science of taste",
+  "future of nuclear fusion",
+  "history of silk trade",
+  "urban heat islands",
+  "economics of attention",
+  "history of public parks",
+  "animal tool use",
+  "carbon capture technology",
+  "history of accounting",
+
+  "psychology of risk taking",
+  "history of census systems",
+  "science of resilience",
+  "future of food production",
+  "history of maritime trade",
+  "economics of auctions",
+  "history of photography",
+  "evolution of transportation hubs",
+  "digital archiving",
+  "science of decision fatigue",
+
+  "history of bridges",
+  "economics of luxury goods",
+  "forest ecology",
+  "history of scientific expeditions",
+  "human adaptation to climate",
+  "science of creativity",
+  "history of universities",
+  "future of smart cities",
+  "economics of migration",
+  "history of agriculture",
+
+  "science of curiosity",
+  "history of weather forecasting",
+  "renewable construction materials",
+  "economics of reputation",
+  "history of navigation instruments",
+  "animal camouflage",
+  "future of satellite networks",
+  "history of census records",
+  "science of perception",
+  "economics of innovation",
+
+  "history of metallurgy",
+  "urban biodiversity",
+  "science of cooperation",
+  "history of diplomacy",
+  "economics of scarcity",
+  "future of autonomous systems",
+  "history of sanitation",
+  "behavioral finance",
+  "science of aging",
+  "history of festivals",
+
+  "economics of tourism",
+  "history of weather instruments",
+  "science of language evolution",
+  "future of synthetic biology",
+  "history of journalism",
+  "economics of trust",
+  "urban ecosystems",
+  "science of navigation",
+  "history of textiles",
+  "future of digital currencies",
+
+  "economics of creativity",
+  "history of shipbuilding",
+  "science of adaptation",
+  "history of water management",
+  "future of renewable grids",
+  "economics of networks",
+  "science of expertise",
+  "history of marketplaces",
+  "future of biotechnology",
+  "animal social structures",
+
+  "history of cartography",
+  "science of collective behavior",
+  "economics of information",
+  "future of space habitats",
+  "history of legal systems",
+  "science of learning",
+  "urban sustainability",
+  "economics of platforms",
+  "history of scientific societies",
+  "future of climate engineering",
+
+  "science of imagination",
+  "history of trade guilds",
+  "economics of patents",
+  "future of ocean exploration",
+  "history of public health",
+  "science of synchronization",
+  "economics of incentives",
+  "history of innovation",
+  "future of human-machine collaboration",
+  "science of forecasting"
+
 ];
 
 function pickTopics() {
@@ -124,6 +335,81 @@ function pickTopics() {
 
 // 🔥 GENERATE WORKOUT (YOUR LOGIC REUSED)
 async function generateWorkout() {
+
+  const { data: previousWorkouts } = await supabase
+  .from("daily_workout_templates")
+  .select("content, workout_date")
+  .order("workout_date", { ascending: false })
+  .limit(60);
+
+ 
+
+
+const recentContentSnippets = [];
+
+(previousWorkouts || []).forEach(day => {
+
+  const content = day.content || {};
+
+  (content.vocab?.questions || []).forEach(q => {
+    recentContentSnippets.push(
+      `VOCAB: ${q.question} | ${(q.options || []).join(" | ")}`
+    );
+  });
+
+  (content.speed?.questions || []).forEach(q => {
+    recentContentSnippets.push(
+      `SPEED: ${(q.paragraph || "").slice(0,150)}`
+    );
+  });
+
+  if (content.rc1?.passage) {
+    recentContentSnippets.push(
+      `RC: ${content.rc1.passage.slice(0,300)}`
+    );
+  }
+
+  if (content.rc2?.passage) {
+    recentContentSnippets.push(
+      `RC: ${content.rc2.passage.slice(0,300)}`
+    );
+  }
+
+});
+
+const memoryBlock = `
+
+RECENT WORKOUT CONTENT
+
+${recentContentSnippets.slice(0,300).join("\n")}
+
+CRITICAL NOVELTY RULE
+
+Everything generated today must be substantially different.
+
+DO NOT REPEAT:
+
+- vocabulary words
+- vocabulary contexts
+- RC themes
+- RC arguments
+- RC viewpoints
+- RC examples
+- speed reading passages
+- explanation structures
+
+Novelty is mandatory.
+
+If any vocabulary word, RC theme, RC argument,
+speed-reading passage theme, or grammar pattern
+appears in the previous content,
+generate a completely different one.
+
+Rephrasing is NOT sufficient.
+
+Semantic duplication is forbidden.
+
+`;
 
   const selectedTopics = pickTopics();
 
@@ -148,6 +434,7 @@ Topic repetition is forbidden.
 `;
 
 const prompt = `
+${memoryBlock}
 ${topicInstruction}
 
 You are a senior CAT VARC examiner who has designed questions for the CAT exam.
@@ -405,238 +692,60 @@ Some passages should use:
 
 ----------------------------------
 
-SECTION 2 VOCABULARY IN CONTEXT
+SECTION 2 VOCABULARY
 
-Generate 10 advanced CAT-style vocabulary questions.
+Generate exactly 10 questions.
 
-VOCAB FORMAT RULE
+Distribution:
 
-Each vocabulary question must be FULLY SELF-CONTAINED.
+- 4 Fill in the Blank
+- 3 Incorrect Usage
+- 3 Contextual Meaning
 
-There is NO external passage for vocabulary questions.
+QUESTION TYPES
 
-DO NOT use phrases like:
-- "according to the passage"
-- "according to the paragraph"
-- "the author suggests"
-- "the passage implies"
-- "as discussed above"
+FILL IN THE BLANK
 
-Every vocabulary question must independently contain:
-- a sentence
-- a quoted phrase
-- a mini-context
-- a fill in the blank
-- a contextual usage example
-- or a standalone scenario
+Use advanced editorial vocabulary.
 
-Students must be able to answer WITHOUT reading any separate passage.
+Students must infer the word from context.
 
-VALID EXAMPLES:
 
-"The committee described the proposal as 'pragmatic' because it:"
-"In the sentence below, what does 'equivocation' most nearly mean?"
-"Which word best completes the sentence?"
-"The historian's tone can best be described as..."
+INCORRECT USAGE
 
-INVALID EXAMPLES:
+Present four sentences.
 
-"According to the passage..."
-"The author implies..."
-"In the paragraph above..."
+The target word appears in every sentence.
 
-CRITICAL:
+One sentence uses the word incorrectly.
 
-These must NOT feel like dictionary questions.
+Students must identify the incorrect usage.
 
-Avoid repetitive GRE-style testing.
+CONTEXTUAL MEANING
 
-The goal is to test:
+One CAT-style contextual interpretation question.
 
-- semantic precision
-- contextual understanding
-- tone sensitivity
-- nuanced word usage
-- distinction between near-synonyms
+VOCABULARY SOURCE
 
-ABSOLUTELY AVOID:
+Use vocabulary commonly found in:
 
-- simple synonym questions
-- simple antonym questions
-- predictable GRE words repeated frequently
-- obvious vocabulary testing patterns
+- Economist
+- Aeon
+- Atlantic
+- New Yorker
+- CAT passages
+- GMAT verbal
 
-VOCABULARY DIFFICULTY RULE
+Avoid excessive philosophy jargon.
 
-Vocabulary questions should test:
+Avoid repeating words from previous workouts.
 
-- nuanced contextual meaning
-- academic usage
-- intellectual discourse vocabulary
-- philosophy/social science terminology
-- editorial language
-- abstract conceptual language
-
-Avoid overused CAT coaching words such as:
-
-- ephemeral
-- laconic
-- verbose
-- mundane
-- obvious GRE clichés
-
-Prefer words like:
-
-- reification
-- teleology
-- punctilious
-- equivocation
-- epistemic
-- hermeneutic
-- perfunctory
-- dialectical
-- recondite
-- discursive
-- canonical
-- heuristic
-- provisional
-- capacious
-
-At least 50% of vocabulary questions should require contextual interpretation rather than direct synonym recall.
-
-QUESTION TYPES TO PRIORITIZE
-
-1. CONTEXTUAL WORD USAGE
-
-Example style:
-
-"The committee described the proposal as 'pragmatic' primarily because it:"
-
-- balanced idealism with feasibility
-- rejected all compromise
-- relied entirely on abstract theory
-- ignored institutional limitations
-
-2. NUANCED FILL IN THE BLANK
-
-The blank must require:
-
-- tone understanding
-- logical consistency
-- semantic precision
-
-NOT mere memorization.
-
-3. CLOSE WORD DISTINCTION
-
-Test subtle differences between:
-
-- skeptical vs cynical
-- pragmatic vs opportunistic
-- ambiguous vs paradoxical
-- abstract vs obscure
-
-4. TONE-DRIVEN VOCABULARY
-
-Students should infer:
-
-- emotional implication
-- intellectual stance
-- rhetorical force
-
-5. CONTEXTUAL ELIMINATION
-
-At least TWO options should initially appear plausible.
-RC OPTION NUANCE RULE
-
-Incorrect options should NOT be obviously false.
-
-Instead, they should:
-
-- contain partial truth
-- preserve passage language while distorting implication
-- subtly remove qualifications
-- overextend contextual claims
-- shift author tone slightly
-- confuse description with endorsement
-- introduce tiny scope exaggerations
-
-The best distractor should feel 85-90% correct initially.
-
-Students should struggle between:
-
-- a nuanced correct answer
-- a dangerously attractive near-correct answer
-
-Avoid:
-
-- direct contradiction
-- exaggerated absurdity
-- obviously unrelated options
-
-The correct answer should depend on:
-
-- nuance
-- connotation
-- contextual appropriateness
-
-VOCAB DIFFICULTY RULE
-
-Questions should feel:
-
-- CAT-like
-- editorial-like
-- intellectually contextual
-
-NOT like:
-
-- GRE flashcards
-- dictionary drills
-- memorized word lists
-
-WORD REPETITION RULE
-
-Never overuse commonly repeated AI vocabulary such as:
-
-- inscrutable
-- ephemeral
-- quixotic
-- laconic
-- esoteric
-- transient
-- tenuous
-
-Maintain a rolling diversity of vocabulary and contexts.
-
-OPTION DESIGN RULE
-
-Wrong options must fail because:
-
-- they mismatch tone
-- they distort nuance
-- they are contextually inappropriate
-- they are semantically adjacent but not precise
-
-EXPLANATION RULE
-
-Each explanation must:
-
-- explain the meaning of the correct option
-- explain WHY it fits THIS context
-- explain why the strongest distractor is tempting
-- explain subtle differences between close words
-- teach vocabulary naturally through reasoning
-
-Explanations should feel like a top CAT mentor teaching nuanced interpretation.
-
-Avoid repetitive explanation templates.
-
-FORMAT:
+FORMAT
 
 question
 options
 correctIndex
-skill = vocabulary
+skill="vocabulary"
 explanation
 
 SECTION 3 READING COMPREHENSION
@@ -927,122 +1036,204 @@ Before finalizing the question set, check:
 
 SECTION 4 MICRO REASONING
 
-Generate 5 questions.
+IMPORTANT:
 
-Allowed types ONLY:
+Although this section is called MICRO REASONING,
+generate ONLY elite GMAT-style Sentence Correction questions.
 
-1. Paragraph Summary
-2. Paragraph Completion
-3. Critical Reasoning (Assumption / Inference)
+Generate exactly 5 questions.
 
-Formatting rules:
-
-PARAGRAPH SUMMARY
-
-Provide a paragraph (120–160 words).
-
-Question must be:
-
-"Which of the following options best summarizes the paragraph?"
-
-Provide 4 options.
-
-----------------------------------
-
-PARAGRAPH COMPLETION
-
-Provide a paragraph ending with a logical gap.
-
-Question must be:
-
-"Which of the following sentences best completes the paragraph?"
-
-Provide 4 options.
-
-----------------------------------
-
-CRITICAL REASONING
-
-Provide a short argument (90–120 words).
-
-Question must be either:
-
-"Which of the following is an assumption required by the argument?"
-
-OR
-
-"Which of the following can be logically inferred from the argument?"
-
-Provide 4 options.
-
-----------------------------------
-
-IMPORTANT RULES
-
-MICRO OPTION COLLISION RULE
-
-In summary questions:
-
-- all four options must capture at least 60% of paragraph meaning
-- differences should arise from:
-  - misplaced emphasis
-  - hidden causality distortion
-  - qualification shifts
-  - slight ideological overreach
-  - narrowing vs broadening
-
-Avoid:
-- obviously incomplete summaries
-- obviously extreme interpretations
-- one clearly comprehensive option
-
-MICRO QUESTION DIFFICULTY RULE
-
-Summary options must:
-- all appear conceptually relevant
-- differ only in scope, emphasis, or qualification
-- avoid obvious ideological extremes
-
-Incorrect summary options should preserve 70-80% of the paragraph's meaning while subtly distorting:
-- emphasis
-- causality
-- author stance
-- degree of certainty
-
-MICRO COLLISION INTENSIFIER
-
-In para-summary questions:
-
-All four options must:
-- appear capable of summarizing the paragraph
-- preserve major ideas from the passage
-- avoid blatant incompleteness
-
-Differences should arise through:
-- hidden emphasis shifts
-- subtle causality changes
-- degree distortion
-- ideological framing
-- broader vs narrower interpretation
-
-Students should struggle between at least TWO summaries after careful reading.
-
-Every question MUST contain:
+FORMAT
 
 question
-options (array of 4 strings)
+options (4)
 correctIndex
-skill
+skill="grammar"
 explanation
 
-Do NOT include labels like:
-"Para Summary", "Para Completion", etc.
+DIFFICULTY
 
-Return only the paragraph/argument text followed by the question.
+Target GMAT Focus 705-765 level.
 
-----------------------------------
-----------------------------------
+A CAT 99.5 percentile student should find at least TWO options genuinely attractive.
 
+QUESTION DESIGN
+
+The question stem must contain a complete sentence.
+
+The sentence should already be reasonably well written.
+
+The task is NOT to spot obvious grammatical mistakes.
+
+The task is to identify the version that preserves the intended meaning with maximum precision.
+
+OPTION DESIGN
+
+All four options must initially appear correct.
+
+No option may contain:
+
+- obvious subject-verb disagreement
+- obvious pronoun mistakes
+- obvious tense errors
+- broken English
+- awkward nonsense phrasing
+
+A student should NOT be able to eliminate any option instantly.
+
+The difference between options must depend on:
+
+- logical meaning
+- modifier placement
+- comparison logic
+- reference clarity
+- ambiguity
+- parallel structure
+- idiomatic precision
+- concision
+
+DISTRACTOR RULE
+
+Wrong options must fail because they:
+
+- subtly change meaning
+- introduce ambiguity
+- weaken logical comparison
+- create unclear reference
+- distort the intended relationship between ideas
+
+NOT because they are visibly ungrammatical.
+
+The strongest distractor should appear almost correct.
+
+MEANING FIRST RULE
+
+ABSOLUTELY FORBIDDEN QUESTION TYPES
+
+Do NOT generate questions primarily testing:
+
+- neither/nor agreement
+- either/or agreement
+- not only/but also parallelism
+- simple subject verb agreement
+- obvious pronoun errors
+- basic tense corrections
+
+These are too easy.
+
+If a question can be solved by applying a single school-grammar rule,
+discard it and generate a harder one.
+
+At least 4 of the 5 questions must require
+meaning analysis rather than grammar detection.
+
+GMAT STYLE EXAMPLE
+
+Bad:
+
+Neither the manager nor the employees were...
+
+Good:
+
+Unlike previous studies that treated migration as a response to scarcity,
+the new research argues that migration patterns often emerge
+from perceptions of opportunity rather than actual shortages.
+
+All four options should appear grammatically acceptable.
+The correct answer should be chosen because it preserves
+the intended logical relationship most precisely.
+
+The correct answer must be correct primarily because it preserves the intended meaning.
+
+Grammar should support meaning.
+
+Grammar should not be the sole deciding factor.
+
+BAD QUESTION EXAMPLE
+
+The company have launched...
+
+GOOD QUESTION EXAMPLE
+
+The company, along with several subsidiaries, has launched...
+
+where multiple options appear plausible and the distinction depends on meaning and structure.
+
+VARIETY RULE
+
+Across the 5 questions, cover different concepts:
+
+- modifier placement
+- comparisons
+- parallelism
+- logical predication
+- pronoun reference
+- concision
+- idiomatic usage
+- meaning precision
+
+Do not repeat the same concept more than twice.
+
+EXPLANATION RULE
+
+Explain:
+
+- the underlying concept
+- the intended meaning
+- why the correct answer preserves meaning
+- why the strongest distractor is tempting
+- the subtle flaw that makes the distractor incorrect
+
+The explanation should resemble how an elite GMAT instructor teaches.
+
+QUESTION QUALITY CHECK
+
+Before finalizing each question:
+
+- Would a school student eliminate options immediately? If yes, rewrite.
+- Are at least two options plausible? If no, rewrite.
+- Does the question test meaning rather than obvious grammar? If no, rewrite.
+- Is the strongest distractor very attractive? If no, rewrite.
+
+MODEL AFTER
+
+Official GMAT Focus Edition Sentence Correction questions.
+
+Avoid:
+
+- school grammar
+- CAT coaching grammar
+- SSC grammar
+- fill-in-the-blank grammar
+- error spotting
+
+Generate only authentic GMAT-style meaning-based sentence correction questions.
+
+FINAL MICRO VALIDATION
+
+Before returning any grammar question:
+
+Reject the question if the primary error is:
+
+- subject verb agreement
+- neither/nor agreement
+- either/or agreement
+- basic tense selection
+- simple parallelism
+- obvious pronoun error
+
+Replace it with a harder question.
+
+For each grammar question:
+
+Identify internally:
+
+1. Primary concept tested
+2. Whether all options appear grammatically acceptable
+3. Whether meaning, not grammar, determines the answer
+
+If not,
+regenerate the question.
 Return ONLY valid JSON.
 Do NOT use markdown.
 Do NOT use code fences.
@@ -1068,7 +1259,7 @@ Format:
       { role: "system", content: "Return ONLY valid JSON. No markdown." },
       { role: "user", content: prompt }
     ],
-    temperature: 0.9,
+    temperature: 0.8,
     max_tokens: 8000
   });
 

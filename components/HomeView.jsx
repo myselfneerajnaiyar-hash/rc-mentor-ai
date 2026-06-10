@@ -698,7 +698,62 @@ if (user?.id) {
   </CardContent>
 </Card>
 
-     
+     <Card
+  onClick={() => router.push("/pricing")}
+  className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-amber-500/20 rounded-3xl shadow-xl">
+
+  <CardContent className="p-8">
+
+    <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
+      ✨ PREMIUM MEMBERSHIP
+    </div>
+
+    <h2 className="text-3xl font-bold text-white mt-4">
+      Auctor RC Premium
+    </h2>
+
+    <p className="text-slate-300 mt-3">
+      AI RC Generator • Birbal Editorial Decoder • Precision Training • Speed Gym • Unlimited Practice
+    </p>
+
+    <p className="text-slate-500 text-sm mt-2">
+      Serious aspirants use Premium to accelerate improvement.
+    </p>
+
+    <div className="flex flex-wrap gap-2 mt-5">
+
+      <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs">
+        Unlimited RC
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs">
+        Birbal Editorial Decoder
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs">
+        Vocab Lab
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs">
+        Analytics
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs">
+        Speed Gym
+      </div>
+
+    </div>
+
+    <Button
+      onClick={() => router.push("/pricing")}
+      className="mt-6 bg-amber-500 text-black hover:bg-amber-400 font-semibold rounded-xl"
+    >
+      View Premium Plans →
+    </Button>
+
+  </CardContent>
+
+</Card>
 
 
       {/* ================= DAILY WORKOUT ================= */}
@@ -966,32 +1021,7 @@ if (user?.id) {
   </CardContent>
 </Card>
 
- {/* ================= PREMIUM ================= */}
-
-<Card className="bg-slate-900 border-slate-800 rounded-2xl">
-  <CardContent className="p-6 space-y-4">
-
-    <h2 className="text-xl font-semibold text-white">
-      AuctorRC Premium
-    </h2>
-
-    <p className="text-slate-400 text-sm">
-      Unlock unlimited RC practice, deeper analytics, and personal guidance from Birbal.
-    </p>
-
-    <div className="flex gap-4 flex-wrap">
-
-     <Button
-onClick={() => router.push("/pricing")}
-className="rounded-xl"
-> 
-ViewPremium Plans →
-</Button>
-
-    </div>
-
-  </CardContent>
-</Card>
+ 
 
 {/* ================= RC SKILL MAP ================= */}
 

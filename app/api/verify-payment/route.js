@@ -34,13 +34,20 @@ export async function POST(req) {
   let expiry = new Date()
 
   if (plan === "monthly") {
-    expiry.setMonth(expiry.getMonth() + 1)
-  }
+  expiry.setMonth(expiry.getMonth() + 1)
+}
 
-  if (plan === "yearly") {
-    expiry.setFullYear(expiry.getFullYear() + 1)
-  }
+if (plan === "quarterly") {
+  expiry.setMonth(expiry.getMonth() + 3)
+}
 
+if (plan === "half_yearly") {
+  expiry.setMonth(expiry.getMonth() + 6)
+}
+
+if (plan === "yearly") {
+  expiry.setFullYear(expiry.getFullYear() + 1)
+}
   // ---------- get profile ----------
 
   const { data: profile } = await supabase
@@ -72,6 +79,20 @@ export async function POST(req) {
     })
     .eq("user_id", user_id)
 
+    const planNames = {
+  monthly: "Monthly Premium",
+  quarterly: "3 Month Premium",
+  half_yearly: "6 Month Premium",
+  yearly: "Yearly Premium",
+}
+
+const planAmounts = {
+  monthly: 399,
+  quarterly: 999,
+  half_yearly: 1299,
+  yearly: 1999,
+}
+
     await fetch("https://rc.auctorlabs.in/api/send-payment-email", {
 
   method: "POST",
@@ -80,25 +101,19 @@ export async function POST(req) {
     "Content-Type": "application/json",
   },
 
-  body: JSON.stringify({
+ body: JSON.stringify({
 
-    email: profile?.email,
+  email: profile?.email,
 
-    name: profile?.name || "Champion",
+  name: profile?.name || "Champion",
 
-    plan:
-      plan === "monthly"
-        ? "Monthly Premium"
-        : "Yearly Premium",
+  plan: planNames[plan],
 
-    amount:
-      plan === "monthly"
-        ? 399
-        : 1999,
+  amount: planAmounts[plan],
 
-    expiry: new Date(expiry).toDateString(),
+  expiry: new Date(expiry).toDateString(),
 
-  }),
+}),
 })
 
   return Response.json({

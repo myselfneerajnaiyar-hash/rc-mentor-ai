@@ -82,6 +82,15 @@ if (!razorpayLoaded) {
 
         handler: async function (response) {
 
+          const planMap = {
+  399: "monthly",
+  999: "quarterly",
+  1299: "half_yearly",
+  1999: "yearly",
+}
+
+const plan = planMap[amount]
+
           const verify = await fetch("/api/verify-payment", {
             method: "POST",
 
@@ -89,23 +98,20 @@ if (!razorpayLoaded) {
               "Content-Type": "application/json",
             },
 
-            body: JSON.stringify({
-              razorpay_order_id:
-                response.razorpay_order_id,
+           body: JSON.stringify({
+  razorpay_order_id:
+    response.razorpay_order_id,
 
-              razorpay_payment_id:
-                response.razorpay_payment_id,
+  razorpay_payment_id:
+    response.razorpay_payment_id,
 
-              razorpay_signature:
-                response.razorpay_signature,
+  razorpay_signature:
+    response.razorpay_signature,
 
-              user_id: user.id,
+  user_id: user.id,
 
-              plan:
-                amount === 399
-                  ? "monthly"
-                  : "yearly",
-            }),
+  plan,
+}),
           })
 
           const result = await verify.json()
