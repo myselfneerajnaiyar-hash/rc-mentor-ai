@@ -16,7 +16,8 @@ export async function GET(req) {
 const { data: todaySet } = await supabase
   .from("daily_rc_sets")
   .select("id")
-  .eq("challenge_date", today)
+  .order("challenge_date", { ascending: false })
+  .limit(1)
   .single()
 if (!todaySet) {
   return NextResponse.json({
