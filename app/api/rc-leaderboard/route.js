@@ -158,11 +158,23 @@ console.log("Array.isArray(top10) =", Array.isArray(top10))
     }
 
 
-    console.log("todaySet", todaySet)
-console.log("allToday", allToday)
-console.log("attempts", attempts)
-console.log("top10", top10)
-console.log("totalParticipants", totalParticipants)
+    console.log("=== RC LEADERBOARD DEBUG ===")
+console.log("todaySet.id =", todaySet?.id)
+
+console.log("allToday length =", allToday?.length)
+console.log("allToday =", JSON.stringify(allToday))
+
+console.log("attempts length =", attempts?.length)
+console.log("attempts =", JSON.stringify(attempts))
+
+console.log("profiles length =", profiles?.length)
+console.log("profiles =", JSON.stringify(profiles))
+
+console.log("top10 length =", top10?.length)
+console.log("top10 =", JSON.stringify(top10))
+
+console.log("totalParticipants =", totalParticipants)
+console.log("=== END DEBUG ===")
     return NextResponse.json({
       top: top10 || [],
       yourRank,
