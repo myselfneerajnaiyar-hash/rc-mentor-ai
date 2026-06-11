@@ -13,12 +13,21 @@ export async function GET(req) {
     timeZone: "Asia/Kolkata"
   })
 
-const { data: todaySet } = await supabase
+
+const {
+  data: todaySet,
+  error: todaySetError
+} = await supabase
   .from("daily_rc_sets")
   .select("id")
   .order("challenge_date", { ascending: false })
   .limit(1)
   .single()
+
+console.log("todaySetError =", todaySetError)
+console.log("todaySet =", todaySet)
+
+
 if (!todaySet) {
   return NextResponse.json({
     top: [],
@@ -125,6 +134,11 @@ const top10 = (attempts || []).map(a => ({
     name: profileMap[a.user_id] || "Reader"
   }
 }))
+
+console.log("typeof top10 =", typeof top10)
+console.log("top10 =", top10)
+console.log("Array.isArray(top10) =", Array.isArray(top10))
+
       
 
     if (topError) {
