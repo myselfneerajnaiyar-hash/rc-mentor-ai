@@ -68,6 +68,12 @@ if (!todaySet) {
     ascending: true
   })
 
+  console.log("========== ALL TODAY DEBUG ==========")
+console.log("todaySet.id =", todaySet.id)
+console.log("allError =", allError)
+console.log("allToday =", allToday)
+console.log("allToday length =", allToday?.length)
+
     if (allError) {
       console.error(allError)
       return NextResponse.json({ error: allError }, { status: 500 })
@@ -105,6 +111,11 @@ if (!todaySet) {
       ascending: true
     })
     .limit(10)
+
+    console.log("========== ATTEMPTS DEBUG ==========")
+console.log("topError =", topError)
+console.log("attempts =", attempts)
+console.log("attempts length =", attempts?.length)
 
 if (topError) {
   console.error(topError)
