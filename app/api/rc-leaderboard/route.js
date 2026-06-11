@@ -8,13 +8,16 @@ const supabase = createClient(
 )
 export async function GET(req) {
   try {
-    const today = new Date().toISOString().split("T")[0]
-    const { data: todaySet } = await supabase
+   const today = new Date()
+  .toLocaleDateString("en-CA", {
+    timeZone: "Asia/Kolkata"
+  })
+
+const { data: todaySet } = await supabase
   .from("daily_rc_sets")
   .select("id")
   .eq("challenge_date", today)
   .single()
-
 if (!todaySet) {
   return NextResponse.json({
     top: [],
@@ -128,6 +131,12 @@ const top10 = (attempts || []).map(a => ({
       return NextResponse.json({ error: topError }, { status: 500 })
     }
 
+
+    console.log("todaySet", todaySet)
+console.log("allToday", allToday)
+console.log("attempts", attempts)
+console.log("top10", top10)
+console.log("totalParticipants", totalParticipants)
     return NextResponse.json({
       top: top10 || [],
       yourRank,
