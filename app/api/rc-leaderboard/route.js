@@ -15,18 +15,20 @@ export async function GET(req) {
   })
 
 
+
+
 const {
   data: todaySet,
   error: todaySetError
 } = await supabase
   .from("daily_rc_sets")
   .select("id")
-  .order("challenge_date", { ascending: false })
-  .limit(1)
+  .eq("challenge_date", today)
   .single()
 
-console.log("todaySetError =", todaySetError)
+console.log("today =", today)
 console.log("todaySet =", todaySet)
+console.log("todaySetError =", todaySetError)
 
 
 if (!todaySet) {
