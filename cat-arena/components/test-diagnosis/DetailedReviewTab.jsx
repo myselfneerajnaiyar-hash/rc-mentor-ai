@@ -547,8 +547,11 @@ let isCorrect = false;
 
 if (type.includes("placement")) {
 
+  const correctOption =
+    payload.options?.[Number(q.correct_answer) - 1];
+
   isCorrect =
-    String(option).trim() === `Option ${q.correct_answer}`;
+    String(option).trim() === String(correctOption).trim();
 
 } else {
 
@@ -623,8 +626,18 @@ const isSelected =
       if (type.includes("jumble"))
         return attempt.selected_answer;
 
-      if (type.includes("placement"))
-        return `Position ${String(attempt.selected_answer).replace("Option ","")}`;
+      if (type.includes("placement")) {
+   const selectedIndex =
+  Number(attempt.selected_answer) - 1;
+
+const selectedOption =
+  payload.options?.[selectedIndex] ?? "";
+
+return `Position ${String(selectedOption)
+  .replace("Option ", "")
+  .trim()}`;
+
+}
 
       if (type.includes("odd"))
         return `Sentence ${attempt.selected_answer}`;
@@ -662,15 +675,21 @@ const isSelected =
 
 {type.includes("placement")
   ? (() => {
-      const correctIndex = payload.options.findIndex(
-        (opt) =>
-          String(opt).replace("Position ", "").replace("Option ", "").trim() ===
-          String(q.correct_answer)
-      );
+     const correctIndex =
+  Number(q.correct_answer) - 1;
 
-      const letter = ["A", "B", "C", "D"][correctIndex];
+const letter =
+  ["A", "B", "C", "D"][correctIndex];
 
-      return `Option ${letter} (Position ${q.correct_answer})`;
+const correctOption =
+  payload.options?.[correctIndex] ?? "";
+
+const position =
+  String(correctOption)
+    .replace("Option ", "")
+    .trim();
+
+return `Option ${letter} (Position ${position})`;
     })()
   : type.includes("jumble")
   ? q.correct_answer
@@ -2047,9 +2066,9 @@ Question {autopsy.questionNumber}
 const isCorrect =
   letter === correctLetter;
 
-  const selectedLetter =
+ const selectedLetter =
   ["A","B","C","D"][
-    Number(attempt?.selected_answer)
+    Number(attempt?.selected_answer) - 1
   ];
 const isSelected =
   letter === selectedLetter;
