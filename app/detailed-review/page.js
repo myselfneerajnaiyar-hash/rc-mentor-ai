@@ -50,6 +50,8 @@ const { data } =
     .select("*")
     .eq("daily_rc_set_id", data.id)
     .order("order_no");
+    console.log("QUESTION DATA");
+console.log(questionData);
 
 setQuestions(questionData || []);
 
@@ -774,6 +776,64 @@ const enrichment =
 
   <div className="mt-10">
 
+    {/* PASSAGE */}
+
+<div className="mt-10">
+
+  <Card className="bg-slate-900/60 border-cyan-500/20">
+
+    <CardContent className="p-8">
+
+      <h2 className="text-3xl font-black text-cyan-300">
+        Passage
+      </h2>
+
+      <p className="text-slate-400 mt-2">
+        Read the original passage before reviewing the questions.
+      </p>
+
+      <div className="mt-8 space-y-6">
+
+        {(rcSet.passage_json || []).length > 0 ? (
+
+          rcSet.passage_json.map((paragraph, index) => (
+
+            <p
+              key={index}
+              className="
+                text-slate-300
+                leading-8
+                text-base md:text-lg
+              "
+            >
+              {paragraph}
+            </p>
+
+          ))
+
+        ) : (
+
+          <p
+            className="
+              text-slate-300
+              leading-8
+              whitespace-pre-wrap
+              text-base md:text-lg
+            "
+          >
+            {rcSet.passage}
+          </p>
+
+        )}
+
+      </div>
+
+    </CardContent>
+
+  </Card>
+
+</div>
+
     <Card className="bg-slate-900/60 border-cyan-500/20">
 
       <CardContent className="p-8">
@@ -785,6 +845,9 @@ const enrichment =
        <div className="space-y-8">
 
   {questions.map((question) => {
+      console.log("QUESTION OBJECT");
+console.log(question);
+console.log("OPTIONS =", question.options);
 
     const autopsy =
       question.question_enrichment || {};
@@ -894,54 +957,50 @@ const enrichment =
 
             </p>
 
-            <div className="mt-6 space-y-3">
+           <div className="mt-6 space-y-3">
+            
 
-  {(question.options || []).map((option, index) => {
+ {(question.options || []).map((text, index) => {
 
-    const letter =
-      ["A", "B", "C", "D"][index];
+  const letter = ["A", "B", "C", "D"][index];
 
-    const correctLetter =
-  ["A", "B", "C", "D"][
-    Number(question.correct_answer) - 1
-  ];
+  const correct =
+    letter ===
+    ["A", "B", "C", "D"][
+      Number(question.correct_answer) - 1
+    ];
 
-const isCorrect =
-  letter === correctLetter;
+  const selected =
+    letter === attempt?.selected_option;
 
-    const isSelected =
-      letter === attempt?.selected_option;
-
-    return (
-
-      <div
-        key={index}
-        className={`
-          p-4 rounded-xl border text-white
-
-          ${isCorrect
+  return (
+    <div
+      key={letter}
+      className={`
+        p-4 rounded-xl border
+        ${
+          correct
             ? "border-emerald-500 bg-emerald-500/20"
-            : isSelected
+            : selected
             ? "border-red-500 bg-red-500/20"
-            : "border-slate-700 bg-slate-900/50"}
-        `}
-      >
-
-        <div className="font-black text-cyan-300">
-          {letter}
-        </div>
-
-        <div className="mt-2 text-white">
-          {option.text}
-        </div>
-
+            : "border-slate-700 bg-slate-900/50"
+        }
+      `}
+    >
+      <div className="font-black text-cyan-300">
+        {letter}
       </div>
 
-    );
+      <div className="mt-2 text-white">
+        {text}
+      </div>
+    </div>
+  );
 
-  })}
-
+})}
 </div>
+
+
 </div>
 
           {/* USER ANSWER */}
