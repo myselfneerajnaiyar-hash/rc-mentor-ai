@@ -20,44 +20,91 @@ export default function CATInstructions({ onStart }) {
     >
       <h2 style={{ marginBottom: 16 }}>CAT RC Sectional – Instructions</h2>
 
-      {/* GENERAL */}
-      <section style={{ marginBottom: 20 }}>
-        <h4>General Instructions</h4>
-        <ul>
-          <li>This test contains <b>4 Reading Comprehension passages</b>.</li>
-          <li>Each passage has <b>4 questions</b>, making a total of <b>16 questions</b>.</li>
-          <li>The total duration of the test is <b>30 minutes</b>.</li>
-          <li>The test will be <b>auto-submitted</b> when the timer ends.</li>
-          <li>Do <b>not refresh</b> the page during the test.</li>
-        </ul>
-      </section>
+     {/* GENERAL */}
+<section style={{ marginBottom: 20 }}>
+  <h4>General Instructions</h4>
 
-      {/* MARKING */}
-      <section style={{ marginBottom: 20 }}>
-        <h4>Marking Scheme</h4>
-        <ul>
-          <li><b>+3 marks</b> for every correct answer</li>
-          <li><b>−1 mark</b> for every incorrect answer</li>
-          <li><b>0 marks</b> for unattempted questions</li>
-        </ul>
-      </section>
+  <ul>
+    <li>
+      This sectional contains a total of <b>24 questions</b>.
+    </li>
 
-      {/* NAVIGATION */}
-      <section style={{ marginBottom: 20 }}>
-        <h4>Navigation & Actions</h4>
-        <ul>
-          <li>
-            <b>Save & Next</b> – saves your response and moves to the next question
-          </li>
-          <li>
-            <b>Mark for Review</b> – marks the question for later review
-          </li>
-          <li>
-            <b>Clear Response</b> – removes the selected option
-          </li>
-          <li>You may navigate freely between questions during the test</li>
-        </ul>
-      </section>
+    <li>
+      The first <b>16 questions</b> are Reading Comprehension based on <b>4 passages</b> (4 questions each).
+    </li>
+
+    <li>
+      The remaining <b>8 questions</b> belong to the <b>Verbal Ability</b> section.
+    </li>
+
+    <li>
+      The total duration of the test is <b>40 minutes</b>.
+    </li>
+
+    <li>
+      The test will be <b>auto-submitted</b> when the timer expires.
+    </li>
+
+    <li>
+      Do <b>not refresh or close</b> the browser during the test.
+    </li>
+
+  </ul>
+</section>
+
+     {/* MARKING */}
+<section style={{ marginBottom: 20 }}>
+  <h4>Marking Scheme</h4>
+
+  <ul>
+
+    <li>
+      <b>+3 marks</b> for every correct answer.
+    </li>
+
+    <li>
+      <b>-1 mark</b> for every incorrect <b>MCQ</b>.
+    </li>
+
+    <li>
+      <b>No negative marking</b> for incorrect <b>TITA (Type In The Answer)</b> questions.
+    </li>
+
+    <li>
+      <b>0 marks</b> for unattempted questions.
+    </li>
+
+  </ul>
+</section>
+
+    {/* NAVIGATION */}
+<section style={{ marginBottom: 20 }}>
+  <h4>Navigation & Actions</h4>
+
+  <ul>
+
+    <li>
+      Use the <b>Question Palette</b> to jump to any question.
+    </li>
+
+    <li>
+      You may freely switch between Reading Comprehension and Verbal Ability questions during the test.
+    </li>
+
+    <li>
+      You can change your answer any number of times before submitting.
+    </li>
+
+    <li>
+      Questions marked for review will still be evaluated if they contain an answer.
+    </li>
+
+    <li>
+      Click <b>Submit Test</b> only after reviewing all your responses.
+    </li>
+
+  </ul>
+</section>
 
       {/* PALETTE */}
       <section style={{ marginBottom: 20 }}>

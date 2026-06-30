@@ -16,6 +16,7 @@ JSON.parse = function (...args) {
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import HomeView from "../components/HomeView";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
@@ -24,12 +25,12 @@ import SpeedGym from "../components/SpeedGym";
 import SpeedDashboard from "../components/SpeedDashboard";
 import SpeedContainer from "../components/SpeedContainer";
 import VocabLab from "../components/VocabLab";
-import CATArenaLanding from "../cat-arena/CATArenaLanding";
-import CATArenaView from "../cat-arena/CATArenaView";
-import CATArenaTestView from "../cat-arena/CATArenaTestView";
+import CATArenaLanding from "../cat-arena/CATArenaLandingV2";
+import CATArenaView from "../cat-arena/CATArenaViewV2";
+import CATArenaTestView from "../cat-arena/CATArenaTestViewV2";
 import CATInstructions from "../cat-arena/CATInstructions"
-import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainer";
-import CATAnalytics from "../components/CATAnalytics";
+import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainerV2";
+
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
@@ -43,6 +44,7 @@ import ChatMentor from "../components/ChatMentor"
 import PracticeSwitcher from "@/components/PracticeSwitcher";
 import PrecisionTraining from "../components/PrecisionTraining"
 import HangmanView from "../components/HangmanView";
+
 
 
 
@@ -79,6 +81,7 @@ async function loadSectionalAttemptMapFromDB() {
 export default function Page() {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const mainRef = useRef(null);
 
 
@@ -138,10 +141,11 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   
   const [catPhase, setCatPhase] = useState("idle");
 // idle | generating | instructions | test | diagnosis | review
-  const [catTab, setCatTab] = useState("tests"); 
-// tests | analytics
+ 
 
 const [isMobile, setIsMobile] = useState(false);
+
+
 
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 900);
@@ -217,7 +221,17 @@ useEffect(() => {
     return () => clearInterval(id);
   }, [timerRunning, timeLeft]);
 
- 
+useEffect(() => {
+  console.log("view query =", searchParams.get("view"));
+
+  if (searchParams.get("view") === "cat") {
+    console.log("Opening CAT landing");
+
+    setView("cat");
+   
+    setCatPhase("idle");
+  }
+}, [searchParams]);
 
   useEffect(() => {
   async function load() {
@@ -716,7 +730,8 @@ return (
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
-{!isMobile && (
+{!isMobile &&
+ !(view === "cat" && catPhase === "test") && (
   <aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
   <h2 className="text-xl font-semibold text-white tracking-tight">
@@ -868,97 +883,49 @@ ${
 {view === "cat" && (
   <>
   <div className="max-w-5xl mx-auto px-6">
-   <div className="p-4 sticky top-0 z-20 bg-slate-900">
-  <TabGroup
-    tabs={[
-      { value: "tests", label: "Take Tests" },
-      { value: "analytics", label: "Analytics" },
-    ]}
-    active={catTab}
-    onChange={setCatTab}
-  />
-</div>
-
-    {/* ===== ANALYTICS TAB ===== */}
-    {catTab === "analytics" && <CATAnalytics />}
-
-    {/* ===== TESTS TAB ===== */}
-    {catTab === "tests" && (
-      <>
-        {catPhase === "idle" && (
-          <CATArenaLanding
-            attemptedMap={sectionalAttemptMap}
-            onStartRC={async (sectionalId) => {
-              setCatPhase("generating");
-
-              const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
-              const data = await res.json();
-
-              if (!data.passages) {
-                alert("Invalid test file");
-                setCatPhase("idle");
-                return;
-              }
-
-              data.id = sectionalId;
-              setActiveRCTest(data);
-              setCatPhase("instructions");
-            }}
-           
-            onViewDiagnosis={(sectionalId, attemptId) => {
-  setActiveRCTest({
-    id: sectionalId,
-    __startPhase: "diagnosis",
-    __attemptId: attemptId,
-  });
-
-  setCatPhase("test");
-}}
-
-
-            onReviewTest={async (sectionalId) => {
-             
-
-              setCatPhase("generating");
-              const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
-              const data = await res.json();
-
-              data.id = sectionalId;
-              data.__startPhase = "review";
-
-              setActiveRCTest(data);
-              setCatPhase("test");
-            }}
-          />
-        )}
-
-        {catPhase === "generating" && (
-          <div style={{ padding: 40, textAlign: "center" }}>
-            <h2>Generating CAT RC Sectional…</h2>
-            <p>Please wait.</p>
-          </div>
-        )}
-
-        {catPhase === "instructions" && (
-          <CATInstructions
-            onStart={() => setCatPhase("test")}
-          />
-        )}
-
-       {catPhase === "test" && activeRCTest && (
-  <RCSectionalContainer
-    
-    testData={activeRCTest}
-    forceDiagnosis={activeRCTest.__startPhase === "diagnosis"}
-    onExit={() => {
-  setCatPhase("idle");
-  setActiveRCTest(null);
-}}
+   {catPhase === "idle" && (
+  <CATArenaLanding
+    attemptedMap={sectionalAttemptMap}
+    onStartRC={(sectionalId) => {
+      setActiveRCTest({ id: sectionalId });
+      setCatPhase("test");
+    }}
+    onViewDiagnosis={(sectionalId, attemptId) => {
+      setActiveRCTest({
+        id: sectionalId,
+        __startPhase: "diagnosis",
+        __attemptId: attemptId,
+      });
+      setCatPhase("test");
+    }}
   />
 )}
 
-      </>
-    )}
+{catPhase === "generating" && (
+  <div style={{ padding: 40, textAlign: "center" }}>
+    <h2>Generating CAT RC Sectional…</h2>
+    <p>Please wait.</p>
+  </div>
+)}
+
+{catPhase === "instructions" && (
+  <CATInstructions
+    onStart={() => setCatPhase("test")}
+  />
+)}
+
+{catPhase === "test" && activeRCTest && (
+  <RCSectionalContainer
+    testData={activeRCTest}
+    forceDiagnosis={activeRCTest.__startPhase === "diagnosis"}
+    onExit={() => {
+      setCatPhase("idle");
+      setActiveRCTest(null);
+    }}
+  />
+)}
+       
+      
     </div>
   </>
 )}

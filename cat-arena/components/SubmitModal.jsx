@@ -17,9 +17,49 @@ export default function SubmitModal({ open, onCancel, onConfirm }) {
           You will not be able to change your answers after submission.
         </p>
 
-        {loading && (
-  <div style={{ marginBottom: 16, color: "#60a5fa", fontSize: 14 }}>
-    Saving your responses securely...
+     {loading && (
+  <div
+    style={{
+      marginBottom: 20,
+      padding: 18,
+      borderRadius: 10,
+      background: "#0f172a",
+      border: "1px solid #1e3a5f",
+      color: "#e2e8f0",
+      lineHeight: 1.7,
+      fontSize: 14,
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 700,
+        color: "#67e8f9",
+        marginBottom: 10,
+      }}
+    >
+      🧠 Birbal is preparing your Intelligence Report
+    </div>
+
+    <div style={{ marginBottom: 12 }}>
+      ✅ Your test has been submitted successfully.
+    </div>
+
+    <div style={{ marginBottom: 10 }}>
+      We're now generating:
+    </div>
+
+    <ul style={{ margin: 0, paddingLeft: 18 }}>
+      <li>Reading IQ & Performance Score</li>
+      <li>Cognitive Diagnosis</li>
+      <li>Question-wise AI Review</li>
+      <li>Reading DNA Profile</li>
+      <li>Personalized Improvement Plan</li>
+    </ul>
+
+    <div style={{ marginTop: 14, color: "#94a3b8" }}>
+      This usually takes <strong>30–60 seconds</strong>. Please keep this
+      window open while Birbal prepares your report.
+    </div>
   </div>
 )}
 
@@ -48,7 +88,7 @@ export default function SubmitModal({ open, onCancel, onConfirm }) {
   }}
   disabled={loading}
 >
-           {loading ? "Submitting..." : "Submit"}
+           {loading ? "Generating Report..." : "Submit Test"}
           </button>
         </div>
       </div>

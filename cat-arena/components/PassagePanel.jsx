@@ -8,14 +8,36 @@ export default function PassagePanel({
 }) {
   if (!passages || passages.length === 0) return null;
 
-  // CAT rule: 4 questions per passage
-  const QUESTIONS_PER_PASSAGE = 4;
-  const passageIndex = Math.floor(currentQuestionIndex / QUESTIONS_PER_PASSAGE);
-  const passage = passages[passageIndex];
+ let running = 0;
+let passageIndex = 0;
+
+for (let i = 0; i < passages.length; i++) {
+  const count = passages[i].questions.length;
+
+  if (currentQuestionIndex < running + count) {
+    passageIndex = i;
+    break;
+  }
+
+  running += count;
+}
+
+const passage = passages[passageIndex];
   const stats = passageStats?.[passageIndex];
 
-  if (!passage) return null;
+if (!passage) return null;
 
+if (passage.isVA) {
+  return (
+    <div
+      style={{
+        height: "calc(100vh - 120px)",
+        background: "#111827",
+        borderRight: "1px solid #1f2937",
+      }}
+    />
+  );
+}
   return (
     <div
       style={{
