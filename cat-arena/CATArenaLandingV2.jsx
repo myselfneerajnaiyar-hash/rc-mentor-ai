@@ -60,7 +60,7 @@ setAttemptedMap(map);
   style={{
     width: "100%",
     maxWidth: "100%",
-    padding: "24px 40px",
+    padding: "20px 40px",
   }}
 >
     <div style={{ marginBottom: 36 }}>
@@ -154,11 +154,20 @@ setAttemptedMap(map);
 </div>
 
 
-     {activeTab !== "analytics" &&
-sectionals
+     {activeTab !== "analytics" && (
+      <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+      gap: 20,
+      alignItems: "start",
+    }}
+  >
+{sectionals
   .filter((s) =>
     activeTab === "pyq"
       ? s.test_type === "pyq"
+    
       : s.test_type === "mock"
   )
   .map((s) => {
@@ -167,31 +176,72 @@ const attempted = !!attemptId;
 
         return (
           <div key={s.id} style={card(attempted)}>
-           <h3
+           <div
   style={{
-    marginBottom: 8,
-    fontSize: 20,
-    fontWeight: 700,
-    color: "#ffffff",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
   }}
 >
-  {s.test_type === "pyq"
-    ? `${s.exam} ${s.exam_year} • Slot ${s.exam_slot}`
-    : `Auctor Mock ${s.test_number}`}
-</h3>
+  <h3
+    style={{
+      fontSize: 20,
+      fontWeight: 700,
+      color: "#fff",
+      margin: 0,
+    }}
+  >
+    {s.test_type === "pyq"
+      ? `📘 ${s.exam} ${s.exam_year} • Slot ${s.exam_slot}`
+      : `🧪 Auctor Mock ${s.test_number}`}
+  </h3>
+
+  <div
+    style={{
+      background: attempted ? "#14532d" : "#1e3a8a",
+      color: "#fff",
+      padding: "6px 12px",
+      borderRadius: 999,
+      fontSize: 12,
+      fontWeight: 700,
+    }}
+  >
+    {attempted ? "ATTEMPTED ✓" : "🟢 AVAILABLE"}
+  </div>
+</div>
 
 <p
   style={{
     color: "#94a3b8",
+    marginBottom: 14,
+  }}
+>
+  {s.test_type === "pyq"
+    ? "Official CAT VARC Paper"
+    : "Official Auctor VARC Mock"}
+</p>
+
+<div
+  style={{
+    display: "flex",
+    gap: 20,
+    color: "#cbd5e1",
     fontSize: 14,
     marginBottom: 18,
   }}
 >
-  {s.test_type === "pyq"
-    ? "Official CAT Paper"
-    : "Full-Length Mock Test"}
-</p>
+  <span>⏱️ 40 min</span>
+  <span>❓24 Questions</span>
+</div>
 
+<hr
+  style={{
+    border: "none",
+    borderTop: "1px solid #334155",
+    marginBottom: 18,
+  }}
+/>
           {attempted ? (
 
   <button
@@ -203,22 +253,30 @@ const attempted = !!attemptId;
       router.push(`/arena/result/${attemptId}`)
     }
   >
-    Review Test
+    Review Analysis
   </button>
 
 ) : (
 
   <button
-    style={primaryBtn}
+   style={{
+  ...primaryBtn,
+  width: 180,
+  marginTop: 18,
+
+}}
     onClick={() => onStartRC(s.id)}
   >
-    Take Test
+    Start Test
   </button>
 
 )}
           </div>
         );
      })}
+
+     </div>
+   )}
 
       {activeTab === "analytics" && (
         <CATAnalytics />
@@ -230,25 +288,29 @@ const attempted = !!attemptId;
 }
  
 const card = (attempted) => ({
-  borderRadius: 20,
-  padding: 24,
-  marginBottom: 24,
-  background: "#1e293b",
+  borderRadius: 18,
+  padding: 20,
+  minHeight: 210,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+
+  background: "#162235",
+
   border: attempted
     ? "1px solid #22c55e"
     : "1px solid #334155",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-});
 
+  boxShadow: "0 10px 30px rgba(0,0,0,.35)",
+});
 const primaryBtn = {
-  width: "100%",
-  padding: 12,
+  background: "#2563eb",
   color: "#fff",
   border: "none",
-  borderRadius: 12,
-  marginBottom: 12,
+  borderRadius: 10,
+  padding: "12px 22px",
   fontWeight: 700,
-  fontSize: 14,
+  cursor: "pointer",
 };
 
 const analyseBtn = {
