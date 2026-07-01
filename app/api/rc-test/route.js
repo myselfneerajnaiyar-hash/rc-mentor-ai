@@ -18,6 +18,28 @@ function extractJSON(text) {
   return JSON.parse(jsonString);
 }
 
+function shuffleQuestion(question) {
+  if (!Array.isArray(question.options) || question.options.length !== 4) {
+    return question;
+  }
+
+  const options = question.options.map((text, index) => ({
+    text,
+    isCorrect: index === Number(question.correctIndex),
+  }));
+
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+
+  return {
+    ...question,
+    options: options.map(o => o.text),
+    correctIndex: options.findIndex(o => o.isCorrect),
+  };
+}
+
 export async function POST(req) {
   try {
     const { passage } = await req.json();
@@ -198,12 +220,12 @@ try {
         }
       }
 
-      return {
-        prompt: q.prompt,
-        options: q.options,
-        correctIndex: q.correctIndex,
-        type,
-      };
+    return shuffleQuestion({
+  prompt: q.prompt,
+  options: q.options,
+  correctIndex: q.correctIndex,
+  type,
+});
     });
 
     if (questions.length !== 4) {
