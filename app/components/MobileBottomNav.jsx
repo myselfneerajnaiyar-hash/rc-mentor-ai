@@ -59,7 +59,7 @@ export default function MobileBottomNav({
     <nav className="mobile-nav mobile-only safe-bottom-nav">
 
       {tabs.map((tab) => {
-        const freeViews = ["home", "workout", "hangman", "profile", "cat"];
+        const freeViews = ["home", "workout", "hangman", "profile",];
 
 const locked =
   !freeViews.includes(tab.key) &&
