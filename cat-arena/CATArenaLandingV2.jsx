@@ -16,6 +16,30 @@ export default function CATArenaLanding({
   const [activeTab, setActiveTab] = useState("pyq");
 
   const [sectionals, setSectionals] = useState([]);
+  const [plan, setPlan] = useState(null);
+
+  useEffect(() => {
+
+  async function loadPlan() {
+
+    const { data: authData } =
+      await supabase.auth.getUser();
+
+    if (!authData?.user) return;
+
+    const { data } = await supabase
+      .from("subscriptions")
+      .select("plan")
+      .eq("user_id", authData.user.id)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle();
+
+    setPlan(data?.plan || null);
+  }
+
+  loadPlan();
+
+}, []);
   useEffect(() => {
   async function loadTests() {
     const { data, error } = await supabase
@@ -55,6 +79,11 @@ setAttemptedMap(map);
   }, []);
 
   
+const hasFullCATAccess =
+  plan === "yearly" ||
+  plan === "half_yearly";
+
+
    return (
   <div
   style={{
@@ -173,6 +202,9 @@ setAttemptedMap(map);
   .map((s) => {
       const attemptId = attemptedMap[s.id];
 const attempted = !!attemptId;
+const locked =
+  !s.is_free &&
+  !hasFullCATAccess;
 
         return (
           <div key={s.id} style={card(attempted)}>
@@ -197,18 +229,26 @@ const attempted = !!attemptId;
       : `🧪 Auctor Mock ${s.test_number}`}
   </h3>
 
-  <div
-    style={{
-      background: attempted ? "#14532d" : "#1e3a8a",
-      color: "#fff",
-      padding: "6px 12px",
-      borderRadius: 999,
-      fontSize: 12,
-      fontWeight: 700,
-    }}
-  >
-    {attempted ? "ATTEMPTED ✓" : "🟢 AVAILABLE"}
-  </div>
+ <div
+  style={{
+    background: attempted
+      ? "#14532d"
+      : locked
+      ? "#7c2d12"
+      : "#1e3a8a",
+    color: "#fff",
+    padding: "6px 12px",
+    borderRadius: 999,
+    fontSize: 12,
+    fontWeight: 700,
+  }}
+>
+  {attempted
+    ? "ATTEMPTED ✓"
+    : locked
+    ? "🔒 PREMIUM"
+    : "🟢 AVAILABLE"}
+</div>
 </div>
 
 <p
@@ -259,16 +299,22 @@ const attempted = !!attemptId;
 ) : (
 
   <button
-   style={{
-  ...primaryBtn,
-  width: 180,
-  marginTop: 18,
+  style={{
+    ...primaryBtn,
+    width: 180,
+    background: locked ? "#475569" : "#2563eb",
+  }}
+  onClick={() => {
+    if (locked) {
+      router.push("/pricing");
+      return;
+    }
 
-}}
-    onClick={() => onStartRC(s.id)}
-  >
-    Start Test
-  </button>
+    onStartRC(s.id);
+  }}
+>
+  {locked ? "Unlock Premium" : "Start Test"}
+</button>
 
 )}
           </div>

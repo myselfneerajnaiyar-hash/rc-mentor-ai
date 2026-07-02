@@ -48,6 +48,10 @@ if (plan === "half_yearly") {
 if (plan === "yearly") {
   expiry.setFullYear(expiry.getFullYear() + 1)
 }
+
+if (plan === "cat_test_series") {
+  expiry.setFullYear(expiry.getFullYear() + 1)
+}
   // ---------- get profile ----------
 
   const { data: profile } = await supabase
@@ -71,19 +75,23 @@ if (plan === "yearly") {
 
   // ---------- update profile ----------
 
+ 
+  if (plan !== "cat_test_series") {
   await supabase
     .from("profiles")
     .update({
       is_premium: true,
-      premium_expires_at: expiry
+      premium_expires_at: expiry,
     })
-    .eq("user_id", user_id)
+    .eq("user_id", user_id);
+}
 
-    const planNames = {
+   const planNames = {
   monthly: "Monthly Premium",
   quarterly: "3 Month Premium",
   half_yearly: "6 Month Premium",
   yearly: "Yearly Premium",
+  cat_test_series: "CAT VARC Test Series",
 }
 
 const planAmounts = {
@@ -91,6 +99,7 @@ const planAmounts = {
   quarterly: 999,
   half_yearly: 1299,
   yearly: 1999,
+  cat_test_series: 799,
 }
 
     await fetch("https://rc.auctorlabs.in/api/send-payment-email", {

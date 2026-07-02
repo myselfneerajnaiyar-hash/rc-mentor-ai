@@ -4,6 +4,7 @@
 
 export default function SubscribeButton({
   amount,
+  plan,
   label,
   user,
   variant = "primary",
@@ -82,12 +83,7 @@ if (!razorpayLoaded) {
 
         handler: async function (response) {
 
-          const planMap = {
-  399: "monthly",
-  999: "quarterly",
-  1299: "half_yearly",
-  1999: "yearly",
-}
+     
 
 const plan = planMap[amount]
 
@@ -153,9 +149,9 @@ const plan = planMap[amount]
         onClick={startPayment}
         className={`w-full font-semibold py-4 text-lg rounded-xl transition shadow-lg hover:shadow-xl
         ${
-          variant === "premium"
-            ? "bg-black text-white hover:bg-gray-900"
-            : "bg-indigo-600 text-white hover:bg-indigo-500"
+         variant === "premium"
+? "bg-indigo-600 text-white hover:bg-indigo-500"
+: "bg-indigo-600 text-white hover:bg-indigo-500"
         }`}
       >
         {label}

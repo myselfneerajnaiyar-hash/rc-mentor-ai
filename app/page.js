@@ -338,7 +338,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-  const freeViews = ["home", "workout", "hangman", "profile"]
+  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
 
   const lockedView =
     !freeViews.includes(view) &&
@@ -767,7 +767,7 @@ return (
 ].map((item) => {
   const Icon = item.icon;
 
-  const freeViews = ["home", "workout", "hangman", "profile"]
+  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
 
 const locked =
   !freeViews.includes(item.id) &&
@@ -777,7 +777,7 @@ const locked =
   key={item.id}
   onClick={() => {
 
-  const freeViews = ["home", "workout", "hangman", "profile"]
+  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
 
   const locked =
     !freeViews.includes(item.id) &&
