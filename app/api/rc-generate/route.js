@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -26,9 +27,86 @@ const difficultyMap = {
 
 export async function POST(req) {
   try {
-    const { genre, difficulty, lengthRange, bias } = await req.json();
+   const {
+  genre,
+  difficulty,
+  lengthRange,
+  bias,
+  userId,
+} = await req.json();
 
     const { lang, ques } = difficultyMap[difficulty] || difficultyMap.pro;
+    // ------------------------------------
+// PICK AN UNSEEN TOPIC
+// ------------------------------------
+
+let selectedTopic = null;
+let selectedPromptSeed = "";
+
+// Fetch every topic of this genre
+const { data: allTopics, error: topicError } =
+  await supabaseAdmin
+    .from("rc_topics")
+    .select("*")
+    .eq("genre", genre);
+
+if (topicError) {
+  throw topicError;
+}
+
+if (!allTopics || allTopics.length === 0) {
+  throw new Error(`No topics found for genre: ${genre}`);
+}
+
+// Fetch topics already seen by this user
+const { data: seenRows } =
+  await supabaseAdmin
+    .from("user_seen_topics")
+    .select("topic_id")
+    .eq("user_id", userId);
+
+const seenIds = new Set(
+  (seenRows || []).map(x => x.topic_id)
+);
+
+// Keep only unseen topics
+let availableTopics =
+  allTopics.filter(t => !seenIds.has(t.id));
+
+// If all topics are exhausted,
+// start again.
+if (availableTopics.length === 0) {
+
+  await supabaseAdmin
+    .from("user_seen_topics")
+    .delete()
+    .eq("user_id", userId);
+
+  availableTopics = allTopics;
+}
+
+// Random topic
+const chosen =
+  availableTopics[
+    Math.floor(Math.random() * availableTopics.length)
+  ];
+
+selectedTopic = chosen.topic;
+console.log("Selected topic:", selectedTopic);
+selectedPromptSeed = chosen.prompt_seed;
+
+// Remember it
+await supabaseAdmin
+  .from("user_seen_topics")
+  .upsert(
+    {
+      user_id: userId,
+      topic_id: chosen.id,
+    },
+    {
+      onConflict: "user_id,topic_id",
+    }
+  );
     const [minWords, maxWords] = (lengthRange || "400-500").split("-");
 
     let biasText = "";
@@ -60,6 +138,12 @@ ${biasText}
 ${avoidText}
 
 GENRE: ${genre || "Mixed / General"}
+
+MANDATORY TOPIC:
+${selectedTopic}
+
+TOPIC BRIEF:
+${selectedPromptSeed}
 TARGET LENGTH: ${minWords}-${maxWords} words total.
 
 LANGUAGE DIRECTIVE:
@@ -68,6 +152,15 @@ ${lang}
 QUESTION DIRECTIVE:
 ${ques}
 
+IMPORTANT:
+
+You MUST write the passage ONLY about the topic specified above.
+
+Do NOT invent another topic.
+Do NOT broaden into another domain.
+The central argument must revolve around that topic.
+
+The passage should still feel like a real CAT Reading Comprehension passage rather than an encyclopedia article.
 GLOBAL RULES:
 - The passage must have exactly 4 paragraphs.
 - Each paragraph should be proportionally balanced to meet the total word range.
@@ -114,7 +207,7 @@ Do not include any extra commentary outside the JSON.
         { role: "system", content: "You are an expert RC content creator. Output valid JSON only." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.7,
+      temperature: 0.45,
     });
 
     const text = completion.choices[0].message.content || "";
@@ -152,12 +245,12 @@ questions = questions.map((q, i) => ({
   type: orderedTypes[i],
 }));
 
-    return NextResponse.json({
-      passage: json.passage,
-      questions,
-      genreHint: genre || "Mixed",
-      topic: json.topic || "",
-    });
+   return NextResponse.json({
+  passage: json.passage,
+  questions,
+  genreHint: genre || "Mixed",
+  topic: selectedTopic,
+});
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Could not generate RC" }, { status: 500 });

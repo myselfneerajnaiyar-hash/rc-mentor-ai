@@ -192,26 +192,34 @@ useEffect(() => {
   setIndex(0);
   }
 
-  async function generateNewRC() {
+ async function generateNewRC() {
   setGenLoading(true);
 
   try {
+    // Get logged-in user
+    const { data: auth } = await supabase.auth.getUser();
+    console.log("FRONTEND GENRE =", genre);
+
     const res = await fetch("/api/rc-generate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         genre,
         difficulty,
         lengthRange,
+        userId: auth.user.id,
       }),
     });
 
     const data = await res.json();
 
-    setGeneratedRC(data);     // store full RC package
-    setShowGenerator(false);  // hide panel
-    setPhase("newRC");        // show choice screen
+    setGeneratedRC(data);
+    setShowGenerator(false);
+    setPhase("newRC");
   } catch (e) {
+    console.error(e);
     alert("Failed to generate RC");
   } finally {
     setGenLoading(false);
