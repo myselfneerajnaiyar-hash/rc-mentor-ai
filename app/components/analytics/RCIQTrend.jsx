@@ -13,8 +13,20 @@ import {
 } from "recharts";
 
 export default function RCIQTrend({ attempts }) {
-    console.log(attempts[0].sectional_test_content);
-  console.log(attempts[0].sectional_test_content);
+   if (!attempts || attempts.length === 0) {
+  return (
+    <div className="bg-slate-900 rounded-3xl border border-slate-700 p-8">
+      <h2 className="text-3xl font-black text-white mb-4">
+        Reading IQ Trend
+      </h2>
+
+      <p className="text-slate-400">
+        Attempt a CAT test to see your Reading IQ trend.
+      </p>
+    </div>
+  );
+}
+ 
 
 const chartData = attempts
   .slice()

@@ -885,6 +885,7 @@ ${
   <div className="max-w-5xl mx-auto px-6">
    {catPhase === "idle" && (
   <CATArenaLanding
+    isMobile={isMobile}
     attemptedMap={sectionalAttemptMap}
     onStartRC={(sectionalId) => {
       setActiveRCTest({ id: sectionalId });
@@ -898,7 +899,7 @@ ${
       });
       setCatPhase("test");
     }}
-  />
+/>
 )}
 
 {catPhase === "generating" && (

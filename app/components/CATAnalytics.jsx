@@ -103,6 +103,32 @@ const [loadingBirbal, setLoadingBirbal] = useState(false);
     );
   }
 
+  if (attempts.length === 0) {
+  return (
+    <div className="max-w-4xl mx-auto py-16">
+      <div className="rounded-3xl border border-slate-700 bg-slate-900 p-10 text-center">
+
+        <div className="text-6xl mb-6">📊</div>
+
+        <h2 className="text-3xl font-bold text-white mb-4">
+          CAT Analytics
+        </h2>
+
+        <p className="text-slate-400 text-lg">
+          You haven't attempted any CAT VARC tests yet.
+        </p>
+
+        <p className="text-slate-500 mt-3">
+          Attempt your first CAT VARC test to unlock Reading IQ,
+          accuracy trends, Reading DNA, performance analysis and
+          Birbal's AI insights.
+        </p>
+
+      </div>
+    </div>
+  );
+}
+
   const totalTests = attempts.length;
   const totalQuestions = attempts.reduce(
     (a, b) => a + (b.total_questions || 0),

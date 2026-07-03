@@ -8,6 +8,7 @@ import CATAnalytics from "../app/components/CATAnalytics";
 
 
 export default function CATArenaLanding({
+  isMobile,
   onStartRC,
   onViewDiagnosis,
 }) {
@@ -119,7 +120,9 @@ const hasFullCATAccess =
   <div
     style={{
       display: "grid",
-      gridTemplateColumns: "repeat(4,1fr)",
+     gridTemplateColumns: isMobile
+  ? "repeat(2,1fr)"
+  : "repeat(4,1fr)",
       gap: 16,
       marginBottom: 28,
     }}
@@ -151,9 +154,10 @@ const hasFullCATAccess =
 
   <div
     style={{
-      display: "flex",
-      gap: 12,
-      marginBottom: 30,
+     display: isMobile ? "grid" : "flex",
+gridTemplateColumns: isMobile ? "1fr" : undefined,
+gap: 12,
+marginBottom: 30,
     }}
   >
 
@@ -187,7 +191,9 @@ const hasFullCATAccess =
       <div
     style={{
       display: "grid",
-      gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+     gridTemplateColumns: isMobile
+  ? "1fr"
+  : "repeat(2,minmax(0,1fr))",
       gap: 20,
       alignItems: "start",
     }}
@@ -287,6 +293,8 @@ const locked =
   <button
     style={{
       ...primaryBtn,
+
+
       background:"#16a34a"
     }}
     onClick={() =>
@@ -304,14 +312,22 @@ const locked =
     width: 180,
     background: locked ? "#475569" : "#2563eb",
   }}
-  onClick={() => {
-    if (locked) {
-      router.push("/pricing");
-      return;
-    }
+ onClick={() => {
 
-    onStartRC(s.id);
-  }}
+  if (isMobile) {
+    alert(
+      "CAT VARC tests are currently available only on desktop."
+    );
+    return;
+  }
+
+  if (locked) {
+    router.push("/pricing");
+    return;
+  }
+
+  onStartRC(s.id);
+}}
 >
   {locked ? "Unlock Premium" : "Start Test"}
 </button>
