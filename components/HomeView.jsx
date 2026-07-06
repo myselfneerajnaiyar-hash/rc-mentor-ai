@@ -698,6 +698,70 @@ if (user?.id) {
   </CardContent>
 </Card>
 
+<Card
+ onClick={() => setView("cat")}
+  className="
+    cursor-pointer
+    bg-gradient-to-br
+    from-slate-900
+    via-slate-800
+    to-blue-950
+    border
+    border-cyan-500/20
+    rounded-3xl
+    shadow-xl
+    hover:scale-[1.01]
+    transition-all
+  "
+>
+  <CardContent className="p-8">
+
+    <div className="text-cyan-400 text-sm font-bold">
+      🏆 VARC TEST SERIES
+    </div>
+
+    <h2 className="text-3xl font-black text-white mt-3">
+      Train Like The Real CAT
+    </h2>
+
+    <p className="text-slate-300 mt-4">
+      Official CAT PYQs • Auctor Mock Tests • Detailed Analytics • Performance Tracking
+    </p>
+
+    <div className="flex flex-wrap gap-2 mt-5">
+
+      <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Official CAT PYQs
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Mock Tests
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Analytics
+      </div>
+
+      <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Detailed Review
+      </div>
+ <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Mentor Verdict
+      </div>
+       <div className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 text-xs">
+        Cognitive Diagnosis
+      </div>
+    </div>
+
+    <Button
+      className="mt-6 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold"
+    >
+      Explore Test Series →
+    </Button>
+
+  </CardContent>
+</Card>
+
      <Card
   onClick={() => router.push("/pricing")}
   className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-amber-500/20 rounded-3xl shadow-xl">
