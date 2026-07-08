@@ -14,46 +14,46 @@ export default function MobileBottomNav({
   view,
   setView,
   hasPremiumAccess,
+  exam,
 }) {
 
   const router = useRouter();
 
   const tabs = [
-    {
-      key: "home",
-      label: "Home",
-      icon: Home,
-      locked: false,
-    },
+  {
+    key: "home",
+    label: "Home",
+    icon: Home,
+  },
 
-    {
-      key: "mentor",
-      label: "Birbal",
-      icon: MessageSquare,
-      locked: true,
-    },
+  {
+    key: "mentor",
+    label: "Birbal",
+    icon: MessageSquare,
+  },
 
-    {
-      key: "practice",
-      label: "Practice",
-      icon: BookOpen,
-      locked: true,
-    },
+  {
+    key: "practice",
+    label: "Practice",
+    icon: BookOpen,
+  },
 
-    {
-      key: "cat",
-      label: "CAT",
-      icon: GraduationCap,
-      locked: true,
-    },
+  ...(exam === "CAT"
+    ? [
+        {
+          key: "cat",
+          label: "CAT",
+          icon: GraduationCap,
+        },
+      ]
+    : []),
 
-    {
-      key: "profile",
-      label: "Profile",
-      icon: User,
-      locked: false,
-    },
-  ];
+  {
+    key: "profile",
+    label: "Profile",
+    icon: User,
+  },
+];
 
   return (
     <nav className="mobile-nav mobile-only safe-bottom-nav">

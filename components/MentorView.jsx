@@ -18,7 +18,7 @@ const paragraphCount = text.trim().length
 function estimateDifficulty(count) {
   if (count < 300) return "Easy";
   if (count < 450) return "Moderate";
-  if (count < 600) return "CAT-Level";
+  if (count < 600) return "Advanced";
   return "Advanced / Pro";
 }
 
@@ -54,7 +54,7 @@ const progressPercent = Math.min(
         How it works
       </h3>
       <ol className="text-slate-400 space-y-2 text-sm list-decimal list-inside">
-        <li>Paste a CAT-style RC passage (300–600 words recommended).</li>
+        <li>Paste any RC passage (300–600 words recommended).</li>
         <li>We split it into paragraphs automatically.</li>
         <li>You master each paragraph before taking the full test.</li>
       </ol>
@@ -66,7 +66,7 @@ const progressPercent = Math.min(
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Paste your CAT-style RC passage here..."
+        placeholder="Paste your RC passage here..."
         className="w-full h-56 bg-slate-950 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
       />
 
@@ -102,7 +102,7 @@ const progressPercent = Math.min(
             ? "text-green-400"
             : difficulty === "Moderate"
             ? "text-yellow-400"
-            : difficulty === "CAT-Level"
+            : difficulty === "Advanced"
             ? "text-indigo-400"
             : "text-red-400"
         }`}
@@ -115,7 +115,7 @@ const progressPercent = Math.min(
   {/* CAT Ideal Range Bar */}
   <div>
     <div className="flex justify-between text-xs text-slate-500 mb-1">
-      <span>Ideal CAT Range: 350–600 words</span>
+      <span>Recommended Range: 350–600 words</span>
       <span>
         {inIdealRange ? "✔ In Range" : "Outside Range"}
       </span>

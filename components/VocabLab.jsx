@@ -5,13 +5,18 @@ import VocabProfile from "../components/VocabProfile";
 import { supabase } from "../lib/supabase";
 import TabGroup from "../components/TabGroup";
 import PracticeSwitcher from "./PracticeSwitcher";
+import WordDrawer from "../components/WordDrawer";
 
 export default function VocabLab() {
   const [tab, setTab] = useState("bank");
   const [manualWord, setManualWord] = useState("");
   const [lookup, setLookup] = useState(null);
+  const [drawerWords, setDrawerWords] = useState([]);
   const [loadingLookup, setLoadingLookup] = useState(false);
-  const [bank, setBank] = useState([]);
+  const [bank, setBank] = useState({
+  master: [],
+  user: [],
+});
   const [mode, setMode] = useState("home"); // home | lesson | test | result
 
 
@@ -24,38 +29,56 @@ async function fetchBank() {
   if (!authData?.user) return;
 
 
-  const { data, error } = await supabase
-    .from("user_words")
-    .select("*")
-    .eq("user_id", authData.user.id)
-    .order("created_at", { ascending: false });
+  const { data: master } = await supabase
+  .from("master_vocab")
+  .select("*")
+  .order("frequency_rank");
 
- if (!error && data) {
-  const formatted = data.map(w => ({
-    ...w,
-    partOfSpeech: w.part_of_speech,
-    synonyms:
-  typeof w.synonyms === "string"
-    ? w.synonyms.split(",").map(s => s.trim())
-    : w.synonyms || [],
+const { data: user } = await supabase
+  .from("user_words")
+  .select("*")
+  .eq("user_id", authData.user.id)
+  .order("created_at", { ascending: false });
 
-antonyms:
-  typeof w.antonyms === "string"
-    ? w.antonyms.split(",").map(s => s.trim())
-    : w.antonyms || [],
-  }));
+ const masterFormatted = (master || []).map(w => ({
+  ...w,
+  partOfSpeech: w.part_of_speech,
+  synonyms:
+    typeof w.synonyms === "string"
+      ? w.synonyms.split(",").map(s => s.trim())
+      : w.synonyms || [],
+  antonyms:
+    typeof w.antonyms === "string"
+      ? w.antonyms.split(",").map(s => s.trim())
+      : w.antonyms || [],
+}));
 
-  setBank(formatted);
-}
+const userFormatted = (user || []).map(w => ({
+  ...w,
+  partOfSpeech: w.part_of_speech,
+  synonyms:
+    typeof w.synonyms === "string"
+      ? w.synonyms.split(",").map(s => s.trim())
+      : w.synonyms || [],
+  antonyms:
+    typeof w.antonyms === "string"
+      ? w.antonyms.split(",").map(s => s.trim())
+      : w.antonyms || [],
+}));
+
+setBank({
+  master: masterFormatted,
+  user: userFormatted,
+});
 }
 
 async function enrichAllWords() {
   const { data: authData } = await supabase.auth.getUser();
   if (!authData?.user) return;
 
-  const unenriched = bank.filter(
-    w => !w.meaning || !w.synonyms || w.synonyms.length === 0
-  );
+ const unenriched = bank.user.filter(
+  w => !w.meaning || !w.synonyms || w.synonyms.length === 0
+);
 
   if (unenriched.length === 0) return;
 
@@ -170,6 +193,7 @@ const res = await fetch("/api/enrich-word", {
 
   
   return (
+    <>
     <div className="min-h-screen bg-slate-950 text-slate-100 px-6 py-8">
       <div className="max-w-6xl mx-auto">
         <h1 style={{ marginBottom: 12 }}>Vocabulary Lab</h1>
@@ -191,11 +215,14 @@ const res = await fetch("/api/enrich-word", {
   manualWord={manualWord}
   setManualWord={setManualWord}
   lookup={lookup}
+  setLookup={setLookup}
   loading={loadingLookup}
   handleManualAdd={handleManualAdd}
-  bank={bank}
+  masterWords={bank.master}
+userWords={bank.user}
   openWord={openWord}
   enrichAllWords={enrichAllWords}
+  setDrawerWords={setDrawerWords}
 />
           )}
           {tab === "drill" && <VocabDrill />}
@@ -204,24 +231,33 @@ const res = await fetch("/api/enrich-word", {
         </div>
       </div>
     </div>
+     <WordDrawer
+  lookup={lookup}
+  setLookup={setLookup}
+  words={drawerWords}
+ 
+/>
+</>
   );
 }
 
 /* ---------------- COMPONENTS ---------------- */
-
 function WordBank({
   manualWord,
   setManualWord,
   lookup,
+  setLookup,
   loading,
   handleManualAdd,
-  bank,
+  masterWords,
+  userWords,
   openWord,
-  enrichAllWords
+  enrichAllWords,
+  setDrawerWords
 }) {
   const [bulkLoading, setBulkLoading] = useState(false);
 
-   const unenrichedCount = bank.filter(
+  const unenrichedCount = userWords.filter(
   w => !w.meaning || !w.synonyms || w.synonyms.length === 0
 ).length;
   return (
@@ -271,47 +307,114 @@ function WordBank({
 
         {loading && <p style={{ marginTop: 12 }}>Looking up word…</p>}
 
-       {lookup && (
- <div className="mt-6 p-5 rounded-2xl bg-slate-900 border border-slate-700">
-            <h3>{lookup.word}</h3>
-            <p><b>Meaning:</b> {lookup.meaning || "—"}</p>
-            <p><b>Part of Speech:</b> {lookup.partOfSpeech || "—"}</p>
-            <p><b>Usage:</b> {lookup.usage || "—"}</p>
-            <p><b>Root:</b> {lookup.root || "—"}</p>
-            <p><b>Synonyms:</b> {(lookup.synonyms || []).join(", ") || "—"}</p>
-            <p><b>Antonyms:</b> {(lookup.antonyms || []).join(", ") || "—"}</p>
-          </div>
-        )}
 
        
 
-        {bank.length > 0 && (
-          <div style={{ marginTop: 24 }}>
-            <h4>Saved Words</h4>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-                gap: 10,
-              }}
-            >
-              {bank.map((w, i) => (
-                <button
-                  key={i}
-                  onClick={() => openWord(w)}
-                  className="px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-left hover:bg-slate-700 transition"
-                >
-                  <b>{w.word}</b>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>
-                    {w.partOfSpeech || ""}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Core Vocabulary */}
+
+<h4 className="mt-8 text-lg font-semibold">
+  📘 Core Vocabulary ({masterWords.length})
+</h4>
+
+<div
+  style={{
+    marginTop: 16,
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
+    gap: 10,
+  }}
+>
+  {masterWords.map((w) => (
+   <button
+  key={w.word}
+  onClick={() => {
+  setDrawerWords(masterWords);
+  setLookup(w);
+}}
+  className={`group
+    px-4 py-3
+    rounded-xl
+    bg-slate-800/80
+    border border-slate-700
+    border-l-2
+    ${
+      w.frequency_rank <= 50
+        ? "border-l-orange-500"
+        : w.frequency_rank <= 100
+        ? "border-l-yellow-500"
+        : w.frequency_rank <= 200
+        ? "border-l-blue-500"
+        : "border-l-slate-600"
+    }
+    text-left
+    transition-all duration-200
+    hover:bg-slate-800
+    hover:border-orange-500
+    hover:shadow-lg hover:shadow-orange-500/10
+  `}
+>
+  <h3 className="font-semibold text-white tracking-tight group-hover:text-orange-300 transition-colors">
+    {w.word}
+  </h3>
+
+  <p className="text-xs text-slate-400 mt-1">
+    Rank #{w.frequency_rank}
+  </p>
+</button>
+  ))}
+</div>
+
+{/* User Words */}
+
+<h4 className="mt-10 text-lg font-semibold">
+  🧠 Your Saved Words ({userWords.length})
+</h4>
+
+<div
+  style={{
+    marginTop: 16,
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
+    gap: 10,
+  }}
+>
+  {userWords.map((w) => (
+    <button
+      key={w.id}
+    onClick={() => {
+  setDrawerWords(userWords);
+  openWord(w);
+}}
+      className="group
+px-4 py-3
+rounded-xl
+bg-slate-800/80
+border border-slate-700
+border-l-4 border-l-emerald-500
+text-left
+transition-all duration-200
+hover:bg-slate-800
+hover:border-emerald-400
+hover:shadow-lg hover:shadow-emerald-500/10"
+    >
+      <h3 className="font-semibold text-slate-100 group-hover:text-emerald-300 transition-colors">
+  {w.word}
+</h3>
+
+      <div
+        style={{
+          fontSize: 12,
+          color: "#94a3b8",
+        }}
+      >
+        {w.partOfSpeech || ""}
+      </div>
+    </button>
+  ))}
+</div>
       </div>
     </div>
+  
   );
 }
 
@@ -974,6 +1077,8 @@ const qs = usable.slice(0, 5).map(w => {
   </div>
 ))}
     </div>
+     
+    
   );
 }
 

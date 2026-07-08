@@ -15,7 +15,7 @@ export default function ChatMentor({
   const [messages, setMessages] = useState([
    {
 role: "assistant",
-content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the lines, understand author logic, and improve your CAT Reading Comprehension skills. Ask me anything about passages, inference questions, or mistakes."
+content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the lines, understand author logic, and improve your Reading Comprehension skills. Ask me anything about passages, inference questions, or mistakes."
 }
   ])
 

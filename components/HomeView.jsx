@@ -40,13 +40,16 @@ function getGreeting() {
   return "Good night 🌌"
 }
 
-export default function HomeView({ setView, startAdaptiveRC, userName, user }) {
+export default function HomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
+  const isCAT = exam ==="CAT";
+
   const router = useRouter()
   const [streak, setStreak] = useState(0)
   const [coach, setCoach] = useState(null);
   const [dailyRCStreak, setDailyRCStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
   const [todayMission, setTodayMission] =
+
   useState(null);
   const [showBirbalWelcome,
 setShowBirbalWelcome] =
@@ -136,7 +139,7 @@ useEffect(() => {
     const data =
       await res.json();
 
-    console.log("BIRBAL", data);
+    console.log(JSON.stringify(data.coach.missions, null, 2));
 
     setCoach(data.coach);
   }
@@ -160,13 +163,23 @@ useEffect(() => {
     wordHuntStreak === 0
   ) {
 
-    missionText =
-      "Welcome to Auctor RC. Complete your first Daily RC Arena, play one Word Hunt and finish one Daily Workout.";
+   if (isCAT) {
+  missionText =
+    "Welcome to Auctor RC. Complete your first Daily RC Arena, play one Word Hunt and finish one Daily Workout.";
 
-    tasks.push({
-  title: "Daily RC Arena",
-  completed: false
-});
+  tasks.push({
+    title: "Daily RC Arena",
+    completed: false
+  });
+} else {
+  missionText =
+    "Welcome to Auctor RC. Complete your first RC, play one Word Hunt and finish one Daily Workout.";
+
+  tasks.push({
+    title: "Practice RC",
+    completed: false
+  });
+}
 
 tasks.push({
   title: "Word Hunt",
@@ -181,12 +194,12 @@ tasks.push({
 
   else {
 
-    if (dailyRCStreak === 0) {
-      tasks.push({
- title: "Daily RC Arena",
- completed: dailyRCStreak > 0
-});
-    }
+   if (isCAT && dailyRCStreak === 0) {
+  tasks.push({
+    title: "Daily RC Arena",
+    completed: dailyRCStreak > 0
+  });
+}
 
     if (wordHuntStreak === 0) {
      tasks.push({
@@ -644,6 +657,8 @@ if (user?.id) {
   <BirbalCoachCard coach={coach} />
 )}
 
+{isCAT && (
+
 <Card
   onClick={() => router.push("/daily-challenge")}
   className="
@@ -697,6 +712,9 @@ if (user?.id) {
 
   </CardContent>
 </Card>
+)}
+
+{isCAT && (
 
 <Card
  onClick={() => setView("cat")}
@@ -761,6 +779,7 @@ if (user?.id) {
 
   </CardContent>
 </Card>
+)}
 
      <Card
   onClick={() => router.push("/pricing")}
@@ -920,14 +939,16 @@ if (user?.id) {
   }
 />
 
-<StatCard
-  label="RC Arena"
-  value={
-    dailyRCStreak > 0
-      ? `🏆 ${dailyRCStreak} days`
-      : "Start 🏆"
-  }
-/>
+{isCAT && (
+  <StatCard
+    label="RC Arena"
+    value={
+      dailyRCStreak > 0
+        ? `🏆 ${dailyRCStreak} days`
+        : "Start 🏆"
+    }
+  />
+)}
 
 <StatCard label="RC Score" value={`${stats.score}/100`} />
         </div>
@@ -962,6 +983,7 @@ if (user?.id) {
 
   {/* RC LEADERBOARD */}
 
+{isCAT && (
   <div>
     <h3 className="text-sm text-cyan-400 mb-2">
       Daily RC Arena
@@ -969,6 +991,7 @@ if (user?.id) {
 
     <RCLeaderboard />
   </div>
+)}
 
   {/* DAILY WORKOUT */}
 
@@ -993,7 +1016,7 @@ if (user?.id) {
 </div>
 </div>
 
-<RCArenaChampion />
+{isCAT && <RCArenaChampion />}
 
 
 <Card

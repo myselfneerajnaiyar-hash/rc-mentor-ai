@@ -133,22 +133,19 @@ if (
 const { data: profile } =
   await supabaseAdmin
     .from("profiles")
-    .select("name")
+    .select("name, exam")
     .eq("user_id", userId)
     .single();
 
 const userName =
   profile?.name || "Student";
 
-const prompt = `
-You are Birbal.
+const exam =
+  profile?.exam || "";
 
-Analyze this student's activity.
-
-
-
-${JSON.stringify(userData)}
-
+  const availableActivities =
+exam === "CAT"
+? `
 Available activities:
 
 1. Daily RC Arena
@@ -167,6 +164,41 @@ Choose exactly 2 additional missions from:
 - Speed Drill
 - Vocabulary Drill
 - RC Passage Practice
+`
+: `
+Available activities:
+
+1. Daily Workout
+2. Word Hunt
+3. Speed Drill
+4. Vocabulary Drill
+5. RC Passage Practice
+
+Choose exactly 3 missions from:
+
+
+- Daily Workout
+- Word Hunt
+- Speed Drill
+- Vocabulary Drill
+- RC Passage Practice
+
+Never return "Daily RC Arena".
+It is not available for this student.
+`;
+
+console.log("Exam =", exam);
+
+const prompt = `
+You are Birbal.
+
+Analyze this student's activity.
+
+
+
+${JSON.stringify(userData)}
+${availableActivities}
+
 
 Return JSON only:
 
@@ -251,13 +283,24 @@ const coach = JSON.parse(content);
 coach.iq = readingIQ;
 coach.readerType = readerType;
 
-coach.missions = [
-  {
-    title: "Daily RC Arena",
-    activityType: "daily_rc_attempts"
-  },
-  ...coach.missions
-];
+// Remove CAT mission for non-CAT exams
+if (exam !== "CAT") {
+  coach.missions = coach.missions.filter(
+    m => m.title !== "Daily RC Arena"
+  );
+}
+
+if (exam === "CAT") {
+
+  coach.missions = [
+    {
+      title: "Daily RC Arena",
+      activityType: "daily_rc_attempts"
+    },
+    ...coach.missions
+  ];
+
+}
 
 coach.missions =
   coach.missions.filter(

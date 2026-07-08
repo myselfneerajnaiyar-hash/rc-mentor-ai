@@ -129,6 +129,7 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [questionTimes, setQuestionTimes] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [userName, setUserName] = useState("");
+  const [exam, setExam] = useState("");
   const [hasPremiumAccess, setHasPremiumAccess] = useState(false)
 
   // ---- VOCAB STATE ----
@@ -356,16 +357,23 @@ useEffect(() => {
   async function loadProfile() {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("name")
+      .select("name, exam")
       .eq("user_id", user.id)
       .maybeSingle();
 
-    if (profile?.name) {
-      const formatted =
-        profile.name.charAt(0).toUpperCase() +
-        profile.name.slice(1);
-      setUserName(formatted);
-    }
+  if (profile) {
+
+  if (profile.name) {
+    const formatted =
+      profile.name.charAt(0).toUpperCase() +
+      profile.name.slice(1);
+
+    setUserName(formatted);
+
+  }
+
+  setExam(profile.exam || "");
+}
   }
 
   loadProfile();
@@ -721,6 +729,24 @@ if (typeof window !== "undefined") {
 if (authLoading) {
   return null;
 }
+
+const navItems = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "mentor", label: "Ask Birbal", icon: MessageSquare },
+  { id: "workout", label: "Daily Workout", icon: Flame },
+  { id: "precision", label: "Precision Training", icon: Target },
+  { id: "rc", label: "RC", icon: Brain },
+  { id: "vocab", label: "Vocab", icon: BookOpen },
+  { id: "speed", label: "Speed", icon: Timer },
+  { id: "hangman", label: "Word Hunt", icon: Puzzle },
+
+  ...(exam === "CAT"
+    ? [{ id: "cat", label: "CAT", icon: GraduationCap }]
+    : []),
+
+  { id: "premium", label: "Premium", icon: Trophy },
+  { id: "profile", label: "Profile", icon: User },
+];
   
 
 return (
@@ -749,22 +775,7 @@ return (
 
 
      <nav className="flex flex-col gap-2 mt-6">
- {[
-  { id: "home", label: "Home", icon: Home },
-  { id: "mentor",label: "Ask Birbal", icon: MessageSquare},
-  { id: "workout", label: "Daily Workout", icon: Flame },
-   { id: "precision", label: "Precision Training", icon: Target },
- 
-  { id: "rc", label: "RC", icon: Brain },
-  { id: "vocab", label: "Vocab", icon: BookOpen },
-  { id: "speed", label: "Speed", icon: Timer },
-  { id: "hangman", label: "Word Hunt", icon: Puzzle },
- 
-
- { id: "cat", label: "CAT", icon: GraduationCap },
-{ id: "premium", label: "Premium", icon: Trophy },
-{ id: "profile", label: "Profile", icon: User },
-].map((item) => {
+ {navItems.map((item) => {
   const Icon = item.icon;
 
   const freeViews = ["home", "workout", "hangman", "profile", "cat"]
@@ -851,6 +862,7 @@ ${
   startAdaptiveRC={() => setView("workout")}
   userName={userName}
   user={user}
+  exam={exam}
 />
 )}
 
@@ -938,6 +950,7 @@ ${
   view={view}
   setView={setView}
   hasPremiumAccess={hasPremiumAccess}
+  exam={exam}
 />
       </div>
 </div>

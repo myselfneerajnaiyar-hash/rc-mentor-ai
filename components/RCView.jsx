@@ -55,7 +55,7 @@ const [currentQStart, setCurrentQStart] = useState(null);
    const [directTestMode, setDirectTestMode] = useState(false)
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive | plan-complete
   
-// home | rc | vocab | speed | cat
+// home | rc | vocab | speed 
 
   const [generatedRC, setGeneratedRC] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
@@ -992,11 +992,11 @@ return (
     {/* INTRO SECTION */}
     <div className="max-w-3xl">
       <h2 className="text-3xl font-bold mb-4">
-        CAT-Level Reading Comprehension Generator
+        Reading Comprehension Generator
       </h2>
 
       <p className="text-slate-400 text-lg leading-relaxed">
-        Train on AI-generated passages designed to simulate real CAT difficulty.
+        Train on AI-generated passages designed to improve comprehension, inference, logical reasoning, and reading speed.
         Each passage is structured to test inference depth, logical clarity,
         and conceptual understanding — not surface reading.
       </p>
@@ -1015,7 +1015,7 @@ return (
 
   <li className="flex items-start gap-3 text-slate-300">
     <HelpCircle className="w-5 h-5 text-emerald-400 mt-1" />
-    <span><b>4 CAT-style questions</b> — inference-heavy and trap-based</span>
+    <span><b>4 exam-style questions</b> — inference-heavy and trap-based</span>
   </li>
 
   <li className="flex items-start gap-3 text-slate-300">
@@ -1036,7 +1036,7 @@ return (
    {/* GENERATOR SECTION */}
 <div className="max-w-3xl">
 <h3 className="text-xl font-semibold text-white mt-10 mb-4">
-  Generate a CAT-style RC Passage
+  Generate an RC Passage
 </h3>
 
 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
@@ -1079,7 +1079,7 @@ return (
         <option value="beginner">Beginner</option>
         <option value="moderate">Moderate</option>
         <option value="advanced">Advanced</option>
-        <option value="pro">Pro (CAT Killer)</option>
+        <option value="pro">Pro</option>
       </select>
 
      <select
@@ -1156,7 +1156,7 @@ return (
 
     {phase === "plan-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
-    <h3>Preparing your CAT-style RC…</h3>
+    <h3>Preparing your RC Test…</h3>
     <p>Setting up today’s drill.</p>
   </div>
 )}
@@ -1165,7 +1165,7 @@ return (
   <div style={{ marginTop: 40, textAlign: "center" }}>
     {testQuestions.length === 0 ? (
       <>
-        <h3>Preparing your CAT RC Test…</h3>
+        <h3>Preparing your RC Test…</h3>
         <p>Generating passage-based questions.</p>
       </>
     ) : (
@@ -1347,7 +1347,7 @@ return (
 
   <p><b>Average time / question:</b> {avgTime}s</p>
   <p><b>Total time:</b> {totalTime}s</p>
-  <p style={{ color: "#555" }}>CAT benchmark: 40–45s per RC question</p>
+  <p style={{ color: "#555" }}>exam benchmark: 40–45s per RC question</p>
 
   <ul className="space-y-1 mt-3 text-slate-300">
     <li>⚡ Rushed (&lt;15s): {bandCounts.rushed}</li>
@@ -1468,7 +1468,7 @@ return (
 )}
     {phase === "plan-loading" && (
   <div style={{ marginTop: 40, textAlign: "center" }}>
-    <h3>Preparing your CAT-style RC…</h3>
+    <h3>Preparing your exam-style RC…</h3>
     <p>Generating a high-difficulty passage.</p>
   </div>
 )}
