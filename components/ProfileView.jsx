@@ -237,7 +237,7 @@ setSubscription(sub)
   desc="Identify question-type gaps"
   onClick={() => setProfileTab("diagnosis")}
 />
-
+w
 {isCAT && (
   <ActionCard
     title="Sectional Analytics"
@@ -680,3 +680,4 @@ const cancelBtn = {
   color: "#e2e8f0",
   cursor: "pointer",
 };
+

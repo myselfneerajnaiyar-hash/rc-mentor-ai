@@ -41,7 +41,23 @@ function getGreeting() {
 }
 
 export default function HomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
-  const isCAT = exam ==="CAT";
+const normalizedExam = exam?.trim().toUpperCase() || "";
+
+const isCAT = normalizedExam === "CAT";
+
+const examDisplayNames = {
+  CAT: "CAT VARC",
+  XAT: "XAT Verbal",
+  GMAT: "GMAT Verbal",
+  CLAT: "CLAT English",
+  "BANK PO": "Bank PO English",
+  SSC: "SSC English",
+  CUET: "CUET Language",
+  IPMAT: "IPMAT Verbal",
+};
+
+const examDisplayName =
+  examDisplayNames[normalizedExam] || exam || "Reading";
 
   const router = useRouter()
   const [streak, setStreak] = useState(0)
@@ -632,14 +648,17 @@ if (user?.id) {
   {/* Greeting */}
   <div className="flex justify-between items-start">
     <div>
-      <h1 className="text-2xl md:text-4xl font-bold text-white">
-        {getGreeting()}, {userName || "Champion"} 👋
-      </h1>
+     <h1 className="text-2xl md:text-4xl font-bold text-white">
+  {getGreeting()}, {userName || "Champion"} 👋
+</h1>
 
-      <p className="text-slate-400 mt-1">
-        Your structured RC training system
-      </p>
+<p className="text-lg md:text-xl font-semibold text-indigo-300 mt-2">
+  Your {examDisplayName} Intelligence Dashboard
+</p>
 
+<p className="text-slate-400 mt-1">
+  Personalised training for reading, vocabulary, speed and verbal skills.
+</p>
    
     </div>
    

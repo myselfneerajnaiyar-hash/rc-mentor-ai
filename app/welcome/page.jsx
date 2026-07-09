@@ -190,6 +190,7 @@ expiry.setDate(expiry.getDate() + 3)
               <option value="GMAT">GMAT</option>
                <option value="CLAT">CLAT</option>
                 <option value="Bank PO">Bank PO</option>
+                  <option value="SSC">SSC</option>
                  <option value="CUET">CUET</option>
                   <option value="IPMAT">IPMAT</option>
             </select>
