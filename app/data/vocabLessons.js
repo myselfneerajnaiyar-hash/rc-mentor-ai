@@ -3,7 +3,7 @@ export const vocabLessons = [
     id: "uncertainty",
     title: "Shades of Uncertainty",
     exam: "CAT",
-    goal: "Learn how CAT passages hide meaning using subtle forms of vagueness.",
+    goal: "Learn how passages hide meaning using subtle forms of vagueness.",
     words: [
       {
         word: "Obscure",
@@ -51,7 +51,7 @@ export const vocabLessons = [
         antonyms: ["precise"],
       },
     ],
-    concept: `CAT often hides meaning inside imprecision.`,
+    concept: `Author often hides meaning inside imprecision.`,
   },
 
   {
@@ -216,7 +216,7 @@ export const vocabLessons = [
         antonyms: ["disconnect"],
       },
     ],
-    concept: `CAT frequently tests whether a passage claims cause or mere association.`,
+    concept: `RC passages frequently test whether a passage claims cause or mere association.`,
   },
 
   {
@@ -271,7 +271,7 @@ export const vocabLessons = [
         antonyms: ["absolute"],
       },
     ],
-    concept: `Scope errors are the most common CAT traps.`,
+    concept: `Scope errors are the most common traps.`,
   },
   {
     id: "certainty",
@@ -326,7 +326,7 @@ export const vocabLessons = [
       },
     ],
     concept: `RC tests how strongly the author believes a claim.
-CAT often replaces "tentative" with "certain" in traps.`,
+It often replaces "tentative" with "certain" in traps.`,
   },
 
   {
@@ -382,7 +382,7 @@ CAT often replaces "tentative" with "certain" in traps.`,
       },
     ],
     concept: `Evidence words tell you how strong a claim is.
-CAT loves downgrading "empirical" to "anecdotal".`,
+Examiner loves downgrading "empirical" to "anecdotal".`,
   },
 
   {
@@ -547,7 +547,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
         antonyms: ["origin"],
       },
     ],
-    concept: `CAT frequently asks what follows from the author’s view.`,
+    concept: `Exams frequently ask what follows from the author’s view.`,
   },
   {
     id: "assumption",
@@ -602,7 +602,7 @@ CAT loves downgrading "empirical" to "anecdotal".`,
       },
     ],
     concept: `Many RC questions hinge on what is assumed but not said.
-CAT loves asking: “Which assumption underlies the argument?”`,
+Exams love asking: “Which assumption underlies the argument?”`,
   },
 
   {
@@ -712,7 +712,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
         antonyms: ["entirely"],
       },
     ],
-    concept: `CAT replaces hedged claims with absolute ones in traps.`,
+    concept: `Exams replace hedged claims with absolute ones in traps.`,
   },
 
   {
@@ -876,7 +876,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
         antonyms: ["definitive"],
       },
     ],
-    concept: `CAT tests whether evidence truly supports a claim or merely appears to.`,
+    concept: `RC tests whether evidence truly supports a claim or merely appears to.`,
   },
 
   {
@@ -986,7 +986,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
         antonyms: ["stagnation"],
       },
     ],
-    concept: `CAT traps exaggerate speculation into certainty.`,
+    concept: `RC traps exaggerate speculation into certainty.`,
   },
 
   {
@@ -1150,7 +1150,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
         antonyms: ["specifically"],
       },
     ],
-    concept: `Hedging words weaken certainty. CAT often turns them into absolutes.`,
+    concept: `Hedging words weaken certainty. RC questions often turn them into absolutes.`,
   },
 
   {
@@ -1315,7 +1315,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
         antonyms: ["exception"],
       },
     ],
-    concept: `CAT often distorts comparisons into equivalence.`,
+    concept: `RC questions often distort comparisons into equivalence.`,
   },
 
   {
@@ -1424,7 +1424,7 @@ CAT loves asking: “Which assumption underlies the argument?”`,
       antonyms: ["conflict"],
     },
   ],
-  concept: `OMET passages often use polished corporate language.
+  concept: `passages often use polished corporate language.
 Words may sound positive but hide neutral or strategic intent.
 
 Focus on:
@@ -1484,7 +1484,7 @@ Focus on:
       antonyms: ["guaranteed"],
     },
   ],
-  concept: `OMET exams test how managers interpret uncertainty.
+  concept: `Exams test how managers interpret uncertainty.
 Words often indicate caution rather than confidence.
 
 Read carefully:
@@ -1543,7 +1543,7 @@ Read carefully:
       antonyms: ["pattern"],
     },
   ],
-  concept: `OMET passages are often data-heavy.
+  concept: `Passages are often data-heavy.
 Understanding analytical vocabulary prevents misinterpretation.`,
 },
 {
@@ -1598,7 +1598,7 @@ Understanding analytical vocabulary prevents misinterpretation.`,
       antonyms: ["planning"],
     },
   ],
-  concept: `OMET questions often hinge on strategic clarity.
+  concept: `Questions often hinge on strategic clarity.
 These words indicate planning vs implementation.`,
 },{
   id: "omet-ethics",
@@ -1652,7 +1652,7 @@ These words indicate planning vs implementation.`,
       antonyms: ["mismanagement"],
     },
   ],
-  concept: `OMET exams increasingly test ethical reasoning.
+  concept: `Exams increasingly test ethical reasoning.
 Vocabulary here signals norms, obligations, and expectations.`,
 },
   {
@@ -1707,7 +1707,7 @@ Vocabulary here signals norms, obligations, and expectations.`,
       antonyms: ["random", "tactical"],
     },
   ],
-  concept: `OMET passages often focus on business sustainability, scale, and execution.
+  concept: `Passages often focus on business sustainability, scale, and execution.
 These words signal long-term thinking and corporate reasoning.`,
 },
 
@@ -1763,7 +1763,7 @@ These words signal long-term thinking and corporate reasoning.`,
       antonyms: ["pattern"],
     },
   ],
-  concept: `OMET tests reward careful interpretation of data language.
+  concept: `Tests reward careful interpretation of data language.
 Strong candidates avoid over-inference and respect evidence limits.`,
 },
 
@@ -1819,7 +1819,7 @@ Strong candidates avoid over-inference and respect evidence limits.`,
       antonyms: ["imbalance"],
     },
   ],
-  concept: `OMET economics passages emphasize balance, volatility, and systemic effects.
+  concept: `Economics passages emphasize balance, volatility, and systemic effects.
 Precision matters more than jargon.`,
 },
 
@@ -1875,7 +1875,7 @@ Precision matters more than jargon.`,
       antonyms: ["neglect"],
     },
   ],
-  concept: `OMET governance passages test neutrality.
+  concept: `Governance passages test neutrality.
 Watch for procedural language rather than opinionated tone.`,
 },
 
@@ -1931,7 +1931,7 @@ Watch for procedural language rather than opinionated tone.`,
       antonyms: ["acceptance"],
     },
   ],
-  concept: `OMET social passages emphasize systems over individuals.
+  concept: `Social passages emphasize systems over individuals.
 Tone is analytical, not emotional.`,
 },
   {
@@ -1986,7 +1986,7 @@ Tone is analytical, not emotional.`,
       antonyms: ["general"],
     },
   ],
-  concept: `OMET exams often test clarity of meaning.
+  concept: `Exams often test clarity of meaning.
 Words here eliminate guesswork and ambiguity.
 
 Use them to:
@@ -2047,7 +2047,7 @@ Use them to:
       antonyms: ["sure"],
     },
   ],
-  concept: `OMET RCs and VA questions frequently test uncertainty.
+  concept: `RCs and VA questions frequently test uncertainty.
 Recognizing these words helps eliminate extreme answer choices.`,
 },
 
@@ -2103,7 +2103,7 @@ Recognizing these words helps eliminate extreme answer choices.`,
       antonyms: ["careful"],
     },
   ],
-  concept: `Decision-based vocab appears heavily in OMET reasoning sections.
+  concept: `Decision-based vocab appears heavily in reasoning sections.
 These words define quality of judgment.`,
 },
 
@@ -2159,7 +2159,7 @@ These words define quality of judgment.`,
       antonyms: ["permanent"],
     },
   ],
-  concept: `OMET exams reward understanding of organizational logic.`,
+  concept: `Exams reward understanding of organizational logic.`,
 },
 
 {
@@ -2214,7 +2214,7 @@ These words define quality of judgment.`,
       antonyms: ["unproductive"],
     },
   ],
-  concept: `OMET aptitude tests frequently test efficiency-related vocabulary.`,
+  concept: `Exams frequently test efficiency-related vocabulary.`,
 },
   {
   id: "omet-decision",
@@ -2268,7 +2268,7 @@ These words define quality of judgment.`,
       antonyms: ["disagreement"],
     },
   ],
-  concept: `OMET questions often describe decision-making environments.
+  concept: `Questions often describe decision-making environments.
 
 Track:
 * Who decides  
@@ -2330,7 +2330,7 @@ Decision vocabulary clarifies authority and intent.`,
       antonyms: ["neglect"],
     },
   ],
-  concept: `OMET passages often describe institutional setups.
+  concept: `RC passages often describe institutional setups.
 
 Identify:
 * Power flow  
@@ -2392,7 +2392,7 @@ Structure words prevent role-confusion traps.`,
       antonyms: ["introduce"],
     },
   ],
-  concept: `OMET passages frequently test policy and organizational change.
+  concept: `Passages frequently test policy and organizational change.
 
 Watch:
 * Speed of change  
@@ -2454,7 +2454,7 @@ Change words signal intent and timeline.`,
       antonyms: ["permission"],
     },
   ],
-  concept: `OMET questions often revolve around limits.
+  concept: `Questions often revolve around limits.
 
 Identify:
 * Who imposes the restriction  
@@ -2516,7 +2516,7 @@ Constraint language defines boundaries.`,
       antonyms: ["partial effect"],
     },
   ],
-  concept: `OMET RC and reasoning questions focus heavily on outcomes.
+  concept: `RC and reasoning questions focus heavily on outcomes.
 
 Always ask:
 * Intended vs actual result  
@@ -2578,7 +2578,7 @@ Outcome words anchor conclusions.`,
       antonyms: ["weak"],
     },
   ],
-  concept: `OMET RCs often discuss corporate decisions.
+  concept: `RCs often discuss corporate decisions.
 Strategy words signal long-term intent and positioning.`,
 },
 
@@ -2635,7 +2635,7 @@ Strategy words signal long-term intent and positioning.`,
       antonyms: ["fragility"],
     },
   ],
-  concept: `OMET passages frequently test risk assessment.
+  concept: `passages frequently test risk assessment.
 These words indicate uncertainty, not failure.`,
 },
 
@@ -2692,7 +2692,7 @@ These words indicate uncertainty, not failure.`,
       antonyms: ["relevance"],
     },
   ],
-  concept: `OMET RCs often focus on technological change.
+  concept: `RCs often focus on technological change.
 Innovation vocabulary signals future-oriented arguments.`,
 },
 
@@ -2749,7 +2749,7 @@ Innovation vocabulary signals future-oriented arguments.`,
       antonyms: ["restraint"],
     },
   ],
-  concept: `OMET passages frequently analyze consumers.
+  concept: `Passages frequently analyze consumers.
 Behavioral vocabulary helps track demand-side logic.`,
 },
 
@@ -2807,7 +2807,7 @@ Behavioral vocabulary helps track demand-side logic.`,
     },
   ],
   concept: `Management vocabulary reveals authority and control.
-OMET RCs test leadership effectiveness subtly.`,
+RCs test leadership effectiveness subtly.`,
 },
 ];
 

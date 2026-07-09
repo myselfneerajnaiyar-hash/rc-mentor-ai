@@ -256,6 +256,7 @@ function WordBank({
   setDrawerWords
 }) {
   const [bulkLoading, setBulkLoading] = useState(false);
+  const [activeList, setActiveList] = useState("core");
 
   const unenrichedCount = userWords.filter(
   w => !w.meaning || !w.synonyms || w.synonyms.length === 0
@@ -310,109 +311,83 @@ function WordBank({
 
        
 
-        {/* Core Vocabulary */}
+    <div className="mt-8">
 
-<h4 className="mt-8 text-lg font-semibold">
-  📘 Core Vocabulary ({masterWords.length})
-</h4>
+  {/* Tabs */}
+  <div className="flex gap-2 mb-6">
 
-<div
-  style={{
-    marginTop: 16,
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
-    gap: 10,
-  }}
->
-  {masterWords.map((w) => (
-   <button
-  key={w.word}
-  onClick={() => {
-  setDrawerWords(masterWords);
-  setLookup(w);
-}}
-  className={`group
-    px-4 py-3
-    rounded-xl
-    bg-slate-800/80
-    border border-slate-700
-    border-l-2
-    ${
-      w.frequency_rank <= 50
-        ? "border-l-orange-500"
-        : w.frequency_rank <= 100
-        ? "border-l-yellow-500"
-        : w.frequency_rank <= 200
-        ? "border-l-blue-500"
-        : "border-l-slate-600"
-    }
-    text-left
-    transition-all duration-200
-    hover:bg-slate-800
-    hover:border-orange-500
-    hover:shadow-lg hover:shadow-orange-500/10
-  `}
->
-  <h3 className="font-semibold text-white tracking-tight group-hover:text-orange-300 transition-colors">
-    {w.word}
-  </h3>
-
-  <p className="text-xs text-slate-400 mt-1">
-    Rank #{w.frequency_rank}
-  </p>
-</button>
-  ))}
-</div>
-
-{/* User Words */}
-
-<h4 className="mt-10 text-lg font-semibold">
-  🧠 Your Saved Words ({userWords.length})
-</h4>
-
-<div
-  style={{
-    marginTop: 16,
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
-    gap: 10,
-  }}
->
-  {userWords.map((w) => (
     <button
-      key={w.id}
-    onClick={() => {
-  setDrawerWords(userWords);
-  openWord(w);
-}}
-      className="group
-px-4 py-3
-rounded-xl
-bg-slate-800/80
-border border-slate-700
-border-l-4 border-l-emerald-500
-text-left
-transition-all duration-200
-hover:bg-slate-800
-hover:border-emerald-400
-hover:shadow-lg hover:shadow-emerald-500/10"
+      onClick={() => setActiveList("core")}
+      className={`px-4 py-2 rounded-xl transition ${
+        activeList === "core"
+          ? "bg-orange-500 text-white"
+          : "bg-slate-800 text-slate-400 hover:text-white"
+      }`}
     >
-      <h3 className="font-semibold text-slate-100 group-hover:text-emerald-300 transition-colors">
-  {w.word}
-</h3>
-
-      <div
-        style={{
-          fontSize: 12,
-          color: "#94a3b8",
-        }}
-      >
-        {w.partOfSpeech || ""}
-      </div>
+      📘 Core Words ({masterWords.length})
     </button>
-  ))}
+
+    <button
+      onClick={() => setActiveList("saved")}
+      className={`px-4 py-2 rounded-xl transition ${
+        activeList === "saved"
+          ? "bg-emerald-600 text-white"
+          : "bg-slate-800 text-slate-400 hover:text-white"
+      }`}
+    >
+      🧠 Saved Words ({userWords.length})
+    </button>
+
+  </div>
+
+  {/* Word Grid */}
+
+  <div
+    className="grid gap-3 max-h-[650px] overflow-y-auto"
+    style={{
+      gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
+    }}
+  >
+
+    {activeList === "core"
+      ? masterWords.map((w) => (
+          <button
+            key={w.word}
+            onClick={() => {
+              setDrawerWords(masterWords);
+              setLookup(w);
+            }}
+            className="group px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-left hover:border-orange-500 transition"
+          >
+            <h3 className="font-semibold">{w.word}</h3>
+
+            <p className="text-xs text-slate-400">
+              Rank #{w.frequency_rank}
+            </p>
+          </button>
+        ))
+
+      : userWords.map((w) => (
+          <button
+            key={w.id}
+            onClick={() => {
+              setDrawerWords(userWords);
+              openWord(w);
+            }}
+            className="group px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-left hover:border-emerald-500 transition"
+          >
+            <h3 className="font-semibold">{w.word}</h3>
+
+            <p className="text-xs text-slate-400">
+              {w.partOfSpeech || "Tap to enrich"}
+            </p>
+          </button>
+        ))}
+
+  </div>
+
 </div>
-      </div>
+</div>
     </div>
   
   );
@@ -428,6 +403,8 @@ function VocabDrill() {
   const [history, setHistory] = useState([]);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [streak, setStreak] = useState(0);
+const [bestStreak, setBestStreak] = useState(0);
 
   useEffect(() => {
   loadDrillWords();
@@ -437,14 +414,21 @@ async function loadDrillWords() {
   const { data: authData } = await supabase.auth.getUser();
   if (!authData?.user) return;
 
-  const { data } = await supabase
-    .from("user_words")
-    .select("*")
-    .eq("user_id", authData.user.id);
+  const { data: master } = await supabase
+  .from("master_vocab")
+  .select("*")
+  .order("frequency_rank");
 
-  if (!data) return;
+const { data: user } = await supabase
+  .from("user_words")
+  .select("*")
+  .eq("user_id", authData.user.id);
 
-  const formatted = data.map(w => ({
+if (!master || !user) return;
+
+const combined = [...master, ...user];
+
+  const formatted = combined.map(w => ({
     ...w,
     synonyms:
   typeof w.synonyms === "string"
@@ -467,6 +451,10 @@ antonyms:
       (w.antonyms && w.antonyms.length > 0) ||
       w.usage
   );
+
+  console.log("Combined:", combined.length);
+console.log("Formatted:", formatted.length);
+console.log("Enriched:", enriched.length);
 
   setBank(enriched);
 }
@@ -596,6 +584,8 @@ return {
   setScore(0);
   setSelected(null);
   setHistory([]);
+  setStreak(0);
+setBestStreak(0);
   setStartTime(Date.now());
   setEndTime(null);
   setStage("run");
@@ -610,9 +600,18 @@ return {
   setSelected(opt);
 
   // Update score immediately
-  if (correct) {
-    setScore(prev => prev + 1);
-  }
+ if (correct) {
+  setScore(prev => prev + 1);
+
+  setStreak(prev => {
+    const next = prev + 1;
+    setBestStreak(best => Math.max(best, next));
+    return next;
+  });
+
+} else {
+  setStreak(0);
+}
 
   // Push to history immediately
   setHistory(prev => [
@@ -686,29 +685,68 @@ if (isLastQuestion) {
 }
 }
   if (stage === "start") {
-    return (
-      <div>
-  <h2 className="text-2xl font-semibold text-slate-100">
-    Vocab Drills
-  </h2>
-  <p className="text-slate-400 mt-2">
-    10 mixed MCQs: meaning, opposite, usage.
-  </p>
-        <button
-          onClick={startDrill}
-          className="mt-8 w-full sm:w-auto px-8 py-3 rounded-2xl 
-bg-gradient-to-r from-orange-500 to-orange-600 
-hover:from-orange-400 hover:to-orange-500
-text-white font-semibold tracking-wide
-shadow-lg shadow-orange-900/30
-transition-all duration-200
-active:scale-[0.98]"
->
-          Start Drill
-        </button>
+  return (
+    <div className="max-w-2xl mx-auto">
+
+      <h2 className="text-3xl font-bold text-white">
+        Vocabulary Training
+      </h2>
+
+      <p className="text-slate-400 mt-2">
+        Sharpen your vocabulary through a personalized mixed drill.
+      </p>
+
+      <div className="mt-8 rounded-2xl border border-slate-700 bg-slate-800/50 p-6">
+
+        <h3 className="text-lg font-semibold text-white mb-5">
+          🎯 Today's Session
+        </h3>
+
+        <div className="grid grid-cols-2 gap-y-4 text-sm">
+
+          <div>
+            <p className="text-slate-500">Questions</p>
+            <p className="font-semibold text-white">10</p>
+          </div>
+
+          <div>
+            <p className="text-slate-500">Estimated Time</p>
+            <p className="font-semibold text-white">3 minutes</p>
+          </div>
+
+          <div>
+            <p className="text-slate-500">Question Types</p>
+            <p className="font-semibold text-white">
+              Synonym • Antonym • Usage
+            </p>
+          </div>
+
+          <div>
+            <p className="text-slate-500">Vocabulary Source</p>
+            <p className="font-semibold text-emerald-400">
+              Core + Saved Words
+            </p>
+          </div>
+
+        </div>
+
       </div>
-    );
-  }
+
+      <button
+        onClick={startDrill}
+        className="mt-8 w-full py-4 rounded-2xl
+        bg-gradient-to-r from-orange-500 to-orange-600
+        hover:from-orange-400 hover:to-orange-500
+        text-lg font-semibold text-white
+        shadow-lg shadow-orange-900/40
+        transition-all duration-200"
+      >
+        🚀 Start Training
+      </button>
+
+    </div>
+  );
+}
 
   if (stage === "result") {
     const timeTaken = Math.round((endTime - startTime) / 1000);
@@ -718,77 +756,202 @@ active:scale-[0.98]"
     return (
 
       <div className="space-y-6">
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
-  <h2 className="text-2xl font-semibold text-slate-100">
-    Drill Complete
-  </h2>
+       <div className="rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-8">
 
-  <div className="mt-4 flex flex-wrap gap-6 text-slate-300 text-sm">
-    <div>
-      <span className="text-slate-400">Score</span>
-      <div className="text-lg font-semibold text-slate-100">
-        {score} / {questions.length}
+  <div className="text-center">
+
+    <div className="text-5xl mb-3">
+      🏆
+    </div>
+
+    <h2 className="text-3xl font-bold text-white">
+      Drill Complete
+    </h2>
+
+    <p className="text-slate-400 mt-2">
+      Great work! Here's your performance.
+    </p>
+
+  </div>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-8">
+
+    <div className="rounded-2xl bg-slate-800 p-5 text-center">
+      <div className="text-3xl font-bold text-white">
+        {score}
+      </div>
+      <div className="text-slate-400 text-sm">
+        Correct
       </div>
     </div>
 
-    <div>
-      <span className="text-slate-400">Accuracy</span>
-      <div className="text-lg font-semibold text-orange-400">
+    <div className="rounded-2xl bg-slate-800 p-5 text-center">
+      <div className="text-3xl font-bold text-orange-400">
         {accuracy}%
       </div>
-    </div>
-
-    <div>
-      <span className="text-slate-400">Time</span>
-      <div className="text-lg font-semibold text-slate-100">
-        {timeTaken}s
+      <div className="text-slate-400 text-sm">
+        Accuracy
       </div>
     </div>
+
+    <div className="rounded-2xl bg-slate-800 p-5 text-center">
+      <div className="text-3xl font-bold text-emerald-400">
+        🔥 {bestStreak}
+      </div>
+      <div className="text-slate-400 text-sm">
+        Best Streak
+      </div>
+    </div>
+
+    <div className="rounded-2xl bg-slate-800 p-5 text-center">
+      <div className="text-3xl font-bold text-blue-400">
+        {timeTaken}s
+      </div>
+      <div className="text-slate-400 text-sm">
+        Time
+      </div>
+    </div>
+
   </div>
+
 </div>
 
-        <div className="space-y-3">
-          {history.map((h, i) => (
-           <div
-  key={i}
-  className={`p-4 rounded-xl border ${
-    h.isCorrect
-      ? "bg-emerald-900/30 border-emerald-700"
-      : "bg-red-900/30 border-red-700"
-  }`}
->
-  <div className="font-semibold text-slate-100">
-    {i + 1}. {h.word || "Fill in the blank"}
+<div className="mt-8">
+
+  <div className="flex justify-between text-sm text-slate-400 mb-2">
+    <span>Overall Performance</span>
+    <span>{accuracy}%</span>
   </div>
 
-  <div className="mt-2 text-sm text-slate-300">
-    Your answer: <span className="font-medium">{h.chosen}</span>
+  <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+
+    <div
+      className="h-full bg-gradient-to-r from-emerald-500 to-orange-400"
+      style={{
+        width: `${accuracy}%`,
+      }}
+    />
+
   </div>
 
-  {!h.isCorrect && (
-    <div className="text-sm text-red-300">
-      Correct answer: <span className="font-medium">{h.correct}</span>
+</div>
+
+        <div className="mt-8 space-y-8">
+
+  {/* REVIEW AGAIN */}
+  {history.some(h => !h.isCorrect) && (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-white">
+          ↻ Review Again
+        </h3>
+
+        <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-300 text-sm">
+          {history.filter(h => !h.isCorrect).length} words
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        {history
+          .filter(h => !h.isCorrect)
+          .map((h, i) => (
+            <div
+              key={i}
+              className="p-5 rounded-2xl bg-red-950/20 border border-red-800/60"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="font-semibold text-white text-lg">
+                  {h.word || "Fill in the blank"}
+                </div>
+
+                <span className="text-xs px-2 py-1 rounded-full bg-red-500/10 text-red-300">
+                  {h.type === "synonym"
+                    ? "Synonym"
+                    : h.type === "antonym"
+                    ? "Antonym"
+                    : "Usage"}
+                </span>
+              </div>
+
+              <div className="mt-4 grid sm:grid-cols-2 gap-3">
+
+                <div className="rounded-xl bg-slate-900/60 p-3">
+                  <p className="text-xs text-slate-500 mb-1">
+                    Your answer
+                  </p>
+                  <p className="text-red-300 font-medium">
+                    {h.chosen}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-slate-900/60 p-3">
+                  <p className="text-xs text-slate-500 mb-1">
+                    Correct answer
+                  </p>
+                  <p className="text-emerald-300 font-medium">
+                    {h.correct}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   )}
-</div>
-          ))}
-        </div>
 
-        <button
-          onClick={startDrill}
-          style={{
-            marginTop: 16,
-            padding: "10px 16px",
-            borderRadius: 8,
-            border: "1px solid #f97316",
-            background: "#fff7ed",
-            color: "#c2410c",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          Start Next Drill
-        </button>
+
+  {/* CORRECT ANSWERS */}
+  {history.some(h => h.isCorrect) && (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-white">
+          ✓ Correct Answers
+        </h3>
+
+        <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 text-sm">
+          {history.filter(h => h.isCorrect).length} words
+        </span>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-3">
+        {history
+          .filter(h => h.isCorrect)
+          .map((h, i) => (
+            <div
+              key={i}
+              className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-800/50"
+            >
+              <div className="font-semibold text-white">
+                {h.word || "Fill in the blank"}
+              </div>
+
+              <div className="mt-2 text-sm text-slate-400">
+                <span className="text-emerald-300 font-medium">
+                  {h.correct}
+                </span>
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  )}
+
+</div>
+
+       <button
+  onClick={startDrill}
+  className="mt-6 px-6 py-3 rounded-xl
+    bg-gradient-to-r from-orange-500 to-orange-600
+    hover:from-orange-400 hover:to-orange-500
+    text-white font-semibold
+    shadow-lg shadow-orange-900/30
+    transition-all duration-200
+    hover:-translate-y-0.5
+    active:scale-[0.98]"
+>
+  Start Next Drill →
+</button>
       </div>
     );
   }
@@ -797,17 +960,69 @@ active:scale-[0.98]"
 
   return (
     <div>
-      <div className="mb-4 text-slate-400">
-        Q {index + 1} / {questions.length}
-      </div>
+     <div className="mb-6">
 
-      {q.type === "fill" ? (
-        <h3 style={{ marginBottom: 16 }}>{q.prompt}</h3>
-      ) : (
-       <h3 className="mb-4 text-lg font-semibold text-slate-100">
-          {q.prompt} <span style={{ color: "#f97316" }}>{q.word}</span>
-        </h3>
-      )}
+  <div className="flex justify-between items-center mb-2">
+
+  <div className="text-sm text-slate-400">
+    Question {index + 1} of {questions.length}
+  </div>
+
+  <div className="flex items-center gap-4">
+
+    <span className="text-orange-400 font-semibold">
+      🔥 {streak}
+    </span>
+
+    <span className="text-sm text-slate-400">
+      {Math.round(((index + 1) / questions.length) * 100)}%
+    </span>
+
+  </div>
+
+</div>
+  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+    <div
+      className="h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-500"
+      style={{
+        width: `${((index + 1) / questions.length) * 100}%`,
+      }}
+    />
+  </div>
+
+</div>
+
+     <div className="mb-5 flex items-center gap-3">
+
+  <span
+    className={`px-3 py-1 rounded-full text-xs font-semibold
+      ${
+        q.type === "synonym"
+          ? "bg-blue-600/20 text-blue-300"
+          : q.type === "antonym"
+          ? "bg-red-600/20 text-red-300"
+          : "bg-emerald-600/20 text-emerald-300"
+      }`}
+  >
+    {q.type === "synonym"
+      ? "Synonym"
+      : q.type === "antonym"
+      ? "Antonym"
+      : "Usage"}
+  </span>
+
+</div>
+
+{q.type === "fill" ? (
+  <h3 className="text-xl font-semibold text-slate-100 mb-6">
+    {q.prompt}
+  </h3>
+) : (
+  <h3 className="text-xl font-semibold text-slate-100 mb-6">
+    {q.prompt}{" "}
+    <span className="text-orange-400">{q.word}</span>
+  </h3>
+)}
 
       <div className="grid gap-3">
         {q.options.map((opt, i) => {
@@ -978,6 +1193,8 @@ const qs = usable.slice(0, 5).map(w => {
           Score: <b>{testScore}</b> / {testQs.length}
         </p>
 
+
+
         <button
           onClick={() => {
             const updated = {
@@ -1006,8 +1223,8 @@ const qs = usable.slice(0, 5).map(w => {
 <div className="inline-flex bg-slate-800 border border-slate-700 p-1 rounded-xl gap-1 mb-6">
   {[
     { key: "ALL", label: "All" },
-    { key: "CAT", label: "CAT RC" },
-    { key: "OMET", label: "OMET" },
+    { key: "CAT", label: "Passage Words" },
+    { key: "OMET", label: "Everyday Words" },
   ].map(item => (
     <button
       key={item.key}
