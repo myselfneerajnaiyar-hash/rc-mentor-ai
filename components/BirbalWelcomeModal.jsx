@@ -8,14 +8,35 @@ export default function BirbalWelcomeModal({
   onStart,
 }) {
   const [step, setStep] = useState(1);
-  const TOTAL_STEPS = 6
+  const [isCAT, setIsCAT] = useState(false);
+ const TOTAL_STEPS = 3;
 
- const close = async () => {
+useEffect(() => {
+  async function loadUserExam() {
+    if (!user?.id) return;
 
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("exam")
+      .eq("user_id", user.id)
+      .single();
+
+    if (error) {
+      console.error("Could not load user exam:", error);
+      return;
+    }
+
+    setIsCAT(data?.exam?.toUpperCase() === "CAT");
+  }
+
+  loadUserExam();
+}, [user?.id]);
+
+const close = async () => {
   await supabase
     .from("profiles")
     .update({
-      birbal_onboarded: true
+      birbal_onboarded: true,
     })
     .eq("user_id", user.id);
 
@@ -35,21 +56,23 @@ animate-fadeIn
 className="
 w-full
 max-w-xl
+max-h-[90vh]
+overflow-y-auto
 bg-slate-900/95
 backdrop-blur-xl
 border
 border-indigo-500/20
 rounded-3xl
-p-8
+p-5 sm:p-6
 shadow-2xl
 shadow-indigo-900/30
 animate-modalEnter
 "
 >
 
-    <div className="flex justify-center gap-2 mb-6">
+    <div className="flex justify-center gap-2 mb-4">
 
-  {[1,2,3,4,5,6].map((s) => (
+  {[1, 2, 3].map((s) => (
     <div
       key={s}
       className={`h-2 rounded-full transition-all ${
@@ -63,15 +86,12 @@ animate-modalEnter
 </div>
       {step === 1 && (
   <>
-   <BirbalSpeech
- message={`
-Welcome to Auctor RC.
-Most aspirants solve hundreds of passages but never discover WHY they keep making the same mistakes.
-My job is to identify those weaknesses, explain them clearly, and help you improve every day.
-Think of me as your personal RC mentor.
-`}
+  <BirbalSpeech
+  message={`Hi! I'm Birbal, your personal reading mentor.
+I’ll help you understand how you read, where your reasoning goes wrong, and what to improve next.
+The more you practice, the better I understand you.`}
 />
-    <div className="space-y-3 mt-6">
+    <div className="space-y-2 mt-4">
 
       <JourneyCard
         icon="🧠"
@@ -95,7 +115,7 @@ Think of me as your personal RC mentor.
 
     <button
       onClick={() => setStep(2)}
-      className="mt-6 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
+      className="mt-4 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
     >
       Continue →
     </button>
@@ -104,16 +124,12 @@ Think of me as your personal RC mentor.
 
       {step === 2 && (
   <>
-    <BirbalSpeech
-     message={`
-Most RC platforms stop after showing the correct answer.
-Auctor goes much deeper.
-You'll learn why an option is wrong, which RC skill is weak, and exactly what to practice next.
-That's how consistent improvement happens.
-`}
-    />
+   <BirbalSpeech
+  message={`Getting an answer wrong isn't the real problem. Not knowing why you got it wrong is.
+I’ll help you spot patterns in your mistakes and turn them into a clear plan for improvement.`}
+/>
 
-    <div className="space-y-4">
+    <div className="space-y-3">
 
       <JourneyCard
         icon="❌"
@@ -137,7 +153,7 @@ That's how consistent improvement happens.
 
     <button
       onClick={() => setStep(3)}
-      className="mt-6 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
+      className="mt-4 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
     >
       Show My Tools →
     </button>
@@ -147,18 +163,20 @@ That's how consistent improvement happens.
 {step === 3 && (
   <>
    <BirbalSpeech
-  message={`These are the 5 tools you'll use most often.
-You do not need to use all of them every day.
-I'll tell you what to focus on.`}
+  message={`You don't need to use everything at once.
+Start practising, explore the tools below, and I'll help you focus on what matters most for your improvement.
+Ready? Let's begin.`}
 />
 
     <div className="space-y-3">
 
+{isCAT && (
       <JourneyCard
         icon="🏆"
         title="Daily RC Arena"
         desc="Daily CAT PYQ challenge + leaderboard"
       />
+)}
 
       <JourneyCard
         icon="🔥"
@@ -186,144 +204,16 @@ I'll tell you what to focus on.`}
 
     </div>
 
-    <button
-      onClick={() => setStep(4)}
-      className="mt-6 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
-    >
-      More Features →
-    </button>
+   <button
+  onClick={close}
+  className="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-semibold transition"
+>
+  Let's Begin →
+</button>
   </>
 )}
 
-{step === 4 && (
-  <>
-    <BirbalSpeech
-  message={`The Editorial Decoder is one of my most powerful tools.
-Upload any newspaper editorial and I'll break down tone, inference, vocabulary and author intent.
-Precision Training focuses only on your weak areas.
-Analytics helps you track progress like a professional athlete.`}
-/>
 
-    <div className="space-y-3 mt-6">
-
-      <JourneyCard
-        icon="🧠"
-        title="Birbal Editorial Decoder"
-        desc="Upload any editorial screenshot and understand tone, inference, vocabulary and author logic."
-      />
-
-      <JourneyCard
-        icon="🎯"
-        title="Precision Training"
-        desc="Practice only your weak question types."
-      />
-
-      <JourneyCard
-        icon="📊"
-        title="Detailed Analytics"
-        desc="Reading IQ, Reader DNA, Speed, Accuracy and Weakness Tracking."
-      />
-
-    </div>
-
-    <button
-      onClick={() => setStep(5)}
-      className="mt-6 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
-    >
-      Continue →
-    </button>
-  </>
-)}
-
-{step === 5 && (
-  <>
-   <BirbalSpeech
-  message={`Improvement comes from consistency.
-Streaks keep you showing up daily.
-Leaderboards add competition.
-Word Hunt makes vocabulary practice fun.
-Small wins every day create big gains over time.`}
-/>
-
-    <div className="space-y-3 mt-6">
-
-      <JourneyCard
-        icon="🔥"
-        title="Streaks"
-        desc="Build daily momentum."
-      />
-
-      <JourneyCard
-        icon="🏆"
-        title="Leaderboards"
-        desc="Compete with other learners."
-      />
-
-      <JourneyCard
-        icon="🧩"
-        title="Word Hunt"
-        desc="Learn vocabulary through play."
-      />
-
-    </div>
-
-    <button
-      onClick={() => setStep(6)}
-      className="mt-6 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
-    >
-      Show Today's Plan →
-    </button>
-  </>
-)}
-
-       {step === 6 && (
-  <>
-    <BirbalSpeech
-  message={`You don't need hours of study every day.
-Complete this mission and you've made meaningful progress.
-Show up daily and the results will follow.`}
-/>
-
-    <div className="space-y-3 mt-6">
-
-      <JourneyCard
-        icon="🏆"
-        title="Daily RC Arena"
-        desc="8 mins"
-      />
-
-      <JourneyCard
-        icon="🧩"
-        title="Word Hunt"
-        desc="3 mins"
-      />
-
-      <JourneyCard
-        icon="🔥"
-        title="Daily Workout"
-        desc="30 mins"
-      />
-
-      <JourneyCard
-        icon="📊"
-        title="Review Analytics"
-        desc="2 mins"
-      />
-
-    </div>
-
-    <div className="mt-5 text-emerald-400 font-semibold">
-      Total Time: ~33 Minutes
-    </div>
-
-    <button
-      onClick={close}
-      className="mt-6 w-full bg-emerald-600 py-3 rounded-xl font-semibold"
-    >
-      Start Today's Mission →
-    </button>
-  </>
-)}
       </div>
     </div>
   );
@@ -345,7 +235,7 @@ function TypewriterText({ text }) {
       if (i >= text.length) {
         clearInterval(interval);
       }
-    }, 20);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [text]);
@@ -359,13 +249,13 @@ function TypewriterText({ text }) {
 
 function BirbalSpeech({ message }) {
   return (
-    <div className="flex items-start gap-4 mb-6">
+    <div className="flex items-start gap-3 mb-4">
 
       <img
         src="/birbal.png"
         alt="Birbal"
        className="
-w-14 h-14
+w-12 h-12
 rounded-full
 border-2
 border-indigo-500
@@ -382,9 +272,9 @@ float-birbal
     border
     border-slate-700
     rounded-2xl
-    p-4
+    p-3
     text-slate-200
-    leading-relaxed
+    leading-snug
   "
 >
   <div className="text-xs text-indigo-400 mb-2">
@@ -407,21 +297,22 @@ function JourneyCard({ icon, title, desc }) {
         to-slate-800/40
         border
         border-slate-700
-        rounded-2xl
-        p-4
+        rounded-xl
+        px-4
+        py-3
         flex
         items-center
-        gap-4
+        gap-3
         hover:border-indigo-500/40
         transition-all
       "
     >
-      <div className="text-3xl">
+      <div className="text-2xl">
         {icon}
       </div>
 
       <div>
-        <div className="text-white font-semibold text-lg">
+        <div className="text-white font-semibold">
           {title}
         </div>
 
