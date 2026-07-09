@@ -103,6 +103,7 @@ setSubscription(sub)
 }, [profileTab]);
 
   if (!profile) return null;
+  const isCAT = profile.exam?.toUpperCase() === "CAT";
 
   async function handleLogout() {
   await supabase.auth.signOut();
@@ -181,11 +182,14 @@ setSubscription(sub)
 
       {/* PERFORMANCE CARDS */}
       <div style={grid}>
-        <StatCard label="RC Tests" value={stats.rcTests} />
-        <StatCard label="RC Accuracy" value={`${stats.accuracy}%`} />
-        <StatCard label="Vocab Words" value={stats.vocab} />
-        <StatCard label="CAT Sectionals" value={stats.sectionals} />
-      </div>
+  <StatCard label="RC Tests" value={stats.rcTests} />
+  <StatCard label="RC Accuracy" value={`${stats.accuracy}%`} />
+  <StatCard label="Vocab Words" value={stats.vocab} />
+
+  {isCAT && (
+    <StatCard label="CAT Sectionals" value={stats.sectionals} />
+  )}
+</div>
 
       {/* SKILL BREAKDOWN */}
       <div style={section}>
@@ -234,11 +238,13 @@ setSubscription(sub)
   onClick={() => setProfileTab("diagnosis")}
 />
 
-<ActionCard
-  title="Sectional Analytics"
-  desc="Deep CAT sectional insights"
-  onClick={() => setProfileTab("sectionals")}
-/>
+{isCAT && (
+  <ActionCard
+    title="Sectional Analytics"
+    desc="Deep CAT sectional insights"
+    onClick={() => setProfileTab("sectionals")}
+  />
+)}
 
 <ActionCard
   title="Subscription & Courses"
@@ -267,7 +273,7 @@ setSubscription(sub)
 </div>
 
 <p style={{ fontSize: 13, marginTop: 10, color: "#94a3b8" }}>
-  Aim to consistently cross 70% for CAT-level readiness.
+  Aim to consistently cross 70% for Exam-level readiness.
 </p>
   </div>
 )}
