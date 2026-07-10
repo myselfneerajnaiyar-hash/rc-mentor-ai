@@ -159,7 +159,7 @@ transition={{
           <p className="mt-8 max-w-xl text-lg leading-8 text-white/50">
 
             Adaptive RC drills, inference training, tone analysis and
-            AI-guided diagnosis built for serious CAT aspirants.
+            AI-guided diagnosis built for serious aspirants.
 
           </p>
 
@@ -370,7 +370,7 @@ transition={{
 
         <p className="mt-6 text-sm leading-7 text-slate-400">
 
-          Tracks logical inference consistency across CAT RC sets.
+          Tracks logical inference consistency across RC sets.
 
         </p>
 
@@ -682,7 +682,7 @@ transition={{
 
       <h2 className="text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
 
-        Every CAT aspirant
+        Every aspirant
         <br />
 
         struggles differently.
@@ -790,7 +790,7 @@ transition={{
 
           <p className="mt-5 text-[15px] leading-8 text-slate-400">
 
-            Reads slowly and loses comprehension under CAT time pressure.
+            Reads slowly and loses comprehension under time pressure.
 
           </p>
 
@@ -917,7 +917,7 @@ transition={{
 
       <h2 className="text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
 
-        CAT aspirants are already
+       aspirants are already
         <br />
 
         improving with Auctor RC
@@ -927,7 +927,7 @@ transition={{
       <p className="mt-6 max-w-2xl text-lg leading-8 text-white/45">
 
         Students use Auctor RC to improve inference accuracy,
-        eliminate traps and build reading intelligence for CAT VARC.
+        eliminate traps and build reading intelligence for VARC.
 
       </p>
 
@@ -956,7 +956,7 @@ transition={{
             </div>
 
             <div className="text-sm text-white/40">
-              CAT 2026 Aspirant
+             IPMAT 2027 Aspirant
             </div>
 
           </div>
@@ -1038,7 +1038,7 @@ transition={{
             </div>
 
             <div className="text-sm text-white/40">
-              CAT Repeater
+              CAT Aspirant
             </div>
 
           </div>
@@ -1217,7 +1217,7 @@ transition={{
 
       <p className="mt-6 max-w-2xl text-lg leading-8 text-white/45">
 
-        Get CAT RC insights, reading tips, inference training,
+        Get RC insights, reading tips, inference training,
         mock analysis and daily learning content across our platforms.
 
       </p>
@@ -1246,7 +1246,7 @@ transition={{
 
       <p className="mt-5 text-[15px] leading-8 text-slate-400">
 
-        Daily RC reels, CAT strategies, reading psychology 
+        Daily RC reels, Test strategies, reading psychology 
         and student improvement insights.
 
       </p>
@@ -1284,7 +1284,7 @@ transition={{
 
       <p className="mt-5 text-[15px] leading-8 text-slate-400">
 
-        Receive free RC passages, CAT resources,
+        Receive free RC passages, Exam resources,
         daily practice sets and important announcements.
 
       </p>
@@ -1322,7 +1322,7 @@ transition={{
       <p className="mt-5 text-[15px] leading-8 text-slate-400">
 
         Join our WhatsApp channel for quick updates,
-        RC discussions and CAT preparation insights.
+        RC discussions and Exam preparation insights.
 
       </p>
 
@@ -1377,7 +1377,7 @@ transition={{
 
     <p className="mt-6 max-w-2xl text-lg leading-8 text-white/45">
       Daily workouts, speed training, Birbal AI mentoring and deep analytics —
-      everything designed to improve CAT VARC performance.
+      everything designed to improve VARC performance.
     </p>
 
   </div>
@@ -1459,7 +1459,7 @@ transition={{
 
     {
       activeTab === "workout"
-        ? "A structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and CAT-level passages."
+        ? "A structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages."
 
         : activeTab === "speed"
         ? "Train your reading speed without losing comprehension. Improve focus, eye-span and reading efficiency."
@@ -1592,7 +1592,7 @@ transition={{
               : activeTab === "birbal"
               ? "Understand tone, assumptions and argument structures."
 
-              : "Detailed analysis of your CAT RC sectionals."
+              : "Detailed analysis of your RC sectionals."
           }
 
         </p>
