@@ -737,7 +737,7 @@ const navItems = [
   { id: "precision", label: "Precision Training", icon: Target },
   { id: "rc", label: "RC", icon: Brain },
   { id: "vocab", label: "Vocab", icon: BookOpen },
-  { id: "grammar", label: "Grammar Lab", icon: SpellCheck },
+ 
   { id: "speed", label: "Speed", icon: Timer },
   { id: "hangman", label: "Word Hunt", icon: Puzzle },
 
@@ -883,9 +883,7 @@ ${
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
-    {view === "grammar" && (
-  <GrammarLab />
-)}
+   
 
     {view === "precision" && (
   <PrecisionTraining user={user} userName={userName} />
