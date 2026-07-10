@@ -111,6 +111,8 @@ const plan = planMap[amount]
           })
 
           const result = await verify.json()
+          console.log(result);
+          console.log("VERIFY STATUS", verify.status);
 
           if (result.success) {
 

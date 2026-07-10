@@ -9,6 +9,8 @@ const supabase = createClient(
 export async function POST(req) {
 
   const body = await req.json()
+  console.log("VERIFY PAYMENT HIT");
+console.log(body);
 
   const {
     razorpay_order_id,
@@ -54,15 +56,23 @@ if (plan === "cat_test_series") {
 }
   // ---------- get profile ----------
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("user_id", user_id)
-    .single()
+  const {
+  data: profile,
+  error: profileError,
+} = await supabase
+  .from("profiles")
+  .select("*")
+  .eq("user_id", user_id)
+  .single();
+
+console.log("PROFILE:", profile);
+console.log("PROFILE ERROR:", profileError);
 
   /* ---------- save subscription ---------- */
 
-  await supabase.from("subscriptions").insert({
+  const { data, error } = await supabase
+  .from("subscriptions")
+  .insert({
     user_id,
     name: profile?.name || "",
     email: profile?.email || "",
@@ -70,20 +80,34 @@ if (plan === "cat_test_series") {
     exam: profile?.exam || "",
     attempt_year: profile?.attempt_year || "",
     plan,
-    expires_at: expiry
+    expires_at: expiry,
   })
+  .select();
 
+console.log("INSERT DATA:", data);
+console.log("INSERT ERROR:", error);
+
+if (error) {
+  return Response.json(
+    {
+      success: false,
+      error: error.message,
+    },
+    { status: 500 }
+  );
+}
   // ---------- update profile ----------
 
- 
-  if (plan !== "cat_test_series") {
-  await supabase
+ if (plan !== "cat_test_series") {
+  const { error: updateError } = await supabase
     .from("profiles")
     .update({
       is_premium: true,
       premium_expires_at: expiry,
     })
     .eq("user_id", user_id);
+
+  console.log("PROFILE UPDATE ERROR:", updateError);
 }
 
    const planNames = {

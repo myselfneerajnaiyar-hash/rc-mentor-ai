@@ -35,7 +35,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -44,6 +44,7 @@ import ChatMentor from "../components/ChatMentor"
 import PracticeSwitcher from "@/components/PracticeSwitcher";
 import PrecisionTraining from "../components/PrecisionTraining"
 import HangmanView from "../components/HangmanView";
+import GrammarLab from "../components/GrammarLab";
 
 
 
@@ -729,7 +730,6 @@ if (typeof window !== "undefined") {
 if (authLoading) {
   return null;
 }
-
 const navItems = [
   { id: "home", label: "Home", icon: Home },
   { id: "mentor", label: "Ask Birbal", icon: MessageSquare },
@@ -737,6 +737,7 @@ const navItems = [
   { id: "precision", label: "Precision Training", icon: Target },
   { id: "rc", label: "RC", icon: Brain },
   { id: "vocab", label: "Vocab", icon: BookOpen },
+  { id: "grammar", label: "Grammar Lab", icon: SpellCheck },
   { id: "speed", label: "Speed", icon: Timer },
   { id: "hangman", label: "Word Hunt", icon: Puzzle },
 
@@ -747,6 +748,7 @@ const navItems = [
   { id: "premium", label: "Premium", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
 ];
+
   
 
 return (
@@ -881,6 +883,9 @@ ${
     {view === "speed" && <SpeedContainer />}
 
     {view === "vocab" && <VocabLab />}
+    {view === "grammar" && (
+  <GrammarLab />
+)}
 
     {view === "precision" && (
   <PrecisionTraining user={user} userName={userName} />
