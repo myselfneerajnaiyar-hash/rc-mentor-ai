@@ -85,7 +85,7 @@ if (!razorpayLoaded) {
 
      
 
-const plan = planMap[amount]
+
 
           const verify = await fetch("/api/verify-payment", {
             method: "POST",
