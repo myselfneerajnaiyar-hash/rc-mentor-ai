@@ -11,10 +11,29 @@ const [user, setUser] = useState(null)
 
 const router = useRouter()
 
+const [isCatStudent, setIsCatStudent] = useState(false)
+
 useEffect(() => {
   async function loadUser() {
     const { data } = await supabase.auth.getUser()
-    setUser(data?.user || null)
+
+    const currentUser = data?.user || null
+    setUser(currentUser)
+
+    if (!currentUser) return
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("exam")
+      .eq("user_id", currentUser.id)
+      .single()
+
+      if (
+      profile?.exam === "CAT" ||
+      profile?.exam === "XAT"
+    ) {
+      setIsCatStudent(true)
+    }
   }
 
   loadUser()
@@ -55,7 +74,7 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 
 {/* TEST SERIES */}
-
+{isCatStudent && (
 <Card className="
 relative
 bg-gradient-to-br
@@ -138,6 +157,8 @@ user={user}
 
 </Card>
 
+  )}
+
 
 <Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 rounded-3xl ring-2 ring-orange-500">
 
@@ -154,9 +175,12 @@ Half Yearly Plan
 <p className="text-6xl font-bold text-white mb-2">
 ₹1299
 </p>
+
+{isCatStudent && (
 <p className="text-green-400 font-semibold mb-2">
 🎁 Includes CAT VARC Test Series
 </p>
+)}
 
 <p className="text-orange-400 font-medium mb-8">
 Only ₹216/month
@@ -238,9 +262,11 @@ user={user}
     <p className="text-6xl font-bold text-white mb-2">
       ₹1999
     </p>
-    <p className="text-green-400 font-semibold mb-2">
+   {isCatStudent && (
+<p className="text-green-400 font-semibold mb-2">
 🎁 Includes CAT VARC Test Series
 </p>
+)}
 
     <p className="text-orange-400 font-medium mb-8">
       Only ₹166 / month
