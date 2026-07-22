@@ -9,6 +9,8 @@ import { Eye, EyeOff } from "lucide-react"
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "";
+const free = searchParams.get("free") || "";
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -45,8 +47,7 @@ export default function LoginPage() {
       return
     }
 
-    const next = searchParams.get("next") || "";
-const free = searchParams.get("free") || "";
+    
 console.log("NEXT =", next);
 console.log("FREE =", free);
 console.log("URL =", window.location.href);
@@ -143,7 +144,9 @@ router.replace(`/welcome?next=${next}&free=${free}`);
         </form>
 
         <p className="auth-footer">
-          Don’t have an account? <a href="/signup">Sign up</a>
+          Don’t have an account? <a href={`/signup?next=${next}&free=${free}`}>
+  Sign up
+</a>
         </p>
 
       </div>
