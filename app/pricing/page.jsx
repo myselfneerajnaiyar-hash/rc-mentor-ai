@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation"
 
 export default function Pricing() {
 const [user, setUser] = useState(null)
+const [referralCode, setReferralCode] = useState("");
+const [discountApplied, setDiscountApplied] = useState(false);
+const [discountMessage, setDiscountMessage] = useState("");
 
 const router = useRouter()
 
@@ -64,6 +67,55 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 </section>
 
+<div className="max-w-md mt-10 mx-auto mb-12 rounded-2xl border border-slate-700 bg-slate-900/70 p-6">
+  <input
+    type="text"
+    placeholder="Referral Code (Optional)"
+    value={referralCode}
+    disabled={discountApplied}
+    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+    className="w-full rounded-xl bg-slate-800 border border-slate-600 px-4 py-3 text-white"
+  />
+
+  <Button
+  disabled={discountApplied}
+    className="w-full mt-3"
+    onClick={async () => {
+      const { data } = await supabase
+        .from("campus_ambassadors")
+        .select("referral_code")
+        .eq("referral_code", referralCode)
+        .eq("status", "active")
+        .maybeSingle();
+
+     if (!data) {
+  setDiscountApplied(false);
+  setDiscountMessage("❌ Invalid referral code");
+  return;
+}
+
+setDiscountApplied(true);
+setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
+    }}
+  >
+    {discountApplied ? "✓ Referral Applied" : "Apply Referral"}
+  </Button>
+  {discountMessage && (
+  <div
+    className={`mt-4 rounded-xl p-4 text-center font-medium ${
+      discountApplied
+        ? "bg-green-500/15 border border-green-500 text-green-300"
+        : "bg-red-500/15 border border-red-500 text-red-300"
+    }`}
+  >
+    {discountMessage}
+  </div>
+)}
+  
+</div>
+
+
+
 
 {/* PRICING */}
 
@@ -98,30 +150,47 @@ overflow-hidden
 CAT VARC Test Series
 </h3>
 
-<div className="mb-6 text-center">
+<div className="mb-6">
 
-  <div
-    style={{
-      color: "#9ca3af",
-      textDecoration: "line-through",
-      textDecorationColor: "#ef4444",
-      fontSize: "24px",
-      fontWeight: 600,
-    }}
-  >
-    ₹1199
-  </div>
+  {discountApplied ? (
+    <>
+      <p
+        className="text-2xl font-bold text-red-300"
+        style={{
+          textDecoration: "line-through",
+          textDecorationThickness: "3px",
+          textDecorationColor: "#ef4444",
+        }}
+      >
+        ₹799
+      </p>
 
-  <div
-    style={{
-      fontSize: "72px",
-      fontWeight: 800,
-      color: "#fff",
-      lineHeight: 1,
-    }}
-  >
-    ₹799
-  </div>
+      <p className="text-6xl font-bold text-white mt-2">
+        ₹639
+      </p>
+
+      <p className="text-green-400 font-semibold mt-2">
+        Save ₹160
+      </p>
+    </>
+  ) : (
+    <>
+      <p
+        className="text-2xl font-bold text-red-300"
+        style={{
+          textDecoration: "line-through",
+          textDecorationThickness: "3px",
+          textDecorationColor: "#ef4444",
+        }}
+      >
+        ₹1199
+      </p>
+
+      <p className="text-6xl font-bold text-white mt-2">
+        ₹799
+      </p>
+    </>
+  )}
 
 </div>
 
@@ -146,11 +215,11 @@ One-time purchase
 </ul>
 
 <SubscribeButton
-amount={799}
+amount={discountApplied ? 639 : 799}
 plan="cat_test_series"
 label="Unlock Test Series"
-
 user={user}
+referralCode={referralCode}
 />
 
 </CardContent>
@@ -172,19 +241,44 @@ BEST VALUE
 Half Yearly Plan
 </h3>
 
-<p className="text-6xl font-bold text-white mb-2">
-₹1299
+{discountApplied ? (
+  <div className="mb-6">
+  <p
+  className="text-2xl font-bold text-red-300"
+  style={{
+    textDecoration: "line-through",
+    textDecorationThickness: "3px",
+    textDecorationColor: "#ef4444",
+  }}
+>
+      ₹1299
+    </p>
+
+    <p className="text-6xl font-bold text-white">
+      ₹1039
+    </p>
+
+   <p className="text-orange-400 font-medium mb-6">
+{discountApplied ? "Only ₹173/month" : "Only ₹216/month"}
 </p>
 
+<p className="text-green-400 font-semibold">
+Save ₹260
+</p>
+  </div>
+) : (
+  <p className="text-6xl font-bold text-white mb-6">
+    ₹1299
+  </p>
+)}
+
 {isCatStudent && (
-<p className="text-green-400 font-semibold mb-2">
+<p className="text-green-400 font-semibold mb-6">
 🎁 Includes CAT VARC Test Series
 </p>
 )}
 
-<p className="text-orange-400 font-medium mb-8">
-Only ₹216/month
-</p>
+
 
 <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
 <li>✔️ Everything in Monthly</li>
@@ -196,11 +290,12 @@ Only ₹216/month
 </ul>
 
 <SubscribeButton
-amount={1299}
+amount={discountApplied ? 1039 : 1299}
 plan="half_yearly"
 label="Start 6 Month Plan"
 user={user}
 variant="premium"
+referralCode={referralCode}
 />
 
 </CardContent>
@@ -218,13 +313,35 @@ variant="premium"
 3 Month Plan
 </h3>
 
-<p className="text-5xl font-bold text-white mb-3">
-₹999
+{discountApplied ? (
+  <div className="mb-3">
+ <p
+  className="text-2xl font-bold text-red-300"
+  style={{
+    textDecoration: "line-through",
+    textDecorationThickness: "3px",
+    textDecorationColor: "#ef4444",
+  }}
+>
+      ₹999
+    </p>
+    <p className="text-5xl font-bold text-white">
+      ₹799
+    </p>
+    <p className="text-green-400 font-semibold">
+      Save ₹200
+    </p>
+  </div>
+) : (
+  <p className="text-5xl font-bold text-white mb-3">
+    ₹999
+  </p>
+)}
+
+<p className="text-indigo-400 mb-6">
+{discountApplied ? "₹266/month" : "₹333/month"}
 </p>
 
-<p className="text-indigo-400 mb-8">
-₹333/month
-</p>
 
 <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
 <li>✔️ Daily RC workouts</li>
@@ -235,10 +352,11 @@ variant="premium"
 </ul>
 
 <SubscribeButton
-amount={999}
+amount={discountApplied ? 799 : 999}
 plan="quarterly"
 label="Start 3 Month Plan"
 user={user}
+referralCode={referralCode}
 />
 
 </CardContent>
@@ -259,19 +377,45 @@ user={user}
       Elite Yearly
     </h3>
 
-    <p className="text-6xl font-bold text-white mb-2">
+    {discountApplied ? (
+  <div className="mb-6">
+    <p
+  className="text-2xl font-bold text-red-300"
+  style={{
+    textDecoration: "line-through",
+    textDecorationThickness: "3px",
+    textDecorationColor: "#ef4444",
+  }}
+>
       ₹1999
     </p>
+    <p className="text-6xl font-bold text-white">
+      ₹1599
+    </p>
+   <p className="text-orange-400 font-medium">
+Only ₹133/month
+</p>
+
+<p className="text-green-400 font-semibold mb-6">
+Save ₹400
+</p>
+  </div>
+) : (
+  <p className="text-6xl font-bold text-white mb-6">
+    ₹1999
+  </p>
+)}
    {isCatStudent && (
-<p className="text-green-400 font-semibold mb-2">
+<p className="text-green-400 font-semibold mb-6">
 🎁 Includes CAT VARC Test Series
 </p>
 )}
 
-    <p className="text-orange-400 font-medium mb-8">
-      Only ₹166 / month
-    </p>
-
+   {!discountApplied && (
+<p className="text-orange-400 font-medium mb-8">
+Only ₹166/month
+</p>
+)}
     <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
 
       <li>✔️ Everything in Monthly</li>
@@ -282,12 +426,13 @@ user={user}
 
     </ul>
 
-    <SubscribeButton
-  amount={1999}
-  plan="yearly"
-  label="Unlock Premium"
-  user={user}
-  variant="premium"
+   <SubscribeButton
+amount={discountApplied ? 1599 : 1999}
+plan="yearly"
+label="Unlock Premium"
+user={user}
+variant="premium"
+referralCode={referralCode}
 />
 
   </CardContent>
@@ -302,9 +447,30 @@ user={user}
       Pro Monthly
     </h3>
 
-    <p className="text-6xl font-bold text-white mb-3">
+  {discountApplied ? (
+  <div className="mb-3">
+   <p
+  className="text-2xl font-bold text-red-300"
+  style={{
+    textDecoration: "line-through",
+    textDecorationThickness: "3px",
+    textDecorationColor: "#ef4444",
+  }}
+>
       ₹399
     </p>
+    <p className="text-6xl font-bold text-white">
+      ₹319
+    </p>
+    <p className="text-green-400 font-semibold">
+      Save ₹80
+    </p>
+  </div>
+) : (
+  <p className="text-6xl font-bold text-white mb-3">
+    ₹399
+  </p>
+)}
 
     <p className="text-slate-400 mb-8">
       Flexible plan for short term preparation
@@ -321,10 +487,11 @@ user={user}
     </ul>
 
    <SubscribeButton
-  amount={399}
+  amount={discountApplied ? 319 : 399}
   plan="monthly"
   label="Start Monthly Plan"
   user={user}
+  referralCode={referralCode}
 />
 
   </CardContent>
@@ -340,7 +507,7 @@ user={user}
 
 <div className="text-center mt-16 text-gray-400 text-sm">
 
-<p className="mb-2">
+<p className="mb-6">
 Secure payments powered by Razorpay
 </p>
 

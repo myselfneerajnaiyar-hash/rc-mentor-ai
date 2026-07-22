@@ -1,13 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
 import posthog from "posthog-js"
 
 export default function WelcomePage() {
   const router = useRouter()
+  const searchParams = useSearchParams();
+const next = searchParams.get("next");
+useEffect(() => {
+  console.log("URL:", window.location.href);
+  console.log("NEXT:", next);
+}, []);
 
 
   const [name, setName] = useState("Champion")
@@ -133,7 +139,13 @@ expiry.setDate(expiry.getDate() + 3)
   }),
 })
 
-  router.push("/")
+  if (next === "cat") {
+  router.push("/?view=cat");
+} else if (next === "pricing") {
+  router.push("/pricing");
+} else {
+  router.push("/");
+}
 }
   if (loading) {
   return null
@@ -284,7 +296,15 @@ expiry.setDate(expiry.getDate() + 3)
 
         <button
           className={styles["welcome-btn"]}
-          onClick={() => router.push("/")}
+         onClick={() => {
+  if (next === "cat") {
+    router.push("/?view=cat");
+  } else if (next === "pricing") {
+    router.push("/pricing");
+  } else {
+    router.push("/");
+  }
+}}
         >
           Start Your RC Journey →
         </button>

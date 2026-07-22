@@ -17,7 +17,8 @@ console.log(body);
     razorpay_payment_id,
     razorpay_signature,
     user_id,
-    plan
+    plan,
+    referralCode
   } = body
 
   const sign = razorpay_order_id + "|" + razorpay_payment_id
@@ -68,6 +69,21 @@ if (plan === "cat_test_series") {
 console.log("PROFILE:", profile);
 console.log("PROFILE ERROR:", profileError);
 
+// ---------- prevent duplicate processing ----------
+
+const { data: existingPayment } = await supabase
+  .from("subscriptions")
+  .select("id")
+  .eq("razorpay_payment_id", razorpay_payment_id)
+  .maybeSingle();
+
+if (existingPayment) {
+  return Response.json({
+    success: true,
+    message: "Payment already processed",
+  });
+}
+
   /* ---------- save subscription ---------- */
 
   const { data, error } = await supabase
@@ -81,6 +97,9 @@ console.log("PROFILE ERROR:", profileError);
     attempt_year: profile?.attempt_year || "",
     plan,
     expires_at: expiry,
+    referral_code: referralCode ||
+    null,
+    razorpay_payment_id,
   })
   .select();
 
@@ -96,6 +115,37 @@ if (error) {
     { status: 500 }
   );
 }
+
+// ---------- update ambassador commission ----------
+
+const commissionMap = {
+  monthly: 75,
+  quarterly: 125,
+  half_yearly: 150,
+  yearly: 200,
+  cat_test_series: 100,
+};
+
+if (referralCode) {
+  const { data: ambassador } = await supabase
+    .from("campus_ambassadors")
+    .select("*")
+    .eq("referral_code", referralCode)
+    .single();
+
+  if (ambassador) {
+    await supabase
+      .from("campus_ambassadors")
+      .update({
+        total_referrals: ambassador.total_referrals + 1,
+        total_commission:
+          ambassador.total_commission +
+          commissionMap[plan],
+      })
+      .eq("id", ambassador.id);
+  }
+}
+
   // ---------- update profile ----------
 
  if (plan !== "cat_test_series") {
@@ -119,11 +169,11 @@ if (error) {
 }
 
 const planAmounts = {
-  monthly: 399,
-  quarterly: 999,
-  half_yearly: 1299,
-  yearly: 1999,
-  cat_test_series: 799,
+  monthly: referralCode ? 319 : 399,
+  quarterly: referralCode ? 799 : 999,
+  half_yearly: referralCode ? 1039 : 1299,
+  yearly: referralCode ? 1599 : 1999,
+  cat_test_series: referralCode ? 639 : 799,
 }
 
     await fetch("https://rc.auctorlabs.in/api/send-payment-email", {
