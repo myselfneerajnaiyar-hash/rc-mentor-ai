@@ -11,6 +11,7 @@ export default function CATArenaLanding({
   isMobile,
   onStartRC,
   onViewDiagnosis,
+  isFreeFlow,
 }) {
   const [attemptedMap, setAttemptedMap] = useState({});
   const router = useRouter();
@@ -93,6 +94,25 @@ const hasFullCATAccess =
     padding: "20px 40px",
   }}
 >
+  {isFreeFlow && (
+  <div
+    style={{
+      background: "#1e40af",
+      border: "1px solid #3b82f6",
+      borderRadius: 18,
+      padding: 24,
+      marginBottom: 28,
+    }}
+  >
+    <h2 style={{ color: "#fff", marginBottom: 10 }}>
+      🎉 Your 4 FREE AI VARC Mocks are Ready!
+    </h2>
+
+    <p style={{ color: "#dbeafe" }}>
+      Start with any FREE mock below.
+    </p>
+  </div>
+)}
     <div style={{ marginBottom: 36 }}>
 
   <h1
@@ -249,11 +269,13 @@ const locked =
     fontWeight: 700,
   }}
 >
-  {attempted
-    ? "ATTEMPTED ✓"
-    : locked
-    ? "🔒 PREMIUM"
-    : "🟢 AVAILABLE"}
+ {attempted
+  ? "ATTEMPTED ✓"
+  : locked
+  ? "🔒 PREMIUM"
+  : s.is_free
+  ? "🎁 FREE"
+  : "🟢 AVAILABLE"}
 </div>
 </div>
 

@@ -46,8 +46,12 @@ export default function LoginPage() {
     }
 
     const next = searchParams.get("next") || "";
+const free = searchParams.get("free") || "";
+console.log("NEXT =", next);
+console.log("FREE =", free);
+console.log("URL =", window.location.href);
 
-router.replace(`/welcome?next=${next}`);
+router.replace(`/welcome?next=${next}&free=${free}`);
   }
 
   return (

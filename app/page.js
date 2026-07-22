@@ -83,6 +83,7 @@ export default function Page() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isFreeFlow = searchParams.get("free") === "1";
   const mainRef = useRef(null);
 
 
@@ -902,6 +903,7 @@ ${
   <CATArenaLanding
     isMobile={isMobile}
     attemptedMap={sectionalAttemptMap}
+    isFreeFlow={isFreeFlow}
     onStartRC={(sectionalId) => {
       setActiveRCTest({ id: sectionalId });
       setCatPhase("test");

@@ -10,6 +10,7 @@ export default function WelcomePage() {
   const router = useRouter()
   const searchParams = useSearchParams();
 const next = searchParams.get("next");
+const free = searchParams.get("free");
 useEffect(() => {
   console.log("URL:", window.location.href);
   console.log("NEXT:", next);
@@ -139,8 +140,12 @@ expiry.setDate(expiry.getDate() + 3)
   }),
 })
 
-  if (next === "cat") {
-  router.push("/?view=cat");
+ if (next === "cat") {
+  if (free === "1") {
+    router.push("/?view=cat&free=1");
+  } else {
+    router.push("/?view=cat");
+  }
 } else if (next === "pricing") {
   router.push("/pricing");
 } else {
@@ -297,13 +302,17 @@ expiry.setDate(expiry.getDate() + 3)
         <button
           className={styles["welcome-btn"]}
          onClick={() => {
-  if (next === "cat") {
-    router.push("/?view=cat");
-  } else if (next === "pricing") {
-    router.push("/pricing");
+ if (next === "cat") {
+  if (free === "1") {
+    router.push("/?view=cat&free=1");
   } else {
-    router.push("/");
+    router.push("/?view=cat");
   }
+} else if (next === "pricing") {
+  router.push("/pricing");
+} else {
+  router.push("/");
+}
 }}
         >
           Start Your RC Journey →
