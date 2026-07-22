@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import "../login/login.css"
 import { Eye, EyeOff } from "lucide-react"
@@ -13,12 +13,16 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const searchParams = useSearchParams();
+
+const next = searchParams.get("next") || "";
+const free = searchParams.get("free") || ""
   const handleGoogleLogin = async () => {
 
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "https://rc.auctorlabs.in/auth/callback"
+     redirectTo: `https://rc.auctorlabs.in/auth/callback?next=${next}&free=${free}`
     }
   })
 
@@ -47,7 +51,7 @@ export default function SignupPage() {
 
 alert("Check your email to confirm your account.")
 
-router.push("/login")
+router.push(`/login?next=${next}&free=${free}`);
   }
 
   return (
@@ -148,7 +152,7 @@ router.push("/login")
         </form>
 
         <p className="auth-footer">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <a href={`/login?next=${next}&free=${free}`}>Login</a>
         </p>
 
       </div>

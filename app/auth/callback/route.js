@@ -16,8 +16,11 @@ export async function GET(request) {
 
     await supabase.auth.exchangeCodeForSession(code)
   }
+const next = requestUrl.searchParams.get("next") || "";
+const free = requestUrl.searchParams.get("free") || "";
 
-  return NextResponse.redirect(
-    "http://rc.auctorlabs.in/welcome"
-  )
+return NextResponse.redirect(
+  `https://rc.auctorlabs.in/welcome?next=${next}&free=${free}`
+);
+  
 }
