@@ -142,7 +142,9 @@ Ask Birbal anything about RC.
       ✕
     </button>
 
+   <div className="flex-1 min-h-0">
     <ChatMentor setView={setView} />
+</div>
   </div>
 )}
   </>

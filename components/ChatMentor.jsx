@@ -289,6 +289,7 @@ flex-col
 
 h-full
 min-h-0
+overflow-hidden
 
 rounded-[30px]
 
@@ -385,15 +386,17 @@ shadow-xl hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-ful
 
       {/* Chat area */}
 
-     <div
-  className="
-  flex-1
-  overflow-y-auto
-  overscroll-contain
-  touch-pan-y
-  p-4
-  space-y-4
-  "
+    <div
+className="
+flex-1
+min-h-0
+overflow-y-auto
+overscroll-contain
+touch-pan-y
+p-4
+space-y-4
+pb-6
+"
 >
 
      {messages.map((m, i) => {
