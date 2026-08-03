@@ -18,6 +18,8 @@ export default function MobileBottomNav({
   chatOpen,
 }) {
 
+  if (chatOpen) return null;
+
   const router = useRouter();
 
   const tabs = [
@@ -27,11 +29,7 @@ export default function MobileBottomNav({
     icon: Home,
   },
 
-  {
-    key: "mentor",
-    label: "Birbal",
-    icon: MessageSquare,
-  },
+  
 
   {
     key: "practice",

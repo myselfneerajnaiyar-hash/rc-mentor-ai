@@ -92,25 +92,28 @@ Ask Birbal anything about RC.
 
     {/* Chat */}
 
-   {chatOpen && (
+  {chatOpen && (
   <div
     className="
       fixed
       inset-0
       z-[1000]
 
-      md:inset-auto
-      md:bottom-24
+      md:top-auto
+      md:left-auto
       md:right-6
-      md:w-[520px]
-      md:h-[760px]
+      md:bottom-6
+      md:w-[420px]
+      md:h-[650px]
 
       flex
       flex-col
 
       bg-[#101623]
+      rounded-[24px]
 
       md:rounded-[30px]
+      overflow-hidden
       border
       border-slate-700
 
@@ -122,28 +125,13 @@ Ask Birbal anything about RC.
       duration-300
     "
   >
-    <button
-    onClick={() => setChatOpen(false)}
-      className="
-      absolute
-      top-4
-      right-4
-      z-[9999]
-      h-11
-      w-11
-      rounded-full
-      bg-black/50
-      backdrop-blur-md
-      border
-      border-white/10
-      text-white
-      "
-    >
-      ✕
-    </button>
+  
 
-   <div className="flex-1 min-h-0">
-    <ChatMentor setView={setView} />
+   <div className="flex-1 min-h-0 flex overflow-hidden">
+  <ChatMentor
+  setView={setView}
+  onClose={() => setChatOpen(false)}
+/>
 </div>
   </div>
 )}

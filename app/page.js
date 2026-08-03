@@ -30,7 +30,7 @@ import CATArenaView from "../cat-arena/CATArenaViewV2";
 import CATArenaTestView from "../cat-arena/CATArenaTestViewV2";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainerV2";
-
+import BirbalFloatingButton from "@/components/home-v2/BirbalFloatingButton";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
@@ -867,16 +867,11 @@ ${
   userName={userName}
   user={user}
   exam={exam}
-  chatOpen={chatOpen}
-  setChatOpen={setChatOpen}
+ 
 />
 )}
 
-{view === "mentor" && (
-  <ChatMentor
-    setView={setView}
-  />
-)}
+
 
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />
@@ -955,6 +950,14 @@ ${
   </>
 )}
 </div>
+
+<BirbalFloatingButton
+  setView={setView}
+  chatOpen={chatOpen}
+  setChatOpen={setChatOpen}
+/>
+
+
 
   {/* MOBILE BOTTOM NAV (Mobile only) */}
       <div className="md:hidden">

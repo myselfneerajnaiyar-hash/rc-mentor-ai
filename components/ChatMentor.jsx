@@ -14,7 +14,8 @@ export default function ChatMentor({
 
   contextual = false,
 
-  setView
+  setView,
+  onClose,
 
 }) {
 
@@ -284,24 +285,11 @@ async function startVoiceConversation() {
     <div
 className="
 flex
-
 flex-col
-
+w-full
 h-full
-min-h-0
 overflow-hidden
-
-rounded-[30px]
-
-overflow-hidden
-
 bg-[#101623]
-
-border
-
-border-slate-700
-
-backdrop-blur-xl
 "
 >
 
@@ -352,8 +340,16 @@ text-white
   </div>
 </div>
 
-      </div>
+{onClose && (
+  <button
+    onClick={onClose}
+    className="h-11 w-11 rounded-full bg-black/30 flex items-center justify-center shrink-0"
+  >
+    ✕
+  </button>
+)}
 
+</div>
 
       {/* Quick prompts */}
 
@@ -390,10 +386,11 @@ shadow-xl hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-ful
 className="
 flex-1
 min-h-0
+h-0
 overflow-y-auto
 overscroll-contain
 touch-pan-y
-p-4
+p-3
 space-y-4
 pb-6
 "
@@ -419,7 +416,7 @@ pb-6
   />
 )}
 
-<div className="max-w-[calc(100%-60px)]">
+<div className="max-w-[85%]">
 
   <div
   className={`px-4 py-3 rounded-2xl text-[15px] leading-relaxed flex items-start gap-2 shadow-md ${

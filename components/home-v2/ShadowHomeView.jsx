@@ -20,7 +20,7 @@ import TestSeriesHero from "@/components/home-v2/TestSeriesHero";
 import LeaderboardSection from "@/components/home-v2/LeaderboardSection";
 import ReadingProfile from "@/components/home-v2/ReadingProfile";
 import BirbalCoachReport from "@/components/home-v2/BirbalCoachReport";
-import BirbalFloatingButton from "@/components/home-v2/BirbalFloatingButton";
+
 import BirbalCoachCard
 from "@/components/BirbalCoachCard";
 import Header from "@/components/home-v2/Header";
@@ -74,7 +74,7 @@ const examDisplayName =
   const [dailyRCStreak, setDailyRCStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
   const [coachReport, setCoachReport] = useState(null);
-  const [chatOpen, setChatOpen] = useState(false);
+  
   const [todayMission, setTodayMission] =
 
   useState(null);
@@ -491,11 +491,7 @@ setInsight({
   data={coachReport}
 />
 
-<BirbalFloatingButton
-    setView={setView}
-    chatOpen={chatOpen}
-    setChatOpen={setChatOpen}
-/>
+
 
 
 </div>
