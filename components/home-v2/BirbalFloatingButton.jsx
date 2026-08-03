@@ -95,17 +95,21 @@ Ask Birbal anything about RC.
   {chatOpen && (
   <div
     className="
-      fixed
-      inset-0
-      z-[1000]
+     fixed
 
-      md:top-auto
-      md:left-auto
-      md:right-6
-      md:bottom-6
-      md:w-[420px]
-      md:h-[650px]
+top-4
+left-4
+right-4
+bottom-28
 
+z-[1000]
+
+md:top-auto
+md:left-auto
+md:right-6
+md:bottom-6
+md:w-[420px]
+md:h-[650px]
       flex
       flex-col
 
