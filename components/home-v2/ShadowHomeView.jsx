@@ -493,6 +493,7 @@ setInsight({
 
 <BirbalFloatingButton
     setView={setView}
+    chatOpen={chatOpen}
     setChatOpen={setChatOpen}
 />
 

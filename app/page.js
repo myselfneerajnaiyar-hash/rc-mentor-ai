@@ -90,6 +90,7 @@ export default function Page() {
   const [text, setText] = useState("");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
+  const [chatOpen, setChatOpen] = useState(false);
   
 
   const [data, setData] = useState(null);
@@ -866,6 +867,8 @@ ${
   userName={userName}
   user={user}
   exam={exam}
+  chatOpen={chatOpen}
+  setChatOpen={setChatOpen}
 />
 )}
 

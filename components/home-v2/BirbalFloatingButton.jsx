@@ -6,22 +6,23 @@ import ChatMentor from "@/components/ChatMentor";
 
 export default function BirbalFloatingButton({
     setView,
-    setChatOpen
+    chatOpen,
+    setChatOpen,
 }) {
-  const [open, setOpen] = useState(false);
+  
   useEffect(() => {
-  document.body.style.overflow = open ? "hidden" : "";
+  document.body.style.overflow = chatOpen ? "hidden" : "";
 
   return () => {
     document.body.style.overflow = "";
   };
-}, [open]);
+}, [chatOpen]);
 
  return (
   <>
     {/* Speech Bubble */}
 
-   {!open && (
+   {!chatOpen && (
   <div
     className="
     hidden md:block
@@ -62,10 +63,7 @@ Ask Birbal anything about RC.
     {/* Floating Button */}
 
     <button
-     onClick={() => {
-  setOpen(true);
-  setChatOpen?.(true);
-}}
+    onClick={() => setChatOpen(true)}
       className="
       fixed
       bottom-24
@@ -94,7 +92,7 @@ Ask Birbal anything about RC.
 
     {/* Chat */}
 
-   {open && (
+   {chatOpen && (
   <div
     className="
       fixed
@@ -125,10 +123,7 @@ Ask Birbal anything about RC.
     "
   >
     <button
-      onClick={() => {
-  setOpen(false);
-  setChatOpen?.(false);
-}}
+    onClick={() => setChatOpen(false)}
       className="
       absolute
       top-4
