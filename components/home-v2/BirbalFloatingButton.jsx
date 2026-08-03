@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ChatMentor from "@/components/ChatMentor";
 
@@ -8,6 +8,13 @@ export default function BirbalFloatingButton({
     setView
 }) {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+  document.body.style.overflow = open ? "hidden" : "";
+
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [open]);
 
  return (
   <>
@@ -87,18 +94,17 @@ Ask Birbal anything about RC.
      <div
   className="
 fixed
-bottom-0
-right-0
+inset-0
+md:inset-auto
 md:bottom-24
 md:right-6
 z-[1000]
 
 w-full
 md:w-[520px]
-max-w-[95vw]
 
-h-[760px]
-max-h-[85vh]
+h-[100dvh]
+md:h-[760px]
 
 rounded-none
 
