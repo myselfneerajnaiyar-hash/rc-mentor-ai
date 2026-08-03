@@ -13,38 +13,32 @@ export default function BirbalFloatingButton({
   <>
     {/* Speech Bubble */}
 
-    {!open && (
-      <div
-className="
-fixed
-bottom-24
-right-24
+   {!open && (
+  <div
+    className="
+    hidden md:block
 
-z-[998]
+    fixed
+    bottom-24
+    right-24
+    z-[998]
 
-rounded-2xl
+    rounded-2xl
+    bg-slate-900/95
+    backdrop-blur-xl
+    border
+    border-slate-700
 
-bg-slate-900/95
+    px-4
+    py-3
 
-backdrop-blur-xl
+    text-sm
+    text-white
 
-border
-
-border-slate-700
-
-px-4
-
-py-3
-
-text-sm
-
-text-white
-
-shadow-xl
-
-animate-bounce
-"
->
+    shadow-xl
+    animate-bounce
+    "
+  >
 
 <div className="font-semibold">
 👋 Need help?
@@ -63,7 +57,8 @@ Ask Birbal anything about RC.
       onClick={() => setOpen(true)}
       className="
       fixed
-      bottom-6
+      bottom-24
+      md:bottom-6
       right-6
       z-[999]
       h-16
