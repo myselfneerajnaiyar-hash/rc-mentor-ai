@@ -951,11 +951,6 @@ ${
 )}
 </div>
 
-<BirbalFloatingButton
-  setView={setView}
-  chatOpen={chatOpen}
-  setChatOpen={setChatOpen}
-/>
 
 
 
@@ -971,6 +966,12 @@ ${
       </div>
 </div>
     </main>
+    <BirbalFloatingButton
+  setView={setView}
+  chatOpen={chatOpen}
+  setChatOpen={setChatOpen}
+/>
+
     </div>
     </>
   
