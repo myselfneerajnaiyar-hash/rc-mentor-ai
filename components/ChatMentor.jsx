@@ -288,6 +288,7 @@ flex
 flex-col
 
 h-full
+min-h-0
 
 rounded-[30px]
 
@@ -543,7 +544,7 @@ hover:shadow-cyan-500/20
 
       {/* Input */}
 
-  <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-[#0f172a] backdrop-blur">
+  <div className="p-3 border-t border-slate-800 flex gap-2 bg-[#0f172a] backdrop-blur">
 
         <input
         

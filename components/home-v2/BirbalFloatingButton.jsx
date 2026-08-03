@@ -90,78 +90,59 @@ Ask Birbal anything about RC.
 
     {/* Chat */}
 
-    {open && (
-     <div
-  className="
-fixed
-inset-0
-md:inset-auto
-md:bottom-24
-md:right-6
-z-[1000]
+   {open && (
+  <div
+    className="
+      fixed
+      inset-0
+      z-[1000]
 
-w-full
-md:w-[520px]
+      md:inset-auto
+      md:bottom-24
+      md:right-6
+      md:w-[520px]
+      md:h-[760px]
 
-h-[100dvh]
-md:h-[760px]
+      flex
+      flex-col
 
-rounded-none
+      bg-[#101623]
 
-md:rounded-[30px]
+      md:rounded-[30px]
+      border
+      border-slate-700
 
-overflow-hidden
+      shadow-[0_30px_80px_rgba(0,0,0,.65)]
 
-border
-border-slate-700
+      animate-in
+      fade-in
+      zoom-in-95
+      duration-300
+    "
+  >
+    <button
+      onClick={() => setOpen(false)}
+      className="
+      absolute
+      top-4
+      right-4
+      z-[9999]
+      h-11
+      w-11
+      rounded-full
+      bg-black/50
+      backdrop-blur-md
+      border
+      border-white/10
+      text-white
+      "
+    >
+      ✕
+    </button>
 
-bg-[#101623]
-
-shadow-[0_30px_80px_rgba(0,0,0,.65)]
-
-animate-in
-fade-in
-zoom-in-95
-duration-300
-"
->
-     <button
-onClick={() => setOpen(false)}
-className="
-absolute
-top-4
-right-4
-z-[9999]
-
-flex
-items-center
-justify-center
-
-h-11
-w-11
-
-rounded-full
-
-bg-black/50
-backdrop-blur-md
-
-border
-border-white/10
-
-text-white
-
-transition-all
-
-hover:bg-red-500
-hover:rotate-90
-"
->
-✕
-</button>
-
-        <ChatMentor setView={setView} />
-      </div>
-    )}
+    <ChatMentor setView={setView} />
+  </div>
+)}
   </>
 );
 }
