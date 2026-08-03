@@ -960,6 +960,7 @@ ${
   setView={setView}
   hasPremiumAccess={hasPremiumAccess}
   exam={exam}
+  chatOpen={chatOpen}
 />
       </div>
 </div>

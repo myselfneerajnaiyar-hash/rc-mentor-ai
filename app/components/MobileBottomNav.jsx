@@ -15,6 +15,7 @@ export default function MobileBottomNav({
   setView,
   hasPremiumAccess,
   exam,
+  chatOpen,
 }) {
 
   const router = useRouter();
@@ -56,7 +57,11 @@ export default function MobileBottomNav({
 ];
 
   return (
-    <nav className="mobile-nav mobile-only safe-bottom-nav">
+   <nav
+  className={`mobile-nav mobile-only safe-bottom-nav ${
+    chatOpen ? "hidden" : ""
+  }`}
+>
 
       {tabs.map((tab) => {
         const freeViews = ["home", "workout", "hangman", "cat", "profile",];

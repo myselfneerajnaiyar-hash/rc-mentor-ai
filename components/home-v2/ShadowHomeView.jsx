@@ -74,6 +74,7 @@ const examDisplayName =
   const [dailyRCStreak, setDailyRCStreak] = useState(0)
   const [wordHuntStreak, setWordHuntStreak] = useState(0)
   const [coachReport, setCoachReport] = useState(null);
+  const [chatOpen, setChatOpen] = useState(false);
   const [todayMission, setTodayMission] =
 
   useState(null);
@@ -492,6 +493,7 @@ setInsight({
 
 <BirbalFloatingButton
     setView={setView}
+    setChatOpen={setChatOpen}
 />
 
 

@@ -5,7 +5,8 @@ import Image from "next/image";
 import ChatMentor from "@/components/ChatMentor";
 
 export default function BirbalFloatingButton({
-    setView
+    setView,
+    setChatOpen
 }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -61,7 +62,10 @@ Ask Birbal anything about RC.
     {/* Floating Button */}
 
     <button
-      onClick={() => setOpen(true)}
+     onClick={() => {
+  setOpen(true);
+  setChatOpen?.(true);
+}}
       className="
       fixed
       bottom-24
@@ -121,7 +125,10 @@ Ask Birbal anything about RC.
     "
   >
     <button
-      onClick={() => setOpen(false)}
+      onClick={() => {
+  setOpen(false);
+  setChatOpen?.(false);
+}}
       className="
       absolute
       top-4
