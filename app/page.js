@@ -885,6 +885,13 @@ ${
 
     {view === "speed" && <SpeedContainer />}
 
+    {view === "mentor" && (
+  <ChatMentor
+    setView={setView}
+    onClose={() => setView("home")}
+  />
+)}
+
     {view === "vocab" && <VocabLab />}
    
 

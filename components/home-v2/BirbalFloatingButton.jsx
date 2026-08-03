@@ -10,6 +10,8 @@ export default function BirbalFloatingButton({
     setChatOpen,
 }) {
   
+
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
   document.body.style.overflow = chatOpen ? "hidden" : "";
 
@@ -17,6 +19,16 @@ export default function BirbalFloatingButton({
     document.body.style.overflow = "";
   };
 }, [chatOpen]);
+
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+
+  check();
+
+  window.addEventListener("resize", check);
+
+  return () => window.removeEventListener("resize", check);
+}, []);
 
  return (
   <>
@@ -63,7 +75,13 @@ Ask Birbal anything about RC.
     {/* Floating Button */}
 
     <button
-    onClick={() => setChatOpen(true)}
+ onClick={() => {
+  if (window.innerWidth < 768) {
+    setView("mentor");
+  } else {
+    setChatOpen(true);
+  }
+}}
       className="
       fixed
       bottom-24
@@ -92,7 +110,7 @@ Ask Birbal anything about RC.
 
     {/* Chat */}
 
-  {chatOpen && (
+{chatOpen && !isMobile && (
   <div
     className="
      fixed
