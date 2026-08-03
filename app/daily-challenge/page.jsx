@@ -191,9 +191,9 @@ export default function DailyChallengePage() {
 
             {/* TITLE */}
 
-            <div className="mt-8 flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
+           <div className="mt-8 grid lg:grid-cols-[1fr_520px] gap-8 items-start">
 
-  <div className="flex-1">
+  <div className="min-w-0">
 
     <h1 className="text-5xl md:text-7xl font-black leading-none text-white">
       {title}
@@ -221,15 +221,14 @@ export default function DailyChallengePage() {
 
   </div>
 
-  <div
+ <div
   className="
+  w-full
+  lg:w-[520px]
   flex
   flex-col
-  items-stretch
-  md:items-end
   gap-6
-  w-full
-  md:w-auto
+  shrink-0
   "
 >
 
@@ -304,6 +303,7 @@ md:text-xl
         className="
         h-20
         w-full
+        lg:e-[520px]
         rounded-2xl
         bg-gradient-to-r
         from-violet-500

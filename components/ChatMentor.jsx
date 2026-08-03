@@ -1,21 +1,40 @@
 "use client"
-
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Send, Brain, Mic, } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { SpeechRecognition } from "@capacitor-community/speech-recognition"
+import { ACTIONS } from "@/lib/birbalActions";
 
 
 export default function ChatMentor({
+
   passage = "",
-  contextual = false
+
+  contextual = false,
+
+  setView
+
 }) {
 
   const [messages, setMessages] = useState([
    {
-role: "assistant",
-content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the lines, understand author logic, and improve your Reading Comprehension skills. Ask me anything about passages, inference questions, or mistakes."
+  role: "assistant",
+  
+content: `👋 Welcome back!
+
+I'm Birbal — your AI Reading Mentor.
+
+I can help you:
+
+📊 Analyse your performance
+🎯 Recommend today's practice
+📖 Explain any RC
+📰 Decode newspaper editorials
+🧠 Improve your Reading IQ
+
+Ask me anything or choose a suggestion below.`
 }
   ])
 
@@ -24,6 +43,7 @@ content: "👋 Hi! I'm Birbal — your RC mentor. I help you read between the li
   const bottomRef = useRef(null)
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
+  const router = useRouter();
   
   const [listening, setListening] = useState(false)
 const [voiceMode, setVoiceMode] = useState(false)
@@ -85,7 +105,7 @@ useEffect(() => {
 
   setThinking(true)
 
-  const res = await fetch("/api/chat-mentor", {
+  const res = await fetch("/api/birbal", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -119,7 +139,7 @@ async function sendVoiceMessage(text) {
 
   setThinking(true)
 
-  const res = await fetch("/api/chat-mentor", {
+  const res = await fetch("/api/birbal", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -142,15 +162,24 @@ async function sendVoiceMessage(text) {
 }
 
 async function typeMessage(text, updatedMessages) {
+
+  const actionRegex = /<Action>(.*?)<\/Action>/g;
+
+const actions = [...text.matchAll(actionRegex)].map(
+  m => m[1]
+);
+
+text = text.replace(actionRegex, "").trim();
   let currentText = ""
 
   setMessages([
     ...updatedMessages,
     {
-      role: "assistant",
-      content: "",
-      time: new Date()
-    }
+   role: "assistant",
+   content: "",
+   actions,
+   time: new Date()
+}
   ])
 
  for (let i = 0; i < text.length; i++) {
@@ -252,36 +281,83 @@ async function startVoiceConversation() {
 
   return (
 
-    <div className="max-w-2xl mx-auto flex flex-col h-[80vh] bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl">
+    <div
+className="
+flex
+
+flex-col
+
+h-full
+
+rounded-[30px]
+
+overflow-hidden
+
+bg-[#101623]
+
+border
+
+border-slate-700
+
+backdrop-blur-xl
+"
+>
 
       {/* Header */}
 
-      <div className="flex items-center gap-3 p-4 border-b border-slate-800">
+      <div className="
+flex
+
+items-center
+
+gap-3
+
+px-5
+
+py-4
+
+bg-gradient-to-r
+
+from-indigo-600
+
+via-indigo-500
+
+to-blue-600
+
+text-white
+">
 
        <div className="w-10 h-10 overflow-hidden rounded-full">
   <img
-    src="/birbal.png"
+    src="/Birbal avatar.jpeg"
     alt="Birbal"
     className="w-full h-full object-cover"
   />
 </div>
 
-        <div>
-          <div className="text-white font-semibold">
-            Birbal - RC Mentor
-          </div>
+       <div className="flex-1">
+  <h2 className="text-lg font-bold tracking-wide">
+    Birbal AI
+  </h2>
 
-          <div className="text-xs text-slate-400">
-            Ask Birbal anything about reading comprehension
-          </div>
-        </div>
+  <p className="text-xs text-indigo-100">
+    Your Personal Reading Mentor
+  </p>
+
+  <div className="mt-1 inline-flex items-center gap-2 rounded-full bg-white/10 px-2 py-1 text-[10px]">
+    <span className="h-2 w-2 rounded-full bg-green-400"></span>
+    Online
+  </div>
+</div>
 
       </div>
 
 
       {/* Quick prompts */}
 
-      <div className="flex gap-2 p-3 flex-wrap border-b border-slate-800">
+      <div className="flex gap-2 p-3 overflow-x-auto
+whitespace-nowrap
+no-scrollbar border-b border-slate-800">
 
         {[
           "How to improve inference questions?",
@@ -292,7 +368,12 @@ async function startVoiceConversation() {
           <button
             key={i}
             onClick={() => quickPrompt(p)}
-            className="text-xs bg-slate-800/80 hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-full"
+            className="text-[11px] bg-gradient-to-br
+from-slate-800
+to-slate-900
+border
+border-cyan-500/20
+shadow-xl hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-full"
           >
             {p}
           </button>
@@ -319,7 +400,7 @@ async function startVoiceConversation() {
 
 {m.role === "assistant" && (
   <img
-    src="/birbal.png"
+    src="/Birbal avatar.jpeg"
     alt="Birbal"
     className="w-7 h-7 rounded-full mt-1"
   />
@@ -335,10 +416,69 @@ async function startVoiceConversation() {
   }`}
 >
 
-  <div className="whitespace-pre-line flex-1">
+ <div className="flex-1">
+
+  <div className="whitespace-pre-line">
     {m.content}
   </div>
 
+  {m.actions?.length > 0 && (
+    <div className="mt-4 flex flex-col gap-2">
+
+     {m.actions?.map(action => {
+
+   const item = ACTIONS[action];
+
+   if (!item) return null;
+
+   return (
+
+      <button
+         key={action}
+        onClick={() => {
+
+   // Route based actions
+   if (item.route) {
+      router.push(item.route);
+      return;
+   }
+
+   // Internal app views
+   if (setView && item.view) {
+      setView(item.view);
+      return;
+   }
+
+}}
+        className="
+mt-3
+w-full
+rounded-2xl
+border
+border-cyan-500/20
+bg-gradient-to-r
+from-indigo-600
+to-cyan-600
+px-4
+py-3
+text-left
+font-semibold
+shadow-lg
+transition-all
+hover:scale-[1.02]
+hover:shadow-cyan-500/20
+"
+      >
+         {item.title}
+      </button>
+
+   );
+
+})}
+    </div>
+  )}
+
+</div>
   
 
 </div>
@@ -357,22 +497,35 @@ async function startVoiceConversation() {
   )
 })}
 
-     {thinking && (
-  <div className="flex items-start gap-2">
+    {thinking && (
+  <div className="flex items-start gap-3">
 
     <img
-      src="/birbal.png"
+      src="/Birbal avatar.jpeg"
       alt="Birbal"
-     className="w-8 h-8 rounded-full mt-1 border border-slate-700"
+      className="w-8 h-8 rounded-full border border-slate-700"
     />
 
-    <div className="bg-slate-800 text-slate-300 px-4 py-3 rounded-xl text-sm animate-pulse">
-      Birbal is thinking...
+    <div className="rounded-2xl border border-slate-700 bg-slate-800/80 px-4 py-3">
+
+      <div className="flex gap-1 mb-2">
+        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"></div>
+        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce delay-150"></div>
+        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce delay-300"></div>
+      </div>
+
+      <div className="font-medium">
+        🧠 Birbal is analysing...
+      </div>
+
+      <div className="text-xs text-slate-400">
+        Looking at your reading profile
+      </div>
+
     </div>
 
   </div>
 )}
-
 <div ref={bottomRef}></div>
         
 
@@ -381,7 +534,7 @@ async function startVoiceConversation() {
 
       {/* Input */}
 
-  <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-slate-900/95 backdrop-blur">
+  <div className="p-3 border-t border-slate-800 flex gap-2 sticky bottom-0 bg-[#0f172a] backdrop-blur">
 
         <input
         
@@ -394,7 +547,7 @@ async function startVoiceConversation() {
   }
 }}
          placeholder="Ask Birbal about RC..."
-          className="flex-1 bg-slate-800 border border-slate-700 text-white px-4 py-2 rounded-xl outline-none"
+          className="flex-1 bg-[#1b2434] border border-slate-700 text-white px-4 py-2 rounded-full outline-none"
         />
 
         <button

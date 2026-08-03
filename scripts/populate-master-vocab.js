@@ -15,7 +15,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const TARGET = 300;
+const TARGET = 3000;
 const BATCH_SIZE = 20;
 async function generateBatch(existingWords, startRank) {
 

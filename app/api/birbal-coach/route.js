@@ -1,17 +1,24 @@
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import OpenAI from "openai";
+import { getBirbalContext } from "@/lib/birbalContext";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 export async function GET(req) {
+      console.log("========== BIRBAL COACH ROUTE HIT ==========");
 
 const { searchParams } =
   new URL(req.url);
 
 const userId =
   searchParams.get("userId");
+
+  const context = await getBirbalContext(
+  supabaseAdmin,
+  userId
+);
 
   if (!userId) {
     return Response.json({
@@ -32,6 +39,8 @@ const { data: existingMission } =
     .maybeSingle();
 if (existingMission) {
 
+      console.log("Returning cached coach");
+
   const coach =
     existingMission.coach_json;
 
@@ -44,6 +53,7 @@ if (existingMission) {
   return Response.json({
     coach
   });
+
 
 }
 
@@ -95,40 +105,11 @@ const speedAttempts =
 const vocabAttempts =
   vocab?.length || 0;
 
-  const userData = {
-  rcAttempts,
-  challengeAttempts,
-  workoutAttempts,
-  wordhuntAttempts,
-  speedAttempts,
-  vocabAttempts
-};
+  const userData = context;
 
-const readingIQ = Math.min(
-  150,
-  80 +
-  (rcAttempts * 2) +
-  challengeAttempts +
-  workoutAttempts +
-  wordhuntAttempts +
-  speedAttempts +
-  vocabAttempts
-);
+const readingIQ = context.analytics.readingIQ;
 
-let readerType = "Developing Reader";
-
-if (rcAttempts >= 20)
-  readerType = "Analytical Reader";
-
-if (speedAttempts >= 20)
-  readerType = "Fast Reader";
-
-if (
-  rcAttempts >= 20 &&
-  speedAttempts >= 20 &&
-  vocabAttempts >= 10
-)
-  readerType = "Strategic Reader";
+const readerType = context.analytics.readerType;
 
 const { data: profile } =
   await supabaseAdmin
@@ -153,7 +134,7 @@ Available activities:
 3. Word Hunt
 4. Speed Drill
 5. Vocabulary Drill
-6. RC Passage Practice
+6. RC Generator
 
 Daily RC Arena MUST always be included.
 
@@ -163,7 +144,7 @@ Choose exactly 2 additional missions from:
 - Word Hunt
 - Speed Drill
 - Vocabulary Drill
-- RC Passage Practice
+- RC Generator
 `
 : `
 Available activities:
@@ -172,16 +153,46 @@ Available activities:
 2. Word Hunt
 3. Speed Drill
 4. Vocabulary Drill
-5. RC Passage Practice
+5. RC Generator
 
-Choose exactly 3 missions from:
+Choose ONLY from these modules:
 
-
+- Daily RC Arena
 - Daily Workout
 - Word Hunt
 - Speed Drill
-- Vocabulary Drill
-- RC Passage Practice
+- Vocabulary Trainer
+- RC Generator
+
+Never recommend any other activity.
+
+Never invent modules.
+
+missions MUST be an array of OBJECTS.
+
+Example:
+
+"missions":[
+{
+"title":"Daily Workout",
+"priority":"High",
+"reason":"Improve reading consistency"
+},
+{
+"title":"Word Hunt",
+"priority":"Medium",
+"reason":"Build vocabulary"
+},
+{
+"title":"Speed Drill",
+"priority":"Medium",
+"reason":"Increase reading speed"
+}
+]
+
+Never return strings.
+Never return only activity names.
+
 
 Never return "Daily RC Arena".
 It is not available for this student.
@@ -192,29 +203,65 @@ console.log("Exam =", exam);
 const prompt = `
 You are Birbal.
 
-Analyze this student's activity.
+Analyze the student's analytics, recent activity and recommendations.
+
+Treat them as the source of truth.
+
+Do not recalculate any metric.
+
+Do not estimate Reading IQ.
+
+Do not estimate reader type.
+
+Do not estimate accuracy.
+
+Use the supplied analytics exactly.
 
 
 
-${JSON.stringify(userData)}
+Student Analytics
+
+${JSON.stringify(context.analytics, null, 2)}
+
+Student Recent Activity
+
+${JSON.stringify(context.recentActivity, null, 2)}
 ${availableActivities}
 
+Student Recommendations
 
-Return JSON only:
+${JSON.stringify(context.recommendations, null, 2)}
+
+Use ONLY these statistics.
+Do NOT invent any numbers.
+If you mention attempts, use only the values above.
+
+
+Return EXACTLY this JSON object.
+
+Do not omit any field.
 
 {
   "strength":"",
   "weakness":"",
   "diagnosis":"",
   "prescription":"",
- "missions":[
-  {
-    "title":"",
-    "activityType":""
-  }
-]
+  "coachReport":"",
+  "coachMetrics":{
+    
+  },
+  "coachPlan":[
+    {
+      "priority":"",
+      "title":"",
+      "reason":""
+    }
+  ],
+  "missions":[]
 }
 
+Never leave coachReport empty.
+Never remove any key.
 Rules:
 
 Student name:
@@ -234,7 +281,6 @@ Always address the student by name.
 Use the student's name in diagnosis and prescription.
 Speak like Birbal is talking directly to them.
 
-- Generate realistic IQ between 50 and 150
 
 
 - strength must be a short phrase
@@ -242,6 +288,31 @@ Speak like Birbal is talking directly to them.
 
 - diagnosis should address the student directly
 - prescription should address the student directly
+
+coachReport should be a concise coaching report (120-180 words).
+
+Use ONLY the analytics and activity provided.
+
+Do NOT invent statistics.
+
+Do NOT invent Reading IQ.
+
+Do NOT invent reader type.
+
+Do NOT mention any feature that does not exist.
+
+Do NOT recommend RC Passage Practice.
+
+Explain:
+
+- what the student is currently doing well
+- what needs improvement
+- why today's missions were chosen
+
+Finish with one motivating sentence from Birbal.
+
+coachReport must NEVER be empty.
+Return plain text only.
 
 Examples:
 
@@ -256,7 +327,7 @@ Never use:
 "This student..."
 "The learner..."
 
-- choose exactly 3 missions
+- Return exactly 3 missions from the allowed modules above.
 
 - completed must always be false
 `;
@@ -264,6 +335,9 @@ Never use:
 const completion =
   await openai.chat.completions.create({
     model: "gpt-4o-mini",
+    response_format: {
+      type: "json_object"
+    },
     messages: [
       {
         role: "user",
@@ -279,9 +353,43 @@ const content =
     .trim();
 
 const coach = JSON.parse(content);
+if (Array.isArray(coach.missions)) {
+  coach.missions = coach.missions.map((m) => {
+    if (typeof m === "string") {
+      return {
+        title: m,
+        priority: "Medium",
+        reason: "Recommended by Birbal"
+      };
+    }
+    return m;
+  });
+}
+
+if (!coach.coachMetrics) {
+  coach.coachMetrics = {};
+}
+
+coach.coachMetrics.level = readerType;
+if (!coach.coachReport?.trim()) {
+  coach.coachReport =
+`${userName}, your Reading IQ is ${readingIQ} and your current reader type is ${readerType}.
+
+You have made progress, but Birbal believes consistent practice is the key to becoming an exceptional reader.
+
+Your diagnosis indicates that your biggest strength is "${coach.strength}" while your biggest challenge is "${coach.weakness}".
+
+Follow today's prescription carefully and complete the suggested missions. Small improvements every day will compound into a major improvement in your CAT VARC performance.
+
+Remember, great readers are not born—they are trained.`;
+}
+console.log("Coach keys:", Object.keys(coach));
+console.log("Coach JSON:", coach);
+console.log(JSON.stringify(coach, null, 2));
 
 coach.iq = readingIQ;
 coach.readerType = readerType;
+coach.coachMetrics.level = readerType;
 
 // Remove CAT mission for non-CAT exams
 if (exam !== "CAT") {
@@ -331,6 +439,9 @@ return Response.json({
   coach,
   userData
 });
+console.log("MISSIONS:", coach.missions);
+console.log("COACH:", JSON.stringify(coach, null, 2));
+
 }
 
 async function addMissionCompletion(
@@ -345,7 +456,12 @@ async function addMissionCompletion(
 
   for (const mission of missions) {
 
-    mission.completed = false;
+  // Skip invalid missions
+  if (!mission || typeof mission !== "object") {
+    continue;
+  }
+
+  mission.completed = false;
 
     if (mission.title === "Daily RC Arena") {
 
@@ -438,7 +554,7 @@ async function addMissionCompletion(
     }
 
     else if (
-      mission.title === "RC Passage Practice"
+      mission.title === "RC Generator"
     ) {
 
       const { data } =

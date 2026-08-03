@@ -17,7 +17,7 @@ JSON.parse = function (...args) {
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import HomeView from "../components/HomeView";
+import ShadowHomeView from "@/components/home-v2/ShadowHomeView";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
 import RCView from "../components/RCView";
@@ -859,17 +859,21 @@ ${
  {/* <Navbar view={view} setView={setView} /> */}
 </div>
 
-   {view === "home" && (
-<HomeView
+  {view === "home" && (
+ <ShadowHomeView
   setView={setView}
-  startAdaptiveRC={() => setView("workout")}
+  startAdaptiveRC={startAdaptiveRC}
   userName={userName}
   user={user}
   exam={exam}
 />
 )}
 
-{view === "mentor" && <ChatMentor />}
+{view === "mentor" && (
+  <ChatMentor
+    setView={setView}
+  />
+)}
 
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />

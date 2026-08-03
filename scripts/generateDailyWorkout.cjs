@@ -16,26 +16,201 @@ const supabase = createClient(
 // 🔥 VALIDATION (VERY IMPORTANT)
 function validateWorkout(workout) {
 
-  if (!workout) return false;
-
-  if (!Array.isArray(workout.speed?.questions) || workout.speed.questions.length !== 10) return false;
-  if (!Array.isArray(workout.vocab?.questions) || workout.vocab.questions.length !== 10) return false;
-  if (!Array.isArray(workout.micro?.questions) || workout.micro.questions.length !== 5) return false;
-  if (!Array.isArray(workout.rc1?.questions) || workout.rc1.questions.length < 4) return false;
-  if (!Array.isArray(workout.rc2?.questions) || workout.rc2.questions.length < 4) return false;
-
-  for (let section of ["speed", "vocab", "micro", "rc1", "rc2"]) {
-
-    const questions = workout[section]?.questions || [];
-
-    for (let q of questions) {
-
-      if (!Array.isArray(q.options) || q.options.length !== 4) return false;
-
-    }
+  if (!workout) {
+    console.log("FAIL: workout null");
+    return false;
   }
 
+  if (!Array.isArray(workout.speed?.questions) || workout.speed.questions.length !== 10) {
+    console.log("FAIL: speed count");
+    return false;
+  }
+
+  if (!Array.isArray(workout.vocab?.questions) || workout.vocab.questions.length !== 10) {
+    console.log("FAIL: vocab count =", workout.vocab?.questions?.length);
+    return false;
+  }
+
+  if (!Array.isArray(workout.micro?.questions) || workout.micro.questions.length !== 5) {
+    console.log("FAIL: micro count");
+    return false;
+  }
+
+  if (!Array.isArray(workout.rc1?.questions) || workout.rc1.questions.length < 4) {
+    console.log("FAIL: rc1");
+    return false;
+  }
+
+  if (!Array.isArray(workout.rc2?.questions) || workout.rc2.questions.length < 4) {
+    console.log("FAIL: rc2");
+    return false;
+  }
+
+ for (const section of ["speed","vocab","micro","rc1","rc2"]) {
+
+  for (let i = 0; i < workout[section].questions.length; i++) {
+
+    const q = workout[section].questions[i];
+
+    // ✅ Grammar question must exist
+    if (section === "micro" && !q.question) {
+      console.log(`FAIL: micro[${i}] question missing`);
+      console.log(q);
+      return false;
+    }
+
+    if (!Array.isArray(q.options)) {
+      console.log(`FAIL: ${section}[${i}] options missing`);
+      console.log(q);
+      return false;
+    }
+
+    if (q.options.length !== 4) {
+      console.log(`FAIL: ${section}[${i}] options length = ${q.options.length}`);
+      console.log(q);
+      return false;
+    }
+
+  }
+}
+
+  console.log("VALIDATION PASSED");
   return true;
+}
+
+async function getTodaysVocab() {
+
+  const { data, error } = await supabase
+    .from("master_vocab")
+    .select("id, word, meaning, synonyms, antonyms")
+    .order("last_used", {
+      ascending: true,
+      nullsFirst: true
+    })
+    .limit(10);
+
+  if (error) throw error;
+
+  return data;
+
+}
+
+async function markVocabUsed(items) {
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const ids = items.map(x => x.id);
+
+  const { error } = await supabase
+    .from("master_vocab")
+    .update({
+      last_used: today
+    })
+    .in("id", ids);
+
+  if (error) throw error;
+
+}
+
+async function getTodaysIdioms() {
+
+  const { data, error } = await supabase
+    .from("master_idioms")
+    .select("*")
+    .order("last_used", {
+      ascending: true,
+      nullsFirst: true
+    })
+    .limit(2);
+
+  if (error) throw error;
+
+  return data;
+
+}
+
+async function markIdiomsUsed(items) {
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const ids = items.map(x => x.id);
+
+  const { error } = await supabase
+    .from("master_idioms")
+    .update({
+      last_used: today
+    })
+    .in("id", ids);
+
+  if (error) throw error;
+
+}
+
+async function getTodaysFillOpenings() {
+
+  const { data, error } = await supabase
+    .from("master_fill_openings")
+    .select("*")
+    .order("last_used", {
+      ascending: true,
+      nullsFirst: true
+    })
+    .limit(2);
+
+  if (error) throw error;
+
+  return data;
+
+}
+
+async function markFillUsed(items) {
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const ids = items.map(x => x.id);
+
+  const { error } = await supabase
+    .from("master_fill_openings")
+    .update({
+      last_used: today
+    })
+    .in("id", ids);
+
+  if (error) throw error;
+
+}
+
+async function getTodaysTopics() {
+
+  const { data, error } = await supabase
+    .from("master_topics")
+    .select("*")
+    .order("last_used", {
+      ascending: true,
+      nullsFirst: true
+    })
+    .limit(1)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+
+}
+
+async function markTopicsUsed(id) {
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const { error } = await supabase
+    .from("master_topics")
+    .update({
+      last_used: today
+    })
+    .eq("id", id);
+
+  if (error) throw error;
+
 }
 
 // 🔥 SHUFFLE
@@ -86,355 +261,215 @@ function cleanParagraphs(text) {
   return paragraphs.join("\n\n")
 }
 
-const TOPIC_POOL = [
-  "medieval trade networks",
-  "phenomenology",
-  "urban anthropology",
-  "linguistic relativism",
-  "behavioral economics",
-  "postcolonial architecture",
-  "ecological ethics",
-  "history of cartography",
-  "aesthetic philosophy",
-  "memory studies",
-  "cognitive science",
-  "political theology",
-  "literary criticism",
-  "classical liberalism",
-  "feminist historiography",
-  "science of expertise",
-  "music cognition",
-  "history of museums",
-  "epistemology",
-  "cultural semiotics",
-  "migration sociology",
-  "philosophy of language",
-  "bureaucratic systems",
-  "history of measurement",
-  "attention economy",
-  "moral psychology",
-  "theory of evolution",
-  "ancient navigation systems",
-  "urban farming",
-  "behavioral economics",
-  "history of cryptography",
-  "microplastics in oceans",
-  "language extinction",
-  "dark matter research",
-  "renewable energy storage",
-  "coffee cultivation",
-  "medieval trade routes",
-  "architecture of temples",
-  "history of vaccination",
-  "animal migration",
-  "forensic science",
-  "origins of money",
-  "psychology of habit formation",
-  "space debris",
-  "arctic exploration",
-  "evolution of maps",
-  "history of clocks",
-  "sustainable fashion",
-  "coral reef ecosystems",
-  "artificial intelligence ethics",
-  "crowdsourcing",
-  "bird communication",
-  "history of libraries",
-  "cultural anthropology",
-  "human memory",
-  "urban planning",
-  "ocean currents",
-  "volcanic eruptions",
-  "history of taxation",
-  "science of sleep",
-  "digital privacy",
-  "renewable architecture",
-  "bee colonies",
-  "history of printing",
-  "supply chain networks",
-  "astronomical observatories",
-  "desert ecosystems",
-  "history of museums",
-  "blockchain applications",
-  "economic inequality",
-  "language acquisition",
-  "scientific peer review",
-  "marine archaeology",
-  "future of transportation",
-  "cognitive biases",
-  "history of tea",
-  "polar ecosystems",
-  "quantum computing",
-  "history of democracy",
-  "public health systems",
-  "food preservation",
-  "social media psychology",
-  "agricultural innovation",
-  "renewable fuels",
-  "history of paper",
-  "machine learning",
-  "ancient engineering",
-  "wildlife conservation",
-  "urban migration",
-  "history of astronomy",
-  "human evolution",
-  "economic bubbles",
-  "robotics in industry",
-  "renewable materials",
-  "water scarcity",
-  "history of language families",
-  "cultural diffusion",
-  "ethics of genetic engineering",
-  "history of railways",
-  "fungal networks",
-  "scientific revolutions",
-  "history of insurance",
-  "future of work",
-  "deep sea exploration",
-  "collective intelligence",
-  "history of calendars",
-  "archaeological dating methods",
-  "circular economy",
-  "renewable agriculture",
-  "history of measurement",
-  "science communication",
-  "internet governance",
-  "animal intelligence",
-  "history of exploration",
-  "ecosystem restoration",
-  "economic globalization",
-  "history of education",
-  "biomimicry",
-  "history of currencies",
-  "planetary geology",
-  "human cooperation",
-  "history of transportation",
-  "scientific skepticism",
-  "urban resilience",
-  "future energy systems",
-  "decision making under uncertainty",
-  "history of scientific instruments",
-   "history of glassmaking",
-  "ancient irrigation systems",
-  "evolution of banking",
-  "science of color perception",
-  "history of perfume",
-  "renewable desalination",
-  "behavior of crowds",
-  "history of postal systems",
-  "scientific fraud detection",
-  "economics of piracy",
+function extractVocabWord(q) {
 
-  "history of lighthouses",
-  "science of taste",
-  "future of nuclear fusion",
-  "history of silk trade",
-  "urban heat islands",
-  "economics of attention",
-  "history of public parks",
-  "animal tool use",
-  "carbon capture technology",
-  "history of accounting",
+  const text = q.question || "";
 
-  "psychology of risk taking",
-  "history of census systems",
-  "science of resilience",
-  "future of food production",
-  "history of maritime trade",
-  "economics of auctions",
-  "history of photography",
-  "evolution of transportation hubs",
-  "digital archiving",
-  "science of decision fatigue",
+  let m = text.match(/'([^']+)'/);
 
-  "history of bridges",
-  "economics of luxury goods",
-  "forest ecology",
-  "history of scientific expeditions",
-  "human adaptation to climate",
-  "science of creativity",
-  "history of universities",
-  "future of smart cities",
-  "economics of migration",
-  "history of agriculture",
+  if (m) return m[1].trim().toLowerCase();
 
-  "science of curiosity",
-  "history of weather forecasting",
-  "renewable construction materials",
-  "economics of reputation",
-  "history of navigation instruments",
-  "animal camouflage",
-  "future of satellite networks",
-  "history of census records",
-  "science of perception",
-  "economics of innovation",
+  m = text.match(/"([^"]+)"/);
 
-  "history of metallurgy",
-  "urban biodiversity",
-  "science of cooperation",
-  "history of diplomacy",
-  "economics of scarcity",
-  "future of autonomous systems",
-  "history of sanitation",
-  "behavioral finance",
-  "science of aging",
-  "history of festivals",
+  if (m) return m[1].trim().toLowerCase();
 
-  "economics of tourism",
-  "history of weather instruments",
-  "science of language evolution",
-  "future of synthetic biology",
-  "history of journalism",
-  "economics of trust",
-  "urban ecosystems",
-  "science of navigation",
-  "history of textiles",
-  "future of digital currencies",
+  if (
+    Array.isArray(q.options) &&
+    typeof q.correctIndex === "number"
+  ) {
+    return q.options[q.correctIndex]
+      .split(" ")[0]
+      .replace(/[.,;:!?]/g,"")
+      .trim()
+      .toLowerCase();
+  }
 
-  "economics of creativity",
-  "history of shipbuilding",
-  "science of adaptation",
-  "history of water management",
-  "future of renewable grids",
-  "economics of networks",
-  "science of expertise",
-  "history of marketplaces",
-  "future of biotechnology",
-  "animal social structures",
+  return null;
 
-  "history of cartography",
-  "science of collective behavior",
-  "economics of information",
-  "future of space habitats",
-  "history of legal systems",
-  "science of learning",
-  "urban sustainability",
-  "economics of platforms",
-  "history of scientific societies",
-  "future of climate engineering",
-
-  "science of imagination",
-  "history of trade guilds",
-  "economics of patents",
-  "future of ocean exploration",
-  "history of public health",
-  "science of synchronization",
-  "economics of incentives",
-  "history of innovation",
-  "future of human-machine collaboration",
-  "science of forecasting"
-
-];
-
-function pickTopics() {
-  return [...TOPIC_POOL]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
 }
 
+function grammarConcept(q){
+
+  const e=(q.explanation||"").toLowerCase();
+
+  if(e.includes("modifier")) return "modifier placement";
+
+  if(e.includes("comparison")) return "comparison";
+
+  if(e.includes("parallel")) return "parallelism";
+
+  if(e.includes("pronoun")) return "pronoun reference";
+
+  if(e.includes("idiom")) return "idiom";
+
+  if(e.includes("ambigu")) return "ambiguity";
+
+  return "meaning precision";
+
+}
+
+function fixIncorrectUsageQuestion(q) {
+  if (!q.question) return q;
+
+  const text = q.question;
+
+  // Already fine
+  if (
+    Array.isArray(q.options) &&
+    q.options.length === 4 &&
+    q.options.every(o => o.length > 10)
+  ) {
+    return q;
+  }
+
+  const matches = text.match(/([A-D]\))([\s\S]*?)(?=(?:[A-D]\))|$)/g);
+
+  if (matches && matches.length === 4) {
+    q.options = matches.map(m => m.replace(/^[A-D]\)\s*/, "").trim());
+
+    q.question = text.split("A)")[0].trim();
+
+    return q;
+  }
+
+  return q;
+}
+
+
+
+
+
+
+function buildMemoryPrompt(memory) {
+
+return `
+
+############################
+
+PREVIOUSLY USED VOCABULARY
+
+${memory.usedVocab.join("\n")}
+
+############################
+
+PREVIOUSLY USED RC TOPICS
+
+${memory.usedRcTopics.join("\n")}
+
+############################
+
+PREVIOUSLY USED SPEED TOPICS
+
+${memory.usedSpeedTopics.join("\n")}
+
+############################
+
+PREVIOUSLY USED GRAMMAR CONCEPTS
+
+${memory.usedGrammarConcepts.join("\n")}
+
+############################
+
+ABSOLUTE RULES
+
+Do NOT reuse ANY vocabulary word listed above.
+
+Do NOT reuse ANY RC topic listed above.
+
+Do NOT reuse ANY speed-reading topic listed above.
+
+Do NOT reuse ANY grammar concept listed above.
+
+If there is any conflict,
+
+generate a completely different workout.
+
+`;
+
+}
 
 // 🔥 GENERATE WORKOUT (YOUR LOGIC REUSED)
 async function generateWorkout() {
 
-  const { data: previousWorkouts } = await supabase
-  .from("daily_workout_templates")
-  .select("content, workout_date")
-  .order("workout_date", { ascending: false })
-  .limit(60);
+const { data: memoryRows, error } = await supabase
+  .from("workout_memory")
+  .select("*")
+  .order("last_used", { ascending: false })
+  .limit(500);
 
- 
+if (error) throw error;
 
+const memory = {
+  usedVocab: [],
+  usedRcTopics: [],
+  usedSpeedTopics: [],
+  usedGrammarConcepts: []
+};
 
-const recentContentSnippets = [];
-
-(previousWorkouts || []).forEach(day => {
-
-  const content = day.content || {};
-
-  (content.vocab?.questions || []).forEach(q => {
-    recentContentSnippets.push(
-      `VOCAB: ${q.question} | ${(q.options || []).join(" | ")}`
-    );
-  });
-
-  (content.speed?.questions || []).forEach(q => {
-    recentContentSnippets.push(
-      `SPEED: ${(q.paragraph || "").slice(0,150)}`
-    );
-  });
-
-  if (content.rc1?.passage) {
-    recentContentSnippets.push(
-      `RC: ${content.rc1.passage.slice(0,300)}`
-    );
-  }
-
-  if (content.rc2?.passage) {
-    recentContentSnippets.push(
-      `RC: ${content.rc2.passage.slice(0,300)}`
-    );
-  }
-
+(memoryRows || []).forEach(row => {
+  if (row.type === "vocab") memory.usedVocab.push(row.value);
+  if (row.type === "rc") memory.usedRcTopics.push(row.value);
+  if (row.type === "speed") memory.usedSpeedTopics.push(row.value);
+  if (row.type === "grammar") memory.usedGrammarConcepts.push(row.value);
 });
 
-const memoryBlock = `
+console.log({
+  vocab: memory.usedVocab.length,
+  rc: memory.usedRcTopics.length,
+  speed: memory.usedSpeedTopics.length,
+  grammar: memory.usedGrammarConcepts.length
+});
 
-RECENT WORKOUT CONTENT
+  
+const todaysTopics = await getTodaysTopics();
 
-${recentContentSnippets.slice(0,300).join("\n")}
+const todaysVocab = await getTodaysVocab();
 
-CRITICAL NOVELTY RULE
+const todaysWords = todaysVocab.map(x => x.word);
 
-Everything generated today must be substantially different.
+const todaysIdioms = await getTodaysIdioms(memory);
 
-DO NOT REPEAT:
+const todaysFillOpenings = await getTodaysFillOpenings();
+  
 
-- vocabulary words
-- vocabulary contexts
-- RC themes
-- RC arguments
-- RC viewpoints
-- RC examples
-- speed reading passages
-- explanation structures
+console.log("Today's vocab:", todaysWords);
+console.log("Today's idioms:", todaysIdioms);
 
-Novelty is mandatory.
-
-If any vocabulary word, RC theme, RC argument,
-speed-reading passage theme, or grammar pattern
-appears in the previous content,
-generate a completely different one.
-
-Rephrasing is NOT sufficient.
-
-Semantic duplication is forbidden.
-
-`;
-
-  const selectedTopics = pickTopics();
+console.log("Today's fill openings:", todaysFillOpenings);
+console.log("Today's RC1:", todaysTopics.rc1_topic);
+console.log("Today's RC2:", todaysTopics.rc2_topic);
+console.log("Today's Speed:", todaysTopics.speed_topics);
 
 const topicInstruction = `
-MANDATORY TOPICS FOR TODAY:
+MANDATORY TOPICS
 
-${selectedTopics.join("\n")}
+RC1 MUST use ONLY this topic:
 
-STRICT RULES:
+${todaysTopics.rc1_topic}
 
-DO NOT use:
-- AI
-- social media
-- remote work
-- startup culture
-- productivity culture
-- generic climate change discussion
+RC2 MUST use ONLY this topic:
 
-unless explicitly present in the mandatory topics list.
+${todaysTopics.rc2_topic}
 
-Topic repetition is forbidden.
+Generate EXACTLY 10 Speed Reading passages.
+
+Use these topics exactly once:
+
+${todaysTopics.speed_topics
+  .map((topic, index) => `${index + 1}. ${topic}`)
+  .join("\n")}
+
+ABSOLUTE RULES
+
+- Do NOT change the RC topics.
+- Do NOT invent new RC topics.
+- Every Speed passage must use exactly one topic from the list.
+- Every Speed topic must be used exactly once.
+- Do NOT introduce additional Speed topics.
 `;
 
 const prompt = `
-${memoryBlock}
+${buildMemoryPrompt(memory)}
 ${topicInstruction}
 
 You are a senior CAT VARC examiner who has designed questions for the CAT exam.
@@ -443,6 +478,97 @@ Your task is NOT to reward surface comprehension.
 Your task is to punish shallow interpretation.
 
 Your job is NOT to generate easy comprehension questions.
+
+PHASE 1 – PLAN
+
+Before writing the workout, internally create a topic map.
+
+Rules:
+
+* RC1 uses one domain.
+* RC2 uses another unrelated domain.
+* Each Speed passage must use a different discipline.
+
+None may overlap with
+
+RC
+
+Vocabulary
+
+Grammar.
+* Every vocabulary question must come from a different discipline.
+
+Examples
+
+medicine
+
+history
+
+music
+
+architecture
+
+finance
+
+law
+
+sports
+
+ecology
+
+astronomy
+
+psychology
+
+No discipline may repeat.
+* Every Grammar question uses a different context.
+
+No scientific object, historical event, animal, technology,
+institution, profession, natural phenomenon or case study may
+appear more than once anywhere in the workout.
+
+Forbidden:
+- volcano appearing twice
+- bird appearing twice
+- migration appearing twice
+- anthropology appearing twice
+- renewable materials appearing twice
+- navigation appearing twice
+- peer review appearing twice
+
+If any topic repeats,
+rewrite it before producing JSON.
+
+Never output this planning step.
+
+PHASE 2 – DIVERSITY CHECK
+
+Create a list of every noun/topic used.
+
+Examples:
+
+bird
+volcano
+migration
+peer review
+navigation
+renewable materials
+urban anthropology
+
+Every noun may appear ONLY ONCE in the entire workout.
+
+If any noun appears twice,
+
+rewrite the later question.
+
+This applies across ALL sections.
+
+RC
+Speed
+Vocabulary
+Grammar
+
+must all use different examples.
 
 
 Your job is to design questions that test:
@@ -610,6 +736,38 @@ explanation (80-120 words)
 
 EXPLANATION QUALITY RULE
 
+EXPLANATIONS ARE WRITTEN BEFORE THE OPTIONS ARE SHUFFLED.
+
+Therefore:
+
+Never refer to:
+
+- the first option
+- the second option
+- the third option
+- the fourth option
+- Option A
+- Option B
+- Option C
+- Option D
+- the correct option
+
+Always refer ONLY to the actual content.
+
+Example:
+
+Correct:
+
+The sentence describing gradual accumulation best reflects the meaning of "accretion."
+
+Wrong:
+
+The first option is correct.
+
+Never refer to option numbers such as Option 0, Option 1, Option A or Option B.
+
+Explain the answer by referring to the content of the option, not its position.
+
 Explanations must feel natural, analytical, and human.
 
 Avoid rigid templates like:
@@ -643,6 +801,18 @@ Each explanation should vary naturally in style and structure.
 
 Length:
 100-180 words.
+
+GRAMMAR EXPLANATION RULE
+
+For grammar questions, explain:
+
+- the precise grammatical or logical principle being tested,
+- why the chosen sentence preserves the intended meaning,
+- why the strongest distractor appears acceptable at first reading but subtly changes the meaning or introduces a grammatical flaw.
+
+Do NOT simply state that one sentence is grammatically correct.
+
+Teach the underlying concept exactly as an experienced CAT/GMAT mentor would.
 
 ----------------------------------
 
@@ -694,53 +864,210 @@ Some passages should use:
 
 SECTION 2 VOCABULARY
 
-Generate exactly 10 questions.
+Generate exactly 10 vocabulary questions.
 
-Distribution:
+TODAY'S VOCABULARY WORDS
 
-- 4 Fill in the Blank
-- 3 Incorrect Usage
-- 3 Contextual Meaning
+${todaysWords.join("\n")}
 
-QUESTION TYPES
+ABSOLUTE RULES
 
-FILL IN THE BLANK
+Use ONLY the vocabulary words listed above.
 
-Use advanced editorial vocabulary.
+Do NOT generate any other vocabulary word.
 
-Students must infer the word from context.
+Each vocabulary word may be used only once.
 
+The two selected idioms/phrasal verbs are NOT vocabulary words.
 
-INCORRECT USAGE
+Do NOT use them in Synonym, Antonym, Incorrect Usage or Fill in the Blank questions.
 
-Present four sentences.
+Use them ONLY in the Idiom / Phrasal Verb section.
 
-The target word appears in every sentence.
+If you generate a vocabulary word outside this list,
+the workout is invalid.
 
-One sentence uses the word incorrectly.
+Never use words from previous workouts.
 
-Students must identify the incorrect usage.
+Distribution (STRICT)
 
-CONTEXTUAL MEANING
+Use Today's Vocabulary Words:
 
-One CAT-style contextual interpretation question.
+- 2 Incorrect Usage
+- 2 Synonyms
+- 2 Antonyms
+- 2 Fill in the Blank
 
-VOCABULARY SOURCE
+Use Today's Idioms / Phrasal Verbs:
 
-Use vocabulary commonly found in:
+- 2 Idiom / Phrasal Verb questions
 
-- Economist
-- Aeon
-- Atlantic
-- New Yorker
-- CAT passages
-- GMAT verbal
+Do NOT generate Contextual Meaning questions.
 
-Avoid excessive philosophy jargon.
+Do NOT refer to any passage.
 
-Avoid repeating words from previous workouts.
+Do NOT use:
+- according to the passage
+- according to the paragraph
+- the author implies
+- the passage suggests
+- the passage indicates
 
-FORMAT
+Every vocabulary question must use exactly ONE word from Today's Vocabulary Words.
+
+Question Types:
+
+1. Incorrect Usage
+Question:
+"Identify the INCORRECT usage of the word 'X'."
+
+Options:
+4 complete sentences.
+
+2. Synonym
+
+Question:
+"Choose the word closest in meaning to 'X'."
+
+Options:
+4 single-word choices.
+
+3. Antonym
+
+Question:
+"Choose the word opposite in meaning to 'X'."
+
+Options:
+4 single-word choices.
+
+4. Fill in the Blank
+
+TODAY'S FILL OPENINGS
+
+1.
+${todaysFillOpenings[0].opening}
+
+Category:
+${todaysFillOpenings[0].category}
+
+2.
+${todaysFillOpenings[1].opening}
+
+Category:
+${todaysFillOpenings[1].category}
+
+ABSOLUTE RULES
+
+Generate EXACTLY TWO Fill in the Blank questions.
+
+Each question must contain:
+
+* one complete grammatical sentence
+
+* exactly ONE blank written as ____
+
+* the supplied opening unchanged
+
+* exactly ONE correct vocabulary word
+
+Example
+
+Opening:
+
+The historian argued that
+
+Question:
+
+The historian argued that the gradual ____ of evidence eventually transformed scholarly opinion.
+
+Options
+
+accretion
+animus
+quiescent
+protean
+
+Rules
+
+The options MUST be four SINGLE WORDS.
+
+Never use phrases.
+
+Never use clauses.
+
+Never use sentences.
+
+The blank must be answerable by inserting ONE word.
+
+The final sentence must sound natural after inserting the correct answer.
+
+NATURALNESS CHECK
+
+Before returning the question, mentally insert the correct vocabulary word into the blank and read the sentence as complete English.
+
+The sentence must sound like something that could naturally appear in a quality newspaper, magazine, academic essay, or editorial.
+
+Reject sentences that sound forced, awkward, artificially constructed, or written merely to accommodate the target word.
+
+The correct answer must fit BOTH grammatically and semantically.
+
+The distractors should appear plausible but should produce subtle errors of meaning rather than obvious grammatical mistakes.
+
+The distractors should all be believable in context.
+
+EXPLANATION RULE
+
+Do NOT mention option numbers or positions.
+
+Explain why the correct vocabulary word fits the surrounding sentence naturally.
+
+Briefly explain why the closest distractor appears tempting but fails because of meaning or usage.
+
+----------------------------------------
+
+5. Idiom / Phrasal Verb
+
+TODAY'S IDIOMS / PHRASAL VERBS
+
+1.
+Phrase:
+${todaysIdioms[0].phrase}
+
+Meaning:
+${todaysIdioms[0].meaning}
+
+Type:
+${todaysIdioms[0].type}
+
+2.
+Phrase:
+${todaysIdioms[1].phrase}
+
+Meaning:
+${todaysIdioms[1].meaning}
+
+Type:
+${todaysIdioms[1].type}
+
+ABSOLUTE RULES
+
+Generate EXACTLY TWO questions.
+
+Use ONLY the two phrases above.
+
+Do NOT invent any new idiom.
+
+Do NOT invent any new phrasal verb.
+
+Do NOT convert ordinary vocabulary words into idioms.
+
+Each question must ask about the supplied phrase.
+
+The correct answer must exactly match the supplied meaning.
+
+Create three plausible distractors.
+
+Every question MUST contain:
 
 question
 options
@@ -1034,180 +1361,63 @@ Before finalizing the question set, check:
 
 ----------------------------------
 
-SECTION 4 MICRO REASONING
+SECTION 4 MICRO SKILL
 
-IMPORTANT:
+Generate exactly FIVE GMAT-style Sentence Correction questions.
 
-Although this section is called MICRO REASONING,
-generate ONLY elite GMAT-style Sentence Correction questions.
+Difficulty may vary.
 
-Generate exactly 5 questions.
+At least TWO questions should be CAT/GMAT level.
 
-FORMAT
+The remaining questions may be moderate in difficulty provided they are completely correct, unambiguous, and professionally written.
 
-question
-options (4)
+Never sacrifice correctness, clarity, or natural English merely to increase difficulty.
+
+Each question MUST have:
+
+instruction
+originalSentence
+options (4 complete sentences)
 correctIndex
 skill="grammar"
 explanation
 
-DIFFICULTY
+Rules:
 
-Target GMAT Focus 705-765 level.
+The instruction MUST always be one of:
 
-A CAT 99.5 percentile student should find at least TWO options genuinely attractive.
+- Choose the BEST revision.
+- Which version expresses the intended meaning most precisely?
+- Select the most effective sentence.
+- Which sentence is grammatically and logically superior?
 
-QUESTION DESIGN
+The originalSentence must always be displayed separately.
 
-The question stem must contain a complete sentence.
+ALL four options must be COMPLETE SENTENCES.
 
-The sentence should already be reasonably well written.
+Never split the original sentence into fragments.
 
-The task is NOT to spot obvious grammatical mistakes.
+Never create continuation options.
 
-The task is to identify the version that preserves the intended meaning with maximum precision.
+Never generate blanks.
 
-OPTION DESIGN
+Never hide the sentence inside an option.
 
-All four options must initially appear correct.
+Every option should independently replace the original sentence.
 
-No option may contain:
+Each question must test ONLY ONE concept.
 
-- obvious subject-verb disagreement
-- obvious pronoun mistakes
-- obvious tense errors
-- broken English
-- awkward nonsense phrasing
+Use these concepts:
 
-A student should NOT be able to eliminate any option instantly.
+modifier placement
+comparison
+parallelism
+pronoun reference
+logical predication
+meaning precision
+idiomatic usage
 
-The difference between options must depend on:
-
-- logical meaning
-- modifier placement
-- comparison logic
-- reference clarity
-- ambiguity
-- parallel structure
-- idiomatic precision
-- concision
-
-DISTRACTOR RULE
-
-Wrong options must fail because they:
-
-- subtly change meaning
-- introduce ambiguity
-- weaken logical comparison
-- create unclear reference
-- distort the intended relationship between ideas
-
-NOT because they are visibly ungrammatical.
-
-The strongest distractor should appear almost correct.
-
-MEANING FIRST RULE
-
-ABSOLUTELY FORBIDDEN QUESTION TYPES
-
-Do NOT generate questions primarily testing:
-
-- neither/nor agreement
-- either/or agreement
-- not only/but also parallelism
-- simple subject verb agreement
-- obvious pronoun errors
-- basic tense corrections
-
-These are too easy.
-
-If a question can be solved by applying a single school-grammar rule,
-discard it and generate a harder one.
-
-At least 4 of the 5 questions must require
-meaning analysis rather than grammar detection.
-
-GMAT STYLE EXAMPLE
-
-Bad:
-
-Neither the manager nor the employees were...
-
-Good:
-
-Unlike previous studies that treated migration as a response to scarcity,
-the new research argues that migration patterns often emerge
-from perceptions of opportunity rather than actual shortages.
-
-All four options should appear grammatically acceptable.
-The correct answer should be chosen because it preserves
-the intended logical relationship most precisely.
-
-The correct answer must be correct primarily because it preserves the intended meaning.
-
-Grammar should support meaning.
-
-Grammar should not be the sole deciding factor.
-
-BAD QUESTION EXAMPLE
-
-The company have launched...
-
-GOOD QUESTION EXAMPLE
-
-The company, along with several subsidiaries, has launched...
-
-where multiple options appear plausible and the distinction depends on meaning and structure.
-
-VARIETY RULE
-
-Across the 5 questions, cover different concepts:
-
-- modifier placement
-- comparisons
-- parallelism
-- logical predication
-- pronoun reference
-- concision
-- idiomatic usage
-- meaning precision
-
-Do not repeat the same concept more than twice.
-
-EXPLANATION RULE
-
-Explain:
-
-- the underlying concept
-- the intended meaning
-- why the correct answer preserves meaning
-- why the strongest distractor is tempting
-- the subtle flaw that makes the distractor incorrect
-
-The explanation should resemble how an elite GMAT instructor teaches.
-
-QUESTION QUALITY CHECK
-
-Before finalizing each question:
-
-- Would a school student eliminate options immediately? If yes, rewrite.
-- Are at least two options plausible? If no, rewrite.
-- Does the question test meaning rather than obvious grammar? If no, rewrite.
-- Is the strongest distractor very attractive? If no, rewrite.
-
-MODEL AFTER
-
-Official GMAT Focus Edition Sentence Correction questions.
-
-Avoid:
-
-- school grammar
-- CAT coaching grammar
-- SSC grammar
-- fill-in-the-blank grammar
-- error spotting
-
-Generate only authentic GMAT-style meaning-based sentence correction questions.
+No concept may repeat.
 
 FINAL MICRO VALIDATION
 
@@ -1231,6 +1441,48 @@ Identify internally:
 1. Primary concept tested
 2. Whether all options appear grammatically acceptable
 3. Whether meaning, not grammar, determines the answer
+
+FINAL VALIDATION
+
+Before returning JSON verify:
+
+✓ no repeated nouns
+
+✓ no repeated institutions
+
+✓ no repeated animals
+
+✓ no repeated scientific phenomena
+
+✓ no repeated professions
+
+✓ no repeated historical events
+
+✓ grammar contains instructions
+
+✓ grammar options are complete sentences
+
+✓ vocabulary contexts unique
+
+✓ speed topics unique
+
+✓ RC topics unique
+
+If ANY rule fails,
+
+rewrite ONLY those questions.
+
+Do not output until every check passe
+
+FINAL VOCAB VALIDATION
+
+For every Incorrect Usage question:
+
+1. The question must NOT contain "A)", "B)", "C)", or "D)".
+2. The question must NOT contain more than one example sentence.
+3. The options array must contain exactly four complete sentences.
+4. Every option must begin with a capital letter and end with a period.
+5. If the question contains the answer choices instead of the options array, regenerate that question.
 
 If not,
 regenerate the question.
@@ -1273,6 +1525,46 @@ try {
   }
 
   workout = JSON.parse(raw);
+
+  if (workout.micro?.questions) {
+
+  workout.micro.questions = workout.micro.questions.map(q => ({
+
+    question:
+      q.question ||
+      q.instruction ||
+      "Choose the best revision of the following sentence.",
+
+    originalSentence:
+      q.originalSentence ||
+      "",
+
+    options:
+      Array.isArray(q.options)
+        ? q.options
+        : ["Option A","Option B","Option C","Option D"],
+
+    correctIndex:
+      typeof q.correctIndex === "number"
+        ? q.correctIndex
+        : 0,
+
+    skill: "grammar",
+
+    explanation:
+      q.explanation || ""
+
+  }));
+
+}
+  if (workout.vocab?.questions) {
+  workout.vocab.questions =
+    workout.vocab.questions.map(fixIncorrectUsageQuestion);
+    console.log(
+  "Vocab after repair:",
+  workout.vocab.questions.length
+);
+}
   console.log("STRUCTURE CHECK:", Object.keys(workout || {}))
 
 } catch (e) {
@@ -1330,38 +1622,145 @@ console.log("DETAILED CHECK:", {
 
 });
 
-// 🔥 REMOVE BAD VOCAB QUESTIONS
-if (workout.vocab?.questions) {
 
-  workout.vocab.questions = workout.vocab.questions.filter(q => {
-
-    const text = (q.question || "").toLowerCase();
-
-    return !(
-      text.includes("according to the passage") ||
-      text.includes("according to the paragraph") ||
-      text.includes("the author implies") ||
-      text.includes("the passage suggests") ||
-      text.includes("the passage implies")
-    );
-
-  });
-
-}
 
 // 🔥 VOCAB BACKUP VALIDATION
-if (workout.vocab.questions.length < 10) {
-  throw new Error("Bad vocab generation detected");
-}
+// if (workout.vocab.questions.length < 10) {
+//   throw new Error("Bad vocab generation detected");
+// }
 
-  return workout;
+workout.topicId = todaysTopics.id;
+workout.vocabItems = todaysVocab;
+workout.idiomItems = todaysIdioms;
+workout.fillItems = todaysFillOpenings;
+
+return workout;
 }
 
 // 🔥 MAIN
 
+async function saveMemory(workout) {
+
+  const today = new Date().toISOString().split("T")[0];
+  const rows = [];
+
+  // ---------- VOCAB ----------
+
+(workout.vocab?.questions || []).forEach(q => {
+
+  const word = extractVocabWord(q);
+
+  if(word){
+
+    rows.push({
+      type:"vocab",
+      value:word,
+      last_used:today
+    });
+
+  }
+
+});
+
+  // ---------- RC ----------
+ [workout.rc1, workout.rc2].forEach(rc => {
+
+  if(rc?.questions?.length){
+
+    rows.push({
+
+      type:"rc",
+
+      value:rc.questions[0].question
+            .split(" ")
+            .slice(0,8)
+            .join(" ")
+            .toLowerCase(),
+
+      last_used:today
+
+    });
+
+  }
+
+});
+
+  // ---------- SPEED ----------
+  (workout.speed?.questions || []).forEach(q=>{
+
+  if(q.question){
+
+    rows.push({
+
+      type:"speed",
+
+      value:q.question
+          .split(" ")
+          .slice(0,8)
+          .join(" ")
+          .toLowerCase(),
+
+      last_used:today
+
+    });
+
+  }
+
+});
+(workout.micro?.questions || []).forEach((q, i) => {
+
+  rows.push({
+    type: "grammar",
+    value: `${grammarConcept(q)}-${i}`,
+    last_used: today
+  });
+});
+
+  // ---------- GRAMMAR ----------
+
+ const counts = {};
+
+rows.forEach(r => {
+  const key = `${r.type}-${r.value}`;
+  counts[key] = (counts[key] || 0) + 1;
+});
+
+Object.entries(counts)
+  .filter(([_, count]) => count > 1)
+  .forEach(([key, count]) => {
+    console.log("DUPLICATE:", key, count);
+  });
+  const uniqueRows = [
+
+...new Map(
+
+rows.map(r=>[`${r.type}-${r.value}`,r])
+
+).values()
+
+];
+
+console.log("Rows:", rows.length);
+console.log("Unique:", uniqueRows.length);
+  const { error } = await supabase
+    .from("workout_memory")
+    .upsert(uniqueRows, {
+      onConflict: "type,value"
+    });
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+
+  console.log("Memory rows saved:", uniqueRows.length);
+
+}
+
 async function run() {
 
-  const DAYS_TO_GENERATE = 30;
+  const DAYS_TO_GENERATE = 5;
 
   for (let i = 0; i < DAYS_TO_GENERATE; i++) {
 
@@ -1384,8 +1783,9 @@ const date = new Date();
       continue;
     }
 
-    let workout;
-    let attempts = 0;
+   let workout = null;
+let validWorkout = null;
+let attempts = 0;
 
     while (attempts < 3) {
       try {
@@ -1394,12 +1794,17 @@ const date = new Date();
 
 
 
-        if (validateWorkout(workout)) {
-          console.log("✅ Valid workout generated");
-          break;
-        } else {
-          console.log("❌ Invalid workout, retrying...");
-        }
+       if (validateWorkout(workout)) {
+
+  console.log("✅ Valid workout generated");
+
+  validWorkout = workout;
+
+  break;
+
+}
+
+console.log("❌ Invalid workout, retrying...");
 
       } catch (err) {
   console.log("❌ Generation failed:", err.message || err)
@@ -1408,18 +1813,27 @@ const date = new Date();
       attempts++;
     }
 
-    if (!workout) {
-      console.log("❌ Skipping date due to failure:", workoutDate);
-      continue;
-    }
+if (!validWorkout) {
+  console.log("❌ Failed after 3 attempts. Skipping:", workoutDate);
+  continue;
+}
 
     await supabase
       .from("daily_workout_templates")
       .insert({
         workout_date: workoutDate,
         mode: "normal",
-        content: workout
+        content: validWorkout
       });
+     await saveMemory(validWorkout);
+
+await markTopicsUsed(validWorkout.topicId);
+
+await markVocabUsed(validWorkout.vocabItems);
+
+await markIdiomsUsed(validWorkout.idiomItems);
+
+await markFillUsed(validWorkout.fillItems);
 
     console.log("💾 Saved:", workoutDate);
 

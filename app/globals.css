@@ -556,3 +556,99 @@ textarea::placeholder {
     transform: rotate(360deg);
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes birbalFloat {
+  0%,100%{
+    transform:translateY(0px) scale(1);
+  }
+
+  50%{
+    transform:translateY(-6px) scale(1.05);
+  }
+}
+
+.animate-birbal{
+  animation:birbalFloat 3s ease-in-out infinite;
+}
+
+/* ---------------- DRIVER TOUR ---------------- */
+
+.driver-popover{
+  background:#0f172a !important;
+  color:white !important;
+
+  border-radius:18px !important;
+  border:1px solid rgba(99,102,241,.35) !important;
+
+  box-shadow:0 20px 60px rgba(0,0,0,.45) !important;
+
+  padding:22px !important;
+}
+
+.driver-popover-title{
+  color:white !important;
+  font-size:20px !important;
+  font-weight:700 !important;
+}
+
+.driver-popover-description{
+  color:#cbd5e1 !important;
+  line-height:1.7 !important;
+  font-size:15px !important;
+}
+
+.driver-popover-progress-text{
+  color:#94a3b8 !important;
+}
+
+.driver-popover-close-btn{
+  color:#94a3b8 !important;
+}
+
+.driver-popover-next-btn,
+.driver-popover-prev-btn{
+
+  background:#4f46e5 !important;
+
+  color:white !important;
+
+  border:none !important;
+
+  border-radius:10px !important;
+
+  padding:8px 18px !important;
+
+  text-shadow:none !important;
+
+  font-weight:600 !important;
+}
+
+.driver-popover-next-btn:hover,
+.driver-popover-prev-btn:hover{
+  background:#6366f1 !important;
+}
+
+.driver-popover-arrow-side-top.driver-popover-arrow{
+  border-top-color:#0f172a !important;
+}
+
+.driver-popover-arrow-side-bottom.driver-popover-arrow{
+  border-bottom-color:#0f172a !important;
+}
+
+.driver-popover-arrow-side-left.driver-popover-arrow{
+  border-left-color:#0f172a !important;
+}
+
+.driver-popover-arrow-side-right.driver-popover-arrow{
+  border-right-color:#0f172a !important;
+}
