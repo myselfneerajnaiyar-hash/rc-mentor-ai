@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import AssessmentMode from "./assessment/AssessmentMode";
+import SpeedDrillReview from "./assessment/SpeedDrillReview";
 
 export default function SpeedGym() {
   const [phase, setPhase] = useState("loading");
@@ -311,6 +312,8 @@ export default function SpeedGym() {
 }
 
 function DetailedReport({ result, meta, onRestart }) {
+  return <SpeedDrillReview result={result} meta={meta} onRestart={onRestart} />;
+
   return (
     <div style={reportWrap}>
       <section style={panel}>
