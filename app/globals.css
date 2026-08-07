@@ -652,3 +652,38 @@ textarea::placeholder {
 .driver-popover-arrow-side-right.driver-popover-arrow{
   border-right-color:#0f172a !important;
 }
+@layer components {
+  .premium-passage {
+    @apply w-full rounded-2xl border border-slate-700/70 bg-slate-950/45 px-5 py-6 text-[15px] leading-8 text-slate-200 shadow-inner shadow-black/10 sm:px-8 sm:py-8 sm:text-[17px] sm:leading-9;
+  }
+  .question-card {
+    @apply rounded-2xl border border-slate-700/80 bg-slate-800/80 p-5 text-base font-medium leading-7 text-slate-100 shadow-lg shadow-black/10 sm:p-6;
+  }
+  .option-card {
+    @apply block min-h-14 w-full rounded-xl border border-slate-700 bg-slate-800/70 p-4 text-left leading-6 text-slate-200 transition-[border-color,background-color,transform] duration-200 hover:-translate-y-px hover:border-slate-500 hover:bg-slate-700/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 sm:px-5;
+  }
+  .option-card-selected {
+    @apply border-indigo-400 bg-indigo-500/20 text-white ring-1 ring-indigo-400/50 hover:border-indigo-300 hover:bg-indigo-500/25;
+  }
+
+  .timer-card {
+    @apply flex min-h-24 items-center gap-4 rounded-xl border px-5 py-4 backdrop-blur-xl transition-colors duration-300;
+  }
+  .timer-card-normal {
+    @apply border-blue-400/30 bg-blue-500/10 text-blue-100 shadow-[0_0_24px_rgba(59,130,246,0.12)];
+  }
+  .timer-card-warning {
+    @apply border-amber-400/30 bg-amber-500/10 text-amber-200;
+  }
+  .timer-card-critical {
+    @apply animate-pulse border-red-400/35 bg-red-500/10 text-red-200;
+  }
+}
+
+.assessment-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(71 85 105 / 0.7) transparent;
+}
+.assessment-scrollbar::-webkit-scrollbar { height: 5px; width: 5px; }
+.assessment-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.assessment-scrollbar::-webkit-scrollbar-thumb { background: rgb(71 85 105 / 0.7); border-radius: 999px; }

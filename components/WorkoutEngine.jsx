@@ -1,7 +1,10 @@
 "use client"
 import { supabase } from "../lib/supabase"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import WorkoutShell from "./assessment/WorkoutShell"
+import WorkoutReport from "./assessment/WorkoutReport"
+import DetailedSolutions from "./assessment/DetailedSolutions"
 import {
   BarChart,
   Bar,
@@ -21,7 +24,8 @@ export default function WorkoutEngine({
   mode, 
   setView,
   initialAnswers = null,
-  initialPhase = null
+  initialPhase = null,
+  onComplete
 }) {
    const speedQuestions = workout?.speed?.questions || [];
 
@@ -63,6 +67,26 @@ const [microIndex, setMicroIndex] = useState(0)
 const [microTimer, setMicroTimer] = useState(null)
 
 const [attemptSaved, setAttemptSaved] = useState(false)
+const timingRef = useRef({ speed: 0, vocab: 0, rc1: 0, rc2: 0, micro: 0 })
+const [workoutTimings, setWorkoutTimings] = useState(null)
+
+useEffect(() => {
+  if (!["speed", "vocab", "rc1", "rc2", "micro"].includes(phase)) return
+  const section = phase
+  const startedAt = Date.now()
+  return () => {
+    const elapsedSeconds = Math.max(0, Math.round((Date.now() - startedAt) / 1000))
+    timingRef.current = {
+      ...timingRef.current,
+      [section]: timingRef.current[section] + elapsedSeconds,
+    }
+    setWorkoutTimings({ ...timingRef.current })
+  }
+}, [phase])
+
+useEffect(() => {
+  if (phase === "result") onComplete?.()
+}, [phase, onComplete])
 
 /* =========================================================
    RESET VOCAB TIMER ON ENTRY
@@ -286,6 +310,15 @@ useEffect(() => {
 
 if (viewMode === "explanation") {
 
+  return (
+    <DetailedSolutions
+      workout={workout}
+      answers={answers}
+      onBack={() => setViewMode("workout")}
+      detectThinkingTrap={detectThinkingTrap}
+    />
+  )
+
   const sections = ["speed", "vocab", "rc1", "rc2", "micro"]
 
   return (
@@ -452,6 +485,15 @@ if (viewMode === "explanation") {
     
   const { result, totalScore, skillMap } = calculateScore()
 
+  const moduleOrder = ["speed", "vocab", "rc1", "rc2", "micro"]
+  const totalWorkoutQuestions = moduleOrder.reduce((total, section) => total + workout[section].questions.length, 0)
+  const completedWorkoutQuestions = moduleOrder.reduce((total, section) => total + Object.keys(answers[section] || {}).length, 0)
+  const workoutChrome = (title, icon, questionNumber, questionTotal, timer, children) => (
+    <WorkoutShell phase={phase} completedQuestions={completedWorkoutQuestions} totalQuestions={totalWorkoutQuestions} title={title} icon={icon} questionNumber={questionNumber} questionTotal={questionTotal} timer={timer}>
+      {children}
+    </WorkoutShell>
+  )
+
   /* =========================================================
      SPEED RENDER
   ========================================================= */
@@ -464,20 +506,12 @@ if (viewMode === "explanation") {
 
     const question = workout.speed.questions[speedIndex]
 
-    return (
-      <div className="p-8 text-white">
-
-        <h2 className="text-xl font-semibold mb-4">
-          Speed Drill ({speedIndex + 1}/{workout.speed.questions.length})
-        </h2>
-
-        <div className="mb-4">
-          Time Left: {speedTimer}s
-        </div>
+    return workoutChrome("SPEED DRILL", "⚡", speedIndex + 1, workout.speed.questions.length, speedTimer, (
+      <>
 
       {speedStage === "paragraph" && (
   <div>
-    <div className="bg-slate-800 p-6 rounded-xl">
+    <div className="premium-passage">
       {question.paragraph}
     </div>
 
@@ -498,7 +532,7 @@ if (viewMode === "explanation") {
         {speedStage === "question" && (
           <div className="space-y-4">
 
-            <div className="bg-slate-800 p-6 rounded-xl">
+            <div className="question-card">
               {question.question}
             </div>
 
@@ -506,10 +540,10 @@ if (viewMode === "explanation") {
   <button
     key={i}
     onClick={() => handleSpeedAnswer(i)}
-    className={`block w-full text-left p-4 rounded-lg ${
+    className={`option-card ${
       answers.speed[speedIndex] === i
-        ? "bg-indigo-600"
-        : "bg-slate-700 hover:bg-slate-600"
+        ? "option-card-selected"
+        : ""
     }`}
   >
     {opt}
@@ -519,8 +553,8 @@ if (viewMode === "explanation") {
           </div>
         )}
 
-      </div>
-    )
+      </>
+    ))
   }
 
   /* =========================================================
@@ -538,17 +572,10 @@ if (viewMode === "explanation") {
   return <div>Loading...</div>
 }
 
-    return (
-      <div className="p-8 text-white">
+    return workoutChrome("VOCABULARY", "📚", vocabIndex + 1, workout.vocab.questions.length, sectionTimer, (
+      <>
 
-        <h2 className="text-xl font-semibold mb-4">
-          Vocabulary Lab ({vocabIndex + 1}/{workout.vocab.questions.length})
-        </h2>
-        <div className="mb-4">
-  Time Left: {sectionTimer}s
-</div>
-
-        <div className="bg-slate-800 p-6 rounded-xl mb-6">
+        <div className="question-card mb-6">
           {question.question}
         </div>
 
@@ -557,10 +584,10 @@ if (viewMode === "explanation") {
             <button
               key={i}
               onClick={() => handleVocabAnswer(i)}
-              className={`block w-full text-left p-4 rounded-lg
+              className={`option-card
                 ${answers.vocab[vocabIndex] === i
-                  ? "bg-indigo-600"
-                  : "bg-slate-700 hover:bg-slate-600"
+                  ? "option-card-selected"
+                  : ""
                 }`}
             >
               {opt}
@@ -596,8 +623,8 @@ if (viewMode === "explanation") {
 
         </div>
 
-      </div>
-    )
+      </>
+    ))
   }
 
   /* =========================================================
@@ -636,30 +663,22 @@ if (phase === "rc1" || phase === "rc2") {
   }
 }
 
-  return (
-    <div className="p-8 text-white">
-
-      <h2 className="text-xl font-semibold mb-4">
-        {phase === "rc1" ? "RC Passage 1" : "RC Passage 2"}
-      </h2>
-
-      <div className="mb-4">
-        Time Left: {rcTimer}s
-      </div>
+  return workoutChrome(phase === "rc1" ? "RC 1" : "RC 2", phase === "rc1" ? "📖" : "📘", rcIndex + 1, section.questions.length, rcTimer, (
+    <>
 
       {/* Passage */}
-      <div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line max-h-[280px] overflow-y-auto">
+      <div className="premium-passage mb-6 max-h-[420px] overflow-y-auto whitespace-pre-line">
   {section.passage}
 </div>
 
      {question.paragraph && (
-  <div className="bg-slate-800 p-6 rounded-xl mb-6 whitespace-pre-line">
+  <div className="premium-passage mb-6 whitespace-pre-line">
     {question.paragraph}
   </div>
 )}
 
 {/* Question */}
-<div className="bg-slate-700 p-6 rounded-xl mb-4">
+<div className="question-card mb-4">
   {question.question}
 </div>
 
@@ -669,10 +688,10 @@ if (phase === "rc1" || phase === "rc2") {
           <button
             key={i}
             onClick={() => handleRcAnswer(i)}
-            className={`block w-full text-left p-4 rounded-lg
+            className={`option-card
               ${answers[phase][rcIndex] === i
-                ? "bg-indigo-600"
-                : "bg-slate-700 hover:bg-slate-600"
+                ? "option-card-selected"
+                : ""
               }`}
           >
             {opt}
@@ -709,8 +728,8 @@ if (phase === "rc1" || phase === "rc2") {
 
       </div>
 
-    </div>
-  )
+    </>
+  ))
 }
 
 
@@ -741,24 +760,16 @@ if (phase === "micro") {
     setPhase("result")
   }
 
-  return (
-    <div className="p-8 text-white">
-
-      <h2 className="text-xl font-semibold mb-4">
-        Micro Skill Round ({microIndex + 1}/{workout.micro.questions.length})
-      </h2>
-
-      <div className="mb-4">
-        Time Left: {microTimer}s
-      </div>
+  return workoutChrome("MICRO SKILLS", "🎯", microIndex + 1, workout.micro.questions.length, microTimer, (
+    <>
 
      {/* Paragraph */}
-<div className="bg-slate-800 p-6 rounded-xl mb-4 whitespace-pre-line">
+<div className="premium-passage mb-4 whitespace-pre-line">
   {question.paragraph}
 </div>
 
 {/* Question */}
-<div className="bg-slate-700 p-6 rounded-xl mb-4">
+<div className="question-card mb-4">
   {question.question}
 </div>
 
@@ -767,10 +778,10 @@ if (phase === "micro") {
           <button
             key={i}
             onClick={() => handleMicroAnswer(i)}
-            className={`block w-full text-left p-4 rounded-lg
+            className={`option-card
               ${answers.micro[microIndex] === i
-                ? "bg-indigo-600"
-                : "bg-slate-700 hover:bg-slate-600"
+                ? "option-card-selected"
+                : ""
               }`}
           >
             {opt}
@@ -806,11 +817,22 @@ if (phase === "micro") {
 
       </div>
 
-    </div>
-  )
+    </>
+  ))
 }
 
  if (phase === "result") {
+
+  return (
+    <WorkoutReport
+      workout={workout}
+      result={result}
+      skillMap={skillMap}
+      totalScore={totalScore}
+      timings={workoutTimings}
+      onOpenSolutions={() => setViewMode("explanation")}
+    />
+  )
 
 
  

@@ -7,6 +7,7 @@ import { supabase } from "../lib/supabase";
 import RCHistory from "./RCHistory";
 import TabGroup from "./TabGroup";
 import BirbalMessage from "./BirbalMessage";
+import AssessmentMode from "./assessment/AssessmentMode";
 import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 import PracticeSwitcher from "./PracticeSwitcher";
 
@@ -814,6 +815,7 @@ function formatBirbal(text) {
 
 return (
   <div className="min-h-screen text-white">
+  <AssessmentMode active={phase === "test"} />
      
   <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 16px" }}>
 

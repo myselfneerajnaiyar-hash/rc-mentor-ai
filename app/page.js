@@ -31,6 +31,7 @@ import CATArenaTestView from "../cat-arena/CATArenaTestViewV2";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainerV2";
 import BirbalFloatingButton from "@/components/home-v2/BirbalFloatingButton";
+import AssessmentMode from "@/components/assessment/AssessmentMode";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
@@ -734,18 +735,24 @@ if (authLoading) {
 }
 const navItems = [
   { id: "home", label: "Home", icon: Home },
-  { id: "mentor", label: "Ask Birbal", icon: MessageSquare },
   { id: "workout", label: "Daily Workout", icon: Flame },
-  { id: "precision", label: "Precision Training", icon: Target },
   { id: "rc", label: "RC", icon: Brain },
-  { id: "vocab", label: "Vocab", icon: BookOpen },
- 
-  { id: "speed", label: "Speed", icon: Timer },
-  { id: "hangman", label: "Word Hunt", icon: Puzzle },
-
-  ...(exam === "CAT"
+   { id: "precision", label: "Precision Training", icon: Target },
+   ...(exam === "CAT"
     ? [{ id: "cat", label: "CAT", icon: GraduationCap }]
     : []),
+   { id: "vocab", label: "Vocab", icon: BookOpen },
+ 
+  { id: "speed", label: "Speed", icon: Timer },
+   { id: "hangman", label: "Word Hunt", icon: Puzzle },
+  { id: "mentor", label: "Ask Birbal", icon: MessageSquare },
+  
+ 
+  
+  
+ 
+
+  
 
   { id: "premium", label: "Premium", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
@@ -907,6 +914,7 @@ ${
 
 {view === "cat" && (
   <>
+  <AssessmentMode active={catPhase === "test"} />
   <div className="max-w-5xl mx-auto px-6">
    {catPhase === "idle" && (
   <CATArenaLanding

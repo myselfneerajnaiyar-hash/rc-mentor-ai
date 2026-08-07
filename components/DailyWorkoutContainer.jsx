@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import DailyWorkoutFlow from "./DailyWorkoutFlow"
 import DailyPerformance from "./daily/DailyPerformance"
 import DailyAnalytics from "./daily/DailyAnalytics"
@@ -12,6 +14,8 @@ import {
 } from "@/components/ui/tabs"
 
 export default function DailyWorkoutContainer({ user }) {
+  const [workoutRunning, setWorkoutRunning] = useState(false)
+
   return (
     <div className="space-y-8">
 
@@ -28,7 +32,7 @@ export default function DailyWorkoutContainer({ user }) {
       {/* Tabs */}
       <Tabs defaultValue="start" className="w-full">
 
-    <TabsList
+    {!workoutRunning && <TabsList
 className="
 flex gap-2 p-1
 bg-slate-900/60
@@ -36,7 +40,8 @@ backdrop-blur-xl
 border border-slate-800
 rounded-2xl
 w-full
-overflow-x-auto
+overflow-x-auto overflow-y-hidden
+[scrollbar-width:none] [&::-webkit-scrollbar]:hidden
 px-1
 "
 >
@@ -85,7 +90,7 @@ transition-all duration-200"
             Performance
           </TabsTrigger>
 
-        </TabsList>
+        </TabsList>}
 
         {/* Tab Content */}
 
@@ -93,6 +98,7 @@ transition-all duration-200"
           <DailyWorkoutFlow
             mode="normal"
             user={user}
+            onRunningChange={setWorkoutRunning}
           />
         </TabsContent>
 

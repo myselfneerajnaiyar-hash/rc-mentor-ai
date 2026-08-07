@@ -109,7 +109,8 @@ Return ONLY valid JSON in this format:
         "Option 3",
         "Option 4"
       ],
-      "correct": 0
+      "correct": 0,
+      "explanation": "Briefly explain why the correct option follows from the paragraph."
     },
     {
       "q": "Question on para 2",
@@ -119,7 +120,8 @@ Return ONLY valid JSON in this format:
         "Option 3",
         "Option 4"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "Briefly explain why the correct option follows from the paragraph."
     },
     {
       "q": "Question on para 3",
@@ -129,7 +131,8 @@ Return ONLY valid JSON in this format:
         "Option 3",
         "Option 4"
       ],
-      "correct": 2
+      "correct": 2,
+      "explanation": "Briefly explain why the correct option follows from the paragraph."
     },
     {
       "q": "Question on para 4",
@@ -139,7 +142,8 @@ Return ONLY valid JSON in this format:
         "Option 3",
         "Option 4"
       ],
-      "correct": 3
+      "correct": 3,
+      "explanation": "Briefly explain why the correct option follows from the paragraph."
     }
   ]
 }

@@ -1760,7 +1760,7 @@ console.log("Unique:", uniqueRows.length);
 
 async function run() {
 
-  const DAYS_TO_GENERATE = 5;
+  const DAYS_TO_GENERATE = 15;
 
   for (let i = 0; i < DAYS_TO_GENERATE; i++) {
 

@@ -1,10 +1,10 @@
 "use client"
 import { supabase } from "../lib/supabase"
 import { useEffect, useState } from "react"
-import { CheckCircle, Loader2 } from "lucide-react"
+import { BookOpen, BookText, CheckCircle, Loader2, PenLine, Zap } from "lucide-react"
 import WorkoutEngine from "./WorkoutEngine.jsx";
 
-export default function DailyWorkoutFlow({ mode = "normal", setView }) {
+export default function DailyWorkoutFlow({ mode = "normal", setView, onRunningChange }) {
   const [status, setStatus] = useState("building") 
   // building | ready | running
 
@@ -17,6 +17,11 @@ export default function DailyWorkoutFlow({ mode = "normal", setView }) {
     { label: "Crafting RC Passage 2", done: false },
     { label: "Designing Micro Skill Round", done: false },
   ])
+
+  useEffect(() => {
+    onRunningChange?.(status === "running")
+    return () => onRunningChange?.(false)
+  }, [status, onRunningChange])
 
 useEffect(() => {
   async function loadWorkout() {
@@ -165,18 +170,45 @@ if (status === "alreadyAttempted") {
 
   if (status === "ready") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
-        <div className="text-center space-y-6">
-          <h1 className="text-3xl font-bold">
-            ✅ Your 30-Minute Workout Is Ready
-          </h1>
+      <div className="min-h-screen bg-slate-950 py-8 text-white sm:py-12">
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+          <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-6 shadow-2xl shadow-black/20 sm:p-10">
+            <p className="text-xs font-bold tracking-[0.18em] text-indigo-300">TODAY'S FOCUS</p>
+            <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">🔥 Daily Workout</h1>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">A structured 30-minute intelligence workout designed to improve reading speed, comprehension, vocabulary, and language accuracy through short, focused exercises.</p>
+          </section>
 
+          <section className="mt-6">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-px w-8 bg-indigo-400" />
+              <h2 className="text-xl font-bold text-slate-100">Today's Workout</h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <WorkoutCard icon={Zap} title="Speed Drill" lines={["10 short paragraphs", "20 seconds to read each paragraph", "10 seconds to answer the question"]} tone="text-amber-300" />
+              <WorkoutCard icon={BookOpen} title="Vocabulary Lab" lines={["10 vocabulary questions", "Improve word knowledge and contextual understanding"]} tone="text-sky-300" />
+              <WorkoutCard icon={BookText} title="Reading Comprehension" lines={["2 passages", "4 questions per passage", "Build comprehension and inference skills"]} tone="text-violet-300" />
+              <WorkoutCard icon={PenLine} title="Micro Skills" lines={["5 language questions", "Grammar, sentence structure, and usage"]} tone="text-emerald-300" />
+            </div>
+          </section>
+
+          <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6">
+            <h2 className="text-lg font-bold text-slate-100">How it Works</h2>
+            <ul className="mt-4 grid gap-3 text-sm text-slate-400 sm:grid-cols-2">
+              <InfoPoint text="Fresh workout generated every day" />
+              <InfoPoint text="Complete all four modules in about 30 minutes" />
+              <InfoPoint text="Progress is automatically tracked" />
+              <InfoPoint text="Build consistency through daily practice" />
+            </ul>
+          </section>
+
+          <div className="mt-8 flex justify-center">
           <button
             onClick={() => setStatus("running")}
-            className="px-8 py-3 bg-indigo-600 rounded-xl font-semibold hover:bg-indigo-500 transition"
+              className="rounded-2xl bg-indigo-600 px-8 py-3.5 font-semibold text-white shadow-lg shadow-indigo-900/40 transition hover:bg-indigo-500"
           >
             🚀 Start Workout
           </button>
+          </div>
         </div>
       </div>
     )
@@ -188,7 +220,37 @@ if (status === "alreadyAttempted") {
         workout={workout}
         mode={mode}
         setView={setView}
+        onComplete={() => onRunningChange?.(false)}
       />
     )
   }
+}
+
+function WorkoutCard({ icon: Icon, title, lines, tone }) {
+  return (
+    <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors hover:border-slate-700">
+      <div className="flex items-start gap-3">
+        <span className={`rounded-xl bg-slate-800 p-2.5 ${tone}`}><Icon size={20} aria-hidden="true" /></span>
+        <div>
+          <h3 className="font-bold text-slate-100">{title}</h3>
+          <ul className="mt-2 space-y-1 text-sm leading-6 text-slate-400">
+            {lines.map((line) => <li key={line}>{line}</li>)}
+          </ul>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function InfoPoint({ text }) {
+  return (
+    <li className="flex items-center gap-2">
+      <CheckCircle
+        size={16}
+        className="shrink-0 text-indigo-300"
+        aria-hidden="true"
+      />
+      {text}
+    </li>
+  );
 }

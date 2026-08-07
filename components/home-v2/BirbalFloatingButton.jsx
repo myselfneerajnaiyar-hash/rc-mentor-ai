@@ -12,6 +12,19 @@ export default function BirbalFloatingButton({
   
 
   const [isMobile, setIsMobile] = useState(false);
+  const [assessmentActive, setAssessmentActive] = useState(false);
+
+  useEffect(() => {
+    const syncAssessmentMode = () => {
+      const active = document.body.classList.contains("assessment-mode-active");
+      setAssessmentActive(active);
+      if (active) setChatOpen(false);
+    };
+    syncAssessmentMode();
+    const observer = new MutationObserver(syncAssessmentMode);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, [setChatOpen]);
   useEffect(() => {
   document.body.style.overflow = chatOpen ? "hidden" : "";
 
@@ -29,6 +42,8 @@ useEffect(() => {
 
   return () => window.removeEventListener("resize", check);
 }, []);
+
+ if (assessmentActive) return null;
 
  return (
   <>
