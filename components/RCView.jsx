@@ -8,6 +8,7 @@ import RCHistory from "./RCHistory";
 import TabGroup from "./TabGroup";
 import BirbalMessage from "./BirbalMessage";
 import AssessmentMode from "./assessment/AssessmentMode";
+import { RCReport, RCSolutions, RCTestExperience } from "./assessment/RCExperience";
 import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 import PracticeSwitcher from "./PracticeSwitcher";
 
@@ -813,6 +814,41 @@ function formatBirbal(text) {
     .replace(/Quick Lesson:/gi, "\n\n🎯 Quick Lesson\n");
 }
 
+function continueAfterReport() {
+  if (rcMode === "plan") {
+    if (planRCCount + 1 < 3) {
+      setPlanRCCount(c => c + 1);
+      setGeneratedRC(null);
+      setParas([]);
+      setIndex(0);
+      setData(null);
+      setFeedback("");
+      setMode("idle");
+      setShowGenerator(true);
+      setPhase("plan-loading");
+    } else {
+      setPlanRCCount(3);
+      setPhase("plan-complete");
+      const todayKey = new Date().toISOString().slice(0, 10);
+      localStorage.setItem("rcPlanDone-" + todayKey, "true");
+    }
+  } else {
+    setParas([]);
+    setIndex(0);
+    setData(null);
+    setFeedback("");
+    setMode("idle");
+    setGeneratedRC(null);
+    setTestQuestions([]);
+    setTestAnswers({});
+    setResult(null);
+    setDirectTestMode(false);
+    setFullPassage("");
+    setShowGenerator(true);
+    setPhase("mentor");
+  }
+}
+
 return (
   <div className="min-h-screen text-white">
   <AssessmentMode active={phase === "test"} />
@@ -1231,7 +1267,8 @@ return (
   />
 )}
     
-  {phase === "test" && testQuestions.length > 0 && (
+  {phase === "test" && testQuestions.length > 0 && <RCTestExperience passage={fullPassage} questions={testQuestions} currentIndex={currentQIndex} answers={testAnswers} timeLeft={timeLeft} questionTimes={questionTimes} difficulty={difficulty} onAnswer={(optionIndex) => setTestAnswers((current) => ({ ...current, [currentQIndex]: optionIndex }))} onMove={moveToQuestion} onSubmit={submitTest} />}
+  {false && phase === "test" && testQuestions.length > 0 && (
   <div style={{ marginTop: 20 }}>
     <div
       style={{
@@ -1319,7 +1356,8 @@ return (
     </button>
   </div>
 )}
-   {phase === "result" && result && (
+   {phase === "result" && result && <RCReport passage={fullPassage} questions={testQuestions} answers={testAnswers} result={result} score={score} totalTime={totalTime} averageTime={avgTime} onDetailed={() => setPhase("detailed")} onContinue={continueAfterReport} continueLabel={rcMode === "plan" ? "Start Next RC" : "Generate New Passage"} />}
+   {false && phase === "result" && result && (
   <div className="mt-10 space-y-8">
     <h2 className="text-2xl font-bold mb-4">
   Test Summary
@@ -1475,7 +1513,8 @@ return (
   </div>
 )}
 
-  {phase === "detailed" && result && (
+  {phase === "detailed" && result && <RCSolutions passage={fullPassage} questions={testQuestions} answers={testAnswers} result={result} onBack={() => setPhase("result")} />}
+  {false && phase === "detailed" && result && (
   <div style={{ marginTop: 24 }}>
     <h3>Detailed Review</h3>
 
