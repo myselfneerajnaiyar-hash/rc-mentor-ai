@@ -13,7 +13,6 @@ import SubscribeButton from "@/components/SubscribeButton"
 import RCLeaderboard from "@/components/RCLeaderboard"
 import TodayActivity from "@/components/home-v2/TodayActivity";
 import WordHuntLeaderboard from "@/components/WordHuntLeaderboard"
-import RCArenaChampion from "@/components/RCArenaChampion"
 import PremiumFeatures from "@/components/home-v2/PremiumFeatures";
 import PremiumCTA from "@/components/home-v2/PremiumCTA";
 import TestSeriesHero from "@/components/home-v2/TestSeriesHero";

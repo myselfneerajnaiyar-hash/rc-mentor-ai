@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { supabase } from "@/lib/supabase";
 import DailyRCResult from "@/components/DailyRCResult";
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import posthog from "posthog-js";
 
@@ -28,6 +28,8 @@ import {
 export default function DailyChallengeTestPage() {
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const selectedChallengeId = searchParams.get("challengeId");
 
   const [challenge, setChallenge] =
     useState(null);
@@ -38,6 +40,7 @@ export default function DailyChallengeTestPage() {
     const [alreadyAttempted,
   setAlreadyAttempted] =
   useState(false);
+  const [existingAttemptId, setExistingAttemptId] = useState(null);
 
   const [currentQuestion, setCurrentQuestion] =
     useState(0);
@@ -71,17 +74,23 @@ const [score, setScore] =
     .toISOString()
     .split("T")[0];
 
+const istToday = new Date(Date.now() + 5.5 * 60 * 60 * 1000)
+  .toISOString()
+  .split("T")[0];
+
 const { data: rcSet, error: setError } =
   await supabase
     .from("daily_rc_sets")
     .select("*")
-    .eq(
-      "challenge_date",
-      today
-    )
+    .eq(selectedChallengeId ? "id" : "challenge_date", selectedChallengeId || today)
     .single();
 
 if (setError || !rcSet) {
+  setLoading(false);
+  return;
+}
+
+if (selectedChallengeId && rcSet.challenge_date >= istToday) {
   setLoading(false);
   return;
 }
@@ -127,6 +136,7 @@ if (user.data.user) {
   if (attempt) {
 
     setAlreadyAttempted(true);
+    setExistingAttemptId(attempt.id);
 
     setLoading(false);
 
@@ -143,7 +153,7 @@ setTimeLeft(
 
     loadChallenge();
 
-  }, []);
+  }, [selectedChallengeId]);
 
   /* ================= TIMER ================= */
 
@@ -265,16 +275,14 @@ useEffect(() => {
           "
         >
           You have already completed
-          today's Daily RC Challenge.
+          this Daily RC Challenge.
 
           Review your diagnosis,
           learn from your mistakes
           and come back tomorrow.
         </p>
 
-        <Link
-          href="/daily-challenge/result"
-        >
+        <Link href={existingAttemptId ? `/rc-session/${existingAttemptId}` : "/daily-challenge/result"}>
 
           <button
             className="
@@ -287,7 +295,7 @@ useEffect(() => {
             text-xl
             "
           >
-            View Today's Report →
+            Review Attempt →
           </button>
 
         </Link>
@@ -395,23 +403,6 @@ const compositeScore =
 
   const user = await supabase.auth.getUser();
 
-  const profileRes = await supabase
-  .from("profiles")
-  .select("championship_points")
-  .eq("user_id", user.data.user.id)
-  .single();
-
-const currentPoints =
-  profileRes.data?.championship_points || 0;
-
-await supabase
-  .from("profiles")
-  .update({
-    championship_points:
-      currentPoints + compositeScore
-  })
-  .eq("user_id", user.data.user.id);
-
 const { data: attemptRow, error: attemptError } =
   await supabase
     .from("daily_rc_attempts")
@@ -441,6 +432,9 @@ const { data: attemptRow, error: attemptError } =
     const today =
   new Date().toISOString().split("T")[0];
 
+const isHistoricalPractice = Boolean(selectedChallengeId);
+
+if (!isHistoricalPractice) {
 const { data: profile } =
   await supabase
     .from("profiles")
@@ -502,6 +496,7 @@ await supabase
     "user_id",
     user.data.user.id
   );
+}
 
 if (attemptError) {
 

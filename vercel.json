@@ -3,6 +3,10 @@
     {
       "path": "/api/generate-daily-workout",
       "schedule": "30 18 * * *"
+    },
+    {
+      "path": "/api/rc-weekly-challenge",
+      "schedule": "35 18 * * 0"
     }
   ]
 }

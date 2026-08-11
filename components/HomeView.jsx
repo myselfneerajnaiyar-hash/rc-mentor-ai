@@ -11,7 +11,7 @@ import Leaderboard from "./Leaderboard"
 import SubscribeButton from "@/components/SubscribeButton"
 import RCLeaderboard from "./RCLeaderboard"
 import WordHuntLeaderboard from "./WordHuntLeaderboard"
-import RCArenaChampion from "./RCArenaChampion"
+import WeeklyRCChallenge from "./WeeklyRCChallenge"
 import BirbalCoachCard
 from "@/components/BirbalCoachCard";
 import { generateCoachPlan }
@@ -1035,7 +1035,7 @@ if (user?.id) {
 </div>
 </div>
 
-{isCAT && <RCArenaChampion />}
+{isCAT && <WeeklyRCChallenge />}
 
 
 <Card

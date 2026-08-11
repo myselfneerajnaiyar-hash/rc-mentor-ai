@@ -6,7 +6,7 @@ import { Trophy, Flame, Puzzle, Crown } from "lucide-react";
 import RCLeaderboard from "@/components/RCLeaderboard";
 import Leaderboard from "@/components/Leaderboard";
 import WordHuntLeaderboard from "@/components/WordHuntLeaderboard";
-import RCArenaChampion from "@/components/RCArenaChampion";
+import WeeklyRCChallenge from "@/components/WeeklyRCChallenge";
 
 export default function LeaderboardSection({exam}) {
     const isCAT = exam?.trim().toUpperCase() === "CAT";
@@ -38,7 +38,7 @@ const [activeTab, setActiveTab] = useState(
       },
       {
         id: "champions",
-        label: "Champions",
+        label: "Weekly Challenge",
         icon: Crown,
         color: "text-yellow-300",
       },
@@ -114,7 +114,7 @@ const [activeTab, setActiveTab] = useState(
 
         {activeTab === "wordhunt" && <WordHuntLeaderboard />}
 
-        {activeTab === "champions" && <RCArenaChampion />}
+        {activeTab === "champions" && <WeeklyRCChallenge />}
 
       </div>
 

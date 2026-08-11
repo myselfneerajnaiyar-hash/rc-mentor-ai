@@ -209,7 +209,7 @@ const res = await fetch("/api/enrich-word", {
   ]}
 />
 
-       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 min-h-[420px]">
+       <div className={tab === "bank" ? "min-h-[420px]" : "bg-slate-900 border border-slate-800 rounded-2xl p-6 min-h-[420px]"}>
           {tab === "bank" && (
            <WordBank
   manualWord={manualWord}
@@ -223,6 +223,7 @@ userWords={bank.user}
   openWord={openWord}
   enrichAllWords={enrichAllWords}
   setDrawerWords={setDrawerWords}
+  onStartDrill={() => setTab("drill")}
 />
           )}
           {tab === "drill" && <VocabDrill />}
@@ -253,7 +254,8 @@ function WordBank({
   userWords,
   openWord,
   enrichAllWords,
-  setDrawerWords
+  setDrawerWords,
+  onStartDrill
 }) {
   const [bulkLoading, setBulkLoading] = useState(false);
   const [activeList, setActiveList] = useState("core");
@@ -261,136 +263,95 @@ function WordBank({
   const unenrichedCount = userWords.filter(
   w => !w.meaning || !w.synonyms || w.synonyms.length === 0
 ).length;
-  return (
-    <div>
-     <h2 className="text-2xl font-semibold text-slate-100">
-  WordBank
-</h2>
-      {unenrichedCount > 0 && (
- <div className="mt-6 p-4 rounded-xl bg-slate-800 border border-slate-700">
-    <p style={{ fontWeight: 600 }}>
-      ⚡ To unlock full vocab drills, enrich your saved words.
-    </p>
-   <p className="text-sm text-slate-400">
-      {unenrichedCount} word(s) need enrichment.
-    </p>
-
-   <button
-  onClick={async () => {
-    setBulkLoading(true);
-    await enrichAllWords();
-    setBulkLoading(false);
-  }}
-  disabled={bulkLoading}
-      className="mt-3 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold transition disabled:opacity-50"
-    >
-     {bulkLoading ? "Enriching your wordbank..." : "Enrich All Words"}
-    </button>
-  </div>
-)}
-      <p className="text-slate-400">
-        Your personal vocabulary memory. Words appear here automatically from RC,
-        Speed Gym, or when you add them manually.
-      </p>
-
-     <div className="mt-6 p-4 rounded-xl border border-slate-700 bg-slate-800">
-        <input
-          placeholder="Type a word and press Enter"
-          value={manualWord}
-          onChange={e => setManualWord(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === "Enter" && manualWord.trim()) {
-              handleManualAdd(manualWord.trim());
-            }
-          }}
-          className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-        />
-
-        {loading && <p style={{ marginTop: 12 }}>Looking up word…</p>}
-
-
-       
-
-    <div className="mt-8">
-
-  {/* Tabs */}
-  <div className="flex gap-2 mb-6">
-
-    <button
-      onClick={() => setActiveList("core")}
-      className={`px-4 py-2 rounded-xl transition ${
-        activeList === "core"
-          ? "bg-orange-500 text-white"
-          : "bg-slate-800 text-slate-400 hover:text-white"
-      }`}
-    >
-      📘 Core Words ({masterWords.length})
-    </button>
-
-    <button
-      onClick={() => setActiveList("saved")}
-      className={`px-4 py-2 rounded-xl transition ${
-        activeList === "saved"
-          ? "bg-emerald-600 text-white"
-          : "bg-slate-800 text-slate-400 hover:text-white"
-      }`}
-    >
-      🧠 Saved Words ({userWords.length})
-    </button>
-
-  </div>
-
-  {/* Word Grid */}
-
-  <div
-    className="grid gap-3 max-h-[650px] overflow-y-auto"
-    style={{
-      gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))",
-    }}
-  >
-
-    {activeList === "core"
-      ? masterWords.map((w) => (
-          <button
-            key={w.word}
-            onClick={() => {
-              setDrawerWords(masterWords);
-              setLookup(w);
-            }}
-            className="group px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-left hover:border-orange-500 transition"
-          >
-            <h3 className="font-semibold">{w.word}</h3>
-
-            <p className="text-xs text-slate-400">
-              Rank #{w.frequency_rank}
-            </p>
-          </button>
-        ))
-
-      : userWords.map((w) => (
-          <button
-            key={w.id}
-            onClick={() => {
-              setDrawerWords(userWords);
-              openWord(w);
-            }}
-            className="group px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-left hover:border-emerald-500 transition"
-          >
-            <h3 className="font-semibold">{w.word}</h3>
-
-            <p className="text-xs text-slate-400">
-              {w.partOfSpeech || "Tap to enrich"}
-            </p>
-          </button>
-        ))}
-
-  </div>
-
-</div>
-</div>
-    </div>
-  
+  const totalWords = masterWords.length + userWords.length;
+  const revisionReadyCount = [...masterWords, ...userWords].filter(
+    w => (w.synonyms && w.synonyms.length > 0) || (w.antonyms && w.antonyms.length > 0) || w.usage
+  ).length;
+  const selectedWords = activeList === "core" ? masterWords : userWords;
+  const visibleWords = selectedWords.filter((word) =>
+    !manualWord.trim() || word.word?.toLowerCase().includes(manualWord.trim().toLowerCase())
   );
+  return (
+    <div className="space-y-10">
+      <section className="border-b border-slate-800 pb-8">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">WordBank</p>
+        <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-black text-white sm:text-4xl">Your personal vocabulary revision queue.</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-400 sm:text-base">Words you encounter in RCs, Speed Gym, or add yourself are collected here so you can come back, revise them, and turn them into active vocabulary.</p>
+            <p className="mt-2 text-sm font-semibold text-slate-200">These aren&apos;t words to memorize once. They&apos;re words to revisit.</p>
+          </div>
+          {revisionReadyCount >= 10 ? (
+            <button type="button" onClick={onStartDrill} className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-cyan-500 px-5 text-sm font-black text-slate-950 transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">Start a Revision Drill →</button>
+          ) : (
+            <div className="max-w-xs rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-xs leading-5 text-slate-400">Enrich at least 10 words to unlock a revision drill.</div>
+          )}
+        </div>
+      </section>
+
+      <section aria-label="WordBank statistics" className="grid grid-cols-3 gap-3">
+        <WordBankStat label="Total Words" value={totalWords} />
+        <WordBankStat label="Saved Words" value={userWords.length} />
+        <WordBankStat label="Need Enrichment" value={unenrichedCount} />
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="border-t border-slate-800 pt-5">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">What does “Enrich” mean?</p>
+          <p className="mt-2 text-sm leading-6 text-slate-400">Move beyond recognizing a word to knowing how it works—its meaning, tone, context, and usage.</p>
+          <LearningFlow steps={["Discover", "Revise", "Drill", "Master"]} />
+        </section>
+        <section className="border-t border-slate-800 pt-5">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">How your drills work</p>
+          <p className="mt-2 text-sm leading-6 text-slate-400">Your Core and enriched Saved words feed the existing mixed practice for context, meaning, and usage.</p>
+          <LearningFlow steps={["WordBank", "Revision", "Contextual Drills", "Reinforcement"]} />
+        </section>
+      </div>
+
+      {unenrichedCount > 0 && (
+        <section className="flex flex-col gap-4 rounded-xl border border-amber-500/15 bg-amber-500/[0.045] p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div><p className="text-sm font-bold text-amber-200">{unenrichedCount} saved word{unenrichedCount === 1 ? "" : "s"} need enrichment</p><p className="mt-1 text-xs text-slate-400">Add meaning, usage, synonyms, and antonyms so these words can power more drill types.</p></div>
+          <button onClick={async () => { setBulkLoading(true); await enrichAllWords(); setBulkLoading(false); }} disabled={bulkLoading} className="shrink-0 rounded-lg border border-amber-400/25 bg-amber-500/10 px-4 py-2.5 text-xs font-bold text-amber-200 transition hover:bg-amber-500/15 disabled:opacity-50">{bulkLoading ? "Enriching WordBank…" : "Enrich Saved Words"}</button>
+        </section>
+      )}
+
+      <section>
+        <div className="flex flex-col gap-4 border-b border-slate-800 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Your Words</p><h3 className="mt-1 text-2xl font-black text-white">Build recognition into recall</h3></div>
+          <div className="inline-flex rounded-xl border border-slate-800 bg-slate-900/55 p-1" role="tablist" aria-label="WordBank lists">
+            <button type="button" role="tab" aria-selected={activeList === "core"} onClick={() => setActiveList("core")} className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${activeList === "core" ? "bg-cyan-500/15 text-cyan-200 ring-1 ring-cyan-400/20" : "text-slate-500 hover:text-white"}`}>Core Words <span className="ml-1 text-slate-500">{masterWords.length}</span></button>
+            <button type="button" role="tab" aria-selected={activeList === "saved"} onClick={() => setActiveList("saved")} className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${activeList === "saved" ? "bg-cyan-500/15 text-cyan-200 ring-1 ring-cyan-400/20" : "text-slate-500 hover:text-white"}`}>Saved Words <span className="ml-1 text-slate-500">{userWords.length}</span></button>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <label htmlFor="wordbank-search" className="sr-only">Search or add a WordBank word</label>
+          <input id="wordbank-search" placeholder="Search your WordBank…" value={manualWord} onChange={e => setManualWord(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && manualWord.trim()) handleManualAdd(manualWord.trim()); }} className="w-full rounded-xl border border-slate-700 bg-slate-900/65 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/15" />
+          <p className="mt-2 text-xs text-slate-500">Search a word or press Enter to enrich and add it to your WordBank.</p>
+          {loading && <p className="mt-2 text-xs text-cyan-300">Looking up word…</p>}
+        </div>
+
+        <div className="mt-6 grid max-h-[650px] grid-cols-2 gap-3 overflow-y-auto pr-1 md:grid-cols-3">
+          {visibleWords.map((word) => {
+            const isCore = activeList === "core";
+            return <button key={isCore ? word.word : word.id} type="button" onClick={() => { setDrawerWords(isCore ? masterWords : userWords); if (isCore) setLookup(word); else openWord(word); }} className="group min-w-0 rounded-xl border border-slate-800 bg-slate-900/45 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-cyan-500/30 hover:bg-slate-900/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">
+              <h4 className="truncate text-base font-bold text-white group-hover:text-cyan-100">{word.word}</h4>
+              <p className="mt-1 truncate text-[11px] text-slate-500">{isCore ? (word.frequency_rank ? `Rank #${word.frequency_rank}` : "Core vocabulary") : (word.partOfSpeech || "Tap to enrich")}</p>
+              {!isCore && word.added_from && <p className="mt-2 truncate text-[10px] uppercase tracking-wide text-slate-600">Added from {String(word.added_from).replaceAll("_", " ")}</p>}
+            </button>;
+          })}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function WordBankStat({ label, value }) {
+  return <div className="border-l border-slate-700 px-3 py-1 sm:px-5"><p className="text-[9px] font-bold uppercase tracking-wide text-slate-500 sm:text-[10px]">{label}</p><p className="mt-1 text-xl font-black text-white sm:text-2xl">{value}</p></div>;
+}
+
+function LearningFlow({ steps }) {
+  return <div className="mt-4 grid grid-cols-[auto_1fr_auto_1fr_auto_1fr_auto] items-center gap-2" aria-label={steps.join(" to ")}>{steps.map((step, index) => <div key={step} className="contents"><span className="text-[10px] font-bold uppercase tracking-wide text-slate-300 sm:text-xs">{step}</span>{index < steps.length - 1 && <span className="h-px bg-gradient-to-r from-slate-700 to-cyan-500/35" aria-hidden="true" />}</div>)}</div>;
 }
 
 function VocabDrill() {

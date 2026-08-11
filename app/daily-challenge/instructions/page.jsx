@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 
 
 export default function InstructionsPage() {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const challengeId = searchParams.get("challengeId")
 
 
   return (
@@ -93,7 +96,7 @@ export default function InstructionsPage() {
 
 </div>
 
-        <Link href="/daily-challenge/test">
+        <Link href={challengeId ? `/daily-challenge/test?challengeId=${encodeURIComponent(challengeId)}` : "/daily-challenge/test"}>
 
          <button
 className="
