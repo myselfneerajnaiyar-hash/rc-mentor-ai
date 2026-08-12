@@ -7,6 +7,10 @@
     {
       "path": "/api/rc-weekly-challenge",
       "schedule": "35 18 * * 0"
+    },
+    {
+      "path": "/api/whatsapp/process",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
