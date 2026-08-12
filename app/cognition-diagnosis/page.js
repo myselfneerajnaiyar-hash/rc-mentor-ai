@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import {
+  ArrowLeft,
   Brain,
   Target,
   Skull,
@@ -169,386 +168,38 @@ wrongQuestions.forEach((q, index) => {
     "RC Accuracy";
 
   return (
+    <main className="min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <header className="flex flex-wrap items-center justify-between gap-4">
+          <div><Link href="/daily-challenge/result" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"><ArrowLeft size={16} />Results</Link><h1 className="mt-3 text-3xl font-black sm:text-4xl">Cognitive Diagnosis</h1><p className="mt-2 text-sm text-slate-400">Understand the pattern behind your decisions and what to do next.</p></div>
+          <div className="flex items-center gap-3"><Link href="/detailed-review" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">Detailed Review →</Link><Link href="/" className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800">Dashboard</Link></div>
+        </header>
 
-    <div className="min-h-screen bg-[#071120] text-white">
+        <section className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-slate-900/50 p-5 sm:p-6">
+          <div className="flex gap-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/10"><Brain size={20} className="text-purple-300" /></div><div><p className="text-[11px] font-black uppercase tracking-[0.18em] text-purple-300">Birbal&apos;s Verdict</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">{diagnosis}</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-slate-300">{whyFail}</p></div></div>
+        </section>
 
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
-
-       <div className="flex items-center justify-between mb-8">
-
-  <Link href="/">
-    <div className="flex items-center gap-3 cursor-pointer">
-
-      <img
-        src="/logo.png"
-        className="w-8 h-8"
-      />
-
-      <div>
-
-        <div className="font-bold text-white">
-          Auctor RC
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <DiagnosisBlock label="Your Pattern" title="Today&apos;s Villain" value={trap} tone="red" icon={Skull} />
+          <DiagnosisBlock label="Why It Happened" title="How It Attacks" value={firstWrong?.question_enrichment?.whyThisTrapWorks || whyFail} tone="amber" icon={ShieldAlert} />
+          <DiagnosisBlock label="Under Time Pressure" title="Where judgment slips" value={firstWrong?.question_enrichment?.timePressureDanger || whyFail} tone="amber" icon={TrendingUp} />
+          <DiagnosisBlock label="What a Topper Would Do" title="Better thinking process" value={topperThinking} tone="purple" icon={Sparkles} />
+          <DiagnosisBlock label="Birbal&apos;s Lesson" title="What to remember" value={firstWrong?.question_enrichment?.skillExplanation || topperThinking} tone="cyan" icon={Brain} />
+          <DiagnosisBlock label="Your Next Mission" title={mission} value="Apply this skill deliberately in your next RC attempt." tone="green" icon={Target} />
         </div>
 
-        <div className="text-xs text-slate-400">
-          Daily Arena
-        </div>
-
-      </div>
-
-    </div>
-  </Link>
-
-  <div className="flex items-center gap-4">
-
-    <Link
-      href="/daily-challenge/result"
-      className="
-      inline-flex
-      items-center
-      gap-2
-      text-slate-400
-      hover:text-white
-      "
-    >
-      <ArrowLeft size={18} />
-      Back to Results
-    </Link>
-
-    <Link href="/">
-      <button
-        className="
-        px-4 py-2
-        rounded-xl
-        bg-slate-800
-        text-white
-        hover:bg-slate-700
-        "
-      >
-        Dashboard
-      </button>
-    </Link>
-
-  </div>
-
-</div>
-
-       <div>
-
-  <h1 className="text-6xl font-black">
-    Cognitive Diagnosis
-  </h1>
-
-  <p className="text-slate-400 mt-4 max-w-2xl">
-    Birbal watched every decision you made.
-    Here's what really happened inside your head.
-  </p>
-
-</div>
-
-       <Card className="mt-10 bg-gradient-to-br from-cyan-500/15 to-blue-500/5 border-cyan-500/20 overflow-hidden">
-
-  <CardContent className="p-8">
-
-    <div className="relative">
-
-      <div>
-
-        <div className="flex items-center gap-3">
-
-          <Brain
-            size={32}
-            className="text-cyan-300"
-          />
-
-          <div className="text-cyan-300 text-sm uppercase tracking-widest font-black">
-            Birbal's Verdict
+        {wrongQuestions.length > 0 && <section className="mt-6">
+          <div className="flex items-center gap-2"><ShieldAlert size={18} className="text-amber-300" /><h2 className="text-lg font-bold">Wrong Question Replay</h2><span className="rounded-full bg-red-500/10 px-2 py-0.5 text-xs text-red-300">{wrongQuestions.length}</span></div>
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
+            {wrongQuestions.map((question) => { const enrich = question.question_enrichment || {}; return <article key={question.id} className="rounded-xl border border-slate-800 bg-slate-900/50 p-4"><div className="flex items-center justify-between gap-3"><p className="text-[11px] font-bold uppercase tracking-wide text-cyan-300">Question {enrich.questionNumber}</p><span className="truncate text-xs text-red-300">{enrich.trapType}</span></div><p className="mt-2 text-sm leading-6 text-slate-400">{enrich.whyStudentsFail}</p>{enrich.topperShortcut && <div className="mt-3 border-l-2 border-emerald-400/50 pl-3"><p className="text-[10px] font-bold uppercase tracking-wide text-emerald-300">Topper Shortcut</p><p className="mt-1 text-xs leading-5 text-slate-300">{enrich.topperShortcut}</p></div>}</article>; })}
           </div>
-
-        </div>
-
-        <div
-  className="
-  text-3xl
-  md:text-5xl
-  font-black
-  text-white
-  mt-6
-  leading-tight
-  break-words
-  "
->
-  {diagnosis}
-</div>
-
-        <p className="mt-6 text-slate-300 leading-8 text-lg">
-          {whyFail}
-        </p>
-
-<div className="flex justify-end mt-4">
-  <img
-    src="/birbal.png"
-    alt="Birbal"
-    className="w-12 opacity-70"
-  />
-</div>
+        </section>}
       </div>
-
-     
-
-    </div>
-
-
-  </CardContent>
-
-</Card>
-
-        <Card className="mt-6 bg-red-500/10 border-red-500/20">
-          <CardContent className="p-8">
-
-           <div className="flex gap-5 items-center">
-
-  <Skull
-    className="
-      h-12
-      w-12
-      text-red-400
-    "
-  />
-
-  <div>
-
-    <div className="text-red-300 font-black">
-      Today's Villain
-    </div>
-
-    <div className="text-4xl font-black text-white mt-2">
-      {trap}
-    </div>
-
-  </div>
-
-</div>
-
-          </CardContent>
-        </Card>
-
-        <Card className="mt-6 bg-orange-500/10 border-orange-500/20">
-  <CardContent className="p-8">
-
-    <div className="text-orange-300 font-black text-xl">
-      Why Your Brain Fell For It
-    </div>
-
-    <p className="mt-4 text-slate-300 leading-8">
-      {whyFail}
-    </p>
-
-  </CardContent>
-</Card>
-
-<Card className="mt-6 bg-red-500/5 border-red-500/20">
-  <CardContent className="p-8">
-
-    <div className="text-red-300 font-black text-xl">
-      Villain Dossier
-    </div>
-
-    <div className="mt-6 space-y-5">
-
-      <div>
-        <div className="text-red-300 font-bold">
-          Villain
-        </div>
-
-        <div className="text-white mt-1">
-          {trap}
-        </div>
-      </div>
-
-      <div>
-        <div className="text-red-300 font-bold">
-          How It Attacks
-        </div>
-
-        <div className="text-slate-300 mt-1">
-          {firstWrong?.question_enrichment?.whyThisTrapWorks}
-        </div>
-      </div>
-
-      <div>
-        <div className="text-red-300 font-bold">
-          Under Time Pressure
-        </div>
-
-        <div className="text-slate-300 mt-1">
-          {firstWrong?.question_enrichment?.timePressureDanger}
-        </div>
-      </div>
-
-    </div>
-
-  </CardContent>
-</Card>
-
-        <Card className="mt-6 bg-purple-500/10 border-purple-500/20">
-          <CardContent className="p-8">
-
-            <div className="flex gap-5">
-
-  <Sparkles
-    className="
-      h-12
-      w-12
-      text-purple-400
-      shrink-0
-    "
-  />
-
-  <div>
-
-    <div className="text-purple-300 font-black">
-      What A Topper Would Think
-    </div>
-
-    <p className="mt-4 text-slate-300 text-lg leading-8">
-      {topperThinking}
-    </p>
-
-  </div>
-
-</div>
-
-          </CardContent>
-        </Card>
-
-        <Card className="mt-6 bg-cyan-500/10 border-cyan-500/20">
-  <CardContent className="p-8">
-
-    <div className="text-cyan-300 font-black text-xl">
-      Birbal's Lesson
-    </div>
-
-    <p className="mt-6 text-slate-300 leading-8">
-      {firstWrong?.question_enrichment?.skillExplanation}
-    </p>
-
-  </CardContent>
-</Card>
-
-        <Card className="mt-6 bg-emerald-500/10 border-emerald-500/20">
-          <CardContent className="p-8">
-
-            <div className="flex gap-5 items-center">
-
-  <Target
-    className="
-      h-12
-      w-12
-      text-emerald-400
-    "
-  />
-
-  <div>
-
-    <div className="text-emerald-300 font-black">
-      Tomorrow's Mission
-    </div>
-
-    <div
-  className="
-  text-3xl
-  md:text-5xl
-  font-black
-  text-white
-  mt-2
-  leading-tight
-  break-words
-  "
->
-  {mission}
-</div>
-
-  </div>
-
-</div>
-
-          </CardContent>
-        </Card>
-
-        <div className="mt-10">
-
-         <div className="flex items-center gap-3">
-
-  <ShieldAlert
-    className="
-      h-8
-      w-8
-      text-amber-400
-    "
-  />
-
-  <h2 className="text-4xl font-black">
-    Wrong Question Replay
-  </h2>
-
-</div>
-
-          <div className="space-y-6 mt-6">
-
-            {wrongQuestions.map((question) => {
-
-              const enrich =
-                question.question_enrichment || {};
-
-              return (
-
-                <Card
-                  key={question.id}
-                  className="bg-slate-900/60 border-cyan-500/20"
-                >
-
-                  <CardContent className="p-6">
-
-                    <div className="text-cyan-300 font-black">
-                      Question {enrich.questionNumber}
-                    </div>
-
-                    <div className="mt-4 text-white text-xl font-bold">
-                      {enrich.trapType}
-                    </div>
-
-                    <p className="mt-4 text-slate-300">
-                      {enrich.whyStudentsFail}
-                    </p>
-
-                    <div className="mt-6 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4">
-
-                      <div className="text-emerald-300 font-bold">
-                        Topper Shortcut
-                      </div>
-
-                      <p className="mt-2 text-slate-300">
-                        {enrich.topperShortcut}
-                      </p>
-
-                    </div>
-
-                  </CardContent>
-
-                </Card>
-
-              );
-
-            })}
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
+    </main>
   );
+}
+
+function DiagnosisBlock({ label, title, value, tone, icon: Icon }) {
+  const tones = { red: "text-red-300 border-red-500/15", amber: "text-amber-300 border-amber-500/15", purple: "text-purple-300 border-purple-500/15", cyan: "text-cyan-300 border-cyan-500/15", green: "text-emerald-300 border-emerald-500/15" };
+  return <section className={`rounded-xl border bg-slate-900/50 p-4 ${tones[tone]}`}><div className="flex items-center gap-2"><Icon size={15} aria-hidden="true" /><p className="text-[10px] font-black uppercase tracking-[0.16em]">{label}</p></div><h3 className="mt-2 text-base font-bold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{value}</p></section>;
 }

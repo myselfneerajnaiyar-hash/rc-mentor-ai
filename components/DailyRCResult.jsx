@@ -1,7 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -116,306 +114,56 @@ else {
 
 
   return (
-    <div className="min-h-screen bg-[#071120] text-white">
+    <main className="min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link href="/daily-challenge" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} />Back to Arena</Link>
+          <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><Link href="/cognition-diagnosis" className="hover:text-purple-300">Cognitive Diagnosis</Link><span>→</span><Link href="/detailed-review" className="hover:text-cyan-300">Detailed Review</Link></nav>
+        </div>
 
-      <div className="max-w-7xl mx-auto px-8 py-10">
-        <div className="mb-8">
-  <Link href="/daily-challenge">
-    <button className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-      <ArrowLeft size={18} />
-      Back to Arena
-    </button>
-  </Link>
-</div>
-
-        {/* HERO */}
-
-        <div className="rounded-[36px] border border-cyan-500/20 bg-gradient-to-br from-cyan-950 via-slate-900 to-black p-10">
-
-          <div className="text-xs uppercase tracking-[0.35em] text-cyan-300 font-bold">
-            Daily RC Arena
+        <section className="mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div><p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-300">Daily RC Arena</p><h1 className="mt-2 text-3xl font-black sm:text-4xl">RC Diagnosis Report</h1><span className={`mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-bold ${badgeColor}`}>{badge}</span></div>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+              <SummaryMetric label="Score" value={score} tone={score < 0 ? "red" : "green"} />
+              <SummaryMetric label="Accuracy" value={`${accuracy}%`} />
+              <SummaryMetric label="Time" value={formatTime(timeUsed)} />
+              <SummaryMetric label="Questions" value={(resultData?.correct || 0) + (resultData?.incorrect || 0) + (resultData?.unanswered || 0)} />
+              <SummaryMetric label="Correct" value={resultData?.correct} tone="green" />
+              <SummaryMetric label="Incorrect" value={resultData?.incorrect} tone="red" />
+            </div>
           </div>
+        </section>
 
-          <h1 className="text-6xl font-black mt-4">
-            RC Diagnosis Report
-          </h1>
-
-          <div className="grid md:grid-cols-2 gap-12 mt-10">
-
-            {/* LEFT */}
-
-            <div>
-
-              <div className="text-slate-400 text-sm uppercase">
-                CAT Score
-              </div>
-
-             <div
-  className={`
-    text-8xl
-    font-black
-    mt-2
-    ${score < 0
-      ? "text-red-400"
-      : "text-emerald-400"}
-  `}
->
-  {score}
-</div>
-
-              <div
-                className={`inline-flex mt-6 px-5 py-2 rounded-full border font-bold ${badgeColor}`}
-              >
-                {badge}
-              </div>
-
-            </div>
-
-            {/* RIGHT */}
-
-            <div className="grid grid-cols-2 gap-5">
-
-              <MetricCard
-  title="Accuracy"
-  value={`${accuracy}%`}
-/>
-
-<MetricCard
-  title="Time Used"
-  value={`${Math.floor(
-    timeUsed / 60
-  )}m ${timeUsed % 60}s`}
-/>
-
-<MetricCard
-  title="CAT Score"
-  value={score}
-/>
-
-<MetricCard
-  title="Composite Score"
-  value={composite}
-/>
-
-            </div>
-
-          </div>
-
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <InsightPanel label="Mentor Verdict" title={profile} body={mentorText} tone="amber" />
+          <InsightPanel label="Performance Profile" title={profileDescription} body={`Composite score: ${composite} · Unanswered: ${resultData?.unanswered || 0}`} tone="cyan" />
         </div>
 
-       
-
-        {/* STATS */}
-
-        <div className="grid md:grid-cols-4 gap-5 mt-8">
-
-          <StatCard
-            title="Attempted"
-            value={resultData?.attempted}
-          />
-
-          <StatCard
-            title="Correct"
-            value={resultData?.correct}
-          />
-
-          <StatCard
-            title="Incorrect"
-            value={resultData?.incorrect}
-          />
-
-          <StatCard
-            title="Unanswered"
-            value={resultData?.unanswered}
-          />
-
+        <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_1fr]">
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><p className="text-[11px] font-bold uppercase tracking-wide text-cyan-300">Leaderboard Impact</p><div className="mt-3 flex items-end gap-8"><div><p className="text-xs text-slate-500">CAT Score</p><p className="text-2xl font-black">{score}</p></div><div><p className="text-xs text-slate-500">Composite</p><p className="text-2xl font-black text-cyan-200">{composite}</p></div></div><p className="mt-3 text-xs leading-5 text-slate-500">Composite score combines CAT performance with completion speed for ranking.</p></section>
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><p className="text-[11px] font-bold uppercase tracking-wide text-emerald-300">Today&apos;s Mission</p><ul className="mt-3 grid gap-2 text-sm text-slate-300"><li>✓ Read the author&apos;s conclusion before options</li><li>✓ Eliminate only after evidence</li><li>✓ Cap decision time at 90 seconds</li></ul></section>
         </div>
 
-        {/* MENTOR */}
-
-        <Card className="mt-8 bg-orange-500/10 border-orange-500/30">
-
-          <CardContent className="p-8">
-
-            <div className="text-orange-300 font-black text-xl">
-              Strategic Mentor Insight
-            </div>
-
-            <p className="mt-4 text-slate-200 leading-8 text-lg">
-              {mentorText}
-            </p>
-
-          </CardContent>
-
-        </Card>
-
-        <Card className="rounded-3xl border border-cyan-500/20 bg-slate-900/50 p-8">
-
-  <div className="text-cyan-300 text-sm uppercase tracking-[0.25em]">
-    Performance Profile
-  </div>
-
-  <div className="mt-4 text-4xl font-black text-white">
-    {profile}
-  </div>
-
-  <div className="mt-4 text-slate-300 leading-7">
-    {profileDescription}
-  </div>
-
-</Card>
-
-        {/* LEADERBOARD */}
-
-        <Card className="mt-8 bg-cyan-500/10 border-cyan-500/30">
-
-          <CardContent className="p-8">
-
-            <div className="text-cyan-300 text-xl font-black">
-              Leaderboard Impact
-            </div>
-
-            <div className="mt-6 grid md:grid-cols-2 gap-6">
-
-              <div>
-
-                <div className="text-slate-400">
-                  CAT Score
-                </div>
-
-                <div className="text-5xl font-black mt-2 text-white">
-                  {score}
-                </div>
-
-              </div>
-
-             <div>
-  <div className="text-sm text-slate-300">
-    Composite Score
-  </div>
-
-  <div className="text-6xl font-black text-cyan-200 mt-3">
-    {composite}
-    <p className="mt-4 text-orange-400 text-sm">
-Composite Score contributes to your RC Arena Championship Points.
-</p>
-  </div>
-</div>
-            </div>
-
-            <p className="mt-6 text-slate-300 leading-7">
-              Students are ranked first by CAT Score.
-If CAT Scores are equal, faster completion results in a higher rank.
-            </p>
-
-          </CardContent>
-
-        </Card>
-
-        <Card className="mt-10 rounded-3xl border border-purple-500/20 bg-purple-500/5 p-8">
-
-<h3 className="text-purple-300 font-black text-xl">
-Today's Mission
-</h3>
-
-<ul className="mt-4 space-y-3 text-slate-200">
-
-<li>✓ Read author's conclusion before options</li>
-
-<li>✓ Eliminate only after evidence</li>
-
-<li>✓ Cap decision time at 90 seconds</li>
-
-</ul>
-
-</Card>
-
-        {/* CTA */}
-
-       <div className="grid md:grid-cols-2 gap-4 mt-10">
-
-      <Link href="/cognition-diagnosis" className="w-full">
-  <Button
-    className="
-      h-16
-      w-full
-      rounded-2xl
-      bg-gradient-to-r
-      from-violet-500
-      to-pink-500
-      text-white
-      font-black
-      text-lg
-    "
-  >
-    Open Cognitive Diagnosis →
-  </Button>
-</Link>
-
-<Link href="/detailed-review" className="w-full">
-  <Button
-    className="
-      h-16
-      w-full
-      rounded-2xl
-      bg-slate-900
-      border
-      border-cyan-500/30
-      hover:bg-slate-800
-      text-cyan-300
-      font-black
-      text-lg
-    "
-  >
-    Open Detailed Review →
-  </Button>
-</Link>
-
-
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <Link href="/cognition-diagnosis" className="flex min-h-14 items-center justify-between rounded-xl border border-purple-500/25 bg-purple-500/10 px-5 font-bold text-purple-200 transition hover:bg-purple-500/15"><span>Cognitive Diagnosis</span><span>→</span></Link>
+          <Link href="/detailed-review" className="flex min-h-14 items-center justify-between rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-5 font-bold text-cyan-200 transition hover:bg-cyan-500/15"><span>Detailed Review</span><span>→</span></Link>
         </div>
-
       </div>
-
-    </div>
+    </main>
   );
 }
 
-function MetricCard({
-  title,
-  value,
-}) {
-  return (
-    <div className="rounded-2xl bg-slate-900/70 border border-slate-700 p-5">
-      <div className="text-slate-400 text-sm">
-        {title}
-      </div>
-
-      <div className="text-3xl font-black mt-2 text-white">
-        {value}
-      </div>
-    </div>
-  );
+function SummaryMetric({ label, value, tone }) {
+  const color = tone === "green" ? "text-emerald-300" : tone === "red" ? "text-red-300" : "text-white";
+  return <div className="min-w-[88px] rounded-xl border border-white/10 bg-white/[0.04] p-3"><p className="text-[9px] font-bold uppercase tracking-wide text-slate-500">{label}</p><p className={`mt-1 text-lg font-black ${color}`}>{value ?? 0}</p></div>;
 }
 
-function StatCard({
-  title,
-  value,
-}) {
-  return (
-    <Card className="bg-slate-900 border-slate-700">
+function InsightPanel({ label, title, body, tone }) {
+  const labelColor = tone === "amber" ? "text-amber-300" : "text-cyan-300";
+  return <section className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><p className={`text-[11px] font-bold uppercase tracking-wide ${labelColor}`}>{label}</p><h2 className="mt-2 text-lg font-bold text-white">{title}</h2><p className="mt-2 text-sm leading-6 text-slate-400">{body}</p></section>;
+}
 
-      <CardContent className="p-6">
-
-        <div className="text-slate-400 text-sm">
-          {title}
-        </div>
-
-        <div className="text-5xl font-black mt-2 text-white">
-          {value}
-        </div>
-
-      </CardContent>
-
-    </Card>
-  );
+function formatTime(seconds) {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
