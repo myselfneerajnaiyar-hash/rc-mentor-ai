@@ -5,7 +5,7 @@ import PostHogProvider from "../components/PostHogProvider"
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Auctor RC – CAT VARC Practice Platform",
+  title: "Auctor RC – AI-Powered Reading Comprehension & Verbal Practice",
   description:
     "Auctor RC is an AI-powered CAT VARC practice platform for reading comprehension and reasoning.",
 };
