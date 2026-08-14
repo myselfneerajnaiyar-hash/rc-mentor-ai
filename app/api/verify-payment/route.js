@@ -1,5 +1,6 @@
 import crypto from "crypto"
 import { createClient } from "@supabase/supabase-js"
+import Razorpay from "razorpay"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -17,8 +18,7 @@ console.log(body);
     razorpay_payment_id,
     razorpay_signature,
     user_id,
-    plan,
-    referralCode
+    plan: requestedPlan
   } = body
 
   const sign = razorpay_order_id + "|" + razorpay_payment_id
@@ -30,6 +30,22 @@ console.log(body);
 
   if (expected !== razorpay_signature) {
     return Response.json({ success: false })
+  }
+
+  // The order created by our server is authoritative for plan, discount and
+  // amount. Client-supplied pricing/referral fields are never trusted here.
+  const razorpay = new Razorpay({
+    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  })
+  const paidOrder = await razorpay.orders.fetch(razorpay_order_id)
+  const plan = paidOrder.notes?.plan
+  const referralCode = paidOrder.notes?.discount_type === "referral"
+    ? paidOrder.notes?.referral_code || null
+    : null
+
+  if (!plan || plan !== requestedPlan) {
+    return Response.json({ success: false, error: "Payment plan mismatch" }, { status: 400 })
   }
 
   /* ---------- plan expiry ---------- */
@@ -168,14 +184,6 @@ if (referralCode) {
   cat_test_series: "CAT VARC Test Series",
 }
 
-const planAmounts = {
-  monthly: referralCode ? 319 : 399,
-  quarterly: referralCode ? 799 : 999,
-  half_yearly: referralCode ? 1039 : 1299,
-  yearly: referralCode ? 1599 : 1999,
-  cat_test_series: referralCode ? 639 : 799,
-}
-
     await fetch("https://rc.auctorlabs.in/api/send-payment-email", {
 
   method: "POST",
@@ -192,7 +200,7 @@ const planAmounts = {
 
   plan: planNames[plan],
 
-  amount: planAmounts[plan],
+  amount: Number(paidOrder.amount) / 100,
 
   expiry: new Date(expiry).toDateString(),
 

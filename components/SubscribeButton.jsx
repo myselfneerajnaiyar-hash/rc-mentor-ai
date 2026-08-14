@@ -8,6 +8,7 @@ export default function SubscribeButton({
   label,
   user,
   referralCode = "",
+  couponCode = "",
   variant = "primary",
 }) {
 
@@ -65,11 +66,14 @@ if (!razorpayLoaded) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount,
+          plan,
+          referralCode,
+          couponCode,
         }),
       })
 
       const order = await res.json()
+      if (!res.ok) throw new Error(order.error || "Unable to create payment order")
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -102,6 +106,7 @@ if (!razorpayLoaded) {
   user_id: user.id,
   plan,
   referralCode,
+  couponCode,
 }),
           })
 

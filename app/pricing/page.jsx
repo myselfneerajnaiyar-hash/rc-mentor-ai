@@ -5,12 +5,16 @@ import SubscribeButton from "@/components/SubscribeButton"
 import { useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
 import { useRouter } from "next/navigation"
+import { validateCouponCode } from "@/lib/payments/pricing"
 
 export default function Pricing() {
 const [user, setUser] = useState(null)
 const [referralCode, setReferralCode] = useState("");
 const [discountApplied, setDiscountApplied] = useState(false);
 const [discountMessage, setDiscountMessage] = useState("");
+const [couponInput, setCouponInput] = useState("");
+const [appliedCoupon, setAppliedCoupon] = useState("");
+const [couponMessage, setCouponMessage] = useState("");
 
 const router = useRouter()
 
@@ -72,13 +76,13 @@ structured training, AI mentorship, analytics, and unlimited practice.
     type="text"
     placeholder="Referral Code (Optional)"
     value={referralCode}
-    disabled={discountApplied}
+    disabled={discountApplied || Boolean(appliedCoupon)}
     onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
     className="w-full rounded-xl bg-slate-800 border border-slate-600 px-4 py-3 text-white"
   />
 
   <Button
-  disabled={discountApplied}
+  disabled={discountApplied || Boolean(appliedCoupon)}
     className="w-full mt-3"
     onClick={async () => {
       const { data } = await supabase
@@ -95,6 +99,9 @@ structured training, AI mentorship, analytics, and unlimited practice.
 }
 
 setDiscountApplied(true);
+setAppliedCoupon("");
+setCouponInput("");
+setCouponMessage("");
 setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
     }}
   >
@@ -112,6 +119,42 @@ setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You save
   </div>
 )}
   
+</div>
+
+<div className="max-w-md mx-auto mb-12 rounded-2xl border border-slate-700 bg-slate-900/70 p-6">
+  <label className="mb-2 block text-sm font-semibold text-slate-200">Coupon Code</label>
+  <div className="flex gap-2">
+    <input
+      type="text"
+      placeholder="Enter coupon code"
+      value={couponInput}
+      onChange={(e) => setCouponInput(e.target.value)}
+      className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
+    />
+    <Button
+      onClick={() => {
+        const result = validateCouponCode(couponInput)
+        if (!result.valid) {
+          setAppliedCoupon("")
+          setCouponMessage("Invalid or expired coupon code.")
+          return
+        }
+        setAppliedCoupon(result.code)
+        setCouponInput(result.code)
+        setDiscountApplied(false)
+        setReferralCode("")
+        setDiscountMessage("")
+        setCouponMessage(`${result.code} applied — 50% discount`)
+      }}
+    >
+      Apply
+    </Button>
+  </div>
+  {couponMessage && (
+    <div className={`mt-4 rounded-xl border p-4 text-center font-medium ${appliedCoupon ? "border-green-500 bg-green-500/15 text-green-300" : "border-red-500 bg-red-500/15 text-red-300"}`}>
+      {couponMessage}
+    </div>
+  )}
 </div>
 
 
@@ -214,12 +257,14 @@ One-time purchase
 
 </ul>
 
+{appliedCoupon && <CouponBreakdown originalRupees={799} />}
 <SubscribeButton
 amount={discountApplied ? 639 : 799}
 plan="cat_test_series"
 label="Unlock Test Series"
 user={user}
-referralCode={referralCode}
+referralCode={appliedCoupon ? "" : referralCode}
+couponCode={appliedCoupon}
 />
 
 </CardContent>
@@ -289,13 +334,15 @@ Save ₹260
 <li>✔️ Full analytics dashboard</li>
 </ul>
 
+{appliedCoupon && <CouponBreakdown originalRupees={1299} />}
 <SubscribeButton
 amount={discountApplied ? 1039 : 1299}
 plan="half_yearly"
 label="Start 6 Month Plan"
 user={user}
 variant="premium"
-referralCode={referralCode}
+referralCode={appliedCoupon ? "" : referralCode}
+couponCode={appliedCoupon}
 />
 
 </CardContent>
@@ -351,12 +398,14 @@ referralCode={referralCode}
 <li>✔️ Unlimited RC practice</li>
 </ul>
 
+{appliedCoupon && <CouponBreakdown originalRupees={999} />}
 <SubscribeButton
 amount={discountApplied ? 799 : 999}
 plan="quarterly"
 label="Start 3 Month Plan"
 user={user}
-referralCode={referralCode}
+referralCode={appliedCoupon ? "" : referralCode}
+couponCode={appliedCoupon}
 />
 
 </CardContent>
@@ -426,13 +475,15 @@ Only ₹166/month
 
     </ul>
 
+   {appliedCoupon && <CouponBreakdown originalRupees={1999} />}
    <SubscribeButton
 amount={discountApplied ? 1599 : 1999}
 plan="yearly"
 label="Unlock Premium"
 user={user}
 variant="premium"
-referralCode={referralCode}
+referralCode={appliedCoupon ? "" : referralCode}
+couponCode={appliedCoupon}
 />
 
   </CardContent>
@@ -486,12 +537,14 @@ referralCode={referralCode}
 
     </ul>
 
+   {appliedCoupon && <CouponBreakdown originalRupees={399} />}
    <SubscribeButton
   amount={discountApplied ? 319 : 399}
   plan="monthly"
   label="Start Monthly Plan"
   user={user}
-  referralCode={referralCode}
+  referralCode={appliedCoupon ? "" : referralCode}
+  couponCode={appliedCoupon}
 />
 
   </CardContent>
@@ -537,4 +590,19 @@ Secure payments powered by Razorpay
 
 </>
 )
+}
+
+function CouponBreakdown({ originalRupees }) {
+  const discount = originalRupees / 2
+  return (
+    <div className="mb-5 space-y-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
+      <div className="flex justify-between text-slate-300"><span>Original</span><span>{formatRupees(originalRupees)}</span></div>
+      <div className="flex justify-between text-emerald-300"><span>Independence Day Discount</span><span>-{formatRupees(discount)}</span></div>
+      <div className="flex justify-between border-t border-emerald-500/20 pt-2 font-bold text-white"><span>You Pay</span><span>{formatRupees(discount)}</span></div>
+    </div>
+  )
+}
+
+function formatRupees(value) {
+  return `₹${value.toLocaleString("en-IN", { minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 })}`
 }
