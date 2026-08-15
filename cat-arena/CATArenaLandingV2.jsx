@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 import CATAnalytics from "../app/components/CATAnalytics";
+import { useTenant } from "@/components/providers/TenantProvider";
 
 
 
@@ -13,6 +14,7 @@ export default function CATArenaLanding({
   onViewDiagnosis,
   isFreeFlow,
 }) {
+  const { entitlement } = useTenant();
   const [attemptedMap, setAttemptedMap] = useState({});
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("pyq");
@@ -82,6 +84,7 @@ setAttemptedMap(map);
 
   
 const hasFullCATAccess =
+  entitlement.isInstituteStudent ||
   plan === "yearly" ||
   plan === "half_yearly";
 

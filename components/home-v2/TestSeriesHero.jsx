@@ -12,7 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export default function TestSeriesHero({setView}) {
+export default function TestSeriesHero({setView, instituteAccess = false}) {
 
     const router = useRouter();
   return (
@@ -82,7 +82,7 @@ export default function TestSeriesHero({setView}) {
               </div>
 
               <div className="rounded-full bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
-                ₹799 One Time
+                {instituteAccess ? "Included by your institute" : "₹799 One Time"}
               </div>
 
             </div>
@@ -254,25 +254,25 @@ export default function TestSeriesHero({setView}) {
         <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-600 to-blue-700 p-5">
 
           <div className="text-sm font-semibold text-cyan-100">
-            Launch Price
+            {instituteAccess ? "Institute Access" : "Launch Price"}
           </div>
 
           <div className="mt-2 text-4xl font-black text-white">
-            ₹799
+            {instituteAccess ? "Included" : "₹799"}
           </div>
 
           <div className="mt-1 text-cyan-100 text-sm">
-            One-Time Purchase
+            {instituteAccess ? "Full CAT access" : "One-Time Purchase"}
           </div>
 
          <Button
   onClick={(e) => {
     e.stopPropagation();
-    router.push("/pricing");
+    instituteAccess ? setView("cat") : router.push("/pricing");
   }}
   className="mt-5 w-full rounded-xl bg-white text-cyan-700 hover:bg-slate-100 font-semibold"
 >
-  Buy Now
+  {instituteAccess ? "Start Practising" : "Buy Now"}
 </Button>
 
         </div>

@@ -4,6 +4,7 @@ import { Upload, Brain, Sparkles, Camera, ImageIcon } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import ChatMentor from "@/components/ChatMentor"
 import { createClient } from "@supabase/supabase-js"
+import { useTenant } from "@/components/providers/TenantProvider"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -12,6 +13,7 @@ const supabase = createClient(
 
 
 export default function BirbalEditorialDecoder() {
+   const { entitlement } = useTenant()
    const [files, setFiles] = useState([])
 const [previews, setPreviews] = useState([])
 
@@ -134,7 +136,7 @@ async function loadPremium() {
 
   if (!data) return
 
-  setIsPremium(data.is_premium)
+  setIsPremium(entitlement.isPremium)
   setBirbalCredits(data.birbal_credits || 0)
 }
 async function compressImage(file) {

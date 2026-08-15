@@ -18,6 +18,7 @@ export async function GET() {
       .from("profiles")
       .select("*")
       .eq("is_premium", false)
+      .is("institute_id", null)
 
     for (const user of users || []) {
 

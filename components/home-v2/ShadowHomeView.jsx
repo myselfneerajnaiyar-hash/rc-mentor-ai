@@ -51,7 +51,7 @@ function getGreeting() {
 }
 
 export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
-const { branding } = useTenant()
+const { branding, entitlement } = useTenant()
 const capabilities = getExamCapabilities(exam)
 const normalizedExam = capabilities.exam
 const isCAT = capabilities.isCAT
@@ -294,7 +294,7 @@ useEffect(() => {
       data.birbal_credit_month !== currentMonth
     ) {
 
-      credits = data.is_premium ? 30 : 1
+      credits = entitlement.isPremium ? 30 : 1
 
       await supabase
         .from("profiles")
@@ -307,21 +307,15 @@ useEffect(() => {
 
     setBirbalCredits(credits)
 
-    setIsPremium(data?.is_premium || false)
+    setIsPremium(entitlement.isPremium)
 
     // TRIAL CHECK
-    const expired =
-      data.trial_expires_at
-        ? new Date() >
-          new Date(data.trial_expires_at)
-        : true
-
-    setTrialExpired(expired)
+    setTrialExpired(!entitlement.hasAccess)
   }
 
   loadPremium()
 
-}, [user])
+}, [user, entitlement])
 
 
 useEffect(() => {
@@ -448,7 +442,7 @@ setInsight({
 
  {isCAT && (
   <>
-    <TestSeriesHero setView={setView} />
+    <TestSeriesHero setView={setView} instituteAccess={entitlement.isInstituteStudent} />
 
    
   </>
@@ -464,8 +458,9 @@ setInsight({
 <PremiumFeatures
   setView={setView}
   startAdaptiveRC={startAdaptiveRC}
+  instituteAccess={entitlement.isInstituteStudent}
 />
-<PremiumCTA />
+{!entitlement.isInstituteStudent && <PremiumCTA />}
 
 <LeaderboardSection exam={exam} />
 

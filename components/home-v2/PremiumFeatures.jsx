@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 export default function PremiumFeatures({
   setView,
   startAdaptiveRC,
+  instituteAccess = false,
 }) {
 
     const router = useRouter();
@@ -30,12 +31,12 @@ export default function PremiumFeatures({
 
           <Crown className="h-4 w-4" />
 
-          Premium AI Features
+          {instituteAccess ? "Institute Access" : "Premium AI Features"}
 
         </div>
 
         <h2 className="mt-4 text-4xl font-bold text-white">
-          Unlock 5 Premium AI Tools
+          {instituteAccess ? "Your Premium AI Tools" : "Unlock 5 Premium AI Tools"}
         </h2>
 
         <p className="mt-3 max-w-3xl text-lg text-slate-400">

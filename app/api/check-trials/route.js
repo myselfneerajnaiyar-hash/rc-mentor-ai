@@ -20,6 +20,7 @@ export async function GET() {
     await supabase
       .from("profiles")
       .select("*")
+      .is("institute_id", null)
 
   for (const user of users || []) {
 

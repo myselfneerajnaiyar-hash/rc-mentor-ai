@@ -8,7 +8,7 @@ import { getExamCapabilities } from "@/lib/tenant/capabilities"
 const TenantContext = createContext(null)
 
 export default function TenantProvider({ children }) {
-  const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), access: "pending" })
+  const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false }, access: "pending" })
 
   useEffect(() => {
     let active = true

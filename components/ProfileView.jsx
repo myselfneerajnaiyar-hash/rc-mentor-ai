@@ -6,7 +6,7 @@ import TenantLogo from "@/components/tenant/TenantLogo";
 
 
 export default function ProfileView({ setView }) {
-  const { branding, capabilities } = useTenant();
+  const { branding, capabilities, entitlement } = useTenant();
   const [profile, setProfile] = useState(null);
   const detailRef = useRef(null);
   const [stats, setStats] = useState({
@@ -332,7 +332,9 @@ w
    <p style={{ marginBottom: 10 }}>
   Current Plan:{" "}
   <strong>
-    {subscription
+    {entitlement.isInstituteStudent
+      ? "Institute-sponsored access"
+      : subscription
       ? `Pro ${
           subscription.plan === "monthly"
             ? "Monthly"
@@ -343,11 +345,12 @@ w
 </p>
 
 <p style={{ color: "#94a3b8" }}>
-  Upgrade to Pro for advanced analytics, AI diagnosis,
-  and full sectional sync.
+  {entitlement.isInstituteStudent
+    ? "Your institute provides full access to the features available for your exam."
+    : "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync."}
 </p>
 
-{!subscription && (
+{!subscription && !entitlement.isInstituteStudent && (
   <button
     style={{
       marginTop: 15,

@@ -83,7 +83,7 @@ async function loadSectionalAttemptMapFromDB() {
 }
     
 export default function Page() {
-  const { branding, profile: tenantProfile, capabilities } = useTenant();
+  const { branding, profile: tenantProfile, capabilities, entitlement } = useTenant();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -137,7 +137,7 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [userName, setUserName] = useState("");
   const [exam, setExam] = useState("");
-  const [hasPremiumAccess, setHasPremiumAccess] = useState(false)
+  const hasPremiumAccess = Boolean(entitlement?.hasAccess)
 
   // ---- VOCAB STATE ----
   
@@ -298,51 +298,6 @@ useEffect(() => {
 
 }, []);
 
-
-useEffect(() => {
-
-  if (!user?.id) return
-
-  async function checkAccess() {
-
-    // STEP 1 → premium subscription check
-    const { data: subscription } = await supabase
-      .from("subscriptions")
-      .select("*")
-      .eq("user_id", user.id)
-      .gt("expires_at", new Date().toISOString())
-      .maybeSingle()
-
-    if (subscription) {
-      setHasPremiumAccess(true)
-      return
-    }
-
-    // STEP 2 → trial check
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("trial_expires_at")
-      .eq("user_id", user.id)
-      .maybeSingle()
-
-    if (!profile?.trial_expires_at) {
-      setHasPremiumAccess(false)
-      return
-    }
-
-    const now = new Date()
-    const expiry = new Date(profile.trial_expires_at)
-
-    if (now < expiry) {
-      setHasPremiumAccess(true)
-    } else {
-      setHasPremiumAccess(false)
-    }
-  }
-
-  checkAccess()
-
-}, [user])
 
 useEffect(() => {
 
@@ -748,7 +703,7 @@ const navItems = [
 
   
 
-  { id: "premium", label: "Premium", icon: Trophy },
+  ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Premium", icon: Trophy }] : []),
   { id: "profile", label: "Profile", icon: User },
 ];
 

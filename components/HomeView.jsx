@@ -18,6 +18,7 @@ import { generateCoachPlan }
 from "@/lib/birbal/generateCoachPlan";
 import BirbalWelcomeModal
 from "@/components/BirbalWelcomeModal";
+import { useTenant } from "@/components/providers/TenantProvider";
 import {
   Brain,
   BookOpen,
@@ -41,6 +42,7 @@ function getGreeting() {
 }
 
 export default function HomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
+const { entitlement } = useTenant()
 const normalizedExam = exam?.trim().toUpperCase() || "";
 
 const isCAT = normalizedExam === "CAT";
@@ -285,7 +287,7 @@ useEffect(() => {
       data.birbal_credit_month !== currentMonth
     ) {
 
-      credits = data.is_premium ? 30 : 1
+      credits = entitlement.isPremium ? 30 : 1
 
       await supabase
         .from("profiles")
@@ -298,21 +300,15 @@ useEffect(() => {
 
     setBirbalCredits(credits)
 
-    setIsPremium(data?.is_premium || false)
+    setIsPremium(entitlement.isPremium)
 
     // TRIAL CHECK
-    const expired =
-      data.trial_expires_at
-        ? new Date() >
-          new Date(data.trial_expires_at)
-        : true
-
-    setTrialExpired(expired)
+    setTrialExpired(!entitlement.hasAccess)
   }
 
   loadPremium()
 
-}, [user])
+}, [user, entitlement])
 
 useEffect(() => {
 

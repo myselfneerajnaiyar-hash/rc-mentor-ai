@@ -1,5 +1,7 @@
 import OpenAI from "openai"
 import { createClient } from "@supabase/supabase-js"
+import { getEffectiveEntitlement } from "@/lib/tenant/entitlement"
+import { authorizeTenantMembership, getRequestHostname, resolveHostname } from "@/lib/tenant/resolveHostname"
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -52,10 +54,26 @@ export async function POST(req) {
           is_premium,
           birbal_credits,
           birbal_credit_month,
-          trial_expires_at
+          trial_expires_at,
+          institute_id,
+          premium_expires_at
         `)
         .eq("user_id", user.id)
         .single()
+
+    const resolvedTenant = await resolveHostname(getRequestHostname(req))
+    const membership = authorizeTenantMembership(resolvedTenant, profile)
+    if (!membership.allowed) return Response.json({ error: "Institute access denied" }, { status: 403 })
+
+    const { data: subscription } = await supabase
+      .from("subscriptions")
+      .select("plan,expires_at")
+      .eq("user_id", user.id)
+      .gt("expires_at", new Date().toISOString())
+      .order("expires_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    const entitlement = getEffectiveEntitlement({ profile, resolvedTenant, subscription })
 
     const currentMonth =
       `${new Date().getFullYear()}-${new Date().getMonth()+1}`
@@ -71,7 +89,7 @@ export async function POST(req) {
     ) {
 
       credits =
-        profile.is_premium ? 30 : 1
+        entitlement.isPremium ? 30 : 1
 
       await supabase
         .from("profiles")
@@ -84,15 +102,7 @@ export async function POST(req) {
 
     // ================= TRIAL CHECK =================
 
-    const trialExpired =
-      !profile.trial_expires_at ||
-      new Date() >
-        new Date(profile.trial_expires_at)
-
-    if (
-      !profile.is_premium &&
-      trialExpired
-    ) {
+    if (!entitlement.hasAccess) {
 
       return Response.json({
         error:
@@ -106,7 +116,7 @@ export async function POST(req) {
 
       return Response.json({
         error:
-          profile.is_premium
+          entitlement.isPremium
             ? "Monthly credits exhausted"
             : "Daily free limit exhausted"
       })
