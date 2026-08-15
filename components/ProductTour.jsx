@@ -110,7 +110,7 @@ export function startProductTour(isCatStudent, brandName = "Auctor RC") {
       popover: {
         title: "⚡ Speed Reading Gym",
         description:
-"Train yourself to read faster without losing comprehension. Perfect for improving CAT speed."
+"Train yourself to read faster without losing comprehension across timed reading tasks."
       }
     },
     {
