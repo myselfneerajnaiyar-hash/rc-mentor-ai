@@ -419,8 +419,6 @@ const { data: savedSession, error } =
     .single()
 
     console.log("SUPABASE SAVE RESULT")
-console.log(savedSession)
-console.log(error)
 
 if (error) {
 
@@ -431,7 +429,6 @@ if (error) {
   })
 }
 
-console.log("FINAL SESSION:", savedSession)
 await supabase
   .from("profiles")
   .update({

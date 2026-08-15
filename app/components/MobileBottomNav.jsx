@@ -15,6 +15,7 @@ export default function MobileBottomNav({
   setView,
   hasPremiumAccess,
   exam,
+  capabilities,
   chatOpen,
 }) {
 
@@ -37,7 +38,7 @@ export default function MobileBottomNav({
     icon: BookOpen,
   },
 
-  ...(exam === "CAT"
+  ...(capabilities?.showCATSectionals
     ? [
         {
           key: "cat",

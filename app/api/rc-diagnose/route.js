@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-console.log("API KEY:", process.env.OPENAI_API_KEY);
-
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -118,7 +116,10 @@ ${JSON.stringify(qMeta, null, 2)}
 
     return NextResponse.json(enriched);
   } catch (e) {
-    console.error(e);
+    console.error("RC diagnosis failed", {
+      name: e instanceof Error ? e.name : "UnknownError",
+      status: typeof e?.status === "number" ? e.status : undefined,
+    });
     return NextResponse.json(
       { error: "Diagnosis failed" },
       { status: 500 }

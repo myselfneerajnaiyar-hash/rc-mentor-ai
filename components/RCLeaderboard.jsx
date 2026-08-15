@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
 
 export default function RCLeaderboard() {
 
@@ -8,7 +9,8 @@ export default function RCLeaderboard() {
 
   async function load() {
 
-    const res = await fetch("/api/rc-leaderboard")
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch("/api/rc-leaderboard", { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} })
 
     if (!res.ok) return
 

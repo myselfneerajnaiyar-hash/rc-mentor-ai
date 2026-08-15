@@ -1,36 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useTenant } from "@/components/providers/TenantProvider";
 
 export default function BirbalWelcomeModal({
     user,
   onStart,
 }) {
+  const { capabilities, branding } = useTenant();
   const [step, setStep] = useState(1);
-  const [isCAT, setIsCAT] = useState(false);
+  const isCAT = capabilities.isCAT;
  const TOTAL_STEPS = 3;
-
-useEffect(() => {
-  async function loadUserExam() {
-    if (!user?.id) return;
-
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("exam")
-      .eq("user_id", user.id)
-      .single();
-
-    if (error) {
-      console.error("Could not load user exam:", error);
-      return;
-    }
-
-    setIsCAT(data?.exam?.toUpperCase() === "CAT");
-  }
-
-  loadUserExam();
-}, [user?.id]);
 
 const close = async () => {
   await supabase
@@ -69,6 +50,11 @@ shadow-indigo-900/30
 animate-modalEnter
 "
 >
+
+    <div className="mb-4 text-center">
+      <p className="text-sm font-semibold text-white">{branding.brandName}</p>
+      {branding.isInstitute && <p className="text-[10px] uppercase tracking-[0.14em] text-slate-500">Powered by Auctor Labs</p>}
+    </div>
 
     <div className="flex justify-center gap-2 mb-4">
 
@@ -115,7 +101,7 @@ The more you practice, the better I understand you.`}
 
     <button
       onClick={() => setStep(2)}
-      className="mt-4 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
+      className="mt-4 w-full brand-primary-bg py-3 rounded-xl font-semibold"
     >
       Continue →
     </button>
@@ -139,7 +125,7 @@ I’ll help you spot patterns in your mistakes and turn them into a clear plan f
 
       <JourneyCard
         icon="🧠"
-        title="Auctor Method"
+        title={`${branding.isInstitute ? branding.brandName : "Auctor"} Method`}
         desc="Solve RC → Diagnosis → Improvement Plan"
       />
 
@@ -153,7 +139,7 @@ I’ll help you spot patterns in your mistakes and turn them into a clear plan f
 
     <button
       onClick={() => setStep(3)}
-      className="mt-4 w-full bg-indigo-600 py-3 rounded-xl font-semibold"
+      className="mt-4 w-full brand-primary-bg py-3 rounded-xl font-semibold"
     >
       Show My Tools →
     </button>

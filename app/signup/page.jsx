@@ -5,8 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import "../login/login.css"
 import { Eye, EyeOff } from "lucide-react"
+import { useTenant } from "@/components/providers/TenantProvider"
+import TenantLogo from "@/components/tenant/TenantLogo"
 
 export default function SignupPage() {
+  const { branding } = useTenant()
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -22,7 +25,7 @@ const free = searchParams.get("free") || ""
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-     redirectTo: `https://rc.auctorlabs.in/auth/callback?next=${next}&free=${free}`
+     redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`
     }
   })
 
@@ -60,10 +63,11 @@ router.push(`/login?next=${next}&free=${free}`);
     {/* LEFT SIDE */}
     <div className="auth-left">
 
-      <h1>Auctor RC</h1>
+      <div className="flex items-center gap-3"><TenantLogo className="h-12 w-12 rounded-xl object-contain" /><h1>{branding.brandName}</h1></div>
+      {branding.isInstitute && <p className="brand-attribution">Powered by Auctor Labs</p>}
 
       <p className="tagline">
-        Train your reading intelligence for CAT.
+        {branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Train your reading intelligence for CAT."}
       </p>
 
       <ul className="feature-list">
@@ -82,6 +86,7 @@ router.push(`/login?next=${next}&free=${free}`);
     <div className="auth-right">
 
       <div className="auth-card">
+        <div className="auth-mobile-brand md:hidden"><TenantLogo className="h-11 w-11 rounded-xl object-contain" /><div><p>{branding.brandName}</p>{branding.isInstitute && <span>Powered by Auctor Labs</span>}</div></div>
 
         <h1 className="auth-title">Create Account</h1>
 
@@ -145,7 +150,7 @@ router.push(`/login?next=${next}&free=${free}`);
 
           {error && <p className="auth-error">{error}</p>}
 
-          <button type="submit" className="auth-button">
+          <button type="submit" className="auth-button brand-primary-bg">
             {loading ? "Creating account..." : "Sign Up"}
           </button>
 

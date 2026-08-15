@@ -5,8 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
 import posthog from "posthog-js"
+import { useTenant } from "@/components/providers/TenantProvider"
+import TenantLogo from "@/components/tenant/TenantLogo"
 
 export default function WelcomePage() {
+  const { branding } = useTenant()
   const router = useRouter()
   const searchParams = useSearchParams();
 const next = searchParams.get("next");
@@ -162,6 +165,7 @@ expiry.setDate(expiry.getDate() + 3)
   return (
     <div className={styles["welcome-wrapper"]}>
       <div className={styles["welcome-card"]}>
+        <div className="mb-6 flex items-center justify-center gap-3"><TenantLogo className="h-10 w-10 rounded-xl object-contain" /><div><span className="font-semibold text-white">{branding.brandName}</span>{branding.isInstitute && <p className="text-[10px] text-slate-400">Powered by Auctor Labs</p>}</div></div>
 
         <h1 className={styles["welcome-title"]}>
           Let’s Set Up Your Profile
@@ -281,6 +285,7 @@ expiry.setDate(expiry.getDate() + 3)
   return (
     <div className={styles["welcome-wrapper"]}>
       <div className={styles["welcome-card"]}>
+        <div className="mb-6 flex items-center justify-center gap-3"><TenantLogo className="h-10 w-10 rounded-xl object-contain" /><div><span className="font-semibold text-white">{branding.brandName}</span>{branding.isInstitute && <p className="text-[10px] text-slate-400">Powered by Auctor Labs</p>}</div></div>
         <h1 className={styles["welcome-title"]}>
           Welcome {name} 👋
         </h1>

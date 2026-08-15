@@ -4,12 +4,15 @@ import {
  AlertTriangle ,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTenant } from "@/components/providers/TenantProvider";
+import TenantLogo from "@/components/tenant/TenantLogo";
 
 export default function TestResultView({
   attempt,
   onViewDiagnosis,
   onExit,
 }) {
+    const { branding } = useTenant();
     const router = useRouter();
  const score = attempt.score ?? 0;
 
@@ -91,19 +94,16 @@ const getScoreColor = (accuracy) => {
 
         <div className="flex items-center gap-3">
 
-          <img
-            src="/logo.png"
-            className="w-8 h-8"
-          />
+          <TenantLogo className="w-8 h-8 rounded-lg object-contain" />
 
           <div>
 
             <div className="font-bold text-white">
-              Auctor RC
+              {branding.brandName}
             </div>
 
             <div className="text-xs text-slate-400">
-              CAT Arena
+              {branding.isInstitute ? "Powered by Auctor Labs · CAT Arena" : "CAT Arena"}
             </div>
 
           </div>

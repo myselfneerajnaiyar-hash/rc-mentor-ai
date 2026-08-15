@@ -1,14 +1,28 @@
 import "./globals.css"
 import Script from "next/script"
 import PostHogProvider from "../components/PostHogProvider"
+import TenantProvider from "@/components/providers/TenantProvider"
+import { headers } from "next/headers"
+import { resolveHostname } from "@/lib/tenant/resolveHostname"
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Auctor RC – AI-Powered Reading Comprehension & Verbal Practice",
-  description:
-    "Auctor RC is an AI-powered CAT VARC practice platform for reading comprehension and reasoning.",
-};
+export async function generateMetadata() {
+  try {
+    const requestHeaders = headers()
+    const hostname = requestHeaders.get("x-forwarded-host")?.split(",")[0] || requestHeaders.get("host")
+    const resolved = await resolveHostname(hostname)
+    if (!resolved.ok) return { title: "Learning Portal Unavailable", robots: { index: false, follow: false } }
+    const brand = resolved.branding
+    return {
+      title: brand.isInstitute ? `${brand.brandName} | Reading Comprehension Platform` : "Auctor RC – AI-Powered Reading Comprehension & Verbal Practice",
+      description: brand.isInstitute ? `${brand.brandName} student learning platform, powered by Auctor.` : "Auctor RC is an AI-powered CAT VARC practice platform for reading comprehension and reasoning.",
+      icons: { icon: brand.faviconUrl },
+    }
+  } catch {
+    return { title: "Auctor RC – AI-Powered Reading Comprehension & Verbal Practice", icons: { icon: "/icon-192.png" } }
+  }
+}
 
 export const viewport = {
   width: "device-width",
@@ -50,7 +64,7 @@ export default function RootLayout({ children }) {
 </Script>
 
         <PostHogProvider />
-        {children}
+        <TenantProvider>{children}</TenantProvider>
         <noscript>
   <img
     height="1"

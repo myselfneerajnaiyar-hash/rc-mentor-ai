@@ -11,7 +11,6 @@ export async function POST(req) {
 
   const body = await req.json()
   console.log("VERIFY PAYMENT HIT");
-console.log(body);
 
   const {
     razorpay_order_id,
@@ -82,8 +81,6 @@ if (plan === "cat_test_series") {
   .eq("user_id", user_id)
   .single();
 
-console.log("PROFILE:", profile);
-console.log("PROFILE ERROR:", profileError);
 
 // ---------- prevent duplicate processing ----------
 
@@ -119,8 +116,6 @@ if (existingPayment) {
   })
   .select();
 
-console.log("INSERT DATA:", data);
-console.log("INSERT ERROR:", error);
 
 if (error) {
   return Response.json(

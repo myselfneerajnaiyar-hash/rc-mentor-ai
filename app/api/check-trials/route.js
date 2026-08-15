@@ -21,8 +21,6 @@ export async function GET() {
       .from("profiles")
       .select("*")
 
-  console.log(users)
-
   for (const user of users || []) {
 
     if (!user.trial_expires_at) continue
@@ -33,19 +31,7 @@ export async function GET() {
     const expiryDate =
       expiry.toISOString().split("T")[0]
 
-    console.log(
-      user.email,
-      expiryDate,
-      tomorrowDate
-    )
-
     if (expiryDate === tomorrowDate) {
-
-      console.log(
-        "SENDING EMAIL TO:",
-        user.email
-      )
-
       await fetch(
         "https://rc.auctorlabs.in/api/send-trial-ending-email",
         {

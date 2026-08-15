@@ -7,11 +7,12 @@ import RCLeaderboard from "@/components/RCLeaderboard";
 import Leaderboard from "@/components/Leaderboard";
 import WordHuntLeaderboard from "@/components/WordHuntLeaderboard";
 import WeeklyRCChallenge from "@/components/WeeklyRCChallenge";
+import { getExamCapabilities } from "@/lib/tenant/capabilities";
 
 export default function LeaderboardSection({exam}) {
-    const isCAT = exam?.trim().toUpperCase() === "CAT";
+const isCAT = getExamCapabilities(exam).isCAT;
 const [activeTab, setActiveTab] = useState(
-  exam?.trim().toUpperCase() === "CAT"
+  isCAT
     ? "rc"
     : "workout"
 );

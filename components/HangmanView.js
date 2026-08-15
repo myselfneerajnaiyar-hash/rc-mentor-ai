@@ -195,7 +195,6 @@ const handleSubmit = async () => {
   console.log("Submitting...");
 
 const { data: sessionData } = await supabase.auth.getSession()
-console.log("USER ID:", sessionData.session?.user?.id);
 
 const payload = {
   user_id: sessionData.session?.user?.id,   // ✅ REAL USER ID
@@ -206,7 +205,6 @@ const payload = {
   attempt_date: new Date().toISOString().split("T")[0]
 }
 
-  console.log(payload);
 
   const res = await fetch("/api/submit", {
     method: "POST",
@@ -233,7 +231,6 @@ const payload = {
 
 
   
-  console.log("Response:", data);
   const score = calculateScore();
 setFinalScore(score);
 };

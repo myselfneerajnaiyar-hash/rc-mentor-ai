@@ -25,6 +25,8 @@ from "@/components/BirbalCoachCard";
 import Header from "@/components/home-v2/Header";
 import { generateCoachPlan }
 from "@/lib/birbal/generateCoachPlan";
+import { getExamCapabilities, getExamDisplayName } from "@/lib/tenant/capabilities";
+import { useTenant } from "@/components/providers/TenantProvider";
 
 import {
   Brain,
@@ -49,23 +51,11 @@ function getGreeting() {
 }
 
 export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
-const normalizedExam = exam?.trim().toUpperCase() || "";
-
-const isCAT = normalizedExam === "CAT";
-
-const examDisplayNames = {
-  CAT: "CAT VARC",
-  XAT: "XAT Verbal",
-  GMAT: "GMAT Verbal",
-  CLAT: "CLAT English",
-  "BANK PO": "Bank PO English",
-  SSC: "SSC English",
-  CUET: "CUET Language",
-  IPMAT: "IPMAT Verbal",
-};
-
-const examDisplayName =
-  examDisplayNames[normalizedExam] || exam || "Reading";
+const { branding } = useTenant()
+const capabilities = getExamCapabilities(exam)
+const normalizedExam = capabilities.exam
+const isCAT = capabilities.isCAT
+const examDisplayName = getExamDisplayName(exam)
 
   const router = useRouter()
   const [streak, setStreak] = useState(0)
@@ -445,7 +435,7 @@ setInsight({
  
    <div className="flex flex-col gap-10 pb-28">
 <Header
-  startTour={() => startProductTour(isCAT)}
+  startTour={() => startProductTour(isCAT, branding.brandName)}
   user={user}
   userName={userName}
   examDisplayName={examDisplayName}

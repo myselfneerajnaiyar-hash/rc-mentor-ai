@@ -230,12 +230,8 @@ useEffect(() => {
     error: sessionError,
   } = await supabase.auth.getSession();
 
-  console.log("SESSION:", session);
-  console.log("SESSION ERROR:", sessionError);
 
   const { data: authData, error: userError } = await supabase.auth.getUser();
-  console.log("USER:", authData);
-  console.log("USER ERROR:", userError);
 
  if (!authData?.user) {
   console.log("⚠️ No authenticated user — skipping DB save");

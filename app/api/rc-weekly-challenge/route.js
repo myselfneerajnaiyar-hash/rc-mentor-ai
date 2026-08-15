@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { requireCapability } from "@/lib/tenant/requireCapability"
 import {
   formatWeeklyRcDisplayDate,
   getPreviousWeeklyRcWindow,
@@ -19,10 +20,12 @@ const supabase = createClient(
 
 export async function GET(request) {
   try {
+    const access = await requireCapability(request, "showDailyRC")
+    if (!access.ok) return NextResponse.json({ error: access.status === 401 ? "Authentication required" : "Daily RC is not available for your exam" }, { status: access.status })
     const url = new URL(request.url)
     const page = Math.max(1, Number(url.searchParams.get("page")) || 1)
     const limit = Math.min(100, Math.max(10, Number(url.searchParams.get("limit")) || 25))
-    const currentUserId = await getCurrentUserId(request)
+    const currentUserId = access.identity.user.id
     const currentWeek = getWeeklyRcWindow()
     const previousWeek = getPreviousWeeklyRcWindow()
 
@@ -77,14 +80,6 @@ export async function GET(request) {
     console.error("Weekly RC leaderboard failed:", error)
     return NextResponse.json({ error: "Unable to load weekly RC leaderboard" }, { status: 500 })
   }
-}
-
-async function getCurrentUserId(request) {
-  const authHeader = request.headers.get("authorization")
-  if (!authHeader?.startsWith("Bearer ")) return null
-  const token = authHeader.slice("Bearer ".length)
-  const { data: { user } } = await supabase.auth.getUser(token)
-  return user?.id || null
 }
 
 async function calculateWeeklyStandings(window) {

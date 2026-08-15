@@ -70,7 +70,6 @@ const { data: profiles } = await supabase
   .select("user_id, name")
   .in("user_id", userIds)
 
-  console.log("Profiles returned:", profiles)
 
 
 const profileMap = {}

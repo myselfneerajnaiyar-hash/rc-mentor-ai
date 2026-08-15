@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { requireCapability } from "@/lib/tenant/requireCapability";
 
 export async function generateStaticParams() {
   const dirPath = path.join(process.cwd(), "data", "catrc");
@@ -14,6 +15,8 @@ export async function generateStaticParams() {
 }
 
 export async function GET(req, { params }) {
+  const access = await requireCapability(req, "showCATSectionals");
+  if (!access.ok) return new Response(JSON.stringify({ error: access.status === 401 ? "Authentication required" : "CAT sectionals are not available for your exam" }), { status: access.status, headers: { "Content-Type": "application/json" } });
   const { id } = params;
 
   try {

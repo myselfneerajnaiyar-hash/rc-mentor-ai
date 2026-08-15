@@ -94,8 +94,6 @@ const question = body.question || "";
 const options = body.options || [];
 const correctIndex = body.correctIndex ?? null;
 
-    console.log("PROFILE:", context.profile);
-
     // DEBUG MODE
 if (body.debug) {
   return NextResponse.json({
@@ -184,4 +182,3 @@ messages: [
 
 }
 
- 

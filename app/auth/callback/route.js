@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { NextResponse } from "next/server"
+import { getRequestHostname, resolveHostname } from "@/lib/tenant/resolveHostname"
 
 export async function GET(request) {
 
@@ -16,11 +17,12 @@ export async function GET(request) {
 
     await supabase.auth.exchangeCodeForSession(code)
   }
-const next = requestUrl.searchParams.get("next") || "";
-const free = requestUrl.searchParams.get("free") || "";
-
-return NextResponse.redirect(
-  `https://rc.auctorlabs.in/welcome?next=${next}&free=${free}`
-);
+const resolved = await resolveHostname(getRequestHostname(request))
+if (!resolved.ok) return NextResponse.json({ error: "Unknown authentication hostname" }, { status: 403 })
+const isLocal = resolved.hostname === "localhost" || resolved.hostname === "127.0.0.1"
+const destination = new URL("/welcome", isLocal ? requestUrl.origin : `https://${resolved.hostname}`)
+destination.searchParams.set("next", requestUrl.searchParams.get("next") || "")
+destination.searchParams.set("free", requestUrl.searchParams.get("free") || "")
+return NextResponse.redirect(destination)
   
 }

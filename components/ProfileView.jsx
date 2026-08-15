@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../lib/supabase";
+import { useTenant } from "@/components/providers/TenantProvider";
+import TenantLogo from "@/components/tenant/TenantLogo";
 
 
 export default function ProfileView({ setView }) {
+  const { branding, capabilities } = useTenant();
   const [profile, setProfile] = useState(null);
   const detailRef = useRef(null);
   const [stats, setStats] = useState({
@@ -103,7 +106,7 @@ setSubscription(sub)
 }, [profileTab]);
 
   if (!profile) return null;
-  const isCAT = profile.exam?.toUpperCase() === "CAT";
+  const isCAT = capabilities.isCAT;
 
   async function handleLogout() {
   await supabase.auth.signOut();
@@ -116,6 +119,7 @@ setSubscription(sub)
       <button onClick={() => setView("home")} style={backBtn}>
         ← Back to Home
       </button>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}><TenantLogo className="h-8 w-8 rounded-lg object-contain" /><div><p style={{ margin: 0, color: "#e2e8f0", fontSize: 14, fontWeight: 600 }}>{branding.brandName}</p>{branding.isInstitute && <p style={{ margin: 0, color: "#64748b", fontSize: 10 }}>Powered by Auctor Labs</p>}</div></div>
 
       {/* HERO SECTION */}
       <div style={hero}>
@@ -128,6 +132,7 @@ setSubscription(sub)
           <p style={subText}>
             {profile.exam} • {profile.attempt_year}
           </p>
+          {branding.isInstitute && <p style={{ color: "var(--brand-secondary)", fontSize: 13, margin: "5px 0" }}>{branding.brandName} student portal</p>}
 
           <p style={{ color: "#94a3b8", fontSize: 14 }}>
   📱 {profile.phone || "Phone not added"}

@@ -55,7 +55,7 @@ export default function Header({
 
     <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
       Good Afternoon,{" "}
-      <span className="text-indigo-300">
+      <span className="brand-primary-text">
         {userName || "Champion"}
       </span>
       👋

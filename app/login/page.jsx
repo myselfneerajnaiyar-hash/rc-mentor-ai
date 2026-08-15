@@ -5,8 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import "./login.css"
 import { Eye, EyeOff } from "lucide-react"
+import { useTenant } from "@/components/providers/TenantProvider"
+import TenantLogo from "@/components/tenant/TenantLogo"
 
 export default function LoginPage() {
+  const { branding } = useTenant()
   const router = useRouter()
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "";
@@ -22,7 +25,7 @@ const free = searchParams.get("free") || "";
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-     redirectTo: `https://rc.auctorlabs.in/auth/callback?next=${next}&free=${free}`
+     redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`
     }
   })
 
@@ -60,10 +63,11 @@ router.replace(`/welcome?next=${next}&free=${free}`);
 
     {/* LEFT SIDE */}
     <div className="auth-left hidden md:flex">
-      <h1>Auctor RC</h1>
+      <div className="flex items-center gap-3"><TenantLogo className="h-12 w-12 rounded-xl object-contain" /><h1>{branding.brandName}</h1></div>
+      {branding.isInstitute && <p className="brand-attribution">Powered by Auctor Labs</p>}
 
       <p className="tagline">
-        Build elite reading intelligence for CAT.
+        {branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Build elite reading intelligence for CAT."}
       </p>
 
       <ul className="feature-list">
@@ -79,6 +83,7 @@ router.replace(`/welcome?next=${next}&free=${free}`);
     <div className="auth-right">
 
      <div className="auth-card w-full md:w-1/2">
+        <div className="auth-mobile-brand md:hidden"><TenantLogo className="h-11 w-11 rounded-xl object-contain" /><div><p>{branding.brandName}</p>{branding.isInstitute && <span>Powered by Auctor Labs</span>}</div></div>
         <h1 className="auth-title">Welcome Back</h1>
         <p className="auth-subtitle">
   New user? Create an account using your email and password.
@@ -137,7 +142,7 @@ router.replace(`/welcome?next=${next}&free=${free}`);
 </div>
           {error && <p className="auth-error">{error}</p>}
 
-          <button type="submit" className="auth-button">
+          <button type="submit" className="auth-button brand-primary-bg">
             Login
           </button>
 

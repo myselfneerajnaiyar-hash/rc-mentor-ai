@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useTenant } from "@/components/providers/TenantProvider";
 
 export default function NewDiagnosisView({
     
@@ -8,6 +9,7 @@ export default function NewDiagnosisView({
   enrichedPassages = [],
   enrichedQuestions = [],
 }) {
+  const { branding } = useTenant();
   const accuracy =
     attempt?.attempted > 0
       ? Math.round(
@@ -60,7 +62,7 @@ const [questions, setQuestions] =
         {/* HEADER */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold">
-            Auctor Mentor Report
+            {branding.isInstitute ? `${branding.brandName} Mentor Report` : "Auctor Mentor Report"}
           </h1>
 
           <p className="text-slate-400 mt-2">

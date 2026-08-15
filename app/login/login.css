@@ -44,14 +44,14 @@
 
 .auth-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-secondary) 18%, transparent);
 }
 
 .auth-button {
   width: 100%;
   padding: 12px;
-  background: #3b82f6;
+  background: var(--brand-primary);
   border: none;
   border-radius: 10px;
   color: white;
@@ -61,7 +61,7 @@
 }
 
 .auth-button:hover {
-  background: #2563eb;
+  filter: brightness(1.08);
 }
 
 .auth-error {
@@ -77,7 +77,7 @@
 }
 
 .auth-footer a {
-  color: #3b82f6;
+  color: var(--brand-secondary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -97,7 +97,7 @@ min-height:100vh;
 
 .auth-left{
 flex:1;
-background:#0f172a;
+background:linear-gradient(145deg, #0f172a 45%, color-mix(in srgb, var(--brand-primary) 24%, #0f172a));
 color:white;
 padding:80px;
 display:flex;
@@ -136,3 +136,8 @@ background:#020617;
     width: 100%;
   }
 }
+
+.brand-attribution { margin-top: -12px; margin-bottom: 24px; font-size: 12px; opacity: .62; letter-spacing: .04em; }
+.auth-mobile-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.auth-mobile-brand p { color: #111827; font-weight: 700; margin: 0; }
+.auth-mobile-brand span { color: #6b7280; font-size: 11px; }

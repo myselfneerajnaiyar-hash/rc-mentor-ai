@@ -115,8 +115,6 @@ async function loadPremium() {
     error: sessionError
   } = await supabase.auth.getSession()
 
-  console.log("SESSION:", session)
-  console.log("SESSION ERROR:", sessionError)
 
   if (!session?.user) {
 
@@ -133,8 +131,6 @@ async function loadPremium() {
     .eq("user_id", session.user.id)
     .single()
 
-  console.log("PROFILE:", data)
-  console.log("PROFILE ERROR:", error)
 
   if (!data) return
 

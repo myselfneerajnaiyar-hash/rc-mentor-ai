@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { requireCapability } from "@/lib/tenant/requireCapability"
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -15,14 +16,9 @@ const DAY_MS = 24 * 60 * 60 * 1000
 
 export async function GET(request) {
   try {
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader?.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 })
-    }
-
-    const token = authHeader.slice("Bearer ".length)
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    if (authError || !user) return NextResponse.json({ error: "Authentication required" }, { status: 401 })
+    const access = await requireCapability(request, "showDailyRC")
+    if (!access.ok) return NextResponse.json({ error: access.status === 401 ? "Authentication required" : "Daily RC is not available for your exam" }, { status: access.status })
+    const user = access.identity.user
 
     const range = new URL(request.url).searchParams.get("range") || "all"
     const rangeStart = getRangeStart(range)

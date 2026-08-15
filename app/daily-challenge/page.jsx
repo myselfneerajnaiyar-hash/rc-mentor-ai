@@ -22,10 +22,10 @@ export default function DailyChallengePage() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/get-daily-rc"
-        );
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch("/api/get-daily-rc", {
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
 
       const data =
         await response.json();

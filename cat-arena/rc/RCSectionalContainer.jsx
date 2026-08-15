@@ -25,7 +25,8 @@ export default function RCSectionalContainer({
     if (!sectionalId) return;
 
     async function loadTest() {
-      const res = await fetch(`/api/cat-sectionals/${sectionalId}`);
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`/api/cat-sectionals/${sectionalId}`, { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} });
       if (!res.ok) return;
       const json = await res.json();
       setLoadedTestData(json);
@@ -88,12 +89,8 @@ export default function RCSectionalContainer({
     error: sessionError,
   } = await supabase.auth.getSession();
 
-  console.log("SESSION:", session);
-  console.log("SESSION ERROR:", sessionError);
 
   const { data: authData, error: userError } = await supabase.auth.getUser();
-  console.log("USER:", authData);
-  console.log("USER ERROR:", userError);
 
  if (!authData?.user) {
   console.log("⚠️ No authenticated user — skipping DB save");

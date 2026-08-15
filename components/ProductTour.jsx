@@ -3,7 +3,7 @@
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
-export function startProductTour(isCatStudent) {
+export function startProductTour(isCatStudent, brandName = "Auctor RC") {
 
 
    
@@ -12,7 +12,7 @@ export function startProductTour(isCatStudent) {
 
         
   popover: {
-    title: "👋 Welcome to Auctor RC",
+    title: `👋 Welcome to ${brandName}`,
     description:
       "This 60-second tour will show you the most important features to improve your reading. Let's begin!"
   }
@@ -72,7 +72,7 @@ export function startProductTour(isCatStudent) {
     {
 
         popover: {
-    title: "👋 Welcome to Auctor RC",
+    title: `👋 Welcome to ${brandName}`,
     description:
       "This 60-second tour will show you the most important features to improve your reading. Let's begin!"
   }

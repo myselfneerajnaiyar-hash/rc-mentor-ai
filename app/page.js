@@ -31,6 +31,7 @@ import CATArenaTestView from "../cat-arena/CATArenaTestViewV2";
 import CATInstructions from "../cat-arena/CATInstructions"
 import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainerV2";
 import BirbalFloatingButton from "@/components/home-v2/BirbalFloatingButton";
+import TenantLogo from "@/components/tenant/TenantLogo";
 import AssessmentMode from "@/components/assessment/AssessmentMode";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
@@ -46,6 +47,7 @@ import PracticeSwitcher from "@/components/PracticeSwitcher";
 import PrecisionTraining from "../components/PrecisionTraining"
 import HangmanView from "../components/HangmanView";
 import GrammarLab from "../components/GrammarLab";
+import { useTenant } from "@/components/providers/TenantProvider";
 
 
 
@@ -81,6 +83,7 @@ async function loadSectionalAttemptMapFromDB() {
 }
     
 export default function Page() {
+  const { branding, profile: tenantProfile, capabilities } = useTenant();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -356,32 +359,23 @@ useEffect(() => {
 }, [view, hasPremiumAccess])
 
  useEffect(() => {
-  if (!user) return;
-
-  async function loadProfile() {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("name, exam")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-  if (profile) {
-
-  if (profile.name) {
+  if (tenantProfile) {
+  if (tenantProfile.name) {
     const formatted =
-      profile.name.charAt(0).toUpperCase() +
-      profile.name.slice(1);
+      tenantProfile.name.charAt(0).toUpperCase() +
+      tenantProfile.name.slice(1);
 
     setUserName(formatted);
 
   }
 
-  setExam(profile.exam || "");
+  setExam(capabilities.exam === "Unassigned" ? "" : capabilities.exam);
 }
-  }
+}, [tenantProfile, capabilities]);
 
-  loadProfile();
-}, [user]);
+useEffect(() => {
+  if (view === "cat" && !capabilities.showCATSectionals) setView("home")
+}, [view, capabilities.showCATSectionals])
 
   function splitPassage() {
     const raw = text.trim();
@@ -738,7 +732,7 @@ const navItems = [
   { id: "workout", label: "Daily Workout", icon: Flame },
   { id: "rc", label: "RC", icon: Brain },
    { id: "precision", label: "Precision Training", icon: Target },
-   ...(exam === "CAT"
+   ...(capabilities.showCATSectionals
     ? [{ id: "cat", label: "CAT", icon: GraduationCap }]
     : []),
    { id: "vocab", label: "Vocab", icon: BookOpen },
@@ -771,11 +765,9 @@ return (
  !(view === "cat" && catPhase === "test") && (
   <aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
-  <h2 className="text-xl font-semibold text-white tracking-tight">
-    Auctor RC
-  </h2>
+<div className="flex items-center gap-3"><TenantLogo className="h-10 w-10 rounded-xl object-contain" /><h2 className="text-xl font-semibold text-white tracking-tight">{branding.brandName}</h2></div>
   <p className="text-xs text-slate-500 mt-1">
-    Powered by Birbal
+    {branding.isInstitute ? "Powered by Auctor Labs" : "Powered by Birbal"}
   </p>
   <div className="h-px bg-slate-800 mt-6" />
 </div>
@@ -822,7 +814,7 @@ ${
  view === item.id
   ? item.id === "mentor"
     ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
-    : "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
+    : "brand-nav-active border"
  : locked
 ? "text-slate-500 opacity-70 hover:bg-slate-800/40"
 : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
@@ -859,6 +851,7 @@ ${
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
+       <div className="mb-5 flex items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 rounded-lg object-contain" /><div><p className="text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div></div>
        {(["rc", "vocab", "speed", "precision"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
@@ -874,6 +867,7 @@ ${
   userName={userName}
   user={user}
   exam={exam}
+  capabilities={capabilities}
  
 />
 )}

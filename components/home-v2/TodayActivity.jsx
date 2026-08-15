@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { getExamCapabilities } from "@/lib/tenant/capabilities";
 
 export default function TodayActivity({
     exam,
@@ -20,6 +21,7 @@ export default function TodayActivity({
 }) {
 
     const router = useRouter();
+    const capabilities = getExamCapabilities(exam);
   return (
     <section className="space-y-8">
 
@@ -46,7 +48,7 @@ export default function TodayActivity({
 
       <div className="grid gap-6 lg:grid-cols-3">
        
-        {exam === "CAT" && (
+        {capabilities.showDailyRC && (
             <>
 
         {/* Daily RC */}
