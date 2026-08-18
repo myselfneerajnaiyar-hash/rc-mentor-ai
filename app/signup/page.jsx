@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import "../login/login.css"
-import { Eye, EyeOff } from "lucide-react"
+import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 
@@ -58,77 +58,73 @@ router.push(`/login?next=${next}&free=${free}`);
   }
 
   return (
-  <div className="auth-layout">
+  <main className="auth-layout">
 
     {/* LEFT SIDE */}
-    <div className="auth-left">
+    <section className="auth-left">
+      <div className="auth-glow auth-glow-one" /><div className="auth-glow auth-glow-two" />
 
-      <div className="flex items-center gap-3"><TenantLogo className="h-12 w-12 rounded-xl object-contain" /><h1>{branding.brandName}</h1></div>
-      {branding.isInstitute && <p className="brand-attribution">Powered by Auctor Labs</p>}
+      <div className="auth-brand"><TenantLogo className="auth-logo" /><div><h1>{branding.brandName}</h1>{branding.isInstitute && <p className="brand-attribution">Powered by Auctor Labs</p>}</div></div>
+      <div className="auth-left-content">
+        <div className="auth-eyebrow"><Sparkles size={14} /> Read deeper. Think sharper.</div>
+        <p className="tagline">{branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Train your reading intelligence for CAT."}</p>
+        <p className="auth-left-copy">A focused learning system designed to turn every passage into measurable progress.</p>
+        <ul className="feature-list">
+          <li><span><BrainCircuit /></span>AI Mentor Birbal</li><li><span><Zap /></span>Daily RC Workouts</li>
+          <li><span><Trophy /></span>Leaderboards &amp; Streaks</li><li><span><BarChart3 /></span>Deep Performance Analytics</li>
+          <li><span><BookOpen /></span>Unlimited RC Generator</li><li><span><Sparkles /></span>CAT RC Sectionals</li>
+        </ul>
+      </div>
+      <p className="auth-proof">Designed for deliberate practice · Built for ambitious readers</p>
 
-      <p className="tagline">
-        {branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Train your reading intelligence for CAT."}
-      </p>
-
-      <ul className="feature-list">
-        <li>🧠 AI Mentor Birbal</li>
-        <li>⚡ Daily RC Workouts</li>
-        <li>🏆 Leaderboards & Streaks</li>
-        <li>📊 Deep Performance Analytics</li>
-        <li>📚 Unlimited RC Generator</li>
-        <li>🎯 CAT RC Sectionals</li>
-      </ul>
-
-    </div>
+    </section>
 
 
     {/* RIGHT SIDE */}
-    <div className="auth-right">
+    <section className="auth-right">
 
       <div className="auth-card">
-        <div className="auth-mobile-brand md:hidden"><TenantLogo className="h-11 w-11 rounded-xl object-contain" /><div><p>{branding.brandName}</p>{branding.isInstitute && <span>Powered by Auctor Labs</span>}</div></div>
+        <div className="auth-mobile-brand"><TenantLogo className="auth-mobile-logo" /><div><p>{branding.brandName}</p>{branding.isInstitute && <span>Powered by Auctor Labs</span>}</div></div>
 
-        <h1 className="auth-title">Create Account</h1>
+        <h1 className="auth-title">Create your {branding.brandName} account</h1>
 
-       <p className="auth-subtitle">
-  New here? Sign up using your email and password.
-</p>
+       <p className="auth-subtitle">Start building stronger reading intelligence.</p>
 
 <button
   onClick={handleGoogleLogin}
   type="button"
-  className="w-full flex items-center justify-center gap-3 py-4 rounded-xl mb-4 border border-gray-300 bg-white hover:bg-gray-100 transition shadow-sm"
+  className="auth-google-button"
 >
 
   <img
     src="https://developers.google.com/identity/images/g-logo.png"
     alt="Google"
-    className="w-5 h-5"
+    className="auth-google-icon"
   />
 
-  <span style={{ color: "#111827", fontWeight: 600 }}>
-    Continue with Google
-  </span>
+  <span>Continue with Google</span>
 
 </button>
 
-        <form onSubmit={handleSignup}>
+        <div className="auth-divider"><span>or continue with email</span></div>
+        <form onSubmit={handleSignup} className="auth-form">
 
-          <input
+          <label className="auth-label" htmlFor="signup-email">Email</label>
+          <input id="signup-email"
             type="email"
-            placeholder="Email"
+            placeholder="you@example.com"
             className="auth-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-        <div className="relative">
+        <label className="auth-label" htmlFor="signup-password">Password</label>
+        <div className="auth-password-wrap">
 
   <input
-    type={showPassword ? "text" : "password"}
-    placeholder="Password"
-    className="auth-input pr-12"
+    id="signup-password" type={showPassword ? "text" : "password"}
+    placeholder="Create a password" className="auth-input auth-password-input"
     value={password}
     onChange={(e) => setPassword(e.target.value)}
     required
@@ -137,12 +133,12 @@ router.push(`/login?next=${next}&free=${free}`);
   <button
     type="button"
     onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-4 top-1/2 -translate-y-1/2 z-50"
+    className="auth-password-toggle" aria-label={showPassword ? "Hide password" : "Show password"}
   >
     {showPassword ? (
-      <EyeOff size={20} color="black" strokeWidth={2.5} />
+      <EyeOff size={19} />
     ) : (
-      <Eye size={20} color="black" strokeWidth={2.5} />
+      <Eye size={19} />
     )}
   </button>
 
@@ -150,8 +146,8 @@ router.push(`/login?next=${next}&free=${free}`);
 
           {error && <p className="auth-error">{error}</p>}
 
-          <button type="submit" className="auth-button brand-primary-bg">
-            {loading ? "Creating account..." : "Sign Up"}
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? <><span className="auth-spinner" />Creating account...</> : "Create account"}
           </button>
 
         </form>
@@ -162,8 +158,8 @@ router.push(`/login?next=${next}&free=${free}`);
 
       </div>
 
-    </div>
+    </section>
 
-  </div>
+  </main>
 )
 }
