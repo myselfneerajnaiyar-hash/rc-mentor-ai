@@ -43,11 +43,16 @@ import {
 
 /* ---------- Time-based greeting ---------- */
 function getGreeting() {
-  const h = new Date().getHours()
-  if (h >= 5 && h < 12) return "Good morning 🌅"
-  if (h >= 12 && h < 17) return "Good afternoon ☀️"
-  if (h >= 17 && h < 22) return "Good evening 🌙"
-  return "Good night 🌌"
+  const hour = Number(new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date()))
+
+  if (hour >= 5 && hour < 12) return "Good Morning"
+  if (hour >= 12 && hour < 17) return "Good Afternoon"
+  if (hour >= 17 && hour < 22) return "Good Evening"
+  return "Good Night"
 }
 
 export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
@@ -58,6 +63,7 @@ const isCAT = capabilities.isCAT
 const examDisplayName = getExamDisplayName(exam)
 
   const router = useRouter()
+  const [greeting, setGreeting] = useState(getGreeting)
   const [streak, setStreak] = useState(0)
   const [coach, setCoach] = useState(null);
   const [dailyRCStreak, setDailyRCStreak] = useState(0)
@@ -74,6 +80,13 @@ useState(false)
 
 const [completedWorkoutToday, setCompletedWorkoutToday] =
 useState(false)
+
+useEffect(() => {
+  const updateGreeting = () => setGreeting(getGreeting())
+  updateGreeting()
+  const timer = window.setInterval(updateGreeting, 60_000)
+  return () => window.clearInterval(timer)
+}, [])
 const [isPremium, setIsPremium] = useState(false)
 const [birbalCredits, setBirbalCredits] = useState(0)
 const [trialExpired, setTrialExpired] = useState(false)
@@ -432,6 +445,7 @@ setInsight({
   startTour={() => startProductTour(isCAT, branding.brandName)}
   user={user}
   userName={userName}
+  greeting={greeting}
   examDisplayName={examDisplayName}
   coach={coach}
   stats={stats}

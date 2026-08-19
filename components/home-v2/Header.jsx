@@ -34,6 +34,7 @@ const statCards = [
 export default function Header({
   user,
   userName,
+  greeting,
   examDisplayName,
   coach,
   stats,
@@ -54,10 +55,10 @@ export default function Header({
   <div className="flex flex-wrap items-center justify-between gap-4">
 
     <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
-      Good Afternoon,{" "}
+      {greeting},{" "}
       <span className="brand-primary-text">
         {userName || "Champion"}
-      </span>
+      </span>{" "}
       👋
     </h1>
 

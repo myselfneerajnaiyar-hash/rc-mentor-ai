@@ -3,6 +3,15 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import OpenAI from "openai"
+import {
+  PRECISION_DURATION_SECONDS,
+  authenticatedUser,
+  buildTargetPlan,
+  normalizeDrill,
+  normalizeTargetSkill,
+  sanitizeDrill,
+  sealDrill,
+} from "@/lib/precision/server"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -17,7 +26,18 @@ export async function POST(req) {
 
   try {
 
-    const { userId, weakSkills } = await req.json()
+    const user = await authenticatedUser(req, supabase)
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+    const body = await req.json()
+    const weakSkills = [...new Set(Array.isArray(body.weakSkills)
+      ? body.weakSkills.filter((skill) => typeof skill === "string").map(normalizeTargetSkill).filter(Boolean).slice(0, 2)
+      : [])]
+    if (!weakSkills.length) {
+      return NextResponse.json({ error: "No diagnosed Precision skills were provided" }, { status: 400 })
+    }
+    const targetPlan = buildTargetPlan(weakSkills)
+    const userId = user.id
 
     // ===== LIMIT CHECK =====
 
@@ -45,7 +65,7 @@ export async function POST(req) {
     }
 
     // ===== GENERATE DRILL =====
-const prompt = `
+const legacyPrompt = `
 You are a senior CAT VARC examiner designing high-quality reasoning drills similar to the CAT exam.
 
 Weak skills to target:
@@ -289,6 +309,71 @@ Return JSON exactly in this format:
 
 Return ONLY valid JSON.
 `;
+const prompt = `
+You are a senior CAT VARC examiner creating a targeted Precision remediation session.
+
+TARGET SKILLS (HARD CONSTRAINT): ${weakSkills.join(", ")}
+EXACT EIGHT-QUESTION SKILL PLAN: ${targetPlan.map((skill, index) => `${index + 1}:${skill}`).join(", ")}
+
+Every question MUST use the exact target_skill assigned at its position and MUST set both "target_skill" and "skill" to that value. Never introduce, substitute, or broaden to another skill. The cognitive task—not merely its label—must test that skill.
+
+SKILL ALIGNMENT RULES:
+- inference: require a conclusion supported by combined textual evidence, never direct retrieval.
+- main_idea: test the passage's central claim or organizing insight, never an isolated detail.
+- author_agreement or author_stance: test the position the writer would endorse from the argument.
+- author_purpose or purpose: test why the passage or a key move exists.
+- tone: distinguish the writer's precise attitude using textual cues.
+- paragraph_function: test the logical role a paragraph or statement plays.
+- assumption: require the unstated premise needed by the reasoning.
+- detail or detail_evidence: test precise evidence without turning into trivial line matching.
+- strengthen or weaken: require evaluating how new information affects the argument.
+- application: require transferring the passage's principle to a new case.
+- next_paragraph: require predicting the logically warranted next development.
+For any other supplied target, construct a genuine reasoning task matching its ordinary RC meaning.
+
+Create 6 micro drills, each with an argumentative paragraph of 80–120 words, then one nuanced mini RC passage of 250–300 words with 2 questions. Use the skill plan in order: micro questions are positions 1–6; mini RC questions are positions 7–8. Do not force the mini RC to inference or tone unless those appear in its assigned positions.
+
+Each question must have four similarly plausible options and one correctIndex. Design distractors intentionally. For every incorrect option, include either structured trap metadata when a meaningful trap is deliberately used, or null fields when there is genuinely no meaningful named trap. Never use a fallback category merely because classification is uncertain.
+
+Allowed trap_type values only:
+extreme_wording, scope_shift, opposite_inference, partially_true, unsupported_assumption, too_broad, too_narrow, qualifier_ignored, cause_effect_confusion, passage_contradiction, distorted_relationship, irrelevant_detail, wrong_comparison, misinterpretation, other.
+
+Use "other" only for a real, clearly explained distractor pattern that cannot fit a named category. Do not emit trap metadata for the correct option.
+
+Every question must have this shape:
+{
+  "paragraph": "",
+  "question": "",
+  "question_type": "the cognitive task being tested",
+  "target_skill": "exact assigned skill",
+  "skill": "exact assigned skill",
+  "options": ["", "", "", ""],
+  "correctIndex": 0,
+  "explanation": {
+    "reasoning": "why the target skill leads to the answer",
+    "why_correct": "why the correct option matches the passage",
+    "traps": [
+      {
+        "optionIndex": 1,
+        "trap_type": "scope_shift or null",
+        "trap_label": "Scope shift or null",
+        "trap_explanation": "Specific explanation grounded in this option and passage, or null"
+      }
+    ]
+  }
+}
+
+Before returning JSON, verify internally:
+1. Every skill exactly matches its assigned position in the skill plan.
+2. Each question actually requires that cognitive skill.
+3. No unrelated RC skill appears.
+4. Trap metadata describes the actual distractor and is not a generic label.
+5. A distractor without a meaningful named trap uses nulls.
+
+Return ONLY valid JSON in exactly this top-level structure:
+{"micro": [6 questions], "mini_rc": {"passage": "", "questions": [2 questions]}}
+`;
+void legacyPrompt
 console.log("Generating precision drill...")
     const completion = await openai.chat.completions.create({
       model: "gpt-4.1",
@@ -311,7 +396,7 @@ Rules:
       ],
       temperature: 0.45,
       response_format: { type: "json_object" },
-      max_tokens: 4000
+      max_tokens: 7000
     })
 
     console.log("OpenAI response received")
@@ -349,26 +434,45 @@ if (!drill.mini_rc || !Array.isArray(drill.mini_rc.questions)) {
   }
 }
 
-    function shuffleQuestion(q) {
+    const normalizedDrill = normalizeDrill(drill, weakSkills)
+    const sealedDrill = sealDrill(normalizedDrill)
 
-  if (!Array.isArray(q.options)) return q
+    const { data: storedDrill, error: drillStoreError } = await supabase
+      .from("precision_drills")
+      .insert({
+        skill_1: weakSkills[0] || "inference",
+        skill_2: weakSkills[1] || weakSkills[0] || "inference",
+        drill_data: {
+          sealed_payload: sealedDrill,
+          generation_version: "precision-targeted-v2",
+        },
+      })
+      .select("id")
+      .single()
 
-  const correctOption = q.options[q.correctIndex]
+    if (drillStoreError || !storedDrill) {
+      console.error("Precision drill storage failed", drillStoreError)
+      return NextResponse.json({ error: "Could not store Precision drill" }, { status: 500 })
+    }
 
-  const shuffled = [...q.options].sort(() => Math.random() - 0.5)
+    const { data: session, error: sessionError } = await supabase
+      .from("rc_sessions")
+      .insert({
+        user_id: userId,
+        passage_id: `precision-v2:${storedDrill.id}`,
+        passage_text: "Precision reasoning drill",
+        total_questions: normalizedDrill.micro.length + normalizedDrill.mini_rc.questions.length,
+        correct_answers: null,
+        time_taken_sec: null,
+        difficulty: "precision",
+      })
+      .select("id,created_at,total_questions")
+      .single()
 
-  const newIndex = shuffled.indexOf(correctOption)
-
-  q.options = shuffled
-  q.correctIndex = newIndex
-
-  return q
-}
-
-drill.micro = drill.micro.map(shuffleQuestion)
-
-drill.mini_rc.questions =
-  drill.mini_rc.questions.map(shuffleQuestion)
+    if (sessionError || !session) {
+      console.error("Precision session creation failed", sessionError)
+      return NextResponse.json({ error: "Could not create Precision session" }, { status: 500 })
+    }
 
     // ===== SAVE ATTEMPT =====
 
@@ -393,7 +497,17 @@ drill.mini_rc.questions =
 
     }
 
-    return NextResponse.json(drill)
+    const expiresAt = new Date(
+      new Date(session.created_at).getTime() + PRECISION_DURATION_SECONDS * 1000
+    ).toISOString()
+
+    return NextResponse.json({
+      sessionId: session.id,
+      createdAt: session.created_at,
+      expiresAt,
+      durationSeconds: PRECISION_DURATION_SECONDS,
+      drill: sanitizeDrill(normalizedDrill),
+    })
 
   } catch (err) {
 
