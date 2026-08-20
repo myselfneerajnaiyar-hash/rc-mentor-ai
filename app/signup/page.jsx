@@ -67,7 +67,7 @@ router.push(`/login?next=${next}&free=${free}`);
       <div className="auth-brand"><TenantLogo className="auth-logo" /><div><h1>{branding.brandName}</h1>{branding.isInstitute && <p className="brand-attribution">Powered by Auctor Labs</p>}</div></div>
       <div className="auth-left-content">
         <div className="auth-eyebrow"><Sparkles size={14} /> Read deeper. Think sharper.</div>
-        <p className="tagline">{branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Train your reading intelligence for CAT."}</p>
+        <p className="tagline">{branding.isInstitute ? "Your institute learning platform, powered by Auctor." : "Train your reading intelligence."}</p>
         <p className="auth-left-copy">A focused learning system designed to turn every passage into measurable progress.</p>
         <ul className="feature-list">
           <li><span><BrainCircuit /></span>AI Mentor Birbal</li><li><span><Zap /></span>Daily RC Workouts</li>
