@@ -124,6 +124,7 @@ export default function Page() {
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setView] = useState("home"); 
+  const [grammarSessionActive, setGrammarSessionActive] = useState(false);
 // home | rc | vocab | speed | cat | workout| crossword
  const [activeRCTest, setActiveRCTest] = useState(null);
 const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
@@ -167,7 +168,8 @@ useEffect(() => {
     view === "rc" ||
     view === "vocab" ||
     view === "speed" ||
-    view === "precision"
+    view === "precision" ||
+    view === "grammar"
   ) {
     if (mainRef.current) {
       mainRef.current.scrollTop = 0;
@@ -691,6 +693,7 @@ const navItems = [
     ? [{ id: "cat", label: "CAT", icon: GraduationCap }]
     : []),
    { id: "vocab", label: "Vocab", icon: BookOpen },
+  { id: "grammar", label: "Grammar", icon: SpellCheck },
  
   { id: "speed", label: "Speed", icon: Timer },
    { id: "hangman", label: "Word Hunt", icon: Puzzle },
@@ -807,7 +810,7 @@ ${
  <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
        <div className="mb-5 flex items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 rounded-lg object-contain" /><div><p className="text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div></div>
-       {(["rc", "vocab", "speed", "precision"].includes(view)) && (
+       {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
    {/* Desktop Navbar */}
@@ -849,6 +852,7 @@ ${
 )}
 
     {view === "vocab" && <VocabLab />}
+    {view === "grammar" && <GrammarLab onSessionActiveChange={setGrammarSessionActive} />}
    
 
     {view === "precision" && (
@@ -930,11 +934,11 @@ ${
       </div>
 </div>
     </main>
-    <BirbalFloatingButton
+    {!grammarSessionActive && <BirbalFloatingButton
   setView={setView}
   chatOpen={chatOpen}
   setChatOpen={setChatOpen}
-/>
+/>}
 
     </div>
     </>

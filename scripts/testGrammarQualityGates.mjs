@@ -1,0 +1,27 @@
+import assert from "node:assert/strict"
+import { failClosedAuditReasons, preAuditQualityReasons } from "./grammarQualityGates.mjs"
+
+const q = (question_text, options) => ({ question_text, options, question_type: "Sentence Correction", explanation: {}, option_analysis: {}, quality: { reasoning_steps: ["one", "two"] } })
+const audit = { mechanism_1: "first independent mechanism", mechanism_2: "second independent mechanism", mechanism_independence_explanation: "Each controls a separate decision.", hard_mechanism_categories: ["attachment", "temporal-scope"], unique_defensible_answer: true, defensible_option_ids: ["A"], option_evaluations: ["A", "B", "C", "D"].map((option_id) => ({ option_id, grammatical_status: option_id === "A" ? "correct" : "incorrect", semantic_status: option_id === "A" ? "preserved" : "defective", defensible: option_id === "A", reason: "objective grammar and meaning check" })), ambiguity_status: "none", context_sufficiency: "sufficient", style_dependency: "none", semantic_consistency: "consistent", hard_reasoning_steps: ["attachment", "temporal scope"], hard_mechanisms_independent: true }
+const tests = [
+  ["introductory modifier alternatives", "REJECT", () => preAuditQualityReasons(q("Excited for the conference, the schedule was read eagerly by Maria.", { A: "Excited for the conference, the schedule was read eagerly by Maria.", B: "Maria, excited for the conference, eagerly read the schedule.", C: "Excited for the conference, Maria eagerly read the schedule.", D: "Maria eagerly read the schedule excited for the conference." }), "modifiers", "easy").some((r) => r.startsWith("equivalent-option-wording"))],
+  ["only scope alternatives", "REJECT", () => preAuditQualityReasons(q("Choose the intended time scope.", { A: "The finance team reviews quarterly reports only after the board meeting.", B: "Only after the board meeting, the finance team reviews quarterly reports.", C: "The finance team only reviews quarterly reports after the board meeting.", D: "The finance team reviews only quarterly reports after the board meeting." }), "modifiers", "moderate").some((r) => r.startsWith("equivalent-option-wording"))],
+  ["reported speech viewpoint", "REJECT", () => preAuditQualityReasons(q("The CEO announced yesterday that the company _____ next month.", { A: "will implement", B: "implemented", C: "had implemented", D: "implements" }), "tenses", "moderate").includes("reported-speech-viewpoint-underdetermined")],
+  ["reported speech ambiguous stated", "REJECT", () => preAuditQualityReasons(q("The spokesperson stated that the company _____ a new product line next year.", { A: "will launch", B: "would launch", C: "launched", D: "launches" }), "tenses", "moderate").includes("reported-speech-viewpoint-underdetermined")],
+  ["reported speech explicit backshift", "PASS", () => preAuditQualityReasons(q("The spokesperson stated in 2024 that the company _____ a new product line in 2025, but the launch was later cancelled.", { A: "would launch", B: "will launch", C: "launches", D: "had launched" }), "tenses", "moderate").includes("reported-speech-viewpoint-underdetermined")],
+  ["reported speech explicit current viewpoint", "PASS", () => preAuditQualityReasons(q("The spokesperson stated last year that the company _____ a new product line next year, and the launch is still scheduled for next year.", { A: "will launch", B: "would launch", C: "launched", D: "had launched" }), "tenses", "moderate").includes("reported-speech-viewpoint-underdetermined")],
+  ["contradictory data countability", "REJECT", () => preAuditQualityReasons(q("While the amount of data was large, only a few specific data mattered.", { A: "amount; data", B: "number; data", C: "amount; datas", D: "number; datas" }), "nouns", "hard").includes("contradictory-data-countability")],
+  ["repeated Hard mechanism", "REJECT", () => failClosedAuditReasons({ ...audit, hard_reasoning_steps: ["past perfect first", "past perfect second"], hard_mechanisms_independent: false }, "hard").length > 0],
+  ["good Modifier Hard", "PASS", () => failClosedAuditReasons(audit, "hard").length > 0],
+  ["good Voice Moderate", "PASS", () => failClosedAuditReasons(audit, "moderate").length > 0],
+  ["good Voice Hard", "PASS", () => failClosedAuditReasons({ ...audit, hard_reasoning_steps: ["preserve perfect aspect", "preserve semantic roles"] }, "hard").length > 0],
+  ["borderline Voice Hard", "REJECT", () => failClosedAuditReasons({ ...audit, hard_mechanism_categories: ["passive-auxiliary-chain", "patient-identification"] }, "hard", "active-passive-voice").length > 0],
+  ["good Voice Hard independent", "PASS", () => failClosedAuditReasons({ ...audit, hard_mechanism_categories: ["perfect-aspect-preservation", "complex-object-transformation"] }, "hard", "active-passive-voice").length > 0],
+  ["Nouns Hard only countability", "REJECT", () => failClosedAuditReasons({ ...audit, hard_mechanism_categories: ["contextual-sense", "quantifier-compatibility"] }, "hard", "nouns").length > 0],
+  ["Nouns Hard three mechanisms", "PASS", () => failClosedAuditReasons({ ...audit, hard_mechanism_categories: ["contextual-sense", "quantifier-compatibility", "possessive-scope"] }, "hard", "nouns").length > 0],
+]
+for (const [name, expected, rejected] of tests) {
+  const actual = rejected() ? "REJECT" : "PASS"
+  assert.equal(actual, expected, name)
+  console.log(`${name}: expected ${expected}, actual ${actual} -> PASS`)
+}

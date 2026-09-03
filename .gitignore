@@ -7,3 +7,4 @@ android/
 *.lock
 *.xml
 .gradle/
+logs/grammar-openai-usage.jsonl

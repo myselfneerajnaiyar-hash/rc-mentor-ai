@@ -5,7 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "grammar:seed": "node scripts/seedGrammarBank.mjs",
+    "grammar:plans:validate": "node scripts/validateGrammarTopicPlans.mjs",
+    "grammar:quality:test": "node scripts/testGrammarQualityGates.mjs",
+    "grammar:pilot:validate": "node scripts/validateGrammarPilot.mjs",
+    "grammar:populate": "node scripts/populateGrammarTopics.mjs",
+    "grammar:populate:plan": "node scripts/planGrammarPopulation.mjs"
   },
   "dependencies": {
     "@capacitor-community/speech-recognition": "^7.0.1",

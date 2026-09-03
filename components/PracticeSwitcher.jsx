@@ -52,6 +52,17 @@ export default function PracticeSwitcher({ view, setView }) {
           🎯 Precision
         </button>
 
+        <button
+          onClick={() => setView("grammar")}
+          className={`flex-1 min-w-[90px] py-2 text-sm rounded-lg transition ${
+            view === "grammar"
+              ? "bg-violet-600 text-white"
+              : "text-slate-400"
+          }`}
+        >
+          Grammar
+        </button>
+
       </div>
 
     </div>

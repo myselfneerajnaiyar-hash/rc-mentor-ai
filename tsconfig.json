@@ -33,7 +33,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/cogition-diagnosis/page.js"  ],
   "exclude": [
     "node_modules"
   ]
