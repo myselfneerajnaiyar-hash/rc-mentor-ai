@@ -49,6 +49,8 @@ import HangmanView from "../components/HangmanView";
 import GrammarLab from "../components/GrammarLab";
 import { useTenant } from "@/components/providers/TenantProvider";
 
+const SHOW_GRAMMAR_LAB = false;
+
 
 
 
@@ -693,7 +695,9 @@ const navItems = [
     ? [{ id: "cat", label: "CAT", icon: GraduationCap }]
     : []),
    { id: "vocab", label: "Vocab", icon: BookOpen },
-  { id: "grammar", label: "Grammar", icon: SpellCheck },
+  ...(SHOW_GRAMMAR_LAB
+    ? [{ id: "grammar", label: "Grammar", icon: SpellCheck }]
+    : []),
  
   { id: "speed", label: "Speed", icon: Timer },
    { id: "hangman", label: "Word Hunt", icon: Puzzle },
