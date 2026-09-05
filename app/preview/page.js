@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import PreviewNavbar from "@/components/PreviewNavbar";
 import PreviewFooter from "@/components/PreviewFooter";
+import FaqSection from "./components/FaqSection";
 
 import "swiper/css";
 
@@ -1653,6 +1654,7 @@ transition={{
 
 </motion.section>
 
+<FaqSection />
 <PreviewFooter/>
     </main>
   );

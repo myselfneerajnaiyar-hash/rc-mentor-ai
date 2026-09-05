@@ -83,7 +83,7 @@ const GRAMMAR_TOPIC_PLANS = {
     auditSiteName: "pronoun decision site",
   },
 }
-const BLUEPRINT_PRODUCTION_TOPICS = ["nouns", "tenses", "verbs-auxiliaries", "articles-determiners", "prepositions", "modifiers", "parallelism", "active-passive-voice", "conjunctions", "conditionals"]
+const BLUEPRINT_PRODUCTION_TOPICS = ["parts-of-speech", "nouns", "tenses", "verbs-auxiliaries", "articles-determiners", "prepositions", "modifiers", "parallelism", "active-passive-voice", "conjunctions", "conditionals"]
 for (const topicId of BLUEPRINT_PRODUCTION_TOPICS) {
   const blueprint = GRAMMAR_TOPIC_BLUEPRINTS[topicId]
   GRAMMAR_TOPIC_PLANS[topicId] = {
@@ -153,9 +153,9 @@ const normalize = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9
 const dedupHash = (topic, difficulty, text) => crypto.createHash("sha256").update(`${topic}|${difficulty}|${normalize(text)}`).digest("hex")
 const similarity = (left, right) => { const a = new Set(normalize(left).split(" ").filter(Boolean)); const b = new Set(normalize(right).split(" ").filter(Boolean)); const union = new Set([...a, ...b]).size; return union ? [...a].filter((token) => b.has(token)).length / union : 0 }
 const blankCount = (value) => (String(value || "").match(/_{2,}/g) || []).length
-const optionSignature = (question) => ["A", "B", "C", "D"].map((key) => normalize(question.options?.[key])).join("|")
+const optionSignature = (question) => ["A", "B", "C", "D"].map((key) => normalize(question.options?.[key])).sort().join("|")
 const storedOptionSignature = (question) => Array.isArray(question.options)
-  ? question.options.slice().sort((left, right) => String(left.label).localeCompare(String(right.label))).map((option) => normalize(option.text)).join("|")
+  ? question.options.map((option) => normalize(option.text)).sort().join("|")
   : optionSignature(question)
 const CONSTRUCTION_FAMILIES = [
   ["only-one-relative", /\bonly one\b.*\bwho\b/i],
@@ -303,7 +303,7 @@ function contentGateReasons(question, topic, difficulty, planIndex) {
   return [...new Set(reasons)]
 }
 
-async function generate(topic, difficulty, count, planOffset = 0, priorApproved = [], variationNonce = "", usageContext = null) {
+async function generate(topic, difficulty, count, planOffset = 0, priorApproved = [], variationNonce = "", usageContext = null, repairConstraints = null) {
   const blueprint = GRAMMAR_DIFFICULTY_BLUEPRINT[difficulty]
   const topicPlan = GRAMMAR_TOPIC_PLANS[topic]
   const subjectVerbCoverage = topic === "subject-verb-agreement" ? `Use a balanced selection appropriate to this batch from: intervening/prepositional phrases; either/or and neither/nor; indefinite pronouns; collective nouns whose agreement is resolved by intended meaning; nouns ending in -s; titles; quantities treated as units versus countable items; paired constructions; relative clauses where the antecedent controls agreement; inverted constructions; compound subjects; proximity traps; and tense-agreement interactions. Prefer exam-style error identification, best revision, and sentence correction. Do not repeat the same governing construction within this batch unless the reasoning demand is genuinely different.` : ""
@@ -317,7 +317,15 @@ async function generate(topic, difficulty, count, planOffset = 0, priorApproved 
 - Reference-repair options must preserve intended meaning while exactly one resolves ambiguity.
 - Reflexive choice must follow local clause structure and genuine co-reference, not emphasis alone.
 - For Hard, test at least two distinct pronoun mechanisms with independently controlled sites; repeated forms governed by one rule do not qualify.` : ""
-  const priorOptionBlocks = priorApproved.map((item) => optionSignature(item.question))
+  const partsOfSpeechOptionStandard = topic === "parts-of-speech" ? `PARTS-OF-SPEECH OPTION-BLOCK STANDARD:
+- Do not use four bare or reusable category labels such as noun/verb/adjective/adverb as the complete A-D options.
+- Make every option a contextualized analysis, sentence pairing, or complete classification tied to the specific target word and syntactic site, so the normalized four-option block is genuinely unique.
+- Do not put two or more lines beginning A., B., C., or D. in question_text; the option block belongs only in options.
+- When replacing a rejected item, change the target lexical item, scenario, and syntactic evidence rather than recycling the rejected sentence frame.` : ""
+  const priorOptionBlocks = [...new Set([
+    ...priorApproved.map((item) => optionSignature(item.question)),
+    ...(repairConstraints?.existingOptionBlocks || []),
+  ])]
   const priorContextAnchors = priorApproved.map((item) => contextAnchor(item.question)).filter(Boolean)
   const response = await trackedCompletion({ model: "gpt-4.1", response_format: { type: "json_object" }, temperature: 0.75, messages: [
     { role: "system", content: "You are Auctor's senior competitive-exam grammar assessment designer. Build natural, intellectually honest items that reward structural reasoning. Never inflate difficulty through length, obscure vocabulary, or artificial prose. Return JSON only." },
@@ -366,6 +374,7 @@ CONTENT STANDARD:
 - Do not repeat question text, embed an option block in the stem and then repeat it in options, or reuse the same four-option block for another question.
 - These normalized option blocks have already been accepted in this run and must not be reused: ${JSON.stringify(priorOptionBlocks)}
 - If the natural short verb forms would recreate one of those blocks, change the question format or use contextualized phrase/full-sentence alternatives. Never resubmit the same four forms in a different order or with cosmetically different punctuation.
+${repairConstraints ? `- REPLACEMENT REQUIREMENT: The rejected slot failed because: ${repairConstraints.reason}. The rejected question text was: ${JSON.stringify(repairConstraints.rejectedQuestionText)}. Avoid these colliding stored question texts: ${JSON.stringify(repairConstraints.avoidedQuestionTexts || [])}. Produce a genuinely different normalized four-option block from every listed block. Do not merely change the stem, reorder the options, or alter punctuation. Use a different tested lexical item, scenario, sentence frame, and contextual mechanism within the assigned construction.` : ""}
 - These convenient context anchors have already been used and must not appear again in this difficulty batch: ${JSON.stringify(priorContextAnchors)}
 - Deliberately rotate realistic domains across policy, technology, finance, publishing, education, business, public administration, culture, and science. Do not default to researchers, scientists, committees, directors, or students. If a prior context anchor is listed above, choose a different domain and role before drafting.
 - Reject an item whose only reasoning is visible singular noun -> singular verb or plural noun -> plural verb. A valid item must require identifying a non-obvious controller, resolving a construction, applying notional meaning, or checking an embedded dependency.
@@ -380,6 +389,7 @@ ${difficulty === "hard" && topic === "subject-verb-agreement" ? `- HARD DETERMIN
 - Hard items may contain 3-5 independent agreement sites. Each site must have one unambiguous controller, remain natural, and be explicitly represented in the answer format. Check every embedded clause separately. The item must require multi-step reasoning and a meaningful trap; surface morphology alone must never solve it.` : ""}
 ${subjectVerbCoverage}
 ${pronounCoverage}
+${partsOfSpeechOptionStandard}
 ${assignedPlans ? `MANDATORY PER-QUESTION CONSTRUCTION PLAN:\n${assignedPlans}\nEach numbered output question must follow its corresponding plan. Do not substitute a simpler stock pattern.` : ""}
 
 Use this complete structure: ${JSON.stringify(GRAMMAR_QUESTION_SCHEMA)}
@@ -493,7 +503,10 @@ async function seedEfficientSet(topic, difficulty) {
   if (error) throw error
   const retained = Array(5).fill(null)
   const localRepairAttempts = Array(5).fill(0), auditRepairAttempts = Array(5).fill(0)
-  const generated = await generate(topic, difficulty, 5, 0, [], `${generationRunNonce}-set`, { topic, difficulty, setNumber, slots: [1, 2, 3, 4, 5], callType: "generation" })
+  const generated = await withOneConnectionRetry(
+    () => generate(topic, difficulty, 5, 0, [], `${generationRunNonce}-set`, { topic, difficulty, setNumber, slots: [1, 2, 3, 4, 5], callType: "generation" }),
+    () => {},
+  )
   benchmarkQuality.initialGenerated += generated.length
   for (let slot = 0; slot < 5; slot += 1) retained[slot] = { question: generated[slot], planIndex: slot }
 
@@ -503,7 +516,16 @@ async function seedEfficientSet(topic, difficulty) {
       attempts[slot] += 1
       const attempt = attempts[slot]
       const prior = retained.filter(Boolean).filter((_, index) => index !== slot)
-      const [question] = await generate(topic, difficulty, 1, slot, prior, `${generationRunNonce}-${phase}-${slot}-${attempt}`, { topic, difficulty, setNumber, slots: [slot + 1], callType: "replacement" })
+      const existingOptionBlocks = retained.filter(Boolean).map((item) => optionSignature(item.question))
+      const rejectedQuestionText = retained[slot]?.question?.question_text
+      const avoidedQuestionTexts = (pool || [])
+        .filter((item) => similarity(item.question_text, rejectedQuestionText) >= 0.6)
+        .slice(0, 10)
+        .map((item) => item.question_text)
+      const [question] = await withOneConnectionRetry(
+        () => generate(topic, difficulty, 1, slot, prior, `${generationRunNonce}-${phase}-${slot}-${attempt}`, { topic, difficulty, setNumber, slots: [slot + 1], callType: "replacement" }, { reason, existingOptionBlocks, rejectedQuestionText, avoidedQuestionTexts }),
+        () => {},
+      )
       benchmarkQuality.replacementsGenerated += 1
       const local = efficientLocalReasons(question, topic, difficulty, slot, pool || [], prior)
       if (!local.length) { retained[slot] = { question, planIndex: slot }; return true }
@@ -519,12 +541,20 @@ async function seedEfficientSet(topic, difficulty) {
     if (local.length && !await repairSlot(slot, local.join("; "))) return { inserted: 0, incomplete: true }
   }
 
-  let audit = await compactSetAudit(retained.map((item) => item.question), topic, difficulty, [0, 1, 2, 3, 4], "set-audit")
+  if (new Set(retained.map((item) => optionSignature(item.question))).size !== retained.length) return { inserted: 0, incomplete: true }
+
+  let audit = await withOneConnectionRetry(
+    () => compactSetAudit(retained.map((item) => item.question), topic, difficulty, [0, 1, 2, 3, 4], "set-audit"),
+    () => {},
+  )
   benchmarkQuality.setAuditRejected += audit.questions.filter((item) => !item.pass).length
   for (let round = 1; round <= 2 && !audit.set_pass; round += 1) {
     const failedSlots = audit.questions.map((item, index) => item.pass ? null : index).filter((index) => index !== null)
     for (const slot of failedSlots) if (!await repairSlot(slot, audit.questions[slot].reason, "audit")) return { inserted: 0, incomplete: true }
-    const replacementAudit = await compactSetAudit(failedSlots.map((slot) => retained[slot].question), topic, difficulty, failedSlots, "replacement-audit")
+    const replacementAudit = await withOneConnectionRetry(
+      () => compactSetAudit(failedSlots.map((slot) => retained[slot].question), topic, difficulty, failedSlots, "replacement-audit"),
+      () => {},
+    )
     replacementAudit.questions.forEach((item, index) => { audit.questions[failedSlots[index]] = item })
     audit.set_pass = audit.questions.every((item) => item.pass)
   }
