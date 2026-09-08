@@ -74,10 +74,19 @@ test("successful conversion persistence and email are idempotent by payment", as
   assert.match(verificationRoute, /onConflict: "payment_id"/)
   assert.match(verificationRoute, /ignoreDuplicates: true/)
   assert.match(verificationRoute, /attributionResult\?\.inserted/)
+  assert.match(verificationRoute, /if \(existingPayment\)[\s\S]*is_premium: true/)
 
   const emailHelper = await readFile(
     new URL("../lib/email/sendInfluencerConversionEmail.js", import.meta.url),
     "utf8"
   )
   assert.match(emailHelper, /idempotencyKey: `influencer-conversion\/\$\{paymentId\}`/)
+})
+
+test("influencer lookup maps the production name column", async () => {
+  const lookup = await readFile(
+    new URL("../lib/payments/influencerCoupons.js", import.meta.url),
+    "utf8"
+  )
+  assert.match(lookup, /name: data\.influencer_name \|\| data\.name/)
 })

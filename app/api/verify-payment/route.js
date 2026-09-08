@@ -174,6 +174,16 @@ if (existingPayment) {
     return Response.json({ success: false, error: attributionResult.error.message }, { status: 500 })
   }
   await notifyInfluencerIfNew(attributionResult)
+  if (plan !== "cat_test_series") {
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ is_premium: true, premium_expires_at: expiry })
+      .eq("user_id", user_id)
+
+    if (updateError) {
+      return Response.json({ success: false, error: updateError.message }, { status: 500 })
+    }
+  }
   return Response.json({
     success: true,
     message: "Payment already processed",
