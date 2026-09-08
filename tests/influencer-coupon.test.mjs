@@ -55,6 +55,29 @@ test("AZADI50 remains a 50 percent coupon", () => {
   assert.equal(calculateCouponAttribution({ originalPaise: 100_000, amountPaidPaise: 50_000, couponCode: "AZADI50" }), null)
 })
 
+test("AUCTOR30 discounts plan prices by exactly 30 percent", () => {
+  const coupon = validateCouponCode("auctor30")
+  assert.equal(coupon.valid, true)
+  assert.equal(coupon.code, "AUCTOR30")
+  assert.equal(coupon.coupon.discountPercent, 30)
+
+  const monthly = calculatePlanPricing("monthly", { couponCode: "AUCTOR30" })
+  assert.equal(monthly.originalPaise, 39_900)
+  assert.equal(monthly.discountPaise, 11_970)
+  assert.equal(monthly.finalPaise, 27_930)
+
+  const yearly = calculatePlanPricing("yearly", { couponCode: "AUCTOR30" })
+  assert.equal(yearly.originalPaise, 199_900)
+  assert.equal(yearly.discountPaise, 59_970)
+  assert.equal(yearly.finalPaise, 139_930)
+
+  assert.equal(calculateCouponAttribution({
+    originalPaise: monthly.originalPaise,
+    amountPaidPaise: monthly.finalPaise,
+    couponCode: "AUCTOR30",
+  }), null)
+})
+
 test("dynamic coupon plan pricing uses the shared coupon calculation", () => {
   const configured = calculatePlanPricing("quarterly", {
     couponCode: "BHOOMIGUPTA20",
