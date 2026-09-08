@@ -1,6 +1,9 @@
 import crypto from "crypto"
 import { createClient } from "@supabase/supabase-js"
 import Razorpay from "razorpay"
+import { findInfluencerCoupon } from "@/lib/payments/influencerCoupons"
+import { sendInfluencerConversionEmail } from "@/lib/email/sendInfluencerConversionEmail"
+import { calculateCouponAttribution, calculatePlanPricing } from "@/lib/payments/pricing"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -38,13 +41,88 @@ export async function POST(req) {
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   })
   const paidOrder = await razorpay.orders.fetch(razorpay_order_id)
+  const paidPayment = await razorpay.payments.fetch(razorpay_payment_id)
   const plan = paidOrder.notes?.plan
+  const couponCode = paidOrder.notes?.discount_type === "coupon"
+    ? paidOrder.notes?.coupon_code || null
+    : null
   const referralCode = paidOrder.notes?.discount_type === "referral"
     ? paidOrder.notes?.referral_code || null
     : null
 
   if (!plan || plan !== requestedPlan) {
     return Response.json({ success: false, error: "Payment plan mismatch" }, { status: 400 })
+  }
+
+  const influencerCoupon = couponCode ? await findInfluencerCoupon(couponCode) : null
+  const pricing = calculatePlanPricing(plan, {
+    couponCode,
+    coupon: influencerCoupon?.coupon,
+  })
+  const paymentCompleted = paidOrder.status === "paid"
+    && paidPayment.status === "captured"
+    && paidPayment.order_id === razorpay_order_id
+    && Number(paidPayment.amount) === pricing.finalPaise
+    && paidPayment.currency === "INR"
+
+  if (!paymentCompleted) {
+    return Response.json({ success: false, error: "Payment is not completed" }, { status: 400 })
+  }
+
+  const couponAttribution = calculateCouponAttribution({
+    originalPaise: pricing.originalPaise,
+    amountPaidPaise: Number(paidPayment.amount),
+    couponCode,
+    coupon: influencerCoupon?.coupon,
+  })
+
+  async function recordInfluencerConversion(subscriptionId) {
+    if (!couponAttribution) return null
+
+    const { data: insertedAttribution, error: attributionError } = await supabase
+      .from("influencer_coupon_conversions")
+      .upsert({
+        coupon_code: couponAttribution.couponCode,
+        influencer_name: couponAttribution.influencerName,
+        original_price: couponAttribution.originalPaise,
+        discount_amount: couponAttribution.discountPaise,
+        amount_paid: couponAttribution.amountPaidPaise,
+        commission_rate: couponAttribution.commissionRate,
+        commission_basis: couponAttribution.commissionBasis,
+        commission_amount: couponAttribution.commissionPaise,
+        revenue_after_commission: couponAttribution.revenueAfterCommissionPaise,
+        payment_id: razorpay_payment_id,
+        order_id: razorpay_order_id,
+        subscription_id: String(subscriptionId || ""),
+        user_id,
+        currency: paidPayment.currency,
+        payment_status: paidPayment.status,
+      }, {
+        onConflict: "payment_id",
+        ignoreDuplicates: true,
+      })
+      .select("id")
+
+    if (attributionError) return { error: attributionError, inserted: false }
+    return { error: null, inserted: Boolean(insertedAttribution?.length) }
+  }
+
+  async function notifyInfluencerIfNew(attributionResult) {
+    if (!attributionResult?.inserted || !influencerCoupon) return
+    try {
+      await sendInfluencerConversionEmail({
+        email: influencerCoupon.email,
+        influencerName: couponAttribution.influencerName,
+        couponCode: couponAttribution.couponCode,
+        plan,
+        attribution: couponAttribution,
+        paymentId: razorpay_payment_id,
+        purchasedAt: new Date(),
+      })
+    } catch (emailError) {
+      // Payment fulfillment must not be rolled back by a notification failure.
+      console.error("INFLUENCER CONVERSION EMAIL ERROR:", emailError)
+    }
   }
 
   /* ---------- plan expiry ---------- */
@@ -91,6 +169,11 @@ const { data: existingPayment } = await supabase
   .maybeSingle();
 
 if (existingPayment) {
+  const attributionResult = await recordInfluencerConversion(existingPayment.id)
+  if (attributionResult?.error) {
+    return Response.json({ success: false, error: attributionResult.error.message }, { status: 500 })
+  }
+  await notifyInfluencerIfNew(attributionResult)
   return Response.json({
     success: true,
     message: "Payment already processed",
@@ -126,6 +209,16 @@ if (error) {
     { status: 500 }
   );
 }
+
+const attributionResult = await recordInfluencerConversion(data?.[0]?.id)
+if (attributionResult?.error) {
+  return Response.json(
+    { success: false, error: attributionResult.error.message },
+    { status: 500 }
+  )
+}
+
+await notifyInfluencerIfNew(attributionResult)
 
 // ---------- update ambassador commission ----------
 

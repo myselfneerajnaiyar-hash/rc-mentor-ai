@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import PreviewNavbar from "@/components/PreviewNavbar";
 import PreviewFooter from "@/components/PreviewFooter";
 import FaqSection from "./components/FaqSection";
@@ -121,182 +122,103 @@ useEffect(() => {
 
       {/* ================= HERO ================= */}
       <motion.section
- initial={{ opacity: 0, y: 60 }}
-whileInView={{
-  opacity: 1,
-  y: 0,
-}}
-transition={{
-  duration: 0.7,
-  ease: "easeOut",
-}}
-  viewport={{ once: true, amount: 0.2 }}
-  className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-20 px-6 pb-24 pt-36 md:grid-cols-2 xl:gap-28"
->
-
-        {/* LEFT */}
-        <div>
-
-          {/* BADGE */}
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-500/10 bg-blue-500/5 px-4 py-2 text-sm text-blue-200">
-
-            <Sparkles size={15} />
-
-            AI Powered Reading Intelligence
-
+        initial={{ opacity: 0, y: 36 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative w-full"
+      >
+        <div className="hero-grid">
+        {/* LEFT: POSITIONING */}
+        <div className="hero-copy relative z-10">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/15 bg-cyan-400/[0.06] px-4 py-2 text-sm font-medium text-cyan-100">
+            <Sparkles size={15} aria-hidden="true" />
+            AI-Powered Reading Intelligence
           </div>
 
-          {/* HEADING */}
-          <h1 className="max-w-2xl text-5xl font-black leading-[1] tracking-[-0.04em] text-white md:text-6xl">
-
-            Train your
-            <br />
-
-            reading intelligence.
-
+          <h1 className="max-w-2xl text-5xl font-black leading-[1.02] tracking-[-0.045em] text-white sm:text-6xl xl:text-7xl">
+            Stop solving more RCs.
+            <span className="mt-2 block text-orange-400">Start solving RCs better.</span>
           </h1>
 
-          {/* SUBTEXT */}
-          <p className="mt-8 max-w-xl text-lg leading-8 text-white/50">
-
-            Adaptive RC drills, inference training, tone analysis and
-            AI-guided diagnosis built for serious aspirants.
-
+          <p className="mt-7 max-w-xl text-lg leading-8 text-slate-300 sm:text-xl">
+            Auctor identifies how your reasoning breaks — then trains the exact skills holding your VARC score back.
           </p>
 
-          {/* BUTTONS */}
-          <div className="mt-12 flex flex-wrap items-center gap-4">
-
-            <button 
-             onClick={() => router.push("/login")}
-            className="group flex items-center gap-2 rounded-2xl bg-orange-500 px-8 py-4 font-semibold text-white transition hover:bg-orange-600 hover:scale-[1.02]">
-
-  <span>Start Free 3 Day Trial</span>
-
-  <ArrowRight
-    size={18}
-    className="text-white transition group-hover:translate-x-1"
-  />
-
-</button>
-
-            <button 
-             onClick={() => router.push("/login")}
-            className="rounded-2xl border border-white/[0.08] bg-white/[0.03] px-8 py-4 font-medium text-white/80 transition hover:bg-white/[0.06]">
-              Login
+          <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <button
+              onClick={() => router.push("/login")}
+              className="group inline-flex min-h-14 items-center gap-2 rounded-2xl bg-orange-500 px-8 py-4 text-base font-bold text-white shadow-[0_16px_45px_rgba(249,115,22,0.22)] transition hover:-translate-y-0.5 hover:bg-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 motion-reduce:transform-none"
+            >
+              Start Free 3-Day Trial
+              <ArrowRight size={18} aria-hidden="true" className="transition group-hover:translate-x-1 motion-reduce:transform-none" />
             </button>
-
+            <button
+              onClick={() => document.querySelectorAll("main > section")[5]?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              className="min-h-12 rounded-xl px-5 py-3 font-semibold text-slate-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
+            >
+              See How It Works
+            </button>
           </div>
 
-          {/* FREE PREVIEW TEXT */}
-          
-
-          {/* FEATURES */}
-          <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/45">
-
-            <div className="flex items-center gap-2">
-              <Brain size={16} />
-              Adaptive RC
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Sparkles size={16} />
-              AI Mentor
-            </div>
-
-            <div className="flex items-center gap-2">
-              <LineChart size={16} />
-              Performance Analytics
-            </div>
-
+          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/[0.07] pt-6 text-sm text-white/45">
+            <span className="flex items-center gap-2"><Brain size={16} className="text-cyan-300" aria-hidden="true" />Adaptive RC</span>
+            <span className="flex items-center gap-2"><Sparkles size={16} className="text-violet-300" aria-hidden="true" />Birbal AI Diagnosis</span>
+            <span className="flex items-center gap-2"><LineChart size={16} className="text-orange-300" aria-hidden="true" />Performance Analytics</span>
           </div>
-
         </div>
 
-        {/* RIGHT */}
-        <div className="relative overflow-hidden">
-
-          {/* GLOW */}
-          <div className="absolute -inset-10 rounded-full bg-blue-500/10 blur-3xl" />
-
-          {/* MAIN CARD */}
-         <div className="relative overflow-hidden rounded-[32px] bg-[#0B1120] shadow-[0_0_80px_rgba(59,130,246,0.12)] backdrop-blur-xl">
-            {/* HEADER */}
-            <div className="flex items-center justify-between border-b border-blue-500/10 px-6 py-5">
-
-              <div>
-
-                <p className="text-sm text-white/40">
-                  Performance Trend
-                </p>
-
-                <h3 className="mt-1 text-lg font-semibold text-white">
-                  Reading Intelligence
-                </h3>
-
-              </div>
-
-              <div className="rounded-full border border-emerald-500/10 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">
-                Live Analytics
-              </div>
-
-            </div>
-
-            {/* IMAGE */}
-            <div className="p-5">
-
-              <img
-                src="/analytics-preview.png"
-                alt="Analytics"
-                className="h-auto w-full rounded-2xl object-contain"
-              />
-
-            </div>
-
-            {/* STATS */}
-            <div className="grid grid-cols-3 gap-4 bg-[#0F172A] px-6 py-5">
-
-              <div>
-
-                <p className="text-xs text-white/35">
-                  Inference Stability
-                </p>
-
-                <div className="mt-2 text-2xl font-bold text-white">
-                  82%
-                </div>
-
-              </div>
-
-              <div>
-
-                <p className="text-xs text-white/35">
-                  Growth Projection
-                </p>
-
-                <div className="mt-2 text-2xl font-bold text-amber-300">
-  +27%
-</div>
-              </div>
-
-              <div>
-
-                <p className="text-xs text-white/35">
-                  RC IQ
-                </p>
-
-                <div className="mt-2 text-2xl font-bold text-cyan-300">
-                  128
-                </div>
-
-              </div>
-
-            </div>
-
+        {/* RIGHT: STUDENT RC VISUAL */}
+        <figure className="hero-visual relative flex items-center" aria-labelledby="student-rc-visual-caption">
+          <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-cyan-500/10 via-blue-500/[0.06] to-orange-500/[0.06] blur-3xl" />
+          <div className="relative w-full overflow-hidden rounded-[2rem] border border-white/[0.12] bg-[#0A1020] p-2 shadow-[0_35px_90px_rgba(0,0,0,0.5)] sm:p-3">
+            <Image src="/auctor-rc-student-hero.png" alt="Focused Indian student practising a reading comprehension passage on a laptop" width={1536} height={1024} priority sizes="(max-width: 767px) 100vw, 55vw" className="aspect-[3/2] max-h-[520px] h-auto w-full max-w-none rounded-[1.5rem] object-cover" />
+            <div className="pointer-events-none absolute inset-2 rounded-[1.5rem] bg-gradient-to-tr from-[#050816]/20 via-transparent to-cyan-300/[0.04] sm:inset-3" />
           </div>
 
+          <figcaption id="student-rc-visual-caption" className="sr-only">A focused student actively practising a reading comprehension passage for a competitive aptitude exam.</figcaption>
+        </figure>
         </div>
+        <style jsx>{`
+          .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: center;
+            gap: 56px;
+            width: 100%;
+            max-width: 1280px;
+            min-height: 700px;
+            margin: 0 auto;
+            padding: 128px 24px 80px;
+          }
 
+          .hero-copy {
+            min-width: 0;
+            max-width: 600px;
+          }
+
+          .hero-visual {
+            min-width: 0;
+            width: 100%;
+            margin: 0;
+          }
+
+          .hero-visual :global(img) {
+            display: block;
+            width: 100%;
+            max-width: none;
+            height: auto;
+            object-fit: cover;
+          }
+
+          @media (min-width: 900px) {
+            .hero-grid {
+              grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+              gap: 64px;
+              padding-top: 96px;
+              padding-bottom: 64px;
+            }
+          }
+        `}</style>
       </motion.section>
 
      {/* ================= READING INTELLIGENCE ================= */}

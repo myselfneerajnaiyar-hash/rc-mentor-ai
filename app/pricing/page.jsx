@@ -5,7 +5,6 @@ import SubscribeButton from "@/components/SubscribeButton"
 import { useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
 import { useRouter } from "next/navigation"
-import { validateCouponCode } from "@/lib/payments/pricing"
 
 export default function Pricing() {
 const [user, setUser] = useState(null)
@@ -14,6 +13,7 @@ const [discountApplied, setDiscountApplied] = useState(false);
 const [discountMessage, setDiscountMessage] = useState("");
 const [couponInput, setCouponInput] = useState("");
 const [appliedCoupon, setAppliedCoupon] = useState("");
+const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
 const [couponMessage, setCouponMessage] = useState("");
 
 const router = useRouter()
@@ -100,6 +100,7 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 setDiscountApplied(true);
 setAppliedCoupon("");
+setAppliedCouponDiscount(0);
 setCouponInput("");
 setCouponMessage("");
 setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
@@ -132,19 +133,26 @@ setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You save
       className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
     />
     <Button
-      onClick={() => {
-        const result = validateCouponCode(couponInput)
-        if (!result.valid) {
+      onClick={async () => {
+        const response = await fetch("/api/validate-coupon", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ couponCode: couponInput }),
+        })
+        const result = await response.json()
+        if (!response.ok || !result.valid) {
           setAppliedCoupon("")
+          setAppliedCouponDiscount(0)
           setCouponMessage("Invalid or expired coupon code.")
           return
         }
         setAppliedCoupon(result.code)
+        setAppliedCouponDiscount(result.discountPercent)
         setCouponInput(result.code)
         setDiscountApplied(false)
         setReferralCode("")
         setDiscountMessage("")
-        setCouponMessage(`${result.code} applied — 50% discount`)
+        setCouponMessage(`${result.code} applied — ${result.discountPercent}% discount`)
       }}
     >
       Apply
@@ -257,7 +265,7 @@ One-time purchase
 
 </ul>
 
-{appliedCoupon && <CouponBreakdown originalRupees={799} />}
+{appliedCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
 <SubscribeButton
 amount={discountApplied ? 639 : 799}
 plan="cat_test_series"
@@ -334,7 +342,7 @@ Save ₹260
 <li>✔️ Full analytics dashboard</li>
 </ul>
 
-{appliedCoupon && <CouponBreakdown originalRupees={1299} />}
+{appliedCoupon && <CouponBreakdown originalRupees={1299} discountPercent={appliedCouponDiscount} />}
 <SubscribeButton
 amount={discountApplied ? 1039 : 1299}
 plan="half_yearly"
@@ -398,7 +406,7 @@ couponCode={appliedCoupon}
 <li>✔️ Unlimited RC practice</li>
 </ul>
 
-{appliedCoupon && <CouponBreakdown originalRupees={999} />}
+{appliedCoupon && <CouponBreakdown originalRupees={999} discountPercent={appliedCouponDiscount} />}
 <SubscribeButton
 amount={discountApplied ? 799 : 999}
 plan="quarterly"
@@ -475,7 +483,7 @@ Only ₹166/month
 
     </ul>
 
-   {appliedCoupon && <CouponBreakdown originalRupees={1999} />}
+   {appliedCoupon && <CouponBreakdown originalRupees={1999} discountPercent={appliedCouponDiscount} />}
    <SubscribeButton
 amount={discountApplied ? 1599 : 1999}
 plan="yearly"
@@ -537,7 +545,7 @@ couponCode={appliedCoupon}
 
     </ul>
 
-   {appliedCoupon && <CouponBreakdown originalRupees={399} />}
+   {appliedCoupon && <CouponBreakdown originalRupees={399} discountPercent={appliedCouponDiscount} />}
    <SubscribeButton
   amount={discountApplied ? 319 : 399}
   plan="monthly"
@@ -592,13 +600,14 @@ Secure payments powered by Razorpay
 )
 }
 
-function CouponBreakdown({ originalRupees }) {
-  const discount = originalRupees / 2
+function CouponBreakdown({ originalRupees, discountPercent }) {
+  const discount = originalRupees * discountPercent / 100
+  const amountDue = originalRupees - discount
   return (
     <div className="mb-5 space-y-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
       <div className="flex justify-between text-slate-300"><span>Original</span><span>{formatRupees(originalRupees)}</span></div>
-      <div className="flex justify-between text-emerald-300"><span>Independence Day Discount</span><span>-{formatRupees(discount)}</span></div>
-      <div className="flex justify-between border-t border-emerald-500/20 pt-2 font-bold text-white"><span>You Pay</span><span>{formatRupees(discount)}</span></div>
+      <div className="flex justify-between text-emerald-300"><span>{discountPercent}% coupon discount</span><span>-{formatRupees(discount)}</span></div>
+      <div className="flex justify-between border-t border-emerald-500/20 pt-2 font-bold text-white"><span>You Pay</span><span>{formatRupees(amountDue)}</span></div>
     </div>
   )
 }

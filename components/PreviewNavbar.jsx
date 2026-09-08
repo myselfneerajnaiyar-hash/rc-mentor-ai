@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"
 
@@ -9,31 +8,7 @@ export default function PreviewNavbar() {
 
   const router = useRouter();
 
- const activities = [
-  "Aditi just enrolled",
-  "Akash completed Daily Workout",
-  "Ritu attempted 2 Vocabulary Drills",
-  "Hemang joined 5 mins ago",
-  "Sneha completed Precision Drill",
-  "Raghav unlocked Birbal AI",
-  "Priya solved 2 RC passages",
-  "Saksham enrolled 30 mins ago",
-  "Kanishka attempted CAT Sectional Test",
-  "Tejas has a Daily Workout streak of 6 days",
-];
-
-  const [activityIndex, setActivityIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-
-    const interval = setInterval(() => {
-      setActivityIndex((prev) => (prev + 1) % activities.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-
-  }, []);
 
   return (
     <>
@@ -150,32 +125,6 @@ export default function PreviewNavbar() {
   </div>
 
 )}
-
-      {/* FLOATING ACTIVITY */}
-
-      <div className="fixed top-24 right-6 z-40 hidden md:block">
-
-        <motion.div
-          key={activityIndex}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="rounded-full border border-cyan-500/20 bg-[#07101F]/80 px-5 py-2 shadow-[0_0_30px_rgba(34,211,238,0.08)] backdrop-blur-xl"
-        >
-
-          <div className="flex items-center gap-3">
-
-            <div className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
-
-            <p className="text-xs font-medium tracking-wide text-cyan-100">
-              {activities[activityIndex]}
-            </p>
-
-          </div>
-
-        </motion.div>
-
-      </div>
 
     </>
   );
