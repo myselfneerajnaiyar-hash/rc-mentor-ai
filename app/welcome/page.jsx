@@ -94,7 +94,7 @@ expiry.setDate(expiry.getDate() + 3)
   // =========================
 
   if (existingProfile) {
-    await supabase
+    const { error: profileError } = await supabase
       .from("profiles")
       .update({
         name: name,
@@ -102,8 +102,11 @@ expiry.setDate(expiry.getDate() + 3)
         attempt_year: attemptYear,
         phone: phone,
         profile_completed: true,
+        trial_days: 3,
+        trial_expires_at: expiry,
       })
       .eq("user_id", user.id)
+    if (profileError) throw profileError
   }
 
   // =========================
@@ -111,7 +114,7 @@ expiry.setDate(expiry.getDate() + 3)
   // =========================
 
   else {
-    await supabase
+    const { error: profileError } = await supabase
       .from("profiles")
       .insert([
         {
@@ -127,6 +130,17 @@ expiry.setDate(expiry.getDate() + 3)
           trial_expires_at: expiry
         },
       ])
+    if (profileError) throw profileError
+  }
+
+  const { data: sessionData } = await supabase.auth.getSession()
+  const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
+  })
+  if (!enrollmentResponse.ok) {
+    const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
+    throw new Error(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
   }
 
   setShowProfileWizard(false)

@@ -4,6 +4,7 @@ import Razorpay from "razorpay"
 import { findInfluencerCoupon } from "@/lib/payments/influencerCoupons"
 import { sendInfluencerConversionEmail } from "@/lib/email/sendInfluencerConversionEmail"
 import { calculateCouponAttribution, calculatePlanPricing } from "@/lib/payments/pricing"
+import { cancelUserEvents } from "@/lib/whatsapp/events"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -125,6 +126,14 @@ export async function POST(req) {
     }
   }
 
+  async function cancelTrialMessagesAfterPurchase() {
+    try {
+      await cancelUserEvents(user_id, "purchase_completed")
+    } catch (error) {
+      console.error("WHATSAPP PURCHASE CANCELLATION ERROR:", error)
+    }
+  }
+
   /* ---------- plan expiry ---------- */
 
   let expiry = new Date()
@@ -174,6 +183,7 @@ if (existingPayment) {
     return Response.json({ success: false, error: attributionResult.error.message }, { status: 500 })
   }
   await notifyInfluencerIfNew(attributionResult)
+  await cancelTrialMessagesAfterPurchase()
   if (plan !== "cat_test_series") {
     const { error: updateError } = await supabase
       .from("profiles")
@@ -229,6 +239,7 @@ if (attributionResult?.error) {
 }
 
 await notifyInfluencerIfNew(attributionResult)
+await cancelTrialMessagesAfterPurchase()
 
 // ---------- update ambassador commission ----------
 

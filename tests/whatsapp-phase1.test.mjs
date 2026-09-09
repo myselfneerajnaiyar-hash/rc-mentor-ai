@@ -5,6 +5,7 @@ import { buildTrialLifecycleEvents, getTrialLifecycle } from "../lib/whatsapp/ev
 import { isWhatsAppAutomationEnabled, isWhatsAppSenderReady } from "../lib/whatsapp/events/config.js"
 import { isAuthorizedCronRequest } from "../lib/whatsapp/events/auth.js"
 import { validateEventInput } from "../lib/whatsapp/events/validation.js"
+import { buildTrialEnrollment } from "../lib/whatsapp/events/enrollment.js"
 
 const migration = await readFile(new URL("../supabase/migrations/202608120001_create_whatsapp_automation_events.sql", import.meta.url), "utf8")
 
@@ -28,6 +29,11 @@ test("signup scheduling excludes trial_day1 and uses configured offsets", () => 
   assert.equal(byType.trial_day7_discount_expiry.scheduledFor.toISOString(), "2026-08-19T00:00:00.000Z")
 })
 
+test("new trial enrollment creates exactly the six initial lifecycle event types", () => {
+  const events = buildTrialEnrollment({ profile: { user_id: "user-1", name: "Reader", phone: "+919876543210", trial_days: 3, trial_expires_at: "2026-08-15T00:00:00.000Z" } })
+  assert.deepEqual(events.map((event) => event.eventType), ["trial_welcome", "trial_no_session", "trial_day2", "trial_day3", "trial_day4_discount", "trial_day7_discount_expiry"])
+})
+
 test("legacy and invalid trials are rejected", () => {
   assert.throws(() => buildTrialLifecycleEvents({ userId: "user-1", trialExpiresAt: "2026-08-15T00:00:00Z", trialDays: 7 }), /three-day trial/)
   assert.throws(() => buildTrialLifecycleEvents({ userId: "user-1", trialExpiresAt: "invalid", trialDays: 3 }), /valid trial_expires_at/)
@@ -41,6 +47,19 @@ test("automation is disabled unless explicitly true", () => {
   assert.equal(isWhatsAppSenderReady({}), false)
   assert.equal(isWhatsAppSenderReady({ WHATSAPP_SENDER_READY: "false" }), false)
   assert.equal(isWhatsAppSenderReady({ WHATSAPP_SENDER_READY: "true" }), false)
+  assert.equal(isWhatsAppSenderReady({
+    WHATSAPP_SENDER_READY: "true",
+    META_WHATSAPP_ACCESS_TOKEN: "token",
+    META_WHATSAPP_PHONE_NUMBER_ID: "phone-id",
+    META_GRAPH_API_VERSION: "v23.0",
+  }), true)
+  assert.equal(isWhatsAppSenderReady({
+    WHATSAPP_SENDER_READY: "true",
+    WHATSAPP_TEST_MODE: "true",
+    META_WHATSAPP_ACCESS_TOKEN: "token",
+    META_WHATSAPP_PHONE_NUMBER_ID: "phone-id",
+    META_GRAPH_API_VERSION: "v23.0",
+  }), false)
 })
 
 test("event payload and attempt validation rejects unsafe input", () => {
@@ -143,4 +162,13 @@ test("migration keeps queue private and RPCs service-role only", () => {
   assert.doesNotMatch(migration, /create policy/i)
   assert.match(migration, /revoke all on function public\.claim_due_whatsapp_automation_events/i)
   assert.match(migration, /grant execute on function public\.claim_due_whatsapp_automation_events\(text, integer\) to service_role/i)
+})
+
+test("canonical trial activation enrolls through the existing welcome path", async () => {
+  const source = await readFile(new URL("../app/welcome/page.jsx", import.meta.url), "utf8")
+  const route = await readFile(new URL("../app/api/whatsapp/enroll-trial/route.js", import.meta.url), "utf8")
+  assert.match(source, /\/api\/whatsapp\/enroll-trial/)
+  assert.match(source, /trial_days:\s*3/)
+  assert.match(route, /createEvents\(events\)/)
+  assert.match(migration, /unique \(user_id, event_type, lifecycle_key\)/i)
 })

@@ -408,6 +408,7 @@ const { data: savedSession, error } =
     .from("editorial_history")
 
     .insert({
+  user_id: user.id,
   analysis: parsed,
 
   extracted_text:
