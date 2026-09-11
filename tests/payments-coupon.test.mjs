@@ -58,3 +58,9 @@ test("verification uses authoritative Razorpay order metadata and amount", () =>
   assert.match(verifyPaymentSource, /amount: Number\(paidOrder\.amount\) \/ 100/)
   assert.match(verifyPaymentSource, /paidOrder\.notes\?\.discount_type === "referral"/)
 })
+
+test("verification gives built-in coupons precedence over colliding influencer codes", () => {
+  assert.match(verifyPaymentSource, /const staticCoupon = validateCouponCode\(couponCode\)/)
+  assert.match(verifyPaymentSource, /couponCode && !staticCoupon\.valid/)
+  assert.match(verifyPaymentSource, /coupon: staticCoupon\.valid \? staticCoupon\.coupon : influencerCoupon\?\.coupon/)
+})
