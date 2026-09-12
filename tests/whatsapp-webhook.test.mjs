@@ -20,7 +20,7 @@ test("parser extracts incoming text and status events", () => {
   const events = parseWhatsAppWebhook(samplePayload())
   assert.equal(events.length, 3)
   assert.deepEqual(events[0], {
-    kind: "message", messageId: "wamid.incoming", phone: "919876543210", whatsappUserId: "919876543210", contactName: "Reader", messageType: "text", text: "Hello", timestamp: "2026-08-12T10:00:00.000Z", phoneNumberId: "12345", displayPhoneNumber: "+91 11111 11111", direction: "incoming", status: "received", raw: samplePayload().entry[0].changes[0].value.messages[0],
+    kind: "message", messageId: "wamid.incoming", phone: "+919876543210", whatsappUserId: "919876543210", contactName: "Reader", messageType: "text", text: "Hello", timestamp: "2026-08-12T10:00:00.000Z", phoneNumberId: "12345", displayPhoneNumber: "+91 11111 11111", direction: "incoming", status: "received", raw: samplePayload().entry[0].changes[0].value.messages[0],
   })
   assert.equal(events[1].status, "delivered")
   assert.equal(events[2].status, "failed")

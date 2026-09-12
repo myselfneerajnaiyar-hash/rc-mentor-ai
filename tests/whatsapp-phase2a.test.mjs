@@ -1,7 +1,7 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 import { classifyMetaFailure, sendTemplateMessage } from "../lib/whatsapp/client.js"
-import { normalizeWhatsAppPhone } from "../lib/whatsapp/phone.js"
+import { normalizeWhatsAppPhone, normalizeWhatsAppPhoneE164 } from "../lib/whatsapp/phone.js"
 import { buildTemplateComponents, validateTemplateComponents, WHATSAPP_TEMPLATES } from "../lib/whatsapp/templates.js"
 import { processClaimedEvents } from "../lib/whatsapp/processor.js"
 import { buildDayOneEvent, getQualifyingActivitySummary } from "../lib/whatsapp/events/activity.js"
@@ -24,7 +24,11 @@ const message = Object.freeze({
 test("phone normalization preserves explicit international country codes", () => {
   assert.deepEqual(normalizeWhatsAppPhone("+91 (98765) 43210"), { ok: true, phone: "919876543210" })
   assert.deepEqual(normalizeWhatsAppPhone("0044 20 7946 0958"), { ok: true, phone: "442079460958" })
-  assert.equal(normalizeWhatsAppPhone("9876543210").ok, false)
+  assert.deepEqual(normalizeWhatsAppPhone("9876543210"), { ok: true, phone: "919876543210" })
+  assert.deepEqual(normalizeWhatsAppPhoneE164("98765-43210"), { ok: true, phone: "+919876543210" })
+  assert.deepEqual(normalizeWhatsAppPhoneE164("+91 98765 43210"), { ok: true, phone: "+919876543210" })
+  assert.deepEqual(normalizeWhatsAppPhoneE164("919876543210"), { ok: true, phone: "+919876543210" })
+  assert.equal(normalizeWhatsAppPhoneE164("+91+919876543210").ok, false)
   assert.equal(normalizeWhatsAppPhone("+12").ok, false)
 })
 
@@ -56,8 +60,8 @@ test("disabled and not-ready senders make zero requests", async () => {
 test("missing Meta configuration and invalid phone fail before requesting", async () => {
   let calls = 0
   const fetchImpl = async () => { calls += 1 }
-  const invalid = await sendTemplateMessage({ ...message, phone: "9876543210" }, { env: enabledEnv, fetchImpl })
-  assert.equal(invalid.category, "country_code_required")
+  const invalid = await sendTemplateMessage({ ...message, phone: "not-a-phone" }, { env: enabledEnv, fetchImpl })
+  assert.equal(invalid.category, "invalid_phone")
   assert.equal(calls, 0)
 })
 
@@ -165,6 +169,23 @@ test("queue processor cancels purchased users without sending", async () => {
   assert.equal(sends, 0)
   assert.deepEqual(calls, [["event-2", "claim-2", "purchase_completed"]])
   assert.deepEqual(result, { processed: 1, sent: 0, failed: 0, cancelled: 1 })
+})
+
+test("queue processor cancels users without consent and rechecks consent before Meta", async () => {
+  let checks = 0
+  let sends = 0
+  const cancelled = []
+  await processClaimedEvents([queueEvent("consent", "user-1")], {
+    hasWhatsAppConsent: async () => ++checks === 1,
+    hasPurchased: async () => false,
+    send: async () => { sends += 1 },
+    markSent: async () => {},
+    markFailed: async () => {},
+    markCancelled: async (...args) => cancelled.push(args),
+  })
+  assert.equal(checks, 2)
+  assert.equal(sends, 0)
+  assert.equal(cancelled[0][2], "whatsapp_opt_in_required")
 })
 
 test("queue processor sends, retries transient failures, and cancels purchasers", async () => {

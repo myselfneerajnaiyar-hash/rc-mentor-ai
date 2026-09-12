@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { AUCTOR_BRANDING } from "@/lib/tenant/branding"
 import { getExamCapabilities } from "@/lib/tenant/capabilities"
@@ -10,12 +10,12 @@ const TenantContext = createContext(null)
 export default function TenantProvider({ children }) {
   const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false }, access: "pending" })
 
-  useEffect(() => {
-    let active = true
-    async function load(session) {
+  const refreshContext = useCallback(async (providedSession) => {
+      const session = providedSession === undefined
+        ? (await supabase.auth.getSession()).data.session
+        : providedSession
       const publicResponse = await fetch("/api/tenant-context", { cache: "no-store" })
       const publicContext = publicResponse.ok ? await publicResponse.json() : null
-      if (!active) return
       if (!publicContext) {
         setState((current) => ({ ...current, loading: false, access: "unknown_hostname" }))
         return
@@ -26,18 +26,19 @@ export default function TenantProvider({ children }) {
       }
       const response = await fetch("/api/session-context", { headers: { Authorization: `Bearer ${session.access_token}` }, cache: "no-store" })
       const context = await response.json().catch(() => null)
-      if (!active) return
       if (!response.ok) {
         setState((current) => ({ ...current, loading: false, tenant: publicContext.tenant, branding: publicContext.branding, access: context?.error || "denied" }))
         return
       }
       setState({ ...context, loading: false, access: "allowed" })
-    }
-
-    supabase.auth.getSession().then(({ data }) => load(data.session))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => load(session))
-    return () => { active = false; subscription.unsubscribe() }
+      return context
   }, [])
+
+  useEffect(() => {
+    refreshContext()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => refreshContext(session))
+    return () => subscription.unsubscribe()
+  }, [refreshContext])
 
   useEffect(() => {
     const branding = state.branding || AUCTOR_BRANDING
@@ -47,7 +48,7 @@ export default function TenantProvider({ children }) {
     favicon.href = branding.faviconUrl
   }, [state.branding])
 
-  const value = useMemo(() => state, [state])
+  const value = useMemo(() => ({ ...state, refreshContext }), [state, refreshContext])
   if (state.loading) return <TenantLoading />
   if (!state.loading && state.access === "unknown_hostname") return <TenantError title="Unknown institute hostname" message="This learning portal is not configured." />
   if (!state.loading && !["pending", "guest", "allowed"].includes(state.access)) return <TenantError title="Access denied" message="Your account does not belong to this institute." />

@@ -124,3 +124,21 @@
   font-size: 14px;
   box-sizing: border-box;
 }
+
+.whatsapp-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.welcome-card .whatsapp-consent input {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin-top: 1px;
+  flex: 0 0 auto;
+}

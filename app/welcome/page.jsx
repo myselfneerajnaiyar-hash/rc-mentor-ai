@@ -7,9 +7,10 @@ import styles from "./welcome.module.css"
 import posthog from "posthog-js"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
+import { normalizeWhatsAppPhoneE164 } from "@/lib/whatsapp/phone"
 
 export default function WelcomePage() {
-  const { branding } = useTenant()
+  const { branding, refreshContext } = useTenant()
   const router = useRouter()
   const searchParams = useSearchParams();
 const next = searchParams.get("next");
@@ -29,6 +30,7 @@ const [loading, setLoading] = useState(true)
   const [exam, setExam] = useState("CAT")
   const [attemptYear, setAttemptYear] = useState("2026")
   const [phone, setPhone] = useState("")
+  const [whatsappOptIn, setWhatsappOptIn] = useState(false)
 
   const [step, setStep] = useState(1)
 
@@ -78,6 +80,12 @@ async function checkUser() {
   if (!authData?.user) return
 
   const user = authData.user
+  const normalizedPhone = normalizeWhatsAppPhoneE164(phone)
+  if (!normalizedPhone.ok) {
+    alert(normalizedPhone.message)
+    return
+  }
+  const whatsappOptInAt = whatsappOptIn ? new Date().toISOString() : null
   const expiry = new Date()
 
 expiry.setDate(expiry.getDate() + 3)
@@ -100,10 +108,12 @@ expiry.setDate(expiry.getDate() + 3)
         name: name,
         exam: exam,
         attempt_year: attemptYear,
-        phone: phone,
+        phone: normalizedPhone.phone,
         profile_completed: true,
         trial_days: 3,
         trial_expires_at: expiry,
+        whatsapp_opt_in: whatsappOptIn,
+        whatsapp_opt_in_at: whatsappOptInAt,
       })
       .eq("user_id", user.id)
     if (profileError) throw profileError
@@ -123,24 +133,30 @@ expiry.setDate(expiry.getDate() + 3)
           name: name,
           exam: exam,
           attempt_year: attemptYear,
-          phone: phone,
+          phone: normalizedPhone.phone,
           role: "student",
           profile_completed: true,
           trial_days: 3,
-          trial_expires_at: expiry
+          trial_expires_at: expiry,
+          whatsapp_opt_in: whatsappOptIn,
+          whatsapp_opt_in_at: whatsappOptInAt,
         },
       ])
     if (profileError) throw profileError
   }
 
-  const { data: sessionData } = await supabase.auth.getSession()
-  const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
-  })
-  if (!enrollmentResponse.ok) {
-    const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
-    throw new Error(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
+  await refreshContext()
+
+  if (whatsappOptIn) {
+    const { data: sessionData } = await supabase.auth.getSession()
+    const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
+    })
+    if (!enrollmentResponse.ok) {
+      const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
+      throw new Error(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
+    }
   }
 
   setShowProfileWizard(false)
@@ -277,6 +293,15 @@ expiry.setDate(expiry.getDate() + 3)
       value={phone}
       onChange={(e) => setPhone(e.target.value)}
     />
+
+    <label className={styles["whatsapp-consent"]}>
+      <input
+        type="checkbox"
+        checked={whatsappOptIn}
+        onChange={(event) => setWhatsappOptIn(event.target.checked)}
+      />
+      <span>I agree to receive Auctor updates, study reminders, recommendations and offers on WhatsApp.</span>
+    </label>
 
     <button
       className={styles["welcome-btn"]}
