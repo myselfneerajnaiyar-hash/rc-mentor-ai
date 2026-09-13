@@ -79,8 +79,9 @@ async function reconcileDayOneEvents(request) {
   let enrolled = 0
   for (const row of welcomeRows || []) {
     if (existing.has(`${row.user_id}:${row.lifecycle_key}`)) continue
-    const { data: profile, error } = await supabaseAdmin.from("profiles").select("user_id,name,phone,is_premium,whatsapp_opt_in,whatsapp_opt_in_at").eq("user_id", row.user_id).single()
+    const { data: profile, error } = await supabaseAdmin.from("profiles").select("user_id,name,phone,is_premium,whatsapp_opt_in,whatsapp_opt_in_at").eq("user_id", row.user_id).maybeSingle()
     if (error) throw error
+    if (!profile) continue
     if (profile.is_premium || !profile.whatsapp_opt_in || !profile.whatsapp_opt_in_at) continue
     const summary = await getQualifyingActivitySummary(supabaseAdmin, row.user_id, trialStart(row.lifecycle_key))
     if (!summary.hasDayOneMetrics) continue
