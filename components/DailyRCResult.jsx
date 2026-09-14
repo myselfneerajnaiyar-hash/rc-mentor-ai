@@ -1,17 +1,23 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDailyRcReview } from "@/lib/dailyRc/useReview";
-import { dailyRcAttemptHref } from "@/lib/dailyRc/review";
+import DailyRCDetailedReview from "@/components/DailyRCDetailedReview";
+import DailyRCCognitiveDiagnosis from "@/components/DailyRCCognitiveDiagnosis";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function DailyRCResult() {
-  return <Suspense fallback={<div>Loading Result...</div>}><AttemptResult /></Suspense>;
+export default function DailyRCResult({ attemptId, initialSection = null }) {
+  return <Suspense fallback={<div>Loading Result...</div>}><AttemptRoute attemptId={attemptId} initialSection={initialSection} /></Suspense>;
 }
-function AttemptResult() {
-  const attemptId = useSearchParams().get("attemptId");
+function AttemptRoute({ attemptId: routeAttemptId, initialSection }) {
+  const searchParams = useSearchParams();
+  const attemptId = routeAttemptId || searchParams.get("attemptId");
+  return <AttemptResult key={attemptId} attemptId={attemptId} initialSection={initialSection} />;
+}
+function AttemptResult({ attemptId, initialSection }) {
+  const [openSection, setOpenSection] = useState(initialSection);
   const { data, error } = useDailyRcReview(attemptId);
   if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
   if (!data) return <div className="p-8 text-white">Loading Result...</div>;
@@ -108,7 +114,7 @@ else {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link href="/daily-challenge" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} />Back to Arena</Link>
-          <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><Link href={dailyRcAttemptHref("/cognition-diagnosis", attemptId)} className="hover:text-purple-300">Cognitive Diagnosis</Link><span>→</span><Link href={dailyRcAttemptHref("/detailed-review", attemptId)} className="hover:text-cyan-300">Detailed Review</Link></nav>
+          <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><a href="#cognitive-diagnosis" onClick={() => setOpenSection("cognitive-diagnosis")} className="hover:text-purple-300">Cognitive Diagnosis</a><span>→</span><a href="#detailed-review" onClick={() => setOpenSection("detailed-review")} className="hover:text-cyan-300">Detailed Review</a></nav>
         </div>
 
         <section className="mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6">
@@ -135,9 +141,13 @@ else {
           <section className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><p className="text-[11px] font-bold uppercase tracking-wide text-emerald-300">Today&apos;s Mission</p><ul className="mt-3 grid gap-2 text-sm text-slate-300"><li>✓ Read the author&apos;s conclusion before options</li><li>✓ Eliminate only after evidence</li><li>✓ Cap decision time at 90 seconds</li></ul></section>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <Link href={dailyRcAttemptHref("/cognition-diagnosis", attemptId)} className="flex min-h-14 items-center justify-between rounded-xl border border-purple-500/25 bg-purple-500/10 px-5 font-bold text-purple-200 transition hover:bg-purple-500/15"><span>Cognitive Diagnosis</span><span>→</span></Link>
-          <Link href={dailyRcAttemptHref("/detailed-review", attemptId)} className="flex min-h-14 items-center justify-between rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-5 font-bold text-cyan-200 transition hover:bg-cyan-500/15"><span>Detailed Review</span><span>→</span></Link>
+        <div className="mt-5 space-y-3">
+          <ReportSection id="cognitive-diagnosis" title="Cognitive Diagnosis" open={openSection === "cognitive-diagnosis"} onToggle={() => setOpenSection(openSection === "cognitive-diagnosis" ? null : "cognitive-diagnosis")}>
+            <DailyRCCognitiveDiagnosis data={data} />
+          </ReportSection>
+          <ReportSection id="detailed-review" title="Detailed Review" open={openSection === "detailed-review"} onToggle={() => setOpenSection(openSection === "detailed-review" ? null : "detailed-review")}>
+            <DailyRCDetailedReview data={data} />
+          </ReportSection>
         </div>
       </div>
     </main>
@@ -156,4 +166,11 @@ function InsightPanel({ label, title, body, tone }) {
 
 function formatTime(seconds) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function ReportSection({ id, title, open, onToggle, children }) {
+  return <section id={id} className="scroll-mt-4 rounded-xl border border-cyan-500/25 bg-slate-900/40">
+    <h2><button id={id + "-heading"} type="button" aria-expanded={open} aria-controls={id + "-content"} onClick={onToggle} className="flex min-h-14 w-full items-center justify-between rounded-xl px-5 text-left font-bold text-cyan-200 transition hover:bg-cyan-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"><span>{title}</span><span aria-hidden="true">{open ? "?" : "+"}</span></button></h2>
+    {open && <div id={id + "-content"} role="region" aria-labelledby={id + "-heading"} className="border-t border-slate-800 p-3 sm:p-5">{children}</div>}
+  </section>;
 }

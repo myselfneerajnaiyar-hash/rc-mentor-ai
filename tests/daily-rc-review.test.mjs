@@ -174,7 +174,7 @@ test("submission and all review entry points retain attempt identity", async () 
   const files = ["../app/detailed-review/page.js", "../app/cognition-diagnosis/page.js", "../components/DailyRCResult.jsx", "../app/rc-session/[attemptId]/page.jsx"]
   for (const file of files) {
     const source = await readFile(new URL(file, import.meta.url), "utf8")
-    assert.match(source, /useDailyRcReview\(/)
+    assert.match(source, /useDailyRcReview\(|<DailyRCResult/)
     assert.doesNotMatch(source, /localStorage|\.from\("daily_rc_sets"\)|href="\/detailed-review"/)
     const result = ts.transpileModule(source, { fileName: file, reportDiagnostics: true, compilerOptions: { jsx: ts.JsxEmit.ReactJSX } })
     assert.equal(result.diagnostics.length, 0)
@@ -186,4 +186,54 @@ test("submission and all review entry points retain attempt identity", async () 
   assert.match(submission, /result\?attemptId=\$\{encodeURIComponent\(attemptRow.id\)\}/)
   assert.match(submission, /key=\{selectedChallengeId \|\| "today"\}/)
   assert.doesNotMatch(submission, /dailyRCResult/)
+})
+
+test("historical and new result routes share the compact report and preserve the requested attempt", async () => {
+  const jsx = (type, props) => ({ type, props })
+  const dependencies = { "react/jsx-runtime": { jsx, jsxs: jsx }, "@/components/DailyRCResult": { default: "CompactReport" } }
+  const historical = await compile("../app/rc-session/[attemptId]/page.jsx", {
+    ...dependencies, "next/navigation": { useParams: () => ({ attemptId: "old-attempt" }) },
+  })
+  assert.equal(historical.default().type, "CompactReport")
+  assert.equal(historical.default().props.attemptId, "old-attempt")
+  const current = await compile("../app/daily-challenge/result/page.jsx", dependencies)
+  assert.equal(current.default().type, "CompactReport")
+  for (const [file, section] of [["detailed-review", "detailed-review"], ["cognition-diagnosis", "cognitive-diagnosis"]]) {
+    const route = await compile(`../app/${file}/page.js`, dependencies)
+    assert.equal(route.default().type, "CompactReport")
+    assert.equal(route.default().props.initialSection, section)
+  }
+})
+
+test("compact report retains saved stats and expands review content inside the same shell", async () => {
+  const React = await import("react")
+  const runtime = await import("react/jsx-runtime")
+  const { renderToStaticMarkup } = await import("react-dom/server")
+  let requestedId
+  const review = await loadDailyRcReview(database(fixtures()), "owner", "attempt-A")
+  Object.assign(review.attempt, { score: -1, accuracy: 50, time_taken: 125, composite_score: 7 })
+  const Detail = ({ data }) => React.createElement("article", { "data-review": data.attempt.id }, data.rcSet.passage)
+  const Cognitive = ({ data }) => React.createElement("article", { "data-diagnosis": data.attempt.id }, "Saved diagnosis")
+  const report = await compile("../components/DailyRCResult.jsx", {
+    "react/jsx-runtime": runtime, react: React, "next/navigation": { useSearchParams: () => new URLSearchParams("attemptId=attempt-A") },
+    "@/lib/dailyRc/useReview": { useDailyRcReview: id => { requestedId = id; return { data: review } } },
+    "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
+    "lucide-react": { ArrowLeft: () => null },
+    "@/components/DailyRCDetailedReview": { default: Detail },
+    "@/components/DailyRCCognitiveDiagnosis": { default: Cognitive },
+  })
+  for (const attemptId of [undefined, "attempt-A"]) {
+    const html = renderToStaticMarkup(React.createElement(report.default, { attemptId }))
+    assert.equal(requestedId, "attempt-A")
+    for (const text of ["RC Diagnosis Report", "RC Casualty", "Mentor Verdict", "Performance Profile", "Leaderboard Impact", "Today&#x27;s Mission", "50%", "2:05"]) assert.ok(html.includes(text), text)
+    assert.match(html, /href="#detailed-review"/)
+    assert.doesNotMatch(html, /href="\/detailed-review|data-review=|data-diagnosis=/)
+    assert.equal((html.match(/aria-expanded="false"/g) || []).length, 2)
+  }
+  for (const section of ["detailed-review", "cognitive-diagnosis"]) {
+    const html = renderToStaticMarkup(React.createElement(report.default, { initialSection: section }))
+    assert.match(html, /RC Diagnosis Report/)
+    assert.match(html, section === "detailed-review" ? /data-review="attempt-A">Passage A/ : /data-diagnosis="attempt-A"/)
+    assert.equal((html.match(/aria-expanded="true"/g) || []).length, 1)
+  }
 })
