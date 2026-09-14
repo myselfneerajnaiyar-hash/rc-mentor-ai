@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 import { supabase } from "@/lib/supabase";
-import DailyRCResult from "@/components/DailyRCResult";
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import posthog from "posthog-js";
@@ -26,10 +25,14 @@ import {
 } from "lucide-react";
 
 export default function DailyChallengeTestPage() {
-
+  return <Suspense fallback={<div>Loading Challenge...</div>}><SelectedChallenge /></Suspense>;
+}
+function SelectedChallenge() {
+  const selectedChallengeId = useSearchParams().get("challengeId");
+  return <ChallengeAttempt key={selectedChallengeId || "today"} selectedChallengeId={selectedChallengeId} />;
+}
+function ChallengeAttempt({ selectedChallengeId }) {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const selectedChallengeId = searchParams.get("challengeId");
 
   const [challenge, setChallenge] =
     useState(null);
@@ -159,7 +162,7 @@ setTimeLeft(
 
  useEffect(() => {
 
-  if (showResults) return;
+  if (loading || alreadyAttempted || showResults) return;
 
   if (timeLeft <= 0) return;
 
@@ -171,15 +174,15 @@ setTimeLeft(
 
   return () => clearInterval(interval);
 
-}, [timeLeft, showResults]);
+}, [timeLeft, showResults, loading, alreadyAttempted]);
 
 useEffect(() => {
 
-  if (timeLeft === 0 && !showResults) {
+  if (!loading && !alreadyAttempted && timeLeft === 0 && !showResults) {
     submitTest();
   }
 
-}, [timeLeft]);
+}, [timeLeft, loading, alreadyAttempted]);
 
   /* ================= FORMAT TIME ================= */
 
@@ -508,9 +511,7 @@ if (attemptError) {
       "You have already attempted today's challenge."
     );
 
-    router.push(
-      "/daily-challenge/result"
-    );
+    router.push("/rc-history");
 
     return;
   }
@@ -571,26 +572,13 @@ const questionRows =
 
 if (questionError) {
   console.error(questionError);
+  alert("Your score was saved, but your responses could not be saved. Review is unavailable; please contact support.");
+  router.push("/rc-history");
+  return;
 }
 setScore(correct);
 
-localStorage.setItem(
-  "dailyRCResult",
-  JSON.stringify({
-    attemptId: attemptRow.id,
-    correct,
-    incorrect,
-    unanswered,
-    attempted,
-    accuracy,
-    catScore,
-    compositeScore,
-    timeUsed,
-    timeLeft
-  })
-);
-
-router.push("/daily-challenge/result");
+router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.id)}`);
 }
 
   

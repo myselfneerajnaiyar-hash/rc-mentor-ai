@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { useDailyRcReview } from "@/lib/dailyRc/useReview";
+import { dailyRcAttemptHref } from "@/lib/dailyRc/review";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -14,98 +16,14 @@ import {
 } from "lucide-react";
 
 export default function CognitionDiagnosisPage() {
-
-  const [rcSet, setRcSet] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [attempts, setAttempts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-
-    async function loadData() {
-
-    const user =
-  await supabase.auth.getUser();
-
-const { data: latestAttempt } =
-  await supabase
-    .from("daily_rc_attempts")
-    .select("*")
-    .eq(
-      "user_id",
-      user.data.user.id
-    )
-    .order("completed_at", {
-      ascending: false,
-    })
-    .limit(1)
-    .single();
-
-if (!latestAttempt) {
-  setLoading(false);
-  return;
+  return <Suspense fallback={<div>Loading Diagnosis...</div>}><AttemptDiagnosis /></Suspense>;
 }
-
-const { data } =
-  await supabase
-    .from("daily_rc_sets")
-    .select("*")
-    .eq(
-      "id",
-      latestAttempt.daily_rc_set_id
-    )
-    .single();
-
-setRcSet(data);
-
-      const { data: questionData } =
-        await supabase
-          .from("daily_rc_questions")
-          .select("*")
-          .eq(
-            "daily_rc_set_id",
-            data.id
-          )
-          .order("order_no");
-
-      setQuestions(questionData || []);
-
-     
-
-     
-
-      if (latestAttempt) {
-
-        const { data: attemptRows } =
-          await supabase
-            .from(
-              "daily_rc_question_attempts"
-            )
-            .select("*")
-            .eq(
-              "attempt_id",
-              latestAttempt.id
-            );
-
-        setAttempts(
-          attemptRows || []
-        );
-      }
-
-      setLoading(false);
-    }
-
-    loadData();
-
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#071120] text-white flex items-center justify-center">
-        Loading Diagnosis...
-      </div>
-    );
-  }
+function AttemptDiagnosis() {
+  const attemptId = useSearchParams().get("attemptId");
+  const { data, error } = useDailyRcReview(attemptId);
+  if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
+  if (!data) return <div className="p-8 text-white">Loading Diagnosis...</div>;
+  const { rcSet, questions, responses: attempts } = data;
 
   const wrongQuestions =
     questions.filter((question) => {
@@ -171,8 +89,8 @@ wrongQuestions.forEach((q, index) => {
     <main className="min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6">
       <div className="mx-auto max-w-6xl">
         <header className="flex flex-wrap items-center justify-between gap-4">
-          <div><Link href="/daily-challenge/result" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"><ArrowLeft size={16} />Results</Link><h1 className="mt-3 text-3xl font-black sm:text-4xl">Cognitive Diagnosis</h1><p className="mt-2 text-sm text-slate-400">Understand the pattern behind your decisions and what to do next.</p></div>
-          <div className="flex items-center gap-3"><Link href="/detailed-review" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">Detailed Review →</Link><Link href="/" className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800">Dashboard</Link></div>
+          <div><Link href={dailyRcAttemptHref("/daily-challenge/result", attemptId)} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"><ArrowLeft size={16} />Results</Link><h1 className="mt-3 text-3xl font-black sm:text-4xl">Cognitive Diagnosis</h1><p className="mt-2 text-sm text-slate-400">Understand the pattern behind your decisions and what to do next.</p></div>
+          <div className="flex items-center gap-3"><Link href={dailyRcAttemptHref("/detailed-review", attemptId)} className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">Detailed Review →</Link><Link href="/" className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800">Dashboard</Link></div>
         </header>
 
         <section className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-slate-900/50 p-5 sm:p-6">

@@ -67,6 +67,12 @@ async function checkUser() {
   name: profile?.name || formatted,
 })
 
+ if (profile?.profile_completed && next === "/inbox") {
+  await refreshContext()
+  router.replace("/inbox")
+  return
+}
+
  if (!profile || !profile.profile_completed) {
   setShowProfileWizard(true)
 }
@@ -173,7 +179,9 @@ expiry.setDate(expiry.getDate() + 3)
   }),
 })
 
- if (next === "cat") {
+ if (next === "/inbox") {
+  router.replace("/inbox");
+} else if (next === "cat") {
   if (free === "1") {
     router.push("/?view=cat&free=1");
   } else {
@@ -346,7 +354,9 @@ expiry.setDate(expiry.getDate() + 3)
         <button
           className={styles["welcome-btn"]}
          onClick={() => {
- if (next === "cat") {
+ if (next === "/inbox") {
+  router.replace("/inbox");
+} else if (next === "cat") {
   if (free === "1") {
     router.push("/?view=cat&free=1");
   } else {

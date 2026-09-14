@@ -1,98 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import Link from "next/link";
+import { useDailyRcReview } from "@/lib/dailyRc/useReview";
+import { dailyRcAttemptHref } from "@/lib/dailyRc/review";
+
 import { useParams } from "next/navigation";
 
 export default function RCSessionPage() {
 
   const params = useParams();
 
-  const [attempt, setAttempt] =
-    useState(null);
-
-  const [questionAttempts,
-    setQuestionAttempts] =
-    useState([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  useEffect(() => {
-
-    async function loadSession() {
-
-      const { data: attemptData, error } =
-        await supabase
-          .from("daily_rc_attempts")
-          .select(`
-            *,
-            daily_rc_sets(*)
-          `)
-          .eq(
-            "id",
-            params.attemptId
-          )
-          .single();
-
-      if (error) {
-
-        console.error(error);
-
-        setLoading(false);
-
-        return;
-      }
-
-      setAttempt(attemptData);
-
-     
-
-    const { data: questionData } =
-  await supabase
-    .from("daily_rc_question_attempts")
-    .select(`
-      *,
-      daily_rc_questions (
-        id,
-        question_text,
-        options,
-        correct_answer,
-        question_enrichment
-      )
-    `)
-    .eq(
-      "attempt_id",
-      params.attemptId
-    );
-      setQuestionAttempts(
-        questionData || []
-      );
-
-      setLoading(false);
-    }
-
-    if (params?.attemptId) {
-
-      loadSession();
-
-    }
-
-  }, [params]);
-
-  if (loading) {
-
-    
-    return (
-
-      <div className="min-h-screen bg-[#071120] text-white flex items-center justify-center">
-
-        Loading Session...
-
-      </div>
-
-    );
-  }
+  const { data, error } = useDailyRcReview(params.attemptId);
+  if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
+  if (!data) return <div className="p-8 text-white">Loading Session...</div>;
+  const attempt = { ...data.attempt, daily_rc_sets: data.rcSet };
+  const questionAttempts = data.questions.map(question => ({
+    ...data.responses.find(response => response.question_id === question.id), daily_rc_questions: question,
+  }));
 
    const passageEnrichment =
   attempt?.daily_rc_sets?.passage_enrichment || {};
@@ -110,6 +34,7 @@ const passageFlow =
     <h1 className="text-6xl font-black">
       RC Diagnosis Report
     </h1>
+    <Link href={dailyRcAttemptHref("/detailed-review", params.attemptId)} className="text-cyan-300">Detailed Review ?</Link>
 
     <div className="mt-10 rounded-3xl border border-cyan-500/20 bg-slate-900 p-8">
 

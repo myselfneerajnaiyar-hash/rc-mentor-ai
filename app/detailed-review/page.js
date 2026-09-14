@@ -1,38 +1,24 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useDailyRcReview } from "@/lib/dailyRc/useReview";
+import { dailyRcAttemptHref } from "@/lib/dailyRc/review";
 import { AlertTriangle, ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import Link from "next/link";
 
 export default function DetailedReviewPage() {
-  const [rcSet, setRcSet] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [attempts, setAttempts] = useState([]);
+  return <Suspense fallback={<div>Loading Review...</div>}><AttemptReview /></Suspense>;
+}
+function AttemptReview() {
+  const attemptId = useSearchParams().get("attemptId");
+  const { data, error } = useDailyRcReview(attemptId);
+  const { rcSet, questions = [], responses: attempts = [] } = data || {};
   const [activeSection, setActiveSection] = useState("passageArgument");
   const [openParagraph, setOpenParagraph] = useState(null);
   const [openVocabulary, setOpenVocabulary] = useState(null);
   const [openQuestion, setOpenQuestion] = useState(0);
 
-  useEffect(() => {
-    async function loadData() {
-      const today = new Date().toISOString().split("T")[0];
-      const { data } = await supabase.from("daily_rc_sets").select("*").eq("challenge_date", today).single();
-      setRcSet(data);
-
-      const { data: questionData } = await supabase.from("daily_rc_questions").select("*").eq("daily_rc_set_id", data.id).order("order_no");
-      setQuestions(questionData || []);
-
-      const user = await supabase.auth.getUser();
-      const { data: latestAttempt } = await supabase.from("daily_rc_attempts").select("*").eq("user_id", user.data.user.id).eq("daily_rc_set_id", data.id).order("completed_at", { ascending: false }).limit(1).single();
-
-      if (latestAttempt) {
-        const { data: attemptRows } = await supabase.from("daily_rc_question_attempts").select("*").eq("attempt_id", latestAttempt.id);
-        setAttempts(attemptRows || []);
-      }
-    }
-    loadData();
-  }, []);
-
+  if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
   if (!rcSet) return <div className="flex min-h-screen items-center justify-center bg-[#071120] text-white">Loading Review...</div>;
 
   const enrichment = rcSet.passage_enrichment || {};
@@ -43,15 +29,15 @@ export default function DetailedReviewPage() {
     <main className="min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6">
       <div className="mx-auto max-w-[1380px]">
         <header className="flex flex-wrap items-start justify-between gap-4">
-          <div><Link href="/daily-challenge/result" className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-white"><ArrowLeft size={15} />Results</Link><h1 className="mt-2 text-3xl font-black leading-tight sm:text-[40px]">Detailed Review</h1><p className="mt-1.5 max-w-2xl text-sm leading-5 text-slate-400">Understand the passage, reconstruct the author&apos;s reasoning, and learn from every question.</p></div>
-          <div className="flex items-center gap-3"><Link href="/cognition-diagnosis" className="text-sm font-semibold text-purple-300 hover:text-purple-200">Cognitive Diagnosis</Link><Link href="/" className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800">Dashboard</Link></div>
+          <div><Link href={dailyRcAttemptHref("/daily-challenge/result", attemptId)} className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-white"><ArrowLeft size={15} />Results</Link><h1 className="mt-2 text-3xl font-black leading-tight sm:text-[40px]">Detailed Review</h1><p className="mt-1.5 max-w-2xl text-sm leading-5 text-slate-400">Understand the passage, reconstruct the author&apos;s reasoning, and learn from every question.</p></div>
+          <div className="flex items-center gap-3"><Link href={dailyRcAttemptHref("/cognition-diagnosis", attemptId)} className="text-sm font-semibold text-purple-300 hover:text-purple-200">Cognitive Diagnosis</Link><Link href="/" className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800">Dashboard</Link></div>
         </header>
 
         <nav className="sticky top-0 z-30 -mx-2 mt-4 overflow-x-auto border-y border-slate-800 bg-[#071120]/95 px-2 py-1.5 backdrop-blur" aria-label="Detailed review sections">
           <div className="flex min-w-max gap-1">{[["blueprint","Blueprint"],["passageArgument","Passage & Argument"],["paragraphs","Paragraphs"],["vocabulary","Vocabulary"],["questions","Questions"]].map(([id,label]) => <button key={id} type="button" onClick={() => setActiveSection(id)} className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${activeSection === id ? "bg-cyan-500/15 text-cyan-200 ring-1 ring-cyan-400/25" : "text-slate-500 hover:text-white"}`}>{label}</button>)}</div>
         </nav>
 
-        <div key={activeSection} className="mt-4 animate-[reviewFade_180ms_ease-out]">
+        <div key={`${attemptId}:${activeSection}`} className="mt-4 animate-[reviewFade_180ms_ease-out]">
           {activeSection === "blueprint" && <Blueprint enrichment={enrichment} psychology={psychology} />}
           {activeSection === "passageArgument" && <PassageArgument rcSet={rcSet} steps={enrichment.passageFlowMap || []} />}
           {activeSection === "paragraphs" && <Paragraphs rcSet={rcSet} items={passageFlow} open={openParagraph} setOpen={setOpenParagraph} />}

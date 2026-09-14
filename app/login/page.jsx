@@ -55,7 +55,7 @@ console.log("NEXT =", next);
 console.log("FREE =", free);
 console.log("URL =", window.location.href);
 
-router.replace(`/welcome?next=${next}&free=${free}`);
+router.replace(`/welcome?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`);
   }
 
   return (

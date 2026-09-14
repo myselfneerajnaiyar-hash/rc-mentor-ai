@@ -12,6 +12,7 @@ export default function DailyChallengePage() {
   const [activeTab, setActiveTab] = useState("today");
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [attemptId, setAttemptId] = useState(null);
   const [alreadyAttempted,
   setAlreadyAttempted] =
   useState(false);
@@ -59,6 +60,7 @@ export default function DailyChallengePage() {
             .maybeSingle();
 
         if (attempt) {
+          setAttemptId(attempt.id);
           setAlreadyAttempted(
             true
           );
@@ -177,7 +179,7 @@ export default function DailyChallengePage() {
           </button>
         </div>
 
-        {activeTab === "previous" ? <PreviousRCs /> : activeTab === "analytics" ? <DailyRcAnalytics onOpenToday={() => setActiveTab("today")} /> : <TodaysRc challenge={challenge} title={title} timer={timer} questionCount={questionCount} alreadyAttempted={alreadyAttempted} />}
+        {activeTab === "previous" ? <PreviousRCs /> : activeTab === "analytics" ? <DailyRcAnalytics onOpenToday={() => setActiveTab("today")} /> : <TodaysRc challenge={challenge} title={title} timer={timer} questionCount={questionCount} alreadyAttempted={alreadyAttempted} attemptId={attemptId} />}
 
 
 
@@ -186,7 +188,7 @@ export default function DailyChallengePage() {
   );
 }
 
-function TodaysRc({ challenge, title, timer, questionCount, alreadyAttempted }) {
+function TodaysRc({ challenge, title, timer, questionCount, alreadyAttempted, attemptId }) {
   const metadata = [challenge.difficulty, challenge.source_year].filter(Boolean);
   const unlocks = [
     { icon: "🏆", title: "Leaderboard Ranking", description: "See where you stand." },
@@ -215,7 +217,7 @@ function TodaysRc({ challenge, title, timer, questionCount, alreadyAttempted }) 
 
         <div className="flex flex-col gap-3">
           {alreadyAttempted
-            ? <Link href="/daily-challenge/result" className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-emerald-950 shadow-lg shadow-emerald-950/20 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300">View Today&apos;s Report →</Link>
+            ? <Link href={attemptId ? `/daily-challenge/result?attemptId=${encodeURIComponent(attemptId)}` : "/rc-history"} className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-emerald-950 shadow-lg shadow-emerald-950/20 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300">View Today&apos;s Report →</Link>
             : <Link href="/daily-challenge/instructions" className="inline-flex min-h-16 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-400 px-6 text-lg font-black text-white shadow-[0_12px_36px_rgba(34,211,238,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_42px_rgba(34,211,238,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">Start Today&apos;s RC →</Link>}
           <p className="text-center text-xs leading-5 text-slate-500">One focused passage. No distractions. Full diagnosis after completion.</p>
         </div>

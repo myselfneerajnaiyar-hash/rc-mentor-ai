@@ -37,7 +37,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck, Inbox } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -48,6 +48,7 @@ import PrecisionTraining from "../components/PrecisionTraining"
 import HangmanView from "../components/HangmanView";
 import GrammarLab from "../components/GrammarLab";
 import { useTenant } from "@/components/providers/TenantProvider";
+import { useInboxUnreadCount } from "@/lib/inbox/useUnreadCount";
 
 const SHOW_GRAMMAR_LAB = false;
 
@@ -141,6 +142,7 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [userName, setUserName] = useState("");
   const [exam, setExam] = useState("");
   const hasPremiumAccess = Boolean(entitlement?.hasAccess)
+  const { count: inboxUnreadCount } = useInboxUnreadCount(Boolean(user))
 
   // ---- VOCAB STATE ----
   
@@ -305,7 +307,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
+  const freeViews = ["home", "inbox", "workout", "hangman", "profile", "cat"]
 
   const lockedView =
     !freeViews.includes(view) &&
@@ -743,7 +745,7 @@ return (
  {navItems.map((item) => {
   const Icon = item.icon;
 
-  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
+  const freeViews = ["home", "inbox", "workout", "hangman", "profile", "cat"]
 
 const locked =
   !freeViews.includes(item.id) &&
@@ -761,6 +763,11 @@ const locked =
 
 if (item.id === "premium") {
   router.push("/pricing")
+  return
+}
+
+if (item.id === "inbox") {
+  router.push("/inbox")
   return
 }
 
@@ -790,6 +797,12 @@ ${
   <span className="text-left leading-tight">
     {item.label}
   </span>
+
+  {item.unreadCount > 0 && (
+    <span className="ml-auto min-w-5 rounded-full bg-indigo-500 px-1.5 py-0.5 text-center text-[10px] font-bold text-white">
+      {item.unreadCount > 99 ? "99+" : item.unreadCount}
+    </span>
+  )}
 
   {locked && (
     <span className="ml-1 text-[10px] opacity-50">
@@ -932,6 +945,7 @@ ${
   view={view}
   setView={setView}
   hasPremiumAccess={hasPremiumAccess}
+  inboxUnreadCount={inboxUnreadCount}
   exam={exam}
   chatOpen={chatOpen}
 />

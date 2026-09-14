@@ -1,17 +1,12 @@
-import { findInfluencerCoupon } from "@/lib/payments/influencerCoupons"
-import { normalizeCouponCode, validateCouponCode } from "@/lib/payments/pricing"
+import { resolveCoupon } from "@/lib/payments/influencerCoupons"
 
 export async function POST(req) {
   try {
     const { couponCode } = await req.json()
-    const code = normalizeCouponCode(couponCode)
-    const staticCoupon = validateCouponCode(code)
-    const result = staticCoupon.valid
-      ? { code, coupon: staticCoupon.coupon }
-      : await findInfluencerCoupon(code)
+    const result = await resolveCoupon(couponCode)
 
-    if (!result) {
-      return Response.json({ valid: false, code }, { status: 404 })
+    if (!result.valid) {
+      return Response.json({ valid: false, code: result.code }, { status: 404 })
     }
 
     // This endpoint deliberately exposes no influencer identity, email, or commission data.

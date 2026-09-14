@@ -1,7 +1,7 @@
 import Razorpay from "razorpay"
 import { supabaseAdmin } from "@/lib/supabaseAdmin"
-import { findInfluencerCoupon } from "@/lib/payments/influencerCoupons"
-import { calculateCouponAttribution, calculatePlanPricing, validateCouponCode } from "@/lib/payments/pricing"
+import { resolveCoupon } from "@/lib/payments/influencerCoupons"
+import { calculateCouponAttribution, calculatePlanPricing } from "@/lib/payments/pricing"
 
 export async function POST(req) {
 
@@ -10,13 +10,8 @@ export async function POST(req) {
     const body = await req.json()
 
     const couponCode = body.couponCode || ""
-    const staticCoupon = validateCouponCode(couponCode)
-    const influencerCoupon = staticCoupon.valid ? null : await findInfluencerCoupon(couponCode)
-    const coupon = staticCoupon.valid
-      ? staticCoupon
-      : influencerCoupon
-        ? { valid: true, code: influencerCoupon.code, coupon: influencerCoupon.coupon }
-        : { valid: false, code: couponCode, coupon: null }
+    const coupon = await resolveCoupon(couponCode)
+    const { influencerCoupon } = coupon
     if (couponCode.trim() && !coupon.valid) {
       return Response.json({ error: "Invalid or expired coupon code." }, { status: 400 })
     }

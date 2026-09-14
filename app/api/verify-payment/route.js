@@ -1,9 +1,9 @@
 import crypto from "crypto"
 import { createClient } from "@supabase/supabase-js"
 import Razorpay from "razorpay"
-import { findInfluencerCoupon } from "@/lib/payments/influencerCoupons"
+import { resolveCoupon } from "@/lib/payments/influencerCoupons"
 import { sendInfluencerConversionEmail } from "@/lib/email/sendInfluencerConversionEmail"
-import { calculateCouponAttribution, calculatePlanPricing, validateCouponCode } from "@/lib/payments/pricing"
+import { calculateCouponAttribution, calculatePlanPricing } from "@/lib/payments/pricing"
 import { cancelUserEvents } from "@/lib/whatsapp/events"
 
 const supabase = createClient(
@@ -55,15 +55,12 @@ export async function POST(req) {
     return Response.json({ success: false, error: "Payment plan mismatch" }, { status: 400 })
   }
 
-  // Match order creation: built-in coupons are authoritative when a database
-  // influencer happens to reuse the same code.
-  const staticCoupon = validateCouponCode(couponCode)
-  const influencerCoupon = couponCode && !staticCoupon.valid
-    ? await findInfluencerCoupon(couponCode)
-    : null
+  const coupon = await resolveCoupon(couponCode)
+  const { influencerCoupon } = coupon
   const pricing = calculatePlanPricing(plan, {
-    couponCode,
-    coupon: staticCoupon.valid ? staticCoupon.coupon : influencerCoupon?.coupon,
+    couponCode: coupon.code,
+    coupon: coupon.coupon,
+    validReferral: Boolean(referralCode),
   })
   const paymentCompleted = paidOrder.status === "paid"
     && paidPayment.status === "captured"

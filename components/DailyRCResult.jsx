@@ -1,36 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { useDailyRcReview } from "@/lib/dailyRc/useReview";
+import { dailyRcAttemptHref } from "@/lib/dailyRc/review";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export default function DailyRCResult() {
-
-    const [resultData, setResultData] =
-  useState(null);
-
-useEffect(() => {
-
-  const data =
-    localStorage.getItem(
-      "dailyRCResult"
-    );
-
-  if (data) {
-    setResultData(
-      JSON.parse(data)
-    );
-  }
-
-}, []);
-
-if (!resultData) {
-  return (
-    <div className="min-h-screen bg-[#071120] text-white flex items-center justify-center">
-      Loading Result...
-    </div>
-  );
+  return <Suspense fallback={<div>Loading Result...</div>}><AttemptResult /></Suspense>;
 }
+function AttemptResult() {
+  const attemptId = useSearchParams().get("attemptId");
+  const { data, error } = useDailyRcReview(attemptId);
+  if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
+  if (!data) return <div className="p-8 text-white">Loading Result...</div>;
+  const { attempt } = data;
+  const resultData = {
+    correct: attempt.correct_count, incorrect: attempt.incorrect_count,
+    unanswered: attempt.unanswered_count, accuracy: attempt.accuracy,
+    catScore: attempt.score, compositeScore: attempt.composite_score, timeUsed: attempt.time_taken,
+  };
 
     const profile =
   resultData.correct === 4
@@ -118,7 +108,7 @@ else {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link href="/daily-challenge" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} />Back to Arena</Link>
-          <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><Link href="/cognition-diagnosis" className="hover:text-purple-300">Cognitive Diagnosis</Link><span>→</span><Link href="/detailed-review" className="hover:text-cyan-300">Detailed Review</Link></nav>
+          <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><Link href={dailyRcAttemptHref("/cognition-diagnosis", attemptId)} className="hover:text-purple-300">Cognitive Diagnosis</Link><span>→</span><Link href={dailyRcAttemptHref("/detailed-review", attemptId)} className="hover:text-cyan-300">Detailed Review</Link></nav>
         </div>
 
         <section className="mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6">
@@ -146,8 +136,8 @@ else {
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <Link href="/cognition-diagnosis" className="flex min-h-14 items-center justify-between rounded-xl border border-purple-500/25 bg-purple-500/10 px-5 font-bold text-purple-200 transition hover:bg-purple-500/15"><span>Cognitive Diagnosis</span><span>→</span></Link>
-          <Link href="/detailed-review" className="flex min-h-14 items-center justify-between rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-5 font-bold text-cyan-200 transition hover:bg-cyan-500/15"><span>Detailed Review</span><span>→</span></Link>
+          <Link href={dailyRcAttemptHref("/cognition-diagnosis", attemptId)} className="flex min-h-14 items-center justify-between rounded-xl border border-purple-500/25 bg-purple-500/10 px-5 font-bold text-purple-200 transition hover:bg-purple-500/15"><span>Cognitive Diagnosis</span><span>→</span></Link>
+          <Link href={dailyRcAttemptHref("/detailed-review", attemptId)} className="flex min-h-14 items-center justify-between rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-5 font-bold text-cyan-200 transition hover:bg-cyan-500/15"><span>Detailed Review</span><span>→</span></Link>
         </div>
       </div>
     </main>
