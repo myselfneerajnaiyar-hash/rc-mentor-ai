@@ -1,4 +1,4 @@
-﻿import test from "node:test"
+import test from "node:test"
 import assert from "node:assert/strict"
 import fs from "node:fs"
 import ts from "typescript"
@@ -6,7 +6,7 @@ import { MemoryDb, message, uid } from "./helpers/inbox-db.mjs"
 import { normalizeNotification, createInboxNotification, applyInboxAction } from "../lib/inbox/service.js"
 import { internalPath, parseList, parseAction, encodeCursor } from "../lib/inbox/validation.js"
 import { listInbox, mutateInbox, inboxHandlers, getInboxMessage, unreadCount } from "../lib/inbox/api.js"
-import { matchesView, reconcileMessages, reconcileDetail, mergeMessages, requestGate } from "../lib/inbox/state.js"
+import { matchesView, reconcileMessages, reconcileDetail, mergeMessages, requestGate, inboxUndo } from "../lib/inbox/state.js"
 import { isAuthorizedInboxCron } from "../lib/inbox/auth.js"
 import { dateKey, dayStart, shiftDay, loadActivityBatch, summarizeActivity, readAll } from "../lib/inbox/activity.js"
 import { chooseDailyNotification } from "../lib/inbox/rules.js"
@@ -299,6 +299,7 @@ test("Inbox JSX parses and real components render rows, selection, folders and s
   const icons = await import("lucide-react")
   const state = await import("../lib/inbox/state.js")
   const validation = await import("../lib/inbox/validation.js")
+  const requests = await import("../lib/inbox/request.js")
   const module = { exports: {} }
   new Function("require", "module", "exports", compiled.outputText)((name) => {
     if (name === "react") return React
@@ -309,6 +310,7 @@ test("Inbox JSX parses and real components render rows, selection, folders and s
     if (name.includes("TenantLogo")) return { __esModule: true, default: () => React.createElement("span", null, "Auctor") }
     if (name.includes(".css")) return { __esModule: true, default: new Proxy({}, { get: (_, key) => key }) }
     if (name.includes("/state")) return state
+    if (name.includes("/request")) return requests
     if (name.includes("/validation")) return validation
     return {}
   }, module, module.exports)
@@ -425,13 +427,14 @@ test("history failure skips its batch and does not stop subsequent users", async
 test("bulk deadline returns acknowledged writes without inventing missing IDs or a count", async () => {
   const db = new MemoryDb({ inbox_notifications: Array.from({ length: 150 }, (_, n) => message(n + 1)) })
   const controller = new AbortController()
-  db.fail = query => { if (query.method === "update") controller.abort(); return null }
+  let writes = 0
+  db.fail = query => { if (query.method === "update" && ++writes === 2) controller.abort(); return null }
   const result = await mutateInbox(db, user, { action: "read", ids: db.tables.inbox_notifications.map(row => row.id) }, { signal: controller.signal })
   assert.equal(result.partial, true); assert.equal(result.refreshRequired, true)
   assert.equal(result.updated.length, 100); assert.equal(result.current.length, 100)
   assert.deepEqual(result.missingIds, []); assert.equal(result.unreadCount, null)
   assert.match(result.error, /Some changes may have been saved/)
-  assert.equal(db.tables.inbox_notifications.filter(row => row.read_at).length, 100)
+  assert.equal(db.tables.inbox_notifications.filter(row => row.read_at).length, 150)
 })
 
 test("bulk reconciliation failure preserves confirmed writes and reports incomplete", async () => {
@@ -440,4 +443,151 @@ test("bulk reconciliation failure preserves confirmed writes and reports incompl
   const result = await mutateInbox(db, user, { action: "read", ids: [uid(1)] })
   assert.equal(result.partial, true); assert.equal(result.updated.length, 1)
   assert.deepEqual(result.missingIds, []); assert.equal(result.unreadCount, null)
+})
+
+
+for (const days of [7, 14, 28, 29, 30, 56, 57, 90]) test(`streak milestone at ${days} days uses an exact threshold, including a bounded history`, () => {
+  const date = "2026-09-13"
+  const events = Array.from({ length: days }, (_, n) => event({ day: shiftDay(date, -n - 1), sessionId: String(n) }))
+  for (const window of [events, events.filter(row => row.day >= shiftDay(date, -29))]) {
+    const result = rule({ events: window })
+    assert.equal(result.type === "STREAK", [7, 14, 28].includes(days))
+    if ([7, 14, 28].includes(days)) {
+      assert.equal(result.ruleKey, `streak:${shiftDay(date, -days)}:${days}`)
+      assert.notEqual(rule({ events: window, history: [{ rule_key: result.ruleKey }] }).type, "STREAK")
+    }
+  }
+})
+
+test("streaks reset after a gap and preserve daily uniqueness", async () => {
+  const events = Array.from({ length: 7 }, (_, n) => event({ day: shiftDay("2026-09-13", -n - 1), sessionId: String(n) }))
+  const first = rule({ events })
+  const resumed = rule({ dateKey: "2026-09-22", events: events.map(e => ({ ...e, day: shiftDay(e.day, 9) })), history: [{ rule_key: first.ruleKey }] })
+  assert.equal(resumed.type, "STREAK"); assert.notEqual(first.ruleKey, resumed.ruleKey)
+  const db = new MemoryDb()
+  assert.ok(await createInboxNotification(db, first)); assert.equal(await createInboxNotification(db, first), null)
+})
+
+for (const url of ["/%61pi/inbox/generate", "/%5fnext/static/x", "/a/../%61pi/inbox", "/%61pi%2finbox", "/%5Fnext", "/%2561pi/inbox"]) test(`encoded excluded CTA rejects ${url}`, () => assert.throws(() => internalPath(url)))
+
+test("decoded CTA validation keeps search query and hash data legitimate", () => {
+  assert.equal(internalPath("/history?search=scope%20trap#results"), "/history?search=scope%20trap#results")
+  assert.equal(internalPath("/history?search=%61pi#results"), "/history?search=%61pi#results")
+})
+
+for (const action of ["read", "unread", "archive", "unarchive", "delete", "restore"]) test(`explicit ${action} can undo only acknowledged messages`, async () => {
+  const initial = message(1, { read_at: action === "unread" ? "original" : null, archived_at: action === "unarchive" || action === "restore" ? "archived" : null, deleted_at: action === "restore" ? "deleted" : null })
+  const db = new MemoryDb({ inbox_notifications: [initial, message(2, { user_id: other })] })
+  const result = await mutateInbox(db, user, { action, ids: [uid(1), uid(2)] })
+  const undo = inboxUndo(action, result)
+  assert.deepEqual(undo.ids, [uid(1)])
+  const restored = await mutateInbox(db, user, undo)
+  assert.equal(restored.updated.length, 1)
+  const row = db.tables.inbox_notifications[0]
+  for (const field of ["read_at", "archived_at", "deleted_at"]) assert.equal(Boolean(row[field]), Boolean(initial[field]))
+  assert.equal(row.body, initial.body)
+})
+
+test("undo skips later changes in another tab and excludes unsafe scopes", async () => {
+  const db = new MemoryDb({ inbox_notifications: [message(1)] })
+  const result = await mutateInbox(db, user, { action: "archive", ids: [uid(1)] })
+  const undo = inboxUndo("archive", result)
+  db.tables.inbox_notifications[0].updated_at = "2099-01-01T00:00:00.000Z"
+  assert.equal((await mutateInbox(db, user, undo)).updated.length, 0)
+  assert.ok(db.tables.inbox_notifications[0].archived_at)
+  assert.equal(inboxUndo("read", result, { all: true }), null)
+  assert.equal(inboxUndo("archive", { ...result, partial: true }), null)
+  assert.equal(inboxUndo("archive", { updated: [] }), null)
+  assert.throws(() => parseAction({ action: "read", ids: [uid(1)], ifUpdatedAt: "injected" }))
+  assert.throws(() => parseAction({ action: "read", all: true, ifUpdatedAt: undo.ifUpdatedAt }))
+})
+
+test("archive/unarchive no-ops cannot become undo candidates", async () => {
+  const db = new MemoryDb({ inbox_notifications: [message(1, { archived_at: "existing" }), message(2)] })
+  assert.equal((await mutateInbox(db, user, { action: "archive", ids: [uid(1)] })).updated.length, 0)
+  assert.equal((await mutateInbox(db, user, { action: "unarchive", ids: [uid(2)] })).updated.length, 0)
+})
+
+test("request deadline settles even when an underlying operation ignores cancellation", async () => {
+  const { withInboxDeadline, InboxTimeoutError } = await import("../lib/inbox/request.js")
+  let bounded
+  await assert.rejects(withInboxDeadline(signal => { bounded = signal; return new Promise(() => {}) }, { timeoutMs: 10 }), InboxTimeoutError)
+  assert.equal(bounded.aborted, true)
+  const abort = new AbortController(); abort.abort()
+  await assert.rejects(withInboxDeadline(() => assert.fail("must not start"), { signal: abort.signal }))
+})
+
+for (const stage of ["session", "fetch", "body", "mutation", "unread-count"]) test(`Inbox ${stage} wait is bounded`, async () => {
+  const { createInboxRequest, InboxTimeoutError } = await import("../lib/inbox/request.js")
+  const never = () => new Promise(() => {})
+  const session = () => Promise.resolve({ data: { session: { access_token: "fixture" } } })
+  let signal
+  const api = createInboxRequest(stage === "session" ? never : session, async (_, options) => {
+    signal = options.signal
+    return stage === "body" ? { ok: true, json: never } : never()
+  }, { sessionTimeoutMs: 10, readTimeoutMs: 20, writeTimeoutMs: 20 })
+  await assert.rejects(api(stage === "unread-count" ? "/api/inbox/unread-count" : "/api/inbox", { method: stage === "mutation" ? "PATCH" : "GET" }), InboxTimeoutError)
+  if (signal) assert.equal(signal.aborted, true)
+})
+
+test("bounded API preserves authorization, cancellation, errors and successful JSON", async () => {
+  const { createInboxRequest } = await import("../lib/inbox/request.js")
+  let sent
+  const api = createInboxRequest(async () => ({ data: { session: { access_token: "fixture" } } }), async (_, options) => { sent = options; return { ok: true, json: async () => ({ unreadCount: 3 }) } })
+  assert.equal((await api("/api/inbox")).unreadCount, 3)
+  assert.equal(sent.headers.Authorization, "Bearer fixture"); assert.equal(sent.cache, "no-store")
+  const guest = createInboxRequest(async () => ({ data: { session: null } }), () => assert.fail("guest must not fetch"))
+  await assert.rejects(guest("/api/inbox"), error => error.status === 401)
+})
+
+test("generator loads the 29th day and prevents rolling 28-day notifications", async () => {
+  const db = new MemoryDb({ profiles: [{ user_id: user, created_at: "2020-01-01" }] })
+  const result = await runInboxGenerator(db, { now: new Date("2026-09-13T02:30:00Z"), logger: silent, loadActivity: async (_, ids, from) => {
+    assert.equal(from, "2026-08-15")
+    return new Map([[user, Array.from({ length: 29 }, (_, n) => event({ day: shiftDay("2026-09-13", -n - 1) }))]])
+  } })
+  assert.equal(result.status, "complete"); assert.notEqual(db.tables.inbox_notifications[0]?.type, "STREAK")
+})
+
+test("generator closes timed-out history reads even when the database ignores abort", async () => {
+  const db = new MemoryDb({ profiles: [{ user_id: user }] })
+  const from = db.from.bind(db)
+  db.from = table => { const q = from(table); if (table === "inbox_notifications") q.then = () => new Promise(() => {}); return q }
+  const result = await runInboxGenerator(db, { budgetMs: 40, logger: silent })
+  assert.equal(result.status, "partial"); assert.ok(db.tables.inbox_generation_runs[0].finished_at)
+})
+
+test("generator recovers killed runs, preserves live runs and retries ledger finalization", async () => {
+  const db = new MemoryDb({ inbox_generation_runs: [{ id: uid(1), status: "running", started_at: "2020-01-01T00:00:00Z" }, { id: uid(2), status: "running", started_at: new Date().toISOString() }] })
+  let finishCalls = 0
+  db.fail = q => q.table === "inbox_generation_runs" && q.method === "update" && q.patch.status === "complete" && ++finishCalls === 1 ? { message: "temporary failure" } : null
+  const result = await runInboxGenerator(db, { logger: silent })
+  assert.equal(result.status, "complete"); assert.equal(finishCalls, 2)
+  assert.equal(db.tables.inbox_generation_runs[0].status, "failed")
+  assert.equal(db.tables.inbox_generation_runs[1].status, "running")
+  assert.equal(db.tables.inbox_generation_runs.at(-1).status, "complete")
+})
+
+test("navigation exposes Inbox on desktop and mobile without replacing existing items", async () => {
+  const desktop = fs.readFileSync("app/page.js", "utf8")
+  const mobile = fs.readFileSync("app/components/MobileBottomNav.jsx", "utf8")
+  assert.match(desktop, /id: "inbox", label: "Inbox", icon: Inbox, unreadCount: inboxUnreadCount/)
+  const React = await import("react"), runtime = await import("react/jsx-runtime"), icons = await import("lucide-react")
+  const { renderToStaticMarkup } = await import("react-dom/server")
+  const module = { exports: {} }
+  const compiled = ts.transpileModule(mobile, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText
+  new Function("require", "module", "exports", compiled)(name => name === "react/jsx-runtime" ? runtime : name === "lucide-react" ? icons : { useRouter: () => ({ push() {} }) }, module, module.exports)
+  const html = renderToStaticMarkup(React.createElement(module.exports.default, { view: "home", inboxUnreadCount: 7, capabilities: { showCATSectionals: true } }))
+  for (const label of ["Home", "Inbox", "Practice", "CAT", "Profile"]) assert.ok(html.includes(`aria-label="${label}"`))
+  assert.match(html, />7</)
+  assert.match(mobile, /router.push\("\/inbox"\)/); assert.match(desktop, /router.push\("\/inbox"\)/)
+})
+
+test("production catalog checks remain a read-only SQL assertion script", () => {
+  const sql = fs.readFileSync(new URL("./inbox-security.sql", import.meta.url), "utf8")
+  assert.match(sql, /begin read only;/)
+  assert.equal(sql.split("$$").length - 1, 2)
+  assert.match(sql, /do \$\$/)
+  assert.match(sql, /rollback;/)
+  for (const object of ["inbox_notifications_rule_key_idx", "inbox_notifications_daily_cap_idx", "inbox_assign_proactive_day", "service_role", "relrowsecurity", "pg_policies"]) assert.ok(sql.includes(object))
 })

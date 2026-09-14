@@ -11,8 +11,9 @@ import { supabase } from "@/lib/supabase"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import styles from "./inbox.module.css"
+import { createInboxRequest } from "@/lib/inbox/request"
 import { internalPath } from "@/lib/inbox/validation"
-import { mergeMessages, reconcileMessages, reconcileDetail, requestGate, publishInboxUpdate } from "@/lib/inbox/state"
+import { mergeMessages, reconcileMessages, reconcileDetail, requestGate, publishInboxUpdate, inboxUndo } from "@/lib/inbox/state"
 
 const FILTERS = ["ALL", "UNREAD", "STUDY", "PROGRESS", "ACHIEVEMENTS", "REMINDERS", "OFFERS"]
 const TYPE_DETAILS = {
@@ -22,14 +23,7 @@ const TYPE_DETAILS = {
   FEATURE_UPDATE: [Sparkles, "Update"], ACCOUNT: [Mail, "Account"], OFFER: [Gift, "Offer"], TRIAL: [Clock3, "Trial"], SYSTEM: [Bell, "System"],
 }
 
-async function api(path, options = {}) {
-  const { data } = await supabase.auth.getSession()
-  if (!data.session?.access_token) throw new Error("Please sign in again")
-  const response = await fetch(path, { ...options, cache: "no-store", headers: { "Content-Type": "application/json", ...options.headers, Authorization: `Bearer ${data.session.access_token}` } })
-  const payload = await response.json().catch(() => null)
-  if (!response.ok) throw new Error(payload?.error || "Inbox request failed")
-  return payload
-}
+const api = createInboxRequest(() => supabase.auth.getSession())
 
 export default function InboxApp() {
   const router = useRouter()
@@ -46,6 +40,7 @@ export default function InboxApp() {
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState(null)
   const mutationLock = useRef(false)
+  const mutationController = useRef(null)
   const listGate = useRef(requestGate())
   const detailGate = useRef(requestGate())
   const mounted = useRef(true)
@@ -82,7 +77,7 @@ export default function InboxApp() {
     }
   }, [filter, folder, search])
   useEffect(() => { load(); return () => listGate.current.cancel() }, [load])
-  useEffect(() => { mounted.current = true; return () => { mounted.current = false; listGate.current.cancel(); detailGate.current.cancel() } }, [])
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; mutationController.current?.abort(); listGate.current.cancel(); detailGate.current.cancel() } }, [])
   useEffect(() => {
     const refresh = () => { if (document.visibilityState === "visible" && !mutationLock.current) { detailGate.current.cancel(); setActive(null); load() } }
     const storage = (event) => { if (event.key === "auctor:inbox-updated") refresh() }
@@ -108,16 +103,20 @@ export default function InboxApp() {
     publishInboxUpdate()
     if (result.partial) setError(result.error)
   }
-  const act = async (action, ids = [...selected], all = false) => {
+  const act = async (action, ids = [...selected], all = false, ifUpdatedAt = null) => {
     if (mutationLock.current || searchPending || (!all && !ids.length)) return
+    mutationController.current = new AbortController()
     mutationLock.current = true; setBusy(true); setError(""); setNotice(null)
     detailGate.current.cancel(); setActive((current) => current?.loading ? null : current); listGate.current.cancel(); setLoading(false); setLoadingMore(false)
     try {
-      const result = await api("/api/inbox", { method: "PATCH", body: JSON.stringify(all ? { action, all: true } : { action, ids }) })
+      const result = await api("/api/inbox", { method: "PATCH", signal: mutationController.current.signal, body: JSON.stringify(all ? { action, all: true } : { action, ids, ...(ifUpdatedAt ? { ifUpdatedAt } : {}) }) })
       if (!mounted.current) return
       reconcile(result)
-      setNotice(result.partial ? { text: result.error } : result.updated.length ? { text: `${result.updated.length} message${result.updated.length === 1 ? "" : "s"} updated`, action: action === "archive" ? "unarchive" : action === "delete" ? "restore" : null, ids: result.updated.map((row) => row.id) } : { text: "No messages changed. Refresh to see the latest state." })
-      if (action === "restore" || action === "unarchive" || (action === "unread" && filter === "UNREAD") || result.partial) { await load(); if (result.partial) setError(result.error) }
+      setNotice(result.partial ? { text: result.error } : result.updated.length ? {
+        text: `${result.updated.length} message${result.updated.length === 1 ? "" : "s"} updated${all ? ". Mark all read cannot be undone; use Mark unread on selected messages." : ""}`,
+        undo: ifUpdatedAt ? null : inboxUndo(action, result, { all }),
+      } : { text: "No messages changed. Refresh to see the latest state." })
+      if (ifUpdatedAt || action === "restore" || action === "unarchive" || (action === "unread" && filter === "UNREAD") || result.partial) { await load(); if (result.partial) setError(result.error) }
     } catch (actionError) {
       if (mounted.current) { closeDetail(); await load(); setError("Bulk action incomplete. Some changes may have been saved. Refresh before retrying.") }
     } finally { mutationLock.current = false; if (mounted.current) setBusy(false) }
@@ -134,9 +133,10 @@ export default function InboxApp() {
       setMessages((current) => reconcileMessages(current, [result.message], { folder, filter }))
       if (Number.isInteger(result.unreadCount)) setUnreadCount(result.unreadCount)
       if (!result.message.read_at && !result.message.deleted_at) {
+        mutationController.current = new AbortController()
         mutationLock.current = true; setBusy(true); listGate.current.cancel(); setLoading(false); setLoadingMore(false)
         try {
-          const changed = await api("/api/inbox", { method: "PATCH", body: JSON.stringify({ action: "read", ids: [message.id] }) })
+          const changed = await api("/api/inbox", { method: "PATCH", signal: mutationController.current.signal, body: JSON.stringify({ action: "read", ids: [message.id] }) })
           if (mounted.current) reconcile(changed)
         } finally { mutationLock.current = false; if (mounted.current) setBusy(false) }
       }
@@ -170,7 +170,7 @@ export default function InboxApp() {
               {folder === "TRASH" ? <ToolButton icon={Inbox} label="Restore" onClick={() => act("restore")} /> : <><ToolButton icon={MailOpen} label="Mark read" onClick={() => act("read")} /><ToolButton icon={Mail} label="Mark unread" onClick={() => act("unread")} /><ToolButton icon={Trash2} label="Delete" danger onClick={() => act("delete")} /></>}
             </div> : <button className={styles.markAll} onClick={markAllRead} disabled={!unreadCount || busy}><CheckCheck size={17} /> Mark all as read</button>}
           </fieldset>
-          {notice && <div className={styles.notice} role="status">{notice.text}{notice.action && <button disabled={busy} onClick={() => { const undo = notice; setNotice(null); act(undo.action, undo.ids) }}>Undo</button>}<button aria-label="Dismiss notification" onClick={() => setNotice(null)}><X size={14} /></button></div>}
+          {notice && <div className={styles.notice} role="status">{notice.text}{notice.undo && <button disabled={busy} onClick={() => { const undo = notice.undo; setNotice(null); act(undo.action, undo.ids, false, undo.ifUpdatedAt) }}>Undo</button>}<button aria-label="Dismiss notification" onClick={() => setNotice(null)}><X size={14} /></button></div>}
 
           {error && <div className={styles.error} role="alert">{error}<button disabled={busy} onClick={() => load()}>Try again</button></div>}
           {loading || searchPending ? <LoadingRows /> : messages.length ? <div className={styles.rows}>{messages.map((message) => <InboxRow key={message.id} message={message} selected={selected.has(message.id)} onToggle={toggle} onOpen={openMessage} disabled={busy || loading || searchPending} />)}</div> : <EmptyState search={search} filter={filter} folder={folder} />}

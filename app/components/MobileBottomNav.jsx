@@ -31,6 +31,11 @@ export default function MobileBottomNav({
     label: "Home",
     icon: Home,
   },
+  {
+    key: "inbox",
+    label: "Inbox",
+    icon: Inbox,
+  },
 
   
 

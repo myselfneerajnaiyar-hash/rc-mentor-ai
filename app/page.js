@@ -690,6 +690,7 @@ if (authLoading) {
 }
 const navItems = [
   { id: "home", label: "Home", icon: Home },
+  { id: "inbox", label: "Inbox", icon: Inbox, unreadCount: inboxUnreadCount },
   { id: "workout", label: "Daily Workout", icon: Flame },
   { id: "rc", label: "RC", icon: Brain },
    { id: "precision", label: "Precision Training", icon: Target },
