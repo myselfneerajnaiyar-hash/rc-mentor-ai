@@ -55,7 +55,7 @@ function getGreeting() {
   return "Good Night"
 }
 
-export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
+export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, inboxUnreadCount = 0 }) {
 const { branding, entitlement } = useTenant()
 const capabilities = getExamCapabilities(exam)
 const normalizedExam = capabilities.exam
@@ -444,6 +444,7 @@ setInsight({
 <Header
   startTour={() => startProductTour(isCAT, branding.brandName)}
   user={user}
+  inboxUnreadCount={inboxUnreadCount}
   userName={userName}
   greeting={greeting}
   examDisplayName={examDisplayName}

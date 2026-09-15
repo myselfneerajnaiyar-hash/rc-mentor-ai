@@ -568,19 +568,37 @@ test("generator recovers killed runs, preserves live runs and retries ledger fin
   assert.equal(db.tables.inbox_generation_runs.at(-1).status, "complete")
 })
 
-test("navigation exposes Inbox on desktop and mobile without replacing existing items", async () => {
+test("navigation moves Inbox to the labeled header control without replacing other items", async () => {
   const desktop = fs.readFileSync("app/page.js", "utf8")
   const mobile = fs.readFileSync("app/components/MobileBottomNav.jsx", "utf8")
-  assert.match(desktop, /id: "inbox", label: "Inbox", icon: Inbox, unreadCount: inboxUnreadCount/)
+  const header = fs.readFileSync("components/home-v2/Header.jsx", "utf8")
+  const link = fs.readFileSync("components/home-v2/InboxHeaderLink.jsx", "utf8")
+  assert.doesNotMatch(desktop, /id: "inbox", label: "Inbox"/)
+  assert.doesNotMatch(mobile, /key: "inbox"/)
+  assert.match(desktop, /useInboxUnreadCount\(Boolean\(user\)\)/)
+  assert.match(desktop, /inboxUnreadCount=\{inboxUnreadCount\}/)
+  assert.match(header, /Product Tour[\s\S]*InboxHeaderLink/)
+  assert.match(link, /href="\/inbox"/)
+  assert.match(link, /<span>Inbox<\/span>/)
+  assert.match(link, /count > 0/)
+  assert.match(link, /aria-label=\{count > 0/)
   const React = await import("react"), runtime = await import("react/jsx-runtime"), icons = await import("lucide-react")
   const { renderToStaticMarkup } = await import("react-dom/server")
   const module = { exports: {} }
   const compiled = ts.transpileModule(mobile, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText
   new Function("require", "module", "exports", compiled)(name => name === "react/jsx-runtime" ? runtime : name === "lucide-react" ? icons : { useRouter: () => ({ push() {} }) }, module, module.exports)
-  const html = renderToStaticMarkup(React.createElement(module.exports.default, { view: "home", inboxUnreadCount: 7, capabilities: { showCATSectionals: true } }))
-  for (const label of ["Home", "Inbox", "Practice", "CAT", "Profile"]) assert.ok(html.includes(`aria-label="${label}"`))
-  assert.match(html, />7</)
-  assert.match(mobile, /router.push\("\/inbox"\)/); assert.match(desktop, /router.push\("\/inbox"\)/)
+  const html = renderToStaticMarkup(React.createElement(module.exports.default, { view: "home", capabilities: { showCATSectionals: true } }))
+  for (const label of ["Home", "Practice", "CAT", "Profile"]) assert.ok(html.includes(`aria-label="${label}"`))
+  assert.doesNotMatch(html, /aria-label="Inbox"/)
+  const linkModule = { exports: {} }
+  const compiledLink = ts.transpileModule(link, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText
+  new Function("require", "module", "exports", compiledLink)(name => name === "react/jsx-runtime" ? runtime : icons, linkModule, linkModule.exports)
+  const empty = renderToStaticMarkup(React.createElement(linkModule.exports.default, { count: 0 }))
+  const unread = renderToStaticMarkup(React.createElement(linkModule.exports.default, { count: 7 }))
+  assert.match(empty, /aria-label="Inbox"/)
+  assert.doesNotMatch(empty, />7</)
+  assert.match(unread, /aria-label="Inbox — 7 unread messages"/)
+  assert.match(unread, />7</)
 })
 
 test("production catalog checks remain a read-only SQL assertion script", () => {

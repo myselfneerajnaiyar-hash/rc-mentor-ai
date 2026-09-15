@@ -18,6 +18,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import ShadowHomeView from "@/components/home-v2/ShadowHomeView";
+import InboxHeaderLink from "@/components/home-v2/InboxHeaderLink";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
 import RCView from "../components/RCView";
@@ -37,7 +38,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
 import ProfileView from "../components/ProfileView";
 import LoginPage from "./login/page";
-import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck, Inbox } from "lucide-react";
+import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
 import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
@@ -690,7 +691,6 @@ if (authLoading) {
 }
 const navItems = [
   { id: "home", label: "Home", icon: Home },
-  { id: "inbox", label: "Inbox", icon: Inbox, unreadCount: inboxUnreadCount },
   { id: "workout", label: "Daily Workout", icon: Flame },
   { id: "rc", label: "RC", icon: Brain },
    { id: "precision", label: "Precision Training", icon: Target },
@@ -746,7 +746,7 @@ return (
  {navItems.map((item) => {
   const Icon = item.icon;
 
-  const freeViews = ["home", "inbox", "workout", "hangman", "profile", "cat"]
+  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
 
 const locked =
   !freeViews.includes(item.id) &&
@@ -764,11 +764,6 @@ const locked =
 
 if (item.id === "premium") {
   router.push("/pricing")
-  return
-}
-
-if (item.id === "inbox") {
-  router.push("/inbox")
   return
 }
 
@@ -827,13 +822,14 @@ ${
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className="w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
-       <div className="mb-5 flex items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 rounded-lg object-contain" /><div><p className="text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div></div>
+       <div className="mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && view !== "home" && <div className="ml-auto"><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
        {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
    {/* Desktop Navbar */}
 <div className="desktop-navbar">
  {/* <Navbar view={view} setView={setView} /> */}
+ {user && view !== "home" && <div className="mb-5 hidden justify-end md:flex"><InboxHeaderLink count={inboxUnreadCount} /></div>}
 </div>
 
   {view === "home" && (
@@ -842,6 +838,7 @@ ${
   startAdaptiveRC={startAdaptiveRC}
   userName={userName}
   user={user}
+  inboxUnreadCount={inboxUnreadCount}
   exam={exam}
   capabilities={capabilities}
  
@@ -946,7 +943,6 @@ ${
   view={view}
   setView={setView}
   hasPremiumAccess={hasPremiumAccess}
-  inboxUnreadCount={inboxUnreadCount}
   exam={exam}
   chatOpen={chatOpen}
 />

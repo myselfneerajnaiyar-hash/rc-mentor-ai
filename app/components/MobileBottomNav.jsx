@@ -6,10 +6,7 @@ import {
   BookOpen,
   GraduationCap,
   User,
-  Inbox,
 } from "lucide-react";
-
-import { useRouter } from "next/navigation";
 
 export default function MobileBottomNav({
   view,
@@ -18,23 +15,15 @@ export default function MobileBottomNav({
   exam,
   capabilities,
   chatOpen,
-  inboxUnreadCount = 0,
 }) {
 
   if (chatOpen) return null;
-
-  const router = useRouter();
 
   const tabs = [
   {
     key: "home",
     label: "Home",
     icon: Home,
-  },
-  {
-    key: "inbox",
-    label: "Inbox",
-    icon: Inbox,
   },
 
   
@@ -70,7 +59,7 @@ export default function MobileBottomNav({
 >
 
       {tabs.map((tab) => {
-        const freeViews = ["home", "inbox", "workout", "hangman", "cat", "profile",];
+        const freeViews = ["home", "workout", "hangman", "cat", "profile",];
 
 const locked =
   !freeViews.includes(tab.key) &&
@@ -98,11 +87,6 @@ const locked =
     return
   }
 
-  if (tab.key === "inbox") {
-    router.push("/inbox")
-    return
-  }
-
   if (tab.key === "practice") {
     setView("rc")
   } else {
@@ -114,12 +98,6 @@ const locked =
             <div className="relative">
 
               <Icon size={22} />
-
-              {tab.key === "inbox" && inboxUnreadCount > 0 && (
-                <span className="absolute -right-2 -top-2 min-w-4 rounded-full bg-indigo-500 px-1 py-px text-center text-[9px] font-bold text-white">
-                  {inboxUnreadCount > 99 ? "99+" : inboxUnreadCount}
-                </span>
-              )}
 
              
 

@@ -3,6 +3,7 @@
 import { Brain, Flame, Gauge, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BirbalCoachCard from "@/components/BirbalCoachCard";
+import InboxHeaderLink from "./InboxHeaderLink";
 
 const statCards = [
   {
@@ -33,6 +34,7 @@ const statCards = [
 
 export default function Header({
   user,
+  inboxUnreadCount = 0,
   userName,
   greeting,
   examDisplayName,
@@ -62,6 +64,7 @@ export default function Header({
       👋
     </h1>
 
+   <div className="flex shrink-0 items-center gap-2">
    <Button
   onClick={startTour}
   className="
@@ -80,6 +83,8 @@ export default function Header({
 >
   ✨ Product Tour
 </Button>
+   {user && <InboxHeaderLink count={inboxUnreadCount} />}
+   </div>
   </div>
 
   <p className="text-slate-400 text-base md:text-lg max-w-xl">
