@@ -191,7 +191,7 @@ test("engagement does not fabricate completed sessions, accuracy or timing", () 
 })
 test("progress needs two adequate samples and at least five percentage points", () => {
   const events = [event({ questions: 20, correct: 18 }), event({ day: "2026-09-02", questions: 20, correct: 14, sessionId: "old" })]
-  const result = rule({ events }); assert.equal(result.type, "PROGRESS"); assert.equal(result.metadata.previousAccuracy, 70); assert.equal(result.metadata.accuracyPercent, 90)
+  const result = rule({ events, exam: "CAT" }); assert.equal(result.type, "PROGRESS"); assert.equal(result.metadata.previousAccuracy, 70); assert.equal(result.metadata.accuracyPercent, 90)
   assert.equal(rule({ events: [events[0]] }).type, "PERFORMANCE_UPDATE")
   assert.equal(rule({ events, history: [{ type: "PROGRESS", created_at: "2026-09-10T00:00:00Z" }] }).type, "PERFORMANCE_UPDATE")
 })
@@ -210,7 +210,7 @@ test("inactivity requires seven days and does not repeat for fourteen days", () 
 test("streak requires actual consecutive completed learning days", () => {
   const events = Array.from({ length: 7 }, (_, n) => event({ day: shiftDay("2026-09-13", -n - 1), sessionId: String(n) }))
   assert.equal(rule({ events }).type, "STREAK"); assert.equal(rule({ events }).metadata.streakDays, 7)
-  assert.notEqual(rule({ events: events.slice(0, 6) }).type, "STREAK")
+  assert.notEqual(rule({ events: events.slice(0, 6) })?.type, "STREAK")
   assert.equal(rule({ events: events.map((row) => ({ ...row, engagement: true, questions: 0 })) }), null)
 })
 test("achievement is a real daily threshold, not a fictional lifetime total", () => {
@@ -451,10 +451,10 @@ for (const days of [7, 14, 28, 29, 30, 56, 57, 90]) test(`streak milestone at ${
   const events = Array.from({ length: days }, (_, n) => event({ day: shiftDay(date, -n - 1), sessionId: String(n) }))
   for (const window of [events, events.filter(row => row.day >= shiftDay(date, -29))]) {
     const result = rule({ events: window })
-    assert.equal(result.type === "STREAK", [7, 14, 28].includes(days))
+    assert.equal(result?.type === "STREAK", [7, 14, 28].includes(days))
     if ([7, 14, 28].includes(days)) {
       assert.equal(result.ruleKey, `streak:${shiftDay(date, -days)}:${days}`)
-      assert.notEqual(rule({ events: window, history: [{ rule_key: result.ruleKey }] }).type, "STREAK")
+      assert.notEqual(rule({ events: window, history: [{ rule_key: result.ruleKey }] })?.type, "STREAK")
     }
   }
 })
