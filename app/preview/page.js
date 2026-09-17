@@ -34,7 +34,7 @@ export default function PreviewPage() {
   "https://wa.me/919953237212?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Auctor%20RC.";
 
 const startFreeTrial = () => {
-  router.push("/login");
+  router.push("/signup");
 };
   const [activeTab, setActiveTab] = useState("workout");
   const videos = [

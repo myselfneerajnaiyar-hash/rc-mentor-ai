@@ -47,7 +47,7 @@ export default function PreviewNavbar() {
 </div>
         {/* DESKTOP LINKS */}
 
-<div className="hidden md:flex items-center gap-10 text-sm font-medium text-slate-300">
+<div className="hidden md:flex items-center gap-10 ml-12 text-sm font-medium text-slate-300">
 
   <a href="/about" className="hover:text-orange-400 transition">
     About Us
