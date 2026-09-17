@@ -84,7 +84,7 @@ export default function FaqSection() {
   return (
     <section
       aria-labelledby="auctor-rc-faq-heading"
-      className="relative isolate z-10 px-6 py-24 md:py-32"
+      className="relative isolate z-10 px-5 py-14 sm:px-6 md:py-32"
     >
       <script
         type="application/ld+json"
@@ -92,13 +92,13 @@ export default function FaqSection() {
       />
 
       <div className="mx-auto max-w-5xl">
-        <div className="mx-auto mb-14 max-w-3xl text-center">
+        <div className="mx-auto mb-9 max-w-3xl text-center sm:mb-14">
           <div className="inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-200">
             Frequently Asked Questions
           </div>
           <h2
             id="auctor-rc-faq-heading"
-            className="mt-6 text-4xl font-bold leading-tight text-white md:text-5xl"
+            className="mt-6 text-3xl font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl"
           >
             Everything you need to know about Auctor RC.
           </h2>
@@ -109,9 +109,9 @@ export default function FaqSection() {
             <AccordionItem
               key={question}
               value={`faq-${index + 1}`}
-              className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B1120]/90 px-5 shadow-lg shadow-black/10 transition data-[state=open]:border-cyan-400/25 data-[state=open]:bg-[#0F172A] sm:px-7"
+              className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0B1120]/90 px-4 shadow-lg shadow-black/10 transition data-[state=open]:border-cyan-400/25 data-[state=open]:bg-[#0F172A] sm:px-7"
             >
-              <AccordionTrigger className="gap-5 py-6 text-base font-semibold text-white hover:text-cyan-200 hover:no-underline sm:text-lg">
+              <AccordionTrigger className="min-h-14 gap-3 py-4 text-left text-[15px] font-semibold leading-6 text-white hover:text-cyan-200 hover:no-underline sm:gap-5 sm:py-6 sm:text-lg">
                 <span className="flex items-start gap-4">
                   <span className="hidden pt-0.5 text-xs font-bold tracking-wider text-white/25 sm:inline">
                     {String(index + 1).padStart(2, "0")}
@@ -119,7 +119,7 @@ export default function FaqSection() {
                   <span>{question}</span>
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="border-t border-white/[0.08] pb-6 pt-5 text-base leading-8 text-white/55 sm:pl-10">
+              <AccordionContent className="border-t border-white/[0.08] pb-5 pt-4 text-[15px] leading-7 text-white/55 sm:pb-6 sm:pl-10 sm:pt-5 sm:text-base sm:leading-8">
                 {answer}
               </AccordionContent>
             </AccordionItem>

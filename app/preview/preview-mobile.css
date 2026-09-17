@@ -1,0 +1,222 @@
+@media (max-width: 767px) {
+  .preview-reading,
+  .preview-educators,
+  .preview-testimonials,
+  .preview-how {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+
+  .preview-reading h2,
+  .preview-educators h2,
+  .preview-testimonials h2,
+  .preview-product > div > div:first-child h2 {
+    font-size: 2rem !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .preview-reading > div > div:nth-child(2) {
+    margin-top: 44px !important;
+    border-radius: 24px !important;
+  }
+
+  .preview-reading > div > div:nth-child(3) {
+    margin-top: 44px !important;
+    padding-top: 36px !important;
+  }
+
+  .preview-reading > div > div:nth-child(3) h3 {
+    font-size: 2rem !important;
+  }
+
+  .preview-educators > div {
+    margin-top: 0 !important;
+  }
+
+  .preview-educators img {
+    height: min(390px, 105vw) !important;
+  }
+
+  .preview-testimonials > div > div:nth-child(2) {
+    margin-top: 36px !important;
+  }
+
+  .preview-testimonials article {
+    min-height: 0 !important;
+  }
+
+  .preview-testimonials {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .testimonial-carousel-viewport {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .testimonial-carousel-track {
+    gap: 16px;
+    margin-left: 0 !important;
+  }
+
+  .testimonial-carousel-slide {
+    min-width: 0;
+    flex: 0 0 clamp(240px, calc(100vw - 95px), 280px) !important;
+    padding-left: 0 !important;
+  }
+
+  .testimonial-carousel-slide article,
+  .testimonial-carousel-slide h3,
+  .testimonial-carousel-slide p,
+  .testimonial-carousel-slide blockquote {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .preview-how h2,
+  .preview-pricing h2,
+  .preview-final-cta h2 {
+    font-size: 2.25rem !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.045em !important;
+  }
+
+  .preview-how > div:first-child > div:first-child {
+    margin-bottom: 40px !important;
+  }
+
+  .preview-pricing {
+    padding: 64px 20px !important;
+  }
+
+  .preview-community {
+    padding: 56px 20px !important;
+  }
+
+  .preview-community > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .preview-community h2 {
+    font-size: 2rem !important;
+    line-height: 1.08 !important;
+  }
+
+  .preview-community-cards {
+    display: flex !important;
+    gap: 14px !important;
+    margin-top: 36px !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+
+  .preview-community-cards::-webkit-scrollbar,
+  .preview-product-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .preview-community-cards > div {
+    flex: 0 0 calc(100% - 64px);
+    padding: 24px !important;
+    scroll-snap-align: start;
+  }
+
+  .preview-community-cards h3 {
+    font-size: 1.5rem !important;
+  }
+
+  .preview-product {
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .preview-product > div > div:first-child {
+    margin-bottom: 36px !important;
+  }
+
+  .preview-product-tabs {
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 0 24px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .preview-product-tabs button {
+    flex: 0 0 auto;
+    padding: 10px 16px !important;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .preview-product-panel {
+    gap: 32px !important;
+  }
+
+  .preview-product-panel h2 {
+    margin-bottom: 20px !important;
+    font-size: 2rem !important;
+  }
+
+  .preview-product-panel p {
+    line-height: 1.65 !important;
+  }
+
+  .preview-product-panel img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .preview-final-cta {
+    padding: 56px 20px !important;
+  }
+
+  .preview-final-cta > div > div {
+    border-radius: 24px !important;
+    padding: 52px 20px !important;
+  }
+
+  .preview-final-cta a,
+  .preview-final-cta button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero-grid {
+    min-height: 0 !important;
+    gap: 36px !important;
+    padding: 112px 20px 52px !important;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.35rem, 11vw, 3rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  .hero-copy > p {
+    margin-top: 20px !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .hero-copy > div:nth-of-type(2) {
+    margin-top: 28px !important;
+  }
+}
+
