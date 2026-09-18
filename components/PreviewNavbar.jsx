@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"
 
 export default function PreviewNavbar() {
 
   const router = useRouter();
+  const pathname = usePathname();
+  const hideLogin = pathname === "/preview-ad";
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -83,12 +85,14 @@ export default function PreviewNavbar() {
 
           {/* LOGIN */}
 
-          <button
-            onClick={() => router.push("/login")}
-            className="ml-auto rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-5 sm:py-2.5"
-          >
-            Login
-          </button>
+          {!hideLogin && (
+            <button
+              onClick={() => router.push("/login")}
+              className="ml-auto rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-5 sm:py-2.5"
+            >
+              Login
+            </button>
+          )}
 
         </div>
 
