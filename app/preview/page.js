@@ -170,7 +170,7 @@ useEffect(() => {
   return (
     <main className="relative min-h-screen text-white overflow-x-clip">
      <PreviewNavbar/>
-        
+
 
       {/* ================= BACKGROUND ================= */}
       {/* ================= BACKGROUND ================= */}
@@ -217,7 +217,7 @@ useEffect(() => {
 
 </div>
 
-     
+
 
       {/* ================= HERO ================= */}
       <motion.section
@@ -289,11 +289,37 @@ useEffect(() => {
 
 </div>
 
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/[0.07] pt-6 text-sm text-white/45">
-            <span className="flex items-center gap-2"><Brain size={16} className="text-cyan-300" aria-hidden="true" />Adaptive RC</span>
-            <span className="flex items-center gap-2"><Sparkles size={16} className="text-violet-300" aria-hidden="true" />Birbal AI Diagnosis</span>
-            <span className="flex items-center gap-2"><LineChart size={16} className="text-orange-300" aria-hidden="true" />Performance Analytics</span>
-          </div>
+        <div className="mt-10 flex items-center justify-between border-t border-white/[0.07] pt-6 text-sm text-white/45">
+  <span className="flex items-center gap-2">
+    <Brain
+      size={18}
+      strokeWidth={2.25}
+      style={{ color: "#67E8F9", display: "block", flexShrink: 0 }}
+      aria-hidden="true"
+    />
+    Adaptive RC
+  </span>
+
+  <span className="flex items-center gap-2">
+    <Sparkles
+      size={18}
+      strokeWidth={2.25}
+      style={{ color: "#C4B5FD", display: "block", flexShrink: 0 }}
+      aria-hidden="true"
+    />
+    Birbal AI Diagnosis
+  </span>
+
+  <span className="flex items-center gap-2">
+    <LineChart
+      size={18}
+      strokeWidth={2.25}
+      style={{ color: "#FDBA74", display: "block", flexShrink: 0 }}
+      aria-hidden="true"
+    />
+    Performance Analytics
+  </span>
+</div>
         </div>
 
         {/* RIGHT: STUDENT RC VISUAL */}
@@ -511,733 +537,12 @@ useEffect(() => {
 
 </div>
 
-
-   {/* BOTTOM STATEMENT */}
-<div className="mt-20 border-t border-white/[0.08] pt-14">
-
-  <h3 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-white md:text-6xl lg:text-[64px]">
-    The goal isn't to become better at{" "}
-    <span className="text-orange-400">
-      answering more questions.
-    </span>
-  </h3>
-
-  <p className="mt-7 max-w-3xl text-lg font-medium leading-relaxed text-white/65 md:text-xl">
-    It's to become better at the thinking that makes the
-    <span className="text-white"> right answer possible.</span>
-  </p>
-
-</div>
 </div>
 </motion.section>
 
 
 
 
-{/* ================= CREATED BY EDUCATORS ================= */}
-<motion.section
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.7, ease: "easeOut" }}
-  viewport={{ once: true, amount: 0.2 }}
-  className="preview-educators relative z-10 py-24 md:py-32"
->
-  <div className="mx-auto mt-20 max-w-7xl px-6">
-
-    <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-
-      {/* ================= LEFT ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â TEXT ================= */}
-      <div>
-
-        <div className="text-xs font-semibold uppercase tracking-[0.22em] text-orange-300">
-          Created by Educators
-        </div>
-
-        <h2 className="mt-5 max-w-xl text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-white md:text-5xl lg:text-6xl">
-          Built from the classroom.
-          <br />
-          <span className="text-white/35">
-            Not from a software brief.
-          </span>
-        </h2>
-
-        <p className="mt-7 max-w-xl text-lg leading-8 text-white/60">
-          Auctor RC was created by{" "}
-          <span className="font-semibold text-white">
-            Neraj Kumar Naiyar
-          </span>
-          , an educator and product builder with deep experience in
-          competitive-exam preparation.
-        </p>
-
-        <div className="mt-9 border-l-2 border-orange-400/60 pl-5">
-          <div className="text-lg font-semibold text-white">
-            Neraj Kumar Naiyar
-          </div>
-
-          <div className="mt-2 text-sm leading-7 text-white/45">
-            IIT Roorkee
-            <br />
-            Educator, Product Builder, Founder, Auctor Labs
-          </div>
-        </div>
-
-        <p className="mt-9 max-w-xl text-base leading-8 text-white/45">
-          After years of working with students and coaching institutes,
-          the idea was simple: RC practice should not stop at telling a
-          student whether an answer was right or wrong. It should help
-          them understand how they think and what they need to improve.
-        </p>
-
-        <div className="mt-9 flex items-center gap-3 text-sm font-medium text-cyan-300">
-          <div className="h-px w-10 bg-cyan-400/50" />
-          Training the thinking behind the score.
-        </div>
-
-      </div>
-
-
-      {/* ================= RIGHT ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â IMAGE ================= */}
-      <div className="flex w-full items-center justify-center lg:justify-end">
-
-        <motion.div
-          initial={{ opacity: 0, x: 30, scale: 0.97 }}
-          whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="w-full max-w-[520px]"
-        >
-
-          <div className="overflow-hidden rounded-[32px] border border-white/[0.12] bg-white/[0.04] p-2 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-
-            <Image
-              src="/founder.jpeg"
-              alt="Neraj Kumar Naiyar, founder of Auctor Labs"
-              width={900}
-              height={1100}
-              className="block h-[480px] w-full rounded-[26px] object-cover object-top"
-            />
-
-          </div>
-
-        </motion.div>
-
-      </div>
-
-    </div>
-
-  </div>
-</motion.section>
-
-{/* ================= WHY NORMAL RC FAILS ================= */}
-<motion.section
-  initial={{ opacity: 0, y: 36 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.75, ease: "easeOut" }}
-  viewport={{ once: true, amount: 0.15 }}
-  className="relative overflow-hidden py-24 text-white md:py-32"
-  style={{ backgroundColor: "#020817" }}
->
-  <div className="mx-auto max-w-7xl px-6">
-
-    {/* ================= HEADER ================= */}
-    <div className="max-w-4xl">
-
-      <div
-        className="text-xs font-black uppercase tracking-[0.24em]"
-        style={{ color: "#ff8a45" }}
-      >
-        Why Most RC Practice Fails
-      </div>
-
-      <h2 className="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.055em] md:text-6xl lg:text-7xl">
-        Most RC practice improves familiarity.
-        <br />
-        <span style={{ color: "#ff8a45" }}>
-          Not reading intelligence.
-        </span>
-      </h2>
-
-      <p className="mt-7 max-w-3xl text-lg leading-8 text-white/55 md:text-xl">
-        Solving hundreds of passages is useless if you never understand why
-        your reasoning breaks.
-      </p>
-
-    </div>
-
-
-    {/* ================= COMPARISON ================= */}
-    <div className="mt-16 grid gap-6 lg:grid-cols-2">
-
-
-      {/* =====================================================
-          LEFT â€” TRADITIONAL RC
-      ===================================================== */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true, amount: 0.2 }}
-        className="relative flex min-h-[620px] flex-col overflow-hidden rounded-[32px] p-8 sm:p-10 md:p-12"
-        style={{
-          backgroundColor: "#B44729",
-          boxShadow: "0 30px 80px rgba(180,71,41,0.22)",
-        }}
-      >
-
-        {/* TOP */}
-        <div className="flex items-start justify-between gap-6">
-
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-orange-100">
-              Traditional
-            </p>
-
-            <h3 className="mt-2 text-3xl font-black tracking-[-0.04em] sm:text-4xl">
-              RC Practice
-            </h3>
-          </div>
-
-          <span
-            className="rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em]"
-            style={{
-              backgroundColor: "#8E351F",
-              color: "#FFE7D8",
-            }}
-          >
-            The old way
-          </span>
-
-        </div>
-
-
-        {/* BIG NUMBER */}
-        <div className="mt-14 flex items-end gap-4">
-
-          <div
-            className="text-7xl font-black leading-none tracking-[-0.08em] sm:text-8xl md:text-9xl"
-            style={{ color: "#FFD0AE" }}
-          >
-            100s
-          </div>
-
-          <div className="pb-2 text-sm font-black uppercase leading-4 tracking-[0.08em] text-orange-50">
-            passages
-            <br />
-            solved
-          </div>
-
-        </div>
-
-
-        {/* DIVIDER */}
-        <div className="my-10 h-px bg-orange-100/30" />
-
-
-        {/* WHAT USUALLY HAPPENS */}
-        <div>
-
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-orange-100">
-            What usually happens
-          </p>
-
-          <div className="mt-5 flex flex-wrap gap-3">
-
-            {[
-              "Random passages",
-              "No reasoning diagnosis",
-              "Same difficulty for everyone",
-              "Wrong answer â†’ move on",
-              "Mock score, but no explanation",
-            ].map((item) => (
-              <span
-                key={item}
-                className="rounded-full px-5 py-3 text-sm font-bold"
-                style={{
-                  backgroundColor: "#8E351F",
-                  color: "#FFF1E8",
-                }}
-              >
-                {item}
-              </span>
-            ))}
-
-          </div>
-
-        </div>
-
-
-        {/* BOTTOM */}
-        <div className="mt-auto pt-12">
-
-          <div className="h-px bg-orange-100/30" />
-
-          <div className="pt-8">
-
-            <p className="text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl">
-              More practice.
-            </p>
-
-            <p
-              className="mt-1 text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl md:text-6xl"
-              style={{ color: "#FFD0AE" }}
-            >
-              Same mistakes.
-            </p>
-
-          </div>
-
-        </div>
-
-      </motion.div>
-
-
-
-      {/* =====================================================
-          RIGHT â€” AUCTOR
-      ===================================================== */}
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7, delay: 0.08 }}
-        viewport={{ once: true, amount: 0.2 }}
-        className="relative flex min-h-[620px] flex-col overflow-hidden rounded-[32px] p-8 sm:p-10 md:p-12"
-        style={{
-          backgroundColor: "#185EAE",
-          boxShadow: "0 30px 80px rgba(24,94,174,0.24)",
-        }}
-      >
-
-        {/* TOP */}
-        <div className="flex items-start justify-between gap-6">
-
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">
-              Auctor
-            </p>
-
-            <h3 className="mt-2 text-3xl font-black tracking-[-0.04em] sm:text-4xl">
-              Reading Intelligence
-            </h3>
-          </div>
-
-          <span
-            className="rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em]"
-            style={{
-              backgroundColor: "#104783",
-              color: "#DDFBFF",
-            }}
-          >
-            The new way
-          </span>
-
-        </div>
-
-
-        {/* IMPROVEMENT LOOP */}
-        <div className="mt-12">
-
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-100">
-            Your improvement loop
-          </p>
-
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-
-
-            {/* PRACTICE */}
-            <div
-              className="rounded-[22px] p-6"
-              style={{ backgroundColor: "#104783" }}
-            >
-              <div className="flex items-center justify-between">
-
-                <span
-                  className="text-xs font-black"
-                  style={{ color: "#FF9B55" }}
-                >
-                  01
-                </span>
-
-                <span
-                  className="text-2xl"
-                  style={{ color: "#8DEBFF" }}
-                >
-                  â†’
-                </span>
-
-              </div>
-
-              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
-                Practice
-              </h4>
-
-              <p className="mt-2 text-sm text-blue-100">
-                Adaptive practice
-              </p>
-
-            </div>
-
-
-            {/* DIAGNOSE */}
-            <div
-              className="rounded-[22px] p-6"
-              style={{ backgroundColor: "#104783" }}
-            >
-              <div className="flex items-center justify-between">
-
-                <span
-                  className="text-xs font-black"
-                  style={{ color: "#FF9B55" }}
-                >
-                  02
-                </span>
-
-                <span
-                  className="text-2xl"
-                  style={{ color: "#8DEBFF" }}
-                >
-                  â†’
-                </span>
-
-              </div>
-
-              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
-                Diagnose
-              </h4>
-
-              <p className="mt-2 text-sm text-blue-100">
-                Reasoning analysis
-              </p>
-
-            </div>
-
-
-            {/* UNDERSTAND */}
-            <div
-              className="rounded-[22px] p-6"
-              style={{ backgroundColor: "#104783" }}
-            >
-              <div className="flex items-center justify-between">
-
-                <span
-                  className="text-xs font-black"
-                  style={{ color: "#FF9B55" }}
-                >
-                  03
-                </span>
-
-                <span
-                  className="text-2xl"
-                  style={{ color: "#8DEBFF" }}
-                >
-                  â†’
-                </span>
-
-              </div>
-
-              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
-                Understand
-              </h4>
-
-              <p className="mt-2 text-sm text-blue-100">
-                See why you got it wrong
-              </p>
-
-            </div>
-
-
-            {/* IMPROVE */}
-            <div
-              className="rounded-[22px] border p-6"
-              style={{
-                backgroundColor: "#0B3978",
-                borderColor: "rgba(141,235,255,0.55)",
-              }}
-            >
-              <div className="flex items-center justify-between">
-
-                <span
-                  className="text-xs font-black"
-                  style={{ color: "#FF9B55" }}
-                >
-                  04
-                </span>
-
-                <span
-                  className="text-2xl"
-                  style={{ color: "#8DEBFF" }}
-                >
-                  âœ“
-                </span>
-
-              </div>
-
-              <h4
-                className="mt-8 text-3xl font-black tracking-[-0.04em]"
-                style={{ color: "#8DEBFF" }}
-              >
-                Improve
-              </h4>
-
-              <p className="mt-2 text-sm text-cyan-50">
-                Train the exact gap
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        {/* WHAT CHANGES */}
-        <div className="mt-8 border-t border-cyan-100/20 pt-7">
-
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-100">
-            What changes
-          </p>
-
-          <div className="mt-5 flex flex-wrap gap-3">
-
-            {[
-              "Reasoning diagnosis",
-              "Trap & elimination analysis",
-              "Reading intelligence profile",
-              "Targeted improvement",
-            ].map((item) => (
-              <span
-                key={item}
-                className="rounded-full px-4 py-2.5 text-sm font-bold"
-                style={{
-                  backgroundColor: "#104783",
-                  color: "#E6FBFF",
-                }}
-              >
-                {item}
-              </span>
-            ))}
-
-          </div>
-
-        </div>
-
-
-        {/* BOTTOM */}
-        <div className="mt-auto pt-10">
-
-          <div className="h-px bg-cyan-100/20" />
-
-          <div className="pt-8">
-
-            <p className="text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl">
-              Don&apos;t just know
-            </p>
-
-            <p
-              className="mt-1 text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl md:text-6xl"
-              style={{ color: "#8DEBFF" }}
-            >
-              what you got wrong.
-            </p>
-
-          </div>
-
-        </div>
-
-      </motion.div>
-
-    </div>
-
-
-    {/* ================= CLOSING STATEMENT ================= */}
-    <div className="mt-20 border-t border-white/10 pt-12 md:mt-24 md:pt-16">
-
-      <p className="max-w-6xl text-4xl font-black leading-[0.98] tracking-[-0.055em] sm:text-5xl md:text-6xl lg:text-7xl">
-        The goal isn&apos;t to become better at{" "}
-        <span style={{ color: "#FF8A45" }}>
-          answering more questions.
-        </span>
-      </p>
-
-      <p className="mt-6 max-w-4xl text-lg font-medium leading-8 text-white/55 sm:text-xl md:text-2xl">
-        It&apos;s to become better at the thinking that makes the right answer
-        possible.
-      </p>
-
-    </div>
-
-  </div>
-</motion.section>
-
-
-      {/* ================= TESTIMONIALS ================= */}
-<section className="preview-testimonials relative isolate z-10 py-24 md:py-32">
-  <div className="mx-auto max-w-7xl px-6">
-    <motion.div
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      viewport={{ once: true, amount: 0.2 }}
-      className="max-w-4xl"
-    >
-      <div className="mt-10 text-xs font-bold uppercase tracking-[0.22em] text-orange-300">Student Reviews</div>
-      <h2 className="mt-5 text-4xl font-black leading-[1.04] tracking-[-0.045em] text-white md:text-6xl">
-        Trusted by Students.<br />Built for Institutes.
-      </h2>
-      <p className="mt-6 max-w-2xl text-lg leading-8 text-white/55">
-        Real students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.
-      </p>
-    </motion.div>
-
-    <div className="testimonial-carousel-viewport mt-14 overflow-hidden" ref={videoRef}>
-      <div className="testimonial-carousel-track -ml-6 flex">
-        {videos.map((video) => (
-          <div key={video.name} className="testimonial-carousel-slide min-w-0 flex-[0_0_100%] pl-6 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
-            <article className="h-full overflow-hidden rounded-3xl border border-white/10 bg-[#101828] shadow-xl">
-              <div
-                className="relative aspect-video cursor-pointer overflow-hidden bg-black"
-                onClick={() => setSelectedVideo(video.video)}
-              >
-                <img src={video.thumbnail} alt={`${video.name} video testimonial`} className="h-full w-full object-cover" />
-                <div className="pointer-events-none absolute inset-0 z-10 bg-black/20" />
-                <button
-                  type="button"
-                  aria-label={`Play ${video.name}'s testimonial`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    setSelectedVideo(video.video);
-                  }}
-                  className="absolute inset-0 z-20 flex cursor-pointer items-center justify-center"
-                >
-                  <span className="grid h-16 w-16 place-items-center rounded-full border border-white/30 bg-orange-500 shadow-lg transition hover:scale-110 hover:bg-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:h-20 sm:w-20">
-                    <Play className="ml-1 text-white" size={32} fill="white" aria-hidden="true" />
-                  </span>
-                </button>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold leading-7 text-white">{video.title}</h3>
-                <p className="mt-3 text-sm font-semibold text-orange-300">{video.name}</p>
-              </div>
-            </article>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <div className="mt-7 flex justify-center gap-2" aria-label="Video testimonial slides">
-      {videos.map((video, index) => (
-        <button key={video.name} type="button" onClick={() => videoApi?.scrollTo(index)} aria-label={`Go to video testimonial ${index + 1}`} className={`h-2.5 rounded-full transition-all ${videoIndex === index ? "w-8 bg-orange-500" : "w-2.5 bg-white/20 hover:bg-white/35"}`} />
-      ))}
-    </div>
-
-    <div className="mt-20 flex items-end justify-between gap-6 border-t border-white/10 pt-12">
-      <div>
-        <div className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Written experiences</div>
-        <h3 className="mt-3 text-3xl font-black tracking-[-0.03em] text-white md:text-4xl">What Students Say</h3>
-      </div>
-    </div>
-
-    <div className="testimonial-carousel-viewport mt-9 overflow-hidden" ref={reviewRef}>
-      <div className="testimonial-carousel-track flex -ml-5">
-        {reviews.map((review) => (
-          <div key={review.name} className="testimonial-carousel-slide min-w-0 flex-[0_0_100%] pl-5 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
-            <article className="flex h-full min-h-[330px] flex-col rounded-[24px] border border-white/10 bg-[#0B1428] p-7 shadow-xl">
-              <div className="flex gap-1 text-amber-400" aria-label="5 out of 5 stars">
-                {[...Array(5)].map((_, index) => <Star key={index} size={18} fill="currentColor" aria-hidden="true" />)}
-              </div>
-              <blockquote className="mt-7 flex-1 text-base leading-8 text-white/70">“{review.text}”</blockquote>
-              <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
-                <img src={review.photo} alt={review.name} className="h-14 w-14 rounded-full object-cover object-top" />
-                <p className="font-bold text-white">{review.name}</p>
-              </div>
-            </article>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <div className="mt-7 flex justify-center gap-2" aria-label="Written testimonial slides">
-      {reviews.map((review, index) => (
-        <button key={review.name} type="button" onClick={() => reviewApi?.scrollTo(index)} aria-label={`Go to written testimonial ${index + 1}`} className={`h-2.5 rounded-full transition-all ${reviewIndex === index ? "w-8 bg-orange-500" : "w-2.5 bg-white/20 hover:bg-white/35"}`} />
-      ))}
-    </div>
-  </div>
-</section>
-
-{mounted && selectedVideo &&
-  createPortal(
-    <div
-      onClick={() => setSelectedVideo(null)}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 2147483647,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        background: "rgba(0, 0, 0, 0.82)",
-        backdropFilter: "blur(8px)",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          position: "relative",
-          width: "min(720px, 88vw)",
-          maxHeight: "78vh",
-        }}
-      >
-        {/* CLOSE BUTTON */}
-        <button
-          type="button"
-          onClick={() => setSelectedVideo(null)}
-          aria-label="Close video"
-          style={{
-            position: "absolute",
-            top: "12px",
-            right: "12px",
-            zIndex: 10,
-            width: "42px",
-            height: "42px",
-            borderRadius: "9999px",
-            border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(0,0,0,0.65)",
-            color: "white",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-          }}
-        >
-          <X size={22} />
-        </button>
-
-        {/* VIDEO */}
-        <video
-          key={selectedVideo}
-          src={selectedVideo}
-          controls
-          autoPlay
-          playsInline
-          preload="metadata"
-          style={{
-            display: "block",
-            width: "100%",
-            maxHeight: "78vh",
-            borderRadius: "20px",
-            objectFit: "contain",
-            background: "#000",
-            boxShadow: "0 30px 100px rgba(0,0,0,0.65)",
-          }}
-        />
-      </div>
-    </div>,
-    document.body
-  )
-}
 {/* ================= HOW IT WORKS ================= */}
 <motion.section
   initial={{ opacity: 0, y: 60 }}
@@ -1247,7 +552,7 @@ useEffect(() => {
     ease: "easeOut",
   }}
   viewport={{ once: true, amount: 0.15 }}
-  className="preview-how relative z-10 py-24 md:py-32"
+  className="preview-how relative z-10 py-24 mt-10 md:py-32"
 >
   <div
     style={{
@@ -1835,6 +1140,702 @@ useEffect(() => {
   </div>
 </div>
 </motion.section>
+
+{/* ================= CREATED BY EDUCATORS ================= */}
+<motion.section
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  viewport={{ once: true, amount: 0.2 }}
+  className="preview-educators relative z-10 py-20 md:py-24"
+>
+  <div className="mx-auto max-w-7xl px-6">
+
+    <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+
+      {/* ================= LEFT ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â TEXT ================= */}
+      <div>
+
+        <div className="text-xs font-semibold uppercase tracking-[0.22em] text-orange-300">
+          Created by Educators
+        </div>
+
+        <h2 className="mt-5 max-w-xl text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-white md:text-5xl lg:text-6xl">
+          Built from the classroom.
+        </h2>
+
+        <p className="mt-7 max-w-xl text-lg leading-8 text-white/60">
+          Auctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.
+        </p>
+
+        <div className="mt-9 border-l-2 border-orange-400/60 pl-5">
+          <div className="text-lg font-semibold text-white">
+            Neraj Kumar Naiyar
+          </div>
+
+          <div className="mt-2 text-sm leading-7 text-white/45">
+            IIT Roorkee
+            <br />
+            Educator, Product Builder, Founder, Auctor Labs
+          </div>
+        </div>
+
+      </div>
+
+
+
+      {/* ================= RIGHT — IMAGE ================= */}
+<div className="flex w-full items-center justify-center lg:justify-end">
+
+  <motion.div
+    initial={{ opacity: 0, x: 30, scale: 0.97 }}
+    whileInView={{ opacity: 1, x: 0, scale: 1 }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+    viewport={{ once: true }}
+    className="w-full max-w-[400px]"
+  >
+
+    <div className="overflow-hidden rounded-[28px] border border-white/[0.12] bg-white/[0.04] p-2 shadow-[0_24px_60px_rgba(0,0,0,0.32)]">
+
+      <Image
+        src="/founder.jpeg"
+        alt="Neraj Kumar Naiyar, founder of Auctor Labs"
+        width={900}
+        height={1100}
+        className="block h-[420px] w-full rounded-[22px] object-cover object-top"
+      />
+
+    </div>
+
+  </motion.div>
+
+</div>
+
+    </div>
+
+  </div>
+</motion.section>
+
+      {/* ================= TESTIMONIALS ================= */}
+<section className="preview-testimonials relative isolate z-10 py-24 md:py-32">
+  <div className="mx-auto max-w-7xl px-6">
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+      className="max-w-4xl"
+    >
+      <div className="mt-10 text-xs font-bold uppercase tracking-[0.22em] text-orange-300">Student Reviews</div>
+      <h2 className="mt-5 text-4xl font-black leading-[1.04] tracking-[-0.045em] text-white md:text-6xl">
+        Trusted by Students.<br />Built for Institutes.
+      </h2>
+      <p className="mt-6 max-w-2xl text-lg leading-8 text-white/55">
+        Real students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.
+      </p>
+    </motion.div>
+
+    <div className="testimonial-carousel-viewport mt-14 overflow-hidden" ref={videoRef}>
+      <div className="testimonial-carousel-track -ml-6 flex">
+        {videos.map((video) => (
+          <div key={video.name} className="testimonial-carousel-slide min-w-0 flex-[0_0_100%] pl-6 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
+            <article className="h-full overflow-hidden rounded-3xl border border-white/10 bg-[#101828] shadow-xl">
+              <div
+                className="relative aspect-video cursor-pointer overflow-hidden bg-black"
+                onClick={() => setSelectedVideo(video.video)}
+              >
+                <img src={video.thumbnail} alt={`${video.name} video testimonial`} className="h-full w-full object-cover" />
+                <div className="pointer-events-none absolute inset-0 z-10 bg-black/20" />
+               <button
+  type="button"
+  aria-label={`Play ${video.name}'s testimonial`}
+  onClick={(event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedVideo(video.video);
+  }}
+  className="absolute inset-0 z-20 flex cursor-pointer items-center justify-center"
+>
+  <div
+    className="shrink-0 rounded-full border border-white/30 bg-orange-500 shadow-lg transition hover:scale-110 hover:bg-orange-400"
+    style={{
+      width: "80px",
+      height: "80px",
+      minWidth: "80px",
+      minHeight: "80px",
+      maxWidth: "80px",
+      maxHeight: "80px",
+      borderRadius: "50%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      style={{ display: "block", marginLeft: "3px" }}
+    >
+      <path
+        d="M8 5L19 12L8 19V5Z"
+        fill="white"
+      />
+    </svg>
+  </div>
+</button>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold leading-7 text-white">{video.title}</h3>
+                <p className="mt-3 text-sm font-semibold text-orange-300">{video.name}</p>
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="mt-7 flex justify-center gap-2" aria-label="Video testimonial slides">
+      {videos.map((video, index) => (
+        <button key={video.name} type="button" onClick={() => videoApi?.scrollTo(index)} aria-label={`Go to video testimonial ${index + 1}`} className={`h-2.5 rounded-full transition-all ${videoIndex === index ? "w-8 bg-orange-500" : "w-2.5 bg-white/20 hover:bg-white/35"}`} />
+      ))}
+    </div>
+
+    <div className="mt-20 flex items-end justify-between gap-6 border-t border-white/10 pt-12">
+      <div>
+        <div className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Written experiences</div>
+        <h3 className="mt-3 text-3xl font-black tracking-[-0.03em] text-white md:text-4xl">What Students Say</h3>
+      </div>
+    </div>
+
+    <div className="testimonial-carousel-viewport mt-9 overflow-hidden" ref={reviewRef}>
+      <div className="testimonial-carousel-track flex -ml-5">
+        {reviews.map((review) => (
+          <div key={review.name} className="testimonial-carousel-slide min-w-0 flex-[0_0_100%] pl-5 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
+            <article className="flex h-full min-h-[330px] flex-col rounded-[24px] border border-white/10 bg-[#0B1428] p-7 shadow-xl">
+              <div className="flex gap-1 text-amber-400" aria-label="5 out of 5 stars">
+                {[...Array(5)].map((_, index) => <Star key={index} size={18} fill="currentColor" aria-hidden="true" />)}
+              </div>
+              <blockquote className="mt-7 flex-1 text-base leading-8 text-white/70">“{review.text}”</blockquote>
+              <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
+                <img src={review.photo} alt={review.name} className="h-14 w-14 rounded-full object-cover object-top" />
+                <p className="font-bold text-white">{review.name}</p>
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="mt-7 flex justify-center gap-2" aria-label="Written testimonial slides">
+      {reviews.map((review, index) => (
+        <button key={review.name} type="button" onClick={() => reviewApi?.scrollTo(index)} aria-label={`Go to written testimonial ${index + 1}`} className={`h-2.5 rounded-full transition-all ${reviewIndex === index ? "w-8 bg-orange-500" : "w-2.5 bg-white/20 hover:bg-white/35"}`} />
+      ))}
+    </div>
+  </div>
+</section>
+
+{mounted && selectedVideo &&
+  createPortal(
+    <div
+      onClick={() => setSelectedVideo(null)}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 2147483647,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
+        background: "rgba(0, 0, 0, 0.82)",
+        backdropFilter: "blur(8px)",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          position: "relative",
+          width: "min(720px, 88vw)",
+          maxHeight: "78vh",
+        }}
+      >
+        {/* CLOSE BUTTON */}
+        <button
+          type="button"
+          onClick={() => setSelectedVideo(null)}
+          aria-label="Close video"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            zIndex: 10,
+            width: "42px",
+            height: "42px",
+            borderRadius: "9999px",
+            border: "1px solid rgba(255,255,255,0.25)",
+            background: "rgba(0,0,0,0.65)",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
+        >
+          <X size={22} />
+        </button>
+
+        {/* VIDEO */}
+        <video
+          key={selectedVideo}
+          src={selectedVideo}
+          controls
+          autoPlay
+          playsInline
+          preload="metadata"
+          style={{
+            display: "block",
+            width: "100%",
+            maxHeight: "78vh",
+            borderRadius: "20px",
+            objectFit: "contain",
+            background: "#000",
+            boxShadow: "0 30px 100px rgba(0,0,0,0.65)",
+          }}
+        />
+      </div>
+    </div>,
+    document.body
+  )
+}
+{/* ================= WHY NORMAL RC FAILS ================= */}
+<motion.section
+  initial={{ opacity: 0, y: 36 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.75, ease: "easeOut" }}
+  viewport={{ once: true, amount: 0.15 }}
+  className="relative overflow-hidden py-24 text-white md:py-32"
+  style={{ backgroundColor: "#020817" }}
+>
+  <div className="mx-auto max-w-7xl px-6">
+
+    {/* ================= HEADER ================= */}
+    <div className="max-w-4xl">
+
+      <div
+        className="text-xs font-black uppercase tracking-[0.24em]"
+        style={{ color: "#ff8a45" }}
+      >
+        Why Most RC Practice Fails
+      </div>
+
+      <h2 className="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.055em] md:text-6xl lg:text-7xl">
+        Most RC practice improves familiarity.
+        <br />
+        <span style={{ color: "#ff8a45" }}>
+          Not reading intelligence.
+        </span>
+      </h2>
+
+      <p className="mt-7 max-w-3xl text-lg leading-8 text-white/55 md:text-xl">
+        Solving hundreds of passages is useless if you never understand why
+        your reasoning breaks.
+      </p>
+
+    </div>
+
+
+    {/* ================= COMPARISON ================= */}
+    <div className="mt-16 grid gap-6 lg:grid-cols-2">
+
+
+      {/* =====================================================
+          LEFTTRADITIONAL RC
+      ===================================================== */}
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7 }}
+        viewport={{ once: true, amount: 0.2 }}
+        className="relative flex min-h-[620px] flex-col overflow-hidden rounded-[32px] p-8 sm:p-10 md:p-12"
+        style={{
+          backgroundColor: "#B44729",
+          boxShadow: "0 30px 80px rgba(180,71,41,0.22)",
+        }}
+      >
+
+        {/* TOP */}
+        <div className="flex items-start justify-between gap-6">
+
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-orange-100">
+              Traditional
+            </p>
+
+            <h3 className="mt-2 text-3xl font-black tracking-[-0.04em] sm:text-4xl">
+              RC Practice
+            </h3>
+          </div>
+
+          <span
+            className="rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em]"
+            style={{
+              backgroundColor: "#8E351F",
+              color: "#FFE7D8",
+            }}
+          >
+            The old way
+          </span>
+
+        </div>
+
+
+        {/* BIG NUMBER */}
+        <div className="mt-14 flex items-end gap-4">
+
+          <div
+            className="text-7xl font-black leading-none tracking-[-0.08em] sm:text-8xl md:text-9xl"
+            style={{ color: "#FFD0AE" }}
+          >
+            100s
+          </div>
+
+          <div className="pb-2 text-sm font-black uppercase leading-4 tracking-[0.08em] text-orange-50">
+            passages
+            <br />
+            solved
+          </div>
+
+        </div>
+
+
+        {/* DIVIDER */}
+        <div className="my-10 h-px bg-orange-100/30" />
+
+
+        {/* WHAT USUALLY HAPPENS */}
+        <div>
+
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-orange-100">
+            What usually happens
+          </p>
+
+          <div className="mt-5 flex flex-wrap gap-3">
+
+            {[
+              "Random passages",
+              "No reasoning diagnosis",
+              "Same difficulty for everyone",
+              "Wrong answer â†’ move on",
+              "Mock score, but no explanation",
+            ].map((item) => (
+              <span
+                key={item}
+                className="rounded-full px-5 py-3 text-sm font-bold"
+                style={{
+                  backgroundColor: "#8E351F",
+                  color: "#FFF1E8",
+                }}
+              >
+                {item}
+              </span>
+            ))}
+
+          </div>
+
+        </div>
+
+
+        {/* BOTTOM */}
+        <div className="mt-auto pt-12">
+
+          <div className="h-px bg-orange-100/30" />
+
+          <div className="pt-8">
+
+            <p className="text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl">
+              More practice.
+            </p>
+
+            <p
+              className="mt-1 text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl md:text-6xl"
+              style={{ color: "#FFD0AE" }}
+            >
+              Same mistakes.
+            </p>
+
+          </div>
+
+        </div>
+
+      </motion.div>
+
+
+
+      {/* =====================================================
+          RIGHT â€” AUCTOR
+      ===================================================== */}
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.08 }}
+        viewport={{ once: true, amount: 0.2 }}
+        className="relative flex min-h-[620px] flex-col overflow-hidden rounded-[32px] p-8 sm:p-10 md:p-12"
+        style={{
+          backgroundColor: "#185EAE",
+          boxShadow: "0 30px 80px rgba(24,94,174,0.24)",
+        }}
+      >
+
+        {/* TOP */}
+        <div className="flex items-start justify-between gap-6">
+
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">
+              Auctor
+            </p>
+
+            <h3 className="mt-2 text-3xl font-black tracking-[-0.04em] sm:text-4xl">
+              Reading Intelligence
+            </h3>
+          </div>
+
+          <span
+            className="rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em]"
+            style={{
+              backgroundColor: "#104783",
+              color: "#DDFBFF",
+            }}
+          >
+            The new way
+          </span>
+
+        </div>
+
+
+        {/* IMPROVEMENT LOOP */}
+        <div className="mt-12">
+
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-100">
+            Your improvement loop
+          </p>
+
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+
+
+            {/* PRACTICE */}
+            <div
+              className="rounded-[22px] p-6"
+              style={{ backgroundColor: "#104783" }}
+            >
+              <div className="flex items-center justify-between">
+
+                <span
+                  className="text-xs font-black"
+                  style={{ color: "#FF9B55" }}
+                >
+                  01
+                </span>
+
+                <span
+                  className="text-2xl"
+                  style={{ color: "#8DEBFF" }}
+                >
+
+                </span>
+
+              </div>
+
+              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
+                Practice
+              </h4>
+
+              <p className="mt-2 text-sm text-blue-100">
+                Adaptive practice
+              </p>
+
+            </div>
+
+
+            {/* DIAGNOSE */}
+            <div
+              className="rounded-[22px] p-6"
+              style={{ backgroundColor: "#104783" }}
+            >
+              <div className="flex items-center justify-between">
+
+                <span
+                  className="text-xs font-black"
+                  style={{ color: "#FF9B55" }}
+                >
+                  02
+                </span>
+
+                <span
+                  className="text-2xl"
+                  style={{ color: "#8DEBFF" }}
+                >
+
+                </span>
+
+              </div>
+
+              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
+                Diagnose
+              </h4>
+
+              <p className="mt-2 text-sm text-blue-100">
+                Reasoning analysis
+              </p>
+
+            </div>
+
+
+            {/* UNDERSTAND */}
+            <div
+              className="rounded-[22px] p-6"
+              style={{ backgroundColor: "#104783" }}
+            >
+              <div className="flex items-center justify-between">
+
+                <span
+                  className="text-xs font-black"
+                  style={{ color: "#FF9B55" }}
+                >
+                  03
+                </span>
+
+                <span
+                  className="text-2xl"
+                  style={{ color: "#8DEBFF" }}
+                >
+
+                </span>
+
+              </div>
+
+              <h4 className="mt-8 text-3xl font-black tracking-[-0.04em]">
+                Understand
+              </h4>
+
+              <p className="mt-2 text-sm text-blue-100">
+                See why you got it wrong
+              </p>
+
+            </div>
+
+
+            {/* IMPROVE */}
+            <div
+              className="rounded-[22px] border p-6"
+              style={{
+                backgroundColor: "#0B3978",
+                borderColor: "rgba(141,235,255,0.55)",
+              }}
+            >
+              <div className="flex items-center justify-between">
+
+                <span
+                  className="text-xs font-black"
+                  style={{ color: "#FF9B55" }}
+                >
+                  04
+                </span>
+
+                <span
+                  className="text-2xl"
+                  style={{ color: "#8DEBFF" }}
+                >
+
+                </span>
+
+              </div>
+
+              <h4
+                className="mt-8 text-3xl font-black tracking-[-0.04em]"
+                style={{ color: "#8DEBFF" }}
+              >
+                Improve
+              </h4>
+
+              <p className="mt-2 text-sm text-cyan-50">
+                Train the exact gap
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* WHAT CHANGES */}
+        <div className="mt-8 border-t border-cyan-100/20 pt-7">
+
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-100">
+            What changes
+          </p>
+
+          <div className="mt-5 flex flex-wrap gap-3">
+
+            {[
+              "Reasoning diagnosis",
+              "Trap & elimination analysis",
+              "Reading intelligence profile",
+              "Targeted improvement",
+            ].map((item) => (
+              <span
+                key={item}
+                className="rounded-full px-4 py-2.5 text-sm font-bold"
+                style={{
+                  backgroundColor: "#104783",
+                  color: "#E6FBFF",
+                }}
+              >
+                {item}
+              </span>
+            ))}
+
+          </div>
+
+        </div>
+
+
+        {/* BOTTOM */}
+        <div className="mt-auto pt-10">
+
+          <div className="h-px bg-cyan-100/20" />
+
+          <div className="pt-8">
+
+            <p className="text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl">
+              Don&apos;t just know
+            </p>
+
+            <p
+              className="mt-1 text-4xl font-black leading-[0.95] tracking-[-0.05em] sm:text-5xl md:text-6xl"
+              style={{ color: "#8DEBFF" }}
+            >
+              what you got wrong.
+            </p>
+
+          </div>
+
+        </div>
+
+      </motion.div>
+
+    </div>
+
+
+
+
+  </div>
+</motion.section>
+
 
 {/* ================= PRICING ================= */}
 <section
@@ -2510,7 +2511,7 @@ transition={{
 
       <p className="mt-5 text-[15px] leading-8 text-slate-400">
 
-        Daily RC reels, Test strategies, reading psychology 
+        Daily RC reels, Test strategies, reading psychology
         and student improvement insights.
 
       </p>
@@ -2640,7 +2641,7 @@ transition={{
     </h2>
 
     <p className="mt-6 max-w-2xl text-lg leading-8 text-white/45">
-      Daily workouts, speed training, Birbal AI mentoring and deep analytics ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â
+      Daily workouts, speed training, Birbal AI mentoring and deep analytics.
       everything designed to improve VARC performance.
     </p>
 
@@ -2709,7 +2710,7 @@ transition={{
       {/* LEFT */}
      <div>
 
-  
+
 
   {/* TITLE */}
   <h2 className="mb-8 text-5xl font-bold leading-tight text-white">
@@ -2875,7 +2876,7 @@ transition={{
 
   </div>
 
- 
+
 
 </div>
 
@@ -2951,7 +2952,7 @@ transition={{
     </div>
 
   </div>
-   
+
 
 </motion.section>
 
