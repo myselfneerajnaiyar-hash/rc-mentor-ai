@@ -16,7 +16,21 @@ test("real activity selects study over generic progress and respects weakness th
   const weak = [event("2026-09-12", "RC / Precision", 20, 8, "inference")]
   assert.equal(choose(weak).type, "DAILY_RECOMMENDATION")
   assert.equal(choose(weak).metadata.skill, "inference")
-  assert.equal(choose([event("2026-09-12", "RC / Precision", 19, 8)]), null)
+  assert.equal(choose([event("2026-09-12", "RC / Precision", 19, 8)]).type, "PERFORMANCE_UPDATE")
+  assert.equal(choose([event("2026-09-12", "Vocabulary", 20, 18)]).type, "PERFORMANCE_UPDATE")
+})
+test("performance update is the final activity fallback without a volume threshold or cooldown", () => {
+  for (const questions of [1, 9, 19]) {
+    const result = choose([event("2026-09-12", "Vocabulary", questions, Math.min(questions, 1))])
+    assert.equal(result.type, "PERFORMANCE_UPDATE")
+    assert.equal(result.metadata.questions, questions)
+  }
+  const recentPerformance = [{ type: "PERFORMANCE_UPDATE", created_at: "2026-09-12T02:30:00Z" }]
+  assert.equal(choose([event("2026-09-12", "Vocabulary", 5, 4)], { history: recentPerformance }).type, "PERFORMANCE_UPDATE")
+})
+test("stronger rules still win before the restored performance fallback", () => {
+  assert.equal(choose([event("2026-09-12", "RC / Precision", 20, 8, "inference")]).type, "DAILY_RECOMMENDATION")
+  assert.equal(choose([event("2026-09-12", "Vocabulary", 100, 80)]).type, "ACHIEVEMENT")
   assert.equal(choose([event("2026-09-12", "Vocabulary", 20, 18)]).type, "PERFORMANCE_UPDATE")
 })
 test("recommendation follow-up and CAT exam prep require saved recommendation or exam weakness", () => {
@@ -52,7 +66,8 @@ test("announcements require active, targeted, explicitly configured records", ()
 })
 test("daily cap and duplicate keys do not suppress transactional notices", async () => {
   const db = new MemoryDb()
-  const daily = choose([event("2026-09-12", "Vocabulary", 20, 18)])
+  const daily = choose([event("2026-09-12", "Vocabulary", 5, 4)])
+  assert.equal(daily.type, "PERFORMANCE_UPDATE")
   assert.ok(await createInboxNotification(db, daily))
   assert.equal(await createInboxNotification(db, { ...daily, type: "PROGRESS", idempotencyKey: "other" }), null)
   const transactional = chooseInboxLifecycle({ profile, now, subscriptions: [] })
