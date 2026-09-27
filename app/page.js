@@ -15,43 +15,54 @@ JSON.parse = function (...args) {
 };
 
 import { useState, useEffect, useRef } from "react";
+import dynamicImport from "next/dynamic";
+import ProductTourButton from '@/components/ProductTourButton';
+import ProductTourOnboarding from '@/components/ProductTourOnboarding';
+import MobileHome from "@/components/mobile/MobileHome";
+import TodayHub from "@/components/mobile/TodayHub";
+import PracticeHub from "@/components/mobile/PracticeHub";
+import PremiumLock from "@/components/mobile/PremiumLock";
+import { allowActivityExit } from "@/components/mobile/MobileShell";
+import { BOOTCAMP_ENABLED, GRAMMAR_ENABLED, FEATURES } from "@/lib/mobile/features.mjs";
+import LeaderboardSection from "@/components/home-v2/LeaderboardSection";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import ShadowHomeView from "@/components/home-v2/ShadowHomeView";
 import InboxHeaderLink from "@/components/home-v2/InboxHeaderLink";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
-import RCView from "../components/RCView";
+const RCView = dynamicImport(() => import("../components/RCView"), { loading: () => <p role="status">Opening your practice…</p> });
 import SpeedGym from "../components/SpeedGym";
 import SpeedDashboard from "../components/SpeedDashboard";
-import SpeedContainer from "../components/SpeedContainer";
-import VocabLab from "../components/VocabLab";
-import CATArenaLanding from "../cat-arena/CATArenaLandingV2";
+const SpeedContainer = dynamicImport(() => import("../components/SpeedContainer"), { loading: () => <p role="status">Opening your practice…</p> });
+const VocabLab = dynamicImport(() => import("../components/VocabLab"), { loading: () => <p role="status">Opening your practice…</p> });
+const CATArenaLanding = dynamicImport(() => import("../cat-arena/CATArenaLandingV2"), { loading: () => <p role="status">Opening your practice…</p> });
 import CATArenaView from "../cat-arena/CATArenaViewV2";
 import CATArenaTestView from "../cat-arena/CATArenaTestViewV2";
 import CATInstructions from "../cat-arena/CATInstructions"
-import RCSectionalContainer from "../cat-arena/rc/RCSectionalContainerV2";
+const RCSectionalContainer = dynamicImport(() => import("../cat-arena/rc/RCSectionalContainerV2"), { loading: () => <p role="status">Opening your practice…</p> });
 import BirbalFloatingButton from "@/components/home-v2/BirbalFloatingButton";
 import TenantLogo from "@/components/tenant/TenantLogo";
 import AssessmentMode from "@/components/assessment/AssessmentMode";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { supabase } from "../lib/supabase"
-import ProfileView from "../components/ProfileView";
+const ProfileView = dynamicImport(() => import("../components/ProfileView"), { loading: () => <p role="status">Opening your practice…</p> });
 import LoginPage from "./login/page";
 import { Home, Brain, BookOpen, Timer, GraduationCap, BarChart3, User, Flame, MessageSquare, Target, Puzzle, Lock, Trophy, SpellCheck } from "lucide-react";
 import DailyWorkoutFlow from "../components/DailyWorkoutFlow";
 import Leaderboard from "../components/Leaderboard"
-import DailyWorkoutContainer from "../components/DailyWorkoutContainer"
+const DailyWorkoutContainer = dynamicImport(() => import("../components/DailyWorkoutContainer"), { loading: () => <p role="status">Opening your practice…</p> });
 import TabGroup from "../components/TabGroup";
-import ChatMentor from "../components/ChatMentor"
+const ChatMentor = dynamicImport(() => import("../components/ChatMentor"), { loading: () => <p role="status">Opening your practice…</p> });
 import PracticeSwitcher from "@/components/PracticeSwitcher";
-import PrecisionTraining from "../components/PrecisionTraining"
-import HangmanView from "../components/HangmanView";
-import GrammarLab from "../components/GrammarLab";
+const PrecisionTraining = dynamicImport(() => import("../components/PrecisionTraining"), { loading: () => <p role="status">Opening your practice…</p> });
+const HangmanView = dynamicImport(() => import("../components/HangmanView"), { loading: () => <p role="status">Opening your practice…</p> });
+const GrammarLab = dynamicImport(() => import("../components/GrammarLab"), { loading: () => <p role="status">Opening your practice…</p> });
 import { useTenant } from "@/components/providers/TenantProvider";
 import { useInboxUnreadCount } from "@/lib/inbox/useUnreadCount";
+import { captureLearningEvent } from "@/lib/learningAnalytics";
 
-const SHOW_GRAMMAR_LAB = false;
+const SHOW_GRAMMAR_LAB = GRAMMAR_ENABLED;
 
 
 
@@ -127,7 +138,15 @@ export default function Page() {
   const [result, setResult] = useState(null);
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
-  const [view, setView] = useState("home"); 
+  const [view, setViewState] = useState("home");
+  const [lockedFeature, setLockedFeature] = useState(null);
+  function setView(next) {
+    if (!allowActivityExit()) return;
+    const feature = FEATURES.find(f => f.id === next);
+    if (feature?.premium && !hasPremiumAccess) { captureLearningEvent("premium_feature_click", {feature:next}); setLockedFeature(feature); return; }
+    router.push(`/?view=${next}`);
+  } 
+  const dashboardSeenRef = useRef(false);
   const [grammarSessionActive, setGrammarSessionActive] = useState(false);
 // home | rc | vocab | speed | cat | workout| crossword
  const [activeRCTest, setActiveRCTest] = useState(null);
@@ -142,6 +161,16 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
   const [isAdaptive, setIsAdaptive] = useState(false);
   const [userName, setUserName] = useState("");
   const [exam, setExam] = useState("");
+  useEffect(() => {
+    if (authLoading || !user || view !== "home") {
+      dashboardSeenRef.current = false;
+      return;
+    }
+    if (!dashboardSeenRef.current) {
+      dashboardSeenRef.current = true;
+      captureLearningEvent("dashboard_viewed", { exam });
+    }
+  }, [authLoading, user, view, exam]);
   const hasPremiumAccess = Boolean(entitlement?.hasAccess)
   const { count: inboxUnreadCount } = useInboxUnreadCount(Boolean(user))
 
@@ -157,7 +186,7 @@ const [sectionalAttemptMap, setSectionalAttemptMap] = useState({});
 // idle | generating | instructions | test | diagnosis | review
  
 
-const [isMobile, setIsMobile] = useState(false);
+const [isMobile, setIsMobile] = useState(null);
 
 
 
@@ -237,16 +266,15 @@ useEffect(() => {
   }, [timerRunning, timeLeft]);
 
 useEffect(() => {
-  console.log("view query =", searchParams.get("view"));
-
-  if (searchParams.get("view") === "cat") {
-    console.log("Opening CAT landing");
-
-    setView("cat");
-   
-    setCatPhase("idle");
-  }
-}, [searchParams]);
+  if (window.__auctorCancelledBack) { window.__auctorCancelledBack=false; return; }
+  const requested=searchParams.get("view") || "home";
+  const allowed=["home","today","practice","profile","workout","hangman","rc","speed","vocab","precision","cat","mentor","leaderboards",...(GRAMMAR_ENABLED?["grammar"]:[])];
+  const next=allowed.includes(requested)?requested:"home";
+  const feature=FEATURES.find(f=>f.id===next);
+  if(feature?.premium && !hasPremiumAccess){setLockedFeature(feature);setViewState("practice");return;}
+  setViewState(next);
+  document.body.scrollTop=0;document.documentElement.scrollTop=0;mainRef.current?.scrollTo(0,0);
+}, [searchParams, hasPremiumAccess]);
 
   useEffect(() => {
   async function load() {
@@ -306,19 +334,7 @@ useEffect(() => {
 }, []);
 
 
-useEffect(() => {
 
-  const freeViews = ["home", "inbox", "workout", "hangman", "profile", "cat"]
-
-  const lockedView =
-    !freeViews.includes(view) &&
-    !hasPremiumAccess
-
-  if (lockedView) {
-    setView("home")
-  }
-
-}, [view, hasPremiumAccess])
 
  useEffect(() => {
   if (tenantProfile) {
@@ -726,7 +742,7 @@ return (
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
-{!isMobile &&
+{isMobile === false &&
  !(view === "cat" && catPhase === "test") && (
   <aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
     <div className="mb-8">
@@ -743,6 +759,7 @@ return (
 
 
      <nav className="flex flex-col gap-2 mt-6">
+ {BOOTCAMP_ENABLED && <a href="/boot-camp" className="w-full flex items-start gap-3 px-4 py-3 rounded-xl text-emerald-200 border border-emerald-700/40 hover:bg-emerald-900/20"><Target size={20} />Boot Camp</a>}
  {navItems.map((item) => {
   const Icon = item.icon;
 
@@ -768,7 +785,7 @@ if (item.id === "premium") {
 }
 
 if (locked) {
-  router.push("/pricing")
+  setLockedFeature(FEATURES.find(f=>f.id===item.id) || {id:item.id,name:item.label})
   return
 }
 
@@ -820,19 +837,25 @@ ${
   <main 
   ref={mainRef}
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
- <div className="w-full px-4 md:px-8 py-6 md:py-10">
+ <div className="root-content w-full px-4 md:px-8 py-6 md:py-10">
       <div className="w-full">
-       <div className="mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && view !== "home" && <div className="ml-auto"><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
+       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && <div className="dashboard-header-actions ml-auto"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
        {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
    {/* Desktop Navbar */}
 <div className="desktop-navbar">
  {/* <Navbar view={view} setView={setView} /> */}
- {user && view !== "home" && <div className="mb-5 hidden justify-end md:flex"><InboxHeaderLink count={inboxUnreadCount} /></div>}
+ {user && view !== "home" && <div className="mb-5 hidden justify-end gap-2 md:flex"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}
 </div>
 
-  {view === "home" && (
+  {view === "home" && isMobile !== null && <ProductTourOnboarding/>}
+  {view === "home" && isMobile === true && <MobileHome />}
+  {view === "today" && <TodayHub />}
+  {view === "practice" && <PracticeHub />}
+  {view === "leaderboards" && <LeaderboardSection exam={exam}/>}
+  {lockedFeature && <PremiumLock feature={lockedFeature} onClose={()=>setLockedFeature(null)}/>}
+  {view === "home" && isMobile === false && (
  <ShadowHomeView
   setView={setView}
   startAdaptiveRC={startAdaptiveRC}
@@ -860,10 +883,10 @@ ${
     {view === "speed" && <SpeedContainer />}
 
     {view === "mentor" && (
-  <ChatMentor
+  <div className="mobile-conversation"><ChatMentor
     setView={setView}
     onClose={() => setView("home")}
-  />
+  /></div>
 )}
 
     {view === "vocab" && <VocabLab />}
@@ -883,7 +906,7 @@ ${
 {view === "cat" && (
   <>
   <AssessmentMode active={catPhase === "test"} />
-  <div className="max-w-5xl mx-auto px-6">
+  <div className="cat-arena-shell max-w-5xl mx-auto px-6">
    {catPhase === "idle" && (
   <CATArenaLanding
     isMobile={isMobile}
@@ -938,18 +961,10 @@ ${
 
 
   {/* MOBILE BOTTOM NAV (Mobile only) */}
-      <div className="md:hidden">
-        <MobileBottomNav
-  view={view}
-  setView={setView}
-  hasPremiumAccess={hasPremiumAccess}
-  exam={exam}
-  chatOpen={chatOpen}
-/>
-      </div>
+
 </div>
     </main>
-    {!grammarSessionActive && <BirbalFloatingButton
+    {!grammarSessionActive && view !== "mentor" && <BirbalFloatingButton
   setView={setView}
   chatOpen={chatOpen}
   setChatOpen={setChatOpen}

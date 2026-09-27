@@ -1,4 +1,5 @@
 "use client";
+import { useRouteTab } from "@/lib/mobile/useRouteTab";
 import { useState, useEffect } from "react";
 import MentorView from "./MentorView";
 import Navbar from "./Navbar";
@@ -8,12 +9,13 @@ import RCHistory from "./RCHistory";
 import TabGroup from "./TabGroup";
 import BirbalMessage from "./BirbalMessage";
 import AssessmentMode from "./assessment/AssessmentMode";
+import NextActivity from "./mobile/NextActivity";
 import { RCReport, RCSolutions, RCTestExperience } from "./assessment/RCExperience";
 import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 import PracticeSwitcher from "./PracticeSwitcher";
 
 export default function RCView({view,setView }) {
-  const [rcTab, setRcTab] = useState("generate");
+  const [rcTab, setRcTab] = useRouteTab(["generate","paste","profile","history"],"generate");
   useEffect(() => {
   async function checkUser() {
    const { data, error } = await supabase.auth.getUser();
@@ -1356,7 +1358,7 @@ return (
     </button>
   </div>
 )}
-   {phase === "result" && result && <RCReport passage={fullPassage} questions={testQuestions} answers={testAnswers} result={result} score={score} totalTime={totalTime} averageTime={avgTime} onDetailed={() => setPhase("detailed")} onContinue={continueAfterReport} continueLabel={rcMode === "plan" ? "Start Next RC" : "Generate New Passage"} />}
+   {phase === "result" && result && <><NextActivity current="rc"/><RCReport passage={fullPassage} questions={testQuestions} answers={testAnswers} result={result} score={score} totalTime={totalTime} averageTime={avgTime} onDetailed={() => setPhase("detailed")} onContinue={continueAfterReport} continueLabel={rcMode === "plan" ? "Start Next RC" : "Generate New Passage"} /></>}
    {false && phase === "result" && result && (
   <div className="mt-10 space-y-8">
     <h2 className="text-2xl font-bold mb-4">

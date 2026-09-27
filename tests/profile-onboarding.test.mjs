@@ -23,7 +23,7 @@ test("profile completion stores normalized phone and consent timestamp", () => {
 
 test("profile completion refreshes the shared dashboard context before navigation", () => {
   assert.match(provider, /const refreshContext = useCallback/)
-  assert.match(provider, /cache: "no-store"/)
+  assert.match(provider, /cache:\s*["']no-store["']/)
   assert.match(welcome, /await refreshContext\(\)/)
   const finishProfile = welcome.slice(welcome.indexOf("async function finishProfile"))
   assert.ok(finishProfile.indexOf("await refreshContext()") < finishProfile.indexOf("router.push"))

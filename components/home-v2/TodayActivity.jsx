@@ -1,4 +1,6 @@
 "use client";
+import { useDailyActivity } from '@/components/mobile/DailyActivityProvider';
+import Recovery from '@/components/mobile/Recovery';
 import { useRouter } from "next/navigation";
 
 import {
@@ -11,19 +13,39 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { getExamCapabilities } from "@/lib/tenant/capabilities";
+import { useEffect, useRef } from "react";
+import { captureLearningEvent } from "@/lib/learningAnalytics";
 
 export default function TodayActivity({
     exam,
   setView,
-  dailyRCCompleted = false,
-  workoutCompleted = false,
-  wordhuntCompleted = false,
+
 }) {
 
+    const daily=useDailyActivity();
+    const activity=id=>daily.activities.find(a=>a.id===id);
+    const dailyRCCompleted=activity('daily_rc')?.completed;
+    const workoutCompleted=activity('workout')?.completed;
+    const wordhuntCompleted=activity('hangman')?.completed;
     const router = useRouter();
     const capabilities = getExamCapabilities(exam);
+    const primaryType = capabilities.showDailyRC ? "daily_rc" : "daily_workout";
+    const viewedRef = useRef(false);
+    const primaryRef = useRef(null);
+    useEffect(() => {
+      const element = primaryRef.current;
+      if (!element || viewedRef.current || typeof IntersectionObserver === "undefined") return;
+      const observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting || viewedRef.current) return;
+        viewedRef.current = true;
+        captureLearningEvent("primary_cta_viewed", { activity_type: primaryType, exam });
+        observer.disconnect();
+      }, { threshold: 0.5 });
+      observer.observe(element);
+      return () => observer.disconnect();
+    }, [primaryType, exam]);
   return (
-    <section className="space-y-8">
+    <section className="space-y-8" data-daily-ready={!daily.loading&&!daily.error} aria-busy={daily.loading}>
 
       {/* Section Header */}
 
@@ -44,6 +66,7 @@ export default function TodayActivity({
 
       </div>
 
+      {daily.error&&<Recovery message={daily.error} onRetry={daily.refresh} area="daily_progress"/>}
       {/* Cards */}
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -78,11 +101,14 @@ export default function TodayActivity({
             10-15 mins
 
           </div>
-<Button
-  onClick={() => router.push("/daily-challenge")}
+<Button disabled={daily.loading||!!daily.error||!activity(primaryType==="daily_rc"?"daily_rc":"workout")?.available} ref={primaryType === "daily_rc" ? primaryRef : undefined}
+  onClick={() => {
+    captureLearningEvent("primary_cta_clicked", { activity_type: "daily_rc", exam });
+    router.push("/daily-challenge");
+  }}
             className="mt-6 w-full justify-between rounded-xl bg-indigo-600 hover:bg-indigo-500"
           >
-            {dailyRCCompleted ? "View Analysis" : "Start Challenge"}
+            {daily.loading ? "Loading daily status..." : daily.error ? "Status unavailable" : !activity("daily_rc")?.available ? "No challenge today" : dailyRCCompleted ? "View Analysis" : "Start Challenge"}
 
             <ArrowRight className="h-4 w-4" />
           </Button>
@@ -117,11 +143,14 @@ export default function TodayActivity({
             <span>25–30 mins</span>
           </div>
 
-          <Button
-            onClick={() => setView("workout")}
+          <Button disabled={daily.loading||!!daily.error||!activity("workout")?.available} ref={primaryType === "daily_workout" ? primaryRef : undefined}
+            onClick={() => {
+              if (primaryType === "daily_workout") captureLearningEvent("primary_cta_clicked", { activity_type: "daily_workout", exam });
+              setView("workout");
+            }}
            className="mt-6 w-full justify-between rounded-xl bg-orange-600 hover:bg-orange-500"
           >
-            {workoutCompleted ? "Continue Workout" : "Start Workout"}
+            {daily.loading ? "Loading daily status..." : daily.error ? "Status unavailable" : workoutCompleted ? "Continue Workout" : "Start Workout"}
 
             <ArrowRight className="h-4 w-4" />
           </Button>
@@ -152,11 +181,11 @@ export default function TodayActivity({
             <span>5 mins</span>
           </div>
 
-          <Button
+          <Button disabled={daily.loading||!!daily.error||!activity("hangman")?.available}
             onClick={() => setView("hangman")}
         className="mt-6 w-full justify-between rounded-xl bg-emerald-600 hover:bg-emerald-500"
           >
-            {wordhuntCompleted ? "Play Again" : "Play Now"}
+            {daily.loading ? "Loading daily status..." : daily.error ? "Status unavailable" : !activity("hangman")?.available ? "No puzzle today" : wordhuntCompleted ? "Play Again" : "Play Now"}
 
             <ArrowRight className="h-4 w-4" />
           </Button>

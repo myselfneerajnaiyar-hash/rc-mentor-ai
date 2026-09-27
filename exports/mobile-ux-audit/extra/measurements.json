@@ -1,0 +1,5175 @@
+{
+  "results": [
+    {
+      "name": "-preview-320",
+      "url": "/preview",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 17207,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 17207
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-eb30542502bd2445",
+          "top": 0,
+          "h": 1325,
+          "total": 1575
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "top": 0,
+          "h": 681,
+          "total": 931
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 18
+        },
+        {
+          "text": "Stop solving more RCs.\nStart solving RCs better.",
+          "y": 187
+        },
+        {
+          "text": "A score tells you what happened.\nAuctor helps you understand why.",
+          "y": 1170
+        },
+        {
+          "text": "Your mistakes leave a pattern.",
+          "y": 1542
+        },
+        {
+          "text": "Don't just practice RC.\nTrain how you read.",
+          "y": 2597
+        },
+        {
+          "text": "Every mistake becomes a training signal.",
+          "y": 3049
+        },
+        {
+          "text": "Built from the classroom.",
+          "y": 4750
+        },
+        {
+          "text": "Trusted by Students.\nBuilt for Institutes.",
+          "y": 5781
+        },
+        {
+          "text": "From Avoiding RC to Enjoying Reading",
+          "y": 6453
+        },
+        {
+          "text": "Daily Workouts Changed My Reading Habit",
+          "y": 6453
+        },
+        {
+          "text": "Birbal Helped Me Understand My Mistakes",
+          "y": 6435
+        },
+        {
+          "text": "What Students Say",
+          "y": 6789
+        },
+        {
+          "text": "Most RC practice improves familiarity.\nNot reading intelligence.",
+          "y": 7536
+        },
+        {
+          "text": "RC Practice",
+          "y": 8020
+        },
+        {
+          "text": "Reading Intelligence",
+          "y": 8854
+        },
+        {
+          "text": "Train smarter.\nChoose your plan.",
+          "y": 10340
+        },
+        {
+          "text": "₹399",
+          "y": 10737
+        },
+        {
+          "text": "₹999",
+          "y": 10737
+        },
+        {
+          "text": "₹1299",
+          "y": 10737
+        },
+        {
+          "text": "₹1999",
+          "y": 10737
+        },
+        {
+          "text": "Learn RC daily.\nStay connected with Auctor.",
+          "y": 11399
+        },
+        {
+          "text": "Instagram",
+          "y": 11796
+        },
+        {
+          "text": "Telegram",
+          "y": 11796
+        },
+        {
+          "text": "WhatsApp",
+          "y": 11796
+        },
+        {
+          "text": "Your complete\nRC training dashboard.",
+          "y": 12339
+        },
+        {
+          "text": "Daily RC Workout",
+          "y": 12725
+        },
+        {
+          "text": "Stop doing more RCs.\nStart understanding them.",
+          "y": 13921
+        },
+        {
+          "text": "Everything you need to know about Auctor RC.",
+          "y": 14671
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "y": 14780
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "y": 14854
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "y": 14928
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "y": 15050
+        },
+        {
+          "text": "What is Reader DNA?",
+          "y": 15124
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "y": 15198
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "y": 15296
+        },
+        {
+          "text": "Is there a free trial?",
+          "y": 15394
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "y": 15468
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "y": 15566
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "y": 15664
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "y": 15762
+        },
+        {
+          "text": "Train reading intelligence.\nNot just RC familiarity.",
+          "y": 16170
+        },
+        {
+          "text": "PRODUCT",
+          "y": 16662
+        },
+        {
+          "text": "COMMUNITY",
+          "y": 16662
+        }
+      ],
+      "controls": [
+        {
+          "text": "Open navigation menu",
+          "x": 268,
+          "y": 12,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "Login",
+          "x": 200,
+          "y": 13,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 20,
+          "y": 475,
+          "w": 280,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 20,
+          "y": 543,
+          "w": 280,
+          "h": 58
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 31,
+          "y": 4485,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "WhatsApp",
+          "x": 31,
+          "y": 4543,
+          "w": 144,
+          "h": 50
+        },
+        {
+          "text": "Play Ishaan Chandrakar's testimonial",
+          "x": 25,
+          "y": 6072,
+          "w": 238,
+          "h": 357
+        },
+        {
+          "text": "Play Bhoomi Saluja's testimonial",
+          "x": 281,
+          "y": 6072,
+          "w": 238,
+          "h": 356
+        },
+        {
+          "text": "Play Rushill's testimonial",
+          "x": 537,
+          "y": 6072,
+          "w": 238,
+          "h": 338
+        },
+        {
+          "text": "Go to video testimonial 1",
+          "x": 136,
+          "y": 6622,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 2",
+          "x": 176,
+          "y": 6622,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 3",
+          "x": 184,
+          "y": 6622,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 1",
+          "x": 136,
+          "y": 7398,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 2",
+          "x": 176,
+          "y": 7398,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 3",
+          "x": 184,
+          "y": 7398,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 51,
+          "y": 10953,
+          "w": 154,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 281,
+          "y": 10955,
+          "w": 154,
+          "h": 49
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 511,
+          "y": 10953,
+          "w": 154,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 741,
+          "y": 10955,
+          "w": 154,
+          "h": 49
+        },
+        {
+          "text": "Talk to us on WhatsApp",
+          "x": 57,
+          "y": 11116,
+          "w": 206,
+          "h": 21
+        },
+        {
+          "text": "Follow Instagram",
+          "x": 45,
+          "y": 12012,
+          "w": 166,
+          "h": 72
+        },
+        {
+          "text": "Join Telegram",
+          "x": 275,
+          "y": 12044,
+          "w": 148,
+          "h": 48
+        },
+        {
+          "text": "Join WhatsApp",
+          "x": 505,
+          "y": 12044,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "Daily Workout",
+          "x": 0,
+          "y": 12631,
+          "w": 136,
+          "h": 46
+        },
+        {
+          "text": "Speed Gym",
+          "x": 146,
+          "y": 12631,
+          "w": 117,
+          "h": 46
+        },
+        {
+          "text": "Birbal AI",
+          "x": 273,
+          "y": 12631,
+          "w": 96,
+          "h": 46
+        },
+        {
+          "text": "Analytics",
+          "x": 378,
+          "y": 12631,
+          "w": 99,
+          "h": 46
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 24,
+          "y": 13628,
+          "w": 272,
+          "h": 56
+        },
+        {
+          "text": "Talk to us",
+          "x": 24,
+          "y": 13696,
+          "w": 272,
+          "h": 58
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 41,
+          "y": 14318,
+          "w": 238,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 41,
+          "y": 14386,
+          "w": 238,
+          "h": 58
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "x": 37,
+          "y": 14780,
+          "w": 246,
+          "h": 56
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "x": 37,
+          "y": 14854,
+          "w": 246,
+          "h": 56
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "x": 37,
+          "y": 14928,
+          "w": 246,
+          "h": 104
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "x": 37,
+          "y": 15050,
+          "w": 246,
+          "h": 56
+        },
+        {
+          "text": "What is Reader DNA?",
+          "x": 37,
+          "y": 15124,
+          "w": 246,
+          "h": 56
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "x": 37,
+          "y": 15198,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "x": 37,
+          "y": 15296,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "Is there a free trial?",
+          "x": 37,
+          "y": 15394,
+          "w": 246,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "x": 37,
+          "y": 15468,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "x": 37,
+          "y": 15566,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "x": 37,
+          "y": 15664,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "x": 37,
+          "y": 15762,
+          "w": 246,
+          "h": 80
+        },
+        {
+          "text": "Start Free 3 Days Trial",
+          "x": 24,
+          "y": 16542,
+          "w": 221,
+          "h": 56
+        },
+        {
+          "text": "Instagram",
+          "x": 180,
+          "y": 16706,
+          "w": 116,
+          "h": 24
+        },
+        {
+          "text": "Telegram",
+          "x": 180,
+          "y": 16750,
+          "w": 116,
+          "h": 24
+        },
+        {
+          "text": "WhatsApp",
+          "x": 180,
+          "y": 16794,
+          "w": 116,
+          "h": 24
+        }
+      ],
+      "text": "Auctor RC\nLogin\nAI-Powered Reading Intelligence\nStop solving more RCs.\nStart solving RCs better.\n\nAuctor identifies how your reasoning breaks and then trains the exact skills holding your VARC score back.\n\nStart Your Free Trial\nConnect on WhatsApp\nAdaptive RC\nBirbal AI Diagnosis\nPerformance Analytics\nA focused student actively practising a reading comprehension passage for a competitive aptitude exam.\nReading Intelligence\nA score tells you what happened.\nAuctor helps you understand why.\n\nEvery RC answer reveals something about how you read, infer, eliminate and interpret the author's intent.\n\nBEYOND THE SCORE\nYour mistakes leave a pattern.\n\nAuctor looks beyond the final answer to identify the reasoning patterns behind your performance.\n\nInference\n\nHow you connect what the passage says with what it implies.\n\nElimination\n\nHow you reject options and where traps catch you.\n\nTone & intent\n\nHow accurately you read the author's position and purpose.\n\nHOW AUCTOR WORKS\nDon't just practice RC.\nTrain how you read.\n\nEvery practice session becomes part of a learning loop — practice, understand your mistakes, identify the gap, and train it deliberately.\n\nTHE AUCTOR LEARNING LOOP\nEvery mistake becomes a training signal.\nPractice → Diagnose → Improve\n01\nPractice\n\nSolve RCs through focused, adaptive practice.\n\n02\nDiagnose\n\nUnderstand the reasoning behind your answers.\n\n03\nUnderstand\n\nSee where inference, elimination or interpretation breaks.\n\n04\nImprove\n\nTrain the exact gap instead of simply doing more questions.\n\nThe objective is not more practice. It is better practice.\n\nTrain the thinking\n\nReady to see how you read?\n\nStart your free trial or talk to us first.\n\nStart Free Trial\nWhatsApp\nCREATED BY EDUCATORS\nBuilt from the classroom.\n\nAuctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.\n\nNeraj Kumar Naiyar\nIIT Roorkee\nEducator, Product Builder, Founder, Auctor Labs\nSTUDENT REVIEWS\nTrusted by Students.\nBuilt for Institutes.\n\nReal students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.\n\nFrom Avoiding RC to Enjoying Reading\n\nIshaan Chandrakar\n\nDaily Workouts Changed My Reading Habit\n\nBhoomi Saluja\n\nBirbal Helped Me Understand My Mistakes\n\nRushill\n\nWRITTEN EXPERIENCES\nWhat Students Say\n“I used to avoid reading because I never enjoyed it. After using Auctor consistently, reading has become a daily habit and I can clearly feel the improvement in my comprehension.”\n\nKeshu Sharma\n\n“The Daily Workout feature kept me consistent. Instead of randomly practising RCs, I finally had a proper learning routine every day.”\n\nPushti Kapoor\n\n“Birbal doesn't just tell you the right answer. It explains why you were wrong, which completely changed how I approached Reading Comprehension.”\n\nNabeel\n\nWHY MOST RC PRACTICE FAILS\nMost RC practice improves familiarity.\nNot reading intelligence.\n\nSolving hundreds of passages is useless if you never understand why your reasoning breaks.\n\nTRADITIONAL\n\nRC Practice\nTHE OLD WAY\n100s\nPASSAGES\nSOLVED\n\nWHAT USUALLY HAPPENS\n\nRandom passages\nNo reasoning diagnosis\nSame difficulty for everyone\nWrong answer â†’ move on\nMock score, but no explanation\n\nMore practice.\n\nSame mistakes.\n\nAUCTOR\n\nReading Intelligence\nTHE NEW WAY\n\nYOUR IMPROVEMENT LOOP\n\n01\nPractice\n\nAdaptive practice\n\n02\nDiagnose\n\nReasoning analysis\n\n03\nUnderstand\n\nSee why you got it wrong\n\n04\nImprove\n\nTrain the exact gap\n\nWHAT CHANGES\n\nReasoning diagnosis\nTrap & elimination analysis\nReading intelligence profile\nTargeted improvement\n\nDon't just know\n\nwhat you got wrong.\n\nSIMPLE PRICING\nTrain smarter.\nChoose your plan.\n\nStart with the plan that fits your preparation and get complete access to Auctor RC's AI-powered reading intelligence tools.\n\nMONTHLY\n\n₹399\n\nPerfect to get started\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nPOPULAR\n\nQUARTERLY\n\n₹999\n\nMost Popular\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nHALF-YEARLY\n\n₹1299\n\nBest Value\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nMAXIMUM SAVINGS\n\nYEARLY\n\n₹1999\n\nMaximum Savings\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nNot sure which plan is right for you?\n\nTalk to us on WhatsApp\nJoin The Auctor Community\nLearn RC daily.\nStay connected with Auctor.\n\nGet RC insights, reading tips, inference training, mock analysis and daily learning content across our platforms.\n\nInstagram\n\nDaily RC reels, Test strategies, reading psychology and student improvement insights.\n\nFollow Instagram\nTelegram\n\nReceive free RC passages, Exam resources, daily practice sets and important announcements.\n\nJoin Telegram\nWhatsApp\n\nJoin our WhatsApp channel for quick updates, RC discussions and Exam preparation insights.\n\nJoin WhatsApp\nInside Auctor RC\nYour complete\nRC training dashboard.\n\nDaily workouts, speed training, Birbal AI mentoring and deep analytics. everything designed to improve VARC performance.\n\nDaily Workout\nSpeed Gym\nBirbal AI\nAnalytics\nDaily RC Workout\n\nA structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages.\n\nAdaptive RC passages\n\nDifficulty changes dynamically with your performance.\n\nSkill focused improvement\n\nImprove tone detection, inference and elimination logic.\n\nAI driven feedback\n\nBirbal continuously analyzes your reading behaviour.\n\nStart Your Free Trial\nTalk to us\n\nSTART TRAINING DIFFERENTLY\n\nStop doing more RCs.\nStart understanding them.\n\nExperience Auctor RC and see how a more intelligent approach to Reading Comprehension can change the way you practise.\n\nStart Your Free Trial\nConnect on WhatsApp\nFrequently Asked Questions\nEverything you need to know about Auctor RC.\nWhat is Auctor RC used for?\nWho built Auctor RC?\nHow is Auctor RC different from a normal RC question bank?\nWhat is Birbal in Auctor RC?\nWhat is Reader DNA?\nWhich exams does Auctor RC cover?\nHow much does Auctor RC cost?\nIs there a free trial?\nDoes Auctor RC replace a coaching institute?\nHow much time does Auctor RC take per day?\nDoes Auctor RC only help with speed, or also accuracy?\nCan institutes use Auctor RC under their own brand?\nAuctor RC\nTrain reading intelligence.\nNot just RC familiarity.\n\nAdaptive RC drills, Birbal AI diagnosis, reading cognition analytics and CAT-level improvement systems.\n\nStart Free 3 Days Trial\nPRODUCT\nAdaptive RC\nBirbal AI\nAnalytics\nRC Workouts\nCOMMUNITY\nInstagram\nTelegram\nWhatsApp\n© 2026 Auctor RC. Powered by Birbal AI.\nPrivacy\nTerms\nContact"
+    },
+    {
+      "name": "-preview-360",
+      "url": "/preview",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 16445,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 16445
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-eb30542502bd2445",
+          "top": 0,
+          "h": 1240,
+          "total": 1490
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "top": 0,
+          "h": 632,
+          "total": 882
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 18
+        },
+        {
+          "text": "Stop solving more RCs.\nStart solving RCs better.",
+          "y": 186
+        },
+        {
+          "text": "A score tells you what happened.\nAuctor helps you understand why.",
+          "y": 1205
+        },
+        {
+          "text": "Your mistakes leave a pattern.",
+          "y": 1544
+        },
+        {
+          "text": "Don't just practice RC.\nTrain how you read.",
+          "y": 2509
+        },
+        {
+          "text": "Every mistake becomes a training signal.",
+          "y": 2910
+        },
+        {
+          "text": "Built from the classroom.",
+          "y": 4514
+        },
+        {
+          "text": "Trusted by Students.\nBuilt for Institutes.",
+          "y": 5528
+        },
+        {
+          "text": "From Avoiding RC to Enjoying Reading",
+          "y": 6168
+        },
+        {
+          "text": "Daily Workouts Changed My Reading Habit",
+          "y": 6168
+        },
+        {
+          "text": "Birbal Helped Me Understand My Mistakes",
+          "y": 6147
+        },
+        {
+          "text": "What Students Say",
+          "y": 6504
+        },
+        {
+          "text": "Most RC practice improves familiarity.\nNot reading intelligence.",
+          "y": 7215
+        },
+        {
+          "text": "RC Practice",
+          "y": 7659
+        },
+        {
+          "text": "Reading Intelligence",
+          "y": 8433
+        },
+        {
+          "text": "Train smarter.\nChoose your plan.",
+          "y": 9863
+        },
+        {
+          "text": "₹399",
+          "y": 10223
+        },
+        {
+          "text": "₹999",
+          "y": 10223
+        },
+        {
+          "text": "₹1299",
+          "y": 10223
+        },
+        {
+          "text": "₹1999",
+          "y": 10223
+        },
+        {
+          "text": "Learn RC daily.\nStay connected with Auctor.",
+          "y": 10885
+        },
+        {
+          "text": "Instagram",
+          "y": 11250
+        },
+        {
+          "text": "Telegram",
+          "y": 11250
+        },
+        {
+          "text": "WhatsApp",
+          "y": 11250
+        },
+        {
+          "text": "Your complete\nRC training dashboard.",
+          "y": 11761
+        },
+        {
+          "text": "Daily RC Workout",
+          "y": 12147
+        },
+        {
+          "text": "Stop doing more RCs.\nStart understanding them.",
+          "y": 13330
+        },
+        {
+          "text": "Everything you need to know about Auctor RC.",
+          "y": 14049
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "y": 14122
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "y": 14196
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "y": 14270
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "y": 14368
+        },
+        {
+          "text": "What is Reader DNA?",
+          "y": 14442
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "y": 14516
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "y": 14590
+        },
+        {
+          "text": "Is there a free trial?",
+          "y": 14664
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "y": 14738
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "y": 14836
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "y": 14934
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "y": 15032
+        },
+        {
+          "text": "Train reading intelligence.\nNot just RC familiarity.",
+          "y": 15440
+        },
+        {
+          "text": "PRODUCT",
+          "y": 15900
+        },
+        {
+          "text": "COMMUNITY",
+          "y": 15900
+        }
+      ],
+      "controls": [
+        {
+          "text": "Open navigation menu",
+          "x": 308,
+          "y": 12,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "Login",
+          "x": 240,
+          "y": 13,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 20,
+          "y": 483,
+          "w": 320,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 20,
+          "y": 551,
+          "w": 320,
+          "h": 58
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 31,
+          "y": 4249,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "WhatsApp",
+          "x": 31,
+          "y": 4307,
+          "w": 144,
+          "h": 50
+        },
+        {
+          "text": "Play Ishaan Chandrakar's testimonial",
+          "x": 25,
+          "y": 5750,
+          "w": 263,
+          "h": 394
+        },
+        {
+          "text": "Play Bhoomi Saluja's testimonial",
+          "x": 306,
+          "y": 5750,
+          "w": 263,
+          "h": 394
+        },
+        {
+          "text": "Play Rushill's testimonial",
+          "x": 587,
+          "y": 5750,
+          "w": 263,
+          "h": 374
+        },
+        {
+          "text": "Go to video testimonial 1",
+          "x": 156,
+          "y": 6337,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 2",
+          "x": 196,
+          "y": 6337,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 3",
+          "x": 204,
+          "y": 6337,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 1",
+          "x": 156,
+          "y": 7077,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 2",
+          "x": 196,
+          "y": 7077,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 3",
+          "x": 204,
+          "y": 7077,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 51,
+          "y": 10439,
+          "w": 194,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 321,
+          "y": 10441,
+          "w": 194,
+          "h": 49
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 591,
+          "y": 10439,
+          "w": 194,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 861,
+          "y": 10441,
+          "w": 194,
+          "h": 49
+        },
+        {
+          "text": "Talk to us on WhatsApp",
+          "x": 77,
+          "y": 10602,
+          "w": 206,
+          "h": 21
+        },
+        {
+          "text": "Follow Instagram",
+          "x": 45,
+          "y": 11434,
+          "w": 173,
+          "h": 48
+        },
+        {
+          "text": "Join Telegram",
+          "x": 315,
+          "y": 11466,
+          "w": 148,
+          "h": 48
+        },
+        {
+          "text": "Join WhatsApp",
+          "x": 585,
+          "y": 11434,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "Daily Workout",
+          "x": 0,
+          "y": 12053,
+          "w": 136,
+          "h": 46
+        },
+        {
+          "text": "Speed Gym",
+          "x": 146,
+          "y": 12053,
+          "w": 117,
+          "h": 46
+        },
+        {
+          "text": "Birbal AI",
+          "x": 273,
+          "y": 12053,
+          "w": 96,
+          "h": 46
+        },
+        {
+          "text": "Analytics",
+          "x": 378,
+          "y": 12053,
+          "w": 99,
+          "h": 46
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 24,
+          "y": 13055,
+          "w": 312,
+          "h": 56
+        },
+        {
+          "text": "Talk to us",
+          "x": 24,
+          "y": 13123,
+          "w": 312,
+          "h": 58
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 41,
+          "y": 13696,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 41,
+          "y": 13764,
+          "w": 278,
+          "h": 58
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "x": 37,
+          "y": 14122,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "x": 37,
+          "y": 14196,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "x": 37,
+          "y": 14270,
+          "w": 286,
+          "h": 80
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "x": 37,
+          "y": 14368,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "What is Reader DNA?",
+          "x": 37,
+          "y": 14442,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "x": 37,
+          "y": 14516,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "x": 37,
+          "y": 14590,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "Is there a free trial?",
+          "x": 37,
+          "y": 14664,
+          "w": 286,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "x": 37,
+          "y": 14738,
+          "w": 286,
+          "h": 80
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "x": 37,
+          "y": 14836,
+          "w": 286,
+          "h": 80
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "x": 37,
+          "y": 14934,
+          "w": 286,
+          "h": 80
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "x": 37,
+          "y": 15032,
+          "w": 286,
+          "h": 80
+        },
+        {
+          "text": "Start Free 3 Days Trial",
+          "x": 24,
+          "y": 15780,
+          "w": 221,
+          "h": 56
+        },
+        {
+          "text": "Instagram",
+          "x": 200,
+          "y": 15944,
+          "w": 136,
+          "h": 24
+        },
+        {
+          "text": "Telegram",
+          "x": 200,
+          "y": 15988,
+          "w": 136,
+          "h": 24
+        },
+        {
+          "text": "WhatsApp",
+          "x": 200,
+          "y": 16032,
+          "w": 136,
+          "h": 24
+        }
+      ],
+      "text": "Auctor RC\nLogin\nAI-Powered Reading Intelligence\nStop solving more RCs.\nStart solving RCs better.\n\nAuctor identifies how your reasoning breaks and then trains the exact skills holding your VARC score back.\n\nStart Your Free Trial\nConnect on WhatsApp\nAdaptive RC\nBirbal AI Diagnosis\nPerformance Analytics\nA focused student actively practising a reading comprehension passage for a competitive aptitude exam.\nReading Intelligence\nA score tells you what happened.\nAuctor helps you understand why.\n\nEvery RC answer reveals something about how you read, infer, eliminate and interpret the author's intent.\n\nBEYOND THE SCORE\nYour mistakes leave a pattern.\n\nAuctor looks beyond the final answer to identify the reasoning patterns behind your performance.\n\nInference\n\nHow you connect what the passage says with what it implies.\n\nElimination\n\nHow you reject options and where traps catch you.\n\nTone & intent\n\nHow accurately you read the author's position and purpose.\n\nHOW AUCTOR WORKS\nDon't just practice RC.\nTrain how you read.\n\nEvery practice session becomes part of a learning loop — practice, understand your mistakes, identify the gap, and train it deliberately.\n\nTHE AUCTOR LEARNING LOOP\nEvery mistake becomes a training signal.\nPractice → Diagnose → Improve\n01\nPractice\n\nSolve RCs through focused, adaptive practice.\n\n02\nDiagnose\n\nUnderstand the reasoning behind your answers.\n\n03\nUnderstand\n\nSee where inference, elimination or interpretation breaks.\n\n04\nImprove\n\nTrain the exact gap instead of simply doing more questions.\n\nThe objective is not more practice. It is better practice.\n\nTrain the thinking\n\nReady to see how you read?\n\nStart your free trial or talk to us first.\n\nStart Free Trial\nWhatsApp\nCREATED BY EDUCATORS\nBuilt from the classroom.\n\nAuctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.\n\nNeraj Kumar Naiyar\nIIT Roorkee\nEducator, Product Builder, Founder, Auctor Labs\nSTUDENT REVIEWS\nTrusted by Students.\nBuilt for Institutes.\n\nReal students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.\n\nFrom Avoiding RC to Enjoying Reading\n\nIshaan Chandrakar\n\nDaily Workouts Changed My Reading Habit\n\nBhoomi Saluja\n\nBirbal Helped Me Understand My Mistakes\n\nRushill\n\nWRITTEN EXPERIENCES\nWhat Students Say\n“I used to avoid reading because I never enjoyed it. After using Auctor consistently, reading has become a daily habit and I can clearly feel the improvement in my comprehension.”\n\nKeshu Sharma\n\n“The Daily Workout feature kept me consistent. Instead of randomly practising RCs, I finally had a proper learning routine every day.”\n\nPushti Kapoor\n\n“Birbal doesn't just tell you the right answer. It explains why you were wrong, which completely changed how I approached Reading Comprehension.”\n\nNabeel\n\nWHY MOST RC PRACTICE FAILS\nMost RC practice improves familiarity.\nNot reading intelligence.\n\nSolving hundreds of passages is useless if you never understand why your reasoning breaks.\n\nTRADITIONAL\n\nRC Practice\nTHE OLD WAY\n100s\nPASSAGES\nSOLVED\n\nWHAT USUALLY HAPPENS\n\nRandom passages\nNo reasoning diagnosis\nSame difficulty for everyone\nWrong answer â†’ move on\nMock score, but no explanation\n\nMore practice.\n\nSame mistakes.\n\nAUCTOR\n\nReading Intelligence\nTHE NEW WAY\n\nYOUR IMPROVEMENT LOOP\n\n01\nPractice\n\nAdaptive practice\n\n02\nDiagnose\n\nReasoning analysis\n\n03\nUnderstand\n\nSee why you got it wrong\n\n04\nImprove\n\nTrain the exact gap\n\nWHAT CHANGES\n\nReasoning diagnosis\nTrap & elimination analysis\nReading intelligence profile\nTargeted improvement\n\nDon't just know\n\nwhat you got wrong.\n\nSIMPLE PRICING\nTrain smarter.\nChoose your plan.\n\nStart with the plan that fits your preparation and get complete access to Auctor RC's AI-powered reading intelligence tools.\n\nMONTHLY\n\n₹399\n\nPerfect to get started\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nPOPULAR\n\nQUARTERLY\n\n₹999\n\nMost Popular\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nHALF-YEARLY\n\n₹1299\n\nBest Value\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nMAXIMUM SAVINGS\n\nYEARLY\n\n₹1999\n\nMaximum Savings\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nNot sure which plan is right for you?\n\nTalk to us on WhatsApp\nJoin The Auctor Community\nLearn RC daily.\nStay connected with Auctor.\n\nGet RC insights, reading tips, inference training, mock analysis and daily learning content across our platforms.\n\nInstagram\n\nDaily RC reels, Test strategies, reading psychology and student improvement insights.\n\nFollow Instagram\nTelegram\n\nReceive free RC passages, Exam resources, daily practice sets and important announcements.\n\nJoin Telegram\nWhatsApp\n\nJoin our WhatsApp channel for quick updates, RC discussions and Exam preparation insights.\n\nJoin WhatsApp\nInside Auctor RC\nYour complete\nRC training dashboard.\n\nDaily workouts, speed training, Birbal AI mentoring and deep analytics. everything designed to improve VARC performance.\n\nDaily Workout\nSpeed Gym\nBirbal AI\nAnalytics\nDaily RC Workout\n\nA structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages.\n\nAdaptive RC passages\n\nDifficulty changes dynamically with your performance.\n\nSkill focused improvement\n\nImprove tone detection, inference and elimination logic.\n\nAI driven feedback\n\nBirbal continuously analyzes your reading behaviour.\n\nStart Your Free Trial\nTalk to us\n\nSTART TRAINING DIFFERENTLY\n\nStop doing more RCs.\nStart understanding them.\n\nExperience Auctor RC and see how a more intelligent approach to Reading Comprehension can change the way you practise.\n\nStart Your Free Trial\nConnect on WhatsApp\nFrequently Asked Questions\nEverything you need to know about Auctor RC.\nWhat is Auctor RC used for?\nWho built Auctor RC?\nHow is Auctor RC different from a normal RC question bank?\nWhat is Birbal in Auctor RC?\nWhat is Reader DNA?\nWhich exams does Auctor RC cover?\nHow much does Auctor RC cost?\nIs there a free trial?\nDoes Auctor RC replace a coaching institute?\nHow much time does Auctor RC take per day?\nDoes Auctor RC only help with speed, or also accuracy?\nCan institutes use Auctor RC under their own brand?\nAuctor RC\nTrain reading intelligence.\nNot just RC familiarity.\n\nAdaptive RC drills, Birbal AI diagnosis, reading cognition analytics and CAT-level improvement systems.\n\nStart Free 3 Days Trial\nPRODUCT\nAdaptive RC\nBirbal AI\nAnalytics\nRC Workouts\nCOMMUNITY\nInstagram\nTelegram\nWhatsApp\n© 2026 Auctor RC. Powered by Birbal AI.\nPrivacy\nTerms\nContact"
+    },
+    {
+      "name": "-preview-375",
+      "url": "/preview",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 16204,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 16204
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-eb30542502bd2445",
+          "top": 0,
+          "h": 1214,
+          "total": 1464
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "top": 0,
+          "h": 632,
+          "total": 882
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 18
+        },
+        {
+          "text": "Stop solving more RCs.\nStart solving RCs better.",
+          "y": 186
+        },
+        {
+          "text": "A score tells you what happened.\nAuctor helps you understand why.",
+          "y": 1222
+        },
+        {
+          "text": "Your mistakes leave a pattern.",
+          "y": 1561
+        },
+        {
+          "text": "Don't just practice RC.\nTrain how you read.",
+          "y": 2512
+        },
+        {
+          "text": "Every mistake becomes a training signal.",
+          "y": 2876
+        },
+        {
+          "text": "Built from the classroom.",
+          "y": 4397
+        },
+        {
+          "text": "Trusted by Students.\nBuilt for Institutes.",
+          "y": 5422
+        },
+        {
+          "text": "From Avoiding RC to Enjoying Reading",
+          "y": 6052
+        },
+        {
+          "text": "Daily Workouts Changed My Reading Habit",
+          "y": 6052
+        },
+        {
+          "text": "Birbal Helped Me Understand My Mistakes",
+          "y": 6031
+        },
+        {
+          "text": "What Students Say",
+          "y": 6388
+        },
+        {
+          "text": "Most RC practice improves familiarity.\nNot reading intelligence.",
+          "y": 7067
+        },
+        {
+          "text": "RC Practice",
+          "y": 7511
+        },
+        {
+          "text": "Reading Intelligence",
+          "y": 8245
+        },
+        {
+          "text": "Train smarter.\nChoose your plan.",
+          "y": 9675
+        },
+        {
+          "text": "₹399",
+          "y": 10035
+        },
+        {
+          "text": "₹999",
+          "y": 10035
+        },
+        {
+          "text": "₹1299",
+          "y": 10035
+        },
+        {
+          "text": "₹1999",
+          "y": 10035
+        },
+        {
+          "text": "Learn RC daily.\nStay connected with Auctor.",
+          "y": 10698
+        },
+        {
+          "text": "Instagram",
+          "y": 11063
+        },
+        {
+          "text": "Telegram",
+          "y": 11063
+        },
+        {
+          "text": "WhatsApp",
+          "y": 11063
+        },
+        {
+          "text": "Your complete\nRC training dashboard.",
+          "y": 11542
+        },
+        {
+          "text": "Daily RC Workout",
+          "y": 11893
+        },
+        {
+          "text": "Stop doing more RCs.\nStart understanding them.",
+          "y": 13089
+        },
+        {
+          "text": "Everything you need to know about Auctor RC.",
+          "y": 13808
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "y": 13881
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "y": 13955
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "y": 14029
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "y": 14127
+        },
+        {
+          "text": "What is Reader DNA?",
+          "y": 14201
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "y": 14275
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "y": 14349
+        },
+        {
+          "text": "Is there a free trial?",
+          "y": 14423
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "y": 14497
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "y": 14595
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "y": 14693
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "y": 14791
+        },
+        {
+          "text": "Train reading intelligence.\nNot just RC familiarity.",
+          "y": 15199
+        },
+        {
+          "text": "PRODUCT",
+          "y": 15659
+        },
+        {
+          "text": "COMMUNITY",
+          "y": 15659
+        }
+      ],
+      "controls": [
+        {
+          "text": "Open navigation menu",
+          "x": 323,
+          "y": 12,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "Login",
+          "x": 255,
+          "y": 13,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 20,
+          "y": 489,
+          "w": 335,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 20,
+          "y": 557,
+          "w": 335,
+          "h": 58
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 31,
+          "y": 4190,
+          "w": 158,
+          "h": 50
+        },
+        {
+          "text": "WhatsApp",
+          "x": 199,
+          "y": 4190,
+          "w": 144,
+          "h": 50
+        },
+        {
+          "text": "Play Ishaan Chandrakar's testimonial",
+          "x": 25,
+          "y": 5612,
+          "w": 278,
+          "h": 417
+        },
+        {
+          "text": "Play Bhoomi Saluja's testimonial",
+          "x": 321,
+          "y": 5612,
+          "w": 278,
+          "h": 416
+        },
+        {
+          "text": "Play Rushill's testimonial",
+          "x": 617,
+          "y": 5612,
+          "w": 278,
+          "h": 395
+        },
+        {
+          "text": "Go to video testimonial 1",
+          "x": 164,
+          "y": 6221,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 2",
+          "x": 204,
+          "y": 6221,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 3",
+          "x": 212,
+          "y": 6221,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 1",
+          "x": 164,
+          "y": 6929,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 2",
+          "x": 204,
+          "y": 6929,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 3",
+          "x": 212,
+          "y": 6929,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 51,
+          "y": 10251,
+          "w": 209,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 336,
+          "y": 10253,
+          "w": 209,
+          "h": 49
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 621,
+          "y": 10251,
+          "w": 209,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 906,
+          "y": 10253,
+          "w": 209,
+          "h": 49
+        },
+        {
+          "text": "Talk to us on WhatsApp",
+          "x": 84,
+          "y": 10414,
+          "w": 206,
+          "h": 21
+        },
+        {
+          "text": "Follow Instagram",
+          "x": 45,
+          "y": 11247,
+          "w": 173,
+          "h": 48
+        },
+        {
+          "text": "Join Telegram",
+          "x": 330,
+          "y": 11247,
+          "w": 148,
+          "h": 48
+        },
+        {
+          "text": "Join WhatsApp",
+          "x": 615,
+          "y": 11247,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "Daily Workout",
+          "x": 0,
+          "y": 11799,
+          "w": 136,
+          "h": 46
+        },
+        {
+          "text": "Speed Gym",
+          "x": 146,
+          "y": 11799,
+          "w": 117,
+          "h": 46
+        },
+        {
+          "text": "Birbal AI",
+          "x": 273,
+          "y": 11799,
+          "w": 96,
+          "h": 46
+        },
+        {
+          "text": "Analytics",
+          "x": 378,
+          "y": 11799,
+          "w": 99,
+          "h": 46
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 24,
+          "y": 12814,
+          "w": 327,
+          "h": 56
+        },
+        {
+          "text": "Talk to us",
+          "x": 24,
+          "y": 12882,
+          "w": 327,
+          "h": 58
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 41,
+          "y": 13455,
+          "w": 293,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 41,
+          "y": 13523,
+          "w": 293,
+          "h": 58
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "x": 37,
+          "y": 13881,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "x": 37,
+          "y": 13955,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "x": 37,
+          "y": 14029,
+          "w": 301,
+          "h": 80
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "x": 37,
+          "y": 14127,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "What is Reader DNA?",
+          "x": 37,
+          "y": 14201,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "x": 37,
+          "y": 14275,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "x": 37,
+          "y": 14349,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "Is there a free trial?",
+          "x": 37,
+          "y": 14423,
+          "w": 301,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "x": 37,
+          "y": 14497,
+          "w": 301,
+          "h": 80
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "x": 37,
+          "y": 14595,
+          "w": 301,
+          "h": 80
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "x": 37,
+          "y": 14693,
+          "w": 301,
+          "h": 80
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "x": 37,
+          "y": 14791,
+          "w": 301,
+          "h": 80
+        },
+        {
+          "text": "Start Free 3 Days Trial",
+          "x": 24,
+          "y": 15539,
+          "w": 221,
+          "h": 56
+        },
+        {
+          "text": "Instagram",
+          "x": 208,
+          "y": 15703,
+          "w": 144,
+          "h": 24
+        },
+        {
+          "text": "Telegram",
+          "x": 208,
+          "y": 15747,
+          "w": 144,
+          "h": 24
+        },
+        {
+          "text": "WhatsApp",
+          "x": 208,
+          "y": 15791,
+          "w": 144,
+          "h": 24
+        }
+      ],
+      "text": "Auctor RC\nLogin\nAI-Powered Reading Intelligence\nStop solving more RCs.\nStart solving RCs better.\n\nAuctor identifies how your reasoning breaks and then trains the exact skills holding your VARC score back.\n\nStart Your Free Trial\nConnect on WhatsApp\nAdaptive RC\nBirbal AI Diagnosis\nPerformance Analytics\nA focused student actively practising a reading comprehension passage for a competitive aptitude exam.\nReading Intelligence\nA score tells you what happened.\nAuctor helps you understand why.\n\nEvery RC answer reveals something about how you read, infer, eliminate and interpret the author's intent.\n\nBEYOND THE SCORE\nYour mistakes leave a pattern.\n\nAuctor looks beyond the final answer to identify the reasoning patterns behind your performance.\n\nInference\n\nHow you connect what the passage says with what it implies.\n\nElimination\n\nHow you reject options and where traps catch you.\n\nTone & intent\n\nHow accurately you read the author's position and purpose.\n\nHOW AUCTOR WORKS\nDon't just practice RC.\nTrain how you read.\n\nEvery practice session becomes part of a learning loop — practice, understand your mistakes, identify the gap, and train it deliberately.\n\nTHE AUCTOR LEARNING LOOP\nEvery mistake becomes a training signal.\nPractice → Diagnose → Improve\n01\nPractice\n\nSolve RCs through focused, adaptive practice.\n\n02\nDiagnose\n\nUnderstand the reasoning behind your answers.\n\n03\nUnderstand\n\nSee where inference, elimination or interpretation breaks.\n\n04\nImprove\n\nTrain the exact gap instead of simply doing more questions.\n\nThe objective is not more practice. It is better practice.\n\nTrain the thinking\n\nReady to see how you read?\n\nStart your free trial or talk to us first.\n\nStart Free Trial\nWhatsApp\nCREATED BY EDUCATORS\nBuilt from the classroom.\n\nAuctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.\n\nNeraj Kumar Naiyar\nIIT Roorkee\nEducator, Product Builder, Founder, Auctor Labs\nSTUDENT REVIEWS\nTrusted by Students.\nBuilt for Institutes.\n\nReal students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.\n\nFrom Avoiding RC to Enjoying Reading\n\nIshaan Chandrakar\n\nDaily Workouts Changed My Reading Habit\n\nBhoomi Saluja\n\nBirbal Helped Me Understand My Mistakes\n\nRushill\n\nWRITTEN EXPERIENCES\nWhat Students Say\n“I used to avoid reading because I never enjoyed it. After using Auctor consistently, reading has become a daily habit and I can clearly feel the improvement in my comprehension.”\n\nKeshu Sharma\n\n“The Daily Workout feature kept me consistent. Instead of randomly practising RCs, I finally had a proper learning routine every day.”\n\nPushti Kapoor\n\n“Birbal doesn't just tell you the right answer. It explains why you were wrong, which completely changed how I approached Reading Comprehension.”\n\nNabeel\n\nWHY MOST RC PRACTICE FAILS\nMost RC practice improves familiarity.\nNot reading intelligence.\n\nSolving hundreds of passages is useless if you never understand why your reasoning breaks.\n\nTRADITIONAL\n\nRC Practice\nTHE OLD WAY\n100s\nPASSAGES\nSOLVED\n\nWHAT USUALLY HAPPENS\n\nRandom passages\nNo reasoning diagnosis\nSame difficulty for everyone\nWrong answer â†’ move on\nMock score, but no explanation\n\nMore practice.\n\nSame mistakes.\n\nAUCTOR\n\nReading Intelligence\nTHE NEW WAY\n\nYOUR IMPROVEMENT LOOP\n\n01\nPractice\n\nAdaptive practice\n\n02\nDiagnose\n\nReasoning analysis\n\n03\nUnderstand\n\nSee why you got it wrong\n\n04\nImprove\n\nTrain the exact gap\n\nWHAT CHANGES\n\nReasoning diagnosis\nTrap & elimination analysis\nReading intelligence profile\nTargeted improvement\n\nDon't just know\n\nwhat you got wrong.\n\nSIMPLE PRICING\nTrain smarter.\nChoose your plan.\n\nStart with the plan that fits your preparation and get complete access to Auctor RC's AI-powered reading intelligence tools.\n\nMONTHLY\n\n₹399\n\nPerfect to get started\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nPOPULAR\n\nQUARTERLY\n\n₹999\n\nMost Popular\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nHALF-YEARLY\n\n₹1299\n\nBest Value\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nMAXIMUM SAVINGS\n\nYEARLY\n\n₹1999\n\nMaximum Savings\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nNot sure which plan is right for you?\n\nTalk to us on WhatsApp\nJoin The Auctor Community\nLearn RC daily.\nStay connected with Auctor.\n\nGet RC insights, reading tips, inference training, mock analysis and daily learning content across our platforms.\n\nInstagram\n\nDaily RC reels, Test strategies, reading psychology and student improvement insights.\n\nFollow Instagram\nTelegram\n\nReceive free RC passages, Exam resources, daily practice sets and important announcements.\n\nJoin Telegram\nWhatsApp\n\nJoin our WhatsApp channel for quick updates, RC discussions and Exam preparation insights.\n\nJoin WhatsApp\nInside Auctor RC\nYour complete\nRC training dashboard.\n\nDaily workouts, speed training, Birbal AI mentoring and deep analytics. everything designed to improve VARC performance.\n\nDaily Workout\nSpeed Gym\nBirbal AI\nAnalytics\nDaily RC Workout\n\nA structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages.\n\nAdaptive RC passages\n\nDifficulty changes dynamically with your performance.\n\nSkill focused improvement\n\nImprove tone detection, inference and elimination logic.\n\nAI driven feedback\n\nBirbal continuously analyzes your reading behaviour.\n\nStart Your Free Trial\nTalk to us\n\nSTART TRAINING DIFFERENTLY\n\nStop doing more RCs.\nStart understanding them.\n\nExperience Auctor RC and see how a more intelligent approach to Reading Comprehension can change the way you practise.\n\nStart Your Free Trial\nConnect on WhatsApp\nFrequently Asked Questions\nEverything you need to know about Auctor RC.\nWhat is Auctor RC used for?\nWho built Auctor RC?\nHow is Auctor RC different from a normal RC question bank?\nWhat is Birbal in Auctor RC?\nWhat is Reader DNA?\nWhich exams does Auctor RC cover?\nHow much does Auctor RC cost?\nIs there a free trial?\nDoes Auctor RC replace a coaching institute?\nHow much time does Auctor RC take per day?\nDoes Auctor RC only help with speed, or also accuracy?\nCan institutes use Auctor RC under their own brand?\nAuctor RC\nTrain reading intelligence.\nNot just RC familiarity.\n\nAdaptive RC drills, Birbal AI diagnosis, reading cognition analytics and CAT-level improvement systems.\n\nStart Free 3 Days Trial\nPRODUCT\nAdaptive RC\nBirbal AI\nAnalytics\nRC Workouts\nCOMMUNITY\nInstagram\nTelegram\nWhatsApp\n© 2026 Auctor RC. Powered by Birbal AI.\nPrivacy\nTerms\nContact"
+    },
+    {
+      "name": "-preview-390",
+      "url": "/preview",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 16082,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 16082
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-eb30542502bd2445",
+          "top": 0,
+          "h": 1214,
+          "total": 1464
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "top": 0,
+          "h": 632,
+          "total": 882
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 9
+        },
+        {
+          "text": "Stop solving more RCs.\nStart solving RCs better.",
+          "y": 186
+        },
+        {
+          "text": "A score tells you what happened.\nAuctor helps you understand why.",
+          "y": 1239
+        },
+        {
+          "text": "Your mistakes leave a pattern.",
+          "y": 1578
+        },
+        {
+          "text": "Don't just practice RC.\nTrain how you read.",
+          "y": 2539
+        },
+        {
+          "text": "Every mistake becomes a training signal.",
+          "y": 2903
+        },
+        {
+          "text": "Built from the classroom.",
+          "y": 4423
+        },
+        {
+          "text": "Trusted by Students.\nBuilt for Institutes.",
+          "y": 5414
+        },
+        {
+          "text": "From Avoiding RC to Enjoying Reading",
+          "y": 6045
+        },
+        {
+          "text": "Daily Workouts Changed My Reading Habit",
+          "y": 6044
+        },
+        {
+          "text": "Birbal Helped Me Understand My Mistakes",
+          "y": 6023
+        },
+        {
+          "text": "What Students Say",
+          "y": 6380
+        },
+        {
+          "text": "Most RC practice improves familiarity.\nNot reading intelligence.",
+          "y": 7059
+        },
+        {
+          "text": "RC Practice",
+          "y": 7503
+        },
+        {
+          "text": "Reading Intelligence",
+          "y": 8197
+        },
+        {
+          "text": "Train smarter.\nChoose your plan.",
+          "y": 9627
+        },
+        {
+          "text": "₹399",
+          "y": 9956
+        },
+        {
+          "text": "₹999",
+          "y": 9956
+        },
+        {
+          "text": "₹1299",
+          "y": 9956
+        },
+        {
+          "text": "₹1999",
+          "y": 9956
+        },
+        {
+          "text": "Learn RC daily.\nStay connected with Auctor.",
+          "y": 10619
+        },
+        {
+          "text": "Instagram",
+          "y": 10983
+        },
+        {
+          "text": "Telegram",
+          "y": 10983
+        },
+        {
+          "text": "WhatsApp",
+          "y": 10983
+        },
+        {
+          "text": "Your complete\nRC training dashboard.",
+          "y": 11462
+        },
+        {
+          "text": "Daily RC Workout",
+          "y": 11781
+        },
+        {
+          "text": "Stop doing more RCs.\nStart understanding them.",
+          "y": 12967
+        },
+        {
+          "text": "Everything you need to know about Auctor RC.",
+          "y": 13686
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "y": 13759
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "y": 13833
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "y": 13907
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "y": 14005
+        },
+        {
+          "text": "What is Reader DNA?",
+          "y": 14079
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "y": 14153
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "y": 14227
+        },
+        {
+          "text": "Is there a free trial?",
+          "y": 14301
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "y": 14375
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "y": 14473
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "y": 14571
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "y": 14669
+        },
+        {
+          "text": "Train reading intelligence.\nNot just RC familiarity.",
+          "y": 15077
+        },
+        {
+          "text": "PRODUCT",
+          "y": 15537
+        },
+        {
+          "text": "COMMUNITY",
+          "y": 15537
+        }
+      ],
+      "controls": [
+        {
+          "text": "Open navigation menu",
+          "x": 338,
+          "y": 12,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "Login",
+          "x": 270,
+          "y": 13,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 20,
+          "y": 496,
+          "w": 350,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 20,
+          "y": 564,
+          "w": 350,
+          "h": 58
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 31,
+          "y": 4216,
+          "w": 158,
+          "h": 50
+        },
+        {
+          "text": "WhatsApp",
+          "x": 199,
+          "y": 4216,
+          "w": 144,
+          "h": 50
+        },
+        {
+          "text": "Play Ishaan Chandrakar's testimonial",
+          "x": 25,
+          "y": 5604,
+          "w": 278,
+          "h": 417
+        },
+        {
+          "text": "Play Bhoomi Saluja's testimonial",
+          "x": 321,
+          "y": 5604,
+          "w": 278,
+          "h": 416
+        },
+        {
+          "text": "Play Rushill's testimonial",
+          "x": 617,
+          "y": 5604,
+          "w": 278,
+          "h": 395
+        },
+        {
+          "text": "Go to video testimonial 1",
+          "x": 171,
+          "y": 6213,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 2",
+          "x": 211,
+          "y": 6213,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 3",
+          "x": 219,
+          "y": 6213,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 1",
+          "x": 171,
+          "y": 6921,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 2",
+          "x": 211,
+          "y": 6921,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 3",
+          "x": 219,
+          "y": 6921,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 51,
+          "y": 10172,
+          "w": 224,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 351,
+          "y": 10174,
+          "w": 224,
+          "h": 49
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 651,
+          "y": 10172,
+          "w": 224,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 951,
+          "y": 10174,
+          "w": 224,
+          "h": 49
+        },
+        {
+          "text": "Talk to us on WhatsApp",
+          "x": 92,
+          "y": 10335,
+          "w": 206,
+          "h": 21
+        },
+        {
+          "text": "Follow Instagram",
+          "x": 45,
+          "y": 11167,
+          "w": 173,
+          "h": 48
+        },
+        {
+          "text": "Join Telegram",
+          "x": 345,
+          "y": 11167,
+          "w": 148,
+          "h": 48
+        },
+        {
+          "text": "Join WhatsApp",
+          "x": 645,
+          "y": 11167,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "Daily Workout",
+          "x": 0,
+          "y": 11687,
+          "w": 136,
+          "h": 46
+        },
+        {
+          "text": "Speed Gym",
+          "x": 146,
+          "y": 11687,
+          "w": 117,
+          "h": 46
+        },
+        {
+          "text": "Birbal AI",
+          "x": 273,
+          "y": 11687,
+          "w": 96,
+          "h": 46
+        },
+        {
+          "text": "Analytics",
+          "x": 378,
+          "y": 11687,
+          "w": 99,
+          "h": 46
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 24,
+          "y": 12692,
+          "w": 342,
+          "h": 56
+        },
+        {
+          "text": "Talk to us",
+          "x": 24,
+          "y": 12760,
+          "w": 342,
+          "h": 58
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 41,
+          "y": 13333,
+          "w": 308,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 41,
+          "y": 13401,
+          "w": 308,
+          "h": 58
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "x": 37,
+          "y": 13759,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "x": 37,
+          "y": 13833,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "x": 37,
+          "y": 13907,
+          "w": 316,
+          "h": 80
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "x": 37,
+          "y": 14005,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "What is Reader DNA?",
+          "x": 37,
+          "y": 14079,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "x": 37,
+          "y": 14153,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "x": 37,
+          "y": 14227,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "Is there a free trial?",
+          "x": 37,
+          "y": 14301,
+          "w": 316,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "x": 37,
+          "y": 14375,
+          "w": 316,
+          "h": 80
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "x": 37,
+          "y": 14473,
+          "w": 316,
+          "h": 80
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "x": 37,
+          "y": 14571,
+          "w": 316,
+          "h": 80
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "x": 37,
+          "y": 14669,
+          "w": 316,
+          "h": 80
+        },
+        {
+          "text": "Start Free 3 Days Trial",
+          "x": 24,
+          "y": 15417,
+          "w": 221,
+          "h": 56
+        },
+        {
+          "text": "Instagram",
+          "x": 215,
+          "y": 15581,
+          "w": 151,
+          "h": 24
+        },
+        {
+          "text": "Telegram",
+          "x": 215,
+          "y": 15625,
+          "w": 151,
+          "h": 24
+        },
+        {
+          "text": "WhatsApp",
+          "x": 215,
+          "y": 15669,
+          "w": 151,
+          "h": 24
+        }
+      ],
+      "text": "Auctor RC\n\nPowered by Birbal AI\n\nLogin\nAI-Powered Reading Intelligence\nStop solving more RCs.\nStart solving RCs better.\n\nAuctor identifies how your reasoning breaks and then trains the exact skills holding your VARC score back.\n\nStart Your Free Trial\nConnect on WhatsApp\nAdaptive RC\nBirbal AI Diagnosis\nPerformance Analytics\nA focused student actively practising a reading comprehension passage for a competitive aptitude exam.\nReading Intelligence\nA score tells you what happened.\nAuctor helps you understand why.\n\nEvery RC answer reveals something about how you read, infer, eliminate and interpret the author's intent.\n\nBEYOND THE SCORE\nYour mistakes leave a pattern.\n\nAuctor looks beyond the final answer to identify the reasoning patterns behind your performance.\n\nInference\n\nHow you connect what the passage says with what it implies.\n\nElimination\n\nHow you reject options and where traps catch you.\n\nTone & intent\n\nHow accurately you read the author's position and purpose.\n\nHOW AUCTOR WORKS\nDon't just practice RC.\nTrain how you read.\n\nEvery practice session becomes part of a learning loop — practice, understand your mistakes, identify the gap, and train it deliberately.\n\nTHE AUCTOR LEARNING LOOP\nEvery mistake becomes a training signal.\nPractice → Diagnose → Improve\n01\nPractice\n\nSolve RCs through focused, adaptive practice.\n\n02\nDiagnose\n\nUnderstand the reasoning behind your answers.\n\n03\nUnderstand\n\nSee where inference, elimination or interpretation breaks.\n\n04\nImprove\n\nTrain the exact gap instead of simply doing more questions.\n\nThe objective is not more practice. It is better practice.\n\nTrain the thinking\n\nReady to see how you read?\n\nStart your free trial or talk to us first.\n\nStart Free Trial\nWhatsApp\nCREATED BY EDUCATORS\nBuilt from the classroom.\n\nAuctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.\n\nNeraj Kumar Naiyar\nIIT Roorkee\nEducator, Product Builder, Founder, Auctor Labs\nSTUDENT REVIEWS\nTrusted by Students.\nBuilt for Institutes.\n\nReal students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.\n\nFrom Avoiding RC to Enjoying Reading\n\nIshaan Chandrakar\n\nDaily Workouts Changed My Reading Habit\n\nBhoomi Saluja\n\nBirbal Helped Me Understand My Mistakes\n\nRushill\n\nWRITTEN EXPERIENCES\nWhat Students Say\n“I used to avoid reading because I never enjoyed it. After using Auctor consistently, reading has become a daily habit and I can clearly feel the improvement in my comprehension.”\n\nKeshu Sharma\n\n“The Daily Workout feature kept me consistent. Instead of randomly practising RCs, I finally had a proper learning routine every day.”\n\nPushti Kapoor\n\n“Birbal doesn't just tell you the right answer. It explains why you were wrong, which completely changed how I approached Reading Comprehension.”\n\nNabeel\n\nWHY MOST RC PRACTICE FAILS\nMost RC practice improves familiarity.\nNot reading intelligence.\n\nSolving hundreds of passages is useless if you never understand why your reasoning breaks.\n\nTRADITIONAL\n\nRC Practice\nTHE OLD WAY\n100s\nPASSAGES\nSOLVED\n\nWHAT USUALLY HAPPENS\n\nRandom passages\nNo reasoning diagnosis\nSame difficulty for everyone\nWrong answer â†’ move on\nMock score, but no explanation\n\nMore practice.\n\nSame mistakes.\n\nAUCTOR\n\nReading Intelligence\nTHE NEW WAY\n\nYOUR IMPROVEMENT LOOP\n\n01\nPractice\n\nAdaptive practice\n\n02\nDiagnose\n\nReasoning analysis\n\n03\nUnderstand\n\nSee why you got it wrong\n\n04\nImprove\n\nTrain the exact gap\n\nWHAT CHANGES\n\nReasoning diagnosis\nTrap & elimination analysis\nReading intelligence profile\nTargeted improvement\n\nDon't just know\n\nwhat you got wrong.\n\nSIMPLE PRICING\nTrain smarter.\nChoose your plan.\n\nStart with the plan that fits your preparation and get complete access to Auctor RC's AI-powered reading intelligence tools.\n\nMONTHLY\n\n₹399\n\nPerfect to get started\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nPOPULAR\n\nQUARTERLY\n\n₹999\n\nMost Popular\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nHALF-YEARLY\n\n₹1299\n\nBest Value\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nMAXIMUM SAVINGS\n\nYEARLY\n\n₹1999\n\nMaximum Savings\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nNot sure which plan is right for you?\n\nTalk to us on WhatsApp\nJoin The Auctor Community\nLearn RC daily.\nStay connected with Auctor.\n\nGet RC insights, reading tips, inference training, mock analysis and daily learning content across our platforms.\n\nInstagram\n\nDaily RC reels, Test strategies, reading psychology and student improvement insights.\n\nFollow Instagram\nTelegram\n\nReceive free RC passages, Exam resources, daily practice sets and important announcements.\n\nJoin Telegram\nWhatsApp\n\nJoin our WhatsApp channel for quick updates, RC discussions and Exam preparation insights.\n\nJoin WhatsApp\nInside Auctor RC\nYour complete\nRC training dashboard.\n\nDaily workouts, speed training, Birbal AI mentoring and deep analytics. everything designed to improve VARC performance.\n\nDaily Workout\nSpeed Gym\nBirbal AI\nAnalytics\nDaily RC Workout\n\nA structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages.\n\nAdaptive RC passages\n\nDifficulty changes dynamically with your performance.\n\nSkill focused improvement\n\nImprove tone detection, inference and elimination logic.\n\nAI driven feedback\n\nBirbal continuously analyzes your reading behaviour.\n\nStart Your Free Trial\nTalk to us\n\nSTART TRAINING DIFFERENTLY\n\nStop doing more RCs.\nStart understanding them.\n\nExperience Auctor RC and see how a more intelligent approach to Reading Comprehension can change the way you practise.\n\nStart Your Free Trial\nConnect on WhatsApp\nFrequently Asked Questions\nEverything you need to know about Auctor RC.\nWhat is Auctor RC used for?\nWho built Auctor RC?\nHow is Auctor RC different from a normal RC question bank?\nWhat is Birbal in Auctor RC?\nWhat is Reader DNA?\nWhich exams does Auctor RC cover?\nHow much does Auctor RC cost?\nIs there a free trial?\nDoes Auctor RC replace a coaching institute?\nHow much time does Auctor RC take per day?\nDoes Auctor RC only help with speed, or also accuracy?\nCan institutes use Auctor RC under their own brand?\nAuctor RC\nTrain reading intelligence.\nNot just RC familiarity.\n\nAdaptive RC drills, Birbal AI diagnosis, reading cognition analytics and CAT-level improvement systems.\n\nStart Free 3 Days Trial\nPRODUCT\nAdaptive RC\nBirbal AI\nAnalytics\nRC Workouts\nCOMMUNITY\nInstagram\nTelegram\nWhatsApp\n© 2026 Auctor RC. Powered by Birbal AI.\nPrivacy\nTerms\nContact"
+    },
+    {
+      "name": "-preview-414",
+      "url": "/preview",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 15762,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 15762
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-eb30542502bd2445",
+          "top": 0,
+          "h": 1185,
+          "total": 1435
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "top": 0,
+          "h": 595,
+          "total": 845
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 9
+        },
+        {
+          "text": "Stop solving more RCs.\nStart solving RCs better.",
+          "y": 186
+        },
+        {
+          "text": "A score tells you what happened.\nAuctor helps you understand why.",
+          "y": 1266
+        },
+        {
+          "text": "Your mistakes leave a pattern.",
+          "y": 1605
+        },
+        {
+          "text": "Don't just practice RC.\nTrain how you read.",
+          "y": 2581
+        },
+        {
+          "text": "Every mistake becomes a training signal.",
+          "y": 2909
+        },
+        {
+          "text": "Built from the classroom.",
+          "y": 4400
+        },
+        {
+          "text": "Trusted by Students.\nBuilt for Institutes.",
+          "y": 5391
+        },
+        {
+          "text": "From Avoiding RC to Enjoying Reading",
+          "y": 6021
+        },
+        {
+          "text": "Daily Workouts Changed My Reading Habit",
+          "y": 6021
+        },
+        {
+          "text": "Birbal Helped Me Understand My Mistakes",
+          "y": 6000
+        },
+        {
+          "text": "What Students Say",
+          "y": 6357
+        },
+        {
+          "text": "Most RC practice improves familiarity.\nNot reading intelligence.",
+          "y": 7036
+        },
+        {
+          "text": "RC Practice",
+          "y": 7408
+        },
+        {
+          "text": "Reading Intelligence",
+          "y": 8102
+        },
+        {
+          "text": "Train smarter.\nChoose your plan.",
+          "y": 9492
+        },
+        {
+          "text": "₹399",
+          "y": 9821
+        },
+        {
+          "text": "₹999",
+          "y": 9821
+        },
+        {
+          "text": "₹1299",
+          "y": 9821
+        },
+        {
+          "text": "₹1999",
+          "y": 9821
+        },
+        {
+          "text": "Learn RC daily.\nStay connected with Auctor.",
+          "y": 10483
+        },
+        {
+          "text": "Instagram",
+          "y": 10848
+        },
+        {
+          "text": "Telegram",
+          "y": 10848
+        },
+        {
+          "text": "WhatsApp",
+          "y": 10848
+        },
+        {
+          "text": "Your complete\nRC training dashboard.",
+          "y": 11327
+        },
+        {
+          "text": "Daily RC Workout",
+          "y": 11646
+        },
+        {
+          "text": "Stop doing more RCs.\nStart understanding them.",
+          "y": 12777
+        },
+        {
+          "text": "Everything you need to know about Auctor RC.",
+          "y": 13459
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "y": 13532
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "y": 13606
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "y": 13680
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "y": 13778
+        },
+        {
+          "text": "What is Reader DNA?",
+          "y": 13852
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "y": 13926
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "y": 14000
+        },
+        {
+          "text": "Is there a free trial?",
+          "y": 14074
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "y": 14148
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "y": 14222
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "y": 14296
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "y": 14394
+        },
+        {
+          "text": "Train reading intelligence.\nNot just RC familiarity.",
+          "y": 14802
+        },
+        {
+          "text": "PRODUCT",
+          "y": 15217
+        },
+        {
+          "text": "COMMUNITY",
+          "y": 15217
+        }
+      ],
+      "controls": [
+        {
+          "text": "Open navigation menu",
+          "x": 362,
+          "y": 12,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "Login",
+          "x": 294,
+          "y": 13,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 20,
+          "y": 507,
+          "w": 374,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 20,
+          "y": 575,
+          "w": 374,
+          "h": 58
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 31,
+          "y": 4193,
+          "w": 158,
+          "h": 50
+        },
+        {
+          "text": "WhatsApp",
+          "x": 199,
+          "y": 4193,
+          "w": 144,
+          "h": 50
+        },
+        {
+          "text": "Play Ishaan Chandrakar's testimonial",
+          "x": 25,
+          "y": 5581,
+          "w": 278,
+          "h": 417
+        },
+        {
+          "text": "Play Bhoomi Saluja's testimonial",
+          "x": 321,
+          "y": 5581,
+          "w": 278,
+          "h": 416
+        },
+        {
+          "text": "Play Rushill's testimonial",
+          "x": 617,
+          "y": 5581,
+          "w": 278,
+          "h": 395
+        },
+        {
+          "text": "Go to video testimonial 1",
+          "x": 183,
+          "y": 6190,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 2",
+          "x": 223,
+          "y": 6190,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to video testimonial 3",
+          "x": 231,
+          "y": 6190,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 1",
+          "x": 183,
+          "y": 6898,
+          "w": 32,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 2",
+          "x": 223,
+          "y": 6898,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Go to written testimonial 3",
+          "x": 231,
+          "y": 6898,
+          "w": 0,
+          "h": 10
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 51,
+          "y": 10037,
+          "w": 248,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 375,
+          "y": 10039,
+          "w": 248,
+          "h": 49
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 699,
+          "y": 10037,
+          "w": 248,
+          "h": 51
+        },
+        {
+          "text": "Start Free Trial",
+          "x": 1023,
+          "y": 10039,
+          "w": 248,
+          "h": 49
+        },
+        {
+          "text": "Talk to us on WhatsApp",
+          "x": 104,
+          "y": 10200,
+          "w": 206,
+          "h": 21
+        },
+        {
+          "text": "Follow Instagram",
+          "x": 45,
+          "y": 11032,
+          "w": 173,
+          "h": 48
+        },
+        {
+          "text": "Join Telegram",
+          "x": 369,
+          "y": 11032,
+          "w": 148,
+          "h": 48
+        },
+        {
+          "text": "Join WhatsApp",
+          "x": 693,
+          "y": 11032,
+          "w": 158,
+          "h": 48
+        },
+        {
+          "text": "Daily Workout",
+          "x": 0,
+          "y": 11552,
+          "w": 136,
+          "h": 46
+        },
+        {
+          "text": "Speed Gym",
+          "x": 146,
+          "y": 11552,
+          "w": 117,
+          "h": 46
+        },
+        {
+          "text": "Birbal AI",
+          "x": 273,
+          "y": 11552,
+          "w": 96,
+          "h": 46
+        },
+        {
+          "text": "Analytics",
+          "x": 378,
+          "y": 11552,
+          "w": 99,
+          "h": 46
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 24,
+          "y": 12502,
+          "w": 366,
+          "h": 56
+        },
+        {
+          "text": "Talk to us",
+          "x": 24,
+          "y": 12570,
+          "w": 366,
+          "h": 58
+        },
+        {
+          "text": "Start Your Free Trial",
+          "x": 41,
+          "y": 13106,
+          "w": 332,
+          "h": 56
+        },
+        {
+          "text": "Connect on WhatsApp",
+          "x": 41,
+          "y": 13174,
+          "w": 332,
+          "h": 58
+        },
+        {
+          "text": "What is Auctor RC used for?",
+          "x": 37,
+          "y": 13532,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "Who built Auctor RC?",
+          "x": 37,
+          "y": 13606,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "How is Auctor RC different from a normal RC question bank?",
+          "x": 37,
+          "y": 13680,
+          "w": 340,
+          "h": 80
+        },
+        {
+          "text": "What is Birbal in Auctor RC?",
+          "x": 37,
+          "y": 13778,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "What is Reader DNA?",
+          "x": 37,
+          "y": 13852,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "Which exams does Auctor RC cover?",
+          "x": 37,
+          "y": 13926,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "How much does Auctor RC cost?",
+          "x": 37,
+          "y": 14000,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "Is there a free trial?",
+          "x": 37,
+          "y": 14074,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC replace a coaching institute?",
+          "x": 37,
+          "y": 14148,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "How much time does Auctor RC take per day?",
+          "x": 37,
+          "y": 14222,
+          "w": 340,
+          "h": 56
+        },
+        {
+          "text": "Does Auctor RC only help with speed, or also accuracy?",
+          "x": 37,
+          "y": 14296,
+          "w": 340,
+          "h": 80
+        },
+        {
+          "text": "Can institutes use Auctor RC under their own brand?",
+          "x": 37,
+          "y": 14394,
+          "w": 340,
+          "h": 80
+        },
+        {
+          "text": "Start Free 3 Days Trial",
+          "x": 24,
+          "y": 15097,
+          "w": 221,
+          "h": 56
+        },
+        {
+          "text": "Instagram",
+          "x": 227,
+          "y": 15261,
+          "w": 163,
+          "h": 24
+        },
+        {
+          "text": "Telegram",
+          "x": 227,
+          "y": 15305,
+          "w": 163,
+          "h": 24
+        },
+        {
+          "text": "WhatsApp",
+          "x": 227,
+          "y": 15349,
+          "w": 163,
+          "h": 24
+        }
+      ],
+      "text": "Auctor RC\n\nPowered by Birbal AI\n\nLogin\nAI-Powered Reading Intelligence\nStop solving more RCs.\nStart solving RCs better.\n\nAuctor identifies how your reasoning breaks and then trains the exact skills holding your VARC score back.\n\nStart Your Free Trial\nConnect on WhatsApp\nAdaptive RC\nBirbal AI Diagnosis\nPerformance Analytics\nA focused student actively practising a reading comprehension passage for a competitive aptitude exam.\nReading Intelligence\nA score tells you what happened.\nAuctor helps you understand why.\n\nEvery RC answer reveals something about how you read, infer, eliminate and interpret the author's intent.\n\nBEYOND THE SCORE\nYour mistakes leave a pattern.\n\nAuctor looks beyond the final answer to identify the reasoning patterns behind your performance.\n\nInference\n\nHow you connect what the passage says with what it implies.\n\nElimination\n\nHow you reject options and where traps catch you.\n\nTone & intent\n\nHow accurately you read the author's position and purpose.\n\nHOW AUCTOR WORKS\nDon't just practice RC.\nTrain how you read.\n\nEvery practice session becomes part of a learning loop — practice, understand your mistakes, identify the gap, and train it deliberately.\n\nTHE AUCTOR LEARNING LOOP\nEvery mistake becomes a training signal.\nPractice → Diagnose → Improve\n01\nPractice\n\nSolve RCs through focused, adaptive practice.\n\n02\nDiagnose\n\nUnderstand the reasoning behind your answers.\n\n03\nUnderstand\n\nSee where inference, elimination or interpretation breaks.\n\n04\nImprove\n\nTrain the exact gap instead of simply doing more questions.\n\nThe objective is not more practice. It is better practice.\n\nTrain the thinking\n\nReady to see how you read?\n\nStart your free trial or talk to us first.\n\nStart Free Trial\nWhatsApp\nCREATED BY EDUCATORS\nBuilt from the classroom.\n\nAuctor RC was created by Neraj Kumar Naiyar, an educator and product builder focused on competitive-exam preparation with over 16 years of classroom teaching experience.\n\nNeraj Kumar Naiyar\nIIT Roorkee\nEducator, Product Builder, Founder, Auctor Labs\nSTUDENT REVIEWS\nTrusted by Students.\nBuilt for Institutes.\n\nReal students. Real experiences. See how Auctor RC is helping learners become stronger readers every single day.\n\nFrom Avoiding RC to Enjoying Reading\n\nIshaan Chandrakar\n\nDaily Workouts Changed My Reading Habit\n\nBhoomi Saluja\n\nBirbal Helped Me Understand My Mistakes\n\nRushill\n\nWRITTEN EXPERIENCES\nWhat Students Say\n“I used to avoid reading because I never enjoyed it. After using Auctor consistently, reading has become a daily habit and I can clearly feel the improvement in my comprehension.”\n\nKeshu Sharma\n\n“The Daily Workout feature kept me consistent. Instead of randomly practising RCs, I finally had a proper learning routine every day.”\n\nPushti Kapoor\n\n“Birbal doesn't just tell you the right answer. It explains why you were wrong, which completely changed how I approached Reading Comprehension.”\n\nNabeel\n\nWHY MOST RC PRACTICE FAILS\nMost RC practice improves familiarity.\nNot reading intelligence.\n\nSolving hundreds of passages is useless if you never understand why your reasoning breaks.\n\nTRADITIONAL\n\nRC Practice\nTHE OLD WAY\n100s\nPASSAGES\nSOLVED\n\nWHAT USUALLY HAPPENS\n\nRandom passages\nNo reasoning diagnosis\nSame difficulty for everyone\nWrong answer â†’ move on\nMock score, but no explanation\n\nMore practice.\n\nSame mistakes.\n\nAUCTOR\n\nReading Intelligence\nTHE NEW WAY\n\nYOUR IMPROVEMENT LOOP\n\n01\nPractice\n\nAdaptive practice\n\n02\nDiagnose\n\nReasoning analysis\n\n03\nUnderstand\n\nSee why you got it wrong\n\n04\nImprove\n\nTrain the exact gap\n\nWHAT CHANGES\n\nReasoning diagnosis\nTrap & elimination analysis\nReading intelligence profile\nTargeted improvement\n\nDon't just know\n\nwhat you got wrong.\n\nSIMPLE PRICING\nTrain smarter.\nChoose your plan.\n\nStart with the plan that fits your preparation and get complete access to Auctor RC's AI-powered reading intelligence tools.\n\nMONTHLY\n\n₹399\n\nPerfect to get started\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nPOPULAR\n\nQUARTERLY\n\n₹999\n\nMost Popular\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nHALF-YEARLY\n\n₹1299\n\nBest Value\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\nMAXIMUM SAVINGS\n\nYEARLY\n\n₹1999\n\nMaximum Savings\n\nFull Auctor RC access\nAI-powered practice\nPerformance insights\nStart Free Trial\n\nNot sure which plan is right for you?\n\nTalk to us on WhatsApp\nJoin The Auctor Community\nLearn RC daily.\nStay connected with Auctor.\n\nGet RC insights, reading tips, inference training, mock analysis and daily learning content across our platforms.\n\nInstagram\n\nDaily RC reels, Test strategies, reading psychology and student improvement insights.\n\nFollow Instagram\nTelegram\n\nReceive free RC passages, Exam resources, daily practice sets and important announcements.\n\nJoin Telegram\nWhatsApp\n\nJoin our WhatsApp channel for quick updates, RC discussions and Exam preparation insights.\n\nJoin WhatsApp\nInside Auctor RC\nYour complete\nRC training dashboard.\n\nDaily workouts, speed training, Birbal AI mentoring and deep analytics. everything designed to improve VARC performance.\n\nDaily Workout\nSpeed Gym\nBirbal AI\nAnalytics\nDaily RC Workout\n\nA structured 30 minute RC training routine combining speed drills, vocabulary building, inference correction and exam-level passages.\n\nAdaptive RC passages\n\nDifficulty changes dynamically with your performance.\n\nSkill focused improvement\n\nImprove tone detection, inference and elimination logic.\n\nAI driven feedback\n\nBirbal continuously analyzes your reading behaviour.\n\nStart Your Free Trial\nTalk to us\n\nSTART TRAINING DIFFERENTLY\n\nStop doing more RCs.\nStart understanding them.\n\nExperience Auctor RC and see how a more intelligent approach to Reading Comprehension can change the way you practise.\n\nStart Your Free Trial\nConnect on WhatsApp\nFrequently Asked Questions\nEverything you need to know about Auctor RC.\nWhat is Auctor RC used for?\nWho built Auctor RC?\nHow is Auctor RC different from a normal RC question bank?\nWhat is Birbal in Auctor RC?\nWhat is Reader DNA?\nWhich exams does Auctor RC cover?\nHow much does Auctor RC cost?\nIs there a free trial?\nDoes Auctor RC replace a coaching institute?\nHow much time does Auctor RC take per day?\nDoes Auctor RC only help with speed, or also accuracy?\nCan institutes use Auctor RC under their own brand?\nAuctor RC\nTrain reading intelligence.\nNot just RC familiarity.\n\nAdaptive RC drills, Birbal AI diagnosis, reading cognition analytics and CAT-level improvement systems.\n\nStart Free 3 Days Trial\nPRODUCT\nAdaptive RC\nBirbal AI\nAnalytics\nRC Workouts\nCOMMUNITY\nInstagram\nTelegram\nWhatsApp\n© 2026 Auctor RC. Powered by Birbal AI.\nPrivacy\nTerms\nContact"
+    },
+    {
+      "name": "-welcome-320",
+      "url": "/welcome",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s Set Up Your Profile",
+          "y": 325
+        }
+      ],
+      "controls": [
+        {
+          "text": "Enter your Name",
+          "x": 50,
+          "y": 501,
+          "w": 220,
+          "h": 47
+        },
+        {
+          "text": "Next →",
+          "x": 50,
+          "y": 568,
+          "w": 220,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\nLet’s Set Up Your Profile\n\nWhat should we call you?\n\nNext →"
+    },
+    {
+      "name": "-welcome-360",
+      "url": "/welcome",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s Set Up Your Profile",
+          "y": 325
+        }
+      ],
+      "controls": [
+        {
+          "text": "Enter your Name",
+          "x": 50,
+          "y": 501,
+          "w": 260,
+          "h": 47
+        },
+        {
+          "text": "Next →",
+          "x": 50,
+          "y": 568,
+          "w": 260,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\nLet’s Set Up Your Profile\n\nWhat should we call you?\n\nNext →"
+    },
+    {
+      "name": "-welcome-375",
+      "url": "/welcome",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s Set Up Your Profile",
+          "y": 325
+        }
+      ],
+      "controls": [
+        {
+          "text": "Enter your Name",
+          "x": 50,
+          "y": 501,
+          "w": 275,
+          "h": 47
+        },
+        {
+          "text": "Next →",
+          "x": 50,
+          "y": 568,
+          "w": 275,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\nLet’s Set Up Your Profile\n\nWhat should we call you?\n\nNext →"
+    },
+    {
+      "name": "-welcome-390",
+      "url": "/welcome",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s Set Up Your Profile",
+          "y": 325
+        }
+      ],
+      "controls": [
+        {
+          "text": "Enter your Name",
+          "x": 50,
+          "y": 501,
+          "w": 290,
+          "h": 47
+        },
+        {
+          "text": "Next →",
+          "x": 50,
+          "y": 568,
+          "w": 290,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\nLet’s Set Up Your Profile\n\nWhat should we call you?\n\nNext →"
+    },
+    {
+      "name": "-welcome-414",
+      "url": "/welcome",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s Set Up Your Profile",
+          "y": 325
+        }
+      ],
+      "controls": [
+        {
+          "text": "Enter your Name",
+          "x": 50,
+          "y": 501,
+          "w": 314,
+          "h": 47
+        },
+        {
+          "text": "Next →",
+          "x": 50,
+          "y": 568,
+          "w": 314,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\nLet’s Set Up Your Profile\n\nWhat should we call you?\n\nNext →"
+    },
+    {
+      "name": "-inbox-320",
+      "url": "/inbox",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1041,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1041
+        }
+      ],
+      "nav": [
+        "Inbox\nArchive\nTrash\nRefresh"
+      ],
+      "headings": [
+        {
+          "text": "Inbox",
+          "y": 115
+        },
+        {
+          "text": "Your inbox is ready",
+          "y": 677
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Auctor home",
+          "x": 16,
+          "y": 19,
+          "w": 34,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 236,
+          "y": 24,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "text": "Search inbox",
+          "x": 59,
+          "y": 215,
+          "w": 230,
+          "h": 21
+        },
+        {
+          "text": "Inbox",
+          "x": 12,
+          "y": 277,
+          "w": 62,
+          "h": 38
+        },
+        {
+          "text": "Archive",
+          "x": 80,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "Trash",
+          "x": 159,
+          "y": 277,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Refresh",
+          "x": 236,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "All",
+          "x": 8,
+          "y": 331,
+          "w": 42,
+          "h": 50
+        },
+        {
+          "text": "Unread",
+          "x": 54,
+          "y": 331,
+          "w": 69,
+          "h": 50
+        },
+        {
+          "text": "Study",
+          "x": 126,
+          "y": 331,
+          "w": 59,
+          "h": 50
+        },
+        {
+          "text": "Progress",
+          "x": 190,
+          "y": 331,
+          "w": 77,
+          "h": 50
+        },
+        {
+          "text": "Achievements",
+          "x": 271,
+          "y": 331,
+          "w": 108,
+          "h": 50
+        },
+        {
+          "text": "Reminders",
+          "x": 382,
+          "y": 331,
+          "w": 88,
+          "h": 50
+        },
+        {
+          "text": "Offers",
+          "x": 474,
+          "y": 331,
+          "w": 62,
+          "h": 50
+        },
+        {
+          "text": "Select all",
+          "x": 12,
+          "y": 382,
+          "w": 73,
+          "h": 18
+        },
+        {
+          "text": "Mark all as read",
+          "x": 198,
+          "y": 382,
+          "w": 110,
+          "h": 18
+        },
+        {
+          "text": "Try again",
+          "x": 239,
+          "y": 463,
+          "w": 51,
+          "h": 20
+        }
+      ],
+      "text": "Home\n\nYOUR AUCTOR\n\nInbox\n\nYou're all caught up\n\nInbox\nArchive\nTrash\nRefresh\nAll\nUnread\nStudy\nProgress\nAchievements\nReminders\nOffers\nSelect all\nMark all as read\nAudit fixture: unavailable\nTry again\nYour inbox is ready\n\nUseful study updates, recommendations and milestones will appear here."
+    },
+    {
+      "name": "-inbox-360",
+      "url": "/inbox",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1041,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1041
+        }
+      ],
+      "nav": [
+        "Inbox\nArchive\nTrash\nRefresh"
+      ],
+      "headings": [
+        {
+          "text": "Inbox",
+          "y": 115
+        },
+        {
+          "text": "Your inbox is ready",
+          "y": 677
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Auctor home",
+          "x": 16,
+          "y": 19,
+          "w": 34,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 276,
+          "y": 24,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "text": "Search inbox",
+          "x": 59,
+          "y": 215,
+          "w": 270,
+          "h": 21
+        },
+        {
+          "text": "Inbox",
+          "x": 12,
+          "y": 277,
+          "w": 62,
+          "h": 38
+        },
+        {
+          "text": "Archive",
+          "x": 80,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "Trash",
+          "x": 159,
+          "y": 277,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Refresh",
+          "x": 276,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "All",
+          "x": 8,
+          "y": 331,
+          "w": 42,
+          "h": 50
+        },
+        {
+          "text": "Unread",
+          "x": 54,
+          "y": 331,
+          "w": 69,
+          "h": 50
+        },
+        {
+          "text": "Study",
+          "x": 126,
+          "y": 331,
+          "w": 59,
+          "h": 50
+        },
+        {
+          "text": "Progress",
+          "x": 190,
+          "y": 331,
+          "w": 77,
+          "h": 50
+        },
+        {
+          "text": "Achievements",
+          "x": 271,
+          "y": 331,
+          "w": 108,
+          "h": 50
+        },
+        {
+          "text": "Reminders",
+          "x": 382,
+          "y": 331,
+          "w": 88,
+          "h": 50
+        },
+        {
+          "text": "Offers",
+          "x": 474,
+          "y": 331,
+          "w": 62,
+          "h": 50
+        },
+        {
+          "text": "Select all",
+          "x": 12,
+          "y": 382,
+          "w": 73,
+          "h": 18
+        },
+        {
+          "text": "Mark all as read",
+          "x": 238,
+          "y": 382,
+          "w": 110,
+          "h": 18
+        },
+        {
+          "text": "Try again",
+          "x": 279,
+          "y": 463,
+          "w": 51,
+          "h": 20
+        }
+      ],
+      "text": "Home\n\nYOUR AUCTOR\n\nInbox\n\nYou're all caught up\n\nInbox\nArchive\nTrash\nRefresh\nAll\nUnread\nStudy\nProgress\nAchievements\nReminders\nOffers\nSelect all\nMark all as read\nAudit fixture: unavailable\nTry again\nYour inbox is ready\n\nUseful study updates, recommendations and milestones will appear here."
+    },
+    {
+      "name": "-inbox-375",
+      "url": "/inbox",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1041,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1041
+        }
+      ],
+      "nav": [
+        "Inbox\nArchive\nTrash\nRefresh"
+      ],
+      "headings": [
+        {
+          "text": "Inbox",
+          "y": 115
+        },
+        {
+          "text": "Your inbox is ready",
+          "y": 677
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Auctor home",
+          "x": 16,
+          "y": 19,
+          "w": 34,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 291,
+          "y": 24,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "text": "Search inbox",
+          "x": 59,
+          "y": 215,
+          "w": 285,
+          "h": 21
+        },
+        {
+          "text": "Inbox",
+          "x": 12,
+          "y": 277,
+          "w": 62,
+          "h": 38
+        },
+        {
+          "text": "Archive",
+          "x": 80,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "Trash",
+          "x": 159,
+          "y": 277,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Refresh",
+          "x": 291,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "All",
+          "x": 8,
+          "y": 331,
+          "w": 42,
+          "h": 50
+        },
+        {
+          "text": "Unread",
+          "x": 54,
+          "y": 331,
+          "w": 69,
+          "h": 50
+        },
+        {
+          "text": "Study",
+          "x": 126,
+          "y": 331,
+          "w": 59,
+          "h": 50
+        },
+        {
+          "text": "Progress",
+          "x": 190,
+          "y": 331,
+          "w": 77,
+          "h": 50
+        },
+        {
+          "text": "Achievements",
+          "x": 271,
+          "y": 331,
+          "w": 108,
+          "h": 50
+        },
+        {
+          "text": "Reminders",
+          "x": 382,
+          "y": 331,
+          "w": 88,
+          "h": 50
+        },
+        {
+          "text": "Offers",
+          "x": 474,
+          "y": 331,
+          "w": 62,
+          "h": 50
+        },
+        {
+          "text": "Select all",
+          "x": 12,
+          "y": 382,
+          "w": 73,
+          "h": 18
+        },
+        {
+          "text": "Mark all as read",
+          "x": 253,
+          "y": 382,
+          "w": 110,
+          "h": 18
+        },
+        {
+          "text": "Try again",
+          "x": 294,
+          "y": 463,
+          "w": 51,
+          "h": 20
+        }
+      ],
+      "text": "Home\n\nYOUR AUCTOR\n\nInbox\n\nYou're all caught up\n\nInbox\nArchive\nTrash\nRefresh\nAll\nUnread\nStudy\nProgress\nAchievements\nReminders\nOffers\nSelect all\nMark all as read\nAudit fixture: unavailable\nTry again\nYour inbox is ready\n\nUseful study updates, recommendations and milestones will appear here."
+    },
+    {
+      "name": "-inbox-390",
+      "url": "/inbox",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1041,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1041
+        }
+      ],
+      "nav": [
+        "Inbox\nArchive\nTrash\nRefresh"
+      ],
+      "headings": [
+        {
+          "text": "Inbox",
+          "y": 115
+        },
+        {
+          "text": "Your inbox is ready",
+          "y": 677
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Auctor home",
+          "x": 16,
+          "y": 19,
+          "w": 34,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 306,
+          "y": 24,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "text": "Search inbox",
+          "x": 59,
+          "y": 215,
+          "w": 300,
+          "h": 21
+        },
+        {
+          "text": "Inbox",
+          "x": 12,
+          "y": 277,
+          "w": 62,
+          "h": 38
+        },
+        {
+          "text": "Archive",
+          "x": 80,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "Trash",
+          "x": 159,
+          "y": 277,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Refresh",
+          "x": 306,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "All",
+          "x": 8,
+          "y": 331,
+          "w": 42,
+          "h": 50
+        },
+        {
+          "text": "Unread",
+          "x": 54,
+          "y": 331,
+          "w": 69,
+          "h": 50
+        },
+        {
+          "text": "Study",
+          "x": 126,
+          "y": 331,
+          "w": 59,
+          "h": 50
+        },
+        {
+          "text": "Progress",
+          "x": 190,
+          "y": 331,
+          "w": 77,
+          "h": 50
+        },
+        {
+          "text": "Achievements",
+          "x": 271,
+          "y": 331,
+          "w": 108,
+          "h": 50
+        },
+        {
+          "text": "Reminders",
+          "x": 382,
+          "y": 331,
+          "w": 88,
+          "h": 50
+        },
+        {
+          "text": "Offers",
+          "x": 474,
+          "y": 331,
+          "w": 62,
+          "h": 50
+        },
+        {
+          "text": "Select all",
+          "x": 12,
+          "y": 382,
+          "w": 73,
+          "h": 18
+        },
+        {
+          "text": "Mark all as read",
+          "x": 268,
+          "y": 382,
+          "w": 110,
+          "h": 18
+        },
+        {
+          "text": "Try again",
+          "x": 309,
+          "y": 463,
+          "w": 51,
+          "h": 20
+        }
+      ],
+      "text": "Home\n\nYOUR AUCTOR\n\nInbox\n\nYou're all caught up\n\nInbox\nArchive\nTrash\nRefresh\nAll\nUnread\nStudy\nProgress\nAchievements\nReminders\nOffers\nSelect all\nMark all as read\nAudit fixture: unavailable\nTry again\nYour inbox is ready\n\nUseful study updates, recommendations and milestones will appear here."
+    },
+    {
+      "name": "-inbox-414",
+      "url": "/inbox",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1041,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1041
+        }
+      ],
+      "nav": [
+        "Inbox\nArchive\nTrash\nRefresh"
+      ],
+      "headings": [
+        {
+          "text": "Inbox",
+          "y": 115
+        },
+        {
+          "text": "Your inbox is ready",
+          "y": 677
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Auctor home",
+          "x": 16,
+          "y": 19,
+          "w": 34,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 330,
+          "y": 24,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "text": "Search inbox",
+          "x": 59,
+          "y": 215,
+          "w": 324,
+          "h": 21
+        },
+        {
+          "text": "Inbox",
+          "x": 12,
+          "y": 277,
+          "w": 62,
+          "h": 38
+        },
+        {
+          "text": "Archive",
+          "x": 80,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "Trash",
+          "x": 159,
+          "y": 277,
+          "w": 60,
+          "h": 38
+        },
+        {
+          "text": "Refresh",
+          "x": 330,
+          "y": 277,
+          "w": 72,
+          "h": 38
+        },
+        {
+          "text": "All",
+          "x": 8,
+          "y": 331,
+          "w": 42,
+          "h": 50
+        },
+        {
+          "text": "Unread",
+          "x": 54,
+          "y": 331,
+          "w": 69,
+          "h": 50
+        },
+        {
+          "text": "Study",
+          "x": 126,
+          "y": 331,
+          "w": 59,
+          "h": 50
+        },
+        {
+          "text": "Progress",
+          "x": 190,
+          "y": 331,
+          "w": 77,
+          "h": 50
+        },
+        {
+          "text": "Achievements",
+          "x": 271,
+          "y": 331,
+          "w": 108,
+          "h": 50
+        },
+        {
+          "text": "Reminders",
+          "x": 382,
+          "y": 331,
+          "w": 88,
+          "h": 50
+        },
+        {
+          "text": "Offers",
+          "x": 474,
+          "y": 331,
+          "w": 62,
+          "h": 50
+        },
+        {
+          "text": "Select all",
+          "x": 12,
+          "y": 382,
+          "w": 73,
+          "h": 18
+        },
+        {
+          "text": "Mark all as read",
+          "x": 292,
+          "y": 382,
+          "w": 110,
+          "h": 18
+        },
+        {
+          "text": "Try again",
+          "x": 333,
+          "y": 463,
+          "w": 51,
+          "h": 20
+        }
+      ],
+      "text": "Home\n\nYOUR AUCTOR\n\nInbox\n\nYou're all caught up\n\nInbox\nArchive\nTrash\nRefresh\nAll\nUnread\nStudy\nProgress\nAchievements\nReminders\nOffers\nSelect all\nMark all as read\nAudit fixture: unavailable\nTry again\nYour inbox is ready\n\nUseful study updates, recommendations and milestones will appear here."
+    },
+    {
+      "name": "-boot-camp-analytics-320",
+      "url": "/boot-camp/analytics",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 952,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "HTML",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "See your training take shape.",
+          "y": 180
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Home",
+          "x": 232,
+          "y": 33,
+          "w": 72,
+          "h": 36
+        },
+        {
+          "text": "← Training calendar",
+          "x": 16,
+          "y": 113,
+          "w": 116,
+          "h": 15
+        },
+        {
+          "text": "Try again",
+          "x": 111,
+          "y": 406,
+          "w": 98,
+          "h": 45
+        }
+      ],
+      "text": "AUCTOR / BOOT CAMP\nBack to Home\n← Training calendar\n\nYOUR VARC TRAINING INTELLIGENCE\n\nSee your training take shape.\n\nEvery saved result. A clearer view of what comes next.\n\nAudit fixture: unavailable\n\nTry again"
+    },
+    {
+      "name": "-boot-camp-analytics-360",
+      "url": "/boot-camp/analytics",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 952,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "HTML",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "See your training take shape.",
+          "y": 180
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Home",
+          "x": 269,
+          "y": 42,
+          "w": 75,
+          "h": 18
+        },
+        {
+          "text": "← Training calendar",
+          "x": 16,
+          "y": 113,
+          "w": 116,
+          "h": 15
+        },
+        {
+          "text": "Try again",
+          "x": 131,
+          "y": 406,
+          "w": 98,
+          "h": 45
+        }
+      ],
+      "text": "AUCTOR / BOOT CAMP\nBack to Home\n← Training calendar\n\nYOUR VARC TRAINING INTELLIGENCE\n\nSee your training take shape.\n\nEvery saved result. A clearer view of what comes next.\n\nAudit fixture: unavailable\n\nTry again"
+    },
+    {
+      "name": "-boot-camp-analytics-375",
+      "url": "/boot-camp/analytics",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 952,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "HTML",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "See your training take shape.",
+          "y": 180
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Home",
+          "x": 284,
+          "y": 42,
+          "w": 75,
+          "h": 18
+        },
+        {
+          "text": "← Training calendar",
+          "x": 16,
+          "y": 113,
+          "w": 116,
+          "h": 15
+        },
+        {
+          "text": "Try again",
+          "x": 138,
+          "y": 370,
+          "w": 98,
+          "h": 45
+        }
+      ],
+      "text": "AUCTOR / BOOT CAMP\nBack to Home\n← Training calendar\n\nYOUR VARC TRAINING INTELLIGENCE\n\nSee your training take shape.\n\nEvery saved result. A clearer view of what comes next.\n\nAudit fixture: unavailable\n\nTry again"
+    },
+    {
+      "name": "-boot-camp-analytics-390",
+      "url": "/boot-camp/analytics",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 952,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "HTML",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "See your training take shape.",
+          "y": 180
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Home",
+          "x": 299,
+          "y": 42,
+          "w": 75,
+          "h": 18
+        },
+        {
+          "text": "← Training calendar",
+          "x": 16,
+          "y": 113,
+          "w": 116,
+          "h": 15
+        },
+        {
+          "text": "Try again",
+          "x": 146,
+          "y": 370,
+          "w": 98,
+          "h": 45
+        }
+      ],
+      "text": "AUCTOR / BOOT CAMP\nBack to Home\n← Training calendar\n\nYOUR VARC TRAINING INTELLIGENCE\n\nSee your training take shape.\n\nEvery saved result. A clearer view of what comes next.\n\nAudit fixture: unavailable\n\nTry again"
+    },
+    {
+      "name": "-boot-camp-analytics-414",
+      "url": "/boot-camp/analytics",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 952,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "HTML",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "See your training take shape.",
+          "y": 180
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Home",
+          "x": 322,
+          "y": 42,
+          "w": 75,
+          "h": 18
+        },
+        {
+          "text": "← Training calendar",
+          "x": 17,
+          "y": 113,
+          "w": 116,
+          "h": 15
+        },
+        {
+          "text": "Try again",
+          "x": 158,
+          "y": 370,
+          "w": 98,
+          "h": 45
+        }
+      ],
+      "text": "AUCTOR / BOOT CAMP\nBack to Home\n← Training calendar\n\nYOUR VARC TRAINING INTELLIGENCE\n\nSee your training take shape.\n\nEvery saved result. A clearer view of what comes next.\n\nAudit fixture: unavailable\n\nTry again"
+    },
+    {
+      "name": "daily-next-clipped-320",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 4086,
+      "bodyHeight": 4930,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 4086,
+          "h": 844,
+          "total": 4930
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": -4029
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 29,
+          "y": -3756,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": -69,
+          "y": 13,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": -21,
+          "y": 13,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 27,
+          "y": 13,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 75,
+          "y": 13,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "",
+          "x": 141,
+          "y": -45,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": -69,
+          "y": 222,
+          "w": 254,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": -69,
+          "y": 320,
+          "w": 254,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": -69,
+          "y": 418,
+          "w": 254,
+          "h": 102
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": -69,
+          "y": 536,
+          "w": 254,
+          "h": 102
+        },
+        {
+          "text": "Previous",
+          "x": -69,
+          "y": 683,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 59,
+          "y": 683,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 221,
+          "y": 683,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "8:00\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "workout-analytics-empty",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": -4,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 74,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 179,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 273,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 301,
+          "y": 678,
+          "w": 66,
+          "h": 66
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\nComplete at least 2 workouts to unlock analytics.\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "rc-profile-empty",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1130,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1130
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "RC Profile",
+          "y": 387
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "RC",
+          "x": 21,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Vocab",
+          "x": 91,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Speed",
+          "x": 161,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "🎯 Precision",
+          "x": 231,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Grammar",
+          "x": 321,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Generate Passage",
+          "x": 39,
+          "y": 205,
+          "w": 94,
+          "h": 83
+        },
+        {
+          "text": "Paste your passage",
+          "x": 139,
+          "y": 205,
+          "w": 87,
+          "h": 83
+        },
+        {
+          "text": "RC Profile",
+          "x": 232,
+          "y": 205,
+          "w": 77,
+          "h": 83
+        },
+        {
+          "text": "RC History",
+          "x": 315,
+          "y": 205,
+          "w": 82,
+          "h": 83
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 301,
+          "y": 677,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nInbox\nRC\nVocab\nSpeed\n🎯 Precision\nGrammar\nGenerate Passage\nPaste your passage\nRC Profile\nRC History\nRC Profile\n\nNo RC data yet.\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "speed-profile-empty",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1130,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1130
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Speed Reading Gym",
+          "y": 195
+        },
+        {
+          "text": "Speed Profile",
+          "y": 533
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "RC",
+          "x": 21,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Vocab",
+          "x": 91,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Speed",
+          "x": 161,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "🎯 Precision",
+          "x": 231,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Grammar",
+          "x": 321,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Speed Drill",
+          "x": 56,
+          "y": 330,
+          "w": 105,
+          "h": 41
+        },
+        {
+          "text": "Speed Profile",
+          "x": 167,
+          "y": 330,
+          "w": 120,
+          "h": 41
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 302,
+          "y": 683,
+          "w": 64,
+          "h": 64
+        }
+      ],
+      "text": "Auctor\n\nInbox\nRC\nVocab\nSpeed\n🎯 Precision\nGrammar\nSpeed Reading Gym\n\nTrain how fast you read without losing meaning.\n\nSpeed Drill\nSpeed Profile\n⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked automatically\nSpeed Profile\n\nNo drills yet.\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "daily-analytics-error",
+      "url": "/daily-challenge",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1010,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1010
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Your reading performance",
+          "y": 288
+        },
+        {
+          "text": "Your reading analytics will appear here.",
+          "y": 621
+        }
+      ],
+      "controls": [
+        {
+          "text": "Auctor RC\nDaily Arena",
+          "x": 16,
+          "y": 110,
+          "w": 120,
+          "h": 40
+        },
+        {
+          "text": "Dashboard",
+          "x": 265,
+          "y": 110,
+          "w": 109,
+          "h": 40
+        },
+        {
+          "text": "Dashboard",
+          "x": 265,
+          "y": 110,
+          "w": 109,
+          "h": 40
+        },
+        {
+          "text": "Today's RC",
+          "x": 21,
+          "y": 187,
+          "w": 116,
+          "h": 40
+        },
+        {
+          "text": "Previous RCs",
+          "x": 137,
+          "y": 187,
+          "w": 116,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 253,
+          "y": 187,
+          "w": 116,
+          "h": 40
+        },
+        {
+          "text": "All Time",
+          "x": 21,
+          "y": 441,
+          "w": 116,
+          "h": 32
+        },
+        {
+          "text": "Last 30 Days",
+          "x": 137,
+          "y": 441,
+          "w": 116,
+          "h": 32
+        },
+        {
+          "text": "Last 7 Days",
+          "x": 253,
+          "y": 441,
+          "w": 116,
+          "h": 32
+        },
+        {
+          "text": "Start Today's RC",
+          "x": 122,
+          "y": 769,
+          "w": 146,
+          "h": 44
+        }
+      ],
+      "text": "DAILY RC ARENA\nAuctor RC\nDaily Arena\nDashboard\nToday's RC\nPrevious RCs\nAnalytics\n\nDAILY RC ANALYTICS\n\nYour reading performance\n\nUnderstand your reading performance, speed and accuracy across every RC you attempt.\n\nAll Time\nLast 30 Days\nLast 7 Days\nYour reading analytics will appear here.\n\nComplete your first Daily RC to start tracking accuracy, speed and progress.\n\nStart Today's RC"
+    },
+    {
+      "name": "birbal-short-viewport",
+      "url": "/",
+      "width": 390,
+      "height": 500,
+      "scrollHeight": 500,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 106,
+      "bodyHeight": 865,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 106,
+          "h": 500,
+          "total": 865
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Birbal AI",
+          "y": 2
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": -74,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "✕",
+          "x": 310,
+          "y": 16,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "How to improve inference questions?",
+          "x": 28,
+          "y": 101,
+          "w": 207,
+          "h": 31
+        },
+        {
+          "text": "How should I read RC faster?",
+          "x": 243,
+          "y": 101,
+          "w": 166,
+          "h": 31
+        },
+        {
+          "text": "What is tone detection?",
+          "x": 417,
+          "y": 101,
+          "w": 141,
+          "h": 31
+        },
+        {
+          "text": "How to find main idea quickly?",
+          "x": 566,
+          "y": 101,
+          "w": 176,
+          "h": 31
+        },
+        {
+          "text": "Ask Birbal about RC...",
+          "x": 28,
+          "y": 581,
+          "w": 226,
+          "h": 42
+        },
+        {
+          "text": "Voice message",
+          "x": 262,
+          "y": 581,
+          "w": 42,
+          "h": 42
+        },
+        {
+          "text": "Send message",
+          "x": 312,
+          "y": 581,
+          "w": 50,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 446,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 446,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 446,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 301,
+          "y": 336,
+          "w": 66,
+          "h": 66
+        }
+      ],
+      "text": "Auctor\n\nInbox\nBirbal AI\n\nYour Personal Reading Mentor\n\nOnline\n✕\nHow to improve inference questions?\nHow should I read RC faster?\nWhat is tone detection?\nHow to find main idea quickly?\n👋 Welcome back!\n\nI'm Birbal — your AI Reading Mentor.\n\nI can help you:\n\n📊 Analyse your performance\n🎯 Recommend today's practice\n📖 Explain any RC\n📰 Decode newspaper editorials\n🧠 Improve your Reading IQ\n\nAsk me anything or choose a suggestion below.\nHome\nPractice\nProfile"
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp/analytics",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp/analytics",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-rc-analytics",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-rc-analytics",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    }
+  ]
+}

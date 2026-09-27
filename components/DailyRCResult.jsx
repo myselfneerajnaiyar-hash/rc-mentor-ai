@@ -1,12 +1,14 @@
 "use client";
+import NextActivity from "@/components/mobile/NextActivity";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDailyRcReview } from "@/lib/dailyRc/useReview";
 import DailyRCDetailedReview from "@/components/DailyRCDetailedReview";
 import DailyRCCognitiveDiagnosis from "@/components/DailyRCCognitiveDiagnosis";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { captureLearningEvent } from "@/lib/learningAnalytics";
 
 export default function DailyRCResult({ attemptId, initialSection = null }) {
   return <Suspense fallback={<div>Loading Result...</div>}><AttemptRoute attemptId={attemptId} initialSection={initialSection} /></Suspense>;
@@ -19,6 +21,15 @@ function AttemptRoute({ attemptId: routeAttemptId, initialSection }) {
 function AttemptResult({ attemptId, initialSection }) {
   const [openSection, setOpenSection] = useState(initialSection);
   const { data, error } = useDailyRcReview(attemptId);
+  const viewedRef = useRef(false);
+  useEffect(() => {
+    if (!data || viewedRef.current) return;
+    viewedRef.current = true;
+    const properties = { activity_type: "daily_rc", activity_id: data.attempt?.daily_rc_set_id };
+    captureLearningEvent("feedback_viewed", properties);
+    captureLearningEvent("daily_rc_feedback_viewed", properties);
+    captureLearningEvent("next_action_viewed", { ...properties, next_action: "back_to_arena" });
+  }, [data]);
   if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
   if (!data) return <div className="p-8 text-white">Loading Result...</div>;
   const { attempt } = data;
@@ -113,7 +124,11 @@ else {
     <main className="min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link href="/daily-challenge" className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} />Back to Arena</Link>
+          <Link href="/daily-challenge" onClick={() => {
+            const properties = { activity_type: "daily_rc", activity_id: attempt.daily_rc_set_id, next_action: "back_to_arena" };
+            captureLearningEvent("next_action_clicked", properties);
+            captureLearningEvent("daily_rc_next_action_clicked", properties);
+          }} className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"><ArrowLeft size={16} />Back to Arena</Link>
           <nav className="flex items-center gap-2 text-xs text-slate-500" aria-label="Analysis journey"><span className="text-cyan-300">Results</span><span>→</span><a href="#cognitive-diagnosis" onClick={() => setOpenSection("cognitive-diagnosis")} className="hover:text-purple-300">Cognitive Diagnosis</a><span>→</span><a href="#detailed-review" onClick={() => setOpenSection("detailed-review")} className="hover:text-cyan-300">Detailed Review</a></nav>
         </div>
 
@@ -131,7 +146,7 @@ else {
           </div>
         </section>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <NextActivity current="daily_rc"/><div className="mt-5 grid gap-4 md:grid-cols-2">
           <InsightPanel label="Mentor Verdict" title={profile} body={mentorText} tone="amber" />
           <InsightPanel label="Performance Profile" title={profileDescription} body={`Composite score: ${composite} · Unanswered: ${resultData?.unanswered || 0}`} tone="cyan" />
         </div>

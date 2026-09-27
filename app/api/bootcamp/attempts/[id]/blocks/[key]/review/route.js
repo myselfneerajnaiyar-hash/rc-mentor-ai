@@ -1,0 +1,3 @@
+import { handleBootCamp } from '@/lib/bootcamp/server'
+export const dynamic = 'force-dynamic'
+export function GET(request,{ params }) { return handleBootCamp(request,'review',params) }

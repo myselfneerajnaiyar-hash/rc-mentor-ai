@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
+import CategoryTabs from '@/components/mobile/CategoryTabs';
+import { BookOpen, Clock, ListChecks, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import CATAnalytics from "../app/components/CATAnalytics";
 import { useTenant } from "@/components/providers/TenantProvider";
 
@@ -11,7 +13,6 @@ import { useTenant } from "@/components/providers/TenantProvider";
 export default function CATArenaLanding({
   isMobile,
   onStartRC,
-  onViewDiagnosis,
   isFreeFlow,
 }) {
   const { entitlement } = useTenant();
@@ -20,6 +21,7 @@ export default function CATArenaLanding({
   const [activeTab, setActiveTab] = useState("pyq");
 
   const [sectionals, setSectionals] = useState([]);
+  const [testStatus, setTestStatus] = useState("loading");
   const [plan, setPlan] = useState(null);
 
   useEffect(() => {
@@ -54,6 +56,9 @@ export default function CATArenaLanding({
 
     if (!error) {
       setSectionals(data || []);
+      setTestStatus("ready");
+    } else {
+      setTestStatus("error");
     }
   }
 
@@ -89,359 +94,35 @@ const hasFullCATAccess =
   plan === "half_yearly";
 
 
-   return (
-  <div
-  style={{
-    width: "100%",
-    maxWidth: "100%",
-    padding: "20px 40px",
-  }}
->
-  {isFreeFlow && (
-  <div
-    style={{
-      background: "#1e40af",
-      border: "1px solid #3b82f6",
-      borderRadius: 18,
-      padding: 24,
-      marginBottom: 28,
-    }}
-  >
-    <h2 style={{ color: "#fff", marginBottom: 10 }}>
-      🎉 Your 4 FREE AI VARC Mocks are Ready!
-    </h2>
-
-    <p style={{ color: "#dbeafe" }}>
-      Start with any FREE mock below.
-    </p>
-  </div>
-)}
-    <div style={{ marginBottom: 36 }}>
-
-  <h1
-    style={{
-      fontSize: 36,
-      fontWeight: 800,
-      color: "#ffffff",
-      marginBottom: 8,
-    }}
-  >
-    🔥 CAT Arena
-  </h1>
-
-  <p
-    style={{
-      color: "#94a3b8",
-      fontSize: 16,
-      marginBottom: 24,
-    }}
-  >
-    Train Like The Real CAT.
-    Official CAT Papers, Auctor Mock Tests and AI Diagnosis.
-  </p>
-
-  <div
-    style={{
-      display: "grid",
-     gridTemplateColumns: isMobile
-  ? "repeat(2,1fr)"
-  : "repeat(4,1fr)",
-      gap: 16,
-      marginBottom: 28,
-    }}
-  >
-
-    <div style={statCard}>
-      <div style={statNumber}>{sectionals.length}</div>
-      <div style={statLabel}>Tests</div>
-    </div>
-
-    <div style={statCard}>
-      <div style={statNumber}>
-        {Object.keys(attemptedMap).length}
-      </div>
-      <div style={statLabel}>Attempted</div>
-    </div>
-
-    <div style={statCard}>
-      <div style={statNumber}>40</div>
-      <div style={statLabel}>Minutes</div>
-    </div>
-
-    <div style={statCard}>
-      <div style={statNumber}>24</div>
-      <div style={statLabel}>Questions</div>
-    </div>
-
-  </div>
-
-  <div
-    style={{
-     display: isMobile ? "grid" : "flex",
-gridTemplateColumns: isMobile ? "1fr" : undefined,
-gap: 12,
-marginBottom: 30,
-    }}
-  >
-
-    <button
-      onClick={() => setActiveTab("pyq")}
-      style={tab(activeTab === "pyq")}
-    >
-      📘 Official CAT PYQs
-    </button>
-
-    <button
-      onClick={() => setActiveTab("mock")}
-      style={tab(activeTab === "mock")}
-    >
-      🧪 Auctor Mocks
-    </button>
-
-    <button
-      onClick={() => setActiveTab("analytics")}
-      style={tab(activeTab === "analytics")}
-    >
-      📊 Analytics
-    </button>
-
-  </div>
-
-</div>
-
-
-     {activeTab !== "analytics" && (
-      <div
-    style={{
-      display: "grid",
-     gridTemplateColumns: isMobile
-  ? "1fr"
-  : "repeat(2,minmax(0,1fr))",
-      gap: 20,
-      alignItems: "start",
-    }}
-  >
-{sectionals
-  .filter((s) =>
-    activeTab === "pyq"
-      ? s.test_type === "pyq"
-    
-      : s.test_type === "mock"
-  )
-  .map((s) => {
-      const attemptId = attemptedMap[s.id];
-const attempted = !!attemptId;
-const locked =
-  !s.is_free &&
-  !hasFullCATAccess;
-
-        return (
-          <div key={s.id} style={card(attempted)}>
-           <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  }}
->
-  <h3
-    style={{
-      fontSize: 20,
-      fontWeight: 700,
-      color: "#fff",
-      margin: 0,
-    }}
-  >
-    {s.test_type === "pyq"
-      ? `📘 ${s.exam} ${s.exam_year} • Slot ${s.exam_slot}`
-      : `🧪 Auctor Mock ${s.test_number}`}
-  </h3>
-
- <div
-  style={{
-    background: attempted
-      ? "#14532d"
-      : locked
-      ? "#7c2d12"
-      : "#1e3a8a",
-    color: "#fff",
-    padding: "6px 12px",
-    borderRadius: 999,
-    fontSize: 12,
-    fontWeight: 700,
-  }}
->
- {attempted
-  ? "ATTEMPTED ✓"
-  : locked
-  ? "🔒 PREMIUM"
-  : s.is_free
-  ? "🎁 FREE"
-  : "🟢 AVAILABLE"}
-</div>
-</div>
-
-<p
-  style={{
-    color: "#94a3b8",
-    marginBottom: 14,
-  }}
->
-  {s.test_type === "pyq"
-    ? "Official CAT VARC Paper"
-    : "Official Auctor VARC Mock"}
-</p>
-
-<div
-  style={{
-    display: "flex",
-    gap: 20,
-    color: "#cbd5e1",
-    fontSize: 14,
-    marginBottom: 18,
-  }}
->
-  <span>⏱️ 40 min</span>
-  <span>❓24 Questions</span>
-</div>
-
-<hr
-  style={{
-    border: "none",
-    borderTop: "1px solid #334155",
-    marginBottom: 18,
-  }}
-/>
-          {attempted ? (
-
-  <button
-    style={{
-      ...primaryBtn,
-
-
-      background:"#16a34a"
-    }}
-    onClick={() =>
-      router.push(`/arena/result/${attemptId}`)
-    }
-  >
-    Review Analysis
-  </button>
-
-) : (
-
-  <button
-  style={{
-    ...primaryBtn,
-    width: 180,
-    background: locked ? "#475569" : "#2563eb",
-  }}
- onClick={() => {
-
-  if (isMobile) {
-    alert(
-      "CAT VARC tests are currently available only on desktop."
-    );
-    return;
-  }
-
-  if (locked) {
-    router.push("/pricing");
-    return;
-  }
-
-  onStartRC(s.id);
-}}
->
-  {locked ? "Unlock Premium" : "Start Test"}
-</button>
-
-)}
-          </div>
-        );
-     })}
-
-     </div>
-   )}
-
-      {activeTab === "analytics" && (
-        <CATAnalytics />
-      )}
-        
-
-    </div>
-  );
+ const tabs=[{value:'pyq',label:'Official CAT PYQs'},{value:'mock',label:'Auctor Mocks'},{value:'analytics',label:'Analytics'}];
+ const tests=sectionals.filter(s=>s.test_type===activeTab);
+ return <div className="sectional-arena">
+  {isFreeFlow&&<aside className="arena-free-banner"><h2>Your free AI VARC mocks</h2><p>Look for the Free label on available mocks below.</p></aside>}
+  <header className="arena-heading"><p className="mobile-eyebrow">Test Arena · Sectionals</p><h1>CAT Arena</h1><p>Official CAT papers, Auctor mock tests and analysis of your attempts.</p></header>
+  <div className="arena-summary"><span><strong>{sectionals.length}</strong> Tests</span><span><strong>{Object.keys(attemptedMap).length}</strong> Attempted</span></div>
+  <CategoryTabs id="arena-category" label="Test categories" tabs={tabs} active={activeTab} onChange={setActiveTab}/>
+  <section role="tabpanel" id="arena-category-panel" aria-labelledby={'arena-category-'+activeTab} tabIndex={0}>
+   {activeTab==='analytics'?<CATAnalytics/>:<>
+    <div className="arena-section-heading"><h2>{activeTab==='pyq'?'Official CAT papers':'Auctor mock tests'}</h2><p>40 minutes · 24 questions per test</p></div>
+    {isMobile&&<p className="arena-device-note">Start tests on desktop. You can review existing attempts here.</p>}
+    <div className="sectional-grid">{tests.map(s=>{
+     const attemptId=attemptedMap[s.id];const attempted=!!attemptId;const locked=!s.is_free&&!hasFullCATAccess;
+     return <article className="sectional-card" key={s.id} data-attempted={attempted}>
+      <div className="sectional-card-top"><span className="sectional-icon" aria-hidden="true"><BookOpen size={22}/></span><span className="sectional-badge" data-status={attempted?'attempted':locked?'locked':'available'}>{attempted?<CheckCircle2 size={14} aria-hidden="true"/>:locked?<Lock size={14} aria-hidden="true"/>:null}{attempted?'Attempted':locked?'Premium':s.is_free?'Free':'Available'}</span></div>
+      <h3>{s.test_type==='pyq'?[s.exam,s.exam_year,s.exam_slot!=null?'· Slot '+s.exam_slot:null].filter(Boolean).join(' '):'Auctor Mock '+s.test_number}</h3>
+      <p className="sectional-description">{s.test_type==='pyq'?'Official CAT VARC Paper':'Official Auctor VARC Mock'}</p>
+      <div className="sectional-meta"><span><Clock size={16} aria-hidden="true"/>40 min</span><span><ListChecks size={16} aria-hidden="true"/>24 questions</span></div>
+      {attempted?<button className="sectional-action" onClick={()=>router.push('/arena/result/'+attemptId)}>Review Analysis<ArrowRight size={18} aria-hidden="true"/></button>:<button className="sectional-action" data-locked={locked} onClick={()=>{
+       if(isMobile){alert('CAT VARC tests are currently available only on desktop.');return;}
+       if(locked){router.push('/pricing');return;}
+       onStartRC(s.id);
+      }}>{locked?'Unlock Premium':'Start Test'}<ArrowRight size={18} aria-hidden="true"/></button>}
+     </article>;
+    })}</div>
+    {testStatus==='loading'&&<p className="arena-empty" role="status">Loading tests...</p>}
+    {testStatus==='error'&&<p className="arena-empty" role="alert">Tests could not be loaded. Please reload to try again.</p>}
+    {testStatus==='ready'&&!tests.length&&<p className="arena-empty">No {activeTab==='pyq'?'official papers':'mock tests'} are currently listed.</p>}
+   </>}
+  </section>
+ </div>;
 }
- 
-const card = (attempted) => ({
-  borderRadius: 18,
-  padding: 20,
-  minHeight: 210,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-
-  background: "#162235",
-
-  border: attempted
-    ? "1px solid #22c55e"
-    : "1px solid #334155",
-
-  boxShadow: "0 10px 30px rgba(0,0,0,.35)",
-});
-const primaryBtn = {
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 10,
-  padding: "12px 22px",
-  fontWeight: 700,
-  cursor: "pointer",
-};
-
-const analyseBtn = {
-  width: "100%",
-  padding: 12,
-  background: "transparent",
-  border: "1px solid #3b82f6",
-  color: "#3b82f6",
-  borderRadius: 12,
-  fontWeight: 600,
-};
-
-const statCard = {
-  background:"#1e293b",
-  border:"1px solid #334155",
-  borderRadius:16,
-  padding:20,
-  textAlign:"center",
-};
-
-const statNumber = {
-  fontSize:28,
-  fontWeight:700,
-  color:"#3b82f6",
-};
-
-const statLabel = {
-  color:"#94a3b8",
-  marginTop:6,
-};
-
-const tab = (active)=>({
-  padding:"12px 22px",
-  borderRadius:12,
-  border:"none",
-  cursor:"pointer",
-  fontWeight:700,
-  background:active ? "#2563eb" : "#1e293b",
-  color:"#fff",
-});
-
-const analyticsCard = {
-  background:"#1e293b",
-  border:"1px solid #334155",
-  borderRadius:18,
-  padding:30,
-};

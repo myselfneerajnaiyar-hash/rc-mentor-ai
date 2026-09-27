@@ -1,11 +1,15 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 
+import AssessmentMode from "@/components/assessment/AssessmentMode";
+import Recovery from "@/components/mobile/Recovery";
+import NextActivity from "@/components/mobile/NextActivity";
+import { withTimeout } from "@/lib/mobile/request";
 import { supabase } from "@/lib/supabase";
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import posthog from "posthog-js";
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 
 import {
   Card,
@@ -33,6 +37,19 @@ function SelectedChallenge() {
 }
 function ChallengeAttempt({ selectedChallengeId }) {
     const router = useRouter();
+  const [pane,setPane]=useState("passage");
+  const paneScroll=useRef({passage:0,questions:0});
+  function changePane(next){paneScroll.current[pane]=window.scrollY;setPane(next);requestAnimationFrame(()=>window.scrollTo(0,paneScroll.current[next]));}
+  const [loadError,setLoadError]=useState(null);
+  const [retry,setRetry]=useState(0);
+  const [saveError,setSaveError]=useState(null);
+  const [submitting,setSubmitting]=useState(false);
+  const savingRef=useRef(false);
+  const savedAttemptRef=useRef(null);
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
+  const mountedRef = useRef(false);
+  const abandonedRef = useRef(false);
 
   const [challenge, setChallenge] =
     useState(null);
@@ -71,6 +88,7 @@ const [score, setScore] =
   useEffect(() => {
 
     async function loadChallenge() {
+    setLoading(true);setLoadError(null);
 
     const today =
   new Date()
@@ -85,12 +103,11 @@ const { data: rcSet, error: setError } =
   await supabase
     .from("daily_rc_sets")
     .select("*")
-    .eq(selectedChallengeId ? "id" : "challenge_date", selectedChallengeId || today)
+    .eq(selectedChallengeId ? "id" : "challenge_date", selectedChallengeId || istToday)
     .single();
 
 if (setError || !rcSet) {
-  setLoading(false);
-  return;
+  throw new Error("This challenge could not load. Please retry.");
 }
 
 if (selectedChallengeId && rcSet.challenge_date >= istToday) {
@@ -107,7 +124,7 @@ const {
   .eq("daily_rc_set_id", rcSet.id)
   .order("order_no");
 
-if (questionError) {
+if (questionError || !rcQuestions?.length) {
   setLoading(false);
   return;
 }
@@ -154,9 +171,34 @@ setTimeLeft(
       setLoading(false);
     }
 
-    loadChallenge();
+    withTimeout(loadChallenge()).catch(error=>{setLoadError(error.message);setLoading(false);});
 
-  }, [selectedChallengeId]);
+  }, [selectedChallengeId,retry]);
+
+  useEffect(() => {
+    if (loading || alreadyAttempted || !challenge?.id || startedRef.current) return;
+    startedRef.current = true;
+    startLearningActivity("daily_rc", challenge.id);
+    captureLearningEvent("daily_rc_started", { activity_type: "daily_rc", activity_id: challenge.id });
+  }, [loading, alreadyAttempted, challenge?.id]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    const recordAbandonment = () => {
+      if (startedRef.current && !completedRef.current && !abandonedRef.current) {
+        abandonedRef.current = true;
+        captureLearningEvent("activity_abandoned", { activity_type: "daily_rc", activity_id: challenge?.id });
+      }
+    };
+    window.addEventListener("pagehide", recordAbandonment);
+    return () => {
+      mountedRef.current = false;
+      window.removeEventListener("pagehide", recordAbandonment);
+      window.setTimeout(() => {
+        if (!mountedRef.current) recordAbandonment();
+      }, 0);
+    };
+  }, [challenge?.id]);
 
   /* ================= TIMER ================= */
 
@@ -178,7 +220,7 @@ setTimeLeft(
 
 useEffect(() => {
 
-  if (!loading && !alreadyAttempted && timeLeft === 0 && !showResults) {
+  if (!loading && !alreadyAttempted && challenge && !saveError && timeLeft === 0 && !showResults) {
     submitTest();
   }
 
@@ -221,13 +263,13 @@ useEffect(() => {
     );
   }
 
-  if (!challenge) {
+  if (loadError || !challenge) {
 
     return (
 
       <div className="min-h-screen bg-[#071120] flex items-center justify-center text-red-400 text-2xl font-bold">
 
-        Failed to load challenge
+        <Recovery area="daily_rc_load" message={loadError || "Challenge unavailable."} onRetry={()=>setRetry(n=>n+1)}/>
 
       </div>
 
@@ -266,7 +308,7 @@ useEffect(() => {
           mt-6
           "
         >
-          Attempt Exhausted
+          Challenge complete
         </h1>
 
         <p
@@ -329,6 +371,11 @@ useEffect(() => {
   /* ================= SELECT OPTION ================= */
 
   function selectOption(index) {
+    if (answers[currentQuestion] === undefined) {
+      const properties = { activity_type: "daily_rc", activity_id: challenge.id, question_number: currentQuestion + 1 };
+      captureLearningEvent("question_answered", properties);
+      captureLearningEvent("daily_rc_question_answered", properties);
+    }
 
     setAnswers((prev) => ({
       ...prev,
@@ -351,6 +398,9 @@ useEffect(() => {
 }
 
  async function submitTest() {
+ if(savingRef.current)return;
+ savingRef.current=true;setSubmitting(true);setSaveError(null);
+ try {
 
   let correct = 0;
   let incorrect = 0;
@@ -404,9 +454,10 @@ const catScore =
 const compositeScore =
   (catScore * 100) + timeLeft;
 
-  const user = await supabase.auth.getUser();
+  const user = await withTimeout(supabase.auth.getUser());
+ if(!user.data.user)throw new Error("Please sign in again to save this attempt.");
 
-const { data: attemptRow, error: attemptError } =
+const { data: attemptRow, error: attemptError } = savedAttemptRef.current ? {data:savedAttemptRef.current,error:null} :
   await supabase
     .from("daily_rc_attempts")
    .insert({
@@ -432,6 +483,8 @@ const { data: attemptRow, error: attemptError } =
     .select()
     .single();
 
+    if(attemptError) throw new Error(attemptError.message || "Your attempt could not save. Retry with your answers preserved.");
+    savedAttemptRef.current=attemptRow;
     const today =
   new Date().toISOString().split("T")[0];
 
@@ -501,34 +554,6 @@ await supabase
   );
 }
 
-if (attemptError) {
-
-  if (
-    attemptError.code === "23505"
-  ) {
-
-    alert(
-      "You have already attempted today's challenge."
-    );
-
-    router.push("/rc-history");
-
-    return;
-  }
-
-  console.error(attemptError);
-  return;
-}
-
-posthog.capture("daily_rc_completed", {
-  challenge_id: challenge.id,
-  challenge_title: challenge.title,
-  score: catScore,
-  accuracy: accuracy,
-  time_used: timeUsed,
-  correct: correct,
-  incorrect: incorrect,
-});
 
 const questionRows =
   questions.map((q, index) => {
@@ -570,15 +595,26 @@ const questionRows =
     .from("daily_rc_question_attempts")
     .insert(questionRows);
 
-if (questionError) {
-  console.error(questionError);
-  alert("Your score was saved, but your responses could not be saved. Review is unavailable; please contact support.");
-  router.push("/rc-history");
-  return;
-}
+if(questionError)throw new Error("Your score is saved. Retry to finish saving your responses; your answers are still here.");
 setScore(correct);
+completedRef.current = true;
+captureLearningEvent("daily_rc_completed", {
+  activity_type: "daily_rc",
+  activity_id: challenge.id,
+  challenge_id: challenge.id,
+  challenge_title: challenge.title,
+  score: catScore,
+  accuracy: accuracy,
+  time_used: timeUsed,
+  correct: correct,
+  incorrect: incorrect,
+});
 
+completeLearningActivity("daily_rc", challenge.id);
+
+window.__auctorExitAllowed=true;
 router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.id)}`);
+ } catch(error){setSaveError(error.message);} finally {savingRef.current=false;setSubmitting(false);}
 }
 
   
@@ -601,10 +637,14 @@ router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.i
 
  return (
 
- <div className="min-h-screen bg-[#071120] text-white">
+ <div className="daily-test min-h-screen bg-[#071120] text-white" data-pane={pane}>
+ <AssessmentMode active={!completedRef.current}/>
+ <div className="daily-test-mobile-header"><div><strong>Daily RC <span role="timer">{formattedTime}</span></strong><button disabled={submitting} onClick={()=>{if(window.confirm('Submit your answers? Unanswered questions will be counted.'))submitTest();}}>{submitting?'Saving…':'Submit'}</button></div><div className="today-tabs" role="tablist" aria-label="Reading and questions"><button role="tab" aria-selected={pane==='passage'} onClick={()=>changePane('passage')}>Passage</button><button role="tab" aria-selected={pane==='questions'} onClick={()=>changePane('questions')}>Questions · {answeredCount}/{questions.length}</button></div></div>
+ {saveError&&<Recovery area="daily_rc_save" message={saveError} onRetry={submitTest}/>}
+ {submitting&&<p role="status" className="p-4">Saving your answers…</p>}
      <div
   className="
-    fixed
+    daily-timer fixed
     top-6
     right-6
     z-[999]
@@ -632,7 +672,7 @@ router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.i
 
    <Card
 className="
-rounded-none
+daily-desktop-header rounded-none
 border-b
 border-white/5
 bg-[#0d1726]
@@ -763,7 +803,7 @@ bg-[#0d1726]
       {/* ================= MAIN ================= */}
 <div
   className="
-  mt-0
+  daily-test-grid mt-0
   grid
   grid-cols-1
   md:grid-cols-2
@@ -774,7 +814,7 @@ bg-[#0d1726]
 >
         {/* ================= PASSAGE PANEL ================= */}
 
-       <Card className="h-full rounded-[32px] border border-white/5 bg-[#0d1726] overflow-hidden">
+       <Card className="daily-test-panel daily-passage-panel h-full rounded-[32px] border border-white/5 bg-[#0d1726] overflow-hidden">
 
           <div className="h-full min-h-0 flex flex-col">
 
@@ -850,7 +890,7 @@ bg-[#0d1726]
 
         {/* ================= QUESTION PANEL ================= */}
 
-     <Card className="h-full rounded-[32px] bg-slate-900/90 overflow-hidden shadow-[0_0_40px_rgba(15,23,42,0.6)]">
+     <Card className="daily-test-panel daily-question-panel h-full rounded-[32px] bg-slate-900/90 overflow-hidden shadow-[0_0_40px_rgba(15,23,42,0.6)]">
 
           <div className="h-full flex flex-col min-w-0">
 
@@ -903,6 +943,8 @@ bg-[#0d1726]
 
       <button
         key={i}
+        aria-label={`Question ${i+1}${answered ? ", answered" : ", unanswered"}`}
+        aria-current={active ? "step" : undefined}
         onClick={() =>
           setCurrentQuestion(i)
         }
@@ -936,12 +978,6 @@ bg-[#0d1726]
 
                 </div>
 
-                <button className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-400/20 flex items-center justify-center text-amber-300">
-
-                  <Flag className="w-5 h-5" />
-
-                </button>
-
               </div>
 
             </div>
@@ -971,6 +1007,8 @@ bg-[#0d1726]
 
                       <button
                         key={index}
+                        disabled={submitting || !!savedAttemptRef.current}
+                        aria-pressed={selected}
                         onClick={() =>
                           selectOption(index)
                         }
@@ -1029,7 +1067,7 @@ bg-[#0d1726]
 
             {/* FOOTER */}
 
-           <div className="sticky bottom-0 shrink-0 border-t border-white/5 bg-[#132038] px-6 py-4 flex items-center justify-between gap-4 min-w-0">
+           <div className="daily-question-footer sticky bottom-0 shrink-0 border-t border-white/5 bg-[#132038] px-6 py-4 flex items-center justify-between gap-4 min-w-0">
               <Button
                 variant="outline"
                 disabled={currentQuestion === 0}

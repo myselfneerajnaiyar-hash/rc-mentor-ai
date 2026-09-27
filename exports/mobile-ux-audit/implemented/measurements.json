@@ -1,0 +1,1456 @@
+{
+  "results": [
+    {
+      "name": "module-speed",
+      "url": "/?view=speed",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 725,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 725,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Speed Reading Gym",
+          "y": 159
+        },
+        {
+          "text": "Speed Drill",
+          "y": 407
+        },
+        {
+          "text": "How it works",
+          "y": 0
+        },
+        {
+          "text": "How your score is calculated",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Reading practice\nVocabulary Lab\nSpeed Reading Gym\nPrecision Training",
+          "x": 16,
+          "y": 74,
+          "w": 205,
+          "h": 48
+        },
+        {
+          "text": "All practice",
+          "x": 229,
+          "y": 74,
+          "w": 75,
+          "h": 48
+        },
+        {
+          "text": "Speed Drill\nSpeed Profile",
+          "x": 33,
+          "y": 275,
+          "w": 254,
+          "h": 48
+        },
+        {
+          "text": "Start Drill",
+          "x": 94,
+          "y": 556,
+          "w": 133,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\nPractice\nReading practice\nVocabulary Lab\nSpeed Reading Gym\nPrecision Training\nAll practice\nSpeed Reading Gym\n\nTrain how fast you read without losing meaning.\n\nView\nSpeed Drill\nSpeed Profile\n\nSPEED PRACTICE\n\nSpeed Drill\n\nRead short timed paragraphs, then check your comprehension. Allow 3–5 minutes.\n\nStart Drill\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "module-workout",
+      "url": "/?view=workout",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 656,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 656,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 74
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 0
+        },
+        {
+          "text": "Today's Workout",
+          "y": 0
+        },
+        {
+          "text": "Speed Drill",
+          "y": 0
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 0
+        },
+        {
+          "text": "Reading Comprehension",
+          "y": 0
+        },
+        {
+          "text": "Micro Skills",
+          "y": 0
+        },
+        {
+          "text": "How it Works",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 21,
+          "y": 192,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 99,
+          "y": 192,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 204,
+          "y": 192,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 298,
+          "y": 192,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "🚀 Start Workout",
+          "x": 64,
+          "y": 410,
+          "w": 193,
+          "h": 52
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nPractise speed, vocabulary and reading in one guided session. Allow about 30 minutes.\n\n🚀 Start Workout\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "module-precision",
+      "url": "/?view=precision",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1178,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1178,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Train where the score is leaking.",
+          "y": 347
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Reading practice\nVocabulary Lab\nSpeed Reading Gym\nPrecision Training",
+          "x": 16,
+          "y": 74,
+          "w": 205,
+          "h": 48
+        },
+        {
+          "text": "All practice",
+          "x": 229,
+          "y": 74,
+          "w": 75,
+          "h": 48
+        },
+        {
+          "text": "Start Precision Drill",
+          "x": 32,
+          "y": 1002,
+          "w": 256,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\nPractice\nReading practice\nVocabulary Lab\nSpeed Reading Gym\nPrecision Training\nAll practice\nAUCTOR RC\nAdaptive skill training with Birbal\nPrecision Training\nTrain where the score is leaking.\n\nHey New Student, Birbal analysed your recent RC performance and prepared a focused eight-question session around the skills that need attention most.\n\nFOCUS AREAS\n\n1\nInference\nPriority skill\n\nSESSION FORMAT\n\n8 targeted questions\n8-minute focused sprint\nSkill and trap diagnosis\nServer-verified scoring\nStart Precision Drill\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "module-cat",
+      "url": "/?view=cat",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 966,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 966,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 CAT Arena",
+          "y": 94
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "📘 Official CAT PYQs",
+          "x": 80,
+          "y": 590,
+          "w": 160,
+          "h": 72
+        },
+        {
+          "text": "🧪 Auctor Mocks",
+          "x": 80,
+          "y": 674,
+          "w": 160,
+          "h": 72
+        },
+        {
+          "text": "📊 Analytics",
+          "x": 80,
+          "y": 758,
+          "w": 160,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 CAT Arena\n\nTrain Like The Real CAT. Official CAT Papers, Auctor Mock Tests and AI Diagnosis.\n\n0\nTests\n0\nAttempted\n40\nMinutes\n24\nQuestions\n📘 Official CAT PYQs\n🧪 Auctor Mocks\n📊 Analytics\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "module-mentor",
+      "url": "/?view=mentor",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 656,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 656,
+      "scrollers": [
+        {
+          "tag": "DIV",
+          "cls": " flex-1 min-h-0 h-0 overflow-y-auto overscroll-contain touch-pan-y p-3 space-y-4 pb-6 ",
+          "top": 121,
+          "h": 327,
+          "total": 448
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Birbal AI",
+          "y": 16
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "✕",
+          "x": 256,
+          "y": 30,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "How to improve inference questions?",
+          "x": 12,
+          "y": 115,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "How should I read RC faster?",
+          "x": 227,
+          "y": 115,
+          "w": 166,
+          "h": 44
+        },
+        {
+          "text": "What is tone detection?",
+          "x": 401,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "How to find main idea quickly?",
+          "x": 550,
+          "y": 115,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Message Birbal",
+          "x": 12,
+          "y": 512,
+          "w": 188,
+          "h": 44
+        },
+        {
+          "text": "Voice message",
+          "x": 208,
+          "y": 512,
+          "w": 42,
+          "h": 44
+        },
+        {
+          "text": "Send message",
+          "x": 258,
+          "y": 512,
+          "w": 50,
+          "h": 44
+        }
+      ],
+      "text": "Auctor\n\nInbox\nBirbal AI\n\nYour Personal Reading Mentor\n\nOnline\n✕\nHow to improve inference questions?\nHow should I read RC faster?\nWhat is tone detection?\nHow to find main idea quickly?\n👋 Welcome back!\n\nI'm Birbal — your AI Reading Mentor.\n\nI can help you:\n\n📊 Analyse your performance\n🎯 Recommend today's practice\n📖 Explain any RC\n📰 Decode newspaper editorials\n🧠 Improve your Reading IQ\n\nAsk me anything or choose a suggestion below."
+    },
+    {
+      "name": "route--daily-challenge",
+      "url": "/daily-challenge",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1900,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1900,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 325
+        },
+        {
+          "text": "Avoid scope distortion traps",
+          "y": 931
+        },
+        {
+          "text": "Unlock your full reading diagnosis",
+          "y": 1164
+        },
+        {
+          "text": "Leaderboard Ranking",
+          "y": 1305
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "y": 1381
+        },
+        {
+          "text": "Trap Analysis",
+          "y": 1457
+        },
+        {
+          "text": "Detailed Review",
+          "y": 1553
+        },
+        {
+          "text": "Reading Profile",
+          "y": 1649
+        },
+        {
+          "text": "Performance Insights",
+          "y": 1725
+        }
+      ],
+      "controls": [
+        {
+          "text": "Auctor RC\nDaily Arena",
+          "x": 16,
+          "y": 102,
+          "w": 120,
+          "h": 40
+        },
+        {
+          "text": "Dashboard",
+          "x": 195,
+          "y": 102,
+          "w": 109,
+          "h": 40
+        },
+        {
+          "text": "Dashboard",
+          "x": 195,
+          "y": 102,
+          "w": 109,
+          "h": 40
+        },
+        {
+          "text": "Today's RC",
+          "x": 21,
+          "y": 179,
+          "w": 93,
+          "h": 60
+        },
+        {
+          "text": "Previous RCs",
+          "x": 114,
+          "y": 179,
+          "w": 93,
+          "h": 60
+        },
+        {
+          "text": "Analytics",
+          "x": 206,
+          "y": 179,
+          "w": 93,
+          "h": 60
+        },
+        {
+          "text": "Start Today's RC →",
+          "x": 37,
+          "y": 765,
+          "w": 246,
+          "h": 28
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "DAILY RC ARENA\nAuctor RC\nDaily Arena\nDashboard\nToday's RC\nPrevious RCs\nAnalytics\n\nTODAY'S CHALLENGE\n\nDaily Reading Challenge\nModerate\nCAT 2023\n\nA CAT-level reading challenge designed to test inference, scope and comprehension under time pressure.\n\nQUESTIONS\n\n4\n\nTARGET TIME\n\n8 min\n\nSCORING\n\n+3 / −1 / 0\n\nStart Today's RC →\n\nOne focused passage. No distractions. Full diagnosis after completion.\n\n🧠\n\nTODAY'S FOCUS\n\nAvoid scope distortion traps\n\nDon't choose an option simply because it sounds reasonable. Every answer must be supported by the passage.\n\nCOMPLETE THE RC\n\nUnlock your full reading diagnosis\n\nYour full reading diagnosis appears after you finish the challenge.\n\n🏆\nLeaderboard Ranking\n\nSee where you stand.\n\n🧠\nCognitive Diagnosis\n\nUnderstand your reading behaviour.\n\n🎯\nTrap Analysis\n\nIdentify the distractors that caught you.\n\n📖\nDetailed Review\n\nReview the passage and every question.\n\n📈\nReading Profile\n\nUnderstand your reading strengths.\n\n⚡\nPerformance Insights\n\nTrack accuracy and speed.\n\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "route--daily-challenge-instructions",
+      "url": "/daily-challenge/instructions",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1204,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1204,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Before You Enter",
+          "y": 137
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 41,
+          "y": 41,
+          "w": 238,
+          "h": 24
+        },
+        {
+          "text": "Start Challenge →",
+          "x": 41,
+          "y": 1011,
+          "w": 238,
+          "h": 64
+        },
+        {
+          "text": "Start Challenge →",
+          "x": 41,
+          "y": 1011,
+          "w": 238,
+          "h": 64
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nDAILY RC ARENA\nBefore You Enter\n\n📖 1 CAT-level Reading Comprehension passage\n\n❓ Total Questions: 4\n\n⏱️ Time Limit: 8 minutes\n\n✅ Correct Answer: +3 marks\n\n❌ Incorrect Answer: -1 mark\n\n⚪ Unattempted: 0 marks\n\n🚫 No pausing once the challenge begins\n\n🏆 Leaderboard ranking depends on Score + Speed\n\n🧠 Detailed Diagnosis unlocks after submission\n\nSCORING SYSTEM\n+3\nCorrect\n-1\nIncorrect\n0\nUnattempted\nStart Challenge →\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "route--daily-challenge-test",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 4717,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 4717,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit",
+          "x": 247,
+          "y": 12,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 71,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 162,
+          "y": 71,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Exit activity",
+          "x": 199,
+          "y": 514,
+          "w": 113,
+          "h": 46
+        }
+      ],
+      "text": "Daily RC 8:00\nSubmit\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nExit activity"
+    },
+    {
+      "name": "daily-questions",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1021,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1021,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit",
+          "x": 247,
+          "y": 12,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 71,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 162,
+          "y": 71,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 270,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 270,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 270,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 270,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 403,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 501,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 599,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 697,
+          "w": 270,
+          "h": 102
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 828,
+          "w": 135,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 884,
+          "w": 278,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 164,
+          "y": 828,
+          "w": 135,
+          "h": 48
+        },
+        {
+          "text": "Exit activity",
+          "x": 199,
+          "y": 514,
+          "w": 113,
+          "h": 46
+        }
+      ],
+      "text": "Daily RC 7:59\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext\nExit activity"
+    },
+    {
+      "name": "route--birbal-v2",
+      "url": "/birbal-v2",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1249,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1249,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Birbal Editorial Decoder™",
+          "y": 176
+        },
+        {
+          "text": "Upload Editorial Screenshot",
+          "y": 689
+        }
+      ],
+      "controls": [
+        {
+          "text": "Analyze",
+          "x": 21,
+          "y": 29,
+          "w": 105,
+          "h": 48
+        },
+        {
+          "text": "History",
+          "x": 126,
+          "y": 29,
+          "w": 101,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Analyze\nHistory\nBirbal Intelligence Lab\nBirbal Editorial Decoder™\n\nUpload any editorial screenshot and let Birbal decode author intent, paragraph flow, vocabulary, inference logic and CAT traps.\n\nAuthor Intent\nInference Engine\nCAT Trap Decoder\nUpload Editorial Screenshot\n\nDrag & drop image, PDF or screenshot\n\nScan Editorial\nUpload From Gallery\n\nWorks best with clear editorial screenshots.\n\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "route--arena-result-missing",
+      "url": "/arena/result/missing",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 568,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 356,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Let’s try that again",
+          "y": 59
+        }
+      ],
+      "controls": [
+        {
+          "text": "Retry",
+          "x": 43,
+          "y": 159,
+          "w": 70,
+          "h": 50
+        },
+        {
+          "text": "Back to Today",
+          "x": 125,
+          "y": 159,
+          "w": 132,
+          "h": 50
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Let’s try that again\n\nThis result could not be loaded. Your saved attempt has not been changed.\n\nRetry\nBack to Today\nHome\nToday\nPractice\nProfile"
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/sectional_tests",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/sectional_test_content",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/sectional_test_content",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/subscriptions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/mentor_test_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/subscriptions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/mentor_test_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/mentor_test_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/mentor_test_attempts",
+      "method": "GET"
+    }
+  ]
+}

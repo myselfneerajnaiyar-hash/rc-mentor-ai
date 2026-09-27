@@ -1,14 +1,16 @@
 "use client";
+import { useRouteTab } from "@/lib/mobile/useRouteTab";
 import { useState, useEffect } from "react";
 import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 import VocabProfile from "../components/VocabProfile";
+import NextActivity from "@/components/mobile/NextActivity";
 import { supabase } from "../lib/supabase";
 import TabGroup from "../components/TabGroup";
 import PracticeSwitcher from "./PracticeSwitcher";
 import WordDrawer from "../components/WordDrawer";
 
 export default function VocabLab() {
-  const [tab, setTab] = useState("bank");
+  const [tab, setTab] = useRouteTab(["bank","drill","learn","profile"],"bank");
   const [manualWord, setManualWord] = useState("");
   const [lookup, setLookup] = useState(null);
   const [drawerWords, setDrawerWords] = useState([]);
@@ -717,7 +719,7 @@ if (isLastQuestion) {
     return (
 
       <div className="space-y-6">
-       <div className="rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-8">
+       <NextActivity current="vocab"/><div className="rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-8">
 
   <div className="text-center">
 
@@ -1149,7 +1151,7 @@ const qs = usable.slice(0, 5).map(w => {
       <div>
        <h2 className="text-2xl font-semibold text-slate-100">
   Lesson Test Complete
-</h2>
+</h2><NextActivity current="vocab"/>
         <p>
           Score: <b>{testScore}</b> / {testQs.length}
         </p>

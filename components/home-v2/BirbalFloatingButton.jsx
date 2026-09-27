@@ -34,7 +34,7 @@ export default function BirbalFloatingButton({
 }, [chatOpen]);
 
 useEffect(() => {
-  const check = () => setIsMobile(window.innerWidth < 768);
+  const check = () => setIsMobile(window.innerWidth < 900);
 
   check();
 
@@ -49,7 +49,7 @@ useEffect(() => {
   <>
     {/* Speech Bubble */}
 
-   {!chatOpen && (
+   {!chatOpen && !isMobile && (
   <div
     className="
     hidden md:block
@@ -89,16 +89,16 @@ Ask Birbal anything about RC.
 
     {/* Floating Button */}
 
-    <button
+    <button aria-label="Ask Birbal"
  onClick={() => {
-  if (window.innerWidth < 768) {
+  if (window.innerWidth < 900) {
     setView("mentor");
   } else {
     setChatOpen(true);
   }
 }}
       className="
-      fixed
+      birbal-launcher fixed
       bottom-24
       md:bottom-6
       right-6
@@ -116,6 +116,7 @@ Ask Birbal anything about RC.
       "
     >
       <Image
+        sizes="64px"
         src="/Birbal avatar.jpeg"
         alt="Birbal"
         fill

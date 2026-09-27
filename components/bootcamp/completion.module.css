@@ -1,0 +1,16 @@
+
+.complete{position:relative;isolation:isolate;overflow:hidden;min-height:72dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px;color:#eeeade;background:radial-gradient(ellipse at 50% 35%,#26677940,transparent 62%)}
+.portrait{position:relative;padding:12px;border:1px solid #b4955a80;border-radius:50%;box-shadow:0 0 70px #77dbee25,0 0 110px #c7a45b18}
+.portrait:before{content:'';position:absolute;inset:-30px;border:1px solid #92dfed66;border-radius:50%;animation:ring 1.8s ease-out both;pointer-events:none}
+.portrait img{display:block;width:132px;height:132px;border-radius:50%;object-fit:cover}
+.eyebrow{margin:28px 0 12px;letter-spacing:.18em;font-size:11px;color:#91dce9}
+.complete h1{font-family:Georgia,serif;font-size:clamp(32px,5vw,62px);font-weight:400;letter-spacing:.03em;margin:0}
+.lead{margin:18px 0 30px;font-size:18px;color:#bacbd3;max-width:520px;line-height:1.7}
+.complete button{position:relative;background:#86e5f4;color:#10303c;border:1px solid #86e5f4;border-radius:7px;min-height:48px;padding:16px 26px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
+.complete button:hover{background:#b2eff8}.complete button:focus-visible{outline:2px solid #efd7af;outline-offset:5px}
+.particles{position:absolute;inset:0;pointer-events:none;z-index:-1}.particles i{position:absolute;left:50%;top:35%;height:8px;width:3px;background:#d3b77d;opacity:0;animation:spark 1.7s cubic-bezier(.15,.6,.3,1) both;animation-delay:calc(.1s + var(--i)*12ms)}
+.particles i:nth-child(even){background:#86e5f4}.particles i:nth-child(6n){width:12px;height:12px;background:transparent;border:1px solid #d3b77d}.particles i:nth-child(5n){border-radius:50%;height:6px;width:6px}
+@keyframes spark{0%{transform:rotate(calc(var(--i)*15deg)) translateY(-35px) scale(.3)}20%{opacity:.85}100%{transform:rotate(calc(var(--i)*15deg)) translateY(-260px) rotate(150deg);opacity:0}}
+@keyframes ring{0%{opacity:0;transform:scale(.6)}20%{opacity:.7}100%{opacity:0;transform:scale(1.7)}}
+@media(prefers-reduced-motion:reduce){.particles,.portrait:before{display:none}}
+@media(max-width:600px){.complete{padding:28px 12px;min-height:70dvh}.portrait img{width:108px;height:108px}.lead{font-size:16px}}

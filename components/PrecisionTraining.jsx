@@ -1,4 +1,5 @@
 "use client"
+import NextActivity from "@/components/mobile/NextActivity";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
@@ -510,7 +511,7 @@ export default function PrecisionTraining({ user, userName }) {
           </section>
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+        <NextActivity current="precision"/><div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <button type="button" onClick={() => setPhase("review")} className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-indigo-500 px-6 text-sm font-semibold text-white transition hover:bg-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"><BookOpen className="h-4 w-4" /> Review every answer</button>
           <button type="button" onClick={startDrill} disabled={loading} className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.035] px-6 text-sm font-medium text-slate-200 transition hover:bg-white/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 disabled:opacity-50">{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />} Start another drill</button>
         </div>

@@ -3,6 +3,7 @@
 import { Brain, Flame, Gauge, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BirbalCoachCard from "@/components/BirbalCoachCard";
+import ProductTourButton from '@/components/ProductTourButton';
 import InboxHeaderLink from "./InboxHeaderLink";
 
 const statCards = [
@@ -65,24 +66,7 @@ export default function Header({
     </h1>
 
    <div className="flex shrink-0 items-center gap-2">
-   <Button
-  onClick={startTour}
-  className="
-    rounded-full
-    h-10
-    px-5
-    border
-    border-violet-500/30
-    bg-violet-500/5
-    text-violet-200
-    hover:text-violet-200
-    hover:bg-violet-500/15
-    hover:border-violet-400
-    transition-all
-"
->
-  ✨ Product Tour
-</Button>
+   {user && <ProductTourButton/>}
    {user && <InboxHeaderLink count={inboxUnreadCount} />}
    </div>
   </div>

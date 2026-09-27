@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { supabase } from "../lib/supabase";
 import { useTenant } from "@/components/providers/TenantProvider";
 import TenantLogo from "@/components/tenant/TenantLogo";
@@ -121,6 +122,8 @@ setSubscription(sub)
       </button>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}><TenantLogo className="h-8 w-8 rounded-lg object-contain" /><div><p style={{ margin: 0, color: "#e2e8f0", fontSize: 14, fontWeight: 600 }}>{branding.brandName}</p>{branding.isInstitute && <p style={{ margin: 0, color: "#64748b", fontSize: 10 }}>Powered by Auctor Labs</p>}</div></div>
 
+      <section className="mobile-profile-links" aria-label="History and progress"><h2>History and progress</h2><Link href="/?view=workout&tab=history">Workout history</Link>{capabilities.showDailyRC&&<Link href="/rc-history">Daily RC history</Link>}{entitlement.hasAccess&&<><Link href="/?view=rc&tab=history">RC practice history</Link><Link href="/?view=vocab&tab=profile">Vocabulary progress</Link><Link href="/?view=speed&tab=profile">Speed progress</Link></>}</section>
+      <Link className="mobile-text-action" href="/?view=home&tour=replay">Replay Product Tour</Link>
       {/* HERO SECTION */}
       <div style={hero}>
         <div style={avatar}>

@@ -1,0 +1,4192 @@
+{
+  "results": [
+    {
+      "name": "workout-speed-reading",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 952,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 952
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Skip Paragraph",
+          "x": 45,
+          "y": 724,
+          "w": 138,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n0 / 5 Questions\n\nSPEED DRILL\n\nQuestion 1 of 1\n\nTIME LEFT\n\n00:20\n\nEvidence matters in reading.\nSkip Paragraph\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-speed-answer",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1149,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 1149
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Evidence",
+          "x": 45,
+          "y": 711,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Guessing",
+          "x": 45,
+          "y": 786,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Ignoring",
+          "x": 45,
+          "y": 860,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Nothing",
+          "x": 45,
+          "y": 934,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n1 / 5 Questions\n\nSPEED DRILL\n\nQuestion 1 of 1\n\nTIME LEFT\n\n00:10\n\nWhat matters?\nEvidence\nGuessing\nIgnoring\nNothing\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-vocab",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1209,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 1209
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Evidence",
+          "x": 45,
+          "y": 719,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Guessing",
+          "x": 45,
+          "y": 790,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Ignoring",
+          "x": 45,
+          "y": 860,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Nothing",
+          "x": 45,
+          "y": 930,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Previous",
+          "x": 45,
+          "y": 1012,
+          "w": 92,
+          "h": 40
+        },
+        {
+          "text": "Submit Section",
+          "x": 191,
+          "y": 1012,
+          "w": 154,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n2 / 5 Questions\n\nVOCABULARY\n\nQuestion 1 of 1\n\nTIME LEFT\n\n05:00\n\nWhat matters?\nEvidence\nGuessing\nIgnoring\nNothing\nPrevious\nSubmit Section\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-rc1",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1751,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 1751
+        },
+        {
+          "tag": "DIV",
+          "cls": "premium-passage mb-6 max-h-[420px] overflow-y-auto whitespace-pre-line",
+          "top": 0,
+          "h": 418,
+          "total": 4528
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Evidence",
+          "x": 45,
+          "y": 1262,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Guessing",
+          "x": 45,
+          "y": 1332,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Ignoring",
+          "x": 45,
+          "y": 1402,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Nothing",
+          "x": 45,
+          "y": 1472,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Previous",
+          "x": 45,
+          "y": 1554,
+          "w": 92,
+          "h": 40
+        },
+        {
+          "text": "Submit Section",
+          "x": 191,
+          "y": 1554,
+          "w": 154,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n3 / 5 Questions\n\nRC 1\n\nQuestion 1 of 1\n\nTIME LEFT\n\n07:00\n\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nEvidence matters in reading.\nWhat matters?\nEvidence\nGuessing\nIgnoring\nNothing\nPrevious\nSubmit Section\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-rc2",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1751,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 1751
+        },
+        {
+          "tag": "DIV",
+          "cls": "premium-passage mb-6 max-h-[420px] overflow-y-auto whitespace-pre-line",
+          "top": 0,
+          "h": 418,
+          "total": 4528
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Evidence",
+          "x": 45,
+          "y": 1262,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Guessing",
+          "x": 45,
+          "y": 1332,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Ignoring",
+          "x": 45,
+          "y": 1402,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Nothing",
+          "x": 45,
+          "y": 1472,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Previous",
+          "x": 45,
+          "y": 1554,
+          "w": 92,
+          "h": 40
+        },
+        {
+          "text": "Submit Section",
+          "x": 191,
+          "y": 1554,
+          "w": 154,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n4 / 5 Questions\n\nRC 2\n\nQuestion 1 of 1\n\nTIME LEFT\n\n08:00\n\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nEvidence matters in reading.\nWhat matters?\nEvidence\nGuessing\nIgnoring\nNothing\nPrevious\nSubmit Section\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-micro",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1299,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 1299
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Evidence",
+          "x": 45,
+          "y": 810,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Guessing",
+          "x": 45,
+          "y": 880,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Ignoring",
+          "x": 45,
+          "y": 950,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Nothing",
+          "x": 45,
+          "y": 1020,
+          "w": 300,
+          "h": 58
+        },
+        {
+          "text": "Previous",
+          "x": 45,
+          "y": 1102,
+          "w": 92,
+          "h": 40
+        },
+        {
+          "text": "Submit Section",
+          "x": 191,
+          "y": 1102,
+          "w": 154,
+          "h": 40
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nSpeed Drill\nVocabulary\nRC 1\nRC 2\nMicro Skills\nOverall Progress\n5 / 5 Questions\n\nMICRO SKILLS\n\nQuestion 1 of 1\n\nTIME LEFT\n\n05:00\n\nEvidence matters in reading.\nWhat matters?\nEvidence\nGuessing\nIgnoring\nNothing\nPrevious\nSubmit Section\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-report-320",
+      "url": "/",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3213,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 3213
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 333
+        },
+        {
+          "text": "Contribution by skill",
+          "y": 2723
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": -39,
+          "y": 210,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 39,
+          "y": 210,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 144,
+          "y": 210,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 238,
+          "y": 210,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": 35,
+          "y": 436,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": 131,
+          "y": 436,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 247,
+          "y": 436,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 386,
+          "y": 436,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 471,
+          "y": 436,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 107,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 213,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 232,
+          "y": 682,
+          "w": 65,
+          "h": 65
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nOverall score\n\n11.00\n\nAccuracy\n\n100.0%\n\nAttempt rate\n\n100.0%\n\nWorkout time\n\n34s\n\nTier\n\nFoundation\n\nQuestions completed\n\n5/5\n\n100.0%\n\nOverall accuracy\n\nOverall accuracy\n100.0%\nOverall completion\n100.0%\nAverage time per question\n7s\n\nTODAY'S VERDICT\n\nYou attempted 100.0% of the workout at 100.0% accuracy. Speed Drill was the strongest section, while Micro Skills created the greatest consistency gap. Speed Drill offers the clearest improvement opportunity based on wrong and skipped responses.\n\nKEY TAKEAWAYS\n\nStrongest area\n\nSpeed Drill\n\nBiggest weakness\n\nMicro Skills\n\nHighest improvement opportunity\n\nSpeed Drill\n\nPotential score recovery\n\nNo negative skill contribution recorded\n\nSCORE IMPACT ANALYSIS\n\nContribution by skill\nInference\n11.00\n\nBIGGEST SCORE LOSS\n\nNone\n\nBIGGEST CONTRIBUTOR\n\ninference: +11.00\n\nPOTENTIAL SCORE RECOVERY\n\n0.00\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-report-360",
+      "url": "/",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3077,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 3077
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 309
+        },
+        {
+          "text": "Contribution by skill",
+          "y": 2587
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 254,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": -19,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 59,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 164,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 258,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": 35,
+          "y": 376,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": 131,
+          "y": 376,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 247,
+          "y": 376,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 386,
+          "y": 376,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 471,
+          "y": 376,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 120,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 240,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 271,
+          "y": 677,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nOverall score\n\n11.00\n\nAccuracy\n\n100.0%\n\nAttempt rate\n\n100.0%\n\nWorkout time\n\n34s\n\nTier\n\nFoundation\n\nQuestions completed\n\n5/5\n\n100.0%\n\nOverall accuracy\n\nOverall accuracy\n100.0%\nOverall completion\n100.0%\nAverage time per question\n7s\n\nTODAY'S VERDICT\n\nYou attempted 100.0% of the workout at 100.0% accuracy. Speed Drill was the strongest section, while Micro Skills created the greatest consistency gap. Speed Drill offers the clearest improvement opportunity based on wrong and skipped responses.\n\nKEY TAKEAWAYS\n\nStrongest area\n\nSpeed Drill\n\nBiggest weakness\n\nMicro Skills\n\nHighest improvement opportunity\n\nSpeed Drill\n\nPotential score recovery\n\nNo negative skill contribution recorded\n\nSCORE IMPACT ANALYSIS\n\nContribution by skill\nInference\n11.00\n\nBIGGEST SCORE LOSS\n\nNone\n\nBIGGEST CONTRIBUTOR\n\ninference: +11.00\n\nPOTENTIAL SCORE RECOVERY\n\n0.00\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-report-375",
+      "url": "/",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3033,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 3033
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 309
+        },
+        {
+          "text": "Contribution by skill",
+          "y": 2543
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 269,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": -12,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 67,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 172,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 266,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": 35,
+          "y": 376,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": 131,
+          "y": 376,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 247,
+          "y": 376,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 386,
+          "y": 376,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 471,
+          "y": 376,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 125,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 250,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 286,
+          "y": 677,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nOverall score\n\n11.00\n\nAccuracy\n\n100.0%\n\nAttempt rate\n\n100.0%\n\nWorkout time\n\n34s\n\nTier\n\nFoundation\n\nQuestions completed\n\n5/5\n\n100.0%\n\nOverall accuracy\n\nOverall accuracy\n100.0%\nOverall completion\n100.0%\nAverage time per question\n7s\n\nTODAY'S VERDICT\n\nYou attempted 100.0% of the workout at 100.0% accuracy. Speed Drill was the strongest section, while Micro Skills created the greatest consistency gap. Speed Drill offers the clearest improvement opportunity based on wrong and skipped responses.\n\nKEY TAKEAWAYS\n\nStrongest area\n\nSpeed Drill\n\nBiggest weakness\n\nMicro Skills\n\nHighest improvement opportunity\n\nSpeed Drill\n\nPotential score recovery\n\nNo negative skill contribution recorded\n\nSCORE IMPACT ANALYSIS\n\nContribution by skill\nInference\n11.00\n\nBIGGEST SCORE LOSS\n\nNone\n\nBIGGEST CONTRIBUTOR\n\ninference: +11.00\n\nPOTENTIAL SCORE RECOVERY\n\n0.00\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-report-390",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3033,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 3033
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 309
+        },
+        {
+          "text": "Contribution by skill",
+          "y": 2543
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": -4,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 74,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 179,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 273,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": 35,
+          "y": 376,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": 131,
+          "y": 376,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 247,
+          "y": 376,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 386,
+          "y": 376,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 471,
+          "y": 376,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 302,
+          "y": 682,
+          "w": 65,
+          "h": 65
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nOverall score\n\n11.00\n\nAccuracy\n\n100.0%\n\nAttempt rate\n\n100.0%\n\nWorkout time\n\n34s\n\nTier\n\nFoundation\n\nQuestions completed\n\n5/5\n\n100.0%\n\nOverall accuracy\n\nOverall accuracy\n100.0%\nOverall completion\n100.0%\nAverage time per question\n7s\n\nTODAY'S VERDICT\n\nYou attempted 100.0% of the workout at 100.0% accuracy. Speed Drill was the strongest section, while Micro Skills created the greatest consistency gap. Speed Drill offers the clearest improvement opportunity based on wrong and skipped responses.\n\nKEY TAKEAWAYS\n\nStrongest area\n\nSpeed Drill\n\nBiggest weakness\n\nMicro Skills\n\nHighest improvement opportunity\n\nSpeed Drill\n\nPotential score recovery\n\nNo negative skill contribution recorded\n\nSCORE IMPACT ANALYSIS\n\nContribution by skill\nInference\n11.00\n\nBIGGEST SCORE LOSS\n\nNone\n\nBIGGEST CONTRIBUTOR\n\ninference: +11.00\n\nPOTENTIAL SCORE RECOVERY\n\n0.00\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-report-414",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3033,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 3033
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 309
+        },
+        {
+          "text": "Contribution by skill",
+          "y": 2543
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 308,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 8,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 86,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 191,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 285,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": 35,
+          "y": 376,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": 131,
+          "y": 376,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 247,
+          "y": 376,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 386,
+          "y": 376,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 471,
+          "y": 376,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 326,
+          "y": 684,
+          "w": 64,
+          "h": 64
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nOverall score\n\n11.00\n\nAccuracy\n\n100.0%\n\nAttempt rate\n\n100.0%\n\nWorkout time\n\n34s\n\nTier\n\nFoundation\n\nQuestions completed\n\n5/5\n\n100.0%\n\nOverall accuracy\n\nOverall accuracy\n100.0%\nOverall completion\n100.0%\nAverage time per question\n7s\n\nTODAY'S VERDICT\n\nYou attempted 100.0% of the workout at 100.0% accuracy. Speed Drill was the strongest section, while Micro Skills created the greatest consistency gap. Speed Drill offers the clearest improvement opportunity based on wrong and skipped responses.\n\nKEY TAKEAWAYS\n\nStrongest area\n\nSpeed Drill\n\nBiggest weakness\n\nMicro Skills\n\nHighest improvement opportunity\n\nSpeed Drill\n\nPotential score recovery\n\nNo negative skill contribution recorded\n\nSCORE IMPACT ANALYSIS\n\nContribution by skill\nInference\n11.00\n\nBIGGEST SCORE LOSS\n\nNone\n\nBIGGEST CONTRIBUTOR\n\ninference: +11.00\n\nPOTENTIAL SCORE RECOVERY\n\n0.00\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-solutions",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1512,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1512
+        }
+      ],
+      "nav": [
+        "Overview\nPerformance\nSection Analysis\nInsights\nSolutions",
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Daily Workout Report",
+          "y": 309
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 308,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 8,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 86,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 191,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 285,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "Overview",
+          "x": -148,
+          "y": 376,
+          "w": 92,
+          "h": 44
+        },
+        {
+          "text": "Performance",
+          "x": -52,
+          "y": 376,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Section Analysis",
+          "x": 64,
+          "y": 376,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "Insights",
+          "x": 203,
+          "y": 376,
+          "w": 82,
+          "h": 44
+        },
+        {
+          "text": "Solutions",
+          "x": 288,
+          "y": 376,
+          "w": 91,
+          "h": 44
+        },
+        {
+          "text": "Speed Drill Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed revie",
+          "x": 28,
+          "y": 451,
+          "w": 358,
+          "h": 171
+        },
+        {
+          "text": "Vocabulary Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review",
+          "x": 28,
+          "y": 638,
+          "w": 358,
+          "h": 171
+        },
+        {
+          "text": "RC1 Review\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →",
+          "x": 28,
+          "y": 824,
+          "w": 358,
+          "h": 171
+        },
+        {
+          "text": "RC2 Review\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →",
+          "x": 28,
+          "y": 1011,
+          "w": 358,
+          "h": 171
+        },
+        {
+          "text": "Micro Skills Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed revi",
+          "x": 28,
+          "y": 1197,
+          "w": 358,
+          "h": 171
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 325,
+          "y": 679,
+          "w": 66,
+          "h": 66
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nWORKOUT COMPLETE \n\nDaily Workout Report\nOverview\nPerformance\nSection Analysis\nInsights\nSolutions\n\nSpeed Drill Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →\n\nVocabulary Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →\n\nRC1 Review\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →\n\nRC2 Review\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →\n\nMicro Skills Solutions\n\nCORRECT\n\n1\n\nWRONG\n\n0\n\nSKIPPED\n\n0\n\nQUESTIONS\n\n1\n\nOpen detailed review →\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "workout-review",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1850,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1850
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 92
+        },
+        {
+          "text": "Question 1 of 1",
+          "y": 660
+        },
+        {
+          "text": "What matters?",
+          "y": 1036
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 308,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 8,
+          "y": 186,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 86,
+          "y": 186,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 191,
+          "y": 186,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 285,
+          "y": 186,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "← Back to report",
+          "x": 28,
+          "y": 284,
+          "w": 141,
+          "h": 42
+        },
+        {
+          "text": "Speed Drill\n1/1\n1 correct\n0 wrong\n0 skipped",
+          "x": 41,
+          "y": 359,
+          "w": 190,
+          "h": 71
+        },
+        {
+          "text": "Vocabulary\n1/1\n1 correct\n0 wrong\n0 skipped",
+          "x": 239,
+          "y": 359,
+          "w": 190,
+          "h": 71
+        },
+        {
+          "text": "RC1\n1/1\n1 correct\n0 wrong\n0 skipped",
+          "x": 437,
+          "y": 359,
+          "w": 190,
+          "h": 71
+        },
+        {
+          "text": "RC2\n1/1\n1 correct\n0 wrong\n0 skipped",
+          "x": 635,
+          "y": 359,
+          "w": 190,
+          "h": 71
+        },
+        {
+          "text": "Micro Skills\n1/1\n1 correct\n0 wrong\n0 skipped",
+          "x": 833,
+          "y": 359,
+          "w": 190,
+          "h": 71
+        },
+        {
+          "text": "Q1\n✓\n\nEarned +1",
+          "x": 41,
+          "y": 508,
+          "w": 145,
+          "h": 74
+        },
+        {
+          "text": "Previous",
+          "x": 49,
+          "y": 708,
+          "w": 104,
+          "h": 38
+        },
+        {
+          "text": "Next",
+          "x": 161,
+          "y": 708,
+          "w": 80,
+          "h": 38
+        },
+        {
+          "text": "Previous Question",
+          "x": 28,
+          "y": 1632,
+          "w": 186,
+          "h": 74
+        },
+        {
+          "text": "Next Question",
+          "x": 226,
+          "y": 1632,
+          "w": 161,
+          "h": 74
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 324,
+          "y": 676,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n← Back to report\nSpeed Drill\n1/1\n1 correct\n0 wrong\n0 skipped\nVocabulary\n1/1\n1 correct\n0 wrong\n0 skipped\nRC1\n1/1\n1 correct\n0 wrong\n0 skipped\nRC2\n1/1\n1 correct\n0 wrong\n0 skipped\nMicro Skills\n1/1\n1 correct\n0 wrong\n0 skipped\n\nREVIEW ORDER\n\nQ1\n✓\n\nEarned +1\n\nSPEED DRILL\n\nQuestion 1 of 1\nPrevious\nNext\nReview Priority: Low\nCorrect\nScore impact: Earned +1\nEvidence matters in reading.\n\nQUESTION\n\nWhat matters?\nEvidence\nB\nGuessing\nC\nIgnoring\nD\nNothing\n\nDETAILED EXPLANATION\n\nExplanation not available.\nTopic: Inference\nPrevious Question\nNext Question\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "speed-second-intro",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1130,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 1130
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Speed Reading Gym",
+          "y": 196
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 308,
+          "y": 32,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "RC",
+          "x": 21,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Vocab",
+          "x": 91,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "Speed",
+          "x": 161,
+          "y": 97,
+          "w": 70,
+          "h": 36
+        },
+        {
+          "text": "🎯 Precision",
+          "x": 231,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Grammar",
+          "x": 321,
+          "y": 97,
+          "w": 90,
+          "h": 36
+        },
+        {
+          "text": "Speed Drill",
+          "x": 57,
+          "y": 274,
+          "w": 105,
+          "h": 41
+        },
+        {
+          "text": "Speed Profile",
+          "x": 169,
+          "y": 274,
+          "w": 120,
+          "h": 41
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 326,
+          "y": 684,
+          "w": 64,
+          "h": 64
+        }
+      ],
+      "text": "Auctor\n\nInbox\nRC\nVocab\nSpeed\n🎯 Precision\nGrammar\nSpeed Reading Gym\n\nTrain how fast you read without losing meaning.\n\nSpeed Drill\nSpeed Profile\n⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked automatically\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "expired-vocab-click",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 4615,
+      "bodyHeight": 9229,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 4615,
+          "h": 844,
+          "total": 9229
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": -4527
+        },
+        {
+          "text": "Train Like The Real CAT",
+          "y": -4010
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": -3741
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": -2092
+        },
+        {
+          "text": "Today's Activities",
+          "y": -1839
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": -1603
+        },
+        {
+          "text": "Daily Workout",
+          "y": -1266
+        },
+        {
+          "text": "Word Hunt",
+          "y": -929
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": -589
+        },
+        {
+          "text": "AI RC Generator",
+          "y": -264
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 414
+        },
+        {
+          "text": "Speed Drills",
+          "y": 640
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 862
+        },
+        {
+          "text": "Precision Training",
+          "y": 1108
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 1379
+        },
+        {
+          "text": "Monthly",
+          "y": 1700
+        },
+        {
+          "text": "Quarterly",
+          "y": 1698
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 1700
+        },
+        {
+          "text": "Yearly",
+          "y": 1700
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 2043
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 2555
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 2990
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 3526
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 3770
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": -4439,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": -4439,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Explore Test Series",
+          "x": 41,
+          "y": -3445,
+          "w": 197,
+          "h": 44
+        },
+        {
+          "text": "Buy Now",
+          "x": 37,
+          "y": -2289,
+          "w": 340,
+          "h": 36
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": -1998,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Challenge",
+          "x": 41,
+          "y": -1455,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": -1118,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": -781,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": -104,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 68,
+          "y": 2251,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Daily RC",
+          "x": 16,
+          "y": 2675,
+          "w": 116,
+          "h": 42
+        },
+        {
+          "text": "Workout",
+          "x": 144,
+          "y": 2675,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 16,
+          "y": 2729,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Weekly Challenge",
+          "x": 164,
+          "y": 2729,
+          "w": 183,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 325,
+          "y": 680,
+          "w": 66,
+          "h": 66
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCAT VARC\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\nAI POWERED VARC TEST SERIES\nTrain Like The Real CAT\n\nAttempt official CAT PYQs and AI-created mock tests with detailed diagnosis, mentor verdict and cognitive analysis after every test.\n\nCAT VARC Test Series\n\nPractice under real exam conditions with official CAT papers and AI-generated mock tests that closely simulate the latest CAT VARC pattern.\n\n24 Official CAT PYQs\n10 AI Mock Tests\n₹799 One Time\nExplore Test Series\nAI Report Preview\nSample\nMentor Verdict\nCognitive Diagnosis\nPerformance Analytics\nIncluded with every test\nAI Mentor Verdict\nCognitive Diagnosis\nDetailed Review\nPerformance Analytics\n24\nOfficial CAT PYQs\n\nCAT 2020–2025 papers with complete analysis.\n\n10\nAI Mock Tests\n\nFresh CAT-level mocks generated by Auctor AI.\n\nAI\nSmart Diagnosis\n\nDiscover exactly why you lose marks.\n\nLaunch Price\n₹799\nOne-Time Purchase\nBuy Now\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily RC Challenge\n\nSolve a fresh CAT-level Reading Comprehension passage every day.\n\n10-15 mins\nStart Challenge\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nDaily RC\nWorkout\nWord Hunt\nWeekly Challenge\nNo RC attempts today\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "expired-birbal-click",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 4615,
+      "bodyHeight": 9229,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 4615,
+          "h": 844,
+          "total": 9229
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": -4527
+        },
+        {
+          "text": "Train Like The Real CAT",
+          "y": -4010
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": -3741
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": -2092
+        },
+        {
+          "text": "Today's Activities",
+          "y": -1839
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": -1603
+        },
+        {
+          "text": "Daily Workout",
+          "y": -1266
+        },
+        {
+          "text": "Word Hunt",
+          "y": -929
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": -589
+        },
+        {
+          "text": "AI RC Generator",
+          "y": -264
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 414
+        },
+        {
+          "text": "Speed Drills",
+          "y": 640
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 862
+        },
+        {
+          "text": "Precision Training",
+          "y": 1108
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 1379
+        },
+        {
+          "text": "Monthly",
+          "y": 1700
+        },
+        {
+          "text": "Quarterly",
+          "y": 1698
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 1700
+        },
+        {
+          "text": "Yearly",
+          "y": 1700
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 2043
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 2555
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 2990
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 3526
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 3770
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": -4439,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": -4439,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Explore Test Series",
+          "x": 41,
+          "y": -3445,
+          "w": 197,
+          "h": 44
+        },
+        {
+          "text": "Buy Now",
+          "x": 37,
+          "y": -2289,
+          "w": 340,
+          "h": 36
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": -1998,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Challenge",
+          "x": 41,
+          "y": -1455,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": -1118,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": -781,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": -104,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 68,
+          "y": 2251,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Daily RC",
+          "x": 16,
+          "y": 2675,
+          "w": 116,
+          "h": 42
+        },
+        {
+          "text": "Workout",
+          "x": 144,
+          "y": 2675,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 16,
+          "y": 2729,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Weekly Challenge",
+          "x": 164,
+          "y": 2729,
+          "w": 183,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 324,
+          "y": 676,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCAT VARC\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\nAI POWERED VARC TEST SERIES\nTrain Like The Real CAT\n\nAttempt official CAT PYQs and AI-created mock tests with detailed diagnosis, mentor verdict and cognitive analysis after every test.\n\nCAT VARC Test Series\n\nPractice under real exam conditions with official CAT papers and AI-generated mock tests that closely simulate the latest CAT VARC pattern.\n\n24 Official CAT PYQs\n10 AI Mock Tests\n₹799 One Time\nExplore Test Series\nAI Report Preview\nSample\nMentor Verdict\nCognitive Diagnosis\nPerformance Analytics\nIncluded with every test\nAI Mentor Verdict\nCognitive Diagnosis\nDetailed Review\nPerformance Analytics\n24\nOfficial CAT PYQs\n\nCAT 2020–2025 papers with complete analysis.\n\n10\nAI Mock Tests\n\nFresh CAT-level mocks generated by Auctor AI.\n\nAI\nSmart Diagnosis\n\nDiscover exactly why you lose marks.\n\nLaunch Price\n₹799\nOne-Time Purchase\nBuy Now\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily RC Challenge\n\nSolve a fresh CAT-level Reading Comprehension passage every day.\n\n10-15 mins\nStart Challenge\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nDaily RC\nWorkout\nWord Hunt\nWeekly Challenge\nNo RC attempts today\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "noncat-home-320",
+      "url": "/",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 7706,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 7706
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": 88
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": 642
+        },
+        {
+          "text": "Today's Activities",
+          "y": 948
+        },
+        {
+          "text": "Daily Workout",
+          "y": 1200
+        },
+        {
+          "text": "Word Hunt",
+          "y": 1561
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": 1925
+        },
+        {
+          "text": "AI RC Generator",
+          "y": 2278
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 3136
+        },
+        {
+          "text": "Speed Drills",
+          "y": 3382
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 3628
+        },
+        {
+          "text": "Precision Training",
+          "y": 3874
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 4169
+        },
+        {
+          "text": "Monthly",
+          "y": 4522
+        },
+        {
+          "text": "Quarterly",
+          "y": 4520
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 4522
+        },
+        {
+          "text": "Yearly",
+          "y": 4522
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 4865
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 5441
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 5910
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 6514
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 6778
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": 176,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": 176,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": 789,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": 1372,
+          "w": 238,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": 1733,
+          "w": 238,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": 2494,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 41,
+          "y": 5137,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Workout",
+          "x": 16,
+          "y": 5625,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 147,
+          "y": 5625,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 107,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 213,
+          "y": 790,
+          "w": 107,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 231,
+          "y": 681,
+          "w": 65,
+          "h": 65
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCLAT English\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nWorkout\nWord Hunt\nNo attempts yet today. Be the first 🚀\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "noncat-home-360",
+      "url": "/",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 7406,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 7406
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": 88
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": 598
+        },
+        {
+          "text": "Today's Activities",
+          "y": 904
+        },
+        {
+          "text": "Daily Workout",
+          "y": 1156
+        },
+        {
+          "text": "Word Hunt",
+          "y": 1517
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": 1857
+        },
+        {
+          "text": "AI RC Generator",
+          "y": 2182
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 2988
+        },
+        {
+          "text": "Speed Drills",
+          "y": 3234
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 3480
+        },
+        {
+          "text": "Precision Training",
+          "y": 3726
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 3997
+        },
+        {
+          "text": "Monthly",
+          "y": 4350
+        },
+        {
+          "text": "Quarterly",
+          "y": 4348
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 4350
+        },
+        {
+          "text": "Yearly",
+          "y": 4350
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 4693
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 5237
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 5706
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 6262
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 6506
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": 176,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": 176,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": 745,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": 1328,
+          "w": 278,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": 1665,
+          "w": 278,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": 2370,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 41,
+          "y": 4933,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Workout",
+          "x": 16,
+          "y": 5421,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 147,
+          "y": 5421,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 120,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 240,
+          "y": 790,
+          "w": 120,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 270,
+          "y": 677,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCLAT English\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nWorkout\nWord Hunt\nNo attempts yet today. Be the first 🚀\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "noncat-home-375",
+      "url": "/",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 7378,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 7378
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": 88
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": 598
+        },
+        {
+          "text": "Today's Activities",
+          "y": 904
+        },
+        {
+          "text": "Daily Workout",
+          "y": 1156
+        },
+        {
+          "text": "Word Hunt",
+          "y": 1517
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": 1857
+        },
+        {
+          "text": "AI RC Generator",
+          "y": 2182
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 2988
+        },
+        {
+          "text": "Speed Drills",
+          "y": 3234
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 3480
+        },
+        {
+          "text": "Precision Training",
+          "y": 3726
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 3997
+        },
+        {
+          "text": "Monthly",
+          "y": 4350
+        },
+        {
+          "text": "Quarterly",
+          "y": 4348
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 4350
+        },
+        {
+          "text": "Yearly",
+          "y": 4350
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 4693
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 5237
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 5706
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 6262
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 6506
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": 176,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": 176,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": 745,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": 1328,
+          "w": 293,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": 1665,
+          "w": 293,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": 2370,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 48,
+          "y": 4933,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Workout",
+          "x": 16,
+          "y": 5421,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 147,
+          "y": 5421,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 125,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 250,
+          "y": 790,
+          "w": 125,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 286,
+          "y": 678,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCLAT English\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nWorkout\nWord Hunt\nNo attempts yet today. Be the first 🚀\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "noncat-home-390",
+      "url": "/",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 7142,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 7142
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": 88
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": 598
+        },
+        {
+          "text": "Today's Activities",
+          "y": 872
+        },
+        {
+          "text": "Daily Workout",
+          "y": 1100
+        },
+        {
+          "text": "Word Hunt",
+          "y": 1437
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": 1777
+        },
+        {
+          "text": "AI RC Generator",
+          "y": 2102
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 2860
+        },
+        {
+          "text": "Speed Drills",
+          "y": 3082
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 3328
+        },
+        {
+          "text": "Precision Training",
+          "y": 3574
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 3845
+        },
+        {
+          "text": "Monthly",
+          "y": 4166
+        },
+        {
+          "text": "Quarterly",
+          "y": 4164
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 4166
+        },
+        {
+          "text": "Yearly",
+          "y": 4166
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 4509
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 5021
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 5490
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 6026
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 6270
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": 176,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": 176,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": 713,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": 1248,
+          "w": 308,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": 1585,
+          "w": 308,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": 2290,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 56,
+          "y": 4717,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Workout",
+          "x": 16,
+          "y": 5205,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 147,
+          "y": 5205,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 130,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 260,
+          "y": 790,
+          "w": 130,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 302,
+          "y": 683,
+          "w": 64,
+          "h": 64
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCLAT English\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nWorkout\nWord Hunt\nNo attempts yet today. Be the first 🚀\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    },
+    {
+      "name": "noncat-home-414",
+      "url": "/",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 6905,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "",
+          "top": 0,
+          "h": 844,
+          "total": 6905
+        }
+      ],
+      "nav": [
+        "Home\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Good Morning, New Student 👋",
+          "y": 88
+        },
+        {
+          "text": "Training starts October 1.",
+          "y": 598
+        },
+        {
+          "text": "Today's Activities",
+          "y": 851
+        },
+        {
+          "text": "Daily Workout",
+          "y": 1079
+        },
+        {
+          "text": "Word Hunt",
+          "y": 1416
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": 1756
+        },
+        {
+          "text": "AI RC Generator",
+          "y": 2081
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 2763
+        },
+        {
+          "text": "Speed Drills",
+          "y": 2985
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": 3207
+        },
+        {
+          "text": "Precision Training",
+          "y": 3453
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": 3724
+        },
+        {
+          "text": "Monthly",
+          "y": 4045
+        },
+        {
+          "text": "Quarterly",
+          "y": 4043
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 4045
+        },
+        {
+          "text": "Yearly",
+          "y": 4045
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": 4388
+        },
+        {
+          "text": "Compete With The Best",
+          "y": 4900
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": 5281
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 5817
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 6061
+        }
+      ],
+      "controls": [
+        {
+          "text": "✨ Product Tour",
+          "x": 16,
+          "y": 176,
+          "w": 147,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 171,
+          "y": 176,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Open Boot Camp →",
+          "x": 47,
+          "y": 692,
+          "w": 155,
+          "h": 46
+        },
+        {
+          "text": "Start Workout",
+          "x": 41,
+          "y": 1227,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 41,
+          "y": 1564,
+          "w": 332,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 41,
+          "y": 2241,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 68,
+          "y": 4596,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Workout",
+          "x": 16,
+          "y": 5020,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 147,
+          "y": 5020,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Home",
+          "x": 0,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Practice",
+          "x": 138,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "Profile",
+          "x": 276,
+          "y": 790,
+          "w": 138,
+          "h": 45
+        },
+        {
+          "text": "",
+          "x": 326,
+          "y": 683,
+          "w": 64,
+          "h": 64
+        }
+      ],
+      "text": "Auctor\n\nGood Morning, New Student 👋\n✨ Product Tour\nInbox\n\nBecome a better reader every single day.\n\nCLAT English\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\n\nBOOT CAMP\n\nTraining starts October 1.\n\nPast days stay open. Your progress stays with you.\n\nOpen Boot Camp →\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nWorkout\nWord Hunt\nNo attempts yet today. Be the first 🚀\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nHome\nPractice\nProfile"
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/speed-generate",
+      "method": "POST"
+    },
+    {
+      "path": "/api/speed-generate",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/master_vocab",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/master_vocab",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/bootcamp",
+      "method": "GET"
+    },
+    {
+      "path": "/api/leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    }
+  ]
+}

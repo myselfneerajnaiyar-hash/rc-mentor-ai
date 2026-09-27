@@ -1,149 +1,34 @@
 "use client";
-
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
-
-export function startProductTour(isCatStudent, brandName = "Auctor RC") {
-
-
-   
-  const catSteps = [
-    {
-
-        
-  popover: {
-    title: `👋 Welcome to ${brandName}`,
-    description:
-      "This 60-second tour will show you the most important features to improve your reading. Let's begin!"
-  }
-},
-
-{
-      element: "#daily-rc",
-      popover: {
-        title: "🏆 Daily RC Challenge",
-       description:
-"Start every day with one fresh actual CAT Passage. Track your rank on the leaderboard and build consistency."
-      }
-    },
-    {
-      element: "#daily-workout",
-      popover: {
-        title: "💪 Daily Workout",
-       description:
-"Your complete daily practice in one place. Finish this to improve Reading, Vocabulary and Speed together."
-      }
-    },
-    {
-      element: "#rc-generator",
-      popover: {
-        title: "📖 RC Generator",
-       description:
-"Create unlimited RCs on any topic, difficulty and length. You'll never run out of practice."
-      }
-    },
-    {
-      element: "#vocab-lab",
-      popover: {
-        title: "📚 Vocabulary Lab",
-       description:
-"Learn, revise and retain high-frequency vocabulary with smart AI-powered revision."
-      }
-    },
-    {
-      element: "#speed-drill",
-      popover: {
-        title: "⚡ Speed Reading Gym",
-        description:
-"Train yourself to read faster without losing comprehension. Perfect for improving CAT speed."
-      }
-    },
-    {
-      element: "#sectionals",
-      popover: {
-        title: "🎯 CAT Sectionals",
-       description:
-"Attempt full CAT VARC sectionals and receive AI-powered diagnosis after every test."
-      }
-    }
-  ];
-
-  const nonCatSteps = [
-    {
-
-        popover: {
-    title: `👋 Welcome to ${brandName}`,
-    description:
-      "This 60-second tour will show you the most important features to improve your reading. Let's begin!"
-  }
-},
-
- {
-      element: "#daily-workout",
-      popover: {
-        title: "💪 Daily Workout",
-       description:
-"Your complete daily practice in one place. Finish this to improve Reading, Vocabulary and Speed together."
-      }
-    },
-
-   {
-      element: "#rc-generator",
-      popover: {
-        title: "📖 RC Generator",
-       description:
-"Create unlimited RCs on any topic, difficulty and length. You'll never run out of practice."
-      }
-    },
-
-   {
-      element: "#vocab-lab",
-      popover: {
-        title: "📚 Vocabulary Lab",
-       description:
-"Learn, revise and retain high-frequency vocabulary with smart AI-powered revision."
-      }
-    },
-
-     {
-      element: "#speed-drill",
-      popover: {
-        title: "⚡ Speed Reading Gym",
-        description:
-"Train yourself to read faster without losing comprehension across timed reading tasks."
-      }
-    },
-    {
-      element: "#editorial",
-      popover: {
-        title: "📰 Birbal Editorial Decoder",
-        description:
-          "Upload editorials and let Birbal explain them paragraph by paragraph."
-      }
-    },
-    {
-      element: "#precision",
-      popover: {
-        title: "🎯 Precision Drills",
-        description:
-          "AI-generated drills based on your weakest RC skills."
-      }
-    }
-  ];
-
-  const driverObj = driver({
-  showProgress: true,
-  animate: true,
-  allowClose: true,
-  stagePadding: 12,
-  stageRadius: 18,
-  nextBtnText: "Next",
-  prevBtnText: "Back",
-  doneBtnText: "Start Learning 🚀",
-  steps: isCatStudent ? catSteps : nonCatSteps,
-});
-
-  setTimeout(() => {
-  driverObj.drive();
-}, 800);
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
+export function startProductTour(){window.dispatchEvent(new Event('auctor:replay-tour'));}
+export function tourSteps(isCatStudent,brandName,mobile,capabilities={showDailyRC:isCatStudent,showCATSectionals:isCatStudent}){
+ const steps=[{popover:{title:'Welcome to '+brandName,description:'Build your reading habit with daily practice. Let us show you where to begin.'}}];
+ const add=(element,title,description)=>steps.push({element,popover:{title,description,side:'bottom',align:'center'}});
+ if(capabilities.showDailyRC)add('#daily-rc','Daily RC Challenge','Practise a fresh CAT passage and review your saved answers.');
+ add('#daily-workout','Daily Workout','Train reading, vocabulary and speed together in one guided session.');
+ add('#word-hunt','Word Hunt','Build vocabulary with a quick daily puzzle.');
+ add('#rc-generator','RC Practice','Generate a passage or bring your own for focused reading practice.');
+ add('#vocab-lab','Vocabulary Lab','Learn words, practise recall and revisit your word bank.');
+ add('#speed-drill','Speed Reading Gym','Build reading speed while checking comprehension.');
+ if(capabilities.showCATSectionals)add('#sectionals','CAT Sectionals','Explore CAT papers and mock tests. Start tests on desktop and review attempts on either device.');
+ add(mobile?'#practice-discovery':'#precision','Precision Training',mobile?'Open All practice, choose Reading, then Precision Training to focus on specific question types.':'Practise the reading question types you want to improve.');
+ if(mobile)add('.auctor-mobile-nav','Your daily navigation','Use Home, Today, Practice and Profile. Replay this tour from your Profile whenever you need it.');
+ else if(!isCatStudent){add('#editorial','Editorial Decoder','Explore editorials with Birbal.');}
+ return steps;
+}
+export function launchProductTour(steps,{onComplete,onClose}){
+ let saving=false;
+ const finish=async()=>{
+  if(saving)return;saving=true;
+  const button=document.querySelector('.driver-popover-next-btn');if(button){button.textContent='Saving...';button.disabled=true;}
+  try{await onComplete();if(instance.isActive())instance.destroy();}
+  catch{if(!instance.isActive())return;if(button){button.textContent='Retry saving';button.disabled=false;}const description=document.querySelector('.driver-popover-description');if(description)description.textContent='Your completion could not be saved. Retry, or close and take the tour again next visit.';}
+  finally{saving=false;}
+ };
+ const instance=driver({steps,showProgress:true,animate:false,allowClose:true,allowScroll:true,disableActiveInteraction:true,stagePadding:8,stageRadius:16,nextBtnText:'Next',prevBtnText:'Back',doneBtnText:'Finish',popoverClass:'auctor-tour',onDoneClick:finish,onNextClick:()=>instance.isLastStep()?finish():instance.moveNext(),onDestroyed:onClose,onPopoverRender:(popover)=>{
+  const skip=document.createElement('button');skip.type='button';skip.className='tour-skip';skip.textContent='Skip Tour';skip.onclick=()=>instance.destroy();popover.footer.prepend(skip);
+ }});
+ document.body.classList.add('product-tour-active');
+ try{instance.drive();return instance;}catch(error){instance.destroy();document.body.classList.remove('product-tour-active');throw error;}
 }

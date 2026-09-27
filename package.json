@@ -11,7 +11,13 @@
     "grammar:quality:test": "node scripts/testGrammarQualityGates.mjs",
     "grammar:pilot:validate": "node scripts/validateGrammarPilot.mjs",
     "grammar:populate": "node scripts/populateGrammarTopics.mjs",
-    "grammar:populate:plan": "node scripts/planGrammarPopulation.mjs"
+    "grammar:populate:plan": "node scripts/planGrammarPopulation.mjs",
+    "test:bootcamp": "node --test tests/bootcamp.test.mjs tests/bootcamp-trainer.test.mjs tests/bootcamp-calendar.test.mjs tests/bootcamp-overall.test.mjs",
+    "test:bootcamp:browser": "node tests/bootcamp.browser.mjs",
+    "lint:bootcamp": "eslint -c eslint.bootcamp.config.mjs lib/bootcamp components/bootcamp app/boot-camp app/api/bootcamp tests/bootcamp*.mjs tests/helpers/bootcamp-db.mjs",
+    "test:bootcamp:trainer:browser": "node tests/bootcamp-trainer.browser.mjs",
+    "test:bootcamp:calendar:browser": "node tests/bootcamp-calendar.browser.mjs",
+    "test:bootcamp:overall:browser": "node tests/bootcamp-overall.browser.mjs"
   },
   "dependencies": {
     "@capacitor-community/speech-recognition": "^7.0.1",
@@ -45,8 +51,13 @@
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@eslint/js": "^9.39.5",
     "@types/react": "19.2.14",
     "autoprefixer": "^10.4.24",
+    "eslint": "^9.39.5",
+    "globals": "^17.12.0",
+    "playwright-core": "^1.63.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
     "typescript": "5.9.3"

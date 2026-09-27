@@ -1,0 +1,203 @@
+   ▲ Next.js 14.0.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/93) ...
+========== BIRBAL COACH ROUTE HIT ==========
+   Generating static pages (23/93) 
+ew [Error]: Dynamic server usage: Page couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at eP (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29225)
+    at Module.eE (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29561)
+    at i (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:34513)
+    at Object.get (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:34729)
+    at d (C:\Projects\rc-mentor-ai\.tmp-tour-header\build\server\app\api\leaderboard\route.js:1:629)
+    at C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:41966
+    at C:\Projects\rc-mentor-ai\node_modules\next\dist\server\lib\trace\tracer.js:133:36
+    at NoopContextManager.with (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093) {
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+ew [Error]: Dynamic server usage: Page couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at eP (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29225)
+    at Module.eE (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29561)
+    at i (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:34513)
+    at Object.get (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:34729)
+    at u (C:\Projects\rc-mentor-ai\.tmp-tour-header\build\server\app\api\wordhunt-leaderboard\route.js:1:629)
+    at C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:41966
+    at C:\Projects\rc-mentor-ai\node_modules\next\dist\server\lib\trace\tracer.js:133:36
+    at NoopContextManager.with (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093) {
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (46/93) 
+   Generating static pages (69/93) 
+CRON ERROR: TypeError: Failed to parse URL from undefined/api/get-daily-workout
+    at node:internal/deps/undici/undici:15845:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at i (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:174256)
+      at M (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:39643)
+      at C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:41758
+      at C:\Projects\rc-mentor-ai\node_modules\next\dist\server\lib\trace\tracer.js:133:36
+      at NoopContextManager.with (C:\Projects\rc-mentor-ai\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062) {
+    code: 'ERR_INVALID_URL',
+    input: 'undefined/api/get-daily-workout'
+  }
+}
+ ✓ Generating static pages (93/93) 
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                             Size     First Load JS
+┌ λ /                                                   90.7 kB         507 kB
+├ λ /_not-found                                         875 B          83.3 kB
+├ λ /about                                              139 B          85.7 kB
+├ λ /api/birbal                                         0 B                0 B
+├ λ /api/birbal-analysis                                0 B                0 B
+├ λ /api/birbal-analysis-v2                             0 B                0 B
+├ λ /api/birbal-analyze                                 0 B                0 B
+├ λ /api/birbal-coach                                   0 B                0 B
+├ λ /api/birbal-context                                 0 B                0 B
+├ λ /api/birbal-insights                                0 B                0 B
+├ λ /api/birbal-question                                0 B                0 B
+├ λ /api/bootcamp                                       0 B                0 B
+├ λ /api/bootcamp/analytics                             0 B                0 B
+├ λ /api/bootcamp/attempts/[id]                         0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/advance                 0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/blocks/[key]/finish     0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/blocks/[key]/responses  0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/blocks/[key]/review     0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/blocks/[key]/start      0 B                0 B
+├ λ /api/bootcamp/attempts/[id]/coach                   0 B                0 B
+├ λ /api/bootcamp/chat                                  0 B                0 B
+├ λ /api/bootcamp/days/[day]/start                      0 B                0 B
+├ λ /api/bootcamp/days/1/start                          0 B                0 B
+├ λ /api/bootcamp/enroll                                0 B                0 B
+├ ● /api/cat-sectionals/[id]                            0 B                0 B
+├   ├ /api/cat-sectionals/sectional-01
+├   ├ /api/cat-sectionals/sectional-02
+├   ├ /api/cat-sectionals/sectional-03
+├   └ [+7 more paths]
+├ λ /api/chat-mentor                                    0 B                0 B
+├ λ /api/check-attempt                                  0 B                0 B
+├ ○ /api/check-expired-trials                           0 B                0 B
+├ ○ /api/check-trials                                   0 B                0 B
+├ λ /api/cognitive-diagnosis                            0 B                0 B
+├ λ /api/create-order                                   0 B                0 B
+├ λ /api/daily-rc-analytics                             0 B                0 B
+├ λ /api/daily-rc-review                                0 B                0 B
+├ λ /api/daily-status                                   0 B                0 B
+├ λ /api/enrich-bulk                                    0 B                0 B
+├ λ /api/enrich-word                                    0 B                0 B
+├ λ /api/generate-cat-rc                                0 B                0 B
+├ ○ /api/generate-daily-workout                         0 B                0 B
+├ λ /api/generate-master-vocab                          0 B                0 B
+├ λ /api/get-birbal-session                             0 B                0 B
+├ λ /api/get-daily-rc                                   0 B                0 B
+├ λ /api/get-daily-workout                              0 B                0 B
+├ ○ /api/get-editorial-history                          0 B                0 B
+├ λ /api/grammar/catalog                                0 B                0 B
+├ λ /api/grammar/history                                0 B                0 B
+├ λ /api/grammar/sessions                               0 B                0 B
+├ λ /api/grammar/sessions/[attemptId]                   0 B                0 B
+├ λ /api/grammar/sessions/[attemptId]/submit            0 B                0 B
+├ λ /api/hangman-streak                                 0 B                0 B
+├ λ /api/inbox                                          0 B                0 B
+├ λ /api/inbox/[id]                                     0 B                0 B
+├ λ /api/inbox/generate                                 0 B                0 B
+├ λ /api/inbox/unread-count                             0 B                0 B
+├ λ /api/leaderboard                                    0 B                0 B
+├ λ /api/mentor-verdict                                 0 B                0 B
+├ λ /api/precision-drill                                0 B                0 B
+├ λ /api/precision-shadow-drill                         0 B                0 B
+├ λ /api/precision/sessions/[sessionId]                 0 B                0 B
+├ λ /api/precision/sessions/[sessionId]/submit          0 B                0 B
+├ λ /api/product-tour                                   0 B                0 B
+├ λ /api/rc-diagnose                                    0 B                0 B
+├ λ /api/rc-generate                                    0 B                0 B
+├ ○ /api/rc-lab-generate                                0 B                0 B
+├ λ /api/rc-leaderboard                                 0 B                0 B
+├ λ /api/rc-mentor                                      0 B                0 B
+├ λ /api/rc-test                                        0 B                0 B
+├ λ /api/rc-weekly-challenge                            0 B                0 B
+├ λ /api/save-attempt                                   0 B                0 B
+├ λ /api/send-payment-email                             0 B                0 B
+├ λ /api/send-trial-ending-email                        0 B                0 B
+├ λ /api/send-trial-expired-email                       0 B                0 B
+├ λ /api/send-welcome-email                             0 B                0 B
+├ λ /api/session-context                                0 B                0 B
+├ λ /api/speed-generate                                 0 B                0 B
+├ λ /api/submit                                         0 B                0 B
+├ λ /api/tenant-context                                 0 B                0 B
+├ ○ /api/test-diagnosis                                 0 B                0 B
+├ ○ /api/test-email                                     0 B                0 B
+├ λ /api/validate-coupon                                0 B                0 B
+├ λ /api/verify-payment                                 0 B                0 B
+├ λ /api/whatsapp/enroll-trial                          0 B                0 B
+├ λ /api/whatsapp/process                               0 B                0 B
+├ λ /api/whatsapp/send-test                             0 B                0 B
+├ λ /api/whatsapp/webhook                               0 B                0 B
+├ λ /api/wordhunt-leaderboard                           0 B                0 B
+├ λ /arena/result/[attemptId]                           2.77 kB         402 kB
+├ λ /auth/callback                                      0 B                0 B
+├ λ /birbal-editorial-decoder                           6.87 kB         166 kB
+├ λ /birbal-test                                        876 B          83.3 kB
+├ λ /birbal-v2                                          8.85 kB         256 kB
+├ λ /birbal-v2/[id]                                     159 B          82.6 kB
+├ λ /boot-camp                                          175 B           259 kB
+├ λ /boot-camp/analytics                                11.1 kB         274 kB
+├ λ /boot-camp/day/[day]                                175 B           259 kB
+├ λ /boot-camp/day/[day]/report                         175 B           259 kB
+├ λ /boot-camp/day/1                                    175 B           259 kB
+├ λ /boot-camp/day/1/report                             175 B           259 kB
+├ λ /cognition-diagnosis                                209 B           255 kB
+├ λ /contact                                            139 B          85.7 kB
+├ λ /daily-challenge                                    10.9 kB         356 kB
+├ λ /daily-challenge/instructions                       2.17 kB        91.4 kB
+├ λ /daily-challenge/result                             209 B           255 kB
+├ λ /daily-challenge/test                               8.86 kB         253 kB
+├ λ /detailed-review                                    209 B           255 kB
+├ λ /hangman                                            1.9 kB         84.4 kB
+├ λ /history                                            1.55 kB          84 kB
+├ λ /inbox                                              9.81 kB         244 kB
+├ λ /login                                              3.51 kB         238 kB
+├ λ /payment-success                                    939 B          83.4 kB
+├ λ /preview                                            164 B           197 kB
+├ λ /preview-ad                                         164 B           197 kB
+├ λ /preview/pricing                                    5.4 kB         97.7 kB
+├ λ /pricing                                            5.77 kB         162 kB
+├ λ /rc-history                                         1.75 kB         155 kB
+├ λ /rc-session/[attemptId]                             312 B           255 kB
+├ λ /rc-session/test                                    159 B          82.6 kB
+├ λ /rc/drill                                           1.12 kB        83.6 kB
+├ λ /result-preview                                     1.16 kB         238 kB
+├ ○ /robots.txt                                         0 B                0 B
+├ λ /shadow-test                                        761 B          83.2 kB
+├ λ /signup                                             3.48 kB         238 kB
+├ ○ /sitemap.xml                                        0 B                0 B
+├ λ /test-diagnosis                                     1.69 kB         399 kB
+├ λ /welcome                                            2.95 kB         237 kB
+└ λ /workout                                            1.58 kB          84 kB
++ First Load JS shared by all                           82.5 kB
+  ├ chunks/4938-6d345cd35133498b.js                     26.8 kB
+  ├ chunks/fd9d1056-5a1f9271538ca830.js                 53.3 kB
+  ├ chunks/main-app-65fe0aaa3bb27fc4.js                 227 B
+  └ chunks/webpack-dc501a64ff2c2457.js                  2.15 kB
+
+
+ƒ Middleware                                            39.7 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+λ  (Dynamic)  server-rendered on demand using Node.js
+

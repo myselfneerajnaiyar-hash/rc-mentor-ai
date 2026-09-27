@@ -1,4 +1,5 @@
 "use client";
+import { useRouteTab } from "@/lib/mobile/useRouteTab";
 import { useState } from "react";
 import { Ban, BookOpen, Gauge, HelpCircle, Target, Zap } from "lucide-react";
 import SpeedGym from "./SpeedGym";
@@ -6,11 +7,11 @@ import SpeedDashboard from "./SpeedDashboard";
 import TabGroup from "./TabGroup";
 
 export default function SpeedContainer() {
-  const [tab, setTab] = useState("drill");
+  const [tab, setTab] = useRouteTab(["drill","profile"],"drill");
   const [started, setStarted] = useState(false);
 
   return (
-    <div style={page}>
+    <div className="speed-container" style={page}>
       {/* HEADER */}
       <div style={header}>
         <h1 style={title}>Speed Reading Gym</h1>
@@ -30,7 +31,7 @@ export default function SpeedContainer() {
   }}
 />
 
-        <div style={infoStrip}>
+        <div className="speed-info-strip" style={infoStrip}>
           ⏱️ 3–5 min drills · 🎯 Eye-span & focus · 📈 Progress tracked automatically
         </div>
       </div>
@@ -43,9 +44,9 @@ export default function SpeedContainer() {
               <section style={drillIntro}>
                 <p style={introEyebrow}>SPEED PRACTICE</p>
                 <h2 style={introTitle}>Speed Drill</h2>
-                <p style={introSubtitle}>Train your reading speed without sacrificing comprehension. Read one paragraph at a time, answer immediately, and build both speed and understanding.</p>
+                <p style={introSubtitle}>Read short timed paragraphs, then check your comprehension. Allow 3–5 minutes.</p>
 
-                <div style={introDivider} />
+                <div className="speed-intro-details"><div style={introDivider} />
 
                 <h3 style={sectionTitle}>How it works</h3>
                 <div style={howItWorksList}>
@@ -76,12 +77,12 @@ export default function SpeedContainer() {
                 </div>
 
                 <p style={adaptationNote}>Your next target is adapted using your recent performance, not a single drill. Consistent performance with good comprehension gradually increases the target.</p>
-              </section>
+              </div></section>
 
               <div style={ctaRow}>
                 <button
   onClick={() => setStarted(true)}
-  className="mt-6 px-8 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20"
+  className="speed-start-button mt-6 px-8 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-all duration-300 shadow-lg shadow-emerald-500/20"
 >
   Start Drill
 </button>

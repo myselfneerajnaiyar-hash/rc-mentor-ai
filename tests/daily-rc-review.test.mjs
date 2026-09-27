@@ -85,6 +85,7 @@ for (const corruption of ["wrong-set", "missing-question", "missing-passage", "m
 }
 
 async function compile(file, dependencies, globals = {}, expose = "") {
+  dependencies = { "@/components/mobile/Recovery": {default:()=>null}, "@/lib/mobile/request": {withTimeout:p=>p,fetchWithTimeout:()=>{}}, "@/lib/learningAnalytics": {captureLearningEvent:()=>{}}, ...dependencies };
   const source = await readFile(new URL(file, import.meta.url), "utf8")
   const exports = {}
   const compiled = ts.transpileModule(source, { fileName: file, reportDiagnostics: true, compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } })
@@ -214,7 +215,7 @@ test("compact report retains saved stats and expands review content inside the s
   Object.assign(review.attempt, { score: -1, accuracy: 50, time_taken: 125, composite_score: 7 })
   const Detail = ({ data }) => React.createElement("article", { "data-review": data.attempt.id }, data.rcSet.passage)
   const Cognitive = ({ data }) => React.createElement("article", { "data-diagnosis": data.attempt.id }, "Saved diagnosis")
-  const report = await compile("../components/DailyRCResult.jsx", {
+  const report = await compile("../components/DailyRCResult.jsx", { "@/components/mobile/NextActivity": { default: () => null },
     "react/jsx-runtime": runtime, react: React, "next/navigation": { useSearchParams: () => new URLSearchParams("attemptId=attempt-A") },
     "@/lib/dailyRc/useReview": { useDailyRcReview: id => { requestedId = id; return { data: review } } },
     "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },

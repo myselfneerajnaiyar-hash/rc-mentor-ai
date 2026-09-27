@@ -1,0 +1,2316 @@
+{
+  "results": [
+    {
+      "name": "home-320x568",
+      "url": "/",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 2053,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 2053,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Welcome, New.",
+          "y": 96
+        },
+        {
+          "text": "Today's Activities",
+          "y": 181
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": 350
+        },
+        {
+          "text": "Daily Workout",
+          "y": 617
+        },
+        {
+          "text": "Word Hunt",
+          "y": 898
+        },
+        {
+          "text": "Build your skills",
+          "y": 1116
+        },
+        {
+          "text": "Your momentum",
+          "y": 1429
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start Challenge\n→",
+          "x": 35,
+          "y": 417,
+          "w": 250,
+          "h": 48
+        },
+        {
+          "text": "Start Workout\n→",
+          "x": 31,
+          "y": 702,
+          "w": 258,
+          "h": 48
+        },
+        {
+          "text": "Start Word Hunt\n→",
+          "x": 31,
+          "y": 963,
+          "w": 258,
+          "h": 48
+        },
+        {
+          "text": "See all free daily activities →",
+          "x": 16,
+          "y": 1046,
+          "w": 288,
+          "h": 44
+        },
+        {
+          "text": "All practice →",
+          "x": 226,
+          "y": 1110,
+          "w": 78,
+          "h": 44
+        },
+        {
+          "text": "Reading\nGenerate or paste RC",
+          "x": 16,
+          "y": 1166,
+          "w": 288,
+          "h": 68
+        },
+        {
+          "text": "Vocabulary\nLearn and recall",
+          "x": 16,
+          "y": 1244,
+          "w": 288,
+          "h": 68
+        },
+        {
+          "text": "Speed\nRead with focus",
+          "x": 16,
+          "y": 1322,
+          "w": 288,
+          "h": 68
+        },
+        {
+          "text": "History and progress →",
+          "x": 35,
+          "y": 1686,
+          "w": 144,
+          "h": 44
+        },
+        {
+          "text": "CAT test series\nExplore papers and mock tests →",
+          "x": 16,
+          "y": 1769,
+          "w": 288,
+          "h": 84
+        },
+        {
+          "text": "Your learning community\nSee the leaderboards →",
+          "x": 16,
+          "y": 1865,
+          "w": 288,
+          "h": 84
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\n\nYOUR DAILY READING PRACTICE\n\nWelcome, New.\n\nA little practice. A stronger reader.\n\nToday's Activities\nFree daily practice\n8 min\nDaily RC Challenge\n\nOne passage. Build your reading accuracy.\n\nStart Challenge\n→\nFree daily practice\n25-30 min\nDaily Workout\n\nReading, vocabulary and speed in one guided session.\n\nStart Workout\n→\nFree daily practice\n5 min\nWord Hunt\n\nA quick daily vocabulary puzzle.\n\nStart Word Hunt\n→\nSee all free daily activities →\nBuild your skills\nAll practice →\nReading\nGenerate or paste RC\nVocabulary\nLearn and recall\nSpeed\nRead with focus\nYour momentum\n0/3\nDone today\n0 days\nWorkout streak\n\nYour first completed activity starts your progress.\n\nHistory and progress →\nCAT test series\nExplore papers and mock tests →\nYour learning community\nSee the leaderboards →\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "chat-keyboard-sized",
+      "url": "/?view=mentor",
+      "width": 320,
+      "height": 340,
+      "scrollHeight": 340,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 340,
+      "scrollers": [
+        {
+          "tag": "DIV",
+          "cls": " flex-1 min-h-0 h-0 overflow-y-auto overscroll-contain touch-pan-y p-3 space-y-4 pb-6 ",
+          "top": 121,
+          "h": 99,
+          "total": 448
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Birbal AI",
+          "y": 16
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "✕",
+          "x": 256,
+          "y": 30,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "How to improve inference questions?",
+          "x": 12,
+          "y": 115,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "How should I read RC faster?",
+          "x": 227,
+          "y": 115,
+          "w": 166,
+          "h": 44
+        },
+        {
+          "text": "What is tone detection?",
+          "x": 401,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "How to find main idea quickly?",
+          "x": 550,
+          "y": 115,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Message Birbal",
+          "x": 12,
+          "y": 284,
+          "w": 188,
+          "h": 44
+        },
+        {
+          "text": "Voice message",
+          "x": 208,
+          "y": 284,
+          "w": 42,
+          "h": 44
+        },
+        {
+          "text": "Send message",
+          "x": 258,
+          "y": 284,
+          "w": 50,
+          "h": 44
+        }
+      ],
+      "text": "Auctor\n\nInbox\nBirbal AI\n\nYour Personal Reading Mentor\n\nOnline\n✕\nHow to improve inference questions?\nHow should I read RC faster?\nWhat is tone detection?\nHow to find main idea quickly?\n👋 Welcome back!\n\nI'm Birbal — your AI Reading Mentor.\n\nI can help you:\n\n📊 Analyse your performance\n🎯 Recommend today's practice\n📖 Explain any RC\n📰 Decode newspaper editorials\n🧠 Improve your Reading IQ\n\nAsk me anything or choose a suggestion below."
+    },
+    {
+      "name": "daily-questions-320x568",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1013,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1013,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 195,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 247,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 162,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 270,
+          "h": 102
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 872,
+          "w": 135,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 928,
+          "w": 278,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 164,
+          "y": 872,
+          "w": 135,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 8:00\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-320x844",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 844,
+      "scrollHeight": 1013,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1013,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 195,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 247,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 162,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 270,
+          "h": 102
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 872,
+          "w": 135,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 928,
+          "w": 278,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 164,
+          "y": 872,
+          "w": 135,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:59\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-360x844",
+      "url": "/daily-challenge/test",
+      "width": 360,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 360,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 235,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 287,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 161,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 182,
+          "y": 115,
+          "w": 161,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 310,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 310,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 310,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 310,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 155,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 318,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 184,
+          "y": 852,
+          "w": 155,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:59\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-375x844",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 250,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 302,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 190,
+          "y": 115,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 325,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 325,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 325,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 325,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 163,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 333,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 192,
+          "y": 852,
+          "w": 163,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:58\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-390x844",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 265,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 317,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 197,
+          "y": 115,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 340,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 340,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 340,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 340,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 170,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 348,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 199,
+          "y": 852,
+          "w": 170,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:57\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-414x844",
+      "url": "/daily-challenge/test",
+      "width": 414,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 414,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 289,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 341,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 188,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 209,
+          "y": 115,
+          "w": 188,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 364,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 364,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 364,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 364,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 182,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 372,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 211,
+          "y": 852,
+          "w": 182,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:57\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-768x844",
+      "url": "/daily-challenge/test",
+      "width": 768,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 768,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 643,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 695,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 365,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 386,
+          "y": 115,
+          "w": 365,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 718,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 718,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 718,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 718,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 359,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 726,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 388,
+          "y": 852,
+          "w": 359,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:56\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-800x844",
+      "url": "/daily-challenge/test",
+      "width": 800,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 800,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 675,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 727,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 381,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 402,
+          "y": 115,
+          "w": 381,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 750,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 750,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 750,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 750,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 375,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 758,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 404,
+          "y": 852,
+          "w": 375,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:56\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-899x844",
+      "url": "/daily-challenge/test",
+      "width": 899,
+      "height": 844,
+      "scrollHeight": 993,
+      "scrollWidth": 899,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 993,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 774,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 826,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 431,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 452,
+          "y": 115,
+          "w": 431,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 314,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 447,
+          "w": 849,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 545,
+          "w": 849,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 643,
+          "w": 849,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 741,
+          "w": 849,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 852,
+          "w": 425,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 908,
+          "w": 857,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 454,
+          "y": 852,
+          "w": 425,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:55\nSubmit\nPassage\nQuestions · 0/4\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-900x844",
+      "url": "/daily-challenge/test",
+      "width": 900,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 900,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 2548,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 2548
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 179,
+          "y": 182,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 487,
+          "y": 402,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 535,
+          "y": 402,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 583,
+          "y": 402,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 631,
+          "y": 402,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 487,
+          "y": 587,
+          "w": 380,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 487,
+          "y": 685,
+          "w": 380,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 487,
+          "y": 783,
+          "w": 380,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 487,
+          "y": 881,
+          "w": 380,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 487,
+          "y": 2487,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 615,
+          "y": 2487,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 777,
+          "y": 2487,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:54\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-1024x844",
+      "url": "/daily-challenge/test",
+      "width": 1024,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 1024,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 2003,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 844,
+          "total": 2003
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 854,
+          "y": 66,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 549,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 597,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 645,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 693,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 549,
+          "y": 474,
+          "w": 442,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 549,
+          "y": 572,
+          "w": 442,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 549,
+          "y": 670,
+          "w": 442,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 549,
+          "y": 768,
+          "w": 442,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 549,
+          "y": 1942,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 708,
+          "y": 1942,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 901,
+          "y": 1942,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:54\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-questions-1440x900",
+      "url": "/daily-challenge/test",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1523,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 900,
+          "total": 1523
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 1270,
+          "y": 66,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 757,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 805,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 853,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 901,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 757,
+          "y": 474,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 757,
+          "y": 572,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 757,
+          "y": 670,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 757,
+          "y": 768,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 757,
+          "y": 1462,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 1020,
+          "y": 1462,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 1317,
+          "y": 1462,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:53\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "daily-save-recovery",
+      "url": "/daily-challenge/test",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 1217,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1217,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s try that again",
+          "y": 216
+        },
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 195,
+          "y": 0,
+          "w": 113,
+          "h": 44
+        },
+        {
+          "text": "Submit",
+          "x": 247,
+          "y": 56,
+          "w": 61,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 162,
+          "y": 115,
+          "w": 141,
+          "h": 44
+        },
+        {
+          "text": "Retry",
+          "x": 23,
+          "y": 292,
+          "w": 70,
+          "h": 50
+        },
+        {
+          "text": "Back to Today",
+          "x": 105,
+          "y": 292,
+          "w": 132,
+          "h": 50
+        },
+        {
+          "text": "1",
+          "x": 25,
+          "y": 518,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 73,
+          "y": 518,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 121,
+          "y": 518,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 169,
+          "y": 518,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 25,
+          "y": 651,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 25,
+          "y": 749,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 25,
+          "y": 847,
+          "w": 270,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 25,
+          "y": 945,
+          "w": 270,
+          "h": 102
+        },
+        {
+          "text": "Previous",
+          "x": 21,
+          "y": 1076,
+          "w": 135,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 21,
+          "y": 1132,
+          "w": 278,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 164,
+          "y": 1076,
+          "w": 135,
+          "h": 48
+        }
+      ],
+      "text": "Exit activity\nDaily RC 7:52\nSubmit\nPassage\nQuestions · 1/4\nLet’s try that again\n\nSave unavailable\n\nRetry\nBack to Today\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "completed-workout",
+      "url": "/?view=today&activity=workout",
+      "width": 320,
+      "height": 568,
+      "scrollHeight": 728,
+      "scrollWidth": 320,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 728,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Today",
+          "y": 96
+        },
+        {
+          "text": "Daily Workout",
+          "y": 402
+        }
+      ],
+      "controls": [
+        {
+          "text": "Inbox",
+          "x": 214,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Workout\n✓\nCompleted",
+          "x": 16,
+          "y": 181,
+          "w": 139,
+          "h": 129
+        },
+        {
+          "text": "Word Hunt\n5 min",
+          "x": 165,
+          "y": 181,
+          "w": 139,
+          "h": 129
+        },
+        {
+          "text": "Review Workout\n→",
+          "x": 35,
+          "y": 493,
+          "w": 250,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 256,
+          "y": 438,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 84,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 160,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 236,
+          "y": 510,
+          "w": 76,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nInbox\n\nMAKE A LITTLE PROGRESS, EVERY DAY\n\nToday\n\nYour free daily activities. Pick one to begin.\n\nWorkout\n✓\nCompleted\nWord Hunt\n5 min\nCompleted today\n25-30 min\nDaily Workout\n\nReading, vocabulary and speed in one guided session.\n\nReview Workout\n→\n\n1 of 2 completed today. Your saved results stay in your history.\n\nHome\nToday\nPractice\nProfile"
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/master_vocab",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/vocab_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/master_vocab",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/vocab_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/user_words",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal",
+      "method": "POST"
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/speed-generate",
+      "method": "POST"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/speed_sessions",
+      "method": "GET"
+    },
+    {
+      "path": "/api/speed-generate",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/mentor_test_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    }
+  ]
+}

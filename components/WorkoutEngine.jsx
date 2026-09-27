@@ -2,6 +2,11 @@
 import { supabase } from "../lib/supabase"
 
 import { useState, useEffect, useRef } from "react"
+import { captureLearningEvent, completeLearningActivity } from "@/lib/learningAnalytics"
+import Recovery from "./mobile/Recovery";
+import NextActivity from "./mobile/NextActivity";
+import AssessmentMode from "./assessment/AssessmentMode";
+import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import WorkoutShell from "./assessment/WorkoutShell"
 import WorkoutReport from "./assessment/WorkoutReport"
 import DetailedSolutions from "./assessment/DetailedSolutions"
@@ -39,7 +44,11 @@ if (speedQuestions.length === 0) {
 }
   console.log("WORKOUT DATA:", workout)
 
- const [phase, setPhase] = useState(initialPhase || "speed")
+  const [phase, setPhase] = useState(initialPhase || "speed")
+  const completedAnalyticsRef = useRef(false)
+  const feedbackAnalyticsRef = useRef(false)
+  const mountedAnalyticsRef = useRef(false)
+  const abandonedAnalyticsRef = useRef(false)
 
   const [viewMode, setViewMode] = useState("workout") 
 // workout | result | explanation
@@ -66,6 +75,8 @@ const [rcTimer, setRcTimer] = useState(null)
 const [microIndex, setMicroIndex] = useState(0)
 const [microTimer, setMicroTimer] = useState(null)
 
+const [saveError,setSaveError]=useState(null);
+const [saveRetry,setSaveRetry]=useState(0);
 const [attemptSaved, setAttemptSaved] = useState(false)
 const timingRef = useRef({ speed: 0, vocab: 0, rc1: 0, rc2: 0, micro: 0 })
 const [workoutTimings, setWorkoutTimings] = useState(null)
@@ -88,6 +99,30 @@ useEffect(() => {
   if (phase === "result") onComplete?.()
 }, [phase, onComplete])
 
+useEffect(() => {
+  if (phase !== "result" || feedbackAnalyticsRef.current || initialAnswers) return
+  feedbackAnalyticsRef.current = true
+  captureLearningEvent("feedback_viewed", { activity_type: "daily_workout" })
+}, [phase, initialAnswers])
+
+useEffect(() => {
+  mountedAnalyticsRef.current = true
+  const recordAbandonment = () => {
+    if (!initialAnswers && !completedAnalyticsRef.current && !abandonedAnalyticsRef.current) {
+      abandonedAnalyticsRef.current = true
+      captureLearningEvent("activity_abandoned", { activity_type: "daily_workout" })
+    }
+  }
+  window.addEventListener("pagehide", recordAbandonment)
+  return () => {
+    mountedAnalyticsRef.current = false
+    window.removeEventListener("pagehide", recordAbandonment)
+    window.setTimeout(() => {
+      if (!mountedAnalyticsRef.current) recordAbandonment()
+    }, 0)
+  }
+}, [initialAnswers])
+
 /* =========================================================
    RESET VOCAB TIMER ON ENTRY
 ========================================================= */
@@ -102,11 +137,12 @@ useEffect(() => {
   if (attemptSaved) return
 
  async function saveAttempt() {
-  const { data: { session } } = await supabase.auth.getSession()
+ try {
+ setSaveError(null);
+  const { data: { session } } = await withTimeout(supabase.auth.getSession())
 
   if (!session) {
-    console.log("No active session")
-    return
+    throw Error("Sign in again before saving. Your answers are still on this screen.")
   }
 
   const totalQuestions = Object.values(skillMap).reduce(
@@ -128,7 +164,8 @@ useEffect(() => {
     ? (totalCorrect / totalQuestions) * 100
     : 0
 
-  const response = await fetch("/api/save-attempt", {
+  if(saveRetry>0){const existing=await fetchWithTimeout("/api/check-attempt",{headers:{Authorization:`Bearer ${session.access_token}`}});if(!existing.ok)throw Error("Could not verify the previous save. Please retry.");const data=await existing.json();if(data.attempted){if(JSON.stringify(data.attempt?.user_responses)!==JSON.stringify(answers))throw Error("A different workout is already saved today. Open History to review it.");setAttemptSaved(true);if(!completedAnalyticsRef.current){completedAnalyticsRef.current=true;completeLearningActivity("daily_workout");}return;}}
+  const response = await fetchWithTimeout("/api/save-attempt", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -148,13 +185,18 @@ useEffect(() => {
 
   if (response.ok) {
     setAttemptSaved(true)
+    if (!completedAnalyticsRef.current) {
+      completedAnalyticsRef.current = true
+      completeLearningActivity("daily_workout")
+    }
   } else {
-    console.log("Save failed")
+    throw Error("Your result could not be saved. Keep this screen open and retry; your answers are preserved.")
   }
+} catch(error) { setSaveError(error.message); }
 }
   saveAttempt()
 
-}, [phase])
+}, [phase, saveRetry])
 
   /* ================= ANSWERS ================= */
 
@@ -167,6 +209,13 @@ useEffect(() => {
     micro: {},
   }
 )
+  function recordAnswer(section, index) {
+    if (answers[section]?.[index] === undefined) {
+      captureLearningEvent("question_answered", {
+        activity_type: "daily_workout", section, question_number: index + 1,
+      })
+    }
+  }
   const [openQuestion, setOpenQuestion] = useState(null)
 
   /* =========================================================
@@ -275,6 +324,7 @@ useEffect(() => {
 
   function handleSpeedAnswer(optionIndex) {
     if (speedStage !== "question") return
+    recordAnswer("speed", speedIndex)
 
     setAnswers(prev => ({
       ...prev,
@@ -290,6 +340,7 @@ useEffect(() => {
   ========================================================= */
 
   function handleVocabAnswer(optionIndex) {
+    recordAnswer("vocab", vocabIndex)
     setAnswers(prev => ({
       ...prev,
       vocab: {
@@ -642,6 +693,7 @@ if (phase === "rc1" || phase === "rc2") {
   const question = section.questions[rcIndex]
 
   function handleRcAnswer(optionIndex) {
+    recordAnswer(phase, rcIndex)
     setAnswers(prev => ({
       ...prev,
       [phase]: {
@@ -746,6 +798,7 @@ if (phase === "micro") {
   const question = workout.micro.questions[microIndex]
 
   function handleMicroAnswer(optionIndex) {
+    recordAnswer("micro", microIndex)
     setAnswers(prev => ({
       ...prev,
       micro: {
@@ -824,6 +877,8 @@ if (phase === "micro") {
  if (phase === "result") {
 
   return (
+    <><AssessmentMode active={!initialAnswers && !attemptSaved}/>
+    {saveError?<Recovery area="workout_save" message={saveError} onRetry={()=>setSaveRetry(n=>n+1)}/>:<p role="status" className="p-4 text-slate-300">{initialAnswers || attemptSaved ? "Result saved" : "Saving your result…"}</p>}
     <WorkoutReport
       workout={workout}
       result={result}
@@ -831,7 +886,7 @@ if (phase === "micro") {
       totalScore={totalScore}
       timings={workoutTimings}
       onOpenSolutions={() => setViewMode("explanation")}
-    />
+    />{(initialAnswers || attemptSaved)&&<NextActivity current="workout"/>}</>
   )
 
 

@@ -577,7 +577,8 @@ test("navigation moves Inbox to the labeled header control without replacing oth
   assert.doesNotMatch(mobile, /key: "inbox"/)
   assert.match(desktop, /useInboxUnreadCount\(Boolean\(user\)\)/)
   assert.match(desktop, /inboxUnreadCount=\{inboxUnreadCount\}/)
-  assert.match(header, /Product Tour[\s\S]*InboxHeaderLink/)
+  assert.match(header, /<ProductTourButton[\s\S]*<InboxHeaderLink/)
+  assert.match(fs.readFileSync("components/ProductTourButton.jsx", "utf8"), /aria-label="Product Tour"/)
   assert.match(link, /href="\/inbox"/)
   assert.match(link, /<span>Inbox<\/span>/)
   assert.match(link, /count > 0/)
@@ -588,7 +589,7 @@ test("navigation moves Inbox to the labeled header control without replacing oth
   const compiled = ts.transpileModule(mobile, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText
   new Function("require", "module", "exports", compiled)(name => name === "react/jsx-runtime" ? runtime : name === "lucide-react" ? icons : { useRouter: () => ({ push() {} }) }, module, module.exports)
   const html = renderToStaticMarkup(React.createElement(module.exports.default, { view: "home", capabilities: { showCATSectionals: true } }))
-  for (const label of ["Home", "Practice", "CAT", "Profile"]) assert.ok(html.includes(`aria-label="${label}"`))
+  for (const label of ["Home", "Today", "Practice", "Profile"]) assert.ok(html.includes(`aria-label="${label}"`))
   assert.doesNotMatch(html, /aria-label="Inbox"/)
   const linkModule = { exports: {} }
   const compiledLink = ts.transpileModule(link, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText

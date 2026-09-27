@@ -1,15 +1,15 @@
 "use client"
 
+import Recovery from "@/components/mobile/Recovery";
+import NextActivity from "@/components/mobile/NextActivity";
+import { fetchWithTimeout } from "@/lib/mobile/request";
 import { Upload, Brain, Sparkles, Camera, ImageIcon } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import ChatMentor from "@/components/ChatMentor"
-import { createClient } from "@supabase/supabase-js"
+import { supabase } from "@/lib/supabase"
 import { useTenant } from "@/components/providers/TenantProvider"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-)
+
 
 
 export default function BirbalEditorialDecoder() {
@@ -18,6 +18,7 @@ export default function BirbalEditorialDecoder() {
 const [previews, setPreviews] = useState([])
 
 
+const [analysisError,setAnalysisError]=useState(null)
 const [phase, setPhase] = useState("idle")
 const [loadingMessage, setLoadingMessage] = useState(
   "Birbal is analyzing editorial psychology..."
@@ -44,7 +45,7 @@ const [visibleSections, setVisibleSections] = useState({
 
 useEffect(() => {
  setTimeout(() => {
-  loadPremium()
+  loadPremium().catch(error=>setAnalysisError(error.message))
 }, 1000)
 
   async function loadSession() {
@@ -59,7 +60,7 @@ useEffect(() => {
 
     try {
 
-      const res = await fetch(
+      const res = await fetchWithTimeout(
         `/api/get-birbal-session?id=${session}`
       )
 
@@ -299,6 +300,7 @@ function toggleParagraph(index) {
 
 
 async function extractEditorial() {
+let messageInterval;setAnalysisError(null);
 
   if (!files.length) return
 
@@ -328,7 +330,7 @@ setExtractedPassage([])
 
 let messageIndex = 0
 
-const messageInterval = setInterval(() => {
+messageInterval = setInterval(() => {
 
   messageIndex =
     (messageIndex + 1) % messages.length
@@ -355,7 +357,7 @@ const {
   data: { session }
 } = await supabase.auth.getSession()
 
-const response = await fetch(
+const response = await fetchWithTimeout(
   "/api/birbal-analysis-v2",
   {
     method: "POST",
@@ -368,21 +370,7 @@ const response = await fetch(
     body: formData,
   }
 )
-if (!response.ok) {
-
-  const errorText = await response.text()
-
-  console.error("API ERROR:", errorText)
-
-  alert(
-    "Birbal servers are overloaded. Please retry with 1-2 screenshots."
-  )
-
-  setPhase("idle")
-
-  return
-}
-
+if (!response.ok) throw new Error("Analysis could not finish. Retry with the same files or choose clearer screenshots.");
 const data = await response.json()
 console.log("API RESPONSE:", data)
 
@@ -490,12 +478,9 @@ setExtractedPassage(
     err
   )
 
-  alert(
-    "Analysis failed. Please retry with clearer or fewer screenshots."
-  )
-
-  setPhase("complete")
-}
+  setAnalysisError(err.message || "Analysis failed. Please retry.");
+  setPhase("idle");
+} finally {clearInterval(messageInterval);}
 }
 
 const fullText = extractedPassage
@@ -604,6 +589,9 @@ function highlightDirectionalWords(text) {
   return (
 
     <div className="min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6">
+{analysisError&&<Recovery area="editorial" message={analysisError} onRetry={extractEditorial}/>}
+{phase==="complete"&&<NextActivity current="editorial"/>}
+
 
       <div className="max-w-5xl mx-auto mb-10">
 

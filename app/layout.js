@@ -1,4 +1,7 @@
 import "./globals.css"
+import "./mobile.css"
+import { Suspense } from "react"
+import MobileShell from "@/components/mobile/MobileShell"
 import Script from "next/script"
 import PostHogProvider from "../components/PostHogProvider"
 import TenantProvider from "@/components/providers/TenantProvider"
@@ -64,7 +67,7 @@ export default function RootLayout({ children }) {
 </Script>
 
         <PostHogProvider />
-        <TenantProvider>{children}</TenantProvider>
+        <TenantProvider><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
         <noscript>
   <img
     height="1"

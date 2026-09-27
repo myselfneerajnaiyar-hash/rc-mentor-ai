@@ -1,6 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { BOOTCAMP_ENABLED } from "@/lib/mobile/features.mjs"
+import BootCampHomeCard from "@/components/bootcamp/BootCampHomeCard"
 import { startProductTour } from "@/components/ProductTour";
 
 import { useEffect, useState } from "react"
@@ -56,7 +58,7 @@ function getGreeting() {
 }
 
 export default function ShadowHomeView({ setView, startAdaptiveRC, userName, user, exam, inboxUnreadCount = 0 }) {
-const { branding, entitlement } = useTenant()
+const { branding, entitlement, profile: tenantProfile } = useTenant()
 const capabilities = getExamCapabilities(exam)
 const normalizedExam = capabilities.exam
 const isCAT = capabilities.isCAT
@@ -75,11 +77,9 @@ const examDisplayName = getExamDisplayName(exam)
   useState(null);
   
 const [playedToday, setPlayedToday] = useState(false)
-const [completedArenaToday, setCompletedArenaToday] =
-useState(false)
 
-const [completedWorkoutToday, setCompletedWorkoutToday] =
-useState(false)
+
+
 
 useEffect(() => {
   const updateGreeting = () => setGreeting(getGreeting())
@@ -132,25 +132,10 @@ const [dna, setDNA] = useState({
 
 
 useEffect(() => {
-  async function loadStreak() {
-    if (!user) return
-const { data, error } = await supabase
-  .from("profiles")
-  .select("streak_count,daily_rc_streak")
-  .eq("user_id", user.id)
-  .single()
-
-    if (!error && data) {
-      setStreak(data.streak_count || 0)
-
-setDailyRCStreak(
-  data.daily_rc_streak || 0
-)
-    }
-  }
-
-  loadStreak()
-}, [user])
+  if (!tenantProfile) return;
+  setStreak(tenantProfile.streak_count || 0);
+  setDailyRCStreak(tenantProfile.daily_rc_streak || 0);
+}, [tenantProfile])
 
 
 useEffect(() => {
@@ -349,49 +334,7 @@ useEffect(() => {
   loadWordHuntStreak();
 }, [user]);
 
-useEffect(() => {
 
-  async function loadTodayActivity() {
-
-    if (!user?.id) return;
-
-    const today =
-      new Date().toISOString().split("T")[0];
-
-    const { data: arena } =
-      await supabase
-        .from("daily_rc_attempts")
-        .select("id")
-        .eq("user_id", user.id)
-        .gte(
-          "completed_at",
-          `${today}T00:00:00`
-        )
-        .limit(1);
-
-    const { data: workout } =
-      await supabase
-        .from("workout_attempts")
-        .select("id")
-        .eq("user_id", user.id)
-        .gte(
-          "completed_at",
-          `${today}T00:00:00`
-        )
-        .limit(1);
-
-    setCompletedArenaToday(
-      arena?.length > 0
-    );
-
-    setCompletedWorkoutToday(
-      workout?.length > 0
-    );
-  }
-
-  loadTodayActivity();
-
-}, [user]);
 
 useEffect(() => {
 
@@ -463,12 +406,10 @@ setInsight({
   </>
 )}
 
+{BOOTCAMP_ENABLED && <BootCampHomeCard userId={user?.id} />}
 <TodayActivity
   exam={normalizedExam}
   setView={setView}
-  dailyRCCompleted={completedArenaToday}
-  workoutCompleted={completedWorkoutToday}
-  wordhuntCompleted={playedToday}
 />
 <PremiumFeatures
   setView={setView}

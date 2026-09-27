@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { useState, useEffect } from "react"
 
 import DailyWorkoutFlow from "./DailyWorkoutFlow"
 import DailyPerformance from "./daily/DailyPerformance"
@@ -14,6 +15,9 @@ import {
 } from "@/components/ui/tabs"
 
 export default function DailyWorkoutContainer({ user }) {
+  const params=useSearchParams();
+  const [tab,setTab]=useState(params.get("tab")||"start");
+  useEffect(()=>{setTab(params.get("tab")||"start")},[params]);
   const [workoutRunning, setWorkoutRunning] = useState(false)
 
   return (
@@ -30,11 +34,11 @@ export default function DailyWorkoutContainer({ user }) {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="start" className="w-full">
+      <Tabs value={tab} onValueChange={setTab} className="w-full">
 
     {!workoutRunning && <TabsList
 className="
-flex gap-2 p-1
+flex !justify-start gap-2 p-1
 bg-slate-900/60
 backdrop-blur-xl
 border border-slate-800

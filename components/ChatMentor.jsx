@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react"
+import { fetchWithTimeout } from "@/lib/mobile/request";
 import Image from "next/image"
 import { Send, Brain, Mic, } from "lucide-react"
 import { supabase } from "@/lib/supabase"
@@ -16,14 +17,19 @@ export default function ChatMentor({
 
   setView,
   onClose,
+  transport,
+  initialMessage,
+  quickPrompts,
+  contextLabel,
 
 }) {
 
+  useEffect(()=>{const viewport=window.visualViewport;const sync=()=>{document.documentElement.style.setProperty('--visual-height',`${viewport?.height||window.innerHeight}px`);document.documentElement.style.setProperty('--visual-top',`${viewport?.offsetTop||0}px`);};sync();viewport?.addEventListener('resize',sync);viewport?.addEventListener('scroll',sync);return()=>{viewport?.removeEventListener('resize',sync);viewport?.removeEventListener('scroll',sync);};},[]);
   const [messages, setMessages] = useState([
    {
   role: "assistant",
   
-content: `👋 Welcome back!
+content: initialMessage || `👋 Welcome back!
 
 I'm Birbal — your AI Reading Mentor.
 
@@ -39,6 +45,10 @@ Ask me anything or choose a suggestion below.`
 }
   ])
 
+  const [chatError, setChatError] = useState(null)
+  const sendingRef = useRef(false)
+  const mountedRef = useRef(true)
+  useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false } }, [])
   const [input, setInput] = useState("")
   const lastMessageRef = useRef(null)
   const bottomRef = useRef(null)
@@ -89,78 +99,30 @@ useEffect(() => {
 
 }, [])
 
- async function sendMessage() {
+ async function sendContextMessage(text) {
+  if(!text.trim() || sendingRef.current)return
+  if(text.length>4000){setChatError('Please keep your message under 4,000 characters.');return}
+  sendingRef.current=true;setThinking(true);setChatError(null)
+  const updated=[...messages,{role:'user',content:text,time:new Date()}]
+  setMessages(updated);setInput('')
+  try {
+    const data=await transport(updated.slice(-12).map(m=>({role:m.role,content:m.content})))
+    if(mountedRef.current)setMessages([...updated,{role:'assistant',content:data.reply,time:new Date()}])
+  } catch(error) {
+    if(mountedRef.current){setMessages(messages);setInput(text);setChatError(error.message || 'Please retry your message.')}
+  } finally {sendingRef.current=false;if(mountedRef.current)setThinking(false)}
+ }
 
-  if (!input.trim()) return
-
-  const userMessage = {
-    role: "user",
-    content: input,
-    time: new Date()
-  }
-
-  const updated = [...messages, userMessage]
-
-  setMessages(updated)
-  setInput("")
-
-  setThinking(true)
-
-  const res = await fetch("/api/birbal", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-   body: JSON.stringify({
-  messages: updated,
-  userId: user?.id,
-  passage,
-  contextual
-})
-  })
-
-  const data = await res.json()
-
-  setThinking(false)
-
- await typeMessage(data.reply, updated)
-}
-
-async function sendVoiceMessage(text) {
-
-  const userMessage = {
-    role: "user",
-    content: text,
-    time: new Date()
-  }
-
-  const updated = [...messages, userMessage]
-
-  setMessages(updated)
-
-  setThinking(true)
-
-  const res = await fetch("/api/birbal", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      messages: updated,
-      userId: user?.id,
-      passage,
-      contextual
-    })
-  })
-
-  const data = await res.json()
-
-  setThinking(false)
-
-  await typeMessage(data.reply, updated)
-
- 
-}
+ async function sendMessage(){return sendVoiceMessage(input);}
+ async function sendVoiceMessage(text){
+  if(transport)return sendContextMessage(text);
+  if(!text.trim()||sendingRef.current)return;
+  sendingRef.current=true;setThinking(true);setChatError(null);
+  const previous=messages;const updated=[...messages,{role:"user",content:text,time:new Date()}];setMessages(updated);setInput("");
+  try{const response=await fetchWithTimeout("/api/birbal",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:updated,userId:user?.id,passage,contextual})});const data=await response.json();if(!response.ok||!data.reply)throw Error(data.error||"Birbal could not reply. Please retry your message.");if(mountedRef.current)await typeMessage(data.reply,updated);}
+  catch(error){if(mountedRef.current){setMessages(previous);setInput(text);setChatError(error.message);}}
+  finally{sendingRef.current=false;if(mountedRef.current)setThinking(false);}
+ }
 
 async function typeMessage(text, updatedMessages) {
 
@@ -331,7 +293,7 @@ text-white
   </h2>
 
   <p className="text-xs text-indigo-100">
-    Your Personal Reading Mentor
+    {contextLabel || "Your Personal Reading Mentor"}
   </p>
 
   <div className="mt-1 inline-flex items-center gap-2 rounded-full bg-white/10 px-2 py-1 text-[10px]">
@@ -342,6 +304,7 @@ text-white
 
 {onClose && (
   <button
+    aria-label="Close Birbal conversation"
     onClick={onClose}
     className="h-11 w-11 rounded-full bg-black/30 flex items-center justify-center shrink-0"
   >
@@ -357,12 +320,12 @@ text-white
 whitespace-nowrap
 no-scrollbar border-b border-slate-800">
 
-        {[
+        {(quickPrompts || [
           "How to improve inference questions?",
           "How should I read RC faster?",
           "What is tone detection?",
           "How to find main idea quickly?"
-        ].map((p, i) => (
+        ]).map((p, i) => (
           <button
             key={i}
             onClick={() => quickPrompt(p)}
@@ -529,7 +492,7 @@ hover:shadow-cyan-500/20
       </div>
 
       <div className="text-xs text-slate-400">
-        Looking at your reading profile
+        {contextLabel || "Looking at your reading profile"}
       </div>
 
     </div>
@@ -542,6 +505,7 @@ hover:shadow-cyan-500/20
       </div>
 
 
+      {chatError && <p role="alert" className="px-4 py-2 text-sm text-amber-200">{chatError}</p>}
       {/* Input */}
 
   <div className="p-3 border-t border-slate-800 flex gap-2 bg-[#0f172a] backdrop-blur">
@@ -556,13 +520,16 @@ hover:shadow-cyan-500/20
     sendMessage()
   }
 }}
-         placeholder="Ask Birbal about RC..."
-          className="flex-1 bg-[#1b2434] border border-slate-700 text-white px-4 py-2 rounded-full outline-none"
+         aria-label="Message Birbal"
+         maxLength={transport ? 4000 : undefined}
+         placeholder={transport ? "Ask about your Boot Camp session..." : "Ask Birbal about RC..."}
+          className="min-w-0 flex-1 bg-[#1b2434] border border-slate-700 text-white px-4 py-2 rounded-full outline-none"
         />
 
         <button
   onClick={startVoiceConversation}
-  disabled={!voiceSupported}
+  aria-label="Voice message"
+  disabled={!voiceSupported || (!!transport && thinking)}
   className={`px-3 rounded-xl flex items-center justify-center ${
     listening ? "bg-red-500" : "bg-slate-700"
   } ${!voiceSupported ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -571,6 +538,8 @@ hover:shadow-cyan-500/20
 </button>
 
 <button
+  aria-label="Send message"
+  disabled={thinking || !input.trim()}
   onClick={sendMessage}
   className="bg-indigo-600 hover:bg-indigo-500 px-4 rounded-xl flex items-center justify-center"
 >

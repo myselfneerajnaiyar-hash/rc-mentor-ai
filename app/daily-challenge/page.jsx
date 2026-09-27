@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Recovery from "@/components/mobile/Recovery";
+import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import { supabase } from "@/lib/supabase"
 import Link from "next/link"
 import DailyRcAnalytics from "@/components/DailyRcAnalytics";
@@ -9,6 +11,8 @@ import DailyRcAnalytics from "@/components/DailyRcAnalytics";
 import { Clock3, FileText, Target } from "lucide-react";
 
 export default function DailyChallengePage() {
+  const [error,setError]=useState(null);
+  const [retry,setRetry]=useState(0);
   const [activeTab, setActiveTab] = useState("today");
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,13 +25,15 @@ export default function DailyChallengePage() {
 
   async function loadChallenge() {
 
+    setLoading(true);setError(null);
     try {
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const response = await fetch("/api/get-daily-rc", {
+      const { data: { session } } = await withTimeout(supabase.auth.getSession());
+      const response = await fetchWithTimeout("/api/get-daily-rc", {
         headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
       });
 
+      if(!response.ok)throw new Error("Daily RC could not load. Please retry.");
       const data =
         await response.json();
 
@@ -69,7 +75,7 @@ export default function DailyChallengePage() {
 
     } catch (err) {
 
-      console.error(err);
+      setError(err.message);
 
     } finally {
 
@@ -80,7 +86,7 @@ export default function DailyChallengePage() {
 
   loadChallenge();
 
-}, []);
+}, [retry]);
 
   if (loading) {
     return (
@@ -92,10 +98,10 @@ export default function DailyChallengePage() {
     );
   }
 
-  if (!challenge) {
+  if (error || !challenge) {
     return (
       <div className="min-h-screen bg-[#071120] flex items-center justify-center text-red-400 text-2xl font-bold">
-        Failed to load challenge
+        <Recovery area="daily_rc" message={error || "No challenge is available yet."} onRetry={()=>setRetry(n=>n+1)}/>
       </div>
     );
   }

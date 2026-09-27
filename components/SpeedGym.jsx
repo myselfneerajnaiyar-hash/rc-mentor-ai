@@ -1,11 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
+import Recovery from "./mobile/Recovery";
+import NextActivity from "./mobile/NextActivity";
+import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import AssessmentMode from "./assessment/AssessmentMode";
 import SpeedDrillReview from "./assessment/SpeedDrillReview";
 
 export default function SpeedGym() {
+  const [saveError,setSaveError]=useState(null);
+  const [saving,setSaving]=useState(false);
+  const savePayload=useRef(null);
+  const [error,setError]=useState(null);
   const [phase, setPhase] = useState("loading");
   const [paras, setParas] = useState([]);
   const [index, setIndex] = useState(0);
@@ -71,13 +78,13 @@ export default function SpeedGym() {
   }
 
   async function start() {
-    setResult(null);
+    setResult(null);setError(null);setPhase("loading");
     try {
-      const target = await computeTarget();
+      const target = await withTimeout(computeTarget());
       setMeta(target);
       setPhase("loading");
 
-      const res = await fetch("/api/speed-generate", {
+      const res = await fetchWithTimeout("/api/speed-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(target),
@@ -99,9 +106,9 @@ export default function SpeedGym() {
       setCompletedReading({});
       setReadSeconds(0);
       beginParagraph(0, merged, target);
-    } catch {
-      alert("Speed drill could not load.");
-      setPhase("intro");
+    } catch (error) {
+      setError(error.message || "Speed drill could not load.");
+      setPhase("error");
     }
   }
 
@@ -221,11 +228,7 @@ export default function SpeedGym() {
     history.push(record);
     localStorage.setItem("speedProfile", JSON.stringify(history));
 
-    const { data: authData } = await supabase.auth.getUser();
-    if (authData?.user) {
-      const { error } = await supabase.from("speed_sessions").insert([
-        {
-          user_id: authData.user.id,
+    savePayload.current={
           total_words: totalWordsRead,
           total_time_s: totalTime,
           raw_wpm: rawWPM,
@@ -235,16 +238,18 @@ export default function SpeedGym() {
           effective_wpm: effectiveWPM,
           paragraph_count: paras.length,
           time_per_paragraph_s: timePerParagraph,
-          difficulty_level: meta.level,
-        },
-      ]);
-      console.log("Speed insert error:", error);
-    }
-
+          difficulty_level: meta.level,};
+    saveResult();
     setResult(record);
     setPhase("result");
   }
 
+  async function saveResult(){
+    setSaving(true);setSaveError(null);
+    try {const {data}=await withTimeout(supabase.auth.getUser());if(!data.user)throw new Error('Please sign in to save your result.');
+    const {error}=await supabase.from('speed_sessions').insert({...savePayload.current,user_id:data.user.id});if(error)throw error;
+    }catch(e){setSaveError(e.message || 'Your result could not save.');}finally{setSaving(false);}
+  }
   const totalAllowed = readSeconds + timeLeft;
   const elapsedRatio = totalAllowed > 0 ? readSeconds / totalAllowed : 0;
   let paceStatus = "";
@@ -266,7 +271,8 @@ export default function SpeedGym() {
 
   return (
     <div style={wrap}>
-      <AssessmentMode active={phase === "reading" || phase === "question"} />
+      {phase === "error" && <Recovery area="speed_generation" message={error} onRetry={start}/>}
+      <AssessmentMode active={phase === "reading" || phase === "question" || saving || !!saveError} />
       {phase === "loading" && <div style={panel}><h3>Preparing adaptive drill…</h3><p>Target: {meta?.wpm} WPM · {meta?.level}</p></div>}
 
       {phase === "reading" && (
@@ -306,7 +312,7 @@ export default function SpeedGym() {
         </div>
       )}
 
-      {phase === "result" && result && <DetailedReport result={result} meta={meta} onRestart={start} />}
+      {phase === "result" && result && <><>{saving&&<p role="status">Saving result…</p>}{saveError&&<Recovery area="speed_save" message={saveError} onRetry={saveResult}/>}</><DetailedReport result={result} meta={meta} onRestart={start} /><NextActivity current="speed"/></>}
     </div>
   );
 }

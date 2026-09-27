@@ -4,8 +4,18 @@ import { useState, useEffect  } from "react";
 import { supabase } from "../lib/supabase";
 import { useRef } from "react";
 
+import Recovery from "@/components/mobile/Recovery";
+import NextActivity from "@/components/mobile/NextActivity";
+import AssessmentMode from "@/components/assessment/AssessmentMode";
+import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
+
 export default function HangmanView() {
  
+const [loadError,setLoadError]=useState(null);
+const [retry,setRetry]=useState(0);
+const [saveError,setSaveError]=useState(null);
+const [saving,setSaving]=useState(false);
+const savingRef=useRef(false);
 const [puzzle, setPuzzle] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [guessed, setGuessed] = useState([]);
@@ -33,9 +43,9 @@ useEffect(() => {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user?.id;
 
-    if (!userId) return;
+    if (!userId) throw new Error("Please sign in to load Word Hunt.");
 
-    const res = await fetch("/api/hangman-streak", {
+    const res = await fetchWithTimeout("/api/hangman-streak", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ user_id: userId }),
@@ -68,16 +78,15 @@ setStreak(streakData.streak);
       .eq("date", today)
       .single();
 
-    if (error || !data) {
-      console.error("No puzzle found for today");
-      return;
+    if (error || !data?.passage || !data?.words?.length) {
+      throw new Error("Today’s Word Hunt is unavailable. Please retry.");
     }
 
     setPuzzle(data);
   }
 
-  loadPuzzle();
-}, []);
+  setLoadError(null);withTimeout(loadPuzzle()).catch(e=>setLoadError(e.message));
+}, [retry]);
 
   useEffect(() => {
   if (!puzzle || finalScore !== null) return; // ✅ STOP when game ends
@@ -101,9 +110,10 @@ useEffect(() => {
   }
 }, [finalScore]);
 
+if(loadError)return <Recovery area="word_hunt_load" message={loadError} onRetry={()=>setRetry(n=>n+1)}/>;
 if (attemptMessage) {
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6"><NextActivity current="hangman"/>
 
         {streak !== null && (
   <div className="mb-4 bg-orange-500/10 border border-orange-500/30 rounded-xl p-3 text-orange-400 font-semibold text-center">
@@ -192,7 +202,9 @@ function calculateScore() {
 }
 
 const handleSubmit = async () => {
-  console.log("Submitting...");
+  if(savingRef.current)return;
+ savingRef.current=true;setSaving(true);setSaveError(null);
+ try {
 
 const { data: sessionData } = await supabase.auth.getSession()
 
@@ -206,7 +218,7 @@ const payload = {
 }
 
 
-  const res = await fetch("/api/submit", {
+  const res = await fetchWithTimeout("/api/submit", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -215,8 +227,9 @@ const payload = {
   });
 
  const data = await res.json();
+ if(!res.ok || !data.success)throw new Error(data.error || "Your result could not save. Please retry.");
  if (data.success) {
-  const res = await fetch("/api/streak", {
+  const res = await fetchWithTimeout("/api/streak", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -233,6 +246,8 @@ const payload = {
   
   const score = calculateScore();
 setFinalScore(score);
+window.dispatchEvent(new Event("auctor:activity-saved"));
+ }catch(e){setSaveError(e.message);}finally{savingRef.current=false;setSaving(false);}
 };
 
  return (
@@ -394,7 +409,7 @@ setFinalScore(score);
 
         <button
           onClick={handleSubmit}
-          disabled={finalScore !== null}
+          disabled={saving || finalScore !== null}
           className="px-6 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-500 disabled:opacity-50"
         >
           Submit Score 🚀
@@ -419,7 +434,7 @@ setFinalScore(score);
 
         {lives <= 0 && (
           <div className="mt-6 text-center text-red-500 font-semibold">
-            Game Over
+            <p>Game complete</p><button disabled={saving || finalScore!==null} onClick={handleSubmit} className="mt-4 min-h-12 rounded-xl bg-indigo-600 px-5 text-white">{finalScore!==null?"Score saved":"Save result"}</button>
           </div>
         )}
 

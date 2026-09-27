@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import Recovery from "@/components/mobile/Recovery";
+import NextActivity from "@/components/mobile/NextActivity";
+import { withTimeout } from "@/lib/mobile/request";
 import TestResultView from "../../../../cat-arena/components/TestResultView";
 import TestDiagnosisTabs
 from "../../../../cat-arena/components/test-diagnosis/TestDiagnosisTabs";
@@ -12,6 +15,8 @@ export default function ResultPage({
 }) {
     const router = useRouter();
 
+  const [error,setError]=useState(null);
+  const [retry,setRetry]=useState(0);
   const [attempt, setAttempt] =
     useState(null);
     const [showDiagnosis, setShowDiagnosis] =
@@ -31,7 +36,7 @@ export default function ResultPage({
           )
           .single();
 
-      if (!data) return;
+      if (!data) throw new Error("This result could not be loaded. Your saved attempt has not been changed.");
 
       console.log("FULL DATA", data);
 console.log("TEST ID FROM DB", data.test_id);
@@ -54,10 +59,11 @@ console.log("TEST ID FROM DB", data.test_id);
 });
     }
 
-    loadAttempt();
+    setError(null);withTimeout(loadAttempt()).catch(e=>setError(e.message));
 
-  }, [params.attemptId]);
+  }, [params.attemptId,retry]);
 
+  if(error)return <main className="p-5"><Recovery area="sectional_result" message={error} onRetry={()=>setRetry(n=>n+1)}/></main>;
   if (!attempt) {
     return (
       <div className="p-10 text-white">
@@ -76,12 +82,12 @@ console.log("TEST ID FROM DB", data.test_id);
 }
 
  return (
-  <TestResultView
+  <><TestResultView
   attempt={attempt}
   onViewDiagnosis={() =>
     setShowDiagnosis(true)
   }
   onExit={() => router.push("/?view=cat")}
-/>
+/><NextActivity current="cat"/></>
 );
 }

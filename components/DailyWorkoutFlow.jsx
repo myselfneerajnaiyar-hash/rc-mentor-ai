@@ -2,9 +2,15 @@
 import { supabase } from "../lib/supabase"
 import { useEffect, useState } from "react"
 import { BookOpen, BookText, CheckCircle, Loader2, PenLine, Zap } from "lucide-react"
+import Recovery from "./mobile/Recovery";
+import NextActivity from "./mobile/NextActivity";
+import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import WorkoutEngine from "./WorkoutEngine.jsx";
+import { startLearningActivity } from "@/lib/learningAnalytics";
 
 export default function DailyWorkoutFlow({ mode = "normal", setView, onRunningChange }) {
+  const [error,setError]=useState(null);
+  const [retry,setRetry]=useState(0);
   const [status, setStatus] = useState("building") 
   // building | ready | running
 
@@ -24,66 +30,23 @@ export default function DailyWorkoutFlow({ mode = "normal", setView, onRunningCh
   }, [status, onRunningChange])
 
 useEffect(() => {
-  async function loadWorkout() {
-
-    // 1️⃣ Check session
-    const { data: { session } } = await supabase.auth.getSession()
-
-    if (!session) {
-      console.error("No session found")
-      return
-    }
-
-    // 2️⃣ Check if already attempted
-    const attemptRes = await fetch("/api/check-attempt", {
-      headers: {
-        Authorization: `Bearer ${session.access_token}`
-      }
-    })
-
-    const attemptData = await attemptRes.json()
-
-    if (attemptData.attempted) {
-  setTodayAttempt(attemptData.attempt)
-  setStatus("alreadyAttempted")
-  return
-}
-
-    // 3️⃣ If not attempted → load workout
-    const res = await fetch(`/api/get-daily-workout?mode=${mode}`)
-
-    if (!res.ok) {
-      console.error("Workout API failed")
-      return
-    }
-
-    const data = await res.json()
-
-const normalizedWorkout = {
-  speed: data?.speed || { questions: [] },
-  vocab: data?.vocab || { questions: [] },
-  rc1: data?.rc1 || { passage: "", questions: [] },
-  rc2: data?.rc2 || { passage: "", questions: [] },
-  micro: data?.micro || { questions: [] }
-}
-
-setWorkout(normalizedWorkout)
-
-    // Animate steps
-    for (let i = 0; i < steps.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setSteps(prev => {
-        const updated = [...prev]
-        updated[i].done = true
-        return updated
-      })
-    }
-
-    setStatus("ready")
-  }
-
-  loadWorkout()
-}, [])
+ let alive=true;setStatus("building");setError(null);
+ async function loadWorkout(){try{
+ const {data:{session}}=await withTimeout(supabase.auth.getSession());
+ if(!session)throw Error("Please sign in again to load your workout.");
+ const response=await fetchWithTimeout("/api/check-attempt",{headers:{Authorization:`Bearer ${session.access_token}`}});
+ if(!response.ok)throw Error("Your workout status could not be checked. Please retry.");
+ const attempt=await response.json();if(!alive)return;
+ if(attempt.attempted){setTodayAttempt(attempt.attempt);setStatus("alreadyAttempted");return;}
+ const res=await fetchWithTimeout(`/api/get-daily-workout?mode=${mode}`);
+ if(!res.ok)throw Error("Today’s workout could not load. Please retry.");
+ const data=await res.json();
+ if(!["speed","vocab","rc1","rc2","micro"].every(key=>data[key]?.questions?.length))throw Error("Today’s workout is still being prepared. Try another daily activity or check again.");
+ if(alive){setWorkout(data);setStatus("ready");}
+ }catch(error){if(alive){setError(error.message);setStatus("error");}}}
+ loadWorkout();return()=>{alive=false;};
+},[mode,retry]);
+if(status==="error")return <Recovery message={error} area="workout_load" onRetry={()=>setRetry(n=>n+1)}/>;
 
 if (status === "alreadyAttempted") {
   return (
@@ -91,7 +54,7 @@ if (status === "alreadyAttempted") {
       <div className="text-center space-y-6 max-w-xl">
 
         <h1 className="text-3xl font-bold text-orange-400">
-          ⚠ Attempt Exhausted
+          ✓ Workout complete
         </h1>
 
         <p className="text-slate-400 text-lg">
@@ -99,9 +62,11 @@ if (status === "alreadyAttempted") {
         </p>
 
         <p className="text-slate-500">
-          Come back tomorrow for a new challenge 🚀
+          Your result is saved. Review it or try another daily activity.
         </p>
 
+        <a className="mobile-secondary" href="/?view=workout&tab=history">Review your workout</a>
+        <NextActivity current="workout"/>
         {todayAttempt && (
           <div className="mt-8 p-6 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
             <h2 className="text-xl font-semibold text-indigo-400">
@@ -170,15 +135,15 @@ if (status === "alreadyAttempted") {
 
   if (status === "ready") {
     return (
-      <div className="min-h-screen bg-slate-950 py-8 text-white sm:py-12">
+      <div className="workout-ready min-h-screen bg-slate-950 py-8 text-white sm:py-12">
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
           <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-6 shadow-2xl shadow-black/20 sm:p-10">
             <p className="text-xs font-bold tracking-[0.18em] text-indigo-300">TODAY'S FOCUS</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">🔥 Daily Workout</h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">A structured 30-minute intelligence workout designed to improve reading speed, comprehension, vocabulary, and language accuracy through short, focused exercises.</p>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">Practise speed, vocabulary and reading in one guided session. Allow about 30 minutes.</p>
           </section>
 
-          <section className="mt-6">
+          <section className="workout-intro-details mt-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-8 bg-indigo-400" />
               <h2 className="text-xl font-bold text-slate-100">Today's Workout</h2>
@@ -191,7 +156,7 @@ if (status === "alreadyAttempted") {
             </div>
           </section>
 
-          <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6">
+          <section className="workout-intro-details mt-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6">
             <h2 className="text-lg font-bold text-slate-100">How it Works</h2>
             <ul className="mt-4 grid gap-3 text-sm text-slate-400 sm:grid-cols-2">
               <InfoPoint text="Fresh workout generated every day" />
@@ -201,9 +166,12 @@ if (status === "alreadyAttempted") {
             </ul>
           </section>
 
-          <div className="mt-8 flex justify-center">
+          <div className="workout-start mt-8 flex justify-center">
           <button
-            onClick={() => setStatus("running")}
+            onClick={() => {
+              startLearningActivity("daily_workout");
+              setStatus("running");
+            }}
               className="rounded-2xl bg-indigo-600 px-8 py-3.5 font-semibold text-white shadow-lg shadow-indigo-900/40 transition hover:bg-indigo-500"
           >
             🚀 Start Workout

@@ -1,0 +1,5 @@
+﻿const fs=require('fs');const edit=(p,f)=>fs.writeFileSync(p,f(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')));
+edit('tests/mobile-ux.browser.mjs',s=>s.replaceAll("page.locator('.generic-tab-select select')","page.locator('.generic-tab-select select').first()").replace('for(const [width,height] of sizes){await page.setViewportSize','for(const [width,height] of (process.env.MOBILE_SKIP_MATRIX?[[320,568]]:sizes)){await page.setViewportSize'));
+edit('components/home-v2/BirbalFloatingButton.jsx',s=>s.replace('{!chatOpen && (','{!chatOpen && !isMobile && ('));
+edit('app/daily-challenge/test/page.jsx',s=>s.replace('selectedChallengeId || today)','selectedChallengeId || istToday)'));
+edit('app/birbal-v2/page.jsx',s=>s.replace('import { createClient } from "@supabase/supabase-js"','import { supabase } from "@/lib/supabase"').replace(/const supabase = createClient\([\s\S]*?\n\)/,'').replace('  loadPremium()\n}, 1000)','  loadPremium().catch(error=>setAnalysisError(error.message))\n}, 1000)').replace('const res = await fetch(', 'const res = await fetchWithTimeout('));
