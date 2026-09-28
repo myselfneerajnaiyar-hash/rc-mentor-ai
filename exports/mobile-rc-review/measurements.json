@@ -1,0 +1,999 @@
+{
+  "results": [
+    {
+      "name": "passage-scrolled-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 4771,
+      "scrollWidth": 375,
+      "scrollY": 450,
+      "bodyScroll": 0,
+      "bodyHeight": 4771,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 450
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 458,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 512,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 571,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 190,
+          "y": 571,
+          "w": 169,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "question-submit-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 1116,
+      "scrollWidth": 375,
+      "scrollY": 42,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 42
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 50,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 104,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 163,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 190,
+          "y": 163,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 317,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 325,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 192,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:58\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "save-recovery-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 1319,
+      "scrollWidth": 375,
+      "scrollY": 246,
+      "bodyScroll": 0,
+      "bodyHeight": 1319,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s try that again",
+          "y": 222
+        },
+        {
+          "text": "Daily Reading Challenge",
+          "y": 246
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 254,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 308,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 367,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 190,
+          "y": 367,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Retry",
+          "x": 23,
+          "y": 298,
+          "w": 70,
+          "h": 50
+        },
+        {
+          "text": "Back to Today",
+          "x": 105,
+          "y": 298,
+          "w": 132,
+          "h": 50
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 661,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 759,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 857,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 955,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 1097,
+          "w": 317,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 1174,
+          "w": 159,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1230,
+          "w": 325,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 192,
+          "y": 1174,
+          "w": 159,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:58\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nLet’s try that again\n\nSave unavailable\n\nRetry\nBack to Today\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "passage-scrolled-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 3671,
+      "scrollWidth": 390,
+      "scrollY": 450,
+      "bodyScroll": 0,
+      "bodyHeight": 3671,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 450
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 458,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 512,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 571,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 197,
+          "y": 571,
+          "w": 176,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "question-submit-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 1116,
+      "scrollWidth": 390,
+      "scrollY": 42,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 42
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 50,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 104,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 163,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 197,
+          "y": 163,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 332,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 340,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 199,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:58\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "save-recovery-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 1319,
+      "scrollWidth": 390,
+      "scrollY": 246,
+      "bodyScroll": 0,
+      "bodyHeight": 1319,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Let’s try that again",
+          "y": 222
+        },
+        {
+          "text": "Daily Reading Challenge",
+          "y": 246
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 254,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 308,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 367,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 197,
+          "y": 367,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Retry",
+          "x": 23,
+          "y": 298,
+          "w": 70,
+          "h": 50
+        },
+        {
+          "text": "Back to Today",
+          "x": 105,
+          "y": 298,
+          "w": 132,
+          "h": 50
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 528,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 661,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 759,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 857,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 955,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 1097,
+          "w": 332,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 1174,
+          "w": 166,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1230,
+          "w": 340,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 199,
+          "y": 1174,
+          "w": 166,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:58\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nLet’s try that again\n\nSave unavailable\n\nRetry\nBack to Today\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "desktop-1440",
+      "url": "/daily-challenge/test",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1523,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 900,
+          "total": 1523
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 1270,
+          "y": 66,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 757,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 805,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 853,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 901,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 757,
+          "y": 474,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 757,
+          "y": 572,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 757,
+          "y": 670,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 757,
+          "y": 768,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 757,
+          "y": 1462,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 1020,
+          "y": 1462,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 1317,
+          "y": 1462,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:59\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "final-state",
+      "url": "/daily-challenge/test",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1523,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 900,
+          "total": 1523
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 1270,
+          "y": 66,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 757,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 805,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 853,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 901,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 757,
+          "y": 474,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 757,
+          "y": 572,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 757,
+          "y": 670,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 757,
+          "y": 768,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 757,
+          "y": 1462,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 1020,
+          "y": 1462,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 1317,
+          "y": 1462,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:59\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/daily-rc-review",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET"
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST"
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET"
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    }
+  ]
+}

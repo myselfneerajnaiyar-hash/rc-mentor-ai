@@ -52,6 +52,8 @@ Ask me anything or choose a suggestion below.`
   const [input, setInput] = useState("")
   const lastMessageRef = useRef(null)
   const bottomRef = useRef(null)
+  const messagesRef = useRef(null)
+  const followMessages = useRef(true)
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
   const router = useRouter();
@@ -64,10 +66,9 @@ const voiceSupported =
   "webkitSpeechRecognition" in window
 
  useEffect(() => {
-bottomRef.current?.scrollIntoView({
-  behavior: "smooth"
-})
-}, [messages])
+    const pane = messagesRef.current;
+    if (pane && followMessages.current) pane.scrollTop = pane.scrollHeight;
+  }, [messages])
 
   useEffect(() => {
 
@@ -102,7 +103,7 @@ useEffect(() => {
  async function sendContextMessage(text) {
   if(!text.trim() || sendingRef.current)return
   if(text.length>4000){setChatError('Please keep your message under 4,000 characters.');return}
-  sendingRef.current=true;setThinking(true);setChatError(null)
+  followMessages.current=true; sendingRef.current=true;setThinking(true);setChatError(null)
   const updated=[...messages,{role:'user',content:text,time:new Date()}]
   setMessages(updated);setInput('')
   try {
@@ -117,7 +118,7 @@ useEffect(() => {
  async function sendVoiceMessage(text){
   if(transport)return sendContextMessage(text);
   if(!text.trim()||sendingRef.current)return;
-  sendingRef.current=true;setThinking(true);setChatError(null);
+  followMessages.current=true; sendingRef.current=true;setThinking(true);setChatError(null);
   const previous=messages;const updated=[...messages,{role:"user",content:text,time:new Date()}];setMessages(updated);setInput("");
   try{const response=await fetchWithTimeout("/api/birbal",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:updated,userId:user?.id,passage,contextual})});const data=await response.json();if(!response.ok||!data.reply)throw Error(data.error||"Birbal could not reply. Please retry your message.");if(mountedRef.current)await typeMessage(data.reply,updated);}
   catch(error){if(mountedRef.current){setMessages(previous);setInput(text);setChatError(error.message);}}
@@ -146,6 +147,7 @@ text = text.replace(actionRegex, "").trim();
   ])
 
  for (let i = 0; i < text.length; i++) {
+  if (!mountedRef.current) return;
   currentText += text[i]
 
   setMessages(prev => {
@@ -154,7 +156,7 @@ text = text.replace(actionRegex, "").trim();
     return copy
   })
 
-  bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+
 
   await new Promise(resolve => setTimeout(resolve, 10))
 }
@@ -245,6 +247,7 @@ async function startVoiceConversation() {
   return (
 
     <div
+style={contextual ? { height: "min(650px, 75dvh)", minHeight: "300px" } : undefined}
 className="
 flex
 flex-col
@@ -346,12 +349,17 @@ shadow-xl hover:bg-indigo-600/30 border border-slate-700 px-3 py-1.5 rounded-ful
       {/* Chat area */}
 
     <div
+ref={messagesRef}
+style={{ overscrollBehaviorY: contextual ? "auto" : "contain" }}
+aria-label="Birbal messages"
+onScroll={event => { const pane = event.currentTarget; followMessages.current = pane.scrollHeight - pane.clientHeight - pane.scrollTop < 32; }}
+onWheel={event => { if (event.deltaY < 0) followMessages.current = false; }}
+onTouchStart={() => { followMessages.current = false; }}
 className="
 flex-1
 min-h-0
 h-0
 overflow-y-auto
-overscroll-contain
 touch-pan-y
 p-3
 space-y-4

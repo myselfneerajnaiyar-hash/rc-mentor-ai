@@ -1,0 +1,2436 @@
+{
+  "results": [
+    {
+      "name": "home-pricing-375",
+      "url": "/",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 1803,
+      "scrollWidth": 375,
+      "scrollY": 903,
+      "bodyScroll": 0,
+      "bodyHeight": 1803,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 903
+        },
+        {
+          "text": "Welcome, New.",
+          "y": 96
+        },
+        {
+          "text": "Today's Activities",
+          "y": 181
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": 350
+        },
+        {
+          "text": "Daily Workout",
+          "y": 617
+        },
+        {
+          "text": "Word Hunt",
+          "y": 617
+        },
+        {
+          "text": "Build your skills",
+          "y": 876
+        },
+        {
+          "text": "Your momentum",
+          "y": 1103
+        }
+      ],
+      "controls": [
+        {
+          "text": "Tour",
+          "x": 192,
+          "y": 16,
+          "w": 71,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 269,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start Challenge\n→",
+          "x": 35,
+          "y": 417,
+          "w": 305,
+          "h": 48
+        },
+        {
+          "text": "Start Workout\n→",
+          "x": 31,
+          "y": 723,
+          "w": 134,
+          "h": 48
+        },
+        {
+          "text": "Start Word Hunt\n→",
+          "x": 211,
+          "y": 715,
+          "w": 134,
+          "h": 56
+        },
+        {
+          "text": "See all free daily activities →",
+          "x": 16,
+          "y": 806,
+          "w": 343,
+          "h": 44
+        },
+        {
+          "text": "All practice →",
+          "x": 281,
+          "y": 870,
+          "w": 78,
+          "h": 44
+        },
+        {
+          "text": "Reading\nGenerate or paste RC",
+          "x": 16,
+          "y": 926,
+          "w": 108,
+          "h": 139
+        },
+        {
+          "text": "Vocabulary\nLearn and recall",
+          "x": 134,
+          "y": 926,
+          "w": 108,
+          "h": 139
+        },
+        {
+          "text": "Speed\nRead with focus",
+          "x": 251,
+          "y": 926,
+          "w": 108,
+          "h": 139
+        },
+        {
+          "text": "History and progress →",
+          "x": 35,
+          "y": 1339,
+          "w": 144,
+          "h": 44
+        },
+        {
+          "text": "CAT test series\nExplore papers and mock tests →",
+          "x": 16,
+          "y": 1422,
+          "w": 343,
+          "h": 84
+        },
+        {
+          "text": "Your learning community\nSee the leaderboards →",
+          "x": 16,
+          "y": 1518,
+          "w": 343,
+          "h": 84
+        },
+        {
+          "text": "Pricing",
+          "x": 16,
+          "y": 1639,
+          "w": 78,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 311,
+          "y": 1673,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 1745,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 98,
+          "y": 1745,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 188,
+          "y": 1745,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 277,
+          "y": 1745,
+          "w": 90,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nTour\nInbox\n\nYOUR DAILY READING PRACTICE\n\nWelcome, New.\n\nA little practice. A stronger reader.\n\nToday's Activities\nFree daily practice\n8 min\nDaily RC Challenge\n\nOne passage. Build your reading accuracy.\n\nStart Challenge\n→\nFree daily practice\n25-30 min\nDaily Workout\n\nReading, vocabulary and speed in one guided session.\n\nStart Workout\n→\nFree daily practice\n5 min\nWord Hunt\n\nA quick daily vocabulary puzzle.\n\nStart Word Hunt\n→\nSee all free daily activities →\nBuild your skills\nAll practice →\nReading\nGenerate or paste RC\nVocabulary\nLearn and recall\nSpeed\nRead with focus\nYour momentum\n0/3\nDone today\n0 days\nWorkout streak\n\nYour first completed activity starts your progress.\n\nHistory and progress →\nCAT test series\nExplore papers and mock tests →\nYour learning community\nSee the leaderboards →\nPricing\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "pricing-375",
+      "url": "/pricing",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 4215,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 4215,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Train Like a 99 Percentiler",
+          "y": 80
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": 905
+        },
+        {
+          "text": "Half Yearly Plan",
+          "y": 1572
+        },
+        {
+          "text": "3 Month Plan",
+          "y": 2190
+        },
+        {
+          "text": "Elite Yearly",
+          "y": 2744
+        },
+        {
+          "text": "Pro Monthly",
+          "y": 3378
+        }
+      ],
+      "controls": [
+        {
+          "text": "Referral Code (Optional)",
+          "x": 25,
+          "y": 532,
+          "w": 325,
+          "h": 50
+        },
+        {
+          "text": "Apply Referral",
+          "x": 25,
+          "y": 594,
+          "w": 325,
+          "h": 36
+        },
+        {
+          "text": "Enter coupon code",
+          "x": 25,
+          "y": 708,
+          "w": 248,
+          "h": 50
+        },
+        {
+          "text": "Apply",
+          "x": 281,
+          "y": 708,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Unlock Test Series",
+          "x": 66,
+          "y": 1405,
+          "w": 243,
+          "h": 60
+        },
+        {
+          "text": "Start 6 Month Plan",
+          "x": 65,
+          "y": 2024,
+          "w": 245,
+          "h": 60
+        },
+        {
+          "text": "Start 3 Month Plan",
+          "x": 65,
+          "y": 2578,
+          "w": 245,
+          "h": 60
+        },
+        {
+          "text": "Unlock Premium",
+          "x": 65,
+          "y": 3212,
+          "w": 245,
+          "h": 60
+        },
+        {
+          "text": "Start Monthly Plan",
+          "x": 65,
+          "y": 3810,
+          "w": 245,
+          "h": 60
+        },
+        {
+          "text": "← Back to Dashboard",
+          "x": 87,
+          "y": 4079,
+          "w": 202,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 842,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 98,
+          "y": 842,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 188,
+          "y": 842,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 277,
+          "y": 842,
+          "w": 90,
+          "h": 52
+        }
+      ],
+      "text": "Train Like a 99 Percentiler\n\nChoose your plan and unlock the complete Auctor RC experience — structured training, AI mentorship, analytics, and unlimited practice.\n\nApply Referral\nCoupon Code\nApply\n🔥 LAUNCH OFFER\nCAT VARC Test Series\n\n₹1199\n\n₹799\n\nOne-time purchase\n\n✔️ Official CAT PYQs\n✔️ 10 Auctor VARC Mocks\n✔️ AI Diagnosis\n✔️ Detailed Analysis\n✔️ Leaderboards\n✔️ Valid till CAT 2026\nUnlock Test Series\nBEST VALUE\nHalf Yearly Plan\n\n₹1299\n\n🎁 Includes CAT VARC Test Series\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ CAT VARC Test Series\n✔️ AI RC Generator\n✔️ Birbal explanations\n✔️ Full analytics dashboard\nStart 6 Month Plan\n3 Month Plan\n\n₹999\n\n₹333/month\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart 3 Month Plan\nANNUAL SAVER\nElite Yearly\n\n₹1999\n\n🎁 Includes CAT VARC Test Series\n\nOnly ₹166/month\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ AI RC Generator\n✔️ Birbal reasoning explanations\n✔️ Full analytics dashboard\nUnlock Premium\nPro Monthly\n\n₹399\n\nFlexible plan for short term preparation\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart Monthly Plan\n\nSecure payments powered by Razorpay\n\nNo hidden charges\n\n← Back to Dashboard\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "passage-top-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 4771,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 4771,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 8,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 62,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 121,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 190,
+          "y": 121,
+          "w": 169,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "passage-scroll-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 4771,
+      "scrollWidth": 375,
+      "scrollY": 500,
+      "bodyScroll": 0,
+      "bodyHeight": 4771,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 500
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 508,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 562,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 621,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 190,
+          "y": 621,
+          "w": 169,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "question-submit-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 900,
+      "scrollHeight": 1116,
+      "scrollWidth": 375,
+      "scrollY": 42,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 42
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 50,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 104,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 163,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 190,
+          "y": 163,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 317,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 325,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 192,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "home-pricing-390",
+      "url": "/",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 1803,
+      "scrollWidth": 390,
+      "scrollY": 903,
+      "bodyScroll": 0,
+      "bodyHeight": 1803,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 903
+        },
+        {
+          "text": "Welcome, New.",
+          "y": 96
+        },
+        {
+          "text": "Today's Activities",
+          "y": 181
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": 350
+        },
+        {
+          "text": "Daily Workout",
+          "y": 617
+        },
+        {
+          "text": "Word Hunt",
+          "y": 617
+        },
+        {
+          "text": "Build your skills",
+          "y": 876
+        },
+        {
+          "text": "Your momentum",
+          "y": 1103
+        }
+      ],
+      "controls": [
+        {
+          "text": "Tour",
+          "x": 207,
+          "y": 16,
+          "w": 71,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start Challenge\n→",
+          "x": 35,
+          "y": 417,
+          "w": 320,
+          "h": 48
+        },
+        {
+          "text": "Start Workout\n→",
+          "x": 31,
+          "y": 723,
+          "w": 141,
+          "h": 48
+        },
+        {
+          "text": "Start Word Hunt\n→",
+          "x": 218,
+          "y": 723,
+          "w": 141,
+          "h": 48
+        },
+        {
+          "text": "See all free daily activities →",
+          "x": 16,
+          "y": 806,
+          "w": 358,
+          "h": 44
+        },
+        {
+          "text": "All practice →",
+          "x": 296,
+          "y": 870,
+          "w": 78,
+          "h": 44
+        },
+        {
+          "text": "Reading\nGenerate or paste RC",
+          "x": 16,
+          "y": 926,
+          "w": 113,
+          "h": 139
+        },
+        {
+          "text": "Vocabulary\nLearn and recall",
+          "x": 139,
+          "y": 926,
+          "w": 113,
+          "h": 139
+        },
+        {
+          "text": "Speed\nRead with focus",
+          "x": 261,
+          "y": 926,
+          "w": 113,
+          "h": 139
+        },
+        {
+          "text": "History and progress →",
+          "x": 35,
+          "y": 1339,
+          "w": 144,
+          "h": 44
+        },
+        {
+          "text": "CAT test series\nExplore papers and mock tests →",
+          "x": 16,
+          "y": 1422,
+          "w": 358,
+          "h": 84
+        },
+        {
+          "text": "Your learning community\nSee the leaderboards →",
+          "x": 16,
+          "y": 1518,
+          "w": 358,
+          "h": 84
+        },
+        {
+          "text": "Pricing",
+          "x": 16,
+          "y": 1639,
+          "w": 78,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 326,
+          "y": 1673,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 1745,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 102,
+          "y": 1745,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 195,
+          "y": 1745,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 289,
+          "y": 1745,
+          "w": 94,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nTour\nInbox\n\nYOUR DAILY READING PRACTICE\n\nWelcome, New.\n\nA little practice. A stronger reader.\n\nToday's Activities\nFree daily practice\n8 min\nDaily RC Challenge\n\nOne passage. Build your reading accuracy.\n\nStart Challenge\n→\nFree daily practice\n25-30 min\nDaily Workout\n\nReading, vocabulary and speed in one guided session.\n\nStart Workout\n→\nFree daily practice\n5 min\nWord Hunt\n\nA quick daily vocabulary puzzle.\n\nStart Word Hunt\n→\nSee all free daily activities →\nBuild your skills\nAll practice →\nReading\nGenerate or paste RC\nVocabulary\nLearn and recall\nSpeed\nRead with focus\nYour momentum\n0/3\nDone today\n0 days\nWorkout streak\n\nYour first completed activity starts your progress.\n\nHistory and progress →\nCAT test series\nExplore papers and mock tests →\nYour learning community\nSee the leaderboards →\nPricing\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "pricing-390",
+      "url": "/pricing",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 4215,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 4215,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Train Like a 99 Percentiler",
+          "y": 80
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": 905
+        },
+        {
+          "text": "Half Yearly Plan",
+          "y": 1572
+        },
+        {
+          "text": "3 Month Plan",
+          "y": 2190
+        },
+        {
+          "text": "Elite Yearly",
+          "y": 2744
+        },
+        {
+          "text": "Pro Monthly",
+          "y": 3378
+        }
+      ],
+      "controls": [
+        {
+          "text": "Referral Code (Optional)",
+          "x": 25,
+          "y": 532,
+          "w": 340,
+          "h": 50
+        },
+        {
+          "text": "Apply Referral",
+          "x": 25,
+          "y": 594,
+          "w": 340,
+          "h": 36
+        },
+        {
+          "text": "Enter coupon code",
+          "x": 25,
+          "y": 708,
+          "w": 263,
+          "h": 50
+        },
+        {
+          "text": "Apply",
+          "x": 296,
+          "y": 708,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Unlock Test Series",
+          "x": 66,
+          "y": 1405,
+          "w": 258,
+          "h": 60
+        },
+        {
+          "text": "Start 6 Month Plan",
+          "x": 65,
+          "y": 2024,
+          "w": 260,
+          "h": 60
+        },
+        {
+          "text": "Start 3 Month Plan",
+          "x": 65,
+          "y": 2578,
+          "w": 260,
+          "h": 60
+        },
+        {
+          "text": "Unlock Premium",
+          "x": 65,
+          "y": 3212,
+          "w": 260,
+          "h": 60
+        },
+        {
+          "text": "Start Monthly Plan",
+          "x": 65,
+          "y": 3810,
+          "w": 260,
+          "h": 60
+        },
+        {
+          "text": "← Back to Dashboard",
+          "x": 94,
+          "y": 4079,
+          "w": 202,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 842,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 102,
+          "y": 842,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 195,
+          "y": 842,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 289,
+          "y": 842,
+          "w": 94,
+          "h": 52
+        }
+      ],
+      "text": "Train Like a 99 Percentiler\n\nChoose your plan and unlock the complete Auctor RC experience — structured training, AI mentorship, analytics, and unlimited practice.\n\nApply Referral\nCoupon Code\nApply\n🔥 LAUNCH OFFER\nCAT VARC Test Series\n\n₹1199\n\n₹799\n\nOne-time purchase\n\n✔️ Official CAT PYQs\n✔️ 10 Auctor VARC Mocks\n✔️ AI Diagnosis\n✔️ Detailed Analysis\n✔️ Leaderboards\n✔️ Valid till CAT 2026\nUnlock Test Series\nBEST VALUE\nHalf Yearly Plan\n\n₹1299\n\n🎁 Includes CAT VARC Test Series\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ CAT VARC Test Series\n✔️ AI RC Generator\n✔️ Birbal explanations\n✔️ Full analytics dashboard\nStart 6 Month Plan\n3 Month Plan\n\n₹999\n\n₹333/month\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart 3 Month Plan\nANNUAL SAVER\nElite Yearly\n\n₹1999\n\n🎁 Includes CAT VARC Test Series\n\nOnly ₹166/month\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ AI RC Generator\n✔️ Birbal reasoning explanations\n✔️ Full analytics dashboard\nUnlock Premium\nPro Monthly\n\n₹399\n\nFlexible plan for short term preparation\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart Monthly Plan\n\nSecure payments powered by Razorpay\n\nNo hidden charges\n\n← Back to Dashboard\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "passage-top-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 3671,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 3671,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 8,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 62,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 121,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 197,
+          "y": 121,
+          "w": 176,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "passage-scroll-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 3671,
+      "scrollWidth": 390,
+      "scrollY": 500,
+      "bodyScroll": 0,
+      "bodyHeight": 3671,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 500
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 508,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 562,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 621,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 197,
+          "y": 621,
+          "w": 176,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    },
+    {
+      "name": "question-submit-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 900,
+      "scrollHeight": 1116,
+      "scrollWidth": 390,
+      "scrollY": 42,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 42
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 50,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 104,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 163,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 197,
+          "y": 163,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 332,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 340,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 199,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "home-pricing-1440",
+      "url": "/",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 4346,
+      "bodyHeight": 5281,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell",
+          "top": 4346,
+          "h": 900,
+          "total": 5281
+        }
+      ],
+      "nav": [
+        "Home\nDaily Workout\nRC\nPrecision Training\nCAT\nVocab\nSpeed\nWord Hunt\nAsk Birbal\nPremium\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Auctor",
+          "y": -4316
+        },
+        {
+          "text": "Good Evening, New Student 👋",
+          "y": -4306
+        },
+        {
+          "text": "Train Like The Real CAT",
+          "y": -3955
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": -3664
+        },
+        {
+          "text": "Today's Activities",
+          "y": -3029
+        },
+        {
+          "text": "Daily RC Challenge",
+          "y": -2817
+        },
+        {
+          "text": "Daily Workout",
+          "y": -2825
+        },
+        {
+          "text": "Word Hunt",
+          "y": -2825
+        },
+        {
+          "text": "Unlock 5 Premium AI Tools",
+          "y": -2477
+        },
+        {
+          "text": "AI RC Generator",
+          "y": -2208
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": -1874
+        },
+        {
+          "text": "Speed Drills",
+          "y": -1874
+        },
+        {
+          "text": "Birbal Editorial",
+          "y": -1874
+        },
+        {
+          "text": "Precision Training",
+          "y": -1874
+        },
+        {
+          "text": "Choose Your Learning Journey",
+          "y": -1555
+        },
+        {
+          "text": "Monthly",
+          "y": 0
+        },
+        {
+          "text": "Quarterly",
+          "y": 0
+        },
+        {
+          "text": "Half-Yearly",
+          "y": 0
+        },
+        {
+          "text": "Yearly",
+          "y": 0
+        },
+        {
+          "text": "Monthly",
+          "y": -1290
+        },
+        {
+          "text": "Quarterly",
+          "y": -1291
+        },
+        {
+          "text": "Half-Yearly",
+          "y": -1290
+        },
+        {
+          "text": "Yearly",
+          "y": -1290
+        },
+        {
+          "text": "Ready to Unlock Premium?",
+          "y": -984
+        },
+        {
+          "text": "Compete With The Best",
+          "y": -580
+        },
+        {
+          "text": "Know Yourself As A Reader",
+          "y": -223
+        },
+        {
+          "text": "RC Skill Map",
+          "y": 91
+        },
+        {
+          "text": "Birbal Assessment",
+          "y": 91
+        }
+      ],
+      "controls": [
+        {
+          "text": "Home",
+          "x": 24,
+          "y": -4129,
+          "w": 207,
+          "h": 46
+        },
+        {
+          "text": "Daily Workout",
+          "x": 24,
+          "y": -4075,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "RC",
+          "x": 24,
+          "y": -4023,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Precision Training",
+          "x": 24,
+          "y": -3971,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "CAT",
+          "x": 24,
+          "y": -3919,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Vocab",
+          "x": 24,
+          "y": -3867,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Speed",
+          "x": 24,
+          "y": -3815,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Word Hunt",
+          "x": 24,
+          "y": -3763,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 24,
+          "y": -3711,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Premium",
+          "x": 24,
+          "y": -3659,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Profile",
+          "x": 24,
+          "y": -3607,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Product Tour",
+          "x": 984,
+          "y": -4302,
+          "w": 135,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 1126,
+          "y": -4302,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Explore Test Series",
+          "x": 313,
+          "y": -3472,
+          "w": 197,
+          "h": 44
+        },
+        {
+          "text": "Buy Now",
+          "x": 1161,
+          "y": -3200,
+          "w": 226,
+          "h": 36
+        },
+        {
+          "text": "Start Challenge",
+          "x": 313,
+          "y": -2669,
+          "w": 307,
+          "h": 36
+        },
+        {
+          "text": "Start Workout",
+          "x": 694,
+          "y": -2677,
+          "w": 307,
+          "h": 36
+        },
+        {
+          "text": "Play Now",
+          "x": 1076,
+          "y": -2677,
+          "w": 307,
+          "h": 36
+        },
+        {
+          "text": "✨ Generate New RC",
+          "x": 313,
+          "y": -2076,
+          "w": 214,
+          "h": 44
+        },
+        {
+          "text": "Explore Premium Plans",
+          "x": 709,
+          "y": -840,
+          "w": 278,
+          "h": 56
+        },
+        {
+          "text": "Daily RC",
+          "x": 288,
+          "y": -484,
+          "w": 116,
+          "h": 42
+        },
+        {
+          "text": "Workout",
+          "x": 416,
+          "y": -484,
+          "w": 119,
+          "h": 42
+        },
+        {
+          "text": "Word Hunt",
+          "x": 548,
+          "y": -484,
+          "w": 136,
+          "h": 42
+        },
+        {
+          "text": "Weekly Challenge",
+          "x": 696,
+          "y": -484,
+          "w": 183,
+          "h": 42
+        },
+        {
+          "text": "Pricing",
+          "x": 288,
+          "y": 835,
+          "w": 78,
+          "h": 48
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 1351,
+          "y": 806,
+          "w": 66,
+          "h": 66
+        }
+      ],
+      "text": "Auctor\n\nPowered by Birbal\n\nNAVIGATION\n\nHome\nDaily Workout\nRC\nPrecision Training\nCAT\nVocab\nSpeed\nWord Hunt\nAsk Birbal\nPremium\nProfile\nGood Evening, New Student 👋\nProduct Tour\nInbox\n\nBecome a better reader every single day.\n\nCAT VARC\n🔥 0 Day Streak\n0\nReading IQ\n0%\nAccuracy\n0 WPM\nSpeed\n0 Days\nStreak\nAI POWERED VARC TEST SERIES\nTrain Like The Real CAT\n\nAttempt official CAT PYQs and AI-created mock tests with detailed diagnosis, mentor verdict and cognitive analysis after every test.\n\nCAT VARC Test Series\n\nPractice under real exam conditions with official CAT papers and AI-generated mock tests that closely simulate the latest CAT VARC pattern.\n\n24 Official CAT PYQs\n10 AI Mock Tests\n₹799 One Time\nExplore Test Series\nAI Report Preview\nSample\nMentor Verdict\nCognitive Diagnosis\nPerformance Analytics\nIncluded with every test\nAI Mentor Verdict\nCognitive Diagnosis\nDetailed Review\nPerformance Analytics\n24\nOfficial CAT PYQs\n\nCAT 2020–2025 papers with complete analysis.\n\n10\nAI Mock Tests\n\nFresh CAT-level mocks generated by Auctor AI.\n\nAI\nSmart Diagnosis\n\nDiscover exactly why you lose marks.\n\nLaunch Price\n₹799\nOne-Time Purchase\nBuy Now\n🆓 FREE DAILY PRACTICE\nToday's Activities\n\nStay consistent with three free activities designed to sharpen your reading every single day.\n\nDaily RC Challenge\n\nSolve a fresh CAT-level Reading Comprehension passage every day.\n\n10-15 mins\nStart Challenge\nDaily Workout\n\nComplete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.\n\n25–30 mins\nStart Workout\nWord Hunt\n\nStrengthen your vocabulary through quick interactive word puzzles and daily practice.\n\n5 mins\nPlay Now\nPREMIUM AI FEATURES\nUnlock 5 Premium AI Tools\n\nGenerate unlimited RCs, decode editorials, train your speed, build vocabulary and master your weak areas.\n\nAI RC Generator\n\nInstantly generate unlimited CAT-level Reading Comprehension passages with customizable topics, difficulty levels and passage lengths.\n\n✨ Generate New RC\nGenerate New Passage\nDifficulty: CAT\nTopic: Philosophy\nLength: Medium\nQuestions: 6\n✨ AI will create a brand-new passage in seconds.\nVocabulary Lab\n\nMaster high-frequency words with AI-curated learning sessions and smart revision.\n\nSpeed Drills\n\nTrain your reading speed and comprehension with adaptive timed exercises.\n\nBirbal Editorial\n\nUnderstand difficult editorials with AI explanations, summaries and vocabulary support.\n\nPrecision Training\n\nImprove your weakest question types with focused AI-powered practice.\n\nPREMIUM MEMBERSHIP\nChoose Your Learning Journey\n\nUnlock every AI-powered feature, unlimited practice and detailed performance insights with one Premium subscription.\n\nMonthly\n\nPerfect to get started\n\n₹399\n\nOne subscription. Full access.\n\nPOPULAR\nQuarterly\n\nMost Popular\n\n₹999\n\nOne subscription. Full access.\n\nHalf-Yearly\n\nBest Value\n\n₹1299\n\nOne subscription. Full access.\n\nYearly\n\nMaximum Savings\n\n₹1999\n\nOne subscription. Full access.\n\nReady to Unlock Premium?\n\nJoin thousands of aspirants using AI-powered practice to improve faster, build consistency and maximize their VARC score.\n\nExplore Premium Plans\n✓ Secure Payments\n✓ Instant Access\n✓ Cancel Anytime\nLEADERBOARDS\nCompete With The Best\n\nClimb the rankings by solving Daily RCs, completing workouts and improving your vocabulary.\n\nDaily RC\nWorkout\nWord Hunt\nWeekly Challenge\nNo RC attempts today\nREADING PROFILE\nKnow Yourself As A Reader\nReading DNA Not Discovered\n\nComplete your first Daily Workout or RC Practice to discover your Reading DNA.\n\nREADING IQ\nUnlock\nACCURACY\n--\nSPEED\n--\nRC SCORE\n--\nSKILLS\n--\nRC Skill Map\n\nPerformance across question types\n\nSolve a few RC passages to unlock your profile.\nBirbal Assessment\n\nAI-powered diagnosis of your reading behaviour.\n\nBirbal hasn't analysed you yet.\n\nComplete your first Daily Workout or RC Practice.\n\nBirbal will automatically discover:\n\n✅ Reading IQ\n✅ Reader Type\n✅ Strongest Skill\n✅ Weakest Skill\n✅ Personal Improvement Plan\n\nPricing\n👋 Need help?\nAsk Birbal anything about RC."
+    },
+    {
+      "name": "pricing-1440",
+      "url": "/pricing",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 2716,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell",
+          "top": 0,
+          "h": 900,
+          "total": 2716
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Train Like a 99 Percentiler",
+          "y": 80
+        },
+        {
+          "text": "CAT VARC Test Series",
+          "y": 690
+        },
+        {
+          "text": "Half Yearly Plan",
+          "y": 689
+        },
+        {
+          "text": "3 Month Plan",
+          "y": 1357
+        },
+        {
+          "text": "Elite Yearly",
+          "y": 1357
+        },
+        {
+          "text": "Pro Monthly",
+          "y": 1991
+        }
+      ],
+      "controls": [
+        {
+          "text": "Referral Code (Optional)",
+          "x": 521,
+          "y": 317,
+          "w": 398,
+          "h": 50
+        },
+        {
+          "text": "Apply Referral",
+          "x": 521,
+          "y": 379,
+          "w": 398,
+          "h": 36
+        },
+        {
+          "text": "Enter coupon code",
+          "x": 521,
+          "y": 493,
+          "w": 321,
+          "h": 50
+        },
+        {
+          "text": "Apply",
+          "x": 850,
+          "y": 493,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Unlock Test Series",
+          "x": 210,
+          "y": 1190,
+          "w": 456,
+          "h": 60
+        },
+        {
+          "text": "Start 6 Month Plan",
+          "x": 773,
+          "y": 1141,
+          "w": 458,
+          "h": 60
+        },
+        {
+          "text": "Start 3 Month Plan",
+          "x": 209,
+          "y": 1745,
+          "w": 458,
+          "h": 60
+        },
+        {
+          "text": "Unlock Premium",
+          "x": 773,
+          "y": 1825,
+          "w": 458,
+          "h": 60
+        },
+        {
+          "text": "Start Monthly Plan",
+          "x": 209,
+          "y": 2399,
+          "w": 458,
+          "h": 60
+        },
+        {
+          "text": "← Back to Dashboard",
+          "x": 619,
+          "y": 2668,
+          "w": 202,
+          "h": 48
+        }
+      ],
+      "text": "Train Like a 99 Percentiler\n\nChoose your plan and unlock the complete Auctor RC experience — structured training, AI mentorship, analytics, and unlimited practice.\n\nApply Referral\nCoupon Code\nApply\n🔥 LAUNCH OFFER\nCAT VARC Test Series\n\n₹1199\n\n₹799\n\nOne-time purchase\n\n✔️ Official CAT PYQs\n✔️ 10 Auctor VARC Mocks\n✔️ AI Diagnosis\n✔️ Detailed Analysis\n✔️ Leaderboards\n✔️ Valid till CAT 2026\nUnlock Test Series\nBEST VALUE\nHalf Yearly Plan\n\n₹1299\n\n🎁 Includes CAT VARC Test Series\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ CAT VARC Test Series\n✔️ AI RC Generator\n✔️ Birbal explanations\n✔️ Full analytics dashboard\nStart 6 Month Plan\n3 Month Plan\n\n₹999\n\n₹333/month\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart 3 Month Plan\nANNUAL SAVER\nElite Yearly\n\n₹1999\n\n🎁 Includes CAT VARC Test Series\n\nOnly ₹166/month\n\n✔️ Everything in Monthly\n✔️ Unlimited RC practice\n✔️ AI RC Generator\n✔️ Birbal reasoning explanations\n✔️ Full analytics dashboard\nUnlock Premium\nPro Monthly\n\n₹399\n\nFlexible plan for short term preparation\n\n✔️ Daily RC workouts\n✔️ Speed reading gym\n✔️ Birbal AI mentor\n✔️ Performance analytics\n✔️ Unlimited RC practice\nStart Monthly Plan\n\nSecure payments powered by Razorpay\n\nNo hidden charges\n\n← Back to Dashboard"
+    },
+    {
+      "name": "daily-desktop-1440",
+      "url": "/daily-challenge/test",
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 1523,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell assessment-mode-active",
+          "top": 0,
+          "h": 900,
+          "total": 1523
+        }
+      ],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 49
+        }
+      ],
+      "controls": [
+        {
+          "text": "Submit Test",
+          "x": 1270,
+          "y": 66,
+          "w": 141,
+          "h": 36
+        },
+        {
+          "text": "1",
+          "x": 757,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 805,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 853,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 901,
+          "y": 289,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 757,
+          "y": 474,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 757,
+          "y": 572,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 757,
+          "y": 670,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 757,
+          "y": 768,
+          "w": 650,
+          "h": 82
+        },
+        {
+          "text": "Previous",
+          "x": 757,
+          "y": 1462,
+          "w": 112,
+          "h": 36
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 1020,
+          "y": 1462,
+          "w": 146,
+          "h": 36
+        },
+        {
+          "text": "Next",
+          "x": 1317,
+          "y": 1462,
+          "w": 90,
+          "h": 36
+        }
+      ],
+      "text": "7:59\nDAILY RC ARENA\nDaily Reading Challenge\nCAT-Level Simulation\n4 Questions\nCAT 2023\nPROGRESS\n0 Attempted\n4 Remaining\nSubmit Test\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions.\nQUESTION\nQ1\n● Not Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "safe-area-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 3695,
+      "scrollWidth": 390,
+      "scrollY": 500,
+      "bodyScroll": 0,
+      "bodyHeight": 3695,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 500
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 532,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 586,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 645,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 0/4",
+          "x": 197,
+          "y": 645,
+          "w": 176,
+          "h": 44
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n0/4 answered\nSubmit Answers\nPassage\nQuestions · 0/4\nREADING PASSAGE\nDaily Reading Challenge\nInference-heavy RC\nReading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions. Reading requires distinguishing evidence from assumptions."
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "daily_rc_set_id": "audit-rc",
+        "score": 3,
+        "accuracy": 100,
+        "correct_count": 1,
+        "incorrect_count": 0,
+        "unanswered_count": 3,
+        "composite_score": 778,
+        "time_taken": 2,
+        "completed_at": "2026-09-28T12:06:22.245Z"
+      }
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "daily_rc_set_id": "audit-rc",
+        "score": 3,
+        "accuracy": 100,
+        "correct_count": 1,
+        "incorrect_count": 0,
+        "unanswered_count": 3,
+        "composite_score": 778,
+        "time_taken": 2,
+        "completed_at": "2026-09-28T12:06:23.147Z"
+      }
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "PATCH",
+      "body": {
+        "daily_rc_streak": 1,
+        "last_rc_attempt_date": "2026-09-28"
+      }
+    },
+    {
+      "path": "/rest/v1/daily_rc_question_attempts",
+      "method": "POST",
+      "body": [
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 1,
+          "selected_option": "A",
+          "correct_option": "A",
+          "is_correct": true,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 2,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 3,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 4,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        }
+      ]
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-rc-review",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "daily_rc_set_id": "audit-rc",
+        "score": 3,
+        "accuracy": 100,
+        "correct_count": 1,
+        "incorrect_count": 0,
+        "unanswered_count": 3,
+        "composite_score": 778,
+        "time_taken": 2,
+        "completed_at": "2026-09-28T12:06:30.331Z"
+      }
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "daily_rc_set_id": "audit-rc",
+        "score": 3,
+        "accuracy": 100,
+        "correct_count": 1,
+        "incorrect_count": 0,
+        "unanswered_count": 3,
+        "composite_score": 778,
+        "time_taken": 2,
+        "completed_at": "2026-09-28T12:06:31.201Z"
+      }
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "PATCH",
+      "body": {
+        "daily_rc_streak": 1,
+        "last_rc_attempt_date": "2026-09-28"
+      }
+    },
+    {
+      "path": "/rest/v1/daily_rc_question_attempts",
+      "method": "POST",
+      "body": [
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 1,
+          "selected_option": "A",
+          "correct_option": "A",
+          "is_correct": true,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 2,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 3,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 4,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        }
+      ]
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-rc-review",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/birbal-coach",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/hangman-streak",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111"
+      }
+    },
+    {
+      "path": "/api/birbal-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/product-tour",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/rc-leaderboard",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "POST",
+      "body": {
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "daily_rc_set_id": "audit-rc",
+        "score": 3,
+        "accuracy": 100,
+        "correct_count": 1,
+        "incorrect_count": 0,
+        "unanswered_count": 3,
+        "composite_score": 779,
+        "time_taken": 1,
+        "completed_at": "2026-09-28T12:06:36.154Z"
+      }
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/profiles",
+      "method": "PATCH",
+      "body": {
+        "daily_rc_streak": 1,
+        "last_rc_attempt_date": "2026-09-28"
+      }
+    },
+    {
+      "path": "/rest/v1/daily_rc_question_attempts",
+      "method": "POST",
+      "body": [
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 1,
+          "selected_option": "A",
+          "correct_option": "A",
+          "is_correct": true,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 2,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 3,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        },
+        {
+          "attempt_id": "saved-rc",
+          "question_id": 4,
+          "selected_option": null,
+          "correct_option": "A",
+          "is_correct": false,
+          "time_spent": 0,
+          "question_type": "unknown"
+        }
+      ]
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-rc-review",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET",
+      "body": null
+    }
+  ]
+}

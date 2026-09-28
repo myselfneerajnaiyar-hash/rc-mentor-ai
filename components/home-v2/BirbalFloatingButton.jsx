@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { acquireBodyScrollLock } from "@/lib/ui/bodyScrollLock.mjs";
 import Image from "next/image";
 import ChatMentor from "@/components/ChatMentor";
 
@@ -11,6 +13,9 @@ export default function BirbalFloatingButton({
 }) {
   
 
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  useEffect(() => { setChatOpen(false); }, [pathname, searchParams, setChatOpen]);
   const [isMobile, setIsMobile] = useState(false);
   const [assessmentActive, setAssessmentActive] = useState(false);
 
@@ -26,22 +31,22 @@ export default function BirbalFloatingButton({
     return () => observer.disconnect();
   }, [setChatOpen]);
   useEffect(() => {
-  document.body.style.overflow = chatOpen ? "hidden" : "";
-
-  return () => {
-    document.body.style.overflow = "";
-  };
-}, [chatOpen]);
+    if (chatOpen && !isMobile && !assessmentActive) return acquireBodyScrollLock();
+  }, [chatOpen, isMobile, assessmentActive]);
 
 useEffect(() => {
-  const check = () => setIsMobile(window.innerWidth < 900);
+  const check = () => {
+    const mobile = window.innerWidth < 900;
+    setIsMobile(mobile);
+    if (mobile) setChatOpen(false);
+  };
 
   check();
 
   window.addEventListener("resize", check);
 
   return () => window.removeEventListener("resize", check);
-}, []);
+}, [setChatOpen]);
 
  if (assessmentActive) return null;
 

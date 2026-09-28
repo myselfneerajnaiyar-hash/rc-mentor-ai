@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { acquireBodyScrollLock } from "@/lib/ui/bodyScrollLock.mjs"
 import { useRouter } from "next/navigation"
 import {
   Archive, ArrowLeft, Bell, BookOpen, Check, CheckCheck, ChevronRight,
@@ -201,8 +202,8 @@ function MessageView({ message, onBack, onAction, router, busy }) {
   const [Icon, category] = TYPE_DETAILS[message.type] || [Bell, "Auctor"]
   const dialog = useRef(null)
   useEffect(() => {
-    const prior = document.activeElement, overflow = document.body.style.overflow
-    document.body.style.overflow = "hidden"
+    const prior = document.activeElement
+    const releaseScroll = acquireBodyScrollLock()
     dialog.current?.querySelector("button")?.focus()
     const keydown = (event) => {
       if (event.key === "Escape") onBack()
@@ -214,7 +215,7 @@ function MessageView({ message, onBack, onAction, router, busy }) {
       }
     }
     document.addEventListener("keydown", keydown)
-    return () => { document.body.style.overflow = overflow; document.removeEventListener("keydown", keydown); if (prior?.isConnected) prior.focus() }
+    return () => { releaseScroll(); document.removeEventListener("keydown", keydown); if (prior?.isConnected) prior.focus() }
   }, [onBack])
   let safeUrl = null
   try { if (message.action_url) safeUrl = internalPath(message.action_url) } catch {}

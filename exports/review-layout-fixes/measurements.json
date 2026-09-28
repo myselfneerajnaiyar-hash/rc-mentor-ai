@@ -1,0 +1,3384 @@
+{
+  "results": [
+    {
+      "name": "review-scroll-375",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 17070,
+      "scrollWidth": 375,
+      "scrollY": 9340,
+      "bodyScroll": 0,
+      "bodyHeight": 17070,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 915
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1426
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1496
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 301,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1426,
+          "w": 341,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1496,
+          "w": 341,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 9347,
+          "w": 115,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 156,
+          "y": 9347,
+          "w": 182,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 37,
+          "y": 9395,
+          "w": 100,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 141,
+          "y": 9395,
+          "w": 100,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 245,
+          "y": 9395,
+          "w": 93,
+          "h": 44
+        },
+        {
+          "text": "Paragraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 1864,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 2457,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3049,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3642,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 4234,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 4826,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 5419,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 6011,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 6604,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7196,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7789,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8381,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8974,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 9566,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10158,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10751,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 11343,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 11936,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12528,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 13121,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 13713,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 22. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 14305,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 23. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 14898,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 24. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 15490,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "Paragraph 25. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 16083,
+          "w": 275,
+          "h": 568
+        },
+        {
+          "text": "STEP 01\nArgument\nEvidence supports the conclusion.\nParagraph 1\n01",
+          "x": 46,
+          "y": 16771,
+          "w": 283,
+          "h": 141
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 10126,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 98,
+          "y": 10126,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 188,
+          "y": 10126,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 277,
+          "y": 10126,
+          "w": 90,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\n\nPASSAGE + ARGUMENT\n\nRead the passage and see how the author's reasoning develops.\n\nPASSAGE\n\n2150 words · approximately 10 min reading\n\nParagraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 22. Reading relies"
+    },
+    {
+      "name": "review-last-action-375",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 2616,
+      "scrollWidth": 375,
+      "scrollY": 1772,
+      "bodyScroll": 0,
+      "bodyHeight": 2616,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 915
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1426
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1496
+        },
+        {
+          "text": "What does the passage suggest? (2)",
+          "y": 1872
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 301,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1426,
+          "w": 341,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1496,
+          "w": 341,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 1779,
+          "w": 115,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 156,
+          "y": 1779,
+          "w": 182,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 37,
+          "y": 1827,
+          "w": 100,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 141,
+          "y": 1827,
+          "w": 100,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 245,
+          "y": 1827,
+          "w": 93,
+          "h": 44
+        },
+        {
+          "text": "Passage · 2150 words",
+          "x": 42,
+          "y": 1716,
+          "w": 291,
+          "h": 34
+        },
+        {
+          "text": "Q1",
+          "x": 42,
+          "y": 1762,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q2\n·",
+          "x": 118,
+          "y": 1762,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q3\n·",
+          "x": 194,
+          "y": 1762,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q4\n·",
+          "x": 271,
+          "y": 1762,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Previous",
+          "x": 59,
+          "y": 2419,
+          "w": 95,
+          "h": 34
+        },
+        {
+          "text": "Next",
+          "x": 242,
+          "y": 2419,
+          "w": 74,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 2558,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 98,
+          "y": 2558,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 188,
+          "y": 2558,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 277,
+          "y": 2558,
+          "w": 90,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\nPassage · 2150 words\nQ1\nQ2\n·\nQ3\n·\nQ4\n·\nQUESTION 2 OF 4\nUnattempted\nWhat does the passage suggest? (2)\nYOUR ANSWER\n—\nNot attempted\nCORRECT ANSWER\nA\nA\nEvidence matters\n✓ CORRECT\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nDIAGNOSIS\n\nPrevious\n2 / 4\nNext\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "workout-tabs-375",
+      "url": "/?view=workout",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 932,
+      "scrollWidth": 375,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 932,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 74
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 0
+        },
+        {
+          "text": "Today's Workout",
+          "y": 0
+        },
+        {
+          "text": "Speed Drill",
+          "y": 0
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 0
+        },
+        {
+          "text": "Reading Comprehension",
+          "y": 0
+        },
+        {
+          "text": "Micro Skills",
+          "y": 0
+        },
+        {
+          "text": "How it Works",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Tour",
+          "x": 192,
+          "y": 16,
+          "w": 71,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 269,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 23,
+          "y": 177,
+          "w": 162,
+          "h": 48
+        },
+        {
+          "text": "Analytics",
+          "x": 191,
+          "y": 177,
+          "w": 162,
+          "h": 48
+        },
+        {
+          "text": "History",
+          "x": 23,
+          "y": 231,
+          "w": 162,
+          "h": 48
+        },
+        {
+          "text": "Performance",
+          "x": 191,
+          "y": 231,
+          "w": 162,
+          "h": 48
+        },
+        {
+          "text": "🚀 Start Workout",
+          "x": 91,
+          "y": 454,
+          "w": 193,
+          "h": 52
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 311,
+          "y": 714,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 786,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 98,
+          "y": 786,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 188,
+          "y": 786,
+          "w": 90,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 277,
+          "y": 786,
+          "w": 90,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nTour\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nPractise speed, vocabulary and reading in one guided session. Allow about 30 minutes.\n\n🚀 Start Workout\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "daily-rc-375",
+      "url": "/daily-challenge/test",
+      "width": 375,
+      "height": 844,
+      "scrollHeight": 1116,
+      "scrollWidth": 375,
+      "scrollY": 272,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 272
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 279,
+          "y": 280,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 251,
+          "y": 334,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 393,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 190,
+          "y": 393,
+          "w": 169,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 317,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 317,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 325,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 192,
+          "y": 971,
+          "w": 159,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "review-scroll-390",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 15684,
+      "scrollWidth": 390,
+      "scrollY": 8621,
+      "bodyScroll": 0,
+      "bodyHeight": 15684,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 891
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1374
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1444
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 316,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1374,
+          "w": 356,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1444,
+          "w": 356,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 8628,
+          "w": 123,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 164,
+          "y": 8628,
+          "w": 189,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 37,
+          "y": 8676,
+          "w": 105,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 146,
+          "y": 8676,
+          "w": 105,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 255,
+          "y": 8676,
+          "w": 98,
+          "h": 44
+        },
+        {
+          "text": "Paragraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 1812,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 2351,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 2890,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3429,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3969,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 4508,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 5047,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 5586,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 6125,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 6664,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7203,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7742,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8281,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8820,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 9359,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 9898,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10437,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10976,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 11515,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12054,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12594,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 22. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 13133,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 23. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 13672,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 24. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 14211,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "Paragraph 25. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 14750,
+          "w": 290,
+          "h": 515
+        },
+        {
+          "text": "STEP 01\nArgument\nEvidence supports the conclusion.\nParagraph 1\n01",
+          "x": 46,
+          "y": 15385,
+          "w": 298,
+          "h": 141
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 9407,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 102,
+          "y": 9407,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 195,
+          "y": 9407,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 289,
+          "y": 9407,
+          "w": 94,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\n\nPASSAGE + ARGUMENT\n\nRead the passage and see how the author's reasoning develops.\n\nPASSAGE\n\n2150 words · approximately 10 min reading\n\nParagraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 22. Reading relies"
+    },
+    {
+      "name": "review-last-action-390",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 2564,
+      "scrollWidth": 390,
+      "scrollY": 1720,
+      "bodyScroll": 0,
+      "bodyHeight": 2564,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 891
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1374
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1444
+        },
+        {
+          "text": "What does the passage suggest? (2)",
+          "y": 1820
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 316,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1374,
+          "w": 356,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1444,
+          "w": 356,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 1727,
+          "w": 123,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 164,
+          "y": 1727,
+          "w": 189,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 37,
+          "y": 1775,
+          "w": 105,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 146,
+          "y": 1775,
+          "w": 105,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 255,
+          "y": 1775,
+          "w": 98,
+          "h": 44
+        },
+        {
+          "text": "Passage · 2150 words",
+          "x": 42,
+          "y": 1664,
+          "w": 306,
+          "h": 34
+        },
+        {
+          "text": "Q1",
+          "x": 42,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q2\n·",
+          "x": 118,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q3\n·",
+          "x": 194,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q4\n·",
+          "x": 271,
+          "y": 1710,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Previous",
+          "x": 59,
+          "y": 2367,
+          "w": 95,
+          "h": 34
+        },
+        {
+          "text": "Next",
+          "x": 257,
+          "y": 2367,
+          "w": 74,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 2506,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 102,
+          "y": 2506,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 195,
+          "y": 2506,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 289,
+          "y": 2506,
+          "w": 94,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\nPassage · 2150 words\nQ1\nQ2\n·\nQ3\n·\nQ4\n·\nQUESTION 2 OF 4\nUnattempted\nWhat does the passage suggest? (2)\nYOUR ANSWER\n—\nNot attempted\nCORRECT ANSWER\nA\nA\nEvidence matters\n✓ CORRECT\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nDIAGNOSIS\n\nPrevious\n2 / 4\nNext\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "workout-tabs-390",
+      "url": "/?view=workout",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 932,
+      "scrollWidth": 390,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 932,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 74
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 0
+        },
+        {
+          "text": "Today's Workout",
+          "y": 0
+        },
+        {
+          "text": "Speed Drill",
+          "y": 0
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 0
+        },
+        {
+          "text": "Reading Comprehension",
+          "y": 0
+        },
+        {
+          "text": "Micro Skills",
+          "y": 0
+        },
+        {
+          "text": "How it Works",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Tour",
+          "x": 207,
+          "y": 16,
+          "w": 71,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 284,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 23,
+          "y": 177,
+          "w": 169,
+          "h": 48
+        },
+        {
+          "text": "Analytics",
+          "x": 198,
+          "y": 177,
+          "w": 169,
+          "h": 48
+        },
+        {
+          "text": "History",
+          "x": 23,
+          "y": 231,
+          "w": 169,
+          "h": 48
+        },
+        {
+          "text": "Performance",
+          "x": 198,
+          "y": 231,
+          "w": 169,
+          "h": 48
+        },
+        {
+          "text": "🚀 Start Workout",
+          "x": 99,
+          "y": 426,
+          "w": 193,
+          "h": 52
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 326,
+          "y": 714,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 786,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 102,
+          "y": 786,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 195,
+          "y": 786,
+          "w": 94,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 289,
+          "y": 786,
+          "w": 94,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nTour\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nPractise speed, vocabulary and reading in one guided session. Allow about 30 minutes.\n\n🚀 Start Workout\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "daily-rc-390",
+      "url": "/daily-challenge/test",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 1116,
+      "scrollWidth": 390,
+      "scrollY": 272,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 272
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 294,
+          "y": 280,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 266,
+          "y": 334,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 393,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 197,
+          "y": 393,
+          "w": 176,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 332,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 332,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 340,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 199,
+          "y": 971,
+          "w": 166,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "review-scroll-430",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 430,
+      "height": 844,
+      "scrollHeight": 14349,
+      "scrollWidth": 430,
+      "scrollY": 7953,
+      "bodyScroll": 0,
+      "bodyHeight": 14349,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 891
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1374
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1444
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 356,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1374,
+          "w": 396,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1444,
+          "w": 396,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 7960,
+          "w": 90,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 131,
+          "y": 7960,
+          "w": 156,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 292,
+          "y": 7960,
+          "w": 101,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 37,
+          "y": 8008,
+          "w": 179,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 220,
+          "y": 8008,
+          "w": 173,
+          "h": 44
+        },
+        {
+          "text": "Paragraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 1812,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 2298,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 2784,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3269,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 3755,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 4241,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 4726,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 5212,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 50,
+          "y": 5698,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 6183,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 6669,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7155,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 7641,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8126,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 8612,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 9098,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 9583,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10069,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 10555,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 11040,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 11526,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 22. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12012,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 23. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12497,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 24. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 12983,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "Paragraph 25. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 50,
+          "y": 13469,
+          "w": 330,
+          "h": 462
+        },
+        {
+          "text": "STEP 01\nArgument\nEvidence supports the conclusion.\nParagraph 1\n01",
+          "x": 46,
+          "y": 14050,
+          "w": 338,
+          "h": 141
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 8739,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 112,
+          "y": 8739,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 215,
+          "y": 8739,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 319,
+          "y": 8739,
+          "w": 104,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\n\nPASSAGE + ARGUMENT\n\nRead the passage and see how the author's reasoning develops.\n\nPASSAGE\n\n2150 words · approximately 10 min reading\n\nParagraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 22. Reading relies"
+    },
+    {
+      "name": "review-last-action-430",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 430,
+      "height": 844,
+      "scrollHeight": 2535,
+      "scrollWidth": 430,
+      "scrollY": 1691,
+      "bodyScroll": 0,
+      "bodyHeight": 2535,
+      "scrollers": [],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions",
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": 142
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": 485
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 724
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 891
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 1374
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 1444
+        },
+        {
+          "text": "What does the passage suggest? (2)",
+          "y": 1820
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 16,
+          "y": 24,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 79,
+          "y": 56,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 211,
+          "y": 56,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 37,
+          "y": 586,
+          "w": 356,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 17,
+          "y": 1374,
+          "w": 396,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 17,
+          "y": 1444,
+          "w": 396,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 37,
+          "y": 1698,
+          "w": 90,
+          "h": 44
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 131,
+          "y": 1698,
+          "w": 156,
+          "h": 44
+        },
+        {
+          "text": "Paragraphs",
+          "x": 292,
+          "y": 1698,
+          "w": 101,
+          "h": 44
+        },
+        {
+          "text": "Vocabulary",
+          "x": 37,
+          "y": 1746,
+          "w": 179,
+          "h": 44
+        },
+        {
+          "text": "Questions",
+          "x": 220,
+          "y": 1746,
+          "w": 173,
+          "h": 44
+        },
+        {
+          "text": "Passage · 2150 words",
+          "x": 42,
+          "y": 1664,
+          "w": 346,
+          "h": 34
+        },
+        {
+          "text": "Q1",
+          "x": 42,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q2\n·",
+          "x": 118,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q3\n·",
+          "x": 194,
+          "y": 1710,
+          "w": 68,
+          "h": 36
+        },
+        {
+          "text": "Q4\n·",
+          "x": 271,
+          "y": 1710,
+          "w": 69,
+          "h": 36
+        },
+        {
+          "text": "Previous",
+          "x": 59,
+          "y": 2338,
+          "w": 95,
+          "h": 34
+        },
+        {
+          "text": "Next",
+          "x": 297,
+          "y": 2338,
+          "w": 74,
+          "h": 34
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 2477,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 112,
+          "y": 2477,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 215,
+          "y": 2477,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 319,
+          "y": 2477,
+          "w": 104,
+          "h": 52
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\nPassage · 2150 words\nQ1\nQ2\n·\nQ3\n·\nQ4\n·\nQUESTION 2 OF 4\nUnattempted\nWhat does the passage suggest? (2)\nYOUR ANSWER\n—\nNot attempted\nCORRECT ANSWER\nA\nA\nEvidence matters\n✓ CORRECT\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nDIAGNOSIS\n\nPrevious\n2 / 4\nNext\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "workout-tabs-430",
+      "url": "/?view=workout",
+      "width": 430,
+      "height": 844,
+      "scrollHeight": 932,
+      "scrollWidth": 430,
+      "scrollY": 0,
+      "bodyScroll": 0,
+      "bodyHeight": 932,
+      "scrollers": [],
+      "nav": [
+        "Home\nToday\nPractice\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 74
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": 0
+        },
+        {
+          "text": "Today's Workout",
+          "y": 0
+        },
+        {
+          "text": "Speed Drill",
+          "y": 0
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 0
+        },
+        {
+          "text": "Reading Comprehension",
+          "y": 0
+        },
+        {
+          "text": "Micro Skills",
+          "y": 0
+        },
+        {
+          "text": "How it Works",
+          "y": 0
+        }
+      ],
+      "controls": [
+        {
+          "text": "Tour",
+          "x": 247,
+          "y": 16,
+          "w": 71,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 324,
+          "y": 16,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 23,
+          "y": 177,
+          "w": 189,
+          "h": 48
+        },
+        {
+          "text": "Analytics",
+          "x": 218,
+          "y": 177,
+          "w": 189,
+          "h": 48
+        },
+        {
+          "text": "History",
+          "x": 23,
+          "y": 231,
+          "w": 189,
+          "h": 48
+        },
+        {
+          "text": "Performance",
+          "x": 218,
+          "y": 231,
+          "w": 189,
+          "h": 48
+        },
+        {
+          "text": "🚀 Start Workout",
+          "x": 119,
+          "y": 426,
+          "w": 193,
+          "h": 52
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 366,
+          "y": 714,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "text": "Home",
+          "x": 8,
+          "y": 786,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Today",
+          "x": 112,
+          "y": 786,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Practice",
+          "x": 215,
+          "y": 786,
+          "w": 104,
+          "h": 52
+        },
+        {
+          "text": "Profile",
+          "x": 319,
+          "y": 786,
+          "w": 104,
+          "h": 52
+        }
+      ],
+      "text": "Auctor\n\nTour\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nPractise speed, vocabulary and reading in one guided session. Allow about 30 minutes.\n\n🚀 Start Workout\nHome\nToday\nPractice\nProfile"
+    },
+    {
+      "name": "daily-rc-430",
+      "url": "/daily-challenge/test",
+      "width": 430,
+      "height": 844,
+      "scrollHeight": 1116,
+      "scrollWidth": 430,
+      "scrollY": 272,
+      "bodyScroll": 0,
+      "bodyHeight": 1116,
+      "scrollers": [],
+      "nav": [],
+      "headings": [
+        {
+          "text": "Daily Reading Challenge",
+          "y": 272
+        }
+      ],
+      "controls": [
+        {
+          "text": "Exit activity",
+          "x": 334,
+          "y": 280,
+          "w": 84,
+          "h": 44
+        },
+        {
+          "text": "Submit Answers",
+          "x": 306,
+          "y": 334,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "Passage",
+          "x": 17,
+          "y": 393,
+          "w": 196,
+          "h": 44
+        },
+        {
+          "text": "Questions · 1/4",
+          "x": 217,
+          "y": 393,
+          "w": 196,
+          "h": 44
+        },
+        {
+          "text": "1",
+          "x": 29,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "2",
+          "x": 77,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "3",
+          "x": 125,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "4",
+          "x": 173,
+          "y": 324,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "text": "A\nEvidence matters",
+          "x": 29,
+          "y": 457,
+          "w": 372,
+          "h": 82
+        },
+        {
+          "text": "B\nAll claims are true",
+          "x": 29,
+          "y": 555,
+          "w": 372,
+          "h": 82
+        },
+        {
+          "text": "C\nReading is unnecessary",
+          "x": 29,
+          "y": 653,
+          "w": 372,
+          "h": 82
+        },
+        {
+          "text": "D\nAssumptions prove claims",
+          "x": 29,
+          "y": 751,
+          "w": 372,
+          "h": 82
+        },
+        {
+          "text": "Submit Answers",
+          "x": 29,
+          "y": 894,
+          "w": 372,
+          "h": 48
+        },
+        {
+          "text": "Previous",
+          "x": 25,
+          "y": 971,
+          "w": 186,
+          "h": 48
+        },
+        {
+          "text": "✕ Clear Response",
+          "x": 25,
+          "y": 1027,
+          "w": 380,
+          "h": 48
+        },
+        {
+          "text": "Next",
+          "x": 219,
+          "y": 971,
+          "w": 186,
+          "h": 48
+        }
+      ],
+      "text": "Daily RC\n7:59\nExit activity\n1/4 answered\nSubmit Answers\nPassage\nQuestions · 1/4\nQUESTION\nQ1\n● Answered\n1\n2\n3\n4\nWhat does the passage suggest? (1)\nA\nEvidence matters\nB\nAll claims are true\nC\nReading is unnecessary\nD\nAssumptions prove claims\n\nSubmit all answers to finish this Daily RC challenge.\n\nSubmit Answers\nPrevious\n✕ Clear Response\nNext"
+    },
+    {
+      "name": "review-scroll-1440",
+      "url": "/daily-challenge/result?attemptId=review-fixture",
+      "width": 1440,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 432,
+      "bodyHeight": 1776,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell",
+          "top": 432,
+          "h": 844,
+          "total": 1776
+        },
+        {
+          "tag": "DIV",
+          "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+          "top": 0,
+          "h": 568,
+          "total": 7941
+        }
+      ],
+      "nav": [
+        "Results\n→\nCognitive Diagnosis\n→\nDetailed Review",
+        "Blueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions"
+      ],
+      "headings": [
+        {
+          "text": "RC Diagnosis Report",
+          "y": -314
+        },
+        {
+          "text": "Next: Daily Workout",
+          "y": -134
+        },
+        {
+          "text": "⚠️ Trap Survivor",
+          "y": 83
+        },
+        {
+          "text": "You are detecting some ideas correctly but still falling into option traps.",
+          "y": 83
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "y": 383
+        },
+        {
+          "text": "Detailed Review\n?",
+          "y": 453
+        }
+      ],
+      "controls": [
+        {
+          "text": "Back to Arena",
+          "x": 144,
+          "y": -408,
+          "w": 109,
+          "h": 20
+        },
+        {
+          "text": "Cognitive Diagnosis",
+          "x": 1081,
+          "y": -406,
+          "w": 105,
+          "h": 16
+        },
+        {
+          "text": "Detailed Review",
+          "x": 1212,
+          "y": -406,
+          "w": 84,
+          "h": 16
+        },
+        {
+          "text": "Next activity →",
+          "x": 165,
+          "y": -56,
+          "w": 1110,
+          "h": 48
+        },
+        {
+          "text": "Cognitive Diagnosis\n+",
+          "x": 145,
+          "y": 383,
+          "w": 1150,
+          "h": 56
+        },
+        {
+          "text": "Detailed Review\n?",
+          "x": 145,
+          "y": 453,
+          "w": 1150,
+          "h": 56
+        },
+        {
+          "text": "Blueprint",
+          "x": 165,
+          "y": 553,
+          "w": 84,
+          "h": 32
+        },
+        {
+          "text": "Passage & Argument",
+          "x": 253,
+          "y": 553,
+          "w": 151,
+          "h": 32
+        },
+        {
+          "text": "Paragraphs",
+          "x": 408,
+          "y": 553,
+          "w": 95,
+          "h": 32
+        },
+        {
+          "text": "Vocabulary",
+          "x": 507,
+          "y": 553,
+          "w": 95,
+          "h": 32
+        },
+        {
+          "text": "Questions",
+          "x": 606,
+          "y": 553,
+          "w": 88,
+          "h": 32
+        },
+        {
+          "text": "Paragraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 750,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 1067,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 1383,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 1700,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 2017,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 2333,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 2650,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 2967,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on e",
+          "x": 194,
+          "y": 3283,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 3600,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 3917,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 4233,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 4550,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 4867,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 5184,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 5500,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 5817,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 6134,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 6450,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 6767,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 7084,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 22. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 7400,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 23. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 7717,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 24. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 8034,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "Paragraph 25. Reading relies on evidence and thoughtful interpretation. Reading relies on ",
+          "x": 194,
+          "y": 8350,
+          "w": 599,
+          "h": 293
+        },
+        {
+          "text": "STEP 01\nArgument\nEvidence supports the conclusion.\nParagraph 1\n01",
+          "x": 846,
+          "y": 754,
+          "w": 404,
+          "h": 142
+        }
+      ],
+      "text": "Back to Arena\nResults\n→\nCognitive Diagnosis\n→\nDetailed Review\n\nDAILY RC ARENA\n\nRC Diagnosis Report\nTrap Survivor\n\nSCORE\n\n2\n\nACCURACY\n\n50%\n\nTIME\n\n2:00\n\nQUESTIONS\n\n4\n\nCORRECT\n\n1\n\nINCORRECT\n\n1\n\nKEEP YOUR MOMENTUM\n\nNext: Daily Workout\n\nReview one useful takeaway, then continue when you’re ready.\n\nNext activity →\n\nMENTOR VERDICT\n\n⚠️ Trap Survivor\n\nYour attempt suggests premature option selection before establishing the author's central argument.\n\nPERFORMANCE PROFILE\n\nYou are detecting some ideas correctly but still falling into option traps.\n\nComposite score: 0 · Unanswered: 2\n\nLEADERBOARD IMPACT\n\nCAT Score\n\n2\n\nComposite\n\n0\n\nComposite score combines CAT performance with completion speed for ranking.\n\nTODAY'S MISSION\n\n✓ Read the author's conclusion before options\n✓ Eliminate only after evidence\n✓ Cap decision time at 90 seconds\nCognitive Diagnosis\n+\nDetailed Review\n?\nBlueprint\nPassage & Argument\nParagraphs\nVocabulary\nQuestions\n\nPASSAGE + ARGUMENT\n\nRead the passage and see how the author's reasoning develops.\n\nPASSAGE\n\n2150 words · approximately 10 min reading\n\nParagraph 1. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 2. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 3. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 4. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 5. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 6. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 7. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 8. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 9. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 10. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 11. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 12. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 13. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 14. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 15. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 16. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 17. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 18. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 19. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 20. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 21. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation. Reading relies on evidence and thoughtful interpretation.\nParagraph 22. Reading relies"
+    },
+    {
+      "name": "workout-tabs-1440",
+      "url": "/?view=workout",
+      "width": 1440,
+      "height": 844,
+      "scrollHeight": 844,
+      "scrollWidth": 1440,
+      "scrollY": 0,
+      "bodyScroll": 408,
+      "bodyHeight": 1252,
+      "scrollers": [
+        {
+          "tag": "BODY",
+          "cls": "mobile-student-shell",
+          "top": 408,
+          "h": 844,
+          "total": 1252
+        }
+      ],
+      "nav": [
+        "Home\nDaily Workout\nRC\nPrecision Training\nCAT\nVocab\nSpeed\nWord Hunt\nAsk Birbal\nPremium\nProfile"
+      ],
+      "headings": [
+        {
+          "text": "Auctor RC",
+          "y": 0
+        },
+        {
+          "text": "Auctor",
+          "y": -378
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": -308
+        },
+        {
+          "text": "🔥 Daily Workout",
+          "y": -19
+        },
+        {
+          "text": "Today's Workout",
+          "y": 126
+        },
+        {
+          "text": "Speed Drill",
+          "y": 191
+        },
+        {
+          "text": "Vocabulary Lab",
+          "y": 191
+        },
+        {
+          "text": "Reading Comprehension",
+          "y": 365
+        },
+        {
+          "text": "Micro Skills",
+          "y": 365
+        },
+        {
+          "text": "How it Works",
+          "y": 551
+        }
+      ],
+      "controls": [
+        {
+          "text": "Home",
+          "x": 24,
+          "y": -191,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Daily Workout",
+          "x": 24,
+          "y": -139,
+          "w": 207,
+          "h": 46
+        },
+        {
+          "text": "RC",
+          "x": 24,
+          "y": -85,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Precision Training",
+          "x": 24,
+          "y": -33,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "CAT",
+          "x": 24,
+          "y": 19,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Vocab",
+          "x": 24,
+          "y": 71,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Speed",
+          "x": 24,
+          "y": 123,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Word Hunt",
+          "x": 24,
+          "y": 175,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 24,
+          "y": 227,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Premium",
+          "x": 24,
+          "y": 279,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Profile",
+          "x": 24,
+          "y": 331,
+          "w": 207,
+          "h": 44
+        },
+        {
+          "text": "Product Tour",
+          "x": 288,
+          "y": -368,
+          "w": 135,
+          "h": 40
+        },
+        {
+          "text": "Inbox",
+          "x": 431,
+          "y": -368,
+          "w": 90,
+          "h": 40
+        },
+        {
+          "text": "Start",
+          "x": 293,
+          "y": -214,
+          "w": 70,
+          "h": 40
+        },
+        {
+          "text": "Analytics",
+          "x": 371,
+          "y": -214,
+          "w": 97,
+          "h": 40
+        },
+        {
+          "text": "History",
+          "x": 476,
+          "y": -214,
+          "w": 86,
+          "h": 40
+        },
+        {
+          "text": "Performance",
+          "x": 570,
+          "y": -214,
+          "w": 121,
+          "h": 40
+        },
+        {
+          "text": "🚀 Start Workout",
+          "x": 752,
+          "y": 704,
+          "w": 193,
+          "h": 52
+        },
+        {
+          "text": "Ask Birbal",
+          "x": 1350,
+          "y": 748,
+          "w": 67,
+          "h": 67
+        }
+      ],
+      "text": "Auctor\n\nPowered by Birbal\n\nNAVIGATION\n\nHome\nDaily Workout\nRC\nPrecision Training\nCAT\nVocab\nSpeed\nWord Hunt\nAsk Birbal\nPremium\nProfile\nProduct Tour\nInbox\n🔥 Daily Workout\n\nStructured 30-minute intelligence training\n\nStart\nAnalytics\nHistory\nPerformance\n\nTODAY'S FOCUS\n\n🔥 Daily Workout\n\nPractise speed, vocabulary and reading in one guided session. Allow about 30 minutes.\n\nToday's Workout\nSpeed Drill\n10 short paragraphs\n20 seconds to read each paragraph\n10 seconds to answer the question\nVocabulary Lab\n10 vocabulary questions\nImprove word knowledge and contextual understanding\nReading Comprehension\n2 passages\n4 questions per passage\nBuild comprehension and inference skills\nMicro Skills\n5 language questions\nGrammar, sentence structure, and usage\nHow it Works\nFresh workout generated every day\nComplete all four modules in about 30 minutes\nProgress is automatically tracked\nBuild consistency through daily practice\n🚀 Start Workout\n👋 Need help?\nAsk Birbal anything about RC."
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-rc",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/inbox/unread-count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/check-attempt",
+      "method": "GET"
+    },
+    {
+      "path": "/api/get-daily-workout",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/workout_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_sets",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_questions",
+      "method": "GET"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "path": "/rest/v1/daily_rc_attempts",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tenant-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/session-context",
+      "method": "GET"
+    },
+    {
+      "path": "/api/daily-status",
+      "method": "GET"
+    }
+  ]
+}

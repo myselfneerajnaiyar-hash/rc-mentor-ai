@@ -21,7 +21,7 @@ export default function DailyWorkoutContainer({ user }) {
   const [workoutRunning, setWorkoutRunning] = useState(false)
 
   return (
-    <div className="space-y-8">
+    <div className="daily-workout-container space-y-8">
 
       {/* Header */}
       <div>
@@ -38,7 +38,7 @@ export default function DailyWorkoutContainer({ user }) {
 
     {!workoutRunning && <TabsList
 className="
-flex !justify-start gap-2 p-1
+workout-tabs flex !justify-start gap-2 p-1
 bg-slate-900/60
 backdrop-blur-xl
 border border-slate-800

@@ -83,5 +83,11 @@ export function useTenant() {
 }
 
 function TenantError({ title, message }) {
-  return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-white"><div className="max-w-md text-center"><h1 className="text-3xl font-bold">{title}</h1><p className="mt-3 text-slate-400">{message}</p><a href="https://rc.auctorlabs.in/login" className="mt-6 inline-flex rounded-xl bg-indigo-600 px-5 py-3 font-semibold">Go to Auctor RC</a></div></main>
+  const [loginHref, setLoginHref] = useState("https://rc.auctorlabs.in/login")
+  useEffect(() => {
+    if (["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname)) {
+      setLoginHref("/login")
+    }
+  }, [])
+  return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-white"><div className="max-w-md text-center"><h1 className="text-3xl font-bold">{title}</h1><p className="mt-3 text-slate-400">{message}</p><a href={loginHref} className="mt-6 inline-flex rounded-xl bg-indigo-600 px-5 py-3 font-semibold">Go to Auctor RC</a></div></main>
 }

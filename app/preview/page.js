@@ -1,4 +1,5 @@
 "use client";
+import { acquireBodyScrollLock } from "@/lib/ui/bodyScrollLock.mjs";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -103,12 +104,11 @@ useEffect(() => {
   const handleKeyDown = (event) => {
     if (event.key === "Escape") setSelectedVideo(null);
   };
-  const previousOverflow = document.body.style.overflow;
-  document.body.style.overflow = "hidden";
+  const releaseScroll = acquireBodyScrollLock();
   window.addEventListener("keydown", handleKeyDown);
 
   return () => {
-    document.body.style.overflow = previousOverflow;
+    releaseScroll();
     window.removeEventListener("keydown", handleKeyDown);
   };
 }, [selectedVideo]);

@@ -1,0 +1,3274 @@
+[
+  {
+    "label": "review-before-375",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 17070,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "17069.9px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 375,
+        "h": 17069.90625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 17070,
+      "clientHeight": 17070,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "17069.9px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 375,
+        "h": 17069.90625
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 16982,
+        "clientHeight": 16982,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16981.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 16981.90625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 14835,
+        "clientHeight": 14835,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14834.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1844.28125,
+          "w": 315,
+          "h": 14834.9375
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "SECTION",
+        "cls": "mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6",
+        "inline": null,
+        "scrollHeight": 310,
+        "clientHeight": 310,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "311.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 96,
+          "w": 343,
+          "h": 311.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 16934,
+        "clientHeight": 16934,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16933.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 24,
+          "w": 343,
+          "h": 16933.90625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 16982,
+        "clientHeight": 16982,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16981.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 16981.90625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 17070,
+        "clientHeight": 17070,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "17069.9px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 17069.90625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 17070,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "17069.9px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 17069.90625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 375,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-after-375",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 435,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 17070,
+      "clientHeight": 844,
+      "scrollTop": 435,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "17069.9px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 375,
+        "h": 17069.90625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 17070,
+      "clientHeight": 17070,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "17069.9px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 375,
+        "h": 17069.90625
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 16982,
+        "clientHeight": 16982,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16981.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 16981.90625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 14835,
+        "clientHeight": 14835,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14834.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1409.28125,
+          "w": 315,
+          "h": 14834.9375
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "SECTION",
+        "cls": "rounded-2xl border border-slate-800 bg-slate-900/55 p-5",
+        "inline": null,
+        "scrollHeight": 173,
+        "clientHeight": 173,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "174.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 243.78125,
+          "w": 343,
+          "h": 174.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mt-5 grid gap-4 md:grid-cols-2",
+        "inline": null,
+        "scrollHeight": 373,
+        "clientHeight": 373,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "373px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 243.78125,
+          "w": 343,
+          "h": 373
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 16934,
+        "clientHeight": 16934,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16933.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": -411,
+          "w": 343,
+          "h": 16933.90625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 16982,
+        "clientHeight": 16982,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16981.9px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 16981.90625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 17070,
+        "clientHeight": 17070,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "17069.9px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 17069.90625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 17070,
+        "clientHeight": 844,
+        "scrollTop": 435,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "17069.9px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 17069.90625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 375,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-before-375",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 16191,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "16191.4px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 375,
+        "h": 16191.40625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 16191,
+      "clientHeight": 16191,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "16191.4px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 375,
+        "h": 16191.40625
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "inline-flex items-center gap-2 mx-auto md:mx-0 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-4 py-2 rounded-full text-sm",
+        "inline": null,
+        "scrollHeight": 36,
+        "clientHeight": 36,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "38px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 90.59375,
+          "y": 393.28125,
+          "w": 193.8125,
+          "h": 38
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto space-y-4 text-center md:text-left",
+        "inline": null,
+        "scrollHeight": 431,
+        "clientHeight": 431,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "431px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 393.28125,
+          "w": 343,
+          "h": 431
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 16103,
+        "clientHeight": 16103,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16103.4px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 16103.40625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 16191,
+        "clientHeight": 16191,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16191.4px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 16191.40625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 16191,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16191.4px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 375,
+          "h": 16191.40625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 375,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-after-375",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 435,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 16191,
+      "clientHeight": 844,
+      "scrollTop": 435,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "16191.4px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 375,
+        "h": 16191.40625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 16191,
+      "clientHeight": 16191,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "16191.4px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 375,
+        "h": 16191.40625
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 16103,
+        "clientHeight": 16103,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16103.4px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 16103.40625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 16191,
+        "clientHeight": 16191,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16191.4px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 16191.40625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 16191,
+        "clientHeight": 844,
+        "scrollTop": 435,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "16191.4px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 375,
+          "h": 16191.40625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 375,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-before-390",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 15684,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "15683.5px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 15683.53125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 15684,
+      "clientHeight": 15684,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "15683.5px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 15683.53125
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 15596,
+        "clientHeight": 15596,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15595.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 15595.53125
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 13501,
+        "clientHeight": 13501,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13500.6px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1792.28125,
+          "w": 330,
+          "h": 13500.5625
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "SECTION",
+        "cls": "mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6",
+        "inline": null,
+        "scrollHeight": 310,
+        "clientHeight": 310,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "311.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 96,
+          "w": 358,
+          "h": 311.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 15548,
+        "clientHeight": 15548,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15547.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 24,
+          "w": 358,
+          "h": 15547.53125
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 15596,
+        "clientHeight": 15596,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15595.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 15595.53125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 15684,
+        "clientHeight": 15684,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15683.5px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 15683.53125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 15684,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15683.5px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 15683.53125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 390,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-after-390",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 700,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 15684,
+      "clientHeight": 844,
+      "scrollTop": 700,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "15683.5px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -700,
+        "w": 390,
+        "h": 15683.53125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 15684,
+      "clientHeight": 15684,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "15683.5px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -700,
+        "w": 390,
+        "h": 15683.53125
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 15596,
+        "clientHeight": 15596,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15595.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 15595.53125
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 13501,
+        "clientHeight": 13501,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13500.6px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1092.28125,
+          "w": 330,
+          "h": 13500.5625
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "mt-3 flex items-end gap-8",
+        "inline": null,
+        "scrollHeight": 48,
+        "clientHeight": 48,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "48px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 37,
+          "y": 369.28125,
+          "w": 316,
+          "h": 48
+        }
+      },
+      {
+        "tag": "SECTION",
+        "cls": "rounded-2xl border border-slate-800 bg-slate-900/55 p-5",
+        "inline": null,
+        "scrollHeight": 169,
+        "clientHeight": 169,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "170.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 319.78125,
+          "w": 358,
+          "h": 170.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mt-5 grid gap-4 lg:grid-cols-[1fr_1fr]",
+        "inline": null,
+        "scrollHeight": 333,
+        "clientHeight": 333,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "333px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 319.78125,
+          "w": 358,
+          "h": 333
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 15548,
+        "clientHeight": 15548,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15547.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": -676,
+          "w": 358,
+          "h": 15547.53125
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 15596,
+        "clientHeight": 15596,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15595.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 15595.53125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 15684,
+        "clientHeight": 15684,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15683.5px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 15683.53125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 15684,
+        "clientHeight": 844,
+        "scrollTop": 700,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "15683.5px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 15683.53125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 390,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-before-390",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 13504,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13503.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 13503.78125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 13504,
+      "clientHeight": 13504,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13503.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 13503.78125
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "inline-flex items-center gap-2 mx-auto md:mx-0 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-4 py-2 rounded-full text-sm",
+        "inline": null,
+        "scrollHeight": 36,
+        "clientHeight": 36,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "38px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 98.09375,
+          "y": 393.28125,
+          "w": 193.8125,
+          "h": 38
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto space-y-4 text-center md:text-left",
+        "inline": null,
+        "scrollHeight": 352,
+        "clientHeight": 352,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "351.75px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 393.28125,
+          "w": 358,
+          "h": 351.75
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 13416,
+        "clientHeight": 13416,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13415.8px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 13415.78125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 13504,
+        "clientHeight": 13504,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13503.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 13503.78125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 13504,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13503.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 13503.78125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 390,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-after-390",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 700,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 13504,
+      "clientHeight": 844,
+      "scrollTop": 700,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13503.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -700,
+        "w": 390,
+        "h": 13503.78125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 13504,
+      "clientHeight": 13504,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13503.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -700,
+        "w": 390,
+        "h": 13503.78125
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "cursor-pointer px-8 py-4 bg-indigo-600 hover:bg-indigo-500 transition rounded-2xl font-semibold text-lg flex items-center justify-center gap-3",
+        "inline": null,
+        "scrollHeight": 60,
+        "clientHeight": 60,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "60px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 58,
+          "y": 363.03125,
+          "w": 274,
+          "h": 60
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mt-8 flex flex-col md:flex-row gap-4 justify-center",
+        "inline": null,
+        "scrollHeight": 138,
+        "clientHeight": 138,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "138px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 58,
+          "y": 363.03125,
+          "w": 274,
+          "h": 138
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "border-2 border-dashed border-indigo-500/30 rounded-3xl p-10 text-center bg-slate-900/40",
+        "inline": null,
+        "scrollHeight": 466,
+        "clientHeight": 466,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "470px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 109.03125,
+          "w": 358,
+          "h": 470
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto mt-16",
+        "inline": null,
+        "scrollHeight": 470,
+        "clientHeight": 470,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "470px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 109.03125,
+          "w": 358,
+          "h": 470
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 13416,
+        "clientHeight": 13416,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13415.8px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 13415.78125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 13504,
+        "clientHeight": 13504,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13503.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 13503.78125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 13504,
+        "clientHeight": 844,
+        "scrollTop": 700,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13503.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -700,
+          "w": 390,
+          "h": 13503.78125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 390,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-before-430",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 14349,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "14349.2px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 430,
+        "h": 14349.15625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 14349,
+      "clientHeight": 14349,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "14349.2px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 430,
+        "h": 14349.15625
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 14261,
+        "clientHeight": 14261,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14261.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 14261.15625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 12166,
+        "clientHeight": 12166,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "12166.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1792.28125,
+          "w": 370,
+          "h": 12166.1875
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "SECTION",
+        "cls": "mt-6 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/55 via-slate-900 to-slate-950 p-5 sm:p-6",
+        "inline": null,
+        "scrollHeight": 310,
+        "clientHeight": 310,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "311.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 96,
+          "w": 398,
+          "h": 311.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 14213,
+        "clientHeight": 14213,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14213.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 24,
+          "w": 398,
+          "h": 14213.15625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 14261,
+        "clientHeight": 14261,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14261.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 14261.15625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 14349,
+        "clientHeight": 14349,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14349.2px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 14349.15625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 14349,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14349.2px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 14349.15625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 430,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-after-430",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 435,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 14349,
+      "clientHeight": 844,
+      "scrollTop": 435,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "14349.2px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 430,
+        "h": 14349.15625
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 14349,
+      "clientHeight": 14349,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "14349.2px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -435,
+        "w": 430,
+        "h": 14349.15625
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 14261,
+        "clientHeight": 14261,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14261.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 430,
+          "h": 14261.15625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 12166,
+        "clientHeight": 12166,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "12166.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 30,
+          "y": 1357.28125,
+          "w": 370,
+          "h": 12166.1875
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "mt-5 grid gap-4 md:grid-cols-2",
+        "inline": null,
+        "scrollHeight": 321,
+        "clientHeight": 321,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "321px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 243.78125,
+          "w": 398,
+          "h": 321
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 14213,
+        "clientHeight": 14213,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14213.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": -411,
+          "w": 398,
+          "h": 14213.15625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 14261,
+        "clientHeight": 14261,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14261.2px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 430,
+          "h": 14261.15625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 14349,
+        "clientHeight": 14349,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14349.2px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 430,
+          "h": 14349.15625
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 14349,
+        "clientHeight": 844,
+        "scrollTop": 435,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "14349.2px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 430,
+          "h": 14349.15625
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 430,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-before-430",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 13368,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13367.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 430,
+        "h": 13367.78125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 13368,
+      "clientHeight": 13368,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13367.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 430,
+        "h": 13367.78125
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "inline-flex items-center gap-2 mx-auto md:mx-0 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-4 py-2 rounded-full text-sm",
+        "inline": null,
+        "scrollHeight": 36,
+        "clientHeight": 36,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "38px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 118.09375,
+          "y": 393.28125,
+          "w": 193.8125,
+          "h": 38
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto space-y-4 text-center md:text-left",
+        "inline": null,
+        "scrollHeight": 352,
+        "clientHeight": 352,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "351.75px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 393.28125,
+          "w": 398,
+          "h": 351.75
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 13280,
+        "clientHeight": 13280,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13279.8px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 13279.78125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 13368,
+        "clientHeight": 13368,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13367.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 13367.78125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 13368,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13367.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 430,
+          "h": 13367.78125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 430,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "decoder-after-430",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 439,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 13368,
+      "clientHeight": 844,
+      "scrollTop": 439,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13367.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -439,
+        "w": 430,
+        "h": 13367.78125
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 13368,
+      "clientHeight": 13368,
+      "scrollTop": 0,
+      "overflow": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "top": "auto",
+      "height": "13367.8px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": -439,
+        "w": 430,
+        "h": 13367.78125
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "border-2 border-dashed border-indigo-500/30 rounded-3xl p-10 text-center bg-slate-900/40",
+        "inline": null,
+        "scrollHeight": 434,
+        "clientHeight": 434,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "438px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 370.03125,
+          "w": 398,
+          "h": 438
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto mt-16",
+        "inline": null,
+        "scrollHeight": 438,
+        "clientHeight": 438,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "438px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 16,
+          "y": 370.03125,
+          "w": 398,
+          "h": 438
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 13280,
+        "clientHeight": 13280,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13279.8px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -439,
+          "w": 430,
+          "h": 13279.78125
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 13368,
+        "clientHeight": 13368,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13367.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -439,
+          "w": 430,
+          "h": 13367.78125
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 13368,
+        "clientHeight": 844,
+        "scrollTop": 439,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "13367.8px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -439,
+          "w": 430,
+          "h": 13367.78125
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "tag": "NAV",
+        "cls": "auctor-mobile-nav",
+        "inline": null,
+        "scrollHeight": 64,
+        "clientHeight": 64,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "fixed",
+        "top": "779px",
+        "height": "65px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 779,
+          "w": 430,
+          "h": 65
+        }
+      }
+    ]
+  },
+  {
+    "label": "review-before-1440",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 1776,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 1776,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1775.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 1775.890625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 7941,
+        "clientHeight": 568,
+        "scrollTop": 0,
+        "overflow": "auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "568px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 166,
+          "y": 1161.890625,
+          "w": 654.75,
+          "h": 568
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "A",
+        "cls": "mobile-secondary",
+        "inline": null,
+        "scrollHeight": 46,
+        "clientHeight": 46,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "48px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 165,
+          "y": 376.390625,
+          "w": 1110,
+          "h": 48
+        }
+      },
+      {
+        "tag": "ASIDE",
+        "cls": "next-activity",
+        "inline": null,
+        "scrollHeight": 199,
+        "clientHeight": 199,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "200.891px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 144,
+          "y": 244.5,
+          "w": 1152,
+          "h": 200.890625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 1728,
+        "clientHeight": 1728,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1727.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 144,
+          "y": 24,
+          "w": 1152,
+          "h": 1727.890625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 1776,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1775.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 1775.890625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 844,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "label": "review-after-1440",
+    "url": "http://localhost:3115/detailed-review?attemptId=review-fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 1776,
+      "clientHeight": 844,
+      "scrollTop": 435,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "main": [
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 1776,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1775.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 1440,
+          "h": 1775.890625
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "jsx-7aeac7c30cf8f09d passage-pane-scroll review-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7",
+        "inline": null,
+        "scrollHeight": 7941,
+        "clientHeight": 568,
+        "scrollTop": 0,
+        "overflow": "auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "568px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 166,
+          "y": 726.890625,
+          "w": 654.75,
+          "h": 568
+        }
+      }
+    ],
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "flex min-h-14 w-full items-center justify-between rounded-xl px-5 text-left font-bold text-cyan-200 transition hover:bg-cyan-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300",
+        "inline": null,
+        "scrollHeight": 56,
+        "clientHeight": 56,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "56px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 145,
+          "y": 380.390625,
+          "w": 1150,
+          "h": 56
+        }
+      },
+      {
+        "tag": "H2",
+        "cls": "",
+        "inline": null,
+        "scrollHeight": 56,
+        "clientHeight": 56,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "56px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 145,
+          "y": 380.390625,
+          "w": 1150,
+          "h": 56
+        }
+      },
+      {
+        "tag": "SECTION",
+        "cls": "scroll-mt-4 rounded-xl border border-cyan-500/25 bg-slate-900/40",
+        "inline": null,
+        "scrollHeight": 56,
+        "clientHeight": 56,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "58px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 144,
+          "y": 379.390625,
+          "w": 1152,
+          "h": 58
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mt-5 space-y-3",
+        "inline": null,
+        "scrollHeight": 938,
+        "clientHeight": 938,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "937.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 144,
+          "y": 379.390625,
+          "w": 1152,
+          "h": 937.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "mx-auto max-w-6xl",
+        "inline": null,
+        "scrollHeight": 1728,
+        "clientHeight": 1728,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1727.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 144,
+          "y": -411,
+          "w": 1152,
+          "h": 1727.890625
+        }
+      },
+      {
+        "tag": "MAIN",
+        "cls": "min-h-screen bg-[#071120] px-4 py-6 text-white sm:px-6",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 1776,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "1775.89px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 1440,
+          "h": 1775.890625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 1776,
+        "clientHeight": 844,
+        "scrollTop": 435,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9;",
+        "scrollHeight": 844,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "label": "decoder-before-1440",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 6904,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "inline-flex items-center gap-2 mx-auto md:mx-0 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-4 py-2 rounded-full text-sm",
+        "inline": null,
+        "scrollHeight": 36,
+        "clientHeight": 36,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "38px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 623.09375,
+          "y": 370.890625,
+          "w": 193.8125,
+          "h": 38
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto space-y-4 text-center md:text-left",
+        "inline": null,
+        "scrollHeight": 231,
+        "clientHeight": 231,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "230.5px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 272,
+          "y": 370.890625,
+          "w": 896,
+          "h": 230.5
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 6904,
+        "clientHeight": 6904,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "6903.77px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 6903.765625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 6904,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 844,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "label": "decoder-after-1440",
+    "url": "http://localhost:3115/birbal-v2?session=fixture",
+    "y": 0,
+    "html": {
+      "tag": "HTML",
+      "cls": "",
+      "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+      "scrollHeight": 844,
+      "clientHeight": 844,
+      "scrollTop": 0,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "body": {
+      "tag": "BODY",
+      "cls": "mobile-student-shell",
+      "inline": null,
+      "scrollHeight": 6904,
+      "clientHeight": 844,
+      "scrollTop": 435,
+      "overflow": "hidden auto",
+      "overflowY": "auto",
+      "position": "static",
+      "top": "auto",
+      "height": "844px",
+      "touchAction": "manipulation",
+      "pointerEvents": "auto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 844
+      }
+    },
+    "main": [],
+    "ancestors": [
+      {
+        "tag": "P",
+        "cls": "text-slate-400 mt-3",
+        "inline": null,
+        "scrollHeight": 24,
+        "clientHeight": 24,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "24px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 314,
+          "y": 396.390625,
+          "w": 812,
+          "h": 24
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "border-2 border-dashed border-indigo-500/30 rounded-3xl p-10 text-center bg-slate-900/40",
+        "inline": null,
+        "scrollHeight": 358,
+        "clientHeight": 358,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "362px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 272,
+          "y": 230.390625,
+          "w": 896,
+          "h": 362
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "max-w-4xl mx-auto mt-16",
+        "inline": null,
+        "scrollHeight": 362,
+        "clientHeight": 362,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "362px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 272,
+          "y": 230.390625,
+          "w": 896,
+          "h": 362
+        }
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-screen bg-slate-950 text-white px-4 md:px-6 py-6",
+        "inline": null,
+        "scrollHeight": 6904,
+        "clientHeight": 6904,
+        "scrollTop": 0,
+        "overflow": "visible",
+        "overflowY": "visible",
+        "position": "static",
+        "top": "auto",
+        "height": "6903.77px",
+        "touchAction": "auto",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": -435,
+          "w": 1440,
+          "h": 6903.765625
+        }
+      },
+      {
+        "tag": "BODY",
+        "cls": "mobile-student-shell",
+        "inline": null,
+        "scrollHeight": 6904,
+        "clientHeight": 844,
+        "scrollTop": 435,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "inline": "--brand-primary: #4f46e5; --brand-secondary: #0ea5e9; --visual-height: 844px; --visual-top: 0px;",
+        "scrollHeight": 844,
+        "clientHeight": 844,
+        "scrollTop": 0,
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "position": "static",
+        "top": "auto",
+        "height": "844px",
+        "touchAction": "manipulation",
+        "pointerEvents": "auto",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 844
+        }
+      }
+    ],
+    "fixed": []
+  }
+]

@@ -20,7 +20,8 @@ function AttemptRoute({ attemptId: routeAttemptId, initialSection }) {
 }
 function AttemptResult({ attemptId, initialSection }) {
   const [openSection, setOpenSection] = useState(initialSection);
-  const { data, error } = useDailyRcReview(attemptId);
+  const [retryKey, setRetryKey] = useState(0);
+  const { data, error } = useDailyRcReview(attemptId, retryKey);
   const viewedRef = useRef(false);
   useEffect(() => {
     if (!data || viewedRef.current) return;
@@ -30,8 +31,8 @@ function AttemptResult({ attemptId, initialSection }) {
     captureLearningEvent("daily_rc_feedback_viewed", properties);
     captureLearningEvent("next_action_viewed", { ...properties, next_action: "back_to_arena" });
   }, [data]);
-  if (error) return <div role="alert" className="p-8 text-white">{error} <Link href="/rc-history">RC History</Link></div>;
-  if (!data) return <div className="p-8 text-white">Loading Result...</div>;
+  if (error) return <div role="alert" className="p-8 text-white"><p>{error}</p><button className="my-4 mr-4 rounded-lg bg-cyan-800 px-4 py-3" onClick={() => setRetryKey(value => value + 1)}>Retry review</button><Link href="/rc-history">RC History</Link></div>;
+  if (!data) return <div className="p-8 text-white"><p role="status">Loading Result...</p><Link className="mt-4 inline-flex min-h-11 items-center text-cyan-300" href="/rc-history">Back to RC History</Link></div>;
   const { attempt } = data;
   const resultData = {
     correct: attempt.correct_count, incorrect: attempt.incorrect_count,

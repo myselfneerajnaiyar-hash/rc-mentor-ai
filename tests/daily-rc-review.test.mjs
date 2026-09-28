@@ -85,7 +85,7 @@ for (const corruption of ["wrong-set", "missing-question", "missing-passage", "m
 }
 
 async function compile(file, dependencies, globals = {}, expose = "") {
-  dependencies = { "@/components/mobile/Recovery": {default:()=>null}, "@/lib/mobile/request": {withTimeout:p=>p,fetchWithTimeout:()=>{}}, "@/lib/learningAnalytics": {captureLearningEvent:()=>{}}, ...dependencies };
+  dependencies = { "@/components/mobile/Recovery": {default:()=>null}, "@/lib/mobile/request": {withTimeout:p=>p,fetchWithTimeout:(...args)=>globals.fetch(...args)}, "@/lib/learningAnalytics": {captureLearningEvent:()=>{}}, ...dependencies };
   const source = await readFile(new URL(file, import.meta.url), "utf8")
   const exports = {}
   const compiled = ts.transpileModule(source, { fileName: file, reportDiagnostics: true, compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } })
@@ -141,7 +141,7 @@ test("client route changes hide old data, abort stale responses and ignore local
   const { useDailyRcReview } = await compile("../lib/dailyRc/useReview.js", {
     react: {
       useState: () => [state, value => { state = value }],
-      useEffect: (effect, [id]) => { if (id !== lastId) { cleanup?.(); effects.push(effect); lastId = id } },
+      useEffect: (effect, [id, retry]) => { const key = `${id}:${retry}`; if (key !== lastId) { cleanup?.(); effects.push(effect); lastId = key } },
     },
     "@/lib/supabase": { supabase: { auth: { getSession: async () => ({ data: { session: { access_token: "mock", user: { id: "owner" } } } }) } } },
   }, {
@@ -149,8 +149,8 @@ test("client route changes hide old data, abort stale responses and ignore local
     fetch: (url, options) => new Promise(resolve => requests.push({ url, options, resolve })),
   })
   const tick = () => new Promise(resolve => setImmediate(resolve))
-  async function render(id) {
-    const value = useDailyRcReview(id)
+  async function render(id, retry = 0) {
+    const value = useDailyRcReview(id, retry)
     for (const effect of effects.splice(0)) cleanup = effect()
     await tick()
     return value
@@ -161,7 +161,7 @@ test("client route changes hide old data, abort stale responses and ignore local
   assert.equal((await render("A")).data.rcSet.passage, "A")
   assert.equal((await render("B")).data, null)
   assert.equal(requests[0].options.signal.aborted, true)
-  assert.equal((await render("A")).data?.rcSet.passage ?? null, "A")
+  assert.equal((await render("A")).data?.rcSet.passage ?? null, null)
   requests[2].resolve(response("A")); await tick()
   requests[1].resolve(response("B")); await tick()
   assert.equal((await render("A")).data.rcSet.passage, "A")
@@ -169,6 +169,10 @@ test("client route changes hide old data, abort stale responses and ignore local
   await render("C")
   requests[3].resolve(response("B")); await tick()
   assert.match((await render("C")).error, /does not match/)
+  await render("C", 1)
+  assert.equal(requests[3].options.signal.aborted, true)
+  requests[4].resolve(response("C")); await tick()
+  assert.equal((await render("C", 1)).data.rcSet.passage, "C")
 })
 
 test("submission and all review entry points retain attempt identity", async () => {
