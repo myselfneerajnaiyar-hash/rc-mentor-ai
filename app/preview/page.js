@@ -31,7 +31,7 @@ import {
 export default function PreviewPage() {
   const router = useRouter();
   const WHATSAPP_URL =
-  "https://wa.me/919953237212?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Auctor%20RC.";
+  "https://wa.me/917975369704?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Auctor%20RC.";
 
 const startFreeTrial = () => {
   router.push("/signup");
