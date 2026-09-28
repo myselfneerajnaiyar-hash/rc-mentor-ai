@@ -59,8 +59,8 @@
  .workout-intro-details{display:none}.workout-ready{min-height:0!important;padding:0!important}.workout-ready>div{padding:0!important}.workout-ready .workout-start{margin-top:18px}
  .speed-intro-details{display:none!important}.speed-start-button{margin-top:12px!important}
  .daily-test .daily-desktop-header{display:none}.daily-test .daily-test-grid{display:block}.daily-test .daily-test-panel{display:none}.daily-test[data-pane=passage] .daily-passage-panel,.daily-test[data-pane=questions] .daily-question-panel{display:block}
- .daily-test-mobile-header{position:sticky;top:0;z-index:40;background:#0c1729;border-bottom:1px solid #334b6c;padding:12px;display:block!important}
- .daily-test-mobile-header>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.daily-test-mobile-header button{min-height:44px;border-radius:10px;padding:10px;background:#244a77;color:#fff;font-size:13px}
+ .daily-test-mobile-header{position:sticky;top:0;z-index:60;background:#0c1729;border-bottom:1px solid #334b6c;padding:calc(8px + env(safe-area-inset-top,0px)) 12px 12px;display:block!important}
+ .daily-test-mobile-header .daily-test-header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.daily-test-mobile-header button{min-height:44px;border-radius:10px;padding:10px;background:#244a77;color:#fff;font-size:13px}
  .daily-test-mobile-header .today-tabs button{background:transparent}.daily-test-mobile-header .today-tabs button[aria-selected=true]{background:#31558d}
  .daily-test .daily-timer{display:none}.daily-test .daily-passage-panel>div>div:first-child{padding:16px}.daily-test .daily-passage-panel>div>div:nth-child(2){padding:18px}.daily-test .daily-passage-panel .text-\[18px\]{font-size:17px;line-height:1.85}
  .daily-test .daily-question-panel{border-radius:16px}.daily-test .daily-question-panel>div>div:first-child{padding:16px}.daily-test .daily-question-panel>div>div:nth-child(2){padding:16px;margin-top:4px}
@@ -75,7 +75,7 @@
 
 @media(max-width:899px){.workout-ready section:first-child{padding:18px}.workout-ready section:first-child h1,.workout-ready section:first-child>p:first-child{display:none}.workout-ready section:first-child>p:last-child{margin:0}.speed-container{padding:0!important;min-height:0!important}.speed-container>div{padding:16px!important}.speed-container h1{font-size:25px!important}.speed-info-strip{display:none}.speed-container>div:nth-child(2){margin-top:16px!important}.speed-container h2{font-size:22px!important}.speed-container section{padding:0!important}.speed-container section>p{margin-top:8px!important}.speed-container .speed-start-button{min-height:48px!important}.assessment-exit{position:fixed;bottom:8px;right:8px;z-index:60;margin:0;box-shadow:0 4px 18px #0008}.daily-test .daily-question-footer{padding-bottom:64px!important}}
 
-.mobile-profile-links{display:none}@media(max-width:899px){.mobile-profile-links{display:grid;gap:8px;margin:18px 0;padding:16px;border:1px solid #354b69;border-radius:14px}.mobile-profile-links h2{font-weight:700}.mobile-profile-links a{min-height:44px;display:flex;align-items:center;color:#b4d4ff}.assessment-exit{position:sticky;top:0;bottom:auto;right:auto;margin:0 12px 0 auto;width:fit-content;height:44px;min-height:44px;z-index:60}.daily-test-mobile-header{top:44px}.daily-test .daily-question-footer{padding-bottom:12px!important}.mobile-student-shell:has(.mobile-conversation){padding-bottom:0}}
+.mobile-profile-links{display:none}@media(max-width:899px){.mobile-profile-links{display:grid;gap:8px;margin:18px 0;padding:16px;border:1px solid #354b69;border-radius:14px}.mobile-profile-links h2{font-weight:700}.mobile-profile-links a{min-height:44px;display:flex;align-items:center;color:#b4d4ff}.assessment-exit{position:sticky;top:0;bottom:auto;right:auto;margin:0 12px 0 auto;width:fit-content;height:44px;min-height:44px;z-index:60}.daily-test .daily-question-footer{padding-bottom:12px!important}.mobile-student-shell:has(.mobile-conversation){padding-bottom:0}}
 /* Dashboard accents mirror home-v2; all visual overrides stay below desktop. */
 .mobile-activity-icon,.practice-mobile-label,.today-card-status{display:none}
 .practice-grid{display:contents}
@@ -143,3 +143,41 @@
 /* A permanent tour entry point, sharing the Inbox header treatment. */
 .product-tour-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;flex-shrink:0;padding:8px 14px;border:1px solid #8b5cf64d;border-radius:999px;background:#8b5cf60d;color:#ddd6fe;font-size:14px;font-weight:600;line-height:1.4;white-space:nowrap}.product-tour-button:hover{background:#8b5cf626;border-color:#a78bfa}.product-tour-button:focus-visible{outline:2px solid #a78bfa;outline-offset:3px}.tour-label-mobile{display:none}.dashboard-header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.tour-notice{position:fixed;right:16px;bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:1000;max-width:min(380px,calc(100vw - 32px));padding:16px;border:1px solid #64748b;border-radius:14px;background:#0f172a;color:#e2e8f0;box-shadow:0 8px 32px #0006;font-size:14px;line-height:1.5}.tour-notice button{min-height:44px;padding:8px 12px;margin:8px 8px 0 0;border:1px solid #6366f1;border-radius:9px;color:#c7d2fe}.tour-skip{min-height:44px!important;padding:8px!important;color:#cbd5e1!important;background:transparent!important;border:0!important;text-shadow:none!important}.auctor-tour .driver-popover-footer{align-items:center}.auctor-tour .driver-popover-navigation-btns{margin-left:auto}
 @media(max-width:899px){.tour-label-desktop{display:none}.tour-label-mobile{display:inline}.product-tour-button{padding:8px 10px;font-size:13px}.dashboard-mobile-header{column-gap:8px!important;flex-wrap:wrap}.dashboard-mobile-header>div.min-w-0{flex:1;min-width:0}.dashboard-header-actions{gap:6px}.dashboard-mobile-header>img{width:32px;height:32px}.auctor-tour .driver-popover-footer{gap:4px}.auctor-tour .driver-popover-progress-text{font-size:11px}}
+
+.home-footer{max-width:1280px;margin:24px auto 0;padding:12px 0;border-top:1px solid #334155}
+.home-footer a{display:inline-flex;align-items:center;min-height:48px;padding:0 16px;color:#b6d3ff;font-size:14px;font-weight:650;border-radius:10px}
+.home-footer a:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+.daily-mobile-submit{display:none}
+@media(max-width:899px){
+ body.mobile-student-shell:has(.daily-test){padding-top:0}
+ .daily-test{min-height:100dvh;overflow-wrap:anywhere}
+ .daily-test .daily-test-content{height:auto;padding:12px}
+ .daily-test .daily-test-panel{height:auto;min-width:0;width:100%;border-radius:16px}
+ .daily-test .daily-test-panel>div{height:auto}
+ .daily-test .daily-test-panel>div>div:nth-child(2){overflow:visible}
+ .daily-test .daily-passage-panel>div>div:nth-child(2){padding:16px}
+ .daily-test .daily-question-footer{position:static}
+ .daily-test-header-row strong{display:flex;align-items:center;gap:10px}
+ .daily-test-header-row [role=timer]{font-variant-numeric:tabular-nums;color:#a5f3fc;white-space:nowrap}
+ .daily-test-header-row>span{font-size:13px;color:#cbd5e1}
+ .daily-test-mobile-header .daily-submit,.daily-mobile-submit button{background:#059669;color:#fff}
+ .daily-test-mobile-header button:disabled,.daily-mobile-submit button:disabled{opacity:.6}
+ .daily-mobile-submit{display:grid;gap:8px;padding:16px;border-top:1px solid #334155}
+ .daily-mobile-submit p{font-size:13px;line-height:1.5;color:#cbd5e1}
+ .daily-mobile-submit button{min-height:48px;padding:12px;border-radius:10px;font-weight:700}
+}
+/* Keep review gestures on the document on phones; desktop panes can chain scroll. */
+@media(max-width:899px){
+ .detailed-rc-review .passage-argument-workspace{display:block;height:auto;overflow:visible}
+ .detailed-rc-review .passage-argument-workspace>section{overflow:visible}
+ .detailed-rc-review .passage-pane-scroll,.detailed-rc-review .reasoning-pane-scroll{overflow:visible;flex:none}
+ .detailed-rc-review .review-section-nav{top:env(safe-area-inset-top,0px);margin-left:0;margin-right:0;overflow:visible}
+ .detailed-rc-review .review-section-nav>div{display:flex;flex-wrap:wrap;min-width:0}
+ .detailed-rc-review .review-section-nav button{min-height:44px;flex:1 1 auto}
+ .detailed-rc-review article>footer{position:static}
+ .daily-workout-container{min-width:0}
+ .daily-workout-container>div[dir]{margin-top:20px}
+ .daily-workout-container .workout-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));height:auto;overflow:visible;gap:6px;padding:6px}
+ .daily-workout-container .workout-tabs [role=tab]{min-width:0;min-height:48px;padding:10px 12px}
+ .daily-workout-container [role=tabpanel]{padding-top:20px}
+}

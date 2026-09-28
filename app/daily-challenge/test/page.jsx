@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
+import { allowActivityExit } from "@/components/mobile/MobileShell";
 import AssessmentMode from "@/components/assessment/AssessmentMode";
 import Recovery from "@/components/mobile/Recovery";
 import NextActivity from "@/components/mobile/NextActivity";
@@ -39,7 +40,19 @@ function ChallengeAttempt({ selectedChallengeId }) {
     const router = useRouter();
   const [pane,setPane]=useState("passage");
   const paneScroll=useRef({passage:0,questions:0});
-  function changePane(next){paneScroll.current[pane]=window.scrollY;setPane(next);requestAnimationFrame(()=>window.scrollTo(0,paneScroll.current[next]));}
+  const restorePaneScroll = useRef(false);
+  useLayoutEffect(() => {
+    if (restorePaneScroll.current) {
+      window.scrollTo(0, paneScroll.current[pane]);
+      restorePaneScroll.current = false;
+    }
+  }, [pane]);
+  function changePane(next) {
+    if (next === pane) return;
+    paneScroll.current[pane] = window.scrollY;
+    restorePaneScroll.current = true;
+    setPane(next);
+  }
   const [loadError,setLoadError]=useState(null);
   const [retry,setRetry]=useState(0);
   const [saveError,setSaveError]=useState(null);
@@ -397,6 +410,10 @@ useEffect(() => {
 
 }
 
+ function confirmMobileSubmit() {
+   if(window.confirm('Submit your answers? Unanswered questions will be counted.'))submitTest();
+ }
+
  async function submitTest() {
  if(savingRef.current)return;
  savingRef.current=true;setSubmitting(true);setSaveError(null);
@@ -639,7 +656,20 @@ router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.i
 
  <div className="daily-test min-h-screen bg-[#071120] text-white" data-pane={pane}>
  <AssessmentMode active={!completedRef.current}/>
- <div className="daily-test-mobile-header"><div><strong>Daily RC <span role="timer">{formattedTime}</span></strong><button disabled={submitting} onClick={()=>{if(window.confirm('Submit your answers? Unanswered questions will be counted.'))submitTest();}}>{submitting?'Saving…':'Submit'}</button></div><div className="today-tabs" role="tablist" aria-label="Reading and questions"><button role="tab" aria-selected={pane==='passage'} onClick={()=>changePane('passage')}>Passage</button><button role="tab" aria-selected={pane==='questions'} onClick={()=>changePane('questions')}>Questions · {answeredCount}/{questions.length}</button></div></div>
+ <header className="daily-test-mobile-header">
+   <div className="daily-test-header-row">
+     <strong>Daily RC <span role="timer" aria-label="Time remaining">{formattedTime}</span></strong>
+     <button onClick={()=>{if(allowActivityExit())router.push('/?view=today');}}>Exit activity</button>
+   </div>
+   <div className="daily-test-header-row">
+     <span>{answeredCount}/{questions.length} answered</span>
+     <button className="daily-submit" disabled={submitting} onClick={confirmMobileSubmit}>{submitting?'Saving…':'Submit Answers'}</button>
+   </div>
+   <div className="today-tabs" role="tablist" aria-label="Reading and questions">
+     <button role="tab" aria-selected={pane==='passage'} onClick={()=>changePane('passage')}>Passage</button>
+     <button role="tab" aria-selected={pane==='questions'} onClick={()=>changePane('questions')}>Questions · {answeredCount}/{questions.length}</button>
+   </div>
+ </header>
  {saveError&&<Recovery area="daily_rc_save" message={saveError} onRetry={submitTest}/>}
  {submitting&&<p role="status" className="p-4">Saving your answers…</p>}
      <div
@@ -666,7 +696,7 @@ router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.i
   </div>
 </div>
 
- <div className="h-full flex flex-col px-2 py-2  gap-3">
+ <div className="daily-test-content h-full flex flex-col px-2 py-2 gap-3">
 
       {/* ================= TOP BAR ================= */}
 
@@ -1063,6 +1093,11 @@ bg-[#0d1726]
 
               </div>
 
+            </div>
+
+            <div className="daily-mobile-submit">
+              <p>Submit all answers to finish this Daily RC challenge.</p>
+              <button disabled={submitting} onClick={confirmMobileSubmit}>{submitting?'Saving…':'Submit Answers'}</button>
             </div>
 
             {/* FOOTER */}

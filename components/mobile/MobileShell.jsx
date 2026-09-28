@@ -32,5 +32,5 @@ export default function MobileShell({children}){
    if(previous.current!==key){document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);previous.current=key;window.__auctorExitAllowed=false;}
  },[path,params]);
  useEffect(()=>{document.body.classList.toggle('mobile-student-shell',isStudent);return()=>document.body.classList.remove('mobile-student-shell');},[isStudent]);
- return <DailyActivityProvider>{isStudent&&active&&<button className="assessment-exit" onClick={()=>navigate('/?view=today')}>Exit activity</button>}{children}{isStudent&&!active&&view!=='mentor'&&<MobileBottomNav view={destination(view)} onNavigate={navigate}/>}</DailyActivityProvider>;
+ return <DailyActivityProvider>{isStudent&&active&&path!=='/daily-challenge/test'&&<button className="assessment-exit" onClick={()=>navigate('/?view=today')}>Exit activity</button>}{children}{isStudent&&!active&&view!=='mentor'&&<MobileBottomNav view={destination(view)} onNavigate={navigate}/>}</DailyActivityProvider>;
 }

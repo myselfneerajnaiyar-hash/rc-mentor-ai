@@ -870,6 +870,8 @@ ${
 
 
 
+{view === "home" && <footer className="home-footer"><a href="/pricing">Pricing</a></footer>}
+
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />
 )}
