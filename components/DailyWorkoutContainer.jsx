@@ -1,9 +1,9 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
-import DailyWorkoutFlow from "./DailyWorkoutFlow"
+import DailyWorkoutFlow, { WORKOUT_INTRO } from "./DailyWorkoutFlow"
 import DailyPerformance from "./daily/DailyPerformance"
 import DailyAnalytics from "./daily/DailyAnalytics"
 import DailyHistory from "./daily/DailyHistory"
@@ -19,6 +19,24 @@ export default function DailyWorkoutContainer({ user }) {
   const [tab,setTab]=useState(params.get("tab")||"start");
   useEffect(()=>{setTab(params.get("tab")||"start")},[params]);
   const [workoutRunning, setWorkoutRunning] = useState(false)
+  const tabsRef = useRef(null)
+  useEffect(() => {
+    const list = tabsRef.current
+    if (!list) return
+    const revealActive = () => {
+      if (!window.matchMedia('(max-width:899px)').matches) return
+      const active = list.querySelector('[data-state="active"]')
+      if (!active) return
+      const bounds = list.getBoundingClientRect(), item = active.getBoundingClientRect()
+      const delta = item.left < bounds.left + 6 ? item.left - bounds.left - 6
+        : item.right > bounds.right - 6 ? item.right - bounds.right + 6 : 0
+      if (delta) list.scrollBy({left: delta, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'})
+    }
+    revealActive()
+    const observer = new ResizeObserver(revealActive)
+    observer.observe(list)
+    return () => observer.disconnect()
+  }, [tab, workoutRunning])
 
   return (
     <div className="daily-workout-container space-y-8">
@@ -29,14 +47,15 @@ export default function DailyWorkoutContainer({ user }) {
           🔥 Daily Workout
         </h1>
         <p className="text-slate-400 mt-1">
-          Structured 30-minute intelligence training
+          <span className="workout-desktop-subtitle">Structured 30-minute intelligence training</span>
+          <span className="workout-mobile-subtitle">{WORKOUT_INTRO}</span>
         </p>
       </div>
 
       {/* Tabs */}
       <Tabs value={tab} onValueChange={setTab} className="w-full">
 
-    {!workoutRunning && <TabsList
+    {!workoutRunning && <TabsList ref={tabsRef} aria-label="Daily Workout sections"
 className="
 workout-tabs flex !justify-start gap-2 p-1
 bg-slate-900/60
@@ -45,7 +64,7 @@ border border-slate-800
 rounded-2xl
 w-full
 overflow-x-auto overflow-y-hidden
-[scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+
 px-1
 "
 >

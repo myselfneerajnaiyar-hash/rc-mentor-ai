@@ -177,7 +177,24 @@
  .detailed-rc-review article>footer{position:static}
  .daily-workout-container{min-width:0}
  .daily-workout-container>div[dir]{margin-top:20px}
- .daily-workout-container .workout-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));height:auto;overflow:visible;gap:6px;padding:6px}
- .daily-workout-container .workout-tabs [role=tab]{min-width:0;min-height:48px;padding:10px 12px}
+ .daily-workout-container .workout-tabs{display:flex;flex-wrap:nowrap;height:auto;overflow-x:auto;overflow-y:hidden;gap:6px;padding:6px;scrollbar-width:thin;scrollbar-color:#475569 transparent;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .daily-workout-container .workout-tabs [role=tab]{flex:0 0 auto;min-height:48px;padding:10px 20px;white-space:nowrap}
  .daily-workout-container [role=tabpanel]{padding-top:20px}
+}
+.workout-mobile-subtitle{display:none}
+@media(max-width:899px){
+ .workout-desktop-subtitle,.workout-ready .workout-overview{display:none}
+ .workout-mobile-subtitle{display:block;max-width:42rem;font-size:14px;line-height:1.6}
+ .workout-ready .workout-activities{margin-top:0;padding:0}
+ .workout-activities>div:first-child{margin-bottom:12px}
+ .workout-activities h2{font-size:18px}
+ .workout-activities>div.grid{grid-template-columns:1fr;gap:10px}
+ .workout-activity-card{padding:14px}
+ .workout-activity-card>div>span{flex-shrink:0;padding:8px}
+ .workout-activity-card h3{font-size:15px;line-height:1.4}
+ .workout-activity-card ul{margin-top:5px;font-size:13px;line-height:1.6}
+ .workout-activity-card li{display:inline;margin:0}
+ .workout-activity-card li+li:before{content:' · ';color:#64748b}
+ .workout-ready .workout-start{margin-top:16px}
+ .workout-start button{min-height:48px;width:100%}
 }

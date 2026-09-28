@@ -8,6 +8,8 @@ import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import WorkoutEngine from "./WorkoutEngine.jsx";
 import { startLearningActivity } from "@/lib/learningAnalytics";
 
+export const WORKOUT_INTRO = "Practise speed, vocabulary and reading in one guided session. Allow about 30 minutes.";
+
 export default function DailyWorkoutFlow({ mode = "normal", setView, onRunningChange }) {
   const [error,setError]=useState(null);
   const [retry,setRetry]=useState(0);
@@ -137,13 +139,13 @@ if (status === "alreadyAttempted") {
     return (
       <div className="workout-ready min-h-screen bg-slate-950 py-8 text-white sm:py-12">
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-6 shadow-2xl shadow-black/20 sm:p-10">
+          <section className="workout-overview rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-6 shadow-2xl shadow-black/20 sm:p-10">
             <p className="text-xs font-bold tracking-[0.18em] text-indigo-300">TODAY'S FOCUS</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">🔥 Daily Workout</h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">Practise speed, vocabulary and reading in one guided session. Allow about 30 minutes.</p>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">{WORKOUT_INTRO}</p>
           </section>
 
-          <section className="workout-intro-details mt-6">
+          <section className="workout-activities mt-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-8 bg-indigo-400" />
               <h2 className="text-xl font-bold text-slate-100">Today's Workout</h2>
@@ -196,7 +198,7 @@ if (status === "alreadyAttempted") {
 
 function WorkoutCard({ icon: Icon, title, lines, tone }) {
   return (
-    <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors hover:border-slate-700">
+    <article className="workout-activity-card rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors hover:border-slate-700">
       <div className="flex items-start gap-3">
         <span className={`rounded-xl bg-slate-800 p-2.5 ${tone}`}><Icon size={20} aria-hidden="true" /></span>
         <div>

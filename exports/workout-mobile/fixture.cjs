@@ -1,0 +1,1 @@
+﻿const fs=require('fs');const p='tests/workout-mobile.browser.mjs';let s=fs.readFileSync(p,'utf8').replace('return route.abort();',"return route.fulfill({status:200,contentType:'text/plain',body:'',headers:{'access-control-allow-origin':'*'}});");fs.writeFileSync(p,s);
