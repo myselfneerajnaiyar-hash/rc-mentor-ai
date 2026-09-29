@@ -7,6 +7,7 @@ import "../login/login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
+import AuthMobileIntro from "@/components/auth/AuthMobileIntro"
 
 export default function SignupPage() {
   const { branding } = useTenant()
@@ -82,6 +83,7 @@ router.push(`/login?next=${next}&free=${free}`);
 
     {/* RIGHT SIDE */}
     <section className="auth-right">
+      <AuthMobileIntro branding={branding} />
 
       <div className="auth-card">
         <div className="auth-mobile-brand"><TenantLogo className="auth-mobile-logo" /><div><p>{branding.brandName}</p>{branding.isInstitute && <span>Powered by Auctor Labs</span>}</div></div>
