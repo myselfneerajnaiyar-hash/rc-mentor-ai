@@ -8,6 +8,7 @@ import posthog from "posthog-js"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import { normalizeWhatsAppPhoneE164 } from "@/lib/whatsapp/phone"
+import { mergeAttribution, normalizeAttribution } from "@/lib/attribution.mjs"
 
 export default function WelcomePage() {
   const { branding, refreshContext } = useTenant()
@@ -61,6 +62,8 @@ async function checkUser() {
     .select("*")
     .eq("user_id", user.id)
     .maybeSingle()
+
+    if (profile) await persistSignupAttribution(user)
 
     posthog.identify(user.id, {
   email: user.email,
@@ -151,6 +154,8 @@ expiry.setDate(expiry.getDate() + 3)
     if (profileError) throw profileError
   }
 
+  await persistSignupAttribution(user)
+
   await refreshContext()
 
   if (whatsappOptIn) {
@@ -192,6 +197,22 @@ expiry.setDate(expiry.getDate() + 3)
 } else {
   router.push("/");
 }
+}
+
+async function persistSignupAttribution(user) {
+  const query = new URLSearchParams(window.location.search)
+  const metadata = normalizeAttribution(user.user_metadata?.signup_attribution)
+  const attribution = mergeAttribution(query, metadata)
+  if (!Object.keys(attribution.firstTouch).length && !Object.keys(attribution.lastTouch).length) return
+  try {
+    const { error } = await supabase.rpc("capture_signup_attribution", {
+      p_first_touch: attribution.firstTouch,
+      p_last_touch: attribution.lastTouch,
+    })
+    if (error) console.warn("Signup attribution was not saved. Apply the prepared profile attribution SQL before enabling production persistence.", error.code || error.message)
+  } catch (error) {
+    console.warn("Signup attribution could not reach the profile service.", error?.message || "Request failed")
+  }
 }
   if (loading) {
   return null

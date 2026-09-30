@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
+import { attributionFromParams, buildAttributedPath, attributionParams } from "@/lib/attribution.mjs"
 import "./login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
@@ -15,6 +16,8 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "";
 const free = searchParams.get("free") || "";
+  const loginAttribution = attributionFromParams(searchParams)
+  const signupHref = buildAttributedPath("/signup", loginAttribution, { next, free })
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -23,10 +26,16 @@ const free = searchParams.get("free") || "";
 
   const handleGoogleLogin = async () => {
 
+  const params = new URLSearchParams()
+  if (next) params.set("next", next)
+  if (free) params.set("free", free)
+  for (const [key, value] of attributionParams(attributionFromParams(new URLSearchParams(window.location.search)))) params.set(key, value)
+  const query = params.toString()
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-     redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`
+     redirectTo: `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`
     }
   })
 
@@ -56,7 +65,7 @@ console.log("NEXT =", next);
 console.log("FREE =", free);
 console.log("URL =", window.location.href);
 
-router.replace(`/welcome?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`);
+router.replace(buildAttributedPath("/welcome", loginAttribution, { next, free }));
   }
 
   return (
@@ -149,7 +158,7 @@ router.replace(`/welcome?next=${encodeURIComponent(next)}&free=${encodeURICompon
         </form>
 
         <p className="auth-footer">
-          Don’t have an account? <a href={`/signup?next=${next}&free=${free}`}>
+          Don’t have an account? <a href={signupHref}>
   Sign up
 </a>
         </p>

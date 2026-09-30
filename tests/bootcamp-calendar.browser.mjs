@@ -32,7 +32,7 @@ await ctx.route('**/*',async route=> {
   if(url.pathname.startsWith('/api/bootcamp')) {
     const suffix=url.pathname.slice('/api/bootcamp'.length),parts=suffix.split('/').filter(Boolean)
     const params={day:parts[0]==='days'?parts[1]:undefined,id:parts[0]==='attempts'?parts[1]:undefined,key:parts[2]==='blocks'?parts[3]:undefined}
-    const op=suffix===''?'home':suffix==='/chat'?'chat':suffix==='/enroll'?'enroll':parts[0]==='days'&&parts[2]==='start'?'start':parts[2]==='blocks'?({start:'block_start',responses:'responses',finish:'finish',review:'review'})[parts[4]]:parts[2]||'get'
+    const op=suffix===''?'home':suffix==='/chat'?'chat':suffix==='/enroll'?'enroll':parts[0]==='leaderboard'?'leaderboard':parts[0]==='days'&&parts[2]==='start'?'start':parts[2]==='blocks'?({start:'block_start',responses:'responses',finish:'finish',review:'review'})[parts[4]]:parts[2]||'get'
     if(op==='chat' && failNextChat){failNextChat=false;return fulfill({error:'Birbal could not reply just now. Please retry your message.'},503)}
     if (op==='responses' && failNextAnswer && Object.hasOwn(JSON.parse(req.postData() || '{}'),'response')) { failNextAnswer=false; return fulfill({error:'Temporary test connection failure. Please retry.'},503) }
     const r=await h.handle(new Request(req.url(),{method:req.method(),headers:req.headers(),...(req.postData()?{body:req.postData()}: {})}),op,params)
@@ -57,6 +57,14 @@ try {
   for(const [date,day,opened] of [['2026-10-01',1,1],['2026-10-05',5,5],['2026-10-25',25,25],['2026-11-19',50,50],['2026-11-20',null,50],['2026-11-29',null,50]]) {
     today=date
     await page.goto(base+'/boot-camp')
+  check(await page.getByRole('link',{name:/Browse Days/}).getAttribute('href')==='#bootcamp-calendar','Browse Days jumps to the existing calendar')
+  check(await page.getByRole('link',{name:'Leaderboards',exact:true}).getAttribute('href')==='#bootcamp-leaderboards','leaderboard has a clear calendar entry point')
+  check(await page.getByRole('link',{name:/Overall Analytics/}).getAttribute('href')==='/boot-camp/analytics','Overall Analytics opens the existing Boot Camp analytics route')
+  const board=page.locator('#bootcamp-leaderboards')
+  await board.getByRole('tab',{name:'Daily'}).waitFor()
+  check(await board.getByText(new RegExp(`Date: ${date} IST`)).count()===1,date+' daily leaderboard shows its IST date')
+  await board.getByRole('tab',{name:'Weekly'}).click()
+  await board.getByText(/Week: 2026-\d\d-\d\d.*2026-\d\d-\d\d IST/).waitFor()
     const calendar=page.getByRole('region',{name:'50-day training calendar'})
     if(day)await page.getByRole('link',{name:`Enter Day ${String(day).padStart(2,'0')}`,exact:true}).waitFor()
     else await page.getByRole('heading',{name:'Time to catch up and review.',exact:true}).waitFor()
@@ -81,11 +89,11 @@ try {
   await page.goto(base+'/boot-camp/day/26');await page.getByRole('alert').filter({hasText:'opens on 2026-10-26'}).waitFor()
   check(await page.getByRole('button',{name:/Start today/}).count()===0,'direct future route exposes no start button')
   today='2026-10-27';await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 27',exact:true}).waitFor()
-  check(await page.getByRole('link',{name:'Day 26 - OPEN',exact:true}).isVisible(),'return after a gap leaves October 26 open')
-  await page.getByRole('link',{name:'Day 23 - OPEN',exact:true}).click();await page.getByRole('button',{name:/Start today/}).click();await click('Begin my warm-up')
+  check(await page.getByRole('link',{name:'Day 26 - AVAILABLE',exact:true}).isVisible(),'return after a gap leaves October 26 open')
+  await page.getByRole('link',{name:'Day 23 - AVAILABLE',exact:true}).click();await page.getByRole('button',{name:/Start today/}).click();await click('Begin my warm-up')
   for(const [key,label,next] of [['warmup','Warm-up','RC 1'],['rc1','RC 1','RC 2']]){await click(`Start ${label}`);await click('Finish this block early');await click('Finish and review');await page.getByRole('heading',{name:'Make the reasoning yours.',exact:true}).waitFor();await click(`Continue to ${next}`);check((await h.service.home(student,23)).attempt.currentBlock!==key,'completed block persists '+key)}
   const before=(await h.service.home(student,23)).attempt
-  await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 27',exact:true}).waitFor();await page.getByRole('link',{name:'Day 23 - IN PROGRESS',exact:true}).click();await page.getByRole('button',{name:'Start RC 2',exact:true}).waitFor()
+  await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 27',exact:true}).waitFor();await page.getByRole('link',{name:'Day 23 - ATTEMPTED / IN PROGRESS',exact:true}).click();await page.getByRole('button',{name:'Start RC 2',exact:true}).waitFor()
   await page.reload();await page.getByRole('button',{name:'Start RC 2',exact:true}).waitFor()
   check((await h.service.home(student,23)).attempt.id===before.id,'two-block partial day resumes the original attempt after refresh')
   let state=(await h.service.home(student,23)).attempt

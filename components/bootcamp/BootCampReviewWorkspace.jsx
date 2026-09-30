@@ -9,13 +9,13 @@ const outcomes={correct:'Correct',incorrect:'Incorrect',skipped:'Skipped',not_re
 const nextLabels={warmup:'Continue to RC 1',va:'Continue to Day Report',rc1:'Continue to RC 2',rc2:'Continue to RC 3',rc3:'Continue to Verbal Ability'}
 export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId, phase='review', commentary, busy, onContinue, onAsk }) {
   const [index,setIndex]=useState(0),[detail,setDetail]=useState(null),[evidenceIndex,setEvidenceIndex]=useState(0),[passageOpen,setPassageOpen]=useState(false)
-  const body=useRef(null),dialog=useRef(null)
+  const dialog=useRef(null)
   const storageKey=`bootcamp-review:${attemptId}:${review.key}`
   useEffect(()=>{try{const stored=Number(sessionStorage.getItem(storageKey));if(Number.isInteger(stored)&&stored>=0&&stored<review.questions.length)setIndex(stored)}catch{/* Selection can remain local when storage is unavailable. */}},[storageKey,review.questions.length])
   useEffect(()=>{if(detail && !dialog.current.open)dialog.current.showModal();if(!detail && dialog.current.open)dialog.current.close()},[detail])
   const q=review.questions[index],a=q.analysis,insight=reviewObservation(review,q.id)
   const evidence=a.evidence || [], selectedOption=a.optionAnalysis?.find(o=>o.optionId===q.response)
-  const choose=i=>{setIndex(i);setEvidenceIndex(0);setPassageOpen(false);body.current?.scrollTo(0,0);try{sessionStorage.setItem(storageKey,String(i))}catch{/* No effect on saved attempt data. */}}
+  const choose=i=>{setIndex(i);setEvidenceIndex(0);setPassageOpen(false);try{sessionStorage.setItem(storageKey,String(i))}catch{/* No effect on saved attempt data. */}}
   const firstEvidence=evidence[evidenceIndex]
   const paragraphs=(review.passage?.text || '').split(/\n\s*\n/).filter(Boolean)
   const normalize=text=>text.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()
@@ -32,7 +32,7 @@ export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId
       </section>}
       <section className={s.evidencePanel} aria-label="Question evidence">
         <nav className={s.questionNav} aria-label="Review questions">{review.questions.map((item,i)=><button key={item.id} onClick={()=>choose(i)} aria-label={`Question ${i+1}: ${outcomes[item.outcome]}`} aria-current={index===i?'true':undefined} className={item.outcome==='correct'?s.correct:item.outcome==='incorrect'?s.incorrect:s.unanswered}>Q{i+1}<span aria-hidden="true">{item.outcome==='correct'?'✓':item.outcome==='incorrect'?'×':'—'}</span></button>)}<button className={`${s.analysisCta} ${s.analysisLink}`} onClick={()=>setDetail('question')}>View full question analysis <span aria-hidden="true">→</span></button></nav>
-        <div className={s.evidenceBody} ref={body} key={q.id}>
+        <div className={s.evidenceBody} key={q.id}>
           <div className={s.metadata}><span>Question {index+1} · {q.type}</span><span>{outcomes[q.outcome]}</span></div><p className={s.skill}>Skill: {a.primarySkill}</p><h2 className={s.question}>{q.text}</h2>
           {q.context && <p className={s.questionContext}>{q.context}</p>}{q.sentenceToPlace && <blockquote className={s.sentenceToPlace}>{q.sentenceToPlace}</blockquote>}{q.sentences?.length>0 && <NumberedSentences sentences={q.sentences}/>}
           <div className={s.answers}><div><small>Your answer</small><strong className={q.outcome==='correct'?s.correct:q.outcome==='incorrect'?s.incorrect:''}>{answer(q.response)}</strong></div><div><small>Correct answer</small><strong className={s.correct}>{answer(q.answer)}</strong></div><span>{Math.round((q.active_ms || 0)/1000)}s active view time</span></div>

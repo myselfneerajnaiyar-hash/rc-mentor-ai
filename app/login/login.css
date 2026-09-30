@@ -25,6 +25,8 @@
 .auth-subtitle { margin:10px 0 28px; color:#64748b; font-size:15px; line-height:1.55; }
 .auth-google-button { width:100%; min-height:50px; display:flex; align-items:center; justify-content:center; gap:11px; padding:12px 18px; border:1px solid #d8dee9; border-radius:12px; background:#fff; color:#172033; font:inherit; font-size:14px; font-weight:650; cursor:pointer; box-shadow:0 1px 2px rgba(15,23,42,.04); transition:border-color .2s,background .2s,box-shadow .2s,transform .2s; }
 .auth-google-button:hover { border-color:#b9c2d0; background:#fbfcfe; box-shadow:0 5px 15px rgba(15,23,42,.06); transform:translateY(-1px); }
+.auth-layout.auth-in-app-mobile .auth-google-button { display:none; }
+.auth-in-app-note { width:min(100%,460px); margin:0 auto 4px; color:#42546a; font-size:13px; line-height:1.5; text-align:center; }
 .auth-google-button:focus-visible,.auth-password-toggle:focus-visible,.auth-button:focus-visible { outline:3px solid color-mix(in srgb,var(--brand-secondary) 24%,transparent); outline-offset:2px; }
 .auth-google-icon { width:19px; height:19px; }
 .auth-divider { display:flex; align-items:center; gap:14px; margin:24px 0; color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }

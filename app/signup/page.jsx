@@ -1,13 +1,22 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
+import { attributionFromParams, buildAttributedPath, attributionParams } from "@/lib/attribution.mjs"
 import "../login/login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import AuthMobileIntro from "@/components/auth/AuthMobileIntro"
+
+function readableAuthError(error, action) {
+  const detail = error?.message || ""
+  if (error?.name === "AuthRetryableFetchError" || /failed to fetch|fetch failed|network|timed out|connection/i.test(detail)) {
+    return `${action} could not reach the authentication service. Check your connection and retry.`
+  }
+  return detail ? `${action} could not complete: ${detail}` : `${action} could not complete. Check your connection and retry.`
+}
 
 export default function SignupPage() {
   const { branding } = useTenant()
@@ -17,21 +26,39 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [metaInAppMobile, setMetaInAppMobile] = useState(false)
   const searchParams = useSearchParams();
 
 const next = searchParams.get("next") || "";
 const free = searchParams.get("free") || ""
+  const signupAttribution = attributionFromParams(searchParams)
+  const loginHref = buildAttributedPath("/login", signupAttribution, { next, free })
+
+  useEffect(() => {
+    const ua = window.navigator.userAgent || ""
+    const inMetaApp = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|FB4A|MessengerForiOS|FBMessenger/i.test(ua)
+    const isMobile = /Android|iPhone|iPod|iPad/i.test(ua) || (ua.includes("Macintosh") && window.navigator.maxTouchPoints > 1)
+    setMetaInAppMobile(inMetaApp && isMobile)
+  }, [])
+
   const handleGoogleLogin = async () => {
+  setError("")
+  try {
+    const params = new URLSearchParams()
+    if (next) params.set("next", next)
+    if (free) params.set("free", free)
+    for (const [key, value] of attributionParams(attributionFromParams(new URLSearchParams(window.location.search)))) params.set(key, value)
+    const query = params.toString()
+    const redirectTo = `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`
 
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-     redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}&free=${encodeURIComponent(free)}`
-    }
-  })
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo }
+    })
 
-  if (error) {
-    alert(error.message)
+    if (error) setError(readableAuthError(error, "Google signup"))
+  } catch (error) {
+    setError(readableAuthError(error, "Google signup"))
   }
 }
 
@@ -39,27 +66,31 @@ const free = searchParams.get("free") || ""
     e.preventDefault()
     setLoading(true)
     setError("")
+    const attribution = attributionFromParams(new URLSearchParams(window.location.search))
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { signup_attribution: attribution } },
+      })
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        setError(readableAuthError(error, "Signup"))
+        return
+      }
+
+      alert("Check your email to confirm your account.")
+      router.push(buildAttributedPath("/login", attribution, { next, free }))
+    } catch (error) {
+      setError(readableAuthError(error, "Signup"))
+    } finally {
       setLoading(false)
-      return
     }
-
-   
-
-alert("Check your email to confirm your account.")
-
-router.push(`/login?next=${next}&free=${free}`);
   }
 
   return (
-  <main className="auth-layout">
+  <main className={`auth-layout${metaInAppMobile ? " auth-in-app-mobile" : ""}`}>
 
     {/* LEFT SIDE */}
     <section className="auth-left">
@@ -92,23 +123,7 @@ router.push(`/login?next=${next}&free=${free}`);
 
        <p className="auth-subtitle">Start building stronger reading intelligence.</p>
 
-<button
-  onClick={handleGoogleLogin}
-  type="button"
-  className="auth-google-button"
->
-
-  <img
-    src="https://developers.google.com/identity/images/g-logo.png"
-    alt="Google"
-    className="auth-google-icon"
-  />
-
-  <span>Continue with Google</span>
-
-</button>
-
-        <div className="auth-divider"><span>or continue with email</span></div>
+        {metaInAppMobile && <p className="auth-in-app-note" role="status">For a smoother signup in this browser, continue with email.</p>}
         <form onSubmit={handleSignup} className="auth-form">
 
           <label className="auth-label" htmlFor="signup-email">Email</label>
@@ -154,8 +169,23 @@ router.push(`/login?next=${next}&free=${free}`);
 
         </form>
 
+        <div className="auth-divider"><span>OR</span></div>
+
+        <button
+          onClick={handleGoogleLogin}
+          type="button"
+          className="auth-google-button"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+            className="auth-google-icon"
+          />
+          <span>Continue with Google</span>
+        </button>
+
         <p className="auth-footer">
-          Already have an account? <a href={`/login?next=${next}&free=${free}`}>Login</a>
+          Already have an account? <a href={loginHref}>Login</a>
         </p>
 
       </div>

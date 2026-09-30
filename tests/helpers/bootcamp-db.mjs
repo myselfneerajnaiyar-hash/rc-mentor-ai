@@ -15,6 +15,7 @@ export async function harness(source, generate, converse, options={now:()=>new D
   await pg.exec(await readFile('supabase/migrations/202609230002_bootcamp_fixed_calendar.sql','utf8'))
   await pg.query('insert into auth.users values ($1),($2)',[student,other])
   await pg.exec('create table bootcamp_days(id text primary key, day_number integer, document jsonb, lock_token text, updated_at text)')
+  await pg.exec('create table profiles(user_id uuid primary key,name text)')
   await pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[source.id,source.day_number,source.document,source.lock_token,source.updated_at])
   const db = { from: table => new Query(table), rpc: async (name,args) => {
     calls.push({ operation:'rpc',name })
@@ -28,6 +29,8 @@ export async function harness(source, generate, converse, options={now:()=>new D
     lt(k,v) { this.filters.push([ident(k),'<',v]);return this }
     order(k,{ascending}) { this.orderBy=`${ident(k)} ${ascending ? 'asc':'desc'}`;return this }
     limit(n) { this.take=n;return this }
+    in(k,values) { this.filters.push([ident(k),'in',values]);return this }
+    range(start,end) { this.skip=start;this.take=end-start+1;return this }
     maybeSingle() { this.single=true;return this }
     upsert(value) { this.value=value;this.mode='insert';return this }
     then(resolve,reject) { return this.execute().then(resolve,reject) }
@@ -37,7 +40,13 @@ export async function harness(source, generate, converse, options={now:()=>new D
         if (this.mode==='insert') {
           const keys=Object.keys(this.value); await pg.query(`insert into ${this.table}(${keys.map(ident)}) values(${keys.map((_,i)=>`$${i+1}`)}) on conflict do nothing`,Object.values(this.value));return {data:null,error:null}
         }
-        const r=await pg.query(`select ${this.columns} from ${this.table}${this.filters.length ? ' where '+this.filters.map(([k,op],i)=>`${k}${op}$${i+1}`).join(' and '):''}${this.orderBy?' order by '+this.orderBy:''}${this.take?' limit '+Number(this.take):''}`,this.filters.map(f=>f[2]))
+        let parameter=0
+        const clauses=this.filters.map(([k,op,v])=>{
+          if(op==='in'){const slots=v.map(()=>`$${++parameter}`);return `${k} in (${slots.join(',')})`}
+          return `${k}${op}$${++parameter}`
+        })
+        const values=this.filters.flatMap(([,op,v])=>op==='in'?v:[v])
+        const r=await pg.query(`select ${this.columns} from ${this.table}${clauses.length ? ' where '+clauses.join(' and '):''}${this.orderBy?' order by '+this.orderBy:''}${this.take!==undefined?' limit '+Number(this.take):''}${this.skip?' offset '+Number(this.skip):''}`,values)
         return {data:this.single ? r.rows[0]||null:r.rows,error:null}
       } catch(e) {return {data:null,error:{message:e.message,code:e.code}}}
     }

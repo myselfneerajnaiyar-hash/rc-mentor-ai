@@ -8,9 +8,6 @@
 .numberedSentences{display:grid;gap:10px;padding:0;margin:16px 0;list-style:none}.numberedSentences li{display:flex;align-items:flex-start;gap:12px;padding:12px;border:1px solid #2b414f;border-radius:7px;background:#0d1923;color:#bac8d4;font-size:13px;line-height:1.7}.sentenceNumber{flex:0 0 28px;display:inline-flex;justify-content:center;align-items:center;height:28px;border:1px solid #4e8192;border-radius:5px;color:#93e2f1;font-weight:600}.questionContext{white-space:pre-wrap;font-size:14px;line-height:1.8;color:#bfccd6}.sentenceToPlace{margin:16px 0;padding:12px 16px;border-left:2px solid #6199aa;background:#153341;color:#d2e3e9;font-size:14px;line-height:1.7}
 
 /* The passage lesson leads the review; the action bar stays within reach. */
-.workspace{height:auto;min-height:calc(100dvh - 142px);grid-template-rows:auto 1fr auto}
-.columns{grid-template-rows:auto;align-items:start}
-.evidencePanel,.trainer{max-height:740px}
 .debrief{grid-column:1/-1;max-height:none;overflow:visible;padding:28px 30px;background:linear-gradient(115deg,#17333e,#14222c 65%);border:1px solid #41616b;border-left:3px solid #89dce9;border-radius:8px}
 .debrief>header{display:flex;justify-content:space-between;align-items:center;gap:20px}
 .debrief .debriefEyebrow{font-size:10px;letter-spacing:.16em;color:#d9bd88;margin:0 0 10px}
@@ -22,7 +19,16 @@
 .actions{position:sticky;bottom:0;z-index:20;padding:14px 0;background:#0c1721f5}
 .continue{text-transform:uppercase;letter-spacing:.04em}.continue:disabled{opacity:.55}
 .fullPassage{max-width:850px;margin:auto;font-family:Georgia,serif;font-size:19px;line-height:1.9;white-space:pre-wrap}
+.detailDialog :global(.passage-argument-workspace),.detailDialog :global(.questions-review-workspace){height:auto!important;min-height:0!important;align-items:start}
+.detailDialog :global(.passage-argument-workspace>section){min-height:0!important;overflow:visible!important}
 @media(max-width:900px){.evidencePanel,.trainer{max-height:none}.debrief{padding:22px 18px}.debrief>header{align-items:flex-start;flex-direction:column;gap:8px}.debrief>div{padding-top:18px;gap:20px}.debrief p{font-size:15px}.actions{position:fixed;padding:12px 0 calc(12px + env(safe-area-inset-bottom))}}
+
+/* Keep the document as the review's vertical scroll owner on every viewport. */
+.workspace{height:auto;min-height:calc(100dvh - 142px);grid-template-rows:auto auto auto}
+.columns{grid-template-rows:auto;align-items:start}
+.evidencePanel,.trainer{max-height:none;overflow:visible}
+.evidenceBody,.trainerBody{overflow:visible;overscroll-behavior:auto}
+.passage{max-height:none;overflow:visible;overscroll-behavior:auto}
 
 .reflection h3{font-size:12px;font-weight:600;letter-spacing:.03em;color:#e1bc86;margin:0 0 10px}
 @media(max-width:900px){.columns{align-items:stretch}}

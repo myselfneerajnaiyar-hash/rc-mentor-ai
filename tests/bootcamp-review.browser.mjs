@@ -86,10 +86,37 @@ try {
     const state=await submit(key)
     await page.getByRole('heading',{name:'Make the reasoning yours.',exact:true}).waitFor()
     check(new URL(page.url()).pathname==='/boot-camp/day/1',key+': review renders in the correct day route')
+    if(key==='rc1') {
+      for(const viewport of [{width:1440,height:1000},{width:390,height:844}]) {
+        await page.setViewportSize(viewport)
+        const scroll=await page.evaluate(()=>{
+          const workspace=document.querySelector('[aria-label$="review workspace"]')
+          const evidence=workspace?.querySelector('[class*="evidenceBody"]')
+          const trainer=workspace?.querySelector('[class*="trainerBody"]')
+          const maxScroll=document.documentElement.scrollHeight-innerHeight
+          window.scrollTo(0,Math.min(240,Math.max(0,maxScroll)))
+          return {pageMoves:document.documentElement.scrollHeight>innerHeight&&scrollY>0,evidenceOverflow:evidence&&getComputedStyle(evidence).overflowY,trainerOverflow:trainer&&getComputedStyle(trainer).overflowY}
+        })
+        check(scroll.pageMoves&&scroll.evidenceOverflow==='visible'&&scroll.trainerOverflow==='visible',`RC review scrolls with the document at ${viewport.width}px`)
+      }
+      await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>window.scrollTo(0,0))
+    }
     check(calls.some(c=>c.op==='finish'&&c.id===state.id&&c.key===key&&c.phase==='review'),key+': click handler submits the correct attempt and block')
     check(calls.some(c=>c.op==='review'&&c.id===state.id&&c.key===key&&c.status===200),key+': matching authorized review data loads')
     check((await h.service.home(student)).attempt.phase==='review',key+': review load leaves saved state at review')
     check(await page.getByRole('button',{name:next[key][0],exact:true}).isEnabled(),key+': continuation is ready without coaching')
+    const desktopFlow=await page.evaluate(()=>({evidence:getComputedStyle(document.querySelector('[class*="evidenceBody"]')).overflowY,trainer:getComputedStyle(document.querySelector('[class*="trainerBody"]')).overflowY,page:document.scrollingElement.scrollHeight>innerHeight}))
+    check(desktopFlow.evidence==='visible'&&desktopFlow.trainer==='visible'&&desktopFlow.page,key+': desktop review scrolls as one document')
+    await page.setViewportSize({width:390,height:844})
+    const mobileFlow=await page.evaluate(()=>({evidence:getComputedStyle(document.querySelector('[class*="evidenceBody"]')).overflowY,trainer:getComputedStyle(document.querySelector('[class*="trainerBody"]')).overflowY,page:document.scrollingElement.scrollHeight>innerHeight}))
+    check(mobileFlow.evidence==='visible'&&mobileFlow.trainer==='visible'&&mobileFlow.page,key+': mobile review scrolls as one document')
+    await page.setViewportSize({width:1440,height:1000})
+    if(key==='rc1') {
+      await page.getByRole('region',{name:'Question evidence'}).getByRole('button',{name:'View full passage',exact:true}).click()
+      const passageFlow=await page.evaluate(()=>{const passage=document.querySelector('[class*="evidenceBody"] [class*="passage"]');return passage?{overflow:getComputedStyle(passage).overflowY,maxHeight:getComputedStyle(passage).maxHeight}:null})
+      check(passageFlow?.overflow==='visible'&&passageFlow.maxHeight==='none','expanded passage flows with the document instead of a nested scroller')
+      await page.getByRole('region',{name:'Question evidence'}).getByRole('button',{name:'Hide full passage',exact:true}).click()
+    }
     const review=await h.service.review(student,state.id,key)
     for(let index=0;index<review.questions.length;index++) {
       await page.getByRole('button',{name:new RegExp('^Question '+(index+1)+':')}).click()
@@ -103,6 +130,12 @@ try {
       await page.getByRole('dialog',{name:'Detailed passage analysis'}).waitFor()
       await page.getByRole('dialog').getByRole('button',{name:'Blueprint',exact:true}).click()
       check(await page.getByRole('dialog').getByText(review.passageAnalysis.coreTheme,{exact:true}).isVisible(),key+': detailed passage opens')
+      const desktopScrollOwners=await page.evaluate(()=>[...document.querySelectorAll('[role="dialog"] *')].filter(el=>{const y=getComputedStyle(el).overflowY;return (y==='auto'||y==='scroll')&&el.scrollHeight>el.clientHeight+1}).map(el=>el.className))
+      check(desktopScrollOwners.every(name=>String(name).includes('dialogBody')),key+': detailed passage has no nested vertical scroll owner on desktop')
+      await page.setViewportSize({width:390,height:844})
+      const mobileScrollOwners=await page.evaluate(()=>[...document.querySelectorAll('[role="dialog"] *')].filter(el=>{const y=getComputedStyle(el).overflowY;return (y==='auto'||y==='scroll')&&el.scrollHeight>el.clientHeight+1}).map(el=>el.className))
+      check(mobileScrollOwners.every(name=>String(name).includes('dialogBody')),key+': detailed passage has no nested vertical scroll owner on mobile')
+      await page.setViewportSize({width:1440,height:1000})
       await click('Back to review')
     }
     await page.reload();await page.getByRole('heading',{name:'Make the reasoning yours.',exact:true}).waitFor()

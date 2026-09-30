@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { usePathname } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { AUCTOR_BRANDING } from "@/lib/tenant/branding"
 import { getExamCapabilities } from "@/lib/tenant/capabilities"
@@ -11,6 +12,10 @@ import Recovery from "@/components/mobile/Recovery"
 const TenantContext = createContext(null)
 
 export default function TenantProvider({ children }) {
+  const pathname = usePathname()
+  // Public auth pages need to be usable before tenant/session lookups complete.
+  // The resolved branding still replaces the default as soon as it is available.
+  const isPublicAuthRoute = pathname === "/signup" || pathname === "/login"
   const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false }, access: "pending" })
 
   const generation=useRef(0),flight=useRef(null);
@@ -51,10 +56,11 @@ export default function TenantProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    if (pathname === "/preview-ad") return
     refreshContext()
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {setState(current=>current.user?.id&&current.user.id!==session?.user?.id?{...current,loading:true,user:null,profile:null}:current);refreshContext(session);})
     return () => subscription.unsubscribe()
-  }, [refreshContext])
+  }, [refreshContext, pathname])
 
   useEffect(() => {
     const branding = state.branding || AUCTOR_BRANDING
@@ -65,10 +71,11 @@ export default function TenantProvider({ children }) {
   }, [state.branding])
 
   const value = useMemo(() => ({ ...state, refreshContext: () => refreshContext(undefined, true) }), [state, refreshContext])
-  if(state.access === "network_error") return <main className="p-6"><Recovery area="entitlement" message={state.error} onRetry={()=>{setState(current=>({...current,loading:true,access:"pending"}));refreshContext();}}/></main>
-  if (state.loading) return <TenantLoading />
-  if (!state.loading && state.access === "unknown_hostname") return <TenantError title="Unknown institute hostname" message="This learning portal is not configured." />
-  if (!state.loading && !["pending", "guest", "allowed"].includes(state.access)) return <TenantError title="Access denied" message="Your account does not belong to this institute." />
+  if (pathname === "/preview-ad") return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>
+  if (!isPublicAuthRoute && state.access === "network_error") return <main className="p-6"><Recovery area="entitlement" message={state.error} onRetry={()=>{setState(current=>({...current,loading:true,access:"pending"}));refreshContext();}}/></main>
+  if (!isPublicAuthRoute && state.loading) return <TenantLoading />
+  if (!isPublicAuthRoute && !state.loading && state.access === "unknown_hostname") return <TenantError title="Unknown institute hostname" message="This learning portal is not configured." />
+  if (!isPublicAuthRoute && !state.loading && !["pending", "guest", "allowed"].includes(state.access)) return <TenantError title="Access denied" message="Your account does not belong to this institute." />
   return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>
 }
 
