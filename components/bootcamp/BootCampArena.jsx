@@ -2,11 +2,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { bootcampRequest } from '@/lib/bootcamp/client'
-import { trainingMonths } from '@/lib/bootcamp/calendar.mjs'
+import { BOOTCAMP_ACCESS_END, BOOTCAMP_PROGRAM_END, BOOTCAMP_START_DATE, trainingMonths } from '@/lib/bootcamp/calendar.mjs'
 import s from './arena.module.css'
 import BootCampLeaderboard from './BootCampLeaderboard'
 
 const months=trainingMonths()
+const displayDate=date=>new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'})
+const monthForDate=date=>months.findIndex(m=>m.key===date.slice(0,7))
 const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
 const labels={TODAY:'TODAY',OPEN_BACKLOG:'CATCH-UP',IN_PROGRESS:'IN PROGRESS',ATTEMPTED:'ATTEMPTED',COMPLETED:'COMPLETED',PREVIEW:'PREVIEW',LOCKED:'LOCKED'}
 
@@ -40,22 +42,22 @@ function AnalyticsCard() {
 export default function BootCampArena({ session, catalog, busy, onChat, unavailable = false }) {
   const [month,setMonth]=useState(0)
   const day=catalog?.calendar?.todayDay || null,period=catalog?.calendar?.period
-  useEffect(()=>{if(catalog?.calendar?.today)setMonth(catalog.calendar.today>='2026-11-01'?1:0)},[catalog?.calendar?.today])
+  useEffect(()=>{if(catalog?.calendar?.today){const index=monthForDate(catalog.calendar.today);setMonth(index<0?monthForDate(BOOTCAMP_START_DATE):index)}},[catalog?.calendar?.today])
   const displayDay=day?String(day).padStart(2,'0'):null
   const entry=catalog?.days?.find(d=>d.day===day),completed=session?.status==='completed'
   const action=completed?`View Day ${displayDay} Report`:session?`Continue Day ${displayDay}`:`Start Day ${displayDay}`
-  const periodTitle=period==='UPCOMING'?'Training starts October 1.':period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose a day to catch up.':'Your practice library is open.'
+  const periodTitle=period==='UPCOMING'?`Training starts ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose a day to catch up.':'Your practice library is open.'
   const current=months[month]
   const missionText=day
     ? entry?.accessible
       ? completed?'Today’s workout is complete. Your report is ready.':session?'Pick up where you left off.':'Your scheduled workout is ready.'
       : 'Today’s session is being prepared. Browse available days in the meantime.'
-    : period==='UPCOMING'?'Your 50-day calendar opens on October 1.':period==='CLOSED'?'Your saved training and analytics remain available.':'Select an open day to continue training.'
+    : period==='UPCOMING'?`Your 50-day calendar opens on ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'Your saved training and analytics remain available.':'Select an open day to continue training.'
 
   return <section className={s.arena}>
     <header className={s.pageIntro}>
       <div><p className={s.eyebrow}>AUCTOR VARC / BOOT CAMP</p><h1>Train with intent.<br/><span>Track every day.</span></h1><p className={s.intro}>A focused 50-day path to sharper reading and more confident reasoning.</p></div>
-      <div className={s.programNote}><span>THE TRAINING WINDOW</span><strong>01 OCT — 29 NOV 2026</strong><small>Practice access through January 31, 2027</small></div>
+      <div className={s.programNote}><span>THE TRAINING WINDOW</span><strong>{displayDate(BOOTCAMP_START_DATE)} — {displayDate(BOOTCAMP_PROGRAM_END)}</strong><small>Practice access through {displayDate(BOOTCAMP_ACCESS_END)}</small></div>
     </header>
 
     <div className={s.dashboardGrid}>

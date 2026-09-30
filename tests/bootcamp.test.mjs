@@ -197,9 +197,9 @@ test('Daily RC review adapter preserves authored meaning, evidence, outcomes and
 test('calendar derives exactly 50 training dates and Monday-first placement from start date',async()=>{
   const {trainingMonths}=await import('../lib/bootcamp/calendar.mjs')
   const months=trainingMonths(), days=months.flatMap(m=>m.cells.filter(c=>c?.day))
-  assert.equal(months.length,2);assert.equal(days.length,50)
-  assert.equal(months[0].cells.findIndex(c=>c?.day===1),3)
-  assert.equal(days[0].iso,'2026-10-01');assert.equal(days.at(-1).iso,'2026-11-19')
+  assert.equal(months.length,3);assert.equal(days.length,50)
+  assert.equal(months[0].cells.findIndex(c=>c?.day===1),7)
+  assert.equal(days[0].iso,'2026-10-05');assert.equal(days.at(-1).iso,'2026-11-23')
   assert.deepEqual(trainingMonths('2028-02-01'),months,'an enrollment/custom start cannot shift the fixed program')
 })
 
@@ -207,7 +207,7 @@ test('contextual chat authenticates ownership, rejects unfinished blocks, is rea
   const seen=[]
   const h=await harness(fixture(),undefined,async(context,messages)=>{seen.push({context,messages});return 'An evidence-based answer.'})
   try {
-    const input={messages:[{role:'user',content:'What is today’s plan?'}]}
+    const input={messages:[{role:'user',content:'What is todayÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s plan?'}]}
     assert.equal((await h.service.chat(student,input)).reply,'An evidence-based answer.')
     assert.equal(seen[0].context.day.status,'not_started')
     assert.equal((await h.service.home(student)).attempt,null)

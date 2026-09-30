@@ -1,10 +1,11 @@
-﻿import test from 'node:test'
+import test from 'node:test'
 import assert from 'node:assert/strict'
-import { BOOTCAMP_CALENDAR,getBootCampCalendarState,trainingMonths } from '../lib/bootcamp/calendar.mjs'
+import { BOOTCAMP_ACCESS_END, BOOTCAMP_CALENDAR, BOOTCAMP_PROGRAM_END, getBootCampCalendarState,trainingMonths } from '../lib/bootcamp/calendar.mjs'
 import { requireBootCampEntitlement } from '../lib/bootcamp/access.mjs'
+import { buildBootCampLeaderboard } from '../lib/bootcamp/leaderboard.mjs'
 import { fixture,harness,student } from './helpers/bootcamp-db.mjs'
 
-for(const [date,today,open] of [['2026-10-01',1,1],['2026-10-05',5,5],['2026-10-25',25,25],['2026-11-19',50,50],['2026-11-20',null,50],['2026-11-29',null,50],['2027-01-31',null,50]])test(`fixed calendar ${date}`,()=>{
+for(const [date,today,open] of [['2026-10-05',1,1],['2026-10-09',5,5],['2026-10-29',25,25],['2026-11-23',50,50],['2026-11-24',null,50],['2026-12-03',null,50],['2027-02-04',null,50]])test(`fixed calendar ${date}`,()=>{
   const states=BOOTCAMP_CALENDAR.map(d=>getBootCampCalendarState(date,d.day))
   assert.equal(states.filter(d=>d.unlocked).length,open)
   assert.deepEqual(states.filter(d=>d.state==='TODAY').map(d=>d.day),today?[today]:[])
@@ -14,19 +15,41 @@ for(const [date,today,open] of [['2026-10-01',1,1],['2026-10-05',5,5],['2026-10-
 })
 test('one mapping, ten buffer dates, India midnight boundaries, no invented CAT countdown',()=>{
   assert.equal(BOOTCAMP_CALENDAR.length,50)
-  assert.equal(BOOTCAMP_CALENDAR[0].date,'2026-10-01');assert.equal(BOOTCAMP_CALENDAR.at(-1).date,'2026-11-19')
+  assert.equal(BOOTCAMP_CALENDAR[0].date,'2026-10-05');assert.equal(BOOTCAMP_CALENDAR.at(-1).date,'2026-11-23')
+  assert.equal(BOOTCAMP_PROGRAM_END,'2026-12-03');assert.equal(BOOTCAMP_ACCESS_END,'2027-02-04')
+  assert.deepEqual(BOOTCAMP_CALENDAR.slice(0,3).map(d=>d.date),['2026-10-05','2026-10-06','2026-10-07'])
+  assert.deepEqual(trainingMonths().map(m=>m.label),['October 2026','November 2026','December 2026'])
   assert.equal(trainingMonths().flatMap(m=>m.cells).filter(c=>c?.buffer).length,10)
-  assert.equal(getBootCampCalendarState('2026-09-30T18:29:59Z',1).state,'LOCKED')
-  assert.equal(getBootCampCalendarState('2026-09-30T18:30:00Z',1).state,'TODAY')
-  assert.equal(getBootCampCalendarState('2026-11-20').period,'BUFFER')
-  assert.equal(getBootCampCalendarState('2026-11-30').period,'LIBRARY')
-  assert.equal(getBootCampCalendarState('2027-02-01',1).unlocked,false)
-  assert.equal(getBootCampCalendarState('2026-10-25').daysToExam,null)
-  assert.equal(getBootCampCalendarState('2026-10-25',null,'not_started','2026-11-10').daysToExam,16)
-  assert.equal(getBootCampCalendarState('2026-10-25',25,'completed').state,'COMPLETED')
-  assert.equal(getBootCampCalendarState('2026-10-25',25,'completed').isToday,true)
-  assert.equal(getBootCampCalendarState('2026-10-25',23,'in_progress').state,'IN_PROGRESS')
-  assert.throws(()=>getBootCampCalendarState('2026-10-25',51))
+  assert.equal(getBootCampCalendarState('2026-10-04T18:29:59Z',1).state,'LOCKED')
+  assert.equal(getBootCampCalendarState('2026-10-04T18:30:00Z',1).state,'TODAY')
+  assert.equal(getBootCampCalendarState('2026-11-24').period,'BUFFER')
+  assert.equal(getBootCampCalendarState('2026-12-04').period,'LIBRARY')
+  assert.equal(getBootCampCalendarState('2027-02-05',1).unlocked,false)
+  assert.equal(getBootCampCalendarState('2026-10-29').daysToExam,null)
+  assert.equal(getBootCampCalendarState('2026-10-29',null,'not_started','2026-11-14').daysToExam,16)
+  assert.equal(getBootCampCalendarState('2026-10-29',25,'completed').state,'COMPLETED')
+  assert.equal(getBootCampCalendarState('2026-10-29',25,'completed').isToday,true)
+  assert.equal(getBootCampCalendarState('2026-10-29',23,'in_progress').state,'IN_PROGRESS')
+  assert.throws(()=>getBootCampCalendarState('2026-10-29',51))
+})
+test('development preview opens authored days before launch without changing scheduled leaderboard dates',async()=>{
+  let today='2026-10-01'
+  const h=await harness(fixture(),undefined,undefined,{now:()=>today,previewAccess:true})
+  try {
+    await h.service.enroll(student)
+    const home=await h.service.home(student)
+    assert.equal(home.calendar.devPreview,true)
+    assert.equal(home.calendar.period,'UPCOMING')
+    assert.equal(home.days[0].accessible,true)
+    assert.equal(home.days[0].releaseDate,'2026-10-05')
+    const previewAttempt=await h.service.start(student,1)
+    assert.equal(previewAttempt.dayNumber,1)
+    assert.equal((await h.service.home(student,1)).attempt.id,previewAttempt.id)
+    const early=buildBootCampLeaderboard({period:'daily',now:'2026-10-01T10:00:00Z',currentUserId:student,
+      attempts:[{userId:student,dayNumber:1,state:{status:'completed',completed_at:'2026-10-01T10:00:00Z'},blocks:Array(5).fill({status:'completed',correct:5})}]})
+    assert.equal(early.current.score,0)
+    assert.equal(early.window.scheduledDays.length,0)
+  } finally {await h.close()}
 })
 test('existing entitlement rules: active trial, purchase, institute, expiry, and no invented extension',()=>{
   const now=new Date('2026-10-25T00:00:00Z'),profile={trial_expires_at:'2026-10-26T00:00:00Z'}
@@ -36,10 +59,10 @@ test('existing entitlement rules: active trial, purchase, institute, expiry, and
   assert.throws(()=>requireBootCampEntitlement({profile:{},subscription:{expires_at:'2026-10-20'}},now),e=>e.status===402)
   assert.equal(requireBootCampEntitlement({profile:{institute_id:'a'},resolvedTenant:{ok:true,kind:'institute',institute:{id:'a'}}},now).kind,'institute')
   assert.throws(()=>requireBootCampEntitlement({profile:{institute_id:'a'},resolvedTenant:{ok:true,kind:'institute',institute:{id:'b'}}},now),e=>e.status===402)
-  assert.throws(()=>requireBootCampEntitlement({profile:{},subscription:{expires_at:'2026-11-30'}},new Date('2027-01-01')),e=>e.status===402)
+  assert.throws(()=>requireBootCampEntitlement({profile:{},subscription:{expires_at:'2026-12-04'}},new Date('2027-01-01')),e=>e.status===402)
 })
 test('SQL/service: late join, gaps, arbitrary backlog, official result, partial resume and route locks',async()=>{
-  let today='2026-10-25'
+  let today='2026-10-29'
   const h=await harness(fixture(),undefined,undefined,{now:()=>today})
   try {
     for(const day of [2,3,5,23,24,25,26,27,50]){const r=fixture(day);await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[r.id,r.day_number,r.document,r.lock_token,r.updated_at])}
@@ -70,20 +93,20 @@ test('SQL/service: late join, gaps, arbitrary backlog, official result, partial 
     assert.deepEqual(after.data.state,official.data.state)
     assert.equal((await h.pg.query('select count(*)::integer as n from bootcamp_day_attempts where day_number=23')).rows[0].n,1)
     for(const day of [5,2,24])assert.equal((await h.service.start(student,day)).dayNumber,day)
-    today='2026-10-27'
+    today='2026-10-31'
     const returned=await h.service.home(student)
     assert.equal(returned.currentDay,27);assert.equal(returned.days[25].state,'OPEN_BACKLOG')
     assert.equal(returned.days[26].state,'TODAY');assert.equal(returned.days[27].state,'LOCKED')
     assert.equal((await h.service.start(student,27)).dayNumber,27)
-    today='2026-10-24'
+    today='2026-10-28'
     await assert.rejects(h.service.get(student,current.id),e=>e.status===403)
     await assert.rejects(h.service.review(student,current.id,'warmup'),e=>e.status===403)
     await assert.rejects(h.service.coach(student,current.id),e=>e.status===403)
-    today='2026-11-20'
+    today='2026-11-24'
     assert.equal((await h.service.home(student)).currentDay,null)
     assert.equal((await h.service.start(student,50)).dayNumber,50)
-    today='2027-01-31';assert.equal((await h.service.home(student)).days.filter(d=>d.unlocked).length,50)
-    today='2027-02-01';await assert.rejects(h.service.start(student,3),e=>e.status===403)
+    today='2027-02-04';assert.equal((await h.service.home(student)).days.filter(d=>d.unlocked).length,50)
+    today='2027-02-05';await assert.rejects(h.service.start(student,3),e=>e.status===403)
     assert.ok(h.calls.every(c=>!c.table||c.table.startsWith('bootcamp_')))
   } finally {await h.close()}
 })

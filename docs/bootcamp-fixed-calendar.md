@@ -1,12 +1,12 @@
-﻿# Boot Camp fixed-calendar release
+# Boot Camp fixed-calendar release
 
 ## Inspection
 
-The existing calendar visually mapped 50 days from October 1, 2026, but the application chose the next incomplete day and required every preceding day to be completed. `bootcamp_create` repeated that sequential restriction. Report navigation checked content availability without checking its release date. The calendar also displayed non-current days as locked even where a link was available.
+The existing calendar visually mapped 50 days from October 5, 2026, but the application chose the next incomplete day and required every preceding day to be completed. `bootcamp_create` repeated that sequential restriction. Report navigation checked content availability without checking its release date. The calendar also displayed non-current days as locked even where a link was available.
 
 Existing Boot Camp enrollment/day/block/question tables already support one official attempt per enrollment/day, serialized creation, immutable source snapshots and finalized answers, block checkpoints, question saves, and timer-preserving resume. No duplicate attempt or per-user scheduling model is required.
 
-Boot Camp authentication previously enforced identity and tenant membership but did not use the existing payment entitlement helper. The new Boot Camp access wrapper reuses that helper without changing its subscription, premium, trial or institute rules. Expired subscriptions are not silently extended through January.
+Boot Camp authentication previously enforced identity and tenant membership but did not use the existing payment entitlement helper. The new Boot Camp access wrapper reuses that helper without changing its subscription, premium, trial or institute rules. Expired subscriptions are not silently extended through February.
 
 Live read-only inspection found the final `Auctor_Boot_Camp_Day_1_FINAL_VALID_FORMAT_v2.docx` document, enriched with 25 questions and 28 enrichment entries. There were three enrollments, three day attempts, fifteen block attempts and seventy-five question attempts. The earlier `bootcamp_history` RPC was absent (PGRST202). No live content or attempt was changed.
 
@@ -16,11 +16,11 @@ Live read-only inspection found the final `Auctor_Boot_Camp_Day_1_FINAL_VALID_FO
 
 | Period | Behavior |
 |---|---|
-| Before October 1, 2026 | Upcoming; all curriculum days locked |
-| October 1-November 19 | Day 1-Day 50, one release each date |
-| November 20-29 | Ten buffer/catch-up dates, no new content days |
-| November 30-January 31, 2027 | Same open practice library |
-| After January 31 | Practice access closed; historical records retained |
+| Before October 5, 2026 | Upcoming; all curriculum days locked |
+| October 5-November 23 | Day 1-Day 50, one release each date |
+| November 24-December 3 | Ten buffer/catch-up dates, no new content days |
+| December 4-February 4, 2027 | Same open practice library |
+| After February 4 | Practice access closed; historical records retained |
 
 Release and progress are distinct. A completed or in-progress day can still be today's mission. Published content availability is also distinct from calendar release: a released day without content shows Preparing, never substitutes an older day for today's mission.
 
@@ -28,7 +28,7 @@ All student API paths that access a day use server-time validation: start, selec
 
 Completed start requests return the existing report state and ID, never create/reset an attempt. No redo/reset action is exposed. Existing intra-day completion and scoring behavior is unchanged.
 
-The landing screen retains the left mission/right October-November calendar. Today is primary even with backlog or a completed result. Previous days have Open/In progress/Completed labels and are accessible in any order. Ten November buffer cells are labelled without Day 51-60. Buffer/library periods provide a calendar browsing CTA. Counts use neutral completed/catch-up language. Backlog reports link back to today's mission rather than unlocking a future day.
+The landing screen retains the left mission/right October-December calendar. Today is primary even with backlog or a completed result. Previous days have Open/In progress/Completed labels and are accessible in any order. Ten November-December buffer cells are labelled without Day 51-60. Buffer/library periods provide a calendar browsing CTA. Counts use neutral completed/catch-up language. Backlog reports link back to today's mission rather than unlocking a future day.
 
 The calendar service exposes `calendar.todayDay`, `daysToExam`, and `nudge` data for manual broadcasts. No authoritative CAT date configuration was found, so the live countdown stays null and no date is guessed. The service supports an explicitly supplied exam date when a product-authoritative configuration is established. No notification infrastructure changed.
 
@@ -69,13 +69,13 @@ Other checks: existing Boot Camp browser regression suite, trainer browser suite
 - 33 service/calendar/history tests passed.
 - 67 calendar browser checks passed for all six requested dates, late join/gap, arbitrary backlog, two-block resume, report/no-retry, prelaunch and January boundaries, plus desktop and 390/320px mobile layouts.
 - 232 existing Boot Camp browser regression checks passed.
-- 31 trainer-history browser checks passed with the test clock advancing through October 1-3.
+- 31 trainer-history browser checks passed with the test clock advancing through October 5-7.
 - Scoped lint, explicit TypeScript check and production build passed. Existing unrelated leaderboard/cron build diagnostics remain; Node also reports the existing entitlement module's unspecified module type when imported by the test runner.
 - Concurrent browser runs initially timed out; all three suites passed independently with no application changes after the build.
 - Final Day 1 content, document metadata, lock token and update timestamp exactly matched the read-only pre-test snapshot. No live content or attempt writes occurred.
 - The local unauthenticated Boot Camp API returns 401. Entitlement states are covered by unit tests; browser suites use intercepted authentication and isolated PostgreSQL.
 - At final readback, the live history prerequisite still returned PGRST202. Both pending SQL migrations above must be applied in order before live later-day starts can work. No live SQL migration was applied by this task.
-- App left running at http://localhost:3000. With the real September 24 date, the program correctly shows Upcoming and locks all content until October 1.
+- App left running at http://localhost:3000. With the real September 24 date, the program correctly shows Upcoming and locks all content until October 5.
 
 For local PowerShell browser checks, set `$env:BOOTCAMP_TEST_BASE_URL='http://localhost:3000'` before running the corresponding npm script. Browser artifacts are in the OS temp `auctor-bootcamp-calendar-acceptance` directory. Published/enriched content must exist for a calendar-open day; unpublished days are shown as Preparing. The CAT countdown remains unset until an authoritative exam date is supplied, and January practice access remains subject to existing entitlement rules.
 

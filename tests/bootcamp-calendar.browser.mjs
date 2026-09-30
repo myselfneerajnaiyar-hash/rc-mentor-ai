@@ -1,4 +1,4 @@
-﻿// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
+// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
 import { chromium } from 'playwright-core'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -10,7 +10,7 @@ const base=process.env.BOOTCAMP_TEST_BASE_URL || 'http://localhost:3111'
 assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname))
 const source=process.env.BOOTCAMP_SOURCE_FILE ? JSON.parse(await readFile(process.env.BOOTCAMP_SOURCE_FILE,'utf8')) : fixture()
 const chatEvidence=[]
-let today='2026-10-01'
+let today='2026-10-05'
 const h=await harness(source,async()=>{throw Error('Exercise coaching fallback')},async(context,messages)=>{
   chatEvidence.push({context,messages})
   return context.focus ? `Let's discuss ${context.focus.label}, question 3. Your saved answer was ${context.focus.questions[2].response}.` : 'Your training starts with five warm-up questions, followed by three RC passages and verbal ability.'
@@ -54,7 +54,7 @@ const check=(condition,message)=>{assert.ok(condition,message);checks++;console.
 async function click(name) {await page.getByRole('button',{name,exact:true}).click()}
 for(let day=2;day<=50;day++){const row=fixture(day);await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at])}
 try {
-  for(const [date,day,opened] of [['2026-10-01',1,1],['2026-10-05',5,5],['2026-10-25',25,25],['2026-11-19',50,50],['2026-11-20',null,50],['2026-11-29',null,50]]) {
+  for(const [date,day,opened] of [['2026-10-05',1,1],['2026-10-09',5,5],['2026-10-29',25,25],['2026-11-23',50,50],['2026-11-24',null,50],['2026-12-03',null,50]]) {
     today=date
     await page.goto(base+'/boot-camp')
   check(await page.getByRole('link',{name:/Browse Days/}).getAttribute('href')==='#bootcamp-calendar','Browse Days jumps to the existing calendar')
@@ -69,7 +69,7 @@ try {
     if(day)await page.getByRole('link',{name:`Enter Day ${String(day).padStart(2,'0')}`,exact:true}).waitFor()
     else await page.getByRole('heading',{name:'Time to catch up and review.',exact:true}).waitFor()
     let links=0,buffers=0,currents=0
-    for(const name of ['October 2026','November 2026']) {
+    for(const name of ['October 2026','November 2026','December 2026']) {
       await page.getByRole('tab',{name,exact:true}).click()
       links+=await calendar.getByRole('link').count()
       buffers+=await calendar.locator('[data-buffer=true]').count()
@@ -80,15 +80,15 @@ try {
     check(currents===(day?1:0),date+' has exactly the mapped current mission')
     check(buffers===10,date+' has ten buffer dates without curriculum numbers')
     check(!/you missed|days behind|broken streak/i.test(await page.locator('body').innerText()),date+' has neutral language')
-    await page.getByRole('tab',{name:date.startsWith('2026-10')?'October 2026':'November 2026',exact:true}).click()
+    await page.getByRole('tab',{name:date.startsWith('2026-10')?'October 2026':date.startsWith('2026-11')?'November 2026':'December 2026',exact:true}).click()
     for(const width of [1440,390,320]){await page.setViewportSize({width,height:width===1440?1000:844});check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),date+' fits '+width);await page.screenshot({path:path.join(output,`${date}-${width}.png`),fullPage:true})}
     await page.setViewportSize({width:1440,height:1000})
   }
-  today='2026-10-25';await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 25',exact:true}).click();await page.getByRole('button',{name:/Start today/}).click();await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
+  today='2026-10-29';await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 25',exact:true}).click();await page.getByRole('button',{name:/Start today/}).click();await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
   check((await h.service.home(student)).attempt.dayNumber===25,'late join starts today without completing earlier days')
   await page.goto(base+'/boot-camp/day/26');await page.getByRole('alert').filter({hasText:'opens on 2026-10-26'}).waitFor()
   check(await page.getByRole('button',{name:/Start today/}).count()===0,'direct future route exposes no start button')
-  today='2026-10-27';await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 27',exact:true}).waitFor()
+  today='2026-10-31';await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 27',exact:true}).waitFor()
   check(await page.getByRole('link',{name:'Day 26 - AVAILABLE',exact:true}).isVisible(),'return after a gap leaves October 26 open')
   await page.getByRole('link',{name:'Day 23 - AVAILABLE',exact:true}).click();await page.getByRole('button',{name:/Start today/}).click();await click('Begin my warm-up')
   for(const [key,label,next] of [['warmup','Warm-up','RC 1'],['rc1','RC 1','RC 2']]){await click(`Start ${label}`);await click('Finish this block early');await click('Finish and review');await page.getByRole('heading',{name:'Make the reasoning yours.',exact:true}).waitFor();await click(`Continue to ${next}`);check((await h.service.home(student,23)).attempt.currentBlock!==key,'completed block persists '+key)}
@@ -103,9 +103,9 @@ try {
   check(await page.getByRole('button',{name:/Start again|Retry day|Reset|Start today/}).count()===0,'completed day opens its report with no retry CTA')
   check(await page.getByRole('link',{name:/Go to today's mission: Day 27/}).isVisible(),'backlog report directs attention back to today')
   check((await h.service.start(student,23)).id===before.id,'start API cannot create a second official attempt')
-  today='2027-01-31';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'Your practice library is open.',exact:true}).waitFor();check((await h.service.home(student)).days.every(d=>d.unlocked),'January library keeps all 50 days open')
-  today='2027-02-01';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'This Boot Camp has ended.',exact:true}).waitFor();check(await page.getByRole('region',{name:'50-day training calendar'}).getByRole('link').count()===0,'practice closes after January access window')
-  today='2026-09-24';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'Training starts October 1.',exact:true}).waitFor();check(await page.getByRole('link',{name:/Enter Day/}).count()===0,'before launch no premature day access')
+  today='2027-02-04';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'Your practice library is open.',exact:true}).waitFor();check((await h.service.home(student)).days.every(d=>d.unlocked),'January library keeps all 50 days open')
+  today='2027-02-05';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'This Boot Camp has ended.',exact:true}).waitFor();check(await page.getByRole('region',{name:'50-day training calendar'}).getByRole('link').count()===0,'practice closes after January access window')
+  today='2026-10-04';await page.goto(base+'/boot-camp');await page.getByRole('heading',{name:'Training starts 05 Oct 2026.',exact:true}).waitFor();check(await page.getByRole('link',{name:/Enter Day/}).count()===0,'before launch no premature day access')
   check(errors.length===0,'no browser runtime exceptions')
   await writeFile(path.join(output,'results.json'),JSON.stringify({checks,errors,calls},null,2))
   console.log('Calendar browser passed:',checks,'checks. Artifacts:',output)

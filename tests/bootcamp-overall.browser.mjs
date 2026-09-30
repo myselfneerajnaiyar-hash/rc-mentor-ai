@@ -1,4 +1,4 @@
-﻿// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
+// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
 import { chromium } from 'playwright-core'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -11,7 +11,7 @@ const base=process.env.BOOTCAMP_TEST_BASE_URL || 'http://localhost:3111'
 assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname))
 const source=process.env.BOOTCAMP_SOURCE_FILE ? JSON.parse(await readFile(process.env.BOOTCAMP_SOURCE_FILE,'utf8')) : fixture()
 const chatEvidence=[]
-let today='2026-10-01'
+let today='2026-10-05'
 const h=await harness(source,async()=>{throw Error('Exercise coaching fallback')},async(context,messages)=>{
   chatEvidence.push({context,messages})
   return context.focus ? `Let's discuss ${context.focus.label}, question 3. Your saved answer was ${context.focus.questions[2].response}.` : 'Your training starts with five warm-up questions, followed by three RC passages and verbal ability.'

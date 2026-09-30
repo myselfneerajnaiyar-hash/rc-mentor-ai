@@ -1,4 +1,4 @@
-﻿import test from 'node:test'
+import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fixture,harness,student,other } from './helpers/bootcamp-db.mjs'
 import { adaptDay } from '../lib/bootcamp/content.mjs'
@@ -85,7 +85,7 @@ test('raw correction changes revision and briefing; fifty-day prompt excludes ol
   assert.equal(after.history.recentEvidence.length,3)
 })
 test('SQL migration: complete Day 1 -> Day 2 -> Day 3; fresh history, ownership, resume and sequencing',async()=>{
-  let today='2026-10-01'
+  let today='2026-10-05'
   const h=await harness(fixture(),undefined,undefined,{now:()=>today})
   try {
     for(const day of [2,3]){const r=fixture(day);await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[r.id,r.day_number,r.document,r.lock_token,r.updated_at])}
@@ -99,7 +99,7 @@ test('SQL migration: complete Day 1 -> Day 2 -> Day 3; fresh history, ownership,
       await act('advance')
       for(const block of adaptDay(fixture(day)).snapshot.blocks){await act('block_start',{key:block.key});const q=block.questions[0];await act('responses',{key:block.key,questionId:q.id,presented:true,response:q.answer});await act('finish',{key:block.key});await act('advance',{reviewed:true})}
       assert.equal(state.status,'completed')
-      today=`2026-10-0${day+1}`
+      today=new Date(Date.UTC(2026,9,5+day)).toISOString().slice(0,10)
       assert.equal((await h.service.home(student)).currentDay,day+1)
       assert.equal((await h.service.home(student,day)).attempt.id,state.id)
     }

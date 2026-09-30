@@ -1,4 +1,4 @@
-﻿// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
+// Production UI + actual Boot Camp handlers + local PostgreSQL; no live data writes.
 import { chromium } from 'playwright-core'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -10,7 +10,7 @@ const base=process.env.BOOTCAMP_TEST_BASE_URL || 'http://localhost:3111'
 assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname))
 const source=process.env.BOOTCAMP_SOURCE_FILE ? JSON.parse(await readFile(process.env.BOOTCAMP_SOURCE_FILE,'utf8')) : fixture()
 const chatEvidence=[]
-let today='2026-10-01'
+let today='2026-10-05'
 const h=await harness(source,async()=>{throw Error('Exercise coaching fallback')},async(context,messages)=>{
   chatEvidence.push({context,messages})
   return context.focus ? `Let's discuss ${context.focus.label}, question 3. Your saved answer was ${context.focus.questions[2].response}.` : 'Your training starts with five warm-up questions, followed by three RC passages and verbal ability.'
@@ -65,7 +65,7 @@ try {
   for(const block of [{key:'warmup',questions:source.document.content.warmup},...source.document.content.passages.map((p,i)=>({key:`rc${i+1}`,questions:p.questions})),{key:'va',questions:source.document.content.verbalAbility}]){
     await act('block_start',{key:block.key});for(const q of block.questions)await act('responses',{key:block.key,questionId:q.id,presented:true,response:q.answer});await act('finish',{key:block.key});await act('advance',{reviewed:true})
   }
-  today='2026-10-02'
+  today='2026-10-06'
   await page.goto(base+'/boot-camp/day/1/report');await page.getByRole('link',{name:/Go to today's mission: Day 02/}).click()
   await page.waitForURL('**/boot-camp/day/2')
   check(page.url().includes('/day/2'),'Day 1 report links to Day 2')
@@ -96,7 +96,7 @@ try {
   }
   await page.getByRole('button',{name:/See my Day 02 report/}).click();await page.getByRole('region',{name:'Day 2 training report'}).waitFor()
   check((await h.service.home(student,2)).attempt.report.correct===25,'Day 2 report preserves 25 saved correct results')
-  today='2026-10-03'
+  today='2026-10-07'
   await page.reload()
   await page.getByRole('link',{name:/Go to today's mission: Day 03/}).click();await page.getByRole('button',{name:/Start today/}).click();await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
   check(await page.getByText(/50 correct from 50 attempted/).isVisible(),'Day 3 automatically uses Day 1 plus Day 2 history')

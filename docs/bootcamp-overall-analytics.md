@@ -1,12 +1,12 @@
-﻿# Boot Camp overall analytics and multi-day readiness
+# Boot Camp overall analytics and multi-day readiness
 
 ## Inspection and scope
 
-The student app already consumes generic Days 1–50 through `adaptDay`, stable source IDs, enrichment keyed by target IDs, immutable attempt snapshots, and the fixed October 1–November 19 curriculum mapping. Existing Day 1 compatibility routes remain aliases. The daily analytics component had a hardcoded Day 01 label; it now receives the actual day number.
+The student app already consumes generic Days 1â€“50 through `adaptDay`, stable source IDs, enrichment keyed by target IDs, immutable attempt snapshots, and the fixed October 5â€“November 23 curriculum mapping. Existing Day 1 compatibility routes remain aliases. The daily analytics component had a hardcoded Day 01 label; it now receives the actual day number.
 
 There was no overall analytics route. Recharts was already installed. Raw Boot Camp question outcomes and snapshot type/skill metadata are suitable for aggregates. Positive active_ms is approximate question-view time, not passage-reading time. Saved-answer and block-finish timestamps support observed activity, but not a complete historical event log. No new database table, view, function or migration was necessary.
 
-Read-only live inventory on September 24, 2026: Day 1 and Day 2 are enriched, each with 25 questions. Days 3–10 are absent. No curriculum, attempts, Content Engine, legacy product, subscription or scoring data was changed. Synthetic curriculum exists only inside isolated test databases.
+Read-only live inventory on September 24, 2026: Day 1 and Day 2 are enriched, each with 25 questions. Days 3â€“10 are absent. No curriculum, attempts, Content Engine, legacy product, subscription or scoring data was changed. Synthetic curriculum exists only inside isolated test databases.
 
 ## Files
 
@@ -30,7 +30,7 @@ Only aggregate counts, dates, approved taxonomy names and evidence-based text le
 
 - Performance uses fully completed day attempts with all five blocks completed. Partial days are shown separately with saved-answer counts and resume links.
 - Attempted = correct + incorrect. Accuracy = total correct / total attempted, not average of daily percentages. No attempts yields null, displayed as a dash.
-- RC includes only rc1–rc3; VA only va. Warm-up is separate in RC/VA comparisons and included in overall/type/skill profiles.
+- RC includes only rc1â€“rc3; VA only va. Warm-up is separate in RC/VA comparisons and included in overall/type/skill profiles.
 - Completed days / 50 gives curriculum progress. Started requires actual block start or saved response, not just opening the mission. RC passages, VA answered questions, and warm-ups are counted within completed days.
 - Question-type/skill bars require at least four answered questions across two completed curriculum days. Sample sizes are visible.
 - Direction compares the latest three completed curriculum days with the preceding three, ordered by curriculum number. Each window needs four answers across two days. A 10 percentage-point change is descriptive, not a significance test or equal-difficulty comparison. Catch-up order does not reorder curriculum-day comparisons.
@@ -46,7 +46,7 @@ No NEW migration is required for this feature. The previous multi-day/calendar w
 1. `supabase/migrations/202609230001_bootcamp_trainer_history.sql`
 2. `supabase/migrations/202609230002_bootcamp_fixed_calendar.sql`
 
-Read-only live check still returns PGRST202 for bootcamp_history. The configured service-role REST client cannot execute DDL; these were not applied. Run them through the project's normal authorized Supabase migration workflow before testing live Day 2+. Do not rerun the original create-table migration. This feature cannot make unpublished Days 3–10 available.
+Read-only live check still returns PGRST202 for bootcamp_history. The configured service-role REST client cannot execute DDL; these were not applied. Run them through the project's normal authorized Supabase migration workflow before testing live Day 2+. Do not rerun the original create-table migration. This feature cannot make unpublished Days 3â€“10 available.
 
 ## Local date testing
 
@@ -55,18 +55,18 @@ The prior code had a test-harness clock but no BOOTCAMP_TEST_DATE integration. T
 Stop the existing local server first, then PowerShell:
 
 ```powershell
-$env:BOOTCAMP_TEST_DATE = '2026-10-01'
+$env:BOOTCAMP_TEST_DATE = '2026-10-05'
 npm run dev -- --port 3000
 ```
 
 To change days, stop with Ctrl+C, set the next date, and restart the same command. Do not run build and a server against the same .next directory concurrently. `npm run start` is production and deliberately ignores this override.
 
-1. Deploy the existing prerequisite migrations and publish finalized Days 3–10 through the unchanged Content Engine workflow when ready. Do not replace final Day 1 or create fake student attempts.
-2. Sign in with an entitled student. Oct 1: complete Day 1; all later days remain locked.
+1. Deploy the existing prerequisite migrations and publish finalized Days 3â€“10 through the unchanged Content Engine workflow when ready. Do not replace final Day 1 or create fake student attempts.
+2. Sign in with an entitled student. Oct 5: complete Day 1; all later days remain locked.
 3. Advance to Oct 2 and Oct 3; complete each. Verify the same generic blocks/review/report flow and one official attempt per day.
 4. Advance directly to Oct 5. Day 4 is open backlog, Day 5 is today, Day 6+ locked. Complete Day 5.
 5. Complete Day 6. On Oct 7, save an answer and leave partway through. Refresh and verify resume.
-6. Advance to Oct 8–10, completing available days. Day 11 remains locked on Oct 10.
+6. Advance to Oct 8â€“10, completing available days. Day 11 remains locked on Oct 14.
 7. Open `/boot-camp/analytics`: completed-day points only; Day 4 absent, Day 7 partial; actual weighted totals, sample counts and taxonomy bars. View Day 10's daily report separately.
 8. Return to Day 4 and finish it; it adds its own curriculum-day point. Resume/finish Day 7; it joins completed performance. Reopening completed days must show the official report, not retry.
 9. Because the override changes release dates only, testing all days in one real sitting does NOT fabricate ten activity dates or a ten-day streak.
@@ -91,7 +91,7 @@ npm run test:bootcamp:trainer:browser
 
 Artifacts are under the OS temp `auctor-bootcamp-overall-acceptance` directory. Final execution results are recorded below after validation completes.
 
-### Final results — September 24, 2026
+### Final results â€” September 24, 2026
 
 - 37 unit/SQL/service tests passed.
 - 33 overall-analytics browser checks passed: empty/single/multi-day profiles, tooltip, owned history, ten-day journey with a missing and a partial day, no retry, resume, error/retry recovery, correct Day 10 label, and all four views at 1440/390/320px with no overflow.
@@ -103,4 +103,4 @@ Artifacts are under the OS temp `auctor-bootcamp-overall-acceptance` directory. 
 - Initial browser test locators needed correction for a Unicode arrow, case-sensitive tab name and Next's separate route-announcer alert. Final runs pass; these were harness locator issues.
 - Screenshots were visually inspected for desktop overview, mobile performance, and desktop consistency. All four views were captured at three widths.
 - App left running at http://localhost:3000 using the built production server. This deliberately ignores BOOTCAMP_TEST_DATE; stop it before starting the development command above.
-- Remaining live readiness limits: Days 3–10 unpublished; previous history/calendar migrations not deployed (history RPC PGRST202). No authorized SQL connection is configured here for applying DDL. The new analytics endpoint itself needs no additional migration.
+- Remaining live readiness limits: Days 3â€“10 unpublished; previous history/calendar migrations not deployed (history RPC PGRST202). No authorized SQL connection is configured here for applying DDL. The new analytics endpoint itself needs no additional migration.
