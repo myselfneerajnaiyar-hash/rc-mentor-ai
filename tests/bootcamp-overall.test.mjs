@@ -44,6 +44,8 @@ test('development date is strict; deployed simulation requires an allowlisted Pr
  assert.equal(bootCampPreviewDate('2026-10-10','cofounder@example.com',{...env,VERCEL_ENV:'production'}),null)
  assert.throws(()=>bootCampPreviewDate('2026-02-30','cofounder@example.com',env))
  const simulated=bootCampPreviewDate('2026-10-10','cofounder@example.com',env)
+ assert.equal(simulated,'2026-10-10','date-only simulator input is passed through without timezone conversion')
+ assert.equal(getBootCampCalendarState(simulated).today,'2026-10-10')
  assert.equal(getBootCampCalendarState(simulated).todayDay,6)
  assert.deepEqual(leaderboardWindow('daily',simulated).scheduledDays.map(d=>d.day),[6])
 })
