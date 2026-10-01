@@ -60,3 +60,11 @@
 @media(max-width:1040px){.dashboardGrid{grid-template-columns:minmax(0,1.8fr) minmax(270px,.8fr);gap:17px}}
 @media(max-width:820px){.dashboardGrid{grid-template-columns:1fr}.calendar{padding:17px 15px 13px}.destinations{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.catchupNotice{padding:14px 15px}.catchupNotice p{font-size:12px}.calendar{padding:14px 10px 12px}.month{min-width:620px}.month td{height:76px}.month td>a,.month td>div{min-height:75px;padding:9px 7px}.month time{font-size:18px}.month strong{font-size:9px}.month small,.catchupBadge{font-size:8px}.legend{font-size:9px}}
+
+/* CAT 2026 countdown display */
+.programNote{align-self:stretch;min-width:270px;padding:18px 20px;border:1px solid #3c5864;border-left:3px solid #d8b77e;border-radius:8px;background:radial-gradient(ellipse at 85% 0%,#a7863a20,transparent 58%),linear-gradient(145deg,#172630,#101a23 78%);box-shadow:0 18px 44px #0003}
+.countdownHead{display:flex;align-items:center;justify-content:space-between;gap:12px}.countdownHead>span{color:#e2c28a;font-size:10px;font-weight:800;letter-spacing:.16em}.countdownHead>strong{color:#d6e0e4;font-size:10px;font-weight:600;text-align:right}
+.countdownNumber{display:flex;align-items:baseline;gap:10px;margin:5px 0 0}.countdownNumber strong{color:#f3f5f0;font:500 clamp(48px,5vw,66px)/.95 Georgia,serif;font-variant-numeric:tabular-nums;letter-spacing:-.055em}.countdownNumber span{color:#e2c28a;font-size:12px;font-weight:700;letter-spacing:.04em}
+.countdownToday{margin:18px 0 12px;color:#f3f5f0;font:500 clamp(23px,2.3vw,31px)/1.1 Georgia,serif}.countdownMessage{margin:7px 0 12px;color:#b8c4ca;font-size:11px;line-height:1.4}
+.trainingWindow{display:grid;gap:4px;padding-top:9px;border-top:1px solid #34444c}.trainingWindow>span{color:#78909c;font-size:8px;font-weight:750;letter-spacing:.13em}.trainingWindow strong{color:#c4d0d5;font-size:10px;font-weight:600}.trainingWindow small{color:#8798a1;font-size:9px}
+@media(max-width:600px){.programNote{min-width:0;margin-top:17px;padding:16px}.countdownNumber strong{font-size:56px}.countdownHead>strong{text-align:right}.countdownToday{font-size:25px}}

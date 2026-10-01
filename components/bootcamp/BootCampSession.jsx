@@ -16,7 +16,7 @@ import { validateReview } from '@/lib/bootcamp/review.mjs'
 import BootCampDayReport from './BootCampDayReport'
 import s from './bootcamp.module.css'
 
-export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1 }) {
+export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1, initialIstDate }) {
   const router=useRouter()
   const [celebrating,setCelebrating]=useState(false)
   const [chat,setChat] = useState(null)
@@ -111,7 +111,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   }
   const errorPanel = error && <div className={s.error} role="alert">{error.message}<div className={s.actions}>{error.status === 401 ? <Link className={s.primary} href="/login">Sign in</Link> : <><button className={s.secondary} disabled={busy} onClick={reload}>Reload saved progress</button>{error.status===402?<Link className={s.primary} href="/pricing">View plans</Link>:<Link href="/boot-camp">Back to Boot Camp</Link>}</>}</div></div>
   const chatPanel = chat && <BootCampChat key={`${session?.id || 'plan'}:${chat.block || 'day'}:${chat.questionId || 'block'}`} attemptId={session?.id} dayNumber={dayRoute?dayNumber:catalog?.currentDay || 1} block={chat.block} questionId={chat.questionId} open={chat.open} onClose={()=>setChat(c=>c ? {...c,open:false} : null)} />
-  if (!dayRoute) return <BootCampShell>{errorPanel}<BootCampArena catalog={catalog} session={session} busy={busy} unavailable={!!error} onChat={()=>setChat({open:true})} />{chatPanel}</BootCampShell>
+  if (!dayRoute) return <BootCampShell>{errorPanel}<BootCampArena catalog={catalog} session={session} busy={busy} unavailable={!!error} initialIstDate={initialIstDate} onChat={()=>setChat({open:true})} />{chatPanel}</BootCampShell>
   const selectedDay=catalog?.days?.find(d=>d.day===dayNumber)
   if (!session && !busy && (error || !selectedDay?.accessible)) return <BootCampShell>{errorPanel}{!error&&<section className={s.hero}><h1 className={s.title}>{selectedDay?.unlocked?'This day is being prepared.':'This day is locked.'}</h1><p className={s.lead}>{selectedDay?.unlocked?'Please check back soon.':`Day ${dayNumber} opens on ${selectedDay?.releaseDate || 'its calendar date'}.`}</p><Link href="/boot-camp">Back to Boot Camp</Link></section>}</BootCampShell>
   if (!session) return <BootCampShell>{errorPanel}<section className={s.hero}><p className={s.eyebrow}>Boot Camp / Day {String(dayNumber).padStart(2,'0')}</p><h1 className={s.title}>Your training is ready.<br />Let’s sharpen your reading.</h1><p className={s.lead}>Birbal has Day {dayNumber} ready for you. A focused warm-up, three passages, and verbal reasoning—with a personal check-in after every block.</p>

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { bootcampRequest } from '@/lib/bootcamp/client'
 import { BOOTCAMP_ACCESS_END, BOOTCAMP_PROGRAM_END, BOOTCAMP_START_DATE, trainingMonths } from '@/lib/bootcamp/calendar.mjs'
+import { catDaysRemaining, nextIstMidnight } from '@/lib/bootcamp/countdown.mjs'
 import s from './arena.module.css'
 import BootCampLeaderboard from './BootCampLeaderboard'
 
@@ -39,8 +40,21 @@ function AnalyticsCard() {
   </article>
 }
 
-export default function BootCampArena({ session, catalog, busy, onChat, unavailable = false }) {
+export default function BootCampArena({ session, catalog, busy, onChat, unavailable = false, initialIstDate }) {
   const [month,setMonth]=useState(0)
+  const [catDays,setCatDays]=useState(()=>initialIstDate ? catDaysRemaining(new Date(`${initialIstDate}T12:00:00+05:30`)) : null)
+  useEffect(()=>{
+    let timer
+    let active=true
+    const update=()=>{
+      if(!active)return
+      const now=new Date()
+      setCatDays(catDaysRemaining(now))
+      timer=setTimeout(update,Math.max(1000,nextIstMidnight(now)-now.getTime()+100))
+    }
+    update()
+    return ()=>{active=false;clearTimeout(timer)}
+  },[])
   const day=catalog?.calendar?.todayDay || null,period=catalog?.calendar?.period
   useEffect(()=>{if(catalog?.calendar?.today){const index=monthForDate(catalog.calendar.today);setMonth(index<0?monthForDate(BOOTCAMP_START_DATE):index)}},[catalog?.calendar?.today])
   const displayDay=day?String(day).padStart(2,'0'):null
@@ -65,7 +79,12 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
     {catalog?.calendar?.devPreview&&<div role="status" style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap',padding:'12px 16px',marginBottom:20,border:'1px solid #b7ead1',borderRadius:8,background:'#10231c',color:'#d8f5e5'}}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
     <header className={s.pageIntro}>
       <div><p className={s.eyebrow}>AUCTOR VARC / BOOT CAMP</p><h1>Train with intent.<br/><span>Track every day.</span></h1><p className={s.intro}>A focused 50-day path to sharper reading and more confident reasoning.</p></div>
-      <div className={s.programNote}><span>THE TRAINING WINDOW</span><strong>{displayDate(BOOTCAMP_START_DATE)} — {displayDate(BOOTCAMP_PROGRAM_END)}</strong><small>Practice access through {displayDate(BOOTCAMP_ACCESS_END)}</small></div>
+      <div className={s.programNote} aria-label="CAT 2026 countdown">
+        <div className={s.countdownHead}><span>CAT 2026</span><strong>Exam Day: 29 November 2026</strong></div>
+        {catDays===null?<div className={s.countdownNumber} aria-hidden="true">—</div>:catDays>0?<div className={s.countdownNumber}><strong>{catDays}</strong><span>days remaining</span></div>:catDays===0?<div className={s.countdownToday}>CAT 2026 is today</div>:<div className={s.countdownToday}>CAT 2026 has concluded</div>}
+        <p className={s.countdownMessage}>Every day counts. Make today's practice matter.</p>
+        <div className={s.trainingWindow}><span>THE TRAINING WINDOW</span><strong>{displayDate(BOOTCAMP_START_DATE)} — {displayDate(BOOTCAMP_PROGRAM_END)}</strong><small>Practice access through {displayDate(BOOTCAMP_ACCESS_END)}</small></div>
+      </div>
     </header>
 
     <div className={s.dashboardGrid}>
