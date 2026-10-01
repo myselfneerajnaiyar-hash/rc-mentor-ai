@@ -48,6 +48,13 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
   const action=completed?`View Day ${displayDay} Report`:session?`Continue Day ${displayDay}`:`Start Day ${displayDay}`
   const periodTitle=period==='UPCOMING'?`Training starts ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose a day to catch up.':'Your practice library is open.'
   const current=months[month]
+  const [testDate,setTestDate]=useState('')
+  useEffect(()=>{setTestDate(new URLSearchParams(window.location.search).get('testDate')||sessionStorage.getItem('bootcamp-test-date')||'')},[])
+  function changeTestDate(value) {
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return
+    sessionStorage.setItem('bootcamp-test-date',value)
+    const url=new URL(window.location.href);url.searchParams.set('testDate',value);window.location.assign(url.toString())
+  }
   const missionText=day
     ? entry?.accessible
       ? completed?'Today’s workout is complete. Your report is ready.':session?'Pick up where you left off.':'Your scheduled workout is ready.'
@@ -55,6 +62,7 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
     : period==='UPCOMING'?`Your 50-day calendar opens on ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'Your saved training and analytics remain available.':'Select an open day to continue training.'
 
   return <section className={s.arena}>
+    {catalog?.calendar?.devPreview&&<div role="status" style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap',padding:'12px 16px',marginBottom:20,border:'1px solid #b7ead1',borderRadius:8,background:'#10231c',color:'#d8f5e5'}}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
     <header className={s.pageIntro}>
       <div><p className={s.eyebrow}>AUCTOR VARC / BOOT CAMP</p><h1>Train with intent.<br/><span>Track every day.</span></h1><p className={s.intro}>A focused 50-day path to sharper reading and more confident reasoning.</p></div>
       <div className={s.programNote}><span>THE TRAINING WINDOW</span><strong>{displayDate(BOOTCAMP_START_DATE)} — {displayDate(BOOTCAMP_PROGRAM_END)}</strong><small>Practice access through {displayDate(BOOTCAMP_ACCESS_END)}</small></div>
@@ -62,7 +70,7 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
 
     <div className={s.dashboardGrid}>
       <section id="bootcamp-calendar" className={s.training} aria-labelledby="training-title">
-        <div className={s.sectionHeading}><div><p className={s.sectionLabel}><span>01</span> CONTINUE TRAINING</p><h2 id="training-title">Your next session starts here.</h2><p>Follow the calendar, continue today, or catch up on an open day.</p></div><a className={s.browseLink} href="#training-month">Browse Days <span aria-hidden="true">↓</span></a></div>
+        <div className={s.sectionHeading}><div><p className={s.sectionLabel}><span>01</span> CONTINUE TRAINING</p><h2 id="training-title">Your next session starts here.</h2><p>Follow the calendar, continue today, or catch up on an open day.</p></div><a className={s.browseLink} href="#bootcamp-calendar">Browse Days <span aria-hidden="true">↓</span></a></div>
 
         <div className={s.mission}>
           <div className={s.missionCopy}><span className={s.missionTag}>{busy?'CHECKING YOUR CALENDAR':unavailable?'TRAINING UNAVAILABLE':day?`SCHEDULED TODAY / DAY ${displayDay}`:period==='BUFFER'?'CATCH-UP WINDOW':period==='CLOSED'?'PRACTICE LIBRARY':'50-DAY PROGRAM'}</span><h3>{busy?'Preparing your next step':day?completed?'A strong session, completed.':session?'Welcome back to your session.':'Today’s mission is ready.':periodTitle}</h3><p>{missionText}</p></div>
