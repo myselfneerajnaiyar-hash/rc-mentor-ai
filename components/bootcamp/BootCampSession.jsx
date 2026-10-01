@@ -73,10 +73,12 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   },[session?.id,session?.phase,retryKey,accept,dayRoute])
 
   useEffect(()=>{
-    if(!dayRoute || busy) return
+    if(!dayRoute || busy || !session) return
     if(session?.phase==='report' && !reportRoute && !celebrating) router.replace(`/boot-camp/day/${dayNumber}/report`)
     else if(reportRoute && session?.phase!=='report' && !error) router.replace(`/boot-camp/day/${dayNumber}`)
   },[dayRoute,reportRoute,session?.phase,busy,error,router,celebrating,dayNumber])
+
+  useEffect(()=>{if(reportRoute&&celebrating)setCelebrating(false)},[reportRoute,celebrating])
 
   async function run(path,method='POST',body) {
     if (working.current) return false
@@ -119,9 +121,9 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   return <BootCampShell session={session} reviewWorkspace={reviewWorkspace || session.phase==='report'}>{errorPanel}{chatPanel}
     {session.phase === 'mission' && <BootCampMission dayNumber={dayNumber} commentary={session.commentary} busy={busy} onContinue={()=>mutate('/advance')} />}
     {session.phase === 'ready' && <BootCampMission ready blockLabel={session.blockLabel} seconds={session.seconds} busy={busy} onContinue={()=>mutate(`/blocks/${session.currentBlock}/start`)} />}
-    {session.phase === 'activity' && <BootCampActivity dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} onSave={body=>mutate(`/blocks/${session.currentBlock}/responses`,'PATCH',body)} onFinish={()=>mutate(`/blocks/${session.currentBlock}/finish`)} onExpire={()=>run(`/attempts/${session.id}`,'GET')} />}
+    {session.phase === 'activity' && <BootCampActivity dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} onSave={body=>mutate(`/blocks/${session.currentBlock}/responses`,'PATCH',body)} onFinish={body=>mutate(`/blocks/${session.currentBlock}/finish`,'POST',body)} onExpire={questionId=>run(`/attempts/${session.id}?presentedQuestionId=${encodeURIComponent(questionId)}`,'GET')} />}
     {reviewWorkspace && (review?.key === session.currentBlock ? <BootCampReviewBoundary key={`${session.id}:${session.currentBlock}:${retryKey}`} attemptId={session.id} block={session.currentBlock} onRetry={reload}><BootCampReviewWorkspace dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} attemptId={session.id} review={review} phase={session.phase} commentary={review.commentary || session.commentary} busy={busy} onContinue={()=>mutate('/advance','POST',{reviewed:true})} onAsk={questionId=>setChat({open:true,block:session.currentBlock,questionId})}/></BootCampReviewBoundary> : !error && <p role="status">Preparing your detailed review...</p>)}
-    {session.phase === 'report' && celebrating && <BootCampCompletion day={dayNumber} onContinue={()=>{setCelebrating(false);router.replace(`/boot-camp/day/${dayNumber}/report`)}}/>}
-    {session.phase === 'report' && !celebrating && <BootCampDayReport dayNumber={dayNumber} todayDay={catalog?.calendar?.todayDay} todayAvailable={!!catalog?.days?.find(d=>d.isToday)?.accessible} report={session.report} commentary={session.commentary} onAsk={()=>setChat({open:true})} />}
+    {session.phase === 'report' && celebrating && !reportRoute && <BootCampCompletion day={dayNumber} onContinue={()=>router.replace(`/boot-camp/day/${dayNumber}/report`)}/>}
+    {session.phase === 'report' && (!celebrating || reportRoute) && <BootCampDayReport dayNumber={dayNumber} todayDay={catalog?.calendar?.todayDay} todayAvailable={!!catalog?.days?.find(d=>d.isToday)?.accessible} report={session.report} commentary={session.commentary} onAsk={()=>setChat({open:true})} />}
   </BootCampShell>
 }

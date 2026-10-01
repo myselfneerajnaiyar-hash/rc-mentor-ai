@@ -11,7 +11,7 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
   const [saveError, setSaveError] = useState(false)
   const [confirmFinish, setConfirmFinish] = useState(false)
   const visibleMs = useRef(0), clock = useRef(Date.now()), expiredSent = useRef(false)
-  const presentationAttempt = useRef(null), questionElement = useRef(null), questionVisible = useRef(false), previousIndex = useRef(0)
+  const questionElement = useRef(null), questionVisible = useRef(false), previousIndex = useRef(0)
   const q = activity.questions[index], saved = activity.responses[index]
   const value = draft === undefined ? saved.response : draft
   const busyRef = useRef(busy); busyRef.current = busy
@@ -26,12 +26,12 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
       setRemaining(seconds)
       if (!seconds && !busyRef.current && !expiredSent.current) {
         expiredSent.current = true
-        Promise.resolve(ops.current.onExpire()).finally(() => { expiredSent.current = false })
+        Promise.resolve(ops.current.onExpire(q.id)).finally(() => { expiredSent.current = false })
       }
     }
     tick(); const timer = setInterval(tick, 500)
     return () => clearInterval(timer)
-  }, [activity.deadline_at, serverNow])
+  }, [activity.deadline_at, serverNow, q.id])
 
   useEffect(() => {
     visibleMs.current = 0; clock.current = Date.now()
@@ -44,16 +44,10 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
   }, [index])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      questionVisible.current = entries[0].isIntersecting
-      if (questionVisible.current && !busyRef.current && presentationAttempt.current !== q.id) {
-        presentationAttempt.current = q.id
-        ops.current.onSave({ questionId: q.id, presented: true })
-      }
-    })
-    if (questionElement.current) observer.observe(questionElement.current)
-    return () => observer.disconnect()
-  }, [q.id, saved.presented_at, busy])
+    const observer = new IntersectionObserver(entries => { questionVisible.current = entries[0].isIntersecting })
+    if(questionElement.current)observer.observe(questionElement.current)
+    return ()=>observer.disconnect()
+  },[q.id])
 
   useEffect(() => {
     if (index !== previousIndex.current) questionElement.current?.scrollIntoView({ block: 'center' })
@@ -67,10 +61,9 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
       const ok = await ops.current.onSave({ questionId: q.id, presented: true, activeMs: saved.active_ms + sample })
       if (ok) visibleMs.current = Math.max(0, visibleMs.current - sample)
     }
-    const timer = setInterval(flush, 10000)
     const onHidden = () => { if (document.visibilityState === 'hidden') flush() }
     document.addEventListener('visibilitychange', onHidden)
-    return () => { clearInterval(timer); document.removeEventListener('visibilitychange', onHidden) }
+    return () => document.removeEventListener('visibilitychange', onHidden)
   }, [q.id, saved.active_ms, draft])
 
   useEffect(() => {
@@ -87,12 +80,12 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
   }
   async function move(next) {
     if (draft !== undefined || saveError) return
-    if (!await onSave({ questionId: q.id, presented: true, activeMs: timing() })) return
+    if (!await onSave({ questionId: q.id, presented: true, activeMs: timing(), nextQuestionId: activity.questions[next]?.id })) return
     visibleMs.current = 0; setConfirmFinish(false); setIndex(next)
   }
   async function finish() {
-    if (!await onSave({ questionId: q.id, presented: true, activeMs: timing() })) return
-    visibleMs.current = 0; await onFinish()
+    const activeMs=timing()
+    if(await onFinish({ questionId: q.id, activeMs }))visibleMs.current = 0
   }
   const disabled = busy || remaining === 0
   const answered = activity.responses.filter(r => r.response !== null).length
