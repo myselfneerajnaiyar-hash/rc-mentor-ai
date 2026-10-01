@@ -62,6 +62,25 @@ test('simulated October 10 calendar shows backlog, today, future locks, and each
     assert.equal(board.eligibleStudents,0)
   } finally {await h.close()}
 })
+test('October 9 exposes only valid past content as startable and leaves invalid content preparing',async()=>{
+  const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-09'})
+  try {
+    for(const day of [2,3,5]) {
+      const row=fixture(day)
+      if(day===3)row.document.status='draft'
+      await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at])
+    }
+    await h.service.enroll(student)
+    const home=await h.service.home(student)
+    assert.equal(home.days[0].state,'OPEN_BACKLOG');assert.equal(home.days[0].accessible,true)
+    assert.equal(home.days[1].state,'OPEN_BACKLOG');assert.equal(home.days[1].accessible,true)
+    assert.equal(home.days[2].unlocked,true);assert.equal(home.days[2].available,false);assert.equal(home.days[2].accessible,false)
+    assert.equal(home.days[4].isToday,true);assert.equal(home.days[4].state,'TODAY');assert.equal(home.days[4].accessible,true)
+    assert.equal((await h.service.start(student,2)).dayNumber,2)
+    assert.equal((await h.service.start(student,5)).dayNumber,5)
+    await assert.rejects(h.service.start(student,3),e=>e.status===404)
+  } finally {await h.close()}
+})
 test('existing entitlement rules: active trial, purchase, institute, expiry, and no invented extension',()=>{
   const now=new Date('2026-10-25T00:00:00Z'),profile={trial_expires_at:'2026-10-26T00:00:00Z'}
   assert.equal(requireBootCampEntitlement({profile},now).kind,'trial')

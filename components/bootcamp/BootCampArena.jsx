@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { bootcampRequest } from '@/lib/bootcamp/client'
 import { BOOTCAMP_ACCESS_END, BOOTCAMP_PROGRAM_END, BOOTCAMP_START_DATE, trainingMonths } from '@/lib/bootcamp/calendar.mjs'
+import { calendarCellLabel } from '@/lib/bootcamp/calendar-display.mjs'
 import { catDaysRemaining, nextIstMidnight } from '@/lib/bootcamp/countdown.mjs'
 import s from './arena.module.css'
 import BootCampLeaderboard from './BootCampLeaderboard'
@@ -11,7 +12,6 @@ const months=trainingMonths()
 const displayDate=date=>new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'})
 const monthForDate=date=>months.findIndex(m=>m.key===date.slice(0,7))
 const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
-const labels={TODAY:'TODAY',OPEN_BACKLOG:'CATCH-UP',IN_PROGRESS:'IN PROGRESS',ATTEMPTED:'ATTEMPTED',COMPLETED:'COMPLETED',PREVIEW:'PREVIEW',LOCKED:'LOCKED'}
 
 function AnalyticsCard() {
   const [data,setData]=useState(null)
@@ -106,10 +106,10 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
           <div id="training-month" role="tabpanel" aria-labelledby={`month-${month}`} className={s.monthViewport}><table className={s.month}><caption className={s.srOnly}>{current.label}</caption><thead><tr>{weekdays.map(d=><th key={d} scope="col">{d}</th>)}</tr></thead><tbody>{Array.from({length:current.cells.length/7},(_,week)=><tr key={week}>{current.cells.slice(week*7,week*7+7).map((cell,i)=>{
             if(!cell)return <td key={i} className={s.empty}/>
             const training=catalog?.days?.find(d=>d.day===cell.day),active=training?.isToday,done=training?.state==='COMPLETED'
-            const stateLabel=training?.unlocked&&!training?.available?'PREPARING':training?.available&&training.state==='OPEN_BACKLOG'?'CATCH-UP':labels[training?.state]||'LOCKED'
+            const stateLabel=calendarCellLabel(training,active)
             const cellClass=[active?s.active:'',done?s.complete:'',training?.state==='OPEN_BACKLOG'?s.backlog:'',training?.state==='IN_PROGRESS'||training?.state==='ATTEMPTED'?s.attempted:'',training?.state==='LOCKED'?s.locked:'',!cell.day&&!cell.buffer?s.outside:''].filter(Boolean).join(' ')
-            const isCatchup=!!training?.accessible&&training.state==='OPEN_BACKLOG'
-            const content=<><time dateTime={cell.iso}>{String(cell.date).padStart(2,'0')}</time>{cell.day?<><strong>DAY {String(cell.day).padStart(2,'0')}</strong>{isCatchup?<span className={s.catchupBadge}>CATCH UP — START</span>:<small>{active&&stateLabel!=='TODAY'?'TODAY · ':''}{stateLabel}</small>}</>:cell.buffer?<><strong>BUFFER</strong><small>{catalog?.calendar?.today>=cell.iso?'CATCH-UP':'UPCOMING'}</small></>:null}</>
+            const isCatchup=!!training?.accessible&&!done&&!active&&training.state==='OPEN_BACKLOG'
+            const content=<><time dateTime={cell.iso}>{String(cell.date).padStart(2,'0')}</time>{cell.day?<><strong>DAY {String(cell.day).padStart(2,'0')}</strong>{isCatchup?<span className={s.catchupBadge}>CATCH-UP AVAILABLE · START</span>:<small>{stateLabel}</small>}</>:cell.buffer?<><strong>BUFFER</strong><small>{catalog?.calendar?.today>=cell.iso?'CATCH-UP':'UPCOMING'}</small></>:null}</>
             return <td key={i} data-training-day={cell.day||undefined} data-buffer={cell.buffer||undefined} className={cellClass}>{training?.accessible?<Link href={`/boot-camp/day/${cell.day}${done?'/report':''}`} aria-label={`Day ${cell.day} - ${isCatchup?'Catch up - start':stateLabel}`} aria-current={active?'date':undefined}>{content}</Link>:<div aria-label={`${cell.iso}, ${cell.day?`Day ${cell.day} - ${stateLabel}`:cell.buffer?'Buffer / catch-up':''}`}>{content}</div>}</td>
           })}</tr>)}</tbody></table></div>
           <div className={s.legend} aria-label="Calendar status key"><span><i className={s.doneKey}/>Completed</span><span><i className={s.progressKey}/>In progress</span><span><i className={s.catchupKey}/>Catch-up available = can start</span><span><i className={s.todayKey}/>Today = today's scheduled workout</span><span><i className={s.lockedKey}/>Locked = not available yet</span></div>

@@ -52,7 +52,7 @@
 .month time{color:#e0e8ec;font-size:19px}
 .month strong{font-size:10px;font-weight:750}
 .month small{color:#9bb0bd;font-size:9px}
-.catchupBadge{align-self:flex-start;padding:4px 6px;border:1px solid #67d9c4;border-radius:3px;background:#174b44;color:#e3fff6;font-size:9px;font-weight:850;letter-spacing:.035em;line-height:1.15;white-space:nowrap}
+.catchupBadge{align-self:flex-start;padding:4px 6px;border:1px solid #67d9c4;border-radius:3px;background:#174b44;color:#e3fff6;font-size:9px;font-weight:850;letter-spacing:.035em;line-height:1.15;white-space:normal}
 .legend{gap:9px 18px;margin-top:14px;color:#adbdc7;font-size:10px;line-height:1.4}
 .legend i{flex:none;width:9px;height:9px}
 .catchupKey{background:#82e4cf!important}
