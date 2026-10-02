@@ -34,15 +34,17 @@ test("attempt records continue joining to passages by the existing set ID", asyn
 })
 
 test("daily leaderboard remains attached to the CAT PYQ set", async () => {
-  const [dailyRoute, leaderboard, weekly, dailyStatus] = await Promise.all([
+  const [dailyRoute, leaderboardRoute, leaderboard, weekly, dailyStatus] = await Promise.all([
     readFile(new URL("../app/api/get-daily-rc/route.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-leaderboard/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/dailyRc/leaderboard.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-weekly-challenge/route.js", import.meta.url), "utf8"),
     readFile(new URL("../lib/mobile/dailyStatus.mjs", import.meta.url), "utf8"),
   ])
   assert.match(dailyRoute, /filterTodaysDailyRc/)
   assert.match(leaderboard, /selectDailyRcLeaderboardSet/)
-  assert.match(leaderboard, /\.select\(`?\s*user_id,[\s\S]*score,[\s\S]*time_taken/)
+  assert.match(leaderboardRoute, /loadDailyRcLeaderboard\(supabase/)
+  assert.match(leaderboard, /\.select\("user_id,score,time_taken"\)/)
   assert.match(weekly, /\.eq\("category", "cat_pyq"\)/)
   assert.match(dailyStatus, /filterTodaysDailyRc/)
 })

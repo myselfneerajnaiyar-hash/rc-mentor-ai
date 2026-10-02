@@ -71,14 +71,16 @@ test("a published original passage scheduled today makes the homepage challenge 
 })
 
 test("today API and runner share the homepage eligibility filters; leaderboard stays CAT PYQ only", async () => {
-  const [todayApi, runner, dailyLeaderboard, weeklyLeaderboard] = await Promise.all([
+  const [todayApi, runner, dailyLeaderboardRoute, dailyLeaderboard, weeklyLeaderboard] = await Promise.all([
     readFile(new URL("../app/api/get-daily-rc/route.js", import.meta.url), "utf8"),
     readFile(new URL("../app/daily-challenge/test/page.jsx", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-leaderboard/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/dailyRc/leaderboard.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-weekly-challenge/route.js", import.meta.url), "utf8"),
   ])
   assert.match(todayApi, /filterTodaysDailyRc/)
   assert.match(runner, /filterTodaysDailyRc/)
+  assert.match(dailyLeaderboardRoute, /loadDailyRcLeaderboard/)
   assert.match(dailyLeaderboard, /selectDailyRcLeaderboardSet/)
   assert.match(weeklyLeaderboard, /\.eq\("category", "cat_pyq"\)/)
 })

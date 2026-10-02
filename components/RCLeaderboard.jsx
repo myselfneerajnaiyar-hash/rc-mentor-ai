@@ -6,17 +6,28 @@ import { supabase } from "@/lib/supabase"
 export default function RCLeaderboard({ category = "cat_pyq" }) {
 
   const [data, setData] = useState([])
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     let active = true
     setData([])
+    setError(null)
 
     const loadCurrentCategory = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      const res = await fetch(`/api/rc-leaderboard?category=${encodeURIComponent(category)}`, { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} })
-      if (!active || !res.ok) return
-      const json = await res.json()
-      if (active) setData(json.top || [])
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        const res = await fetch(`/api/rc-leaderboard?category=${encodeURIComponent(category)}`, { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} })
+        const json = await res.json()
+        if (!active) return
+        if (!res.ok) {
+          setError(json.error || "Could not load this leaderboard. Please try again.")
+          return
+        }
+        setError(null)
+        setData(json.top || [])
+      } catch {
+        if (active) setError("Could not load this leaderboard. Please try again.")
+      }
     }
 
     loadCurrentCategory()
@@ -36,6 +47,14 @@ export default function RCLeaderboard({ category = "cat_pyq" }) {
     if (index === 1) return "🥈"
     if (index === 2) return "🥉"
     return `#${index + 1}`
+  }
+
+  if (error) {
+    return (
+      <div role="alert" className="bg-slate-900 border border-amber-800 rounded-2xl p-6 text-amber-200">
+        {error}
+      </div>
+    )
   }
 
   if (!data.length) {
