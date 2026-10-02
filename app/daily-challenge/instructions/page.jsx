@@ -28,7 +28,7 @@ export default function InstructionsPage() {
 
 
         <div className="text-cyan-300 uppercase tracking-[0.25em] font-bold">
-          Daily RC Arena
+          Daily RC Challenge
         </div>
 
         <h1 className="text-5xl font-black mt-4">

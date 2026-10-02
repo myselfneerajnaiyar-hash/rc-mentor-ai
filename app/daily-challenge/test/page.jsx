@@ -727,7 +727,7 @@ bg-[#0d1726]
   <div>
 
     <div className="text-xs uppercase tracking-[0.25em] text-cyan-300 font-bold">
-      Daily RC Arena
+      Daily RC Challenge
     </div>
 
     <h1 className="text-2xl font-black text-white mt-2">

@@ -98,6 +98,7 @@ async function calculateWeeklyStandings(window) {
     .from("daily_rc_sets")
     .select("id,challenge_date")
     .in("id", attemptedSetIds)
+    .eq("category", "cat_pyq")
     .gte("challenge_date", window.weekStart)
     .lte("challenge_date", window.weekEnd)
 

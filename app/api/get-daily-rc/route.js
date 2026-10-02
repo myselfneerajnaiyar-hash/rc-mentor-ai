@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { requireCapability } from "@/lib/tenant/requireCapability";
+import { normalizeDailyRcCategory } from "@/lib/dailyRc/categories.mjs";
 
 import { createClient }
 from "@supabase/supabase-js";
@@ -30,6 +31,7 @@ console.log("IST DATE:", today);
     const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 20));
     const offset = (page - 1) * limit;
     const status = url.searchParams.get("status") === "attempted" ? "attempted" : "unattempted";
+    const category = normalizeDailyRcCategory(url.searchParams.get("category"));
 
     let attemptsBySet = new Map();
     const authHeader = request.headers.get("authorization");
@@ -52,8 +54,9 @@ console.log("IST DATE:", today);
 
     let setsQuery = supabase
       .from("daily_rc_sets")
-      .select("id,title,challenge_date,difficulty,source_year", { count: "exact" })
-      .lt("challenge_date", today);
+      .select("id,title,challenge_date,difficulty,source_year,category", { count: "exact" })
+      .lt("challenge_date", today)
+      .eq("category", category);
 
     if (status === "attempted") setsQuery = setsQuery.in("id", attemptedSetIds);
     if (status === "unattempted" && attemptedSetIds.length) setsQuery = setsQuery.not("id", "in", `(${attemptedSetIds.join(",")})`);
@@ -74,6 +77,7 @@ console.log("IST DATE:", today);
         challenge_date: set.challenge_date,
         difficulty: set.difficulty || null,
         source_year: set.source_year || null,
+        category: set.category || "cat_pyq",
         attempt: attemptsBySet.get(set.id) || null,
       })),
       pagination: {
@@ -99,6 +103,9 @@ console.log("IST DATE:", today);
         "challenge_date",
         today
       )
+
+      // Keep the existing daily challenge and leaderboard on CAT PYQ passages.
+      .eq("category", "cat_pyq")
 
       .single();
 

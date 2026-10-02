@@ -124,7 +124,7 @@ export default function DailyChallengePage() {
 
           <div className="px-5 py-2 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/20 backdrop-blur-xl">
             <div className="text-sm font-semibold text-cyan-100 tracking-wide">
-              DAILY RC ARENA
+              DAILY RC CHALLENGE
             </div>
           </div>
 
@@ -256,6 +256,7 @@ function PreviousRCs() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [status, setStatus] = useState("unattempted");
+  const [category, setCategory] = useState("cat_pyq");
 
   useEffect(() => {
     let cancelled = false;
@@ -263,7 +264,7 @@ function PreviousRCs() {
     async function loadPrevious() {
       setLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
-      const response = await fetch(`/api/get-daily-rc?view=previous&status=${status}&page=${page}&limit=20`, {
+      const response = await fetch(`/api/get-daily-rc?view=previous&category=${category}&status=${status}&page=${page}&limit=20`, {
         cache: "no-store",
         headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
       });
@@ -277,7 +278,7 @@ function PreviousRCs() {
 
     loadPrevious();
     return () => { cancelled = true; };
-  }, [page, status]);
+  }, [page, status, category]);
 
   if (loading) {
     return <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">Loading previous RCs…</div>;
@@ -286,8 +287,12 @@ function PreviousRCs() {
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6">
       <div className="mb-6">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">Previous RCs</p>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">Daily RC Challenge</p>
         <h2 className="mt-2 text-2xl font-black text-white">Practice previous Daily RC challenges at your own pace.</h2>
+      </div>
+
+      <div className="mb-3 inline-flex w-full rounded-xl border border-slate-800 bg-slate-950/45 p-1 sm:w-auto" role="tablist" aria-label="Previous RC category">
+        {[{ id: "cat_pyq", label: "CAT PYQ" }, { id: "daily_rc_challenge", label: "Daily RC Challenge" }].map((item) => <button key={item.id} type="button" role="tab" aria-selected={category === item.id} onClick={() => { setCategory(item.id); setPage(1); }} className={`flex-1 rounded-lg px-4 py-2 text-xs font-bold transition-colors sm:flex-none ${category === item.id ? "bg-cyan-500/15 text-cyan-200 ring-1 ring-cyan-400/20" : "text-slate-500 hover:text-slate-200"}`}>{item.label}</button>)}
       </div>
 
       <div className="mb-6 inline-flex w-full rounded-xl border border-slate-800 bg-slate-950/45 p-1 sm:w-auto" role="tablist" aria-label="Previous RC status">
@@ -295,7 +300,7 @@ function PreviousRCs() {
       </div>
 
       {challenges.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-700 p-10 text-center text-slate-400">{status === "attempted" ? "You have not attempted any previous RCs yet." : "No unattempted previous RCs available."}</div>
+        <div className="rounded-2xl border border-dashed border-slate-700 p-10 text-center text-slate-400">{status === "attempted" ? `You have not attempted any ${category === "cat_pyq" ? "CAT PYQs" : "Daily RC Challenges"} yet.` : `No unattempted ${category === "cat_pyq" ? "CAT PYQs" : "Daily RC Challenges"} available.`}</div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {challenges.map((challenge) => {
@@ -309,6 +314,7 @@ function PreviousRCs() {
                   <p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">{formatChallengeDate(challenge.challenge_date)}</p>
                   <h3 className="mt-2 line-clamp-2 text-base font-bold leading-6 text-white">{challenge.title || "Daily RC"}</h3>
                   <div className="mt-3 flex min-h-7 flex-wrap gap-1.5 text-[11px] text-slate-400">
+                    <span className="rounded-full border border-cyan-500/25 px-2.5 py-1">{challenge.category === "daily_rc_challenge" ? "Daily RC Challenge" : "CAT PYQ"}</span>
                     {challenge.difficulty && <span className="rounded-full border border-slate-700 px-2.5 py-1">{challenge.difficulty}</span>}
                     {challenge.source_year && <span className="rounded-full border border-slate-700 px-2.5 py-1">{challenge.source_year}</span>}
                   </div>

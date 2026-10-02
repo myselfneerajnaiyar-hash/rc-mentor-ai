@@ -8,6 +8,7 @@ export default function RCHistoryPage() {
 
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("cat_pyq");
 
   useEffect(() => {
 
@@ -27,7 +28,9 @@ export default function RCHistoryPage() {
           .select(`
             *,
             daily_rc_sets (
-              title
+              title,
+              category,
+              source_year
             )
           `)
           .eq(
@@ -73,7 +76,7 @@ export default function RCHistoryPage() {
             </h1>
 
             <p className="text-slate-400 mt-2">
-              Review all your Daily RC Arena attempts.
+              Review your Daily RC Challenge attempts by category.
             </p>
 
           </div>
@@ -93,7 +96,11 @@ export default function RCHistoryPage() {
 
         </div>
 
-        {attempts.length === 0 && (
+        <div className="mt-8 inline-flex rounded-xl border border-slate-700 bg-slate-900/70 p-1" role="tablist" aria-label="History category">
+          {[{ id: "cat_pyq", label: "CAT PYQ" }, { id: "daily_rc_challenge", label: "Daily RC Challenge" }].map((item) => <button key={item.id} type="button" role="tab" aria-selected={category === item.id} onClick={() => setCategory(item.id)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${category === item.id ? "bg-cyan-500/20 text-cyan-200" : "text-slate-400"}`}>{item.label}</button>)}
+        </div>
+
+        {attempts.filter((attempt) => (attempt.daily_rc_sets?.category || "cat_pyq") === category).length === 0 && (
 
           <div className="
             mt-10
@@ -106,7 +113,7 @@ export default function RCHistoryPage() {
           ">
 
             <h2 className="text-3xl font-bold">
-              No RC Attempts Yet
+              No {category === "cat_pyq" ? "CAT PYQ" : "Daily RC Challenge"} attempts yet
             </h2>
 
             <p className="text-slate-400 mt-4">
@@ -119,7 +126,7 @@ export default function RCHistoryPage() {
 
         <div className="mt-10 space-y-5">
 
-          {attempts.map((attempt) => (
+          {attempts.filter((attempt) => (attempt.daily_rc_sets?.category || "cat_pyq") === category).map((attempt) => (
 
             <div
               key={attempt.id}
@@ -142,6 +149,8 @@ export default function RCHistoryPage() {
                       "Daily RC"}
 
                   </div>
+
+                  <div className="mt-2 text-xs font-semibold uppercase tracking-wide text-cyan-300">{attempt.daily_rc_sets?.category === "daily_rc_challenge" ? "Daily RC Challenge" : "CAT PYQ"}{attempt.daily_rc_sets?.source_year ? ` · ${attempt.daily_rc_sets.source_year}` : ""}</div>
 
                   <div className="text-slate-400 mt-2">
 

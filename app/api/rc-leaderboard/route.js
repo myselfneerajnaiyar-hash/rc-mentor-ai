@@ -27,6 +27,7 @@ const {
   .from("daily_rc_sets")
   .select("id")
   .eq("challenge_date", today)
+  .eq("category", "cat_pyq")
   .single()
 
 console.log("today =", today)
