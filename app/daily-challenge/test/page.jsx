@@ -8,6 +8,7 @@ import Recovery from "@/components/mobile/Recovery";
 import NextActivity from "@/components/mobile/NextActivity";
 import { withTimeout } from "@/lib/mobile/request";
 import { supabase } from "@/lib/supabase";
+import { dailyRcTodayDate, filterTodaysDailyRc } from "@/lib/dailyRc/today.mjs";
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
@@ -103,21 +104,15 @@ const [score, setScore] =
     async function loadChallenge() {
     setLoading(true);setLoadError(null);
 
-    const today =
-  new Date()
-    .toISOString()
-    .split("T")[0];
+const istToday = dailyRcTodayDate();
 
-const istToday = new Date(Date.now() + 5.5 * 60 * 60 * 1000)
-  .toISOString()
-  .split("T")[0];
-
-const { data: rcSet, error: setError } =
-  await supabase
-    .from("daily_rc_sets")
-    .select("*")
-    .eq(selectedChallengeId ? "id" : "challenge_date", selectedChallengeId || istToday)
-    .single();
+let rcSetQuery = supabase
+  .from("daily_rc_sets")
+  .select("*");
+rcSetQuery = selectedChallengeId
+  ? rcSetQuery.eq("id", selectedChallengeId)
+  : filterTodaysDailyRc(rcSetQuery, istToday);
+const { data: rcSet, error: setError } = await rcSetQuery.single();
 
 if (setError || !rcSet) {
   throw new Error("This challenge could not load. Please retry.");

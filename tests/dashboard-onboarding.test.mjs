@@ -14,6 +14,8 @@ test('daily summary uses current challenge, correct owner and lightweight querie
  assert.ok(queries.every(q=>!q.columns.includes('*')));
  assert.ok(queries.filter(q=>q.table.endsWith('attempts')).every(q=>q.filters.some(([k,v])=>k==='user_id'&&v==='owner')));
  assert.ok(queries.find(q=>q.table==='daily_rc_sets').filters.some(([,v])=>v==='2026-09-27'));
+ assert.ok(queries.find(q=>q.table==='daily_rc_sets').filters.some(([k,v])=>k==='category'&&v==='daily_rc_challenge'));
+ assert.ok(queries.find(q=>q.table==='daily_rc_sets').filters.some(([k,v])=>k==='is_published'&&v===true));
  assert.ok(queries.find(q=>q.table==='workout_attempts'&&!q.recent).filters.some(([,v])=>v==='2026-09-26'));
  queries.length=0;await loadDailyStatus(db,'other',false);assert.ok(!queries.some(q=>q.table.startsWith('daily_rc')));
 });

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { requireCapability } from "@/lib/tenant/requireCapability";
 import { normalizeDailyRcCategory } from "@/lib/dailyRc/categories.mjs";
+import { dailyRcTodayDate, filterTodaysDailyRc } from "@/lib/dailyRc/today.mjs";
 
 import { createClient }
 from "@supabase/supabase-js";
@@ -16,11 +17,7 @@ export async function GET(request) {
 const access = await requireCapability(request, "showDailyRC");
 if (!access.ok) return NextResponse.json({ error: access.status === 401 ? "Authentication required" : "Daily RC is not available for your exam" }, { status: access.status });
 
-const today = new Date(
-  Date.now() + 5.5 * 60 * 60 * 1000
-)
-  .toISOString()
-  .split("T")[0];
+const today = dailyRcTodayDate();
 
 console.log("IST DATE:", today);
 
@@ -89,25 +86,15 @@ console.log("IST DATE:", today);
     });
   }
 
-  const { data, error } =
-    await supabase
-
+  const { data, error } = await filterTodaysDailyRc(
+    supabase
       .from("daily_rc_sets")
-
       .select(`
         *,
         daily_rc_questions (*)
-      `)
-
-      .eq(
-        "challenge_date",
-        today
-      )
-
-      // Keep the existing daily challenge and leaderboard on CAT PYQ passages.
-      .eq("category", "cat_pyq")
-
-      .single();
+      `),
+    today,
+  ).single();
 
   if (error) {
 
