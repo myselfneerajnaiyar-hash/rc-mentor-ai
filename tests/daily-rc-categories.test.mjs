@@ -41,7 +41,7 @@ test("daily leaderboard remains attached to the CAT PYQ set", async () => {
     readFile(new URL("../lib/mobile/dailyStatus.mjs", import.meta.url), "utf8"),
   ])
   assert.match(dailyRoute, /filterTodaysDailyRc/)
-  assert.match(leaderboard, /\.eq\("category", "cat_pyq"\)/)
+  assert.match(leaderboard, /selectDailyRcLeaderboardSet/)
   assert.match(leaderboard, /\.select\(`?\s*user_id,[\s\S]*score,[\s\S]*time_taken/)
   assert.match(weekly, /\.eq\("category", "cat_pyq"\)/)
   assert.match(dailyStatus, /filterTodaysDailyRc/)

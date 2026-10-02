@@ -79,6 +79,6 @@ test("today API and runner share the homepage eligibility filters; leaderboard s
   ])
   assert.match(todayApi, /filterTodaysDailyRc/)
   assert.match(runner, /filterTodaysDailyRc/)
-  assert.match(dailyLeaderboard, /\.eq\("category", "cat_pyq"\)/)
+  assert.match(dailyLeaderboard, /selectDailyRcLeaderboardSet/)
   assert.match(weeklyLeaderboard, /\.eq\("category", "cat_pyq"\)/)
 })

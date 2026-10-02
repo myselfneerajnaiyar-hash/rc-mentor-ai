@@ -3,33 +3,33 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 
-export default function RCLeaderboard() {
+export default function RCLeaderboard({ category = "cat_pyq" }) {
 
   const [data, setData] = useState([])
 
-  async function load() {
-
-    const { data: { session } } = await supabase.auth.getSession()
-    const res = await fetch("/api/rc-leaderboard", { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} })
-
-    if (!res.ok) return
-
-    const json = await res.json()
-
-    setData(json.top || [])
-  }
-
   useEffect(() => {
+    let active = true
+    setData([])
 
-    load()
+    const loadCurrentCategory = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch(`/api/rc-leaderboard?category=${encodeURIComponent(category)}`, { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} })
+      if (!active || !res.ok) return
+      const json = await res.json()
+      if (active) setData(json.top || [])
+    }
+
+    loadCurrentCategory()
 
     const interval =
-      setInterval(load, 20000)
+      setInterval(loadCurrentCategory, 20000)
 
-    return () =>
+    return () => {
+      active = false
       clearInterval(interval)
+    }
 
-  }, [])
+  }, [category])
 
   function medal(index) {
     if (index === 0) return "🥇"
@@ -42,7 +42,7 @@ export default function RCLeaderboard() {
 
     return (
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-400">
-        No RC attempts today
+        {category === "daily_rc_challenge" ? "No Daily RC Challenge attempts today" : "No CAT PYQ attempts today"}
       </div>
     )
   }
@@ -52,7 +52,7 @@ export default function RCLeaderboard() {
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
 
       <h3 className="text-xl font-black text-cyan-300 mb-4">
-        Daily RC Arena
+        {category === "daily_rc_challenge" ? "Daily RC Challenge Leaderboard" : "Daily CAT PYQ Leaderboard"}
       </h3>
 
       <div className="space-y-3">

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { requireCapability } from "@/lib/tenant/requireCapability"
+import { normalizeDailyRcCategory } from "@/lib/dailyRc/categories.mjs"
+import { selectDailyRcLeaderboardSet } from "@/lib/dailyRc/leaderboard.mjs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
@@ -12,6 +14,7 @@ export async function GET(req) {
   try {
    const access = await requireCapability(req, "showDailyRC")
    if (!access.ok) return NextResponse.json({ error: access.status === 401 ? "Authentication required" : "Daily RC is not available for your exam" }, { status: access.status })
+   const category = normalizeDailyRcCategory(new URL(req.url).searchParams.get("category"))
    const today = new Date()
   .toLocaleDateString("en-CA", {
     timeZone: "Asia/Kolkata"
@@ -23,12 +26,11 @@ export async function GET(req) {
 const {
   data: todaySet,
   error: todaySetError
-} = await supabase
-  .from("daily_rc_sets")
-  .select("id")
-  .eq("challenge_date", today)
-  .eq("category", "cat_pyq")
-  .single()
+} = await selectDailyRcLeaderboardSet(
+  supabase.from("daily_rc_sets").select("id"),
+  category,
+  today,
+).single()
 
 console.log("today =", today)
 

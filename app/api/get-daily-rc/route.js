@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { requireCapability } from "@/lib/tenant/requireCapability";
 import { normalizeDailyRcCategory } from "@/lib/dailyRc/categories.mjs";
 import { dailyRcTodayDate, filterTodaysDailyRc } from "@/lib/dailyRc/today.mjs";
+import { filterDailyRcHistorySets } from "@/lib/dailyRc/history.mjs";
 
 import { createClient }
 from "@supabase/supabase-js";
@@ -49,14 +50,12 @@ console.log("IST DATE:", today);
       return NextResponse.json({ success: true, challenges: [], pagination: { page: 1, limit, total: 0, totalPages: 1 } });
     }
 
-    let setsQuery = supabase
-      .from("daily_rc_sets")
-      .select("id,title,challenge_date,difficulty,source_year,category", { count: "exact" })
-      .lt("challenge_date", today)
-      .eq("category", category);
-
-    if (status === "attempted") setsQuery = setsQuery.in("id", attemptedSetIds);
-    if (status === "unattempted" && attemptedSetIds.length) setsQuery = setsQuery.not("id", "in", `(${attemptedSetIds.join(",")})`);
+    const setsQuery = filterDailyRcHistorySets(
+      supabase
+        .from("daily_rc_sets")
+        .select("id,title,challenge_date,difficulty,source_year,category", { count: "exact" }),
+      { category, status, today, attemptedSetIds },
+    );
 
     const { data: sets, error: setsError, count } = await setsQuery
       .order("challenge_date", { ascending: false })

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trophy, Flame, Puzzle, Crown } from "lucide-react";
+import { Trophy, Flame, Puzzle, Crown, BookOpen } from "lucide-react";
 
 import RCLeaderboard from "@/components/RCLeaderboard";
 import Leaderboard from "@/components/Leaderboard";
@@ -21,9 +21,15 @@ const [activeTab, setActiveTab] = useState(
   ? [
       {
         id: "rc",
-        label: "Daily RC",
+        label: "CAT PYQ",
         icon: Trophy,
         color: "text-cyan-300",
+      },
+      {
+        id: "daily-rc-challenge",
+        label: "Daily RC Challenge",
+        icon: BookOpen,
+        color: "text-blue-300",
       },
       {
         id: "workout",
@@ -109,7 +115,9 @@ const [activeTab, setActiveTab] = useState(
 
       <div className="rounded-3xl border border-slate-800 bg-slate-900 p-5">
 
-        {activeTab === "rc" && <RCLeaderboard />}
+        {activeTab === "rc" && <RCLeaderboard category="cat_pyq" />}
+
+        {activeTab === "daily-rc-challenge" && <RCLeaderboard category="daily_rc_challenge" />}
 
         {activeTab === "workout" && <Leaderboard />}
 
