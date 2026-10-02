@@ -71,6 +71,14 @@ const collision = {
 const legitimateInfluencer = {
   ...collision, id: "influencer-normal", coupon_code: "CREATOR20", name: "Creator",
 }
+const auctor20Influencer = {
+  ...legitimateInfluencer,
+  id: "influencer-auctor20",
+  coupon_code: "AUCTOR20",
+  name: "Auctor Campaign",
+  student_discount_percent: 20,
+  commission_rate: 20,
+}
 const suppliedInfluencer = {
   active: true, discountPercent: 20,
   influencer: { name: "Collision", commissionPercent: 30, commissionBasis: "ORIGINAL_PRICE" },
@@ -114,7 +122,7 @@ async function loadModule(file, dependencies, globals = {}) {
 
 async function checkoutHarness() {
   const rows = {
-    instagram_influencers: [collision, legitimateInfluencer],
+    instagram_influencers: [collision, legitimateInfluencer, auctor20Influencer],
     profiles: [{ user_id: "test-user", name: "Student", email: "student@example.test", phone: "", exam: "CAT", attempt_year: 2026, is_premium: false }],
     subscriptions: [], influencer_coupon_conversions: [],
     campus_ambassadors: [{ id: "ambassador", referral_code: "REFERRAL", status: "active", total_referrals: 0, total_commission: 0 }],
@@ -277,6 +285,33 @@ test("legitimate influencer coupon retains validation, pricing, fulfillment and 
   assert.equal(h.rows.influencer_coupon_conversions[0].coupon_code, "CREATOR20")
   assert.equal(h.rows.influencer_coupon_conversions[0].amount_paid, 103920)
   assert.equal(h.rows.influencer_coupon_conversions[0].commission_amount, 38970)
+})
+
+test("AUCTOR20 uses the influencer record on every plan, including CAT test series", async () => {
+  for (const plan of Object.keys(PLAN_PRICES)) {
+    const h = await checkoutHarness()
+    const couponResponse = await h.validate("auctor20")
+    assert.equal(couponResponse.status, 200)
+    assert.deepEqual(await couponResponse.json(), { valid: true, code: "AUCTOR20", discountPercent: 20 })
+
+    const order = await h.create({ plan, couponCode: "AUCTOR20" })
+    assert.equal(order.amount, Math.round(PLAN_PRICES[plan].basePaise * 0.8))
+    assert.equal(order.notes.influencer_id, "influencer-auctor20")
+    assert.equal(order.notes.discount_type, "coupon")
+    const verified = await h.verify()
+    assert.equal(verified.status, 200)
+    assert.equal((await verified.json()).success, true)
+    assert.equal(h.rows.influencer_coupon_conversions.length, 1)
+    assert.equal(h.rows.influencer_coupon_conversions[0].coupon_code, "AUCTOR20")
+    assert.equal(h.rows.influencer_coupon_conversions[0].commission_amount, Math.round(PLAN_PRICES[plan].basePaise * 0.2))
+  }
+})
+
+test("pricing page supports validated coupon query prefill", async () => {
+  const pricingSource = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
+  assert.match(pricingSource, /searchParams\.get\("coupon"\)/)
+  assert.match(pricingSource, /applyCoupon\(couponFromUrl\)/)
+  assert.match(pricingSource, /couponCode=\{appliedCoupon\}/)
 })
 
 test("server-validated referral pricing is also identical at creation and verification", async () => {

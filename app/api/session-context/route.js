@@ -40,6 +40,7 @@ export async function GET(request) {
     const entitlement = getEffectiveEntitlement({ profile: identity.profile, resolvedTenant: resolved, subscription })
 
     return NextResponse.json({
+      serverTime: new Date().toISOString(),
       user: { id: identity.user.id, email: identity.user.email || null },
       profile: identity.profile,
       institute: resolved.institute,
