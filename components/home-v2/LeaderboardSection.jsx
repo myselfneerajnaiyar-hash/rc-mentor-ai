@@ -13,18 +13,12 @@ export default function LeaderboardSection({exam}) {
 const isCAT = getExamCapabilities(exam).isCAT;
 const [activeTab, setActiveTab] = useState(
   isCAT
-    ? "rc"
+    ? "daily-rc-challenge"
     : "workout"
 );
 
   const tabs = isCAT
   ? [
-      {
-        id: "rc",
-        label: "CAT PYQ",
-        icon: Trophy,
-        color: "text-cyan-300",
-      },
       {
         id: "daily-rc-challenge",
         label: "Daily RC Challenge",
@@ -114,8 +108,6 @@ const [activeTab, setActiveTab] = useState(
       {/* Leaderboard */}
 
       <div className="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-
-        {activeTab === "rc" && <RCLeaderboard category="cat_pyq" />}
 
         {activeTab === "daily-rc-challenge" && <RCLeaderboard category="daily_rc_challenge" />}
 
