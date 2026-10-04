@@ -7,6 +7,7 @@ import { calculatePlanPricing } from "../lib/payments/pricing.js"
 import crypto from "node:crypto"
 
 const migration = await readFile(new URL("../supabase/migrations/202610040001_razorpay_payment_provisioning.sql", import.meta.url), "utf8")
+const safeAttemptYearMigration = await readFile(new URL("../supabase/migrations/202610040002_safe_razorpay_attempt_year.sql", import.meta.url), "utf8")
 const callbackSource = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const webhookSource = await readFile(new URL("../app/api/razorpay/webhook/route.js", import.meta.url), "utf8")
 const processorSource = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
@@ -25,7 +26,7 @@ async function database() {
     );
     create table public.subscriptions(
       id uuid primary key default gen_random_uuid(), user_id uuid, name text, email text, phone text,
-      exam text, attempt_year text, plan text, expires_at timestamptz, referral_code text,
+      exam text, attempt_year integer, plan text, expires_at timestamptz, referral_code text,
       razorpay_payment_id text unique
     );
     create table public.campus_ambassadors(
@@ -34,14 +35,15 @@ async function database() {
     );
   `)
   await db.exec(migration)
+  await db.exec(safeAttemptYearMigration)
   return db
 }
 
-async function addPurchase(db, { userId, orderId, plan = "yearly", referralCode = null, couponCode = "AUCTOR30" }) {
+async function addPurchase(db, { userId, orderId, plan = "yearly", referralCode = null, couponCode = "AUCTOR30", attemptYear = "2026" }) {
   const pricing = calculatePlanPricing(plan, { couponCode: couponCode || "" })
   await db.exec(`insert into auth.users(id) values ('${userId}');
     insert into public.profiles(user_id,name,email,phone,exam,attempt_year) values
-    ('${userId}','Student','student@example.test','','CAT','2026');
+    ('${userId}','Student','student@example.test','','CAT',${attemptYear === null ? "null" : `'${attemptYear.replaceAll("'", "''")}'`});
     insert into public.razorpay_payment_orders(user_id,razorpay_order_id,plan,
       original_amount_paise,discount_amount_paise,amount_paid_paise,coupon_code,referral_code,status)
     values ('${userId}','${orderId}','${plan}',${pricing.originalPaise},${pricing.discountPaise},${pricing.finalPaise},
@@ -90,6 +92,43 @@ test("discounted, other-coupon, and normal yearly orders provision yearly entitl
     assert.equal(new Date(state.rows[0].expires_at).toISOString(), "2031-10-01T12:00:00.000Z")
     assert.equal(new Date(state.rows[0].premium_expires_at).toISOString(), new Date(state.rows[0].expires_at).toISOString())
   }
+  await db.close()
+})
+
+test("attempt_year numeric text is trimmed and safely converted to integer", async () => {
+  const db = await database()
+  await addPurchase(db, { userId: "00000000-0000-0000-0000-000000000020", orderId: "attempt_numeric", attemptYear: " 2026 " })
+  const result = (await provision(db, { orderId: "attempt_numeric", paymentId: "attempt_numeric_pay" })).rows[0].result
+  assert.equal(result.status, "provisioned")
+  const subscription = await db.query(`select attempt_year from public.subscriptions where razorpay_payment_id='attempt_numeric_pay'`)
+  assert.equal(subscription.rows[0].attempt_year, 2026)
+  await db.close()
+})
+
+test("empty, nonnumeric, and out-of-range attempt_year values provision with NULL", async () => {
+  const db = await database()
+  for (const [index, attemptYear] of ["", "CAT 2026", "999999999999999999999999999"].entries()) {
+    const userId = `00000000-0000-0000-0000-00000000002${index + 1}`
+    const orderId = `attempt_invalid_${index}`
+    const paymentId = `attempt_invalid_pay_${index}`
+    await addPurchase(db, { userId, orderId, attemptYear })
+    const result = (await provision(db, { orderId, paymentId })).rows[0].result
+    assert.equal(result.status, "provisioned")
+    const subscription = await db.query(`select attempt_year from public.subscriptions where razorpay_payment_id='${paymentId}'`)
+    assert.equal(subscription.rows[0].attempt_year, null)
+  }
+  await db.close()
+})
+
+test("provisioned-order reconciliation also safely converts attempt_year", async () => {
+  const db = await database()
+  await addPurchase(db, { userId: "00000000-0000-0000-0000-000000000023", orderId: "attempt_reconcile", attemptYear: "CAT 2026" })
+  await db.exec(`update public.razorpay_payment_orders set status='provisioned', razorpay_payment_id='attempt_reconcile_pay',
+    entitlement_expires_at='2031-10-01T12:00:00Z', provisioned_at=now() where razorpay_order_id='attempt_reconcile';`)
+  const result = (await provision(db, { orderId: "attempt_reconcile", paymentId: "attempt_reconcile_pay" })).rows[0].result
+  assert.equal(result.status, "reconciled")
+  const subscription = await db.query(`select attempt_year from public.subscriptions where razorpay_payment_id='attempt_reconcile_pay'`)
+  assert.equal(subscription.rows[0].attempt_year, null)
   await db.close()
 })
 
