@@ -2,8 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { BOOTCAMP_ACCESS_END, BOOTCAMP_CALENDAR, BOOTCAMP_PROGRAM_END, getBootCampCalendarState,trainingMonths } from '../lib/bootcamp/calendar.mjs'
 import { requireBootCampEntitlement } from '../lib/bootcamp/access.mjs'
-import { buildBootCampLeaderboard } from '../lib/bootcamp/leaderboard.mjs'
-import { fixture,harness,student } from './helpers/bootcamp-db.mjs'
+import { fixture,harness,student,other } from './helpers/bootcamp-db.mjs'
 
 for(const [date,today,open] of [['2026-10-05',1,1],['2026-10-09',5,5],['2026-10-29',25,25],['2026-11-23',50,50],['2026-11-24',null,50],['2026-12-03',null,50],['2027-02-04',null,50]])test(`fixed calendar ${date}`,()=>{
   const states=BOOTCAMP_CALENDAR.map(d=>getBootCampCalendarState(date,d.day))
@@ -32,40 +31,54 @@ test('one mapping, ten buffer dates, India midnight boundaries, no invented CAT 
   assert.equal(getBootCampCalendarState('2026-10-29',23,'in_progress').state,'IN_PROGRESS')
   assert.throws(()=>getBootCampCalendarState('2026-10-29',51))
 })
-test('temporary day-link preview opens published content, hides future days from home, then restores the calendar',async()=>{
-  let today='2026-10-01'
-  const day2=fixture(2)
-  const h=await harness(fixture(),undefined,undefined,{now:()=>today,previewAccess:()=>today<'2026-10-05'})
+test('simulated October 10 calendar shows backlog, today, future locks, and each account actual attempts',async()=>{
+  let today='2026-10-10'
+  const h=await harness(fixture(),undefined,undefined,{now:()=>today})
   try {
-    await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[day2.id,day2.day_number,day2.document,day2.lock_token,day2.updated_at])
+    for(const day of Array.from({length:9},(_,i)=>fixture(i+2)))await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[day.id,day.day_number,day.document,day.lock_token,day.updated_at])
     await h.service.enroll(student)
     const home=await h.service.home(student)
     assert.equal(home.calendar.devPreview,false)
-    assert.equal(home.calendar.period,'UPCOMING')
-    assert.equal(home.days[0].accessible,false)
+    assert.equal(home.calendar.today,'2026-10-10')
+    assert.equal(home.calendar.todayDay,6)
+    assert.equal(home.days.slice(0,6).every(day=>day.accessible),true)
+    assert.equal(home.days.slice(6).some(day=>day.accessible),false)
+    assert.equal(home.days.slice(0,5).every(day=>day.state==='OPEN_BACKLOG'),true)
+    assert.equal(home.days[5].state,'TODAY')
     assert.equal(home.days[0].releaseDate,'2026-10-05')
-    const directDay=await h.service.home(student,1)
-    assert.equal(directDay.calendar.devPreview,true)
-    assert.equal(directDay.days[0].accessible,true)
-    assert.equal(directDay.days[1].accessible,false)
-    const directDay2=await h.service.home(student,2)
-    assert.equal(directDay2.days[1].accessible,true)
-    const previewAttempt=await h.service.start(student,1)
-    assert.equal(previewAttempt.dayNumber,1)
-    assert.equal((await h.service.home(student,1)).attempt.id,previewAttempt.id)
-    const day2Attempt=await h.service.start(student,2)
-    assert.equal(day2Attempt.dayNumber,2)
-    today='2026-10-05'
-    const restored=await h.service.home(student)
-    assert.equal(restored.calendar.devPreview,false)
-    assert.equal(restored.days[0].accessible,true)
-    assert.equal(restored.days[1].accessible,false)
-    await assert.rejects(h.service.start(student,2),e=>e.status===403&&/opens on 2026-10-06/.test(e.message))
-    await assert.rejects(h.service.get(student,day2Attempt.id),e=>e.status===403&&/opens on 2026-10-06/.test(e.message))
-    const early=buildBootCampLeaderboard({period:'daily',now:'2026-10-01T10:00:00Z',currentUserId:student,
-      attempts:[{userId:student,dayNumber:1,state:{status:'completed',completed_at:'2026-10-01T10:00:00Z'},blocks:Array(5).fill({status:'completed',correct:5})}]})
-    assert.equal(early.current.score,0)
-    assert.equal(early.window.scheduledDays.length,0)
+    assert.equal(home.completedDays,0)
+    await h.service.enroll(other)
+    const returningAttempt=await h.service.start(other,5)
+    const returning=await h.service.home(other)
+    assert.equal(returning.days[4].status,'in_progress')
+    assert.equal((await h.service.home(other,5)).attempt.id,returningAttempt.id)
+    today='2026-10-11'
+    assert.equal((await h.service.home(student)).calendar.todayDay,7)
+    assert.equal((await h.service.home(student)).days[6].state,'TODAY')
+    assert.equal((await h.service.home(student)).days[7].state,'LOCKED')
+    const board=await h.service.getBootCampLeaderboard(student,'daily')
+    assert.equal(board.window.startDate,'2026-10-11')
+    assert.equal(board.current.score,0)
+    assert.equal(board.eligibleStudents,0)
+  } finally {await h.close()}
+})
+test('October 9 exposes only valid past content as startable and leaves invalid content preparing',async()=>{
+  const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-09'})
+  try {
+    for(const day of [2,3,5]) {
+      const row=fixture(day)
+      if(day===3)row.document.status='draft'
+      await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at])
+    }
+    await h.service.enroll(student)
+    const home=await h.service.home(student)
+    assert.equal(home.days[0].state,'OPEN_BACKLOG');assert.equal(home.days[0].accessible,true)
+    assert.equal(home.days[1].state,'OPEN_BACKLOG');assert.equal(home.days[1].accessible,true)
+    assert.equal(home.days[2].unlocked,true);assert.equal(home.days[2].available,false);assert.equal(home.days[2].accessible,false)
+    assert.equal(home.days[4].isToday,true);assert.equal(home.days[4].state,'TODAY');assert.equal(home.days[4].accessible,true)
+    assert.equal((await h.service.start(student,2)).dayNumber,2)
+    assert.equal((await h.service.start(student,5)).dayNumber,5)
+    await assert.rejects(h.service.start(student,3),e=>e.status===404)
   } finally {await h.close()}
 })
 test('existing entitlement rules: active trial, purchase, institute, expiry, and no invented extension',()=>{

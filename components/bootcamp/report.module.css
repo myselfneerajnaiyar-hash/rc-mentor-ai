@@ -32,3 +32,36 @@
   .glanceBreakdown .timedOut{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px}
   .glanceBreakdown .timedOut dd{margin:0}
 }
+/* Day report hierarchy: result, compact metrics, then differentiated insights. */
+.resultHero{padding:12px 0 20px;border-bottom:1px solid #36505e}
+.resultHero h1{margin-bottom:7px;font-size:clamp(36px,4vw,54px);font-weight:600;letter-spacing:-.04em;color:#f3f5ee}
+.resultHero>p:last-child{margin:0;color:#b6c9d1;font-size:16px;font-weight:550}
+.glance{padding:18px 0 14px}
+.glance>.eyebrow{margin-bottom:4px}
+.glanceBreakdown .glanceStat.correct{border-color:#47735d;background:#14291f}
+.glanceBreakdown .glanceStat.incorrect{border-color:#754b42;background:#2c1d1b}
+.glanceBreakdown .glanceStat.skipped{border-color:#66583b;background:#29251b}
+.glanceBreakdown .glanceStat.unreached{border-color:#3b5265;background:#17232d}
+.insightGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;padding:18px 0 10px}
+.insightCard{min-width:0;padding:18px 20px;border:1px solid #324653;border-radius:10px;background:#111e28}
+.insightCard h2{margin:0 0 8px;font-family:inherit;font-size:19px;font-weight:700;line-height:1.25;color:#eaf0ef}
+.insightCard>p:not(.eyebrow){margin:4px 0;color:#d5e0e2;font-size:14px;line-height:1.6}
+.insightCard.strengths{border-left:4px solid #71c395;background:linear-gradient(110deg,#142a22,#111e28 74%)}
+.strengths h2{color:#a9e0bd}
+.insightCard.attention{border-left:4px solid #d18d78;background:linear-gradient(110deg,#2b201e,#111e28 74%)}
+.attention h2{color:#e9b2a0}
+.insightCard.advice{border-color:#567886;background:linear-gradient(140deg,#18323c,#101b25 80%)}
+.advice .eyebrow,.nextFocus .eyebrow{margin:0 0 8px}
+.advice .ask{margin-top:14px;max-width:220px}
+.insightCard.nextFocus{border:1px solid #92754b;background:linear-gradient(135deg,#2a251b,#171e22 82%)}
+.nextFocus .eyebrow{color:#e7c48b!important}
+.nextFocus>p:last-child{font-size:16px;line-height:1.55}
+.lessons,.watch{grid-column:1/-1;margin:0;padding:14px 17px;border:1px solid #2e4350;border-radius:8px;background:#101b24}
+.lessons p,.watch p{margin:10px 0;font-size:14px;line-height:1.6}
+.lessons small{display:inline;margin-right:8px;color:#84d8e7}
+.reportActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.reportButton{display:inline-flex;min-height:46px;align-items:center;justify-content:center;padding:11px 17px;border:1px solid #65c2d1;border-radius:7px;background:#183743;color:#d8f6f8!important;text-decoration:none!important;font-size:12px;font-weight:750;letter-spacing:.045em;text-transform:uppercase;transition:background .15s,border-color .15s}
+.reportButton:hover{border-color:#a0e7ef;background:#20505b}
+.secondaryButton{border-color:#627985;background:#202c35;color:#e0e8ea!important}
+.secondaryButton:hover{border-color:#a4b5bd;background:#2d3b45}
+@media(max-width:760px){.insightGrid{grid-template-columns:1fr;gap:11px}.lessons,.watch{grid-column:auto}.resultHero>p:last-child{font-size:14px}.reportActions{display:grid;grid-template-columns:1fr}.reportButton{width:100%}}

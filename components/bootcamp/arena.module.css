@@ -35,3 +35,36 @@
 @media(max-width:1040px){.dashboardGrid{grid-template-columns:minmax(0,1.35fr) minmax(285px,.85fr);gap:17px}.calendar{padding:15px 12px 12px}.month td{height:60px}.month td>a,.month td>div{min-height:59px;padding:7px 5px}.featureCard{padding:16px}.featureCard h3{font-size:21px}}
 @media(max-width:820px){.pageIntro{align-items:flex-start;margin-bottom:23px}.dashboardGrid{grid-template-columns:1fr}.destinations{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}.calendar{padding:17px 15px 13px}.month td{height:68px}.month td>a,.month td>div{min-height:67px;padding:8px 6px}.featureCard{padding:18px}.trainer{grid-template-columns:66px minmax(0,1fr) 180px;gap:15px}.portrait{width:62px;height:62px}}
 @media(max-width:600px){.pageIntro{display:block;margin:0 0 22px;padding-bottom:19px}.pageIntro h1{font-size:clamp(36px,10vw,48px)}.intro{font-size:12px;max-width:360px}.programNote{margin-top:17px;padding-left:12px}.sectionHeading{align-items:flex-start}.sectionHeading h2{font-size:25px}.sectionHeading p{max-width:290px;font-size:11px}.browseLink{padding:9px;font-size:8px}.mission{align-items:stretch;flex-direction:column;padding:15px;gap:13px}.mission h3{font-size:19px}.startCta{width:100%;min-width:0}.calendar{padding:14px 8px 11px}.calendarTop strong{font-size:9px}.zone{font-size:6px}.monthTabs{gap:20px}.monthTabs button{font-size:9px}.month th{font-size:6px;padding-bottom:8px}.month td{height:56px}.month td>a,.month td>div{min-height:55px;gap:4px;padding:6px 3px}.month time{font-size:13px}.month strong{font-size:6px}.month small{font-size:5px}.month .active time{font-size:16px}.legend{gap:8px 12px;font-size:7px}.destinations{grid-template-columns:1fr;gap:11px}.featureCard{padding:17px}.featureCard h3{font-size:22px}.featureIntro{font-size:10px}.trainer{grid-template-columns:56px minmax(0,1fr);gap:13px;padding:17px 13px;margin-top:20px}.portrait{width:54px;height:54px}.trainerCopy h2{font-size:19px}.trainerCopy p:last-child{font-size:10px}.trainerAction{grid-column:1/-1}.trainerAction small{font-size:9px}}
+/* Focused calendar clarity and mobile tap targets. */
+.dashboardGrid{grid-template-columns:minmax(0,2.3fr) minmax(290px,.75fr);gap:26px}
+.catchupNotice{margin:0 0 14px;padding:16px 19px;border:1px solid #56928c;border-left:4px solid #70e0cc;border-radius:7px;background:linear-gradient(100deg,#12312f,#112129 78%)}
+.catchupNotice strong{display:block;color:#dcfff5;font-size:clamp(18px,2vw,23px);line-height:1.2}
+.catchupNotice p{margin:5px 0 0;color:#b7d4d2;font-size:13px;line-height:1.5}
+.calendar{padding:21px 22px 17px;border-color:#385666;background:radial-gradient(ellipse at 20% 0%,#1c435366,transparent 62%),linear-gradient(145deg,#122330,#0e1721 72%);box-shadow:0 22px 55px #0003}
+.monthViewport{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-color:#547887 #14232d;scrollbar-width:thin}
+.month{width:100%;min-width:640px}
+.month th{padding:11px 3px 12px;color:#8da5b4;font-size:10px;font-weight:700}
+.month td{height:79px;border-color:#2a414f}
+.month td>a,.month td>div{min-height:78px;gap:6px;padding:10px 9px;color:#c0cdd5}
+.month td>a{position:relative}
+.month td>a:hover{background:#1a3b49;box-shadow:inset 0 0 0 2px #86ddeb}
+.month td>a:focus-visible{z-index:2;outline:3px solid #fff;outline-offset:-3px;background:#1c4350}
+.month time{color:#e0e8ec;font-size:19px}
+.month strong{font-size:10px;font-weight:750}
+.month small{color:#9bb0bd;font-size:9px}
+.catchupBadge{align-self:flex-start;padding:4px 6px;border:1px solid #67d9c4;border-radius:3px;background:#174b44;color:#e3fff6;font-size:9px;font-weight:850;letter-spacing:.035em;line-height:1.15;white-space:normal}
+.legend{gap:9px 18px;margin-top:14px;color:#adbdc7;font-size:10px;line-height:1.4}
+.legend i{flex:none;width:9px;height:9px}
+.catchupKey{background:#82e4cf!important}
+.todayKey{background:#65ddef!important}
+@media(max-width:1040px){.dashboardGrid{grid-template-columns:minmax(0,1.8fr) minmax(270px,.8fr);gap:17px}}
+@media(max-width:820px){.dashboardGrid{grid-template-columns:1fr}.calendar{padding:17px 15px 13px}.destinations{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.catchupNotice{padding:14px 15px}.catchupNotice p{font-size:12px}.calendar{padding:14px 10px 12px}.month{min-width:620px}.month td{height:76px}.month td>a,.month td>div{min-height:75px;padding:9px 7px}.month time{font-size:18px}.month strong{font-size:9px}.month small,.catchupBadge{font-size:8px}.legend{font-size:9px}}
+
+/* CAT 2026 countdown display */
+.programNote{align-self:stretch;min-width:270px;padding:18px 20px;border:1px solid #3c5864;border-left:3px solid #d8b77e;border-radius:8px;background:radial-gradient(ellipse at 85% 0%,#a7863a20,transparent 58%),linear-gradient(145deg,#172630,#101a23 78%);box-shadow:0 18px 44px #0003}
+.countdownHead{display:flex;align-items:center;justify-content:space-between;gap:12px}.countdownHead>span{color:#e2c28a;font-size:10px;font-weight:800;letter-spacing:.16em}.countdownHead>strong{color:#d6e0e4;font-size:10px;font-weight:600;text-align:right}
+.countdownNumber{display:flex;align-items:baseline;gap:10px;margin:5px 0 0}.countdownNumber strong{color:#f3f5f0;font:500 clamp(48px,5vw,66px)/.95 Georgia,serif;font-variant-numeric:tabular-nums;letter-spacing:-.055em}.countdownNumber span{color:#e2c28a;font-size:12px;font-weight:700;letter-spacing:.04em}
+.countdownToday{margin:18px 0 12px;color:#f3f5f0;font:500 clamp(23px,2.3vw,31px)/1.1 Georgia,serif}.countdownMessage{margin:7px 0 12px;color:#b8c4ca;font-size:11px;line-height:1.4}
+.trainingWindow{display:grid;gap:4px;padding-top:9px;border-top:1px solid #34444c}.trainingWindow>span{color:#78909c;font-size:8px;font-weight:750;letter-spacing:.13em}.trainingWindow strong{color:#c4d0d5;font-size:10px;font-weight:600}.trainingWindow small{color:#8798a1;font-size:9px}
+@media(max-width:600px){.programNote{min-width:0;margin-top:17px;padding:16px}.countdownNumber strong{font-size:56px}.countdownHead>strong{text-align:right}.countdownToday{font-size:25px}}

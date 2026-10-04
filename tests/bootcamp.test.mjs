@@ -64,6 +64,34 @@ test('all five outcomes: timeout keeps saved answers; unseen and presented remai
   assert.throws(()=>transition(state,snapshot,'responses',{key:'warmup',questionId:b.questions[0].source_question_id,response:'A'},10000))
 })
 
+test('question navigation records the next presentation in the required save and timeout expires the visible question',()=>{
+  const {snapshot}=adaptDay(fixture()),state=initialState(snapshot,1000),block=state.blocks[0]
+  state.phase='activity';block.status='active';block.started_at=new Date(1000).toISOString();block.deadline_at=new Date(10000).toISOString()
+  const first=snapshot.blocks[0].questions[0],second=snapshot.blocks[0].questions[1]
+  const moved=transition(state,snapshot,'responses',{key:'warmup',questionId:first.id,presented:true,nextQuestionId:second.id,activeMs:500},2000)
+  assert.equal(moved.blocks[0].current_question,1)
+  assert.ok(moved.blocks[0].questions[0].presented_at)
+  assert.ok(moved.blocks[0].questions[1].presented_at)
+  const timed=transition(moved,snapshot,'expire',{questionId:second.id},10000)
+  assert.deepEqual(timed.blocks[0].questions.slice(0,3).map(q=>q.outcome),['timed_out','timed_out','not_reached'])
+})
+
+test('expired attempt GET records the visible question before server timeout finalizes it',async()=>{
+  const h=await harness(fixture(),undefined,undefined,{now:()=>new Date('2026-10-05T06:00:00Z')})
+  try {
+    await h.service.enroll(student)
+    let state=await h.service.start(student),id=state.id
+    state=await h.service.act(student,id,'advance',{revision:state.revision})
+    state=await h.service.act(student,id,'block_start',{key:'warmup',revision:state.revision})
+    const questions=adaptDay(fixture()).snapshot.blocks[0].questions
+    state=await h.service.act(student,id,'responses',{key:'warmup',revision:state.revision,questionId:questions[0].id,presented:true,nextQuestionId:questions[1].id,activeMs:0})
+    await h.pg.query("update bootcamp_block_attempts set state=jsonb_set(state,'{deadline_at}',to_jsonb(clock_timestamp()-interval '1 second')) where day_attempt_id=$1 and block_key='warmup'",[id])
+    const expired=await h.service.get(student,id,questions[1].id)
+    assert.equal(expired.phase,'review')
+    assert.deepEqual((await h.service.review(student,id,'warmup')).questions.slice(0,3).map(q=>q.outcome),['timed_out','timed_out','not_reached'])
+  } finally {await h.close()}
+})
+
 test('public projection never includes answers, source keys, enrichment or future question text',()=> {
   const {snapshot}=adaptDay(fixture());const state=initialState(snapshot)
   const record={id:'test',revision:0,state,snapshot}

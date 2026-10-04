@@ -16,7 +16,7 @@ import { validateReview } from '@/lib/bootcamp/review.mjs'
 import BootCampDayReport from './BootCampDayReport'
 import s from './bootcamp.module.css'
 
-export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1 }) {
+export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1, initialIstDate }) {
   const router=useRouter()
   const [celebrating,setCelebrating]=useState(false)
   const [chat,setChat] = useState(null)
@@ -73,10 +73,12 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   },[session?.id,session?.phase,retryKey,accept,dayRoute])
 
   useEffect(()=>{
-    if(!dayRoute || busy) return
+    if(!dayRoute || busy || !session) return
     if(session?.phase==='report' && !reportRoute && !celebrating) router.replace(`/boot-camp/day/${dayNumber}/report`)
     else if(reportRoute && session?.phase!=='report' && !error) router.replace(`/boot-camp/day/${dayNumber}`)
   },[dayRoute,reportRoute,session?.phase,busy,error,router,celebrating,dayNumber])
+
+  useEffect(()=>{if(reportRoute&&celebrating)setCelebrating(false)},[reportRoute,celebrating])
 
   async function run(path,method='POST',body) {
     if (working.current) return false
@@ -109,7 +111,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   }
   const errorPanel = error && <div className={s.error} role="alert">{error.message}<div className={s.actions}>{error.status === 401 ? <Link className={s.primary} href="/login">Sign in</Link> : <><button className={s.secondary} disabled={busy} onClick={reload}>Reload saved progress</button>{error.status===402?<Link className={s.primary} href="/pricing">View plans</Link>:<Link href="/boot-camp">Back to Boot Camp</Link>}</>}</div></div>
   const chatPanel = chat && <BootCampChat key={`${session?.id || 'plan'}:${chat.block || 'day'}:${chat.questionId || 'block'}`} attemptId={session?.id} dayNumber={dayRoute?dayNumber:catalog?.currentDay || 1} block={chat.block} questionId={chat.questionId} open={chat.open} onClose={()=>setChat(c=>c ? {...c,open:false} : null)} />
-  if (!dayRoute) return <BootCampShell>{errorPanel}<BootCampArena catalog={catalog} session={session} busy={busy} unavailable={!!error} onChat={()=>setChat({open:true})} />{chatPanel}</BootCampShell>
+  if (!dayRoute) return <BootCampShell>{errorPanel}<BootCampArena catalog={catalog} session={session} busy={busy} unavailable={!!error} initialIstDate={initialIstDate} onChat={()=>setChat({open:true})} />{chatPanel}</BootCampShell>
   const selectedDay=catalog?.days?.find(d=>d.day===dayNumber)
   if (!session && !busy && (error || !selectedDay?.accessible)) return <BootCampShell>{errorPanel}{!error&&<section className={s.hero}><h1 className={s.title}>{selectedDay?.unlocked?'This day is being prepared.':'This day is locked.'}</h1><p className={s.lead}>{selectedDay?.unlocked?'Please check back soon.':`Day ${dayNumber} opens on ${selectedDay?.releaseDate || 'its calendar date'}.`}</p><Link href="/boot-camp">Back to Boot Camp</Link></section>}</BootCampShell>
   if (!session) return <BootCampShell>{errorPanel}<section className={s.hero}><p className={s.eyebrow}>Boot Camp / Day {String(dayNumber).padStart(2,'0')}</p><h1 className={s.title}>Your training is ready.<br />Let’s sharpen your reading.</h1><p className={s.lead}>Birbal has Day {dayNumber} ready for you. A focused warm-up, three passages, and verbal reasoning—with a personal check-in after every block.</p>
@@ -119,9 +121,9 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   return <BootCampShell session={session} reviewWorkspace={reviewWorkspace || session.phase==='report'}>{errorPanel}{chatPanel}
     {session.phase === 'mission' && <BootCampMission dayNumber={dayNumber} commentary={session.commentary} busy={busy} onContinue={()=>mutate('/advance')} />}
     {session.phase === 'ready' && <BootCampMission ready blockLabel={session.blockLabel} seconds={session.seconds} busy={busy} onContinue={()=>mutate(`/blocks/${session.currentBlock}/start`)} />}
-    {session.phase === 'activity' && <BootCampActivity dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} onSave={body=>mutate(`/blocks/${session.currentBlock}/responses`,'PATCH',body)} onFinish={()=>mutate(`/blocks/${session.currentBlock}/finish`)} onExpire={()=>run(`/attempts/${session.id}`,'GET')} />}
+    {session.phase === 'activity' && <BootCampActivity dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} onSave={body=>mutate(`/blocks/${session.currentBlock}/responses`,'PATCH',body)} onFinish={body=>mutate(`/blocks/${session.currentBlock}/finish`,'POST',body)} onExpire={questionId=>run(`/attempts/${session.id}?presentedQuestionId=${encodeURIComponent(questionId)}`,'GET')} />}
     {reviewWorkspace && (review?.key === session.currentBlock ? <BootCampReviewBoundary key={`${session.id}:${session.currentBlock}:${retryKey}`} attemptId={session.id} block={session.currentBlock} onRetry={reload}><BootCampReviewWorkspace dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} attemptId={session.id} review={review} phase={session.phase} commentary={review.commentary || session.commentary} busy={busy} onContinue={()=>mutate('/advance','POST',{reviewed:true})} onAsk={questionId=>setChat({open:true,block:session.currentBlock,questionId})}/></BootCampReviewBoundary> : !error && <p role="status">Preparing your detailed review...</p>)}
-    {session.phase === 'report' && celebrating && <BootCampCompletion day={dayNumber} onContinue={()=>{setCelebrating(false);router.replace(`/boot-camp/day/${dayNumber}/report`)}}/>}
-    {session.phase === 'report' && !celebrating && <BootCampDayReport dayNumber={dayNumber} todayDay={catalog?.calendar?.todayDay} todayAvailable={!!catalog?.days?.find(d=>d.isToday)?.accessible} report={session.report} commentary={session.commentary} onAsk={()=>setChat({open:true})} />}
+    {session.phase === 'report' && celebrating && !reportRoute && <BootCampCompletion day={dayNumber} onContinue={()=>router.replace(`/boot-camp/day/${dayNumber}/report`)}/>}
+    {session.phase === 'report' && (!celebrating || reportRoute) && <BootCampDayReport dayNumber={dayNumber} todayDay={catalog?.calendar?.todayDay} todayAvailable={!!catalog?.days?.find(d=>d.isToday)?.accessible} report={session.report} commentary={session.commentary} onAsk={()=>setChat({open:true})} />}
   </BootCampShell>
 }

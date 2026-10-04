@@ -5,7 +5,8 @@ import { adaptDay } from '../lib/bootcamp/content.mjs'
 import { initialState } from '../lib/bootcamp/session.mjs'
 import { buildOverallAnalytics } from '../lib/bootcamp/overall.mjs'
 import { BOOTCAMP_CALENDAR,getBootCampCalendarState } from '../lib/bootcamp/calendar.mjs'
-import { bootCampClock } from '../lib/bootcamp/clock.mjs'
+import { bootCampClock, bootCampPreviewDate, isBootCampPreviewUser } from '../lib/bootcamp/clock.mjs'
+import { leaderboardWindow } from '../lib/bootcamp/leaderboard.mjs'
 export function record(day,correct=10) {
  const snapshot=adaptDay(fixture(day)).snapshot,state=initialState(snapshot)
  state.status='completed';state.phase='report';state.completed_at=`${BOOTCAMP_CALENDAR[day-1].date}T10:00:00Z`
@@ -30,10 +31,23 @@ test('empty, unanswered, missing timing, catch-up dates and Day 50 are truthful'
  const second=record(2);second.state.completed_at=r.state.completed_at;second.state.blocks.forEach(b=>{b.finished_at=r.state.completed_at;b.questions.forEach(q=>q.saved_at=r.state.completed_at)});assert.equal(buildOverallAnalytics([record(1),second],[],calendar).bestStreak,1)
  const day50=record(50);day50.state.completed_at='2026-11-23T10:00:00Z';day50.state.blocks.forEach(b=>{b.finished_at=day50.state.completed_at;b.questions.forEach(q=>q.saved_at=day50.state.completed_at)});assert.equal(buildOverallAnalytics([day50],[],getBootCampCalendarState('2026-11-23')).accuracyByDay[0].day,50)
 })
-test('development date is strict and ignored outside development',()=>{
+test('development date is strict; deployed simulation requires an allowlisted Preview account',()=>{
  assert.equal(bootCampClock({NODE_ENV:'development',BOOTCAMP_TEST_DATE:'2026-10-05'}),'2026-10-05')
  assert.throws(()=>bootCampClock({NODE_ENV:'development',BOOTCAMP_TEST_DATE:'2026-02-30'}))
  for(const NODE_ENV of ['production','test',undefined])assert.ok(bootCampClock({NODE_ENV,BOOTCAMP_TEST_DATE:'invalid'}) instanceof Date)
+ const env={VERCEL_ENV:'preview',BOOTCAMP_PREVIEW_USERS:'owner@example.com,cofounder@example.com'}
+ assert.equal(isBootCampPreviewUser('COFOUNDER@example.com',env),true)
+ assert.equal(isBootCampPreviewUser('student@example.com',env),false)
+ assert.equal(isBootCampPreviewUser('cofounder@example.com',{...env,VERCEL_ENV:'production'}),false)
+ assert.equal(bootCampPreviewDate('2026-10-10','cofounder@example.com',env),'2026-10-10')
+ assert.equal(bootCampPreviewDate('2026-10-10','student@example.com',env),null)
+ assert.equal(bootCampPreviewDate('2026-10-10','cofounder@example.com',{...env,VERCEL_ENV:'production'}),null)
+ assert.throws(()=>bootCampPreviewDate('2026-02-30','cofounder@example.com',env))
+ const simulated=bootCampPreviewDate('2026-10-10','cofounder@example.com',env)
+ assert.equal(simulated,'2026-10-10','date-only simulator input is passed through without timezone conversion')
+ assert.equal(getBootCampCalendarState(simulated).today,'2026-10-10')
+ assert.equal(getBootCampCalendarState(simulated).todayDay,6)
+ assert.deepEqual(leaderboardWindow('daily',simulated).scheduledDays.map(d=>d.day),[6])
 })
 test('analytics endpoint reads only owned Boot Camp data without writes, authentication or keys leaking',async()=>{
  const h=await harness(fixture());try{
