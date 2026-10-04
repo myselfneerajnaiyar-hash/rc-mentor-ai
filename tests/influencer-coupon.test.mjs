@@ -89,15 +89,15 @@ test("dynamic coupon plan pricing uses the shared coupon calculation", () => {
 })
 
 test("successful conversion persistence and email are idempotent by payment", async () => {
-  const verificationRoute = await readFile(
-    new URL("../app/api/verify-payment/route.js", import.meta.url),
+  const paymentProcessor = await readFile(
+    new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url),
     "utf8"
   )
 
-  assert.match(verificationRoute, /onConflict: "payment_id"/)
-  assert.match(verificationRoute, /ignoreDuplicates: true/)
-  assert.match(verificationRoute, /attributionResult\?\.inserted/)
-  assert.match(verificationRoute, /if \(existingPayment\)[\s\S]*is_premium: true/)
+  assert.match(paymentProcessor, /onConflict: "payment_id"/)
+  assert.match(paymentProcessor, /ignoreDuplicates: true/)
+  assert.match(paymentProcessor, /runPostProvisionEffects/)
+  assert.match(paymentProcessor, /apply_razorpay_referral_commission/)
 
   const emailHelper = await readFile(
     new URL("../lib/email/sendInfluencerConversionEmail.js", import.meta.url),

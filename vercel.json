@@ -13,6 +13,10 @@
       "schedule": "*/15 * * * *"
     },
     {
+      "path": "/api/cron/reconcile-razorpay-payments",
+      "schedule": "*/15 * * * *"
+    },
+    {
       "path": "/api/inbox/generate",
       "schedule": "30 2 * * *"
     }

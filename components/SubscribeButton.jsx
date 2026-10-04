@@ -1,5 +1,6 @@
 "use client"
 
+import { supabase } from "@/lib/supabase"
 
 
 export default function SubscribeButton({
@@ -60,10 +61,14 @@ if (!razorpayLoaded) {
   return
 }
 
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) throw new Error("Please sign in again before checkout.")
+
       const res = await fetch("/api/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           plan,
@@ -87,26 +92,24 @@ if (!razorpayLoaded) {
         order_id: order.id,
 
         handler: async function (response) {
-
-     
-
-
+          const { data: { session: verificationSession } } = await supabase.auth.getSession()
+          if (!verificationSession?.access_token) {
+            alert("Payment received. Sign in again to finish confirming access.")
+            return
+          }
 
           const verify = await fetch("/api/verify-payment", {
             method: "POST",
 
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${verificationSession.access_token}`,
             },
 
          body: JSON.stringify({
   razorpay_order_id: response.razorpay_order_id,
   razorpay_payment_id: response.razorpay_payment_id,
   razorpay_signature: response.razorpay_signature,
-  user_id: user.id,
-  plan,
-  referralCode,
-  couponCode,
 }),
           })
 
