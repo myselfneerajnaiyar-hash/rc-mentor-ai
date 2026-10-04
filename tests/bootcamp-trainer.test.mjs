@@ -19,7 +19,7 @@ const context=(records,day)=>buildTrainerContext(records,day,adaptDay(fixture(da
 test('generic history handles Day 1, 2, 3, 10, 25 and 50 without future contamination',()=>{
   const all=Array.from({length:50},(_,i)=>completed(i+1))
   for(const day of [1,2,3,10,25,50]) {
-    const c=context(all,day)
+    const c=context(all.filter(r=>r.day_number<=day),day)
     assert.equal(c.history.overall.daysCompleted,day-1)
     assert.equal(c.history.overall.correct,(day-1)*25)
     assert.equal(c.currentDay.dayNumber,day)
@@ -31,6 +31,41 @@ test('generic history handles Day 1, 2, 3, 10, 25 and 50 without future contamin
     assert.ok(!JSON.stringify(c).includes('"score":999'))
   }
   assert.match(trainerBriefing(context([],1)).briefing.noticed[0],/starting point/)
+})
+test('briefing uses saved completed history for out-of-order catch-up access',()=>{
+  assert.match(trainerBriefing(context([],3)).briefing.noticed[0],/starting point/)
+  const day4=context([completed(4)],3)
+  assert.equal(day4.history.overall.daysCompleted,1)
+  assert.doesNotMatch(trainerBriefing(day4).briefing.noticed[0],/starting point|first set of evidence/)
+  assert.match(trainerBriefing(day4).briefing.noticed[0],/completed training days/)
+  const catchUp=context([completed(2),completed(4)],3)
+  assert.equal(catchUp.history.overall.daysCompleted,2)
+  assert.equal(trainerBriefing(catchUp).briefing.daysCompleted,2)
+  const completedWithoutAnswers=completed(4)
+  for(const block of completedWithoutAnswers.state.blocks) for(const question of block.questions){question.response=null;question.outcome='skipped'}
+  const savedWorkout=context([completedWithoutAnswers],3),briefing=trainerBriefing(savedWorkout)
+  assert.equal(savedWorkout.history.overall.daysCompleted,1)
+  assert.match(briefing.briefing.noticed[0],/add that evidence to your history/)
+  assert.doesNotMatch(JSON.stringify(briefing),/starting point/)
+})
+test('history RPC includes a completed later-numbered workout for an earlier current day',async()=>{
+  const h=await harness(fixture(3))
+  try {
+    const saved=completed(4),state={...saved.state};delete state.blocks
+    const enrollment=await h.pg.query('insert into bootcamp_enrollments(user_id,program_key) values($1,$2) returning id',[student,'bootcamp'])
+    const attempt=await h.pg.query(`insert into bootcamp_day_attempts(enrollment_id,day_number,source_hash,source_revision,snapshot,state)
+      values($1,4,$2,$3,$4,$5) returning id`,[enrollment.rows[0].id,'hash','revision',saved.snapshot,state])
+    for(const [position,block] of saved.state.blocks.entries()) {
+      const blockState={...block};delete blockState.questions
+      await h.pg.query('insert into bootcamp_block_attempts(day_attempt_id,block_key,position,state) values($1,$2,$3,$4)',[attempt.rows[0].id,block.key,position,blockState])
+      for(const [questionPosition,question] of block.questions.entries())
+        await h.pg.query('insert into bootcamp_question_attempts(day_attempt_id,block_key,source_question_id,position,state) values($1,$2,$3,$4,$5)',[attempt.rows[0].id,block.key,question.source_question_id,questionPosition,question])
+    }
+    const trainer=await h.service.getBootCampTrainerContext(student,3)
+    assert.equal(trainer.history.overall.daysCompleted,1)
+    assert.match(trainerBriefing(trainer).briefing.noticed[0],/completed training days/)
+    assert.doesNotMatch(JSON.stringify(trainerBriefing(trainer)),/starting point/)
+  } finally {await h.close()}
 })
 test('recent windows are completed days, non-overlapping and preserve sample sizes',()=>{
   const c=context(Array.from({length:9},(_,i)=>completed(i+1)),10)
@@ -67,7 +102,7 @@ test('unanswered, partial and explicitly abandoned records are participation, no
   assert.equal(c.history.overall.attempted,22);assert.equal(c.history.overall.incorrect,22)
   assert.equal(c.history.overall.skipped,1);assert.equal(c.history.overall.notReached,1);assert.equal(c.history.overall.timedOut,1)
   assert.equal(c.history.participation.partiallyCompleted,1);assert.equal(c.history.participation.abandoned,1)
-  assert.equal(c.history.participation.notStarted,2);assert.equal(c.history.participation.completed,1)
+  assert.equal(c.history.participation.notStarted,1);assert.equal(c.history.participation.completed,1)
   assert.equal(c.history.participation.completionConsistency.started,3)
   assert.equal(c.history.traps.find(p=>p.name==='Scope Shift').selections,16)
 })

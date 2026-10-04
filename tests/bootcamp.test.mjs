@@ -259,7 +259,7 @@ test('contextual chat authenticates ownership, rejects unfinished blocks, is rea
     assert.ok(context.focus.questions[0].analysis.evidence.length)
     assert.equal(context.blocks.length,1);assert.equal(context.history.length,0)
     assert.ok(!JSON.stringify(context).includes('bootcamp-day-1-rc1-q1'))
-    assert.ok(h.calls.slice(callCount).every(c=>c.operation==='select' || c.name==='bootcamp_read'))
+    assert.ok(h.calls.slice(callCount).every(c=>c.operation==='select' || ['bootcamp_read','bootcamp_history'].includes(c.name)))
     assert.equal((await h.service.get(student,id)).revision,before.revision)
     assert.ok(h.calls.every(c=>c.name?.startsWith('bootcamp_') || c.table?.startsWith('bootcamp_')))
     const unauth=await h.handle(new Request('http://localhost/api/bootcamp/chat',{method:'POST',body:JSON.stringify(input)}),'chat')
