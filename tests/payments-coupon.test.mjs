@@ -57,10 +57,9 @@ test("order creation uses server pricing rather than a browser amount", () => {
 })
 
 test("verification uses authoritative Razorpay order metadata and amount", () => {
-  assert.match(verifyPaymentSource, /razorpay\.orders\.fetch\(razorpay_order_id\)/)
-  assert.match(verifyPaymentSource, /const plan = paidOrder\.notes\?\.plan/)
-  assert.match(verifyPaymentSource, /amount: Number\(paidOrder\.amount\) \/ 100/)
-  assert.match(verifyPaymentSource, /paidOrder\.notes\?\.discount_type === "referral"/)
+  assert.match(createOrderSource, /plan: pricing\.plan/)
+  assert.match(verifyPaymentSource, /processSuccessfulPayment\(\{ orderId, paymentId, source: "checkout_callback" \}\)/)
+  assert.doesNotMatch(verifyPaymentSource, /199900|PLAN_PRICES|amount.*plan/)
 })
 
 const collision = {
@@ -111,7 +110,7 @@ async function loadModule(file, dependencies, globals = {}) {
   })
   const exports = {}
   vm.runInNewContext(compiled.outputText, {
-    exports, Response, console: { log() {}, error() {} }, ...globals,
+    exports, Response, console: { log() {}, info() {}, warn() {}, error() {} }, ...globals,
     require(name) {
       assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency: ${name}`)
       return dependencies[name]
@@ -124,6 +123,7 @@ async function checkoutHarness() {
   const rows = {
     instagram_influencers: [collision, legitimateInfluencer, auctor20Influencer],
     profiles: [{ user_id: "test-user", name: "Student", email: "student@example.test", phone: "", exam: "CAT", attempt_year: 2026, is_premium: false }],
+    razorpay_payment_orders: [],
     subscriptions: [], influencer_coupon_conversions: [],
     campus_ambassadors: [{ id: "ambassador", referral_code: "REFERRAL", status: "active", total_referrals: 0, total_commission: 0 }],
   }
@@ -169,10 +169,44 @@ async function checkoutHarness() {
     }
     payments = { fetch: async id => { assert.equal(id, payment.id); return payment } }
   }
+  const processSuccessfulPayment = async ({ orderId, paymentId }) => {
+    assert.equal(orderId, order.id)
+    assert.equal(paymentId, payment.id)
+    const purchase = rows.razorpay_payment_orders.find(row => row.razorpay_order_id === orderId)
+    assert.ok(purchase)
+    assert.equal(purchase.plan, order.notes.plan)
+    if (Number(purchase.amount_paid_paise) !== Number(payment.amount) || payment.status !== "captured") {
+      throw new Error("Captured payment does not match registered purchase")
+    }
+    const existing = rows.subscriptions.find(row => row.razorpay_payment_id === paymentId)
+    if (existing) return { status: "reconciled" }
+    const expiresAt = new Date()
+    expiresAt.setMonth(expiresAt.getMonth() + ({ monthly: 1, quarterly: 3, half_yearly: 6, yearly: 12, cat_test_series: 12 }[purchase.plan]))
+    const subscription = { user_id: purchase.user_id, plan: purchase.plan, expires_at: expiresAt.toISOString(), razorpay_payment_id: paymentId, referral_code: purchase.referral_code }
+    rows.subscriptions.push(subscription)
+    purchase.razorpay_payment_id = paymentId
+    purchase.status = "provisioned"
+    const profile = rows.profiles.find(row => row.user_id === purchase.user_id)
+    if (purchase.plan !== "cat_test_series") {
+      profile.is_premium = true
+      profile.premium_expires_at = subscription.expires_at
+    }
+    if (purchase.influencer_attribution) {
+      rows.influencer_coupon_conversions.push({
+        coupon_code: purchase.influencer_attribution.couponCode,
+        amount_paid: purchase.influencer_attribution.amountPaidPaise,
+        commission_amount: purchase.influencer_attribution.commissionPaise,
+      })
+    }
+    return { status: "provisioned" }
+  }
   const deps = {
     razorpay: Razorpay, crypto,
     "@supabase/supabase-js": { createClient: () => db },
     "@/lib/supabaseAdmin": { supabaseAdmin: db },
+    "@/lib/tenant/getCurrentProfile": { getAuthenticatedProfile: async () => ({ user: { id: "test-user" } }) },
+    "@/lib/payments/razorpaySignatures.mjs": { verifyRazorpayCheckoutSignature: () => true },
+    "@/lib/payments/processSuccessfulPayment": { processSuccessfulPayment },
     "@/lib/payments/influencerCoupons": coupons,
     "@/lib/payments/pricing": pricing,
     "@/lib/email/sendInfluencerConversionEmail": { sendInfluencerConversionEmail: async () => {} },
@@ -251,23 +285,53 @@ test("AUCTOR30 order and verification agree on 90930 and fulfill the six-month p
   assert.equal(h.rows.influencer_coupon_conversions.length, 0)
 })
 
+test("AUCTOR30 yearly checkout provisions the yearly plan at 139930 paise", async () => {
+  const h = await checkoutHarness()
+  const order = await h.create({ plan: "yearly", couponCode: "AUCTOR30" })
+  assert.equal(order.amount, 139930)
+  assert.equal(order.notes.plan, "yearly")
+  assert.equal(order.notes.original_price, "199900")
+  assert.equal(order.notes.discount_amount, "59970")
+  assert.equal(order.notes.amount_paid, "139930")
+
+  const response = await h.verify()
+  assert.equal(response.status, 200)
+  assert.equal(h.rows.subscriptions[0].plan, "yearly")
+  assert.equal(h.rows.subscriptions[0].user_id, "test-user")
+  assert.equal(h.rows.profiles[0].is_premium, true)
+  assert.equal(h.rows.profiles[0].premium_expires_at, h.rows.subscriptions[0].expires_at)
+})
+
+test("yearly purchase provisions with another coupon and with no coupon", async () => {
+  for (const couponCode of ["AZADI50", ""]) {
+    const h = await checkoutHarness()
+    const order = await h.create({ plan: "yearly", couponCode })
+    assert.equal(order.notes.plan, "yearly")
+    assert.equal(order.amount, couponCode ? 99950 : 199900)
+    const response = await h.verify()
+    assert.equal(response.status, 200)
+    assert.equal(h.rows.subscriptions[0].plan, "yearly")
+    assert.equal(h.rows.profiles[0].is_premium, true)
+  }
+})
+
 test("AUCTOR30 verification cannot accept the colliding 103920 price", async () => {
   const h = await checkoutHarness()
   await h.create({ plan: "half_yearly", couponCode: "AUCTOR30" })
   const response = await h.verify({ amount: 103920 })
-  assert.equal(response.status, 400)
-  assert.equal((await response.json()).error, "Payment is not completed")
+  assert.equal(response.status, 503)
+  assert.match((await response.json()).error, /still processing/)
   assert.equal(h.rows.subscriptions.length, 0)
   assert.equal(h.rows.profiles[0].is_premium, false)
 })
 
-test("coupon input cannot reinterpret a six-month order as another plan", async () => {
+test("client plan input cannot change the plan recorded on a six-month order", async () => {
   const h = await checkoutHarness()
   await h.create({ plan: "half_yearly", couponCode: "AUCTOR30" })
   const response = await h.verify({ plan: "yearly" })
-  assert.equal(response.status, 400)
-  assert.equal((await response.json()).error, "Payment plan mismatch")
-  assert.equal(h.rows.subscriptions.length, 0)
+  assert.equal(response.status, 200)
+  assert.equal(h.rows.subscriptions.length, 1)
+  assert.equal(h.rows.subscriptions[0].plan, "half_yearly")
 })
 
 test("legitimate influencer coupon retains validation, pricing, fulfillment and attribution", async () => {
