@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
 import posthog from "posthog-js"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
-import { normalizeWhatsAppPhoneE164 } from "@/lib/whatsapp/phone"
-import { mergeAttribution, normalizeAttribution } from "@/lib/attribution.mjs"
+import { attributionFromParams, buildAttributedPath, mergeAttribution, normalizeAttribution } from "@/lib/attribution.mjs"
+import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
 
 export default function WelcomePage() {
   const { branding, refreshContext } = useTenant()
@@ -16,16 +16,17 @@ export default function WelcomePage() {
   const searchParams = useSearchParams();
 const next = searchParams.get("next");
 const free = searchParams.get("free");
-useEffect(() => {
-  console.log("URL:", window.location.href);
-  console.log("NEXT:", next);
-}, []);
+const loginPath = buildAttributedPath("/login", attributionFromParams(searchParams), { next, free })
 
 
   const [name, setName] = useState("Champion")
   const [showProfileWizard, setShowProfileWizard] = useState(false)
   
 const [loading, setLoading] = useState(true)
+const [authError, setAuthError] = useState("")
+const [profileSaveError, setProfileSaveError] = useState("")
+const [savingProfile, setSavingProfile] = useState(false)
+const finishProfileRequest = useRef(null)
 
   const [profileName, setProfileName] = useState("")
   const [exam, setExam] = useState("CAT")
@@ -40,174 +41,187 @@ const [loading, setLoading] = useState(true)
 }, [])
 
 async function checkUser() {
+  try {
+    const url = new URL(window.location.href)
+    const hashParams = new URLSearchParams(url.hash.replace(/^#/, ""))
+    const callbackError = searchParams.get("error_description") || searchParams.get("error") || hashParams.get("error_description") || hashParams.get("error")
+    if (callbackError) {
+      setAuthError(`Sign in could not complete: ${callbackError}`)
+      return
+    }
 
-  const { data: authData } = await supabase.auth.getUser()
+    const code = searchParams.get("code")
+    if (code) {
+      // The browser client may already have exchanged this during its URL
+      // callback initialization. Only retry the exchange if no session exists.
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+      if (sessionError) throw sessionError
+      if (!sessionData.session) {
+        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+        if (exchangeError) throw exchangeError
+      }
+      url.searchParams.delete("code")
+      url.searchParams.delete("error")
+      url.searchParams.delete("error_code")
+      url.searchParams.delete("error_description")
+      window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`)
+    }
 
-  if (!authData?.user) {
-    router.push("/login")
-    return
-  }
+    const { data: authData, error: userError } = await supabase.auth.getUser()
+    if (!authData?.user && !code) {
+      router.replace(loginPath)
+      return
+    }
+    if (userError) throw userError
+    if (!authData?.user) throw new Error("The confirmation link did not create a session")
 
-  const user = authData.user
+    const user = authData.user
+    const emailName = user.email?.split("@")[0] || "Champion"
+    const clean = emailName.replace(/[0-9]/g, "")
+    const formatted = clean.charAt(0).toUpperCase() + clean.slice(1)
+    setName(formatted)
 
-  const emailName = user.email?.split("@")[0] || "Champion"
-  const clean = emailName.replace(/[0-9]/g, "")
-  const formatted =
-    clean.charAt(0).toUpperCase() + clean.slice(1)
-
-  setName(formatted)
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("user_id", user.id)
-    .maybeSingle()
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle()
+    if (profileError) throw profileError
 
     if (profile) await persistSignupAttribution(user)
 
     posthog.identify(user.id, {
-  email: user.email,
-  name: profile?.name || formatted,
-})
+      email: user.email,
+      name: profile?.name || formatted,
+    })
 
- if (profile?.profile_completed && next === "/inbox") {
-  await refreshContext()
-  router.replace("/inbox")
-  return
+    if (profile?.profile_completed && next === "/inbox") {
+      await refreshContext()
+      router.replace("/inbox")
+      return
+    }
+
+    if (!profile || !profile.profile_completed) setShowProfileWizard(true)
+  } catch (error) {
+    console.error("Welcome authentication failed", error)
+    setAuthError("We couldn't verify your account. Please retry the confirmation link or log in.")
+  } finally {
+    setLoading(false)
+  }
 }
 
- if (!profile || !profile.profile_completed) {
-  setShowProfileWizard(true)
-}
-
-  setLoading(false)   // ✅ MOVE IT HERE
-}
-
- async function finishProfile() {
-  const { data: authData } = await supabase.auth.getUser()
-
-  if (!authData?.user) return
-
-  const user = authData.user
-  const normalizedPhone = normalizeWhatsAppPhoneE164(phone)
-  if (!normalizedPhone.ok) {
-    alert(normalizedPhone.message)
+async function finishProfile() {
+  const validatedPhone = validateMobileNumber(phone)
+  if (!validatedPhone.ok) {
+    setProfileSaveError(validatedPhone.message)
     return
   }
-  const whatsappOptInAt = whatsappOptIn ? new Date().toISOString() : null
-  // 🔥 check if profile already exists
-  const { data: existingProfile } = await supabase
-    .from("profiles")
-    .select("id,trial_started_at,trial_expires_at")
-    .eq("user_id", user.id)
-    .maybeSingle()
 
-  // A preexisting trial (including a legacy trial with no recoverable start)
-  // must never be restarted by revisiting the welcome flow. The database
-  // trigger assigns server time only when a trial is first created.
-  const startTrial = !existingProfile || (!existingProfile.trial_expires_at && !existingProfile.trial_started_at)
-  const newTrialFields = startTrial
-    ? { trial_days: 3, trial_expires_at: new Date().toISOString() }
-    : {}
+  setProfileSaveError("")
+  setSavingProfile(true)
+  try {
+    await runSingleFlight(finishProfileRequest, async () => {
+      const { data: authData, error: authError } = await supabase.auth.getUser()
+      if (authError) throw authError
+      if (!authData?.user) throw new Error("Your session expired. Please log in and finish profile setup again.")
 
-  // =========================
-  // IF PROFILE EXISTS → UPDATE
-  // =========================
+      const user = authData.user
+      const whatsappOptInAt = whatsappOptIn ? new Date().toISOString() : null
+      const { data: existingProfile, error: existingProfileError } = await supabase
+        .from("profiles")
+        .select("id,trial_started_at,trial_expires_at")
+        .eq("user_id", user.id)
+        .maybeSingle()
+      if (existingProfileError) throw existingProfileError
 
-  if (existingProfile) {
-    const { error: profileError } = await supabase
-      .from("profiles")
-      .update({
-        name: name,
-        exam: exam,
-        attempt_year: attemptYear,
-        phone: normalizedPhone.phone,
-        profile_completed: true,
-        ...newTrialFields,
-        whatsapp_opt_in: whatsappOptIn,
-        whatsapp_opt_in_at: whatsappOptInAt,
-      })
-      .eq("user_id", user.id)
-    if (profileError) throw profileError
-  }
+      // Existing trials must never be restarted by revisiting the welcome flow.
+      const startTrial = !existingProfile || (!existingProfile.trial_expires_at && !existingProfile.trial_started_at)
+      const newTrialFields = startTrial
+        ? { trial_days: 3, trial_expires_at: new Date().toISOString() }
+        : {}
 
-  // =========================
-  // IF PROFILE DOES NOT EXIST → INSERT
-  // =========================
-
-  else {
-    const { error: profileError } = await supabase
-      .from("profiles")
-      .insert([
-        {
-          user_id: user.id,
-          email: user.email,
-          name: name,
-          exam: exam,
-          attempt_year: attemptYear,
-          phone: normalizedPhone.phone,
-          role: "student",
-          profile_completed: true,
-          trial_days: 3,
-          trial_expires_at: new Date().toISOString(),
-          whatsapp_opt_in: whatsappOptIn,
-          whatsapp_opt_in_at: whatsappOptInAt,
-        },
-      ])
-    if (profileError) throw profileError
-  }
-
-  await persistSignupAttribution(user)
-
-  await refreshContext()
-
-  if (whatsappOptIn) {
-    void (async () => {
-      try {
-        const { data: sessionData } = await supabase.auth.getSession()
-        const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
-        })
-        if (!enrollmentResponse.ok) {
-          const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
-          console.warn(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
-        }
-      } catch (error) {
-        console.warn("Unable to schedule WhatsApp trial messages", error)
+      if (existingProfile) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({
+            name,
+            exam,
+            attempt_year: attemptYear,
+            phone,
+            profile_completed: true,
+            ...newTrialFields,
+            whatsapp_opt_in: whatsappOptIn,
+            whatsapp_opt_in_at: whatsappOptInAt,
+          })
+          .eq("user_id", user.id)
+        if (profileError) throw profileError
+      } else {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert([{
+            user_id: user.id,
+            email: user.email,
+            name,
+            exam,
+            attempt_year: attemptYear,
+            phone,
+            role: "student",
+            profile_completed: true,
+            trial_days: 3,
+            trial_expires_at: new Date().toISOString(),
+            whatsapp_opt_in: whatsappOptIn,
+            whatsapp_opt_in_at: whatsappOptInAt,
+          }])
+        if (profileError) throw profileError
       }
-    })()
+
+      await persistSignupAttribution(user)
+      await refreshContext()
+
+      if (whatsappOptIn) {
+        void (async () => {
+          try {
+            const { data: sessionData } = await supabase.auth.getSession()
+            const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
+              method: "POST",
+              headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
+            })
+            if (!enrollmentResponse.ok) {
+              const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
+              console.warn(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
+            }
+          } catch (error) {
+            console.warn("Unable to schedule WhatsApp trial messages", error)
+          }
+        })()
+      }
+
+      setShowProfileWizard(false)
+      void fetch("/api/send-welcome-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, name }),
+      }).catch((error) => console.warn("Unable to send welcome email", error))
+
+      if (next === "/inbox") {
+        router.replace("/inbox")
+      } else if (next === "cat") {
+        router.push(free === "1" ? "/?view=cat&free=1" : "/?view=cat")
+      } else if (next === "pricing") {
+        router.push("/pricing")
+      } else {
+        router.push("/")
+      }
+    })
+  } catch (error) {
+    console.error("Profile setup failed", error)
+    setProfileSaveError(error?.message?.startsWith("Your session expired")
+      ? error.message
+      : "We couldn't save your profile. Check your connection and try again.")
+  } finally {
+    setSavingProfile(false)
   }
-
-  setShowProfileWizard(false)
-  void fetch("/api/send-welcome-email", {
-  method: "POST",
-
-  headers: {
-    "Content-Type": "application/json",
-  },
-
-  body: JSON.stringify({
-    email: user.email,
-    name: name,
-  }),
-}).catch((error) => console.warn("Unable to send welcome email", error))
-
- if (next === "/inbox") {
-  router.replace("/inbox");
-} else if (next === "cat") {
-  if (free === "1") {
-    router.push("/?view=cat&free=1");
-  } else {
-    router.push("/?view=cat");
-  }
-} else if (next === "pricing") {
-  router.push("/pricing");
-} else {
-  router.push("/");
 }
-}
-
 async function persistSignupAttribution(user) {
   const query = new URLSearchParams(window.location.search)
   const metadata = normalizeAttribution(user.user_metadata?.signup_attribution)
@@ -226,6 +240,17 @@ async function persistSignupAttribution(user) {
   if (loading) {
   return null
 }
+
+  if (authError) {
+    return (
+      <div className={styles["welcome-wrapper"]}>
+        <div className={styles["welcome-card"]}>
+          <p className={styles["welcome-error"]} role="alert">{authError}</p>
+          <a className={styles["welcome-btn"]} href={loginPath}>Go to Login</a>
+        </div>
+      </div>
+    )
+  }
 
   /* ---------------- PROFILE WIZARD ---------------- */
 
@@ -327,10 +352,18 @@ async function persistSignupAttribution(user) {
 
     <input
       type="tel"
-      placeholder="+91 9876543210"
+      inputMode="numeric"
+      autoComplete="tel-national"
+      aria-label="Mobile number"
+      placeholder="10-digit mobile number"
       value={phone}
-      onChange={(e) => setPhone(e.target.value)}
+      onChange={(e) => {
+        setPhone(e.target.value)
+        setProfileSaveError("")
+      }}
     />
+
+    {profileSaveError && <p className={styles["welcome-error"]} role="alert">{profileSaveError}</p>}
 
     <label className={styles["whatsapp-consent"]}>
       <input
@@ -344,9 +377,9 @@ async function persistSignupAttribution(user) {
     <button
       className={styles["welcome-btn"]}
       onClick={finishProfile}
-      disabled={!phone.trim()}
+      disabled={savingProfile}
     >
-      Finish →
+      {savingProfile ? "Saving..." : "Finish →"}
     </button>
   </>
 )}

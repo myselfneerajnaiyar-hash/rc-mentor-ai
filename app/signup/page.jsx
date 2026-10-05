@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import { attributionFromParams, buildAttributedPath, attributionParams } from "@/lib/attribution.mjs"
+import { classifySignupResult } from "@/lib/onboarding/profileValidation.mjs"
 import "../login/login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
@@ -26,6 +27,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [confirmationMessage, setConfirmationMessage] = useState("")
   const [metaInAppMobile, setMetaInAppMobile] = useState(false)
   const searchParams = useSearchParams();
 
@@ -43,6 +45,7 @@ const free = searchParams.get("free") || ""
 
   const handleGoogleLogin = async () => {
   setError("")
+  setConfirmationMessage("")
   try {
     const params = new URLSearchParams()
     if (next) params.set("next", next)
@@ -64,24 +67,38 @@ const free = searchParams.get("free") || ""
 
   const handleSignup = async (e) => {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
     setError("")
+    setConfirmationMessage("")
     const attribution = attributionFromParams(new URLSearchParams(window.location.search))
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const callbackPath = buildAttributedPath("/auth/callback", attribution, { next, free })
+      const { data, error: signupError } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { signup_attribution: attribution } },
+        options: {
+          data: { signup_attribution: attribution },
+          emailRedirectTo: `${window.location.origin}${callbackPath}`,
+        },
       })
 
-      if (error) {
-        setError(readableAuthError(error, "Signup"))
+      const outcome = classifySignupResult({ data, error: signupError })
+      if (outcome.type === "existing_user") {
+        setError("existing_user")
+        return
+      }
+      if (outcome.type === "error") {
+        setError(readableAuthError(outcome.error, "Signup"))
+        return
+      }
+      if (outcome.type === "authenticated") {
+        router.replace(buildAttributedPath("/welcome", attribution, { next, free }))
         return
       }
 
-      alert("Check your email to confirm your account.")
-      router.push(buildAttributedPath("/login", attribution, { next, free }))
+      setConfirmationMessage("Account created. Check your email to confirm your account. The confirmation link will continue to profile setup.")
     } catch (error) {
       setError(readableAuthError(error, "Signup"))
     } finally {
@@ -161,7 +178,10 @@ const free = searchParams.get("free") || ""
 
 </div>
 
-          {error && <p className="auth-error">{error}</p>}
+          {error === "existing_user" ? (
+            <p className="auth-error" role="alert">User already exists. Please <a href={loginHref}>log in</a>.</p>
+          ) : error && <p className="auth-error" role="alert">{error}</p>}
+          {confirmationMessage && <p className="auth-success" role="status">{confirmationMessage}</p>}
 
           <button type="submit" className="auth-button" disabled={loading}>
             {loading ? <><span className="auth-spinner" />Creating account...</> : "Create account"}

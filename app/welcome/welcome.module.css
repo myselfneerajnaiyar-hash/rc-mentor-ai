@@ -95,6 +95,14 @@
   color: #777;
 }
 
+.welcome-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
 .welcome-emotion {
   font-size: 0.95rem;
   color: #6b7280;

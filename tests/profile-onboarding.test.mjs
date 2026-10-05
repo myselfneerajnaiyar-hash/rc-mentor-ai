@@ -14,8 +14,8 @@ test("WhatsApp consent is explicit, unchecked by default, and optional", () => {
 })
 
 test("profile completion stores normalized phone and consent timestamp", () => {
-  assert.match(welcome, /normalizeWhatsAppPhoneE164\(phone\)/)
-  assert.match(welcome, /phone: normalizedPhone\.phone/)
+  assert.match(welcome, /validateMobileNumber\(phone\)/)
+  assert.match(welcome, /phone,/)
   assert.match(welcome, /whatsappOptIn \? new Date\(\)\.toISOString\(\) : null/)
   assert.match(migration, /whatsapp_opt_in boolean not null default false/i)
   assert.match(migration, /whatsapp_opt_in_at timestamptz/i)
