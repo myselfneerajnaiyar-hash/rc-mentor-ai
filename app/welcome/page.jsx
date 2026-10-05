@@ -162,19 +162,25 @@ async function checkUser() {
   await refreshContext()
 
   if (whatsappOptIn) {
-    const { data: sessionData } = await supabase.auth.getSession()
-    const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
-    })
-    if (!enrollmentResponse.ok) {
-      const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
-      throw new Error(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
-    }
+    void (async () => {
+      try {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const enrollmentResponse = await fetch("/api/whatsapp/enroll-trial", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
+        })
+        if (!enrollmentResponse.ok) {
+          const enrollmentResult = await enrollmentResponse.json().catch(() => ({}))
+          console.warn(enrollmentResult.error || "Unable to schedule WhatsApp trial messages")
+        }
+      } catch (error) {
+        console.warn("Unable to schedule WhatsApp trial messages", error)
+      }
+    })()
   }
 
   setShowProfileWizard(false)
-  await fetch("/api/send-welcome-email", {
+  void fetch("/api/send-welcome-email", {
   method: "POST",
 
   headers: {
@@ -185,7 +191,7 @@ async function checkUser() {
     email: user.email,
     name: name,
   }),
-})
+}).catch((error) => console.warn("Unable to send welcome email", error))
 
  if (next === "/inbox") {
   router.replace("/inbox");

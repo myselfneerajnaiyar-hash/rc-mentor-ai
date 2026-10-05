@@ -21,12 +21,25 @@ test("profile completion stores normalized phone and consent timestamp", () => {
   assert.match(migration, /whatsapp_opt_in_at timestamptz/i)
 })
 
-test("profile completion refreshes the shared dashboard context before navigation", () => {
+test("new profile completion saves first and does not wait on notifications before dashboard navigation", () => {
   assert.match(provider, /const refreshContext = useCallback/)
   assert.match(provider, /cache:\s*["']no-store["']/)
   assert.match(welcome, /await refreshContext\(\)/)
   const finishProfile = welcome.slice(welcome.indexOf("async function finishProfile"))
-  assert.ok(finishProfile.indexOf("await refreshContext()") < finishProfile.indexOf("router.push"))
+  const profileInsert = finishProfile.indexOf(".insert([")
+  const profileUpdate = finishProfile.indexOf(".update({")
+  const profileSave = Math.max(profileInsert, profileUpdate)
+  const contextRefresh = finishProfile.indexOf("await refreshContext()")
+  const dashboardNavigation = finishProfile.indexOf('router.push("/")')
+  const whatsappTask = finishProfile.indexOf("void (async () => {")
+  const welcomeEmailTask = finishProfile.indexOf('void fetch("/api/send-welcome-email"')
+  assert.ok(profileSave >= 0 && profileSave < contextRefresh)
+  assert.ok(contextRefresh < dashboardNavigation)
+  assert.ok(whatsappTask >= 0 && whatsappTask < dashboardNavigation)
+  assert.ok(welcomeEmailTask >= 0 && welcomeEmailTask < dashboardNavigation)
+  assert.match(finishProfile.slice(whatsappTask, welcomeEmailTask), /\/api\/whatsapp\/enroll-trial/)
+  assert.match(finishProfile.slice(whatsappTask, welcomeEmailTask), /\}\)\(\)\s*\}/)
+  assert.match(finishProfile.slice(welcomeEmailTask, dashboardNavigation), /\.catch\(/)
 })
 
 test("phone backfill changes only unambiguous Indian mobile formats", () => {
