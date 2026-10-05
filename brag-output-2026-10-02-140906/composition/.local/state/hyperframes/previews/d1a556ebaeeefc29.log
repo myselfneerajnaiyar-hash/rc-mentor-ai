@@ -1,0 +1,22 @@
+T  hyperframes preview
+[?25l|
+o  Studio running
+[?25h
+
+  Project   composition
+  Studio    http://localhost:3003/#project/composition
+  Server    http://localhost:3003
+
+  Edit with your AI agent — it has HyperFrames skills installed.
+  Changes reload automatically in the studio.
+
+  Press Ctrl+C to stop
+
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families
+[studio] Project history is off: Error: EPERM: operation not permitted, mkdir 'C:\Users\NERAJ\.cache\hyperframes\history\4e722827-00a9-4398-a3b5-e411b9fd4c0e'
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families
+[hyperframes] browserGpuMode probe → hardware (WebGL renderer vendor="Google Inc. (AMD)" renderer="ANGLE (AMD, AMD Radeon (TM) Graphics (0x000015E7) Direct3D11 vs_5_0 ps_5_0, D3D11)")
+[BrowserManager] Browser launched (HeadlessChrome/152.0.7977.30, screenshot, gl=--use-gl=angle --use-angle=d3d11, headlessShell=true, platform=win32)
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families

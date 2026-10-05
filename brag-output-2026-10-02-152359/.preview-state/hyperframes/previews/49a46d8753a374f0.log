@@ -1,0 +1,17 @@
+T  hyperframes preview
+[?25l|
+•  Starting studio[1G[Jo  Studio running
+[?25h
+  Port 3002 is in use, using 3004 instead
+
+
+  Project   composition
+  Studio    http://localhost:3004/#project/composition
+  Server    http://localhost:3004
+
+  Edit with your AI agent — it has HyperFrames skills installed.
+  Changes reload automatically in the studio.
+
+  Press Ctrl+C to stop
+
+[INFO] [Compiler] Injected deterministic @font-face rules for 2 requested font families

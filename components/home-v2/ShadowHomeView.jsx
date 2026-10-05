@@ -25,6 +25,7 @@ import BirbalCoachReport from "@/components/home-v2/BirbalCoachReport";
 import BirbalCoachCard
 from "@/components/BirbalCoachCard";
 import Header from "@/components/home-v2/Header";
+import TrialConversionBanner from "@/components/TrialConversionBanner";
 import { generateCoachPlan }
 from "@/lib/birbal/generateCoachPlan";
 import { getExamCapabilities, getExamDisplayName } from "@/lib/tenant/capabilities";
@@ -397,6 +398,8 @@ setInsight({
   startAdaptiveRC={startAdaptiveRC}
   setView={setView}
 />
+
+<TrialConversionBanner />
 
  {isCAT && (
   <>

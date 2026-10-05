@@ -29,6 +29,18 @@ test("profile completion refreshes the shared dashboard context before navigatio
   assert.ok(finishProfile.indexOf("await refreshContext()") < finishProfile.indexOf("router.push"))
 })
 
+
+test("new signup saves its profile before dashboard navigation without waiting on welcome email", () => {
+  const finishProfile = welcome.slice(welcome.indexOf("async function finishProfile"), welcome.indexOf("async function persistSignupAttribution"))
+  const insert = finishProfile.indexOf('.from("profiles")\n      .insert(')
+  const refresh = finishProfile.indexOf("await refreshContext()")
+  const email = finishProfile.indexOf('fetch("/api/send-welcome-email"')
+  const dashboard = finishProfile.indexOf('router.push("/")')
+  assert.ok(insert >= 0, "new account profile is inserted")
+  assert.ok(insert < refresh && refresh < email && email < dashboard, "persist and refresh complete before navigation")
+  assert.doesNotMatch(finishProfile.slice(email, dashboard), /await\s+fetch\("\/api\/send-welcome-email"/)
+  assert.match(finishProfile.slice(email, dashboard), /\.catch\(/)
+})
 test("phone backfill changes only unambiguous Indian mobile formats", () => {
   assert.match(migration, /btrim\(phone\) ~ '\^\[6-9\]\[0-9\]\{9\}\$'/)
   assert.doesNotMatch(migration, /update public\.profiles[\s\S]*set whatsapp_opt_in\s*=\s*true/i)

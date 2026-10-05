@@ -2,9 +2,9 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import SubscribeButton from "@/components/SubscribeButton"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Pricing() {
 const [user, setUser] = useState(null)
@@ -17,6 +17,44 @@ const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
 const [couponMessage, setCouponMessage] = useState("");
 
 const router = useRouter()
+const searchParams = useSearchParams()
+const couponFromUrl = searchParams.get("coupon") || ""
+
+const applyCoupon = useCallback(async (value) => {
+  try {
+    const response = await fetch("/api/validate-coupon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ couponCode: value }),
+    })
+    const result = await response.json()
+    if (!response.ok || !result.valid) {
+      setAppliedCoupon("")
+      setAppliedCouponDiscount(0)
+      setCouponMessage("Invalid or expired coupon code.")
+      return false
+    }
+    setAppliedCoupon(result.code)
+    setAppliedCouponDiscount(result.discountPercent)
+    setCouponInput(result.code)
+    setDiscountApplied(false)
+    setReferralCode("")
+    setDiscountMessage("")
+    setCouponMessage(`${result.code} applied — ${result.discountPercent}% discount`)
+    return true
+  } catch {
+    setAppliedCoupon("")
+    setAppliedCouponDiscount(0)
+    setCouponMessage("Coupon validation is temporarily unavailable. Please try again.")
+    return false
+  }
+}, [])
+
+useEffect(() => {
+  if (!couponFromUrl) return
+  setCouponInput(couponFromUrl)
+  applyCoupon(couponFromUrl)
+}, [couponFromUrl, applyCoupon])
 
 const [isCatStudent, setIsCatStudent] = useState(false)
 
@@ -133,27 +171,7 @@ setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You save
       className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
     />
     <Button
-      onClick={async () => {
-        const response = await fetch("/api/validate-coupon", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ couponCode: couponInput }),
-        })
-        const result = await response.json()
-        if (!response.ok || !result.valid) {
-          setAppliedCoupon("")
-          setAppliedCouponDiscount(0)
-          setCouponMessage("Invalid or expired coupon code.")
-          return
-        }
-        setAppliedCoupon(result.code)
-        setAppliedCouponDiscount(result.discountPercent)
-        setCouponInput(result.code)
-        setDiscountApplied(false)
-        setReferralCode("")
-        setDiscountMessage("")
-        setCouponMessage(`${result.code} applied — ${result.discountPercent}% discount`)
-      }}
+      onClick={() => applyCoupon(couponInput)}
     >
       Apply
     </Button>

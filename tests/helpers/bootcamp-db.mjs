@@ -12,6 +12,7 @@ export async function harness(source, generate, converse, options={now:()=>new D
   await pg.exec('create schema auth; create table auth.users(id uuid primary key); create role anon; create role authenticated; create role service_role;')
   await pg.exec(await readFile('supabase/migrations/202609220001_bootcamp_day1.sql','utf8'))
   await pg.exec(await readFile('supabase/migrations/202609230001_bootcamp_trainer_history.sql','utf8'))
+  await pg.exec(await readFile('supabase/migrations/202610040002_bootcamp_history_unsequenced.sql','utf8'))
   await pg.exec(await readFile('supabase/migrations/202609230002_bootcamp_fixed_calendar.sql','utf8'))
   await pg.query('insert into auth.users values ($1),($2)',[student,other])
   await pg.exec('create table bootcamp_days(id text primary key, day_number integer, document jsonb, lock_token text, updated_at text)')

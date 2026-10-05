@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1080, initial-scale=1" />
+  <title>Auctor Labs — Train for CAT VARC</title>
+  <style>
+    :root{color-scheme:dark;--ink:#080d18;--navy:#0f172a;--panel:#111c2d;--line:#25334a;--white:#f8fafc;--muted:#a7b6cb;--blue:#3b82f6;--indigo:#6366f1;--cyan:#67e8f9;--gold:#d6b982}
+    *{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#080d18;color:var(--white);font-family:"Segoe UI",system-ui,-apple-system,sans-serif}body{position:relative}
+    #stage{width:1080px;height:1920px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 55% 35%,#17233a 0%,#0b1220 45%,#070b13 100%);isolation:isolate}
+    .grain{position:absolute;inset:0;pointer-events:none;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.27'/%3E%3C/svg%3E");mix-blend-mode:screen;z-index:50}
+    .vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(3,7,13,.18),transparent 23%,transparent 74%,rgba(2,5,11,.68))}
+    .beam{position:absolute;width:1250px;height:800px;left:-130px;top:280px;background:linear-gradient(115deg,transparent 35%,rgba(73,124,196,.13) 50%,transparent 65%);filter:blur(42px);transform:rotate(-12deg);z-index:0}
+    .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;will-change:opacity,transform;z-index:2}
+    .scene-inner{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+    .micro{font-size:21px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:#8ba4c8}
+    /* Opening */
+    #s-hook{align-items:flex-end;padding-bottom:250px;background:radial-gradient(ellipse at 50% 42%,rgba(25,45,71,.38),transparent 56%)}
+    .reading-lines{position:absolute;left:118px;right:84px;top:280px;height:615px;opacity:.56;mask-image:linear-gradient(180deg,transparent,black 12%,black 78%,transparent);transform:rotate(-3deg)}
+    .reading-lines i{display:block;height:16px;border-radius:4px;margin:26px 0;background:linear-gradient(90deg,rgba(119,144,176,.64),rgba(75,99,129,.32) 72%,transparent);filter:blur(1.6px)}
+    .reading-lines i:nth-child(3n){width:88%}.reading-lines i:nth-child(3n+1){width:100%}.reading-lines i:nth-child(3n+2){width:72%}
+    .scan-light{position:absolute;left:35px;right:35px;top:530px;height:170px;background:linear-gradient(180deg,transparent,rgba(64,132,226,.16),transparent);filter:blur(26px);border-top:1px solid rgba(128,185,255,.32);border-bottom:1px solid rgba(128,185,255,.12)}
+    .hook-copy{position:relative;width:850px;z-index:2;margin-bottom:0}
+    .hook-kicker{font-size:20px;letter-spacing:.3em;text-transform:uppercase;color:#83a8d9;margin-bottom:35px;font-weight:700}
+    .hook-line{font-family:Georgia,"Times New Roman",serif;font-size:77px;line-height:1.03;letter-spacing:-.045em;font-weight:500;text-shadow:0 12px 60px rgba(0,0,0,.75)}
+    .hook-line + .hook-line{margin-top:18px;color:#d8e5f6}.hook-line em{font-style:normal;color:#8fb7e7}
+    .hook-rule{height:2px;width:0;margin-top:52px;background:linear-gradient(90deg,#6ea2ea,transparent);box-shadow:0 0 26px #3987ea}
+    /* Brand reveal */
+    #s-brand{background:radial-gradient(ellipse at 52% 47%,rgba(41,76,124,.34),transparent 48%)}
+    .brand-lockup{display:flex;flex-direction:column;align-items:center;gap:26px;transform:translateY(20px)}
+    .mark-wrap{width:248px;height:248px;display:grid;place-items:center;position:relative;isolation:isolate;border:1px solid rgba(156,190,236,.15);border-radius:58px;background:linear-gradient(145deg,rgba(24,38,59,.78),rgba(7,12,21,.46));box-shadow:0 42px 110px rgba(0,0,0,.4),inset 0 1px rgba(255,255,255,.05)}
+    .mark-wrap:before{content:"";position:absolute;inset:-3px;border-radius:60px;background:linear-gradient(135deg,rgba(111,169,238,.6),transparent 38%,transparent 74%,rgba(91,104,230,.4));z-index:0;filter:blur(16px)}
+    .mark-wrap img{position:relative;z-index:1;width:205px;height:205px;object-fit:contain;filter:drop-shadow(0 0 22px rgba(201,224,255,.2))}
+    .brand-name{font-size:68px;font-weight:650;letter-spacing:-.055em;color:#f8fbff}.brand-name span{font-weight:350;color:#b9c9dd}
+    .brand-caption{font-size:20px;letter-spacing:.34em;text-transform:uppercase;color:#85a7d4}
+    .brand-sweep{position:absolute;top:435px;bottom:435px;width:3px;left:-10%;opacity:0;background:linear-gradient(180deg,transparent,rgba(151,200,255,.92),transparent);box-shadow:0 0 34px 10px rgba(79,151,243,.38);transform:skewX(-13deg)}
+    /* Product UI scenes */
+    .feature-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:90px}
+    .feature-head{width:860px;margin:0 auto 28px;display:flex;align-items:center;justify-content:space-between}
+    .feature-index{font-size:19px;letter-spacing:.26em;color:#7f97b8;font-weight:700;text-transform:uppercase}
+    .feature-title{width:860px;margin:0 auto 34px;font-size:59px;line-height:1.03;font-weight:640;letter-spacing:-.045em;color:#f6f9ff}
+    .feature-title .accent{color:#85b6f6}
+    .device{width:870px;min-height:1000px;border-radius:34px;border:1px solid rgba(147,173,207,.22);background:linear-gradient(160deg,rgba(20,31,49,.97),rgba(10,17,29,.98));box-shadow:0 52px 130px rgba(0,0,0,.55),0 1px rgba(255,255,255,.06) inset;overflow:hidden;position:relative;transform:perspective(1500px) rotateX(1.2deg)}
+    .device:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.035),transparent 35%);pointer-events:none;z-index:2}
+    .app-top{height:94px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(148,163,184,.13);background:rgba(5,10,18,.32)}
+    .app-brand{display:flex;align-items:center;gap:15px;font-size:25px;font-weight:700;letter-spacing:-.02em}.app-brand img{width:43px;height:43px;object-fit:contain}
+    .app-status{padding:10px 16px;border:1px solid rgba(93,151,235,.28);background:rgba(59,130,246,.1);color:#b8d6ff;border-radius:999px;font-size:16px;font-weight:700;letter-spacing:.09em}
+    .app-content{padding:42px 44px 48px}
+    .eyebrow{font-size:17px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#91d9e9}
+    .app-h2{font-size:38px;line-height:1.1;font-weight:760;letter-spacing:-.03em;margin:17px 0 18px;color:white}
+    .app-sub{font-size:20px;line-height:1.5;color:#adbed1;margin:0}
+    .pill-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+    .pill{padding:11px 16px;border-radius:999px;background:rgba(255,255,255,.075);border:1px solid rgba(198,216,240,.1);font-size:16px;color:#dce8f6}
+    .action{display:inline-flex;align-items:center;gap:12px;padding:16px 23px;margin-top:31px;background:#f8fafc;color:#164f9c;border-radius:13px;font-size:20px;font-weight:750;box-shadow:0 15px 34px rgba(0,0,0,.18)}
+    /* RC Arena */
+    .arena-card{margin-top:30px;padding:31px;border-radius:23px;background:linear-gradient(138deg,#086987 0%,#185ba8 48%,#101c30 100%);box-shadow:0 25px 52px rgba(3,37,74,.3)}
+    .arena-card .eyebrow{color:#d9f7ff}.arena-card h3{font-size:36px;line-height:1.12;margin:17px 0 16px;color:white;letter-spacing:-.03em}
+    .arena-card p{font-size:20px;color:#d4f2ff;margin:12px 0}.arena-meta{display:inline-block;margin-top:8px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.12);font-size:15px;color:white}
+    .arena-cta{margin-top:27px;padding:14px 22px;background:white;color:#12558f;display:inline-flex;border-radius:12px;font-size:18px;font-weight:800}
+    .detail-strip{display:flex;align-items:center;gap:13px;margin-top:24px;padding:21px;border:1px solid rgba(135,164,201,.14);border-radius:17px;color:#c5d1df;font-size:18px}
+    .detail-dot{width:9px;height:9px;background:#79d8ef;border-radius:50%;box-shadow:0 0 15px #66cde8}
+    /* workout */
+    .workout-card{margin-top:38px;border-radius:27px;padding:36px;background:linear-gradient(138deg,#5147de,#4435bb 60%,#16213d);box-shadow:0 27px 60px rgba(50,42,171,.3)}
+    .workout-heading{display:flex;align-items:center;gap:17px;font-size:36px;line-height:1.1;font-weight:750;letter-spacing:-.04em}
+    .flame{display:grid;place-items:center;width:54px;height:54px;border-radius:17px;background:rgba(255,255,255,.15);font-size:28px}
+    .workout-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:32px}
+    .workout-block{min-height:153px;border-radius:17px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:8px}
+    .workout-block:last-child{grid-column:span 2;min-height:126px}
+    .workout-time{font-size:17px;color:#e0ddff}.workout-label{font-size:22px;font-weight:700;color:white}
+    /* vocabulary */
+    .vocab-topline{height:7px;background:linear-gradient(90deg,#22d3ee,#3b82f6 66%,#26364b)}
+    .vocab-tabs{display:flex;gap:12px;margin-top:30px;padding-bottom:21px;border-bottom:1px solid rgba(148,163,184,.17)}
+    .vocab-tab{padding:12px 17px;border-radius:12px;font-size:16px;color:#a6b4c7;background:rgba(255,255,255,.035)}.vocab-tab.active{color:#d9f7ff;border:1px solid rgba(34,211,238,.2);background:rgba(34,211,238,.09)}
+    .vocab-copy{margin:32px 0 24px;font-size:28px;line-height:1.38;color:#edf4fd;max-width:680px}
+    .word-card{padding:30px;border-radius:20px;border:1px solid rgba(83,174,204,.22);background:linear-gradient(145deg,rgba(16,42,59,.96),rgba(13,26,42,.94));box-shadow:0 20px 45px rgba(0,0,0,.18)}
+    .word-label{font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:#5ed5e8;font-weight:800}.word-term{font-family:Georgia,serif;font-size:50px;color:#f4f8fd;margin:14px 0 10px}.word-desc{font-size:19px;line-height:1.5;color:#bac8d8}
+    .word-tools{display:flex;gap:12px;margin-top:24px}.word-tool{padding:11px 14px;border:1px solid #2b4356;border-radius:10px;color:#9dd7e4;font-size:15px}
+    .vocab-flow{display:flex;align-items:center;justify-content:space-between;margin-top:27px;color:#8fa2ba;font-size:14px;letter-spacing:.04em}.vocab-flow b{color:#c5d7eb;font-weight:600}.flow-line{height:1px;flex:1;margin:0 12px;background:linear-gradient(90deg,#3b82f6,rgba(148,163,184,.1))}
+    /* Birbal */
+    .coach-head{display:flex;gap:20px;align-items:center;padding:26px;border-radius:20px;background:linear-gradient(135deg,rgba(61,57,155,.54),rgba(15,23,42,.45));border:1px solid rgba(135,141,238,.21)}
+    .coach-head img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid rgba(221,186,94,.73);box-shadow:0 0 0 7px rgba(147,117,52,.1)}
+    .coach-name{font-size:26px;font-weight:760;color:#fff}.coach-title{font-size:19px;margin-top:8px;color:#aab4ff}
+    .coach-diagnosis{margin-top:25px;padding:23px;border-left:5px solid #67e8f9;border-radius:0 16px 16px 0;background:rgba(0,0,0,.2);font-size:21px;line-height:1.4;color:#dce6f1}
+    .coach-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:19px}
+    .coach-cell{padding:20px;border-radius:15px;background:rgba(15,23,42,.76);border:1px solid rgba(103,232,249,.1)}.coach-cell span{display:block;font-size:16px;color:#94a3b8;margin-bottom:9px}.coach-cell strong{font-size:21px;color:#dbeafe}
+    .mission-line{margin-top:27px;padding:20px;border-top:1px solid rgba(148,163,184,.16);color:#b9c7d8;font-size:17px;display:flex;justify-content:space-between}
+    /* loop and end */
+    #s-loop{background:radial-gradient(ellipse at 50% 50%,rgba(32,64,104,.34),transparent 53%)}
+    .loop-stack{width:850px;display:flex;flex-direction:column;gap:17px}
+    .loop-word{height:170px;display:flex;align-items:center;justify-content:space-between;padding:0 37px;border-bottom:1px solid rgba(138,163,194,.22);font-size:102px;line-height:1;font-weight:720;letter-spacing:-.07em;color:#f8fbff;text-shadow:0 16px 52px rgba(0,0,0,.42)}
+    .loop-word small{font-size:17px;letter-spacing:.22em;color:#7f9abf;font-weight:650}
+    .loop-word:nth-child(2){color:#c8d9f1}.loop-word:nth-child(3){color:#8bbcff;border-bottom-color:rgba(139,188,255,.45)}
+    .loop-lockup{position:absolute;right:116px;bottom:385px;font-size:21px;letter-spacing:.18em;text-transform:uppercase;color:#91a6c2;opacity:0}
+    #s-end{background:radial-gradient(ellipse at 50% 48%,rgba(31,62,102,.42),transparent 56%)}
+    .end-lockup{display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(18px)}
+    .end-mark{width:142px;height:142px;object-fit:contain;filter:drop-shadow(0 0 28px rgba(143,187,242,.24));margin-bottom:24px}
+    .end-name{font-size:61px;letter-spacing:-.05em;font-weight:650}.end-name span{font-weight:350;color:#becde0}
+    .end-rule{width:90px;height:1px;background:linear-gradient(90deg,transparent,#79a9e7,transparent);margin:30px 0}
+    .end-tag{font-family:Georgia,serif;font-size:39px;line-height:1.2;color:#edf4fd;max-width:830px}
+    .end-url{margin-top:28px;font-size:22px;letter-spacing:.18em;color:#8fb8ed}
+    .end-foot{position:absolute;bottom:192px;left:0;right:0;text-align:center;font-size:15px;letter-spacing:.28em;color:#677c97;text-transform:uppercase}
+    .audio{display:none}
+  </style>
+</head>
+<body>
+  <main id="stage" data-composition-id="auctor-launch" data-width="1080" data-height="1920" data-duration="20" data-no-timeline>
+    <div class="beam" id="ambient"></div>
+    <section class="scene" id="s-hook" aria-label="Reading hook">
+      <div class="scene-inner">
+        <div class="reading-lines"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="scan-light" id="scan"></div>
+        <div class="hook-copy">
+          <div class="hook-kicker">CAT VARC · THE DAILY WORK</div>
+          <div class="hook-line" id="hook-one">Reading isn't<br><em>the problem.</em></div>
+          <div class="hook-line" id="hook-two">Understanding is.</div>
+          <div class="hook-rule" id="hook-rule"></div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-brand" aria-label="Meet Auctor Labs">
+      <div class="scene-inner">
+        <div class="brand-sweep" id="brand-sweep"></div>
+        <div class="brand-lockup" id="brand-lockup">
+          <div class="mark-wrap"><img src="assets/images/auctor-mark.png" alt="Auctor mark" /></div>
+          <div class="brand-name">Auctor <span>Labs</span></div>
+          <div class="brand-caption">Meet Auctor Labs</div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-arena" aria-label="Daily RC Arena product screen">
+      <div class="feature-wrap">
+        <div class="feature-head"><span class="feature-index">01 / FOCUSED PRACTICE</span><span class="feature-index">CAT VARC</span></div>
+        <h2 class="feature-title">Read with <span class="accent">intention.</span></h2>
+        <div class="device" id="device-arena">
+          <div class="app-top"><div class="app-brand"><img src="assets/images/auctor-mark.png" alt="" />Auctor RC</div><div class="app-status">CAT VARC</div></div>
+          <div class="app-content">
+            <div class="arena-card">
+              <div class="eyebrow">DAILY RC ARENA</div>
+              <h3>Today's CAT PYQ Challenge</h3>
+              <span class="arena-meta">Available for 24 Hours</span>
+              <p>4 Questions · 8 Minutes · Detailed Review</p>
+              <p>Attempt → Get Detailed Review + Cognitive Diagnosis + Leaderboard Ranking</p>
+              <div class="arena-cta">Enter Arena <span>→</span></div>
+            </div>
+            <div class="detail-strip"><span class="detail-dot"></span><span>Attempt → Review → Cognitive Diagnosis</span></div>
+            <div class="pill-row"><span class="pill">CAT VARC</span><span class="pill">Reading Comprehension</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-workout" aria-label="Daily Workout product screen">
+      <div class="feature-wrap">
+        <div class="feature-head"><span class="feature-index">02 / DAILY TRAINING</span><span class="feature-index">AUCTOR RC</span></div>
+        <h2 class="feature-title">A focused <span class="accent">daily loop.</span></h2>
+        <div class="device" id="device-workout">
+          <div class="app-top"><div class="app-brand"><img src="assets/images/auctor-mark.png" alt="" />Auctor RC</div><div class="app-status">TODAY</div></div>
+          <div class="app-content">
+            <div class="workout-card">
+              <div class="workout-heading"><span class="flame">✦</span>Today's 30-Min Workout</div>
+              <div class="workout-grid">
+                <div class="workout-block"><span class="workout-time">5 min</span><span class="workout-label">Speed Drill</span></div>
+                <div class="workout-block"><span class="workout-time">5 min</span><span class="workout-label">Vocabulary</span></div>
+                <div class="workout-block"><span class="workout-time">15 min</span><span class="workout-label">2 RC Passages</span></div>
+                <div class="workout-block"><span class="workout-time">5 min</span><span class="workout-label">Tone / Main Idea</span></div>
+                <div class="workout-block"><span class="workout-time">Auto</span><span class="workout-label">Diagnosis Report</span></div>
+              </div>
+            </div>
+            <div class="action">Start Drill <span>→</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-vocab" aria-label="Vocabulary Lab product screen">
+      <div class="feature-wrap">
+        <div class="feature-head"><span class="feature-index">03 / BUILD RECALL</span><span class="feature-index">AUCTOR RC</span></div>
+        <h2 class="feature-title">Words that <span class="accent">stay with you.</span></h2>
+        <div class="device" id="device-vocab">
+          <div class="vocab-topline"></div>
+          <div class="app-top"><div class="app-brand"><img src="assets/images/auctor-mark.png" alt="" />Auctor RC</div><div class="app-status">WORD BANK</div></div>
+          <div class="app-content">
+            <div class="app-h2">Vocabulary Lab</div>
+            <div class="vocab-tabs"><span class="vocab-tab active">WordBank</span><span class="vocab-tab">Vocab Drills</span><span class="vocab-tab">Learn</span><span class="vocab-tab">Profile</span></div>
+            <div class="vocab-copy">Your personal vocabulary revision queue.</div>
+            <div class="word-card">
+              <div class="word-label">CORE WORDS</div>
+              <div class="word-term">Obscure</div>
+              <div class="word-desc">Hard to understand due to complexity<br/><br/><span style="color:#8fa6bb">The theory is obscure to non-specialists.</span></div>
+              <div class="word-tools"><span class="word-tool">Meaning</span><span class="word-tool">Context</span><span class="word-tool">Usage</span></div>
+            </div>
+            <div class="vocab-flow"><b>Discover</b><span class="flow-line"></span><b>Revise</b><span class="flow-line"></span><b>Drill</b><span class="flow-line"></span><b>Master</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-birbal" aria-label="Birbal coaching screen">
+      <div class="feature-wrap">
+        <div class="feature-head"><span class="feature-index">04 / COACHING INSIGHT</span><span class="feature-index">BIRBAL</span></div>
+        <h2 class="feature-title">See the <span class="accent">thinking.</span></h2>
+        <div class="device" id="device-birbal">
+          <div class="app-top"><div class="app-brand"><img src="assets/images/auctor-mark.png" alt="" />Auctor RC</div><div class="app-status">BIRBAL</div></div>
+          <div class="app-content">
+            <div class="coach-head"><img src="assets/images/birbal-avatar.jpeg" alt="Birbal" /><div><div class="coach-name">Birbal</div><div class="coach-title">Birbal's Coaching Plan</div></div></div>
+            <div class="coach-grid"><div class="coach-cell"><span>Strength</span><div style="height:2px;width:100%;background:linear-gradient(90deg,#34d399,rgba(52,211,153,.12));margin-top:19px"></div></div><div class="coach-cell"><span>Weakness</span><div style="height:2px;width:100%;background:linear-gradient(90deg,#f87171,rgba(248,113,113,.12));margin-top:19px"></div></div></div>
+            <div class="mission-line"><span>Today's Mission Progress</span><span>↗</span></div>
+            <div class="pill-row"><span class="pill">Tone Detection</span><span class="pill">Inference Mapping</span><span class="pill">Vocabulary Intelligence</span><span class="pill">Trap Analysis</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="scene" id="s-loop" aria-label="Practice Analyse Improve">
+      <div class="scene-inner">
+        <div class="loop-stack">
+          <div class="loop-word" id="loop-a">Practice.<small>01</small></div>
+          <div class="loop-word" id="loop-b">Analyse.<small>02</small></div>
+          <div class="loop-word" id="loop-c">Improve.<small>03</small></div>
+        </div>
+        <div class="loop-lockup" id="loop-lockup">Every day counts.</div>
+      </div>
+    </section>
+    <section class="scene" id="s-end" aria-label="Auctor Labs closing card">
+      <div class="scene-inner">
+        <div class="end-lockup" id="end-lockup">
+          <img class="end-mark" src="assets/images/auctor-mark.png" alt="Auctor mark" />
+          <div class="end-name">Auctor <span>Labs</span></div>
+          <div class="end-rule"></div>
+          <div class="end-tag">Train for CAT VARC.<br/>Every day.</div>
+          <div class="end-url">www.auctorlabs.in</div>
+        </div>
+        <div class="end-foot">Auctor Labs · CAT VARC practice</div>
+      </div>
+    </section>
+    <div class="vignette"></div><div class="grain"></div>
+    <audio id="original-score" class="audio" data-timeline-role="music" data-start="0" data-duration="20" data-volume="0.9" src="assets/audio/auctor-original-score.wav"></audio>
+  </main>
+  <script>
+    (()=>{
+      const duration=20;
+      const ids=['s-hook','s-brand','s-arena','s-workout','s-vocab','s-birbal','s-loop','s-end'];
+      const scenes=ids.map(id=>document.getElementById(id));
+      const clamp=x=>Math.max(0,Math.min(1,x));
+      const ease=x=>{x=clamp(x);return x*x*(3-2*x)};
+      const mix=(a,b,p)=>a+(b-a)*p;
+      const put=(id,opacity,x=0,y=0,scale=1,rotate=0)=>{const el=document.getElementById(id);if(!el)return;el.style.opacity=String(clamp(opacity));el.style.transform=`translate3d(${x}px,${y}px,0) scale(${scale}) rotate(${rotate}deg)`};
+      let now=0;
+      function fade(t,start,end,inTime=.34,outTime=.3){return ease((t-start)/inTime)*(1-ease((t-(end-outTime))/outTime))}
+      function seek(t){
+        now=clamp(t/duration)*duration;
+        const ranges=[[0,3],[3,6],[6,8],[8,10],[10,12],[12,14],[14,18],[18,20]];
+        scenes.forEach((el,i)=>{const [a,b]=ranges[i],p=fade(now,a,b,i===0?.5:.3,.28);el.style.opacity=String(p);el.style.transform=`translate3d(0,${mix(26,0,ease((now-a)/.55))}px,0) scale(${mix(.985,1,ease((now-a)/.6))})`});
+        put('hook-one',fade(now,.22,2.95,.52,.18),0,mix(30,0,ease((now-.22)/.55)),1);
+        put('hook-two',fade(now,.73,2.96,.48,.18),0,mix(30,0,ease((now-.73)/.5)),1);
+        const rule=document.getElementById('hook-rule');rule.style.width=`${mix(0,690,ease((now-1.35)/.75))}px`;
+        put('brand-lockup',fade(now,3.16,5.91,.55,.2),0,mix(40,0,ease((now-3.15)/.58)),mix(.95,1,ease((now-3.15)/.6)));
+        const sweep=document.getElementById('brand-sweep');sweep.style.left=`${mix(-120,1190,ease((now-3.05)/1.2))}px`;sweep.style.opacity=String(fade(now,3.05,4.28,.16,.18));
+        ['device-arena','device-workout','device-vocab','device-birbal'].forEach((id,i)=>{const start=6+i*2;put(id,fade(now,start+.12,start+1.94,.27,.22),mix(76,0,ease((now-start-.1)/.45)),mix(36,0,ease((now-start-.1)/.5)),mix(.965,1,ease((now-start-.05)/.7)));});
+        ['loop-a','loop-b','loop-c'].forEach((id,i)=>{const st=14+i*1.03;put(id,fade(now,st,18,.23,.25),0,mix(50,0,ease((now-st)/.32)),mix(.97,1,ease((now-st)/.35)));});
+        put('loop-lockup',fade(now,16.9,17.95,.3,.15),0,0,1);
+        put('end-lockup',fade(now,18.05,19.94,.46,.12),0,mix(32,0,ease((now-18.04)/.55)),mix(.97,1,ease((now-18.04)/.6)));
+      }
+      const tl={pause(){},seek(time){seek(Number(time)||0)},time(){return now}};
+      window.__timeline=tl;window.__timelines={'auctor-launch':tl};
+      window.__player={seek(time){seek(Number(time)||0)},renderSeek(time){seek(Number(time)||0)},getTime(){return now},getDuration(){return duration},pause(){}};
+      seek(0);
+    })();
+  </script>
+</body>
+</html>

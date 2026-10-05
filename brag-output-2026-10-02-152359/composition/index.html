@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=1080,initial-scale=1">
+<title>Auctor Labs — CAT VARC Reel</title>
+<script src="assets/gsap.min.js"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#07101f;color:#f5f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:#07101f}.grain{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 870px 950px at 55% 40%,#142744 0%,#0b172a 56%,#07101f 100%)}.glow{position:absolute;z-index:1;width:760px;height:760px;left:190px;top:320px;border-radius:50%;background:radial-gradient(circle,#29398277 0%,#17234e22 43%,transparent 70%);opacity:.65}.rule{height:2px;background:#8ebeff}.screen{position:absolute;inset:0;overflow:hidden;opacity:0;z-index:2}.kicker{font-size:19px;letter-spacing:.23em;text-transform:uppercase;font-weight:750;color:#a9caff}.hook{padding:275px 82px}.hookLine{font-size:106px;line-height:1.02;letter-spacing:-6px;font-weight:730;max-width:900px;margin:48px 0 0}.hookQuestion{font-size:79px;line-height:1.08;letter-spacing:-4px;font-weight:650;max-width:880px;margin-top:75px;color:#e5ebf5}.accent{color:#a8ceff}.hookFooter{position:absolute;bottom:198px;left:84px;right:84px;display:flex;align-items:center;gap:20px;color:#8c9cb5;font-size:16px;letter-spacing:.18em;text-transform:uppercase}.hookFooter .rule{width:88px}.product{padding:120px 66px}.top{display:flex;align-items:center;gap:17px}.mark{width:49px;height:49px;border-radius:14px;background:#03070e url('assets/logo.png') center/contain no-repeat}.wordmark{font-size:24px;font-weight:760;letter-spacing:-.4px}.pill{margin-left:auto;padding:12px 19px;border:1px solid #334967;border-radius:30px;color:#c7d5e8;font-size:17px}.workHead{margin-top:72px;padding:37px 38px 40px;border:1px solid #344866;border-radius:28px;background:linear-gradient(140deg,#172946,#111d31 70%,#191b47);box-shadow:0 30px 95px #0005}.workHead .kicker{font-size:15px;color:#c1baff}.workTitle{font-size:54px;line-height:1.04;letter-spacing:-2.4px;margin:16px 0 16px}.workIntro{font-size:22px;line-height:1.5;color:#b3bfd1;margin:0;max-width:810px}.sectionTitle{font-size:29px;font-weight:720;letter-spacing:-.5px;margin:52px 0 21px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{height:260px;padding:25px 24px;border:1px solid #30435e;background:linear-gradient(145deg,#142137,#0e192b);border-radius:22px;box-shadow:0 16px 45px #0003;opacity:0}.card.reading{position:relative;z-index:10;transform-origin:50% 50%;border-color:#6562d6;background:linear-gradient(145deg,#1c2145,#111a30)}.icon{width:47px;height:47px;border-radius:14px;background:#253550;color:#c8d2ff;display:grid;place-items:center;font-size:23px;margin-bottom:17px}.card h3{font-size:24px;line-height:1.16;margin:0 0 13px;letter-spacing:-.45px}.card p{font-size:17px;line-height:1.45;color:#a7b4c8;margin:3px 0}.workCta{margin:36px auto 0;width:500px;height:76px;display:flex;align-items:center;justify-content:center;border-radius:20px;background:#5146df;color:white;font-size:23px;font-weight:740;box-shadow:0 14px 50px #4f46e555;opacity:0}.pointer{position:absolute;width:40px;height:53px;z-index:15;opacity:0;filter:drop-shadow(0 4px 7px #0009)}.pointer svg{width:100%;height:100%}.selected{position:absolute;left:66px;top:1192px;width:459px;height:260px;border:3px solid #adc9ff;border-radius:24px;opacity:0;box-shadow:0 0 0 900px #08111c22}.rc{padding:160px 72px}.rcHead{display:flex;align-items:center;gap:17px;margin-bottom:40px;opacity:0}.rcTitle{font-size:43px;letter-spacing:-1.5px;font-weight:740}.rcPanel{border:1px solid #31445d;border-radius:26px;overflow:hidden;background:#0d192a;box-shadow:0 36px 110px #0007;opacity:0}.rcToolbar{height:176px;padding:34px 30px;background:#0b1424;border-bottom:1px solid #283a52;display:flex;align-items:center;gap:18px}.rcLabel{font-size:25px;font-weight:690;line-height:1.3;max-width:390px}.rcAction{margin-left:auto;padding:18px 23px;border-radius:28px;background:#047857;color:#ffffff;font-size:17px;font-weight:750;white-space:nowrap}.rcBody{height:530px;padding:39px 34px;position:relative}.rcControl{height:84px;padding:24px 26px;border:1px solid #31445e;background:#111e32;border-radius:19px;margin:0 0 22px;font-size:19px;color:#b5c4d8;opacity:0}.rcControl b{display:block;font-size:15px;letter-spacing:.16em;color:#53d5e5;margin-bottom:12px}.rcNav{display:flex;gap:13px;margin-top:28px}.dot{width:55px;height:55px;border-radius:16px;border:1px solid #415875;display:grid;place-items:center;font-size:19px;color:#dbe7f7;background:#18263b}.dot.active{background:#f4f7fd;color:#102033;border-color:#fff}.rcLine{font-size:54px;line-height:1.05;letter-spacing:-2.4px;font-weight:710;margin:55px 0 0;color:#eff3fa}.rcLine span{color:#87aafc}.birbal{padding:150px 68px}.mentorCard{border:1px solid #3a4d77;border-radius:30px;background:#0d192c;overflow:hidden;box-shadow:0 32px 110px #0006;opacity:0}.mentorTop{height:165px;background:linear-gradient(112deg,#4338ca,#3650bc);padding:34px;display:flex;align-items:center;gap:22px;opacity:0}.avatar{height:88px;width:88px;border-radius:50%;object-fit:cover;border:2px solid #dad4ff}.mentorName{font-size:35px;font-weight:790;letter-spacing:-.8px}.mentorSub{font-size:18px;color:#e3e7ff;margin-top:8px}.online{margin-left:auto;border-radius:24px;background:#ffffff22;padding:12px 15px;font-size:15px}.message{margin:35px 34px 0;padding:27px 29px;border:1px solid #34435a;border-radius:23px;background:#131f31;font-size:23px;line-height:1.45;color:#edf1f8;opacity:0}.message .muted{display:block;margin-top:15px;font-size:18px;line-height:1.45;color:#aab7ca}.suggest{margin:31px 34px 14px;font-size:16px;letter-spacing:.16em;color:#94a7c2;text-transform:uppercase;opacity:0}.prompts{padding:0 34px 36px;display:flex;flex-direction:column;gap:13px}.prompt{padding:18px 21px;border:1px solid #36556b;border-radius:22px;background:#111e2d;color:#d5e9ef;font-size:19px;line-height:1.25;opacity:0}.guided{padding:47px 72px 0;font-size:48px;line-height:1.12;font-weight:700;letter-spacing:-1.5px;max-width:900px;color:#ebf1fa;opacity:0}.end{padding:190px 76px;text-align:center}.endBrand{display:flex;justify-content:center;align-items:center;gap:17px;opacity:0}.endBrand img{width:70px;height:70px;border-radius:18px;background:#03070e}.endBrand strong{font-size:34px;letter-spacing:-.5px}.endRule{width:100px;height:2px;background:#657bcc;margin:77px auto 52px;transform:scaleX(0)}.endLine{font-size:75px;line-height:1.04;letter-spacing:-3.8px;font-weight:730;margin:0 auto 43px;max-width:850px;opacity:0}.endCta{display:inline-flex;align-items:center;justify-content:center;padding:23px 32px;border-radius:18px;background:#a8ceff;color:#0b1729;font-size:23px;font-weight:780;opacity:0}.endFoot{position:absolute;bottom:154px;left:0;right:0;color:#9aaac0;font-size:15px;letter-spacing:.25em;text-transform:uppercase;opacity:0}
+</style>
+</head>
+<body>
+<main data-hf-id="hf-vcxf" id="root" data-composition-id="root" data-start="0" data-duration="20" data-width="1080" data-height="1920">
+  <div data-hf-id="hf-h60x" class="grain"></div><div data-hf-id="hf-2s7n" class="glow"></div>
+  <section data-hf-id="hf-nt5q" class="screen hook" id="hook">
+    <div data-hf-id="hf-rpqk" class="kicker hookKicker">CAT VARC · AUCTOR LABS</div>
+    <div data-hf-id="hf-8r2f" class="hookLine"><span data-hf-id="hf-tl31" class="hookA">CAT is getting</span><br data-hf-id="hf-x5px"><span data-hf-id="hf-18w0" class="hookB accent">closer.</span></div>
+    <div data-hf-id="hf-hap5" class="hookQuestion"><span data-hf-id="hf-gc80" class="hookQ1">But are you</span><br data-hf-id="hf-rsrt"><span data-hf-id="hf-ushs" class="hookQ2 accent">actually improving?</span></div>
+    <div data-hf-id="hf-v5dg" class="hookFooter"><span data-hf-id="hf-6o6j" class="rule"></span><span data-hf-id="hf-v683">A question worth asking</span></div>
+  </section>
+  <section data-hf-id="hf-zhwc" class="screen product" id="workout">
+    <header data-hf-id="hf-a7gx" class="top"><span data-hf-id="hf-zeo6" class="mark"></span><span data-hf-id="hf-2pmy" class="wordmark">Auctor</span><span data-hf-id="hf-h2px" class="pill">Today</span></header>
+    <section data-hf-id="hf-vyv1" class="workHead workCamera">
+      <div data-hf-id="hf-txoa" class="kicker whKicker">TODAY'S FOCUS</div><h1 data-hf-id="hf-u9li" class="workTitle whTitle">Daily Workout</h1>
+      <p data-hf-id="hf-3jst" class="workIntro whIntro">Practise speed, vocabulary and reading in one guided session. Allow about 30 minutes.</p>
+    </section>
+    <h2 data-hf-id="hf-fx28" class="sectionTitle whSection">Today's Workout</h2>
+    <div data-hf-id="hf-hri5" class="cards workCamera">
+      <article data-hf-id="hf-75x7" class="card"><div data-hf-id="hf-b2y4" class="icon">↗</div><h3 data-hf-id="hf-aek6">Speed Drill</h3><p data-hf-id="hf-eisj">10 short paragraphs</p><p data-hf-id="hf-ekky">20 seconds to read each paragraph</p><p data-hf-id="hf-xd6v">10 seconds to answer the question</p></article>
+      <article data-hf-id="hf-w323" class="card"><div data-hf-id="hf-ss6t" class="icon">Aa</div><h3 data-hf-id="hf-unxr">Vocabulary Lab</h3><p data-hf-id="hf-s8qf">10 vocabulary questions</p><p data-hf-id="hf-znez">Improve word knowledge and contextual understanding</p></article>
+      <article data-hf-id="hf-o3pp" class="card reading" id="readingCard"><div data-hf-id="hf-p3cl" class="icon">▤</div><h3 data-hf-id="hf-i0eg">Reading Comprehension</h3><p data-hf-id="hf-dy6o">2 passages</p><p data-hf-id="hf-gg2v">4 questions per passage</p><p data-hf-id="hf-dmk3">Build comprehension and inference skills</p></article>
+      <article data-hf-id="hf-vor2" class="card"><div data-hf-id="hf-qpaf" class="icon">✎</div><h3 data-hf-id="hf-56si">Micro Skills</h3><p data-hf-id="hf-dwud">5 language questions</p><p data-hf-id="hf-g8eu">Grammar, sentence structure, and usage</p></article>
+    </div>
+    <div data-hf-id="hf-1crz" class="workCta" id="workCta">Start Workout</div>
+    <div data-hf-id="hf-qp30" class="pointer" id="pointer"><svg data-hf-id="hf-a8e5" viewBox="0 0 40 53"><path data-hf-id="hf-j3nf" d="M3 2v39l10-10 7 17 8-4-7-16h14L3 2z" fill="#fff" stroke="#15243a" stroke-width="2.5" /></svg></div>
+  </section>
+  <section data-hf-id="hf-w0ye" class="screen rc" id="rc">
+    <div data-hf-id="hf-u613" class="rcHead"><span data-hf-id="hf-cxwn" class="kicker">PRACTICE</span><span data-hf-id="hf-3xyo" class="rule" style="width:54px"></span><span data-hf-id="hf-xrlq" class="rcTitle">Daily Reading Challenge</span></div>
+    <div data-hf-id="hf-upgd" class="rcPanel">
+      <div data-hf-id="hf-7lz6" class="rcToolbar"><div data-hf-id="hf-yeow"><div data-hf-id="hf-fzws" class="kicker" style="font-size:14px;color:#69dbea;margin-bottom:12px">DAILY RC ARENA</div><div data-hf-id="hf-3itv" class="rcLabel">Daily Reading Challenge</div></div><div data-hf-id="hf-w3d1" class="rcAction">Submit Test</div></div>
+      <div data-hf-id="hf-slzh" class="rcBody">
+        <div data-hf-id="hf-vtb2" class="rcControl"><b data-hf-id="hf-99tz">READING PASSAGE</b></div>
+      </div>
+    </div>
+    <div data-hf-id="hf-6r6a" class="rcLine">Practice.<br data-hf-id="hf-szow"><span data-hf-id="hf-gm4z">Understand.</span><br data-hf-id="hf-sldv">Improve.</div>
+    <div data-hf-id="hf-c0ay" class="pointer" id="rcPointer" style="left:900px;top:335px"><svg data-hf-id="hf-cutt" viewBox="0 0 40 53"><path data-hf-id="hf-pf5n" d="M3 2v39l10-10 7 17 8-4-7-16h14L3 2z" fill="#fff" stroke="#15243a" stroke-width="2.5" /></svg></div>
+  </section>
+  <section data-hf-id="hf-i8ju" class="screen birbal" id="birbal">
+    <div data-hf-id="hf-3xu3" class="kicker birbalKicker">GUIDED PRACTICE</div>
+    <div data-hf-id="hf-v9k1" class="mentorCard">
+      <div data-hf-id="hf-ydzc" class="mentorTop"><img data-hf-id="hf-wy2e" class="avatar" src="assets/birbal-avatar.jpeg"><div data-hf-id="hf-y7yw"><div data-hf-id="hf-rvj8" class="mentorName">Birbal AI</div><div data-hf-id="hf-omod" class="mentorSub">Your Personal Reading Mentor</div></div><span data-hf-id="hf-lim8" class="online">● Online</span></div>
+      <div data-hf-id="hf-lblb" class="message">👋 Welcome back!<span data-hf-id="hf-m8hh" class="muted">I'm Birbal — your AI Reading Mentor.</span></div>
+      <div data-hf-id="hf-6qzk" class="suggest">Choose a suggestion</div>
+      <div data-hf-id="hf-w8ut" class="prompts"><div data-hf-id="hf-95wc" class="prompt">How to improve inference questions?</div><div data-hf-id="hf-y58x" class="prompt">How should I read RC faster?</div><div data-hf-id="hf-w5do" class="prompt">What is tone detection?</div><div data-hf-id="hf-z12t" class="prompt">How to find main idea quickly?</div></div>
+    </div>
+    <div data-hf-id="hf-fvpw" class="guided">Your practice,<br data-hf-id="hf-qluq"><span data-hf-id="hf-l8qi" class="accent">guided by Birbal.</span></div>
+  </section>
+  <section data-hf-id="hf-6p34" class="screen end" id="end">
+    <div data-hf-id="hf-g70y" class="endBrand"><img data-hf-id="hf-r1im" src="assets/logo.png"><strong data-hf-id="hf-ynr6">Auctor Labs</strong></div>
+    <div data-hf-id="hf-xvyp" class="endRule"></div>
+    <h1 data-hf-id="hf-n0q7" class="endLine">Make a little progress,<br data-hf-id="hf-q7jp"><span data-hf-id="hf-vtmu" class="accent">every day.</span></h1>
+    <div data-hf-id="hf-2ttt" class="endCta">Start your VARC workout&#160; →</div>
+    <div data-hf-id="hf-hgkg" class="endFoot">CAT VARC · AUCTOR LABS</div>
+  </section>
+  <audio data-hf-id="hf-ch3y" id="music-bed" data-start="0" data-duration="20" data-track-index="1" data-volume="0.30" data-fade-in="0.7" data-fade-out="1.1" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"></audio>
+  <audio data-hf-id="hf-jrjk" id="hook-impact" data-start="1.42" data-duration="0.183" data-track-index="2" data-volume="0.48" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+  <audio data-hf-id="hf-nh83" id="workout-click" data-start="6.28" data-duration="0.1" data-track-index="3" data-volume="0.55" src="assets/sfx/interface/click_001.ogg"></audio>
+  <audio data-hf-id="hf-m7jt" id="rc-click" data-start="9.14" data-duration="0.1" data-track-index="4" data-volume="0.48" src="assets/sfx/interface/click_001.ogg"></audio>
+  <audio data-hf-id="hf-t7k9" id="card-whoosh" data-start="6.52" data-duration="0.601" data-track-index="5" data-volume="0.22" src="assets/sfx/casino/card-slide-1.ogg"></audio>
+</main>
+<script>
+const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+const show=(sel,t,d=.42,y=28,s=.985)=>tl.fromTo(sel,{opacity:0,y,scale:s},{opacity:1,y:0,scale:1,duration:d},t);
+tl.set('.screen',{opacity:0});
+tl.set('#hook',{opacity:1},0);
+show('.hookKicker',.15,.4,16,1);
+show('.hookA',.38,.58,45,.96);
+show('.hookB',.77,.52,40,.96);
+show('.hookQ1',1.35,.48,30,.98);
+show('.hookQ2',1.62,.56,35,.97);
+tl.fromTo('.hookFooter',{opacity:0,x:-25},{opacity:1,x:0,duration:.42},2.12);
+tl.to('#hook',{opacity:0,y:-42,duration:.34,ease:'power2.in'},2.75);
+tl.set('#workout',{opacity:1,y:55,scale:.96,transformOrigin:'50% 50%'},2.78);
+tl.to('#workout',{y:0,scale:1,duration:.56,ease:'power3.out'},2.78);
+show('#workout .top',2.9,.35,14,1);
+show('.whKicker',3.13,.38,18,1);
+show('.whTitle',3.3,.43,22,.98);
+show('.whIntro',3.53,.4,20,1);
+show('.whSection',3.83,.35,18,1);
+document.querySelectorAll('.card').forEach((el,i)=>tl.fromTo(el,{opacity:0,y:36,scale:.96},{opacity:1,y:0,scale:1,duration:.48,ease:'power3.out'},4.1+i*.23));
+tl.fromTo('#workCta',{opacity:0,y:25,scale:.97},{opacity:1,y:0,scale:1,duration:.44,ease:'power3.out'},5.08);
+tl.fromTo('#pointer',{opacity:0,x:700,y:900,scale:.92},{opacity:1,x:528,y:1171,scale:1,duration:.64,ease:'power2.inOut'},5.75);
+tl.to('#workCta',{scale:.97,duration:.1,ease:'power1.in'},6.28);
+tl.to('#workCta',{scale:1,duration:.24,ease:'power2.out',overwrite:'auto'},6.4);
+tl.to('#pointer',{x:537,y:1181,duration:.2,ease:'power2.out',overwrite:'auto'},6.28);
+tl.to('#pointer',{opacity:0,duration:.18},6.55);
+tl.to('#workout header,.workHead,.whSection,.card:not(#readingCard),#workCta',{opacity:.06,duration:.22,ease:'power2.in'},6.52);
+tl.to('#readingCard',{scale:1.95,x:245,y:-48,duration:.55,ease:'power2.inOut',transformOrigin:'50% 50%'},6.52);
+tl.to('#workout',{opacity:0,duration:.2,ease:'power2.in'},6.98);
+tl.fromTo('#rc',{opacity:0,scale:.97,y:35},{opacity:1,scale:1,y:0,duration:.5,ease:'power3.out'},6.92);
+show('.rcHead',7.1,.42,22,1);
+show('.rcPanel',7.27,.5,35,.985);
+show('.rcControl:nth-child(1)',7.57,.4,20,.985);
+tl.fromTo('#rcPointer',{opacity:0,x:-700,y:380},{opacity:1,x:0,y:0,duration:.5,ease:'power2.out'},8.48);
+tl.to('#rcPointer',{x:-8,y:8,duration:.25,ease:'power2.out',overwrite:'auto'},8.95);
+tl.to('.rcAction',{scale:.97,duration:.1,ease:'power1.in'},9.15);
+tl.to('.rcAction',{scale:1,duration:.2,ease:'power2.out'},9.26);
+tl.to('#rcPointer',{opacity:0,duration:.18},9.45);
+show('.rcLine',9.25,.52,40,.98);
+tl.to('#rc',{opacity:0,y:-35,duration:.28,ease:'power2.in'},12.52);
+tl.set('#birbal',{opacity:1,y:45,scale:.98,transformOrigin:'50% 50%'},12.8);
+tl.to('#birbal',{y:0,scale:1,duration:.5,ease:'power3.out'},12.8);
+tl.fromTo('.mentorCard',{opacity:0,y:20,scale:.985},{opacity:1,y:0,scale:1,duration:.42,ease:'power3.out'},12.82);
+show('.birbalKicker',12.82,.35,15,1);
+show('.mentorTop',12.84,.5,28,.97);
+show('.message',13.34,.48,25,.985);
+show('.suggest',13.72,.35,15,1);
+document.querySelectorAll('.prompt').forEach((el,i)=>tl.fromTo(el,{opacity:0,x:-24,y:10},{opacity:1,x:0,y:0,duration:.36,ease:'power2.out'},13.96+i*.28));
+show('.guided',15.3,.5,26,.985);
+tl.to('#birbal',{scale:.94,y:-20,duration:.5,ease:'power2.inOut',transformOrigin:'50% 35%'},16.68);
+tl.to('#birbal',{opacity:0,duration:.28},16.95);
+tl.set('#end',{opacity:1,scale:1.035,transformOrigin:'50% 50%'},16.95);
+tl.to('#end',{scale:1,duration:.55,ease:'power3.out'},16.95);
+show('.endBrand',17.12,.48,22,.96);
+tl.fromTo('.endRule',{scaleX:0},{scaleX:1,duration:.5,ease:'power2.out'},17.52);
+show('.endLine',17.72,.52,27,.98);
+show('.endCta',18.38,.46,20,.97);
+show('.endFoot',18.8,.4,12,1);
+window.__timelines=window.__timelines||{};window.__timelines.root=tl;
+</script>
+</body></html>

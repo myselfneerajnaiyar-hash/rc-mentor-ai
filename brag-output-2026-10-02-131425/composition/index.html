@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920, initial-scale=1">
+    <title>Auctor Labs — Product Demo</title>
+    <script src="node_modules/gsap/dist/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #020617; }
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #f8fafc; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(ellipse at 50% 10%, rgba(49,46,129,.26), transparent 45%), #020617; }
+      .ambient { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(15,23,42,.12), transparent 36%, rgba(15,23,42,.3)); }
+      .topbar { position: absolute; z-index: 20; top: 46px; left: 64px; right: 64px; height: 82px; display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(148,163,184,.14); opacity: 0; }
+      .brand-mark { display: block; width: 56px; height: 56px; border-radius: 15px; background: url("assets/auctor-logo.png") center / cover no-repeat; }
+      .brand-label { font-size: 32px; letter-spacing: -.035em; font-weight: 720; }
+      .brand-label span { color: #818cf8; }
+      .top-meta { margin-left: auto; color: #94a3b8; font-size: 23px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .screen { position: absolute; inset: 0; opacity: 0; }
+      .content { position: absolute; top: 208px; left: 64px; right: 64px; }
+      .eyebrow { color: #a5b4fc; font-size: 26px; line-height: 1.25; letter-spacing: .16em; font-weight: 800; text-transform: uppercase; }
+      h1 { margin: 14px 0 0; font-size: 76px; line-height: 1.05; letter-spacing: -.05em; font-weight: 760; }
+      h2 { margin: 0; font-size: 52px; line-height: 1.12; letter-spacing: -.035em; font-weight: 720; }
+      .lead { margin: 18px 0 0; color: #94a3b8; font-size: 34px; line-height: 1.42; }
+      .section-heading { display: flex; align-items: center; gap: 16px; margin: 40px 0 20px; color: #e2e8f0; font-size: 40px; line-height: 1.15; font-weight: 720; }
+      .section-heading:before { content: ""; width: 8px; height: 34px; border-radius: 20px; background: #818cf8; }
+      .activity-list { display: grid; gap: 18px; }
+      .activity-card, .module-card, .panel, .prompt, .metric { background: linear-gradient(145deg, rgba(15,23,42,.98), rgba(15,23,42,.82)); border: 1px solid rgba(148,163,184,.18); border-radius: 26px; }
+      .activity-card { position: relative; display: grid; grid-template-columns: 76px 1fr; gap: 22px; align-items: start; min-height: 280px; padding: 27px 28px; border-top-width: 5px; opacity: 0; }
+      .activity-card.rc { border-top-color: #6366f1; }
+      .activity-card.workout { border-top-color: #f97316; }
+      .activity-card.wordhunt { border-top-color: #10b981; }
+      .activity-icon { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 20px; background: rgba(99,102,241,.14); color: #a5b4fc; }
+      .activity-card.workout .activity-icon { background: rgba(249,115,22,.14); color: #fdba74; }
+      .activity-card.wordhunt .activity-icon { background: rgba(16,185,129,.14); color: #6ee7b7; }
+      .activity-copy h3 { margin: 1px 0 9px; font-size: 38px; line-height: 1.15; font-weight: 720; }
+      .activity-copy p { margin: 0; color: #94a3b8; font-size: 28px; line-height: 1.35; }
+      .activity-foot { display: flex; align-items: center; gap: 14px; margin-top: 15px; }
+      .activity-time { color: #94a3b8; font-size: 24px; }
+      .mini-cta { margin-left: auto; min-width: 220px; padding: 15px 17px; border: 1px solid rgba(99,102,241,.36); border-radius: 14px; background: #4f46e5; color: #fff; font: 700 27px system-ui, sans-serif; }
+      .workout .mini-cta { background: #ea580c; border-color: rgba(249,115,22,.4); }
+      .wordhunt .mini-cta { background: #059669; border-color: rgba(16,185,129,.4); }
+      .note { margin-top: 22px; color: #94a3b8; font-size: 28px; line-height: 1.4; }
+      .focus-panel { padding: 34px 36px; border: 1px solid rgba(99,102,241,.26); border-radius: 30px; background: linear-gradient(145deg, #0f172a, #10132c 76%, #141a38); }
+      .focus-panel .eyebrow { color: #a5b4fc; }
+      .focus-panel h1 { font-size: 72px; }
+      .focus-panel .lead { max-width: 840px; margin-top: 14px; font-size: 27px; }
+      .workout-title { margin: 40px 0 20px; color: #e2e8f0; font-size: 42px; font-weight: 730; }
+      .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .module-card { min-height: 300px; padding: 25px 24px; opacity: 0; }
+      .module-top { display: flex; align-items: center; gap: 15px; }
+      .module-icon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; background: #1e293b; color: #fcd34d; }
+      .module-card.vocab .module-icon { color: #7dd3fc; }
+      .module-card.rc .module-icon { color: #c4b5fd; }
+      .module-card.micro .module-icon { color: #6ee7b7; }
+      .module-card h3 { margin: 0; font-size: 36px; line-height: 1.13; font-weight: 740; }
+      .module-card ul { margin: 19px 0 0; padding: 0 0 0 23px; color: #94a3b8; font-size: 27px; line-height: 1.38; }
+      .module-card li { margin: 0 0 5px; }
+      .how-panel { margin-top: 19px; padding: 20px 25px; border: 1px solid rgba(148,163,184,.13); border-radius: 22px; background: rgba(15,23,42,.76); }
+      .how-panel h3 { margin: 0 0 12px; font-size: 29px; }
+      .how-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 22px; color: #94a3b8; font-size: 25px; }
+      .start-workout { display: block; margin: 26px auto 0; min-width: 440px; height: 96px; border: 1px solid rgba(99,102,241,.34); border-radius: 22px; background: #4f46e5; color: white; font: 750 34px system-ui, sans-serif; box-shadow: 0 18px 46px rgba(49,46,129,.25); opacity: 0; }
+      .rc-tabs { display: flex; gap: 9px; margin-top: 34px; padding: 9px; width: fit-content; border: 1px solid #1e293b; border-radius: 20px; background: rgba(15,23,42,.8); }
+      .rc-tab { min-width: 145px; padding: 17px 15px; border: 0; border-radius: 14px; background: transparent; color: #94a3b8; font: 650 27px system-ui, sans-serif; }
+      .rc-tab.active { color: white; background: #4f46e5; }
+      .rc-panel { margin-top: 26px; padding: 30px; border: 1px solid #1e293b; border-radius: 28px; background: rgba(15,23,42,.86); }
+      .rc-panel h2 { font-size: 46px; }
+      .rc-panel .lead { margin-top: 13px; font-size: 31px; }
+      .paste-box { height: 310px; margin-top: 23px; padding: 26px; border: 1px solid #334155; border-radius: 20px; background: #020617; color: #94a3b8; font-size: 31px; line-height: 1.4; }
+      .rc-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 20px; }
+      .rc-stat { padding: 16px 18px; border: 1px solid rgba(148,163,184,.14); border-radius: 17px; background: rgba(2,6,23,.45); color: #94a3b8; font-size: 24px; }
+      .rc-stat strong { display: block; margin-top: 7px; color: #f8fafc; font-size: 34px; }
+      .disabled-btn { display: block; margin: 25px 0 0 auto; padding: 18px 24px; border: 0; border-radius: 16px; background: #334155; color: #cbd5e1; font: 700 27px system-ui, sans-serif; opacity: .68; }
+      .wordbank { padding-top: 12px; }
+      .wordbank .eyebrow { color: #67e8f9; }
+      .wordbank h1 { margin-top: 20px; font-size: 66px; line-height: 1.08; }
+      .wordbank .lead { max-width: 860px; font-size: 34px; line-height: 1.4; }
+      .wordbank-emphasis { margin: 16px 0 0; color: #e2e8f0; font-size: 31px; font-weight: 650; }
+      .revision-cta { margin-top: 38px; min-height: 92px; padding: 18px 28px; border: 1px solid rgba(34,211,238,.28); border-radius: 19px; background: #06b6d4; color: #082f49; font: 800 32px system-ui, sans-serif; box-shadow: 0 0 0 0 rgba(34,211,238,0); opacity: 0; }
+      .flow-panel { margin-top: 42px; padding: 26px 28px; border: 1px solid rgba(148,163,184,.16); border-radius: 22px; background: rgba(15,23,42,.65); opacity: 0; }
+      .flow-panel p { margin: 0; color: #67e8f9; font-size: 24px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+      .flow-steps { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 23px; color: #cbd5e1; font-size: 26px; font-weight: 700; }
+      .flow-steps span:nth-child(even) { height: 1px; flex: 1; background: linear-gradient(90deg,#334155,rgba(6,182,212,.52)); }
+      .chat-shell { position: relative; margin-top: 24px; overflow: hidden; border: 1px solid #334155; border-radius: 30px; background: #0f172a; box-shadow: 0 30px 70px rgba(0,0,0,.22); }
+      .chat-head { display: flex; align-items: center; gap: 17px; padding: 23px 28px; border-bottom: 1px solid #1e293b; }
+      .birbal-avatar { width: 76px; height: 76px; object-fit: cover; border: 2px solid #334155; border-radius: 50%; }
+      .chat-name { font-size: 33px; font-weight: 750; }
+      .chat-sub { margin-top: 4px; color: #94a3b8; font-size: 27px; }
+      .greeting { margin: 26px 28px 19px 106px; padding: 24px 28px; border: 1px solid #334155; border-radius: 22px 22px 22px 7px; background: rgba(30,41,59,.72); color: #e2e8f0; font-size: 33px; line-height: 1.35; opacity: 0; }
+      .prompts { display: grid; gap: 13px; padding: 17px 27px 26px 106px; border-top: 1px solid #1e293b; }
+      .prompt { padding: 18px 22px; color: #e2e8f0; font-size: 31px; line-height: 1.2; background: linear-gradient(110deg,#3730a3,#0e7490); border-color: rgba(34,211,238,.26); opacity: 0; }
+      .chat-input { display: flex; gap: 11px; padding: 17px 22px; border-top: 1px solid #1e293b; background: #0f172a; }
+      .fake-input { flex: 1; padding: 18px 24px; border: 1px solid #334155; border-radius: 999px; background: #1e293b; color: #94a3b8; font-size: 27px; }
+      .send-btn { width: 68px; border: 0; border-radius: 17px; background: #4f46e5; color: white; font-size: 30px; }
+      .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; margin-top: 34px; }
+      .metric { min-height: 190px; padding: 25px 29px; opacity: 0; }
+      .metric-label { color: #94a3b8; font-size: 29px; }
+      .metric-value { margin-top: 12px; color: white; font-size: 56px; font-weight: 780; letter-spacing: -.04em; }
+      .metric.iq .metric-value { color: #c4b5fd; }
+      .metric.accuracy .metric-value { color: #6ee7b7; }
+      .metric.speed .metric-value { color: #7dd3fc; }
+      .metric.streak .metric-value { color: #fdba74; }
+      .finish-line { margin-top: 44px; color: #94a3b8; font-size: 34px; line-height: 1.45; opacity: 0; }
+      .labs-lockup { display: flex; align-items: center; gap: 22px; margin-top: 50px; opacity: 0; }
+      .labs-lockup img { width: 78px; height: 78px; border-radius: 20px; object-fit: cover; }
+      .labs-lockup strong { font-size: 35px; letter-spacing: -.03em; }
+      .labs-lockup small { display: block; margin-top: 5px; color: #94a3b8; font-size: 22px; letter-spacing: .1em; text-transform: uppercase; }
+      .cursor { position: absolute; z-index: 30; left: 0; top: 0; width: 48px; height: 58px; opacity: 0; pointer-events: none; filter: drop-shadow(0 6px 10px rgba(0,0,0,.6)); }
+      .cursor svg { width: 48px; height: 58px; }
+      .click-ripple { position: absolute; z-index: 29; width: 86px; height: 86px; border: 2px solid rgba(165,180,252,.8); border-radius: 50%; opacity: 0; pointer-events: none; }
+      .audio { display: none; }
+    </style>
+  </head>
+  <body>
+    <main data-hf-id="hf-h806" id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1080" data-height="1920" data-fps="30">
+      <div data-hf-id="hf-k0k7" class="ambient" aria-hidden="true"></div>
+      <header data-hf-id="hf-x0rn" id="app-header" class="topbar" aria-label="Auctor RC">
+        <div data-hf-id="hf-lcei" class="brand-mark" aria-hidden="true"></div>
+        <div data-hf-id="hf-1v0q" class="brand-label">Auctor<span data-hf-id="hf-ab26">RC</span></div>
+        <div data-hf-id="hf-k7eq" class="top-meta">Powered by Birbal AI</div>
+      </header>
+
+      <section data-hf-id="hf-evlu" class="scene" id="scene-today" aria-label="Today screen">
+        <div data-hf-id="hf-5h5q" class="screen" id="today-screen">
+          <div data-hf-id="hf-mcm7" class="content">
+            <div data-hf-id="hf-v3fy" class="eyebrow today-eyebrow">Daily practice</div>
+            <h1 data-hf-id="hf-76j9" class="today-title">Today</h1>
+            <p data-hf-id="hf-659z" class="lead today-lead">Your free daily activities. Pick one to begin.</p>
+            <h2 data-hf-id="hf-x6p8" class="section-heading today-section">Today's Activities</h2>
+            <div data-hf-id="hf-jg0w" class="activity-list">
+              <article data-hf-id="hf-5ee6" class="activity-card rc today-card" id="today-rc-card">
+                <div data-hf-id="hf-amdc" class="activity-icon" aria-hidden="true"><svg data-hf-id="hf-673f" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.7"><path data-hf-id="hf-j253" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></svg></div>
+                <div data-hf-id="hf-o3fj" class="activity-copy"><h3 data-hf-id="hf-968t">Daily RC Challenge</h3><p data-hf-id="hf-j61f">Solve a fresh CAT-level Reading Comprehension passage every day.</p><div data-hf-id="hf-1dgs" class="activity-foot"><span data-hf-id="hf-2wz9" class="activity-time">10–15 mins</span><button data-hf-id="hf-l2ey" class="mini-cta">Start Challenge <span data-hf-id="hf-0krp" aria-hidden="true">→</span></button></div></div>
+              </article>
+              <article data-hf-id="hf-vj4c" class="activity-card workout today-card" id="today-workout-card">
+                <div data-hf-id="hf-vvlk" class="activity-icon" aria-hidden="true"><svg data-hf-id="hf-y5vv" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.7"><path data-hf-id="hf-yhil" d="m6.5 6.5 11 11M5 9l4-4M15 19l4-4M3 7l4-4m10 18 4-4M2 10l2-2m16 8 2-2" /></svg></div>
+                <div data-hf-id="hf-0sm7" class="activity-copy"><h3 data-hf-id="hf-z68m">Daily Workout</h3><p data-hf-id="hf-wm4k">Complete today's guided workout with Reading Comprehension, Vocabulary and Speed Drills.</p><div data-hf-id="hf-2f44" class="activity-foot"><span data-hf-id="hf-tqku" class="activity-time">25–30 mins</span><button data-hf-id="hf-b9hq" class="mini-cta" id="start-workout-today">Start Workout <span data-hf-id="hf-qlbt" aria-hidden="true">→</span></button></div></div>
+              </article>
+              <article data-hf-id="hf-zpga" class="activity-card wordhunt today-card" id="today-wordhunt-card">
+                <div data-hf-id="hf-uooh" class="activity-icon" aria-hidden="true"><svg data-hf-id="hf-xrku" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.7"><path data-hf-id="hf-lv5s" d="M12 3v5m0 0 3-3m-3 3L9 5M5 11h14M7 15h10M9 19h6" /></svg></div>
+                <div data-hf-id="hf-0eb6" class="activity-copy"><h3 data-hf-id="hf-tz15">Word Hunt</h3><p data-hf-id="hf-9so2">Strengthen your vocabulary through quick interactive word puzzles and daily practice.</p><div data-hf-id="hf-1871" class="activity-foot"><span data-hf-id="hf-dlpg" class="activity-time">5 mins</span><button data-hf-id="hf-vd7b" class="mini-cta">Play Now <span data-hf-id="hf-rs8w" aria-hidden="true">→</span></button></div></div>
+              </article>
+            </div>
+            <p data-hf-id="hf-liqg" class="note today-note">Your saved results stay in your history.</p>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-ng7a" class="scene" id="scene-workout" aria-label="Daily Workout overview">
+        <div data-hf-id="hf-7rzw" class="screen" id="workout-screen">
+          <div data-hf-id="hf-i7rz" class="content">
+            <section data-hf-id="hf-vvhn" class="focus-panel workout-focus">
+              <div data-hf-id="hf-j7p0" class="eyebrow">TODAY'S FOCUS</div>
+              <h1 data-hf-id="hf-n6o4">Daily Workout</h1>
+              <p data-hf-id="hf-1u97" class="lead">Practise speed, vocabulary and reading in one guided session. Allow about 30 minutes.</p>
+            </section>
+            <h2 data-hf-id="hf-h9u3" class="workout-title">Today's Workout</h2>
+            <div data-hf-id="hf-2v6x" class="module-grid">
+              <article data-hf-id="hf-036p" class="module-card speed"><div data-hf-id="hf-dkuy" class="module-top"><div data-hf-id="hf-s1zz" class="module-icon">↗</div><h3 data-hf-id="hf-aek6">Speed Drill</h3></div><ul data-hf-id="hf-ovcc"><li data-hf-id="hf-vlfk">10 short paragraphs</li><li data-hf-id="hf-o1h1">20 seconds to read each paragraph</li><li data-hf-id="hf-y3n8">10 seconds to answer the question</li></ul></article>
+              <article data-hf-id="hf-pq9p" class="module-card vocab"><div data-hf-id="hf-9qf2" class="module-top"><div data-hf-id="hf-t8go" class="module-icon">Aa</div><h3 data-hf-id="hf-unxr">Vocabulary Lab</h3></div><ul data-hf-id="hf-kqbo"><li data-hf-id="hf-kld8">10 vocabulary questions</li><li data-hf-id="hf-438o">Improve word knowledge and contextual understanding</li></ul></article>
+              <article data-hf-id="hf-ksbp" class="module-card rc"><div data-hf-id="hf-a4q3" class="module-top"><div data-hf-id="hf-zqki" class="module-icon">▤</div><h3 data-hf-id="hf-i0eg">Reading Comprehension</h3></div><ul data-hf-id="hf-jjel"><li data-hf-id="hf-ex1x">2 passages</li><li data-hf-id="hf-hqlk">4 questions per passage</li><li data-hf-id="hf-rb66">Build comprehension and inference skills</li></ul></article>
+              <article data-hf-id="hf-tisk" class="module-card micro"><div data-hf-id="hf-aj14" class="module-top"><div data-hf-id="hf-okic" class="module-icon">✎</div><h3 data-hf-id="hf-56si">Micro Skills</h3></div><ul data-hf-id="hf-jxpm"><li data-hf-id="hf-8ixc">5 language questions</li><li data-hf-id="hf-ggdv">Grammar, sentence structure, and usage</li></ul></article>
+            </div>
+            <div data-hf-id="hf-munz" class="how-panel workout-how"><h3 data-hf-id="hf-8n31">How it Works</h3><div data-hf-id="hf-yjc7" class="how-list"><span data-hf-id="hf-yz20">Fresh workout generated every day</span><span data-hf-id="hf-ci09">Progress is automatically tracked</span><span data-hf-id="hf-ocfu">Complete all four modules in about 30 minutes</span><span data-hf-id="hf-4v5w">Build consistency through daily practice</span></div></div>
+            <button data-hf-id="hf-ibmz" class="start-workout" id="start-workout-ready">🚀 Start Workout</button>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-592w" class="scene" id="scene-rc" aria-label="RC practice workspace">
+        <div data-hf-id="hf-01u4" class="screen" id="rc-screen">
+          <div data-hf-id="hf-htgy" class="content">
+            <div data-hf-id="hf-4hs5" class="eyebrow rc-eyebrow">Reading practice</div>
+            <h1 data-hf-id="hf-y3la" class="rc-title">RC Practice</h1>
+            <nav data-hf-id="hf-nj66" class="rc-tabs" aria-label="RC sections">
+              <button data-hf-id="hf-o6k4" class="rc-tab rc-tab-generate">Generate</button><button data-hf-id="hf-npzk" class="rc-tab active" id="paste-tab">Paste</button><button data-hf-id="hf-no5m" class="rc-tab rc-tab-profile">Profile</button><button data-hf-id="hf-rsx6" class="rc-tab rc-tab-history">History</button>
+            </nav>
+            <section data-hf-id="hf-ev6o" class="rc-panel">
+              <h2 data-hf-id="hf-c64e" class="paste-heading">Paste Your RC Passage</h2>
+              <p data-hf-id="hf-yhn5" class="lead paste-desc">We’ll break it down paragraph by paragraph and train your reading depth.</p>
+              <div data-hf-id="hf-yfyp" class="paste-box" role="textbox" aria-label="Paste your RC passage here">Paste your RC passage here...</div>
+              <div data-hf-id="hf-aqvr" class="rc-stats">
+                <div data-hf-id="hf-gtud" class="rc-stat">Words<strong data-hf-id="hf-f0b2">0</strong></div>
+                <div data-hf-id="hf-7lgb" class="rc-stat">Paragraphs<strong data-hf-id="hf-v5n6">0</strong></div>
+                <div data-hf-id="hf-ti5n" class="rc-stat">Est. Reading Time<strong data-hf-id="hf-6azp">1 min</strong></div>
+                <div data-hf-id="hf-1dj1" class="rc-stat">Difficulty<strong data-hf-id="hf-mdro">Easy</strong></div>
+              </div>
+              <button data-hf-id="hf-8nla" class="disabled-btn" aria-disabled="true">Split Into Paragraphs</button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-2vz0" class="scene" id="scene-vocab" aria-label="WordBank revision">
+        <div data-hf-id="hf-pw2w" class="screen" id="vocab-screen">
+          <div data-hf-id="hf-esy3" class="content wordbank">
+            <div data-hf-id="hf-r2g7" class="eyebrow vocab-label">WordBank</div>
+            <h1 data-hf-id="hf-pwst" class="vocab-title">Your personal vocabulary revision queue.</h1>
+            <p data-hf-id="hf-nal1" class="lead vocab-description">Words you encounter in RCs, Speed Gym, or add yourself are collected here so you can come back, revise them, and turn them into active vocabulary.</p>
+            <p data-hf-id="hf-9qwp" class="wordbank-emphasis vocab-emphasis">These aren't words to memorize once. They're words to revisit.</p>
+            <button data-hf-id="hf-2cqs" class="revision-cta" id="revision-cta">Start a Revision Drill →</button>
+            <div data-hf-id="hf-k2z9" class="flow-panel vocab-flow"><p data-hf-id="hf-k0n9">How your drills work</p><div data-hf-id="hf-6xau" class="flow-steps"><b data-hf-id="hf-67f3">WordBank</b><span data-hf-id="hf-uckh"></span><b data-hf-id="hf-3oyg">Revision</b><span data-hf-id="hf-l73p"></span><b data-hf-id="hf-ghs8">Contextual Drills</b><span data-hf-id="hf-me0s"></span><b data-hf-id="hf-gj3e">Reinforcement</b></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-08zr" class="scene" id="scene-birbal" aria-label="Birbal mentor panel">
+        <div data-hf-id="hf-ec23" class="screen" id="birbal-screen">
+          <div data-hf-id="hf-hf5x" class="content">
+            <div data-hf-id="hf-m782" class="eyebrow birbal-eyebrow">Auctor RC · Mentor</div>
+            <h1 data-hf-id="hf-6bc4" class="birbal-title">A moment with Birbal.</h1>
+            <div data-hf-id="hf-e96f" class="chat-shell">
+              <div data-hf-id="hf-f2l9" class="chat-head"><img data-hf-id="hf-hakj" class="birbal-avatar" src="assets/birbal-avatar.jpeg" alt="Birbal"><div data-hf-id="hf-yeow"><div data-hf-id="hf-x3nw" class="chat-name">Birbal AI</div><div data-hf-id="hf-e54o" class="chat-sub">I'm Birbal — your AI Reading Mentor.</div></div></div>
+              <div data-hf-id="hf-fm75" class="greeting" id="birbal-greeting">👋 Welcome back!<br data-hf-id="hf-x5px">I'm Birbal — your AI Reading Mentor.<br data-hf-id="hf-rsrt">Ask me anything or choose a suggestion below.</div>
+              <div data-hf-id="hf-w8ut" class="prompts"><div data-hf-id="hf-k4gm" class="prompt" id="prompt-inference">How to improve inference questions?</div><div data-hf-id="hf-1xbb" class="prompt" id="prompt-speed">How should I read RC faster?</div></div>
+              <div data-hf-id="hf-831x" class="chat-input"><div data-hf-id="hf-zuh9" class="fake-input">Ask Birbal about RC...</div><button data-hf-id="hf-ziai" class="send-btn" aria-label="Send message">➤</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-jzkd" class="scene" id="scene-home" aria-label="Auctor RC home and progress">
+        <div data-hf-id="hf-jao8" class="screen" id="home-screen">
+          <div data-hf-id="hf-k7b4" class="content">
+            <div data-hf-id="hf-vmj8" class="eyebrow home-eyebrow">Your reading practice</div>
+            <h1 data-hf-id="hf-t10u" class="home-title">Become a better reader every single day.</h1>
+            <div data-hf-id="hf-3t5p" class="metric-grid">
+              <article data-hf-id="hf-28o1" class="metric iq"><div data-hf-id="hf-0553" class="metric-label">Reading IQ</div><div data-hf-id="hf-razc" class="metric-value">0</div></article>
+              <article data-hf-id="hf-yy00" class="metric accuracy"><div data-hf-id="hf-fyaw" class="metric-label">Accuracy</div><div data-hf-id="hf-lhaf" class="metric-value">0%</div></article>
+              <article data-hf-id="hf-4bvw" class="metric speed"><div data-hf-id="hf-85h8" class="metric-label">Speed</div><div data-hf-id="hf-mbi6" class="metric-value">0 WPM</div></article>
+              <article data-hf-id="hf-helx" class="metric streak"><div data-hf-id="hf-o1bz" class="metric-label">Streak</div><div data-hf-id="hf-f07n" class="metric-value">0 Days</div></article>
+            </div>
+            <p data-hf-id="hf-ii0t" class="finish-line">Today's practice, with your progress close at hand.</p>
+            <div data-hf-id="hf-u26r" class="labs-lockup"><img data-hf-id="hf-5p7b" src="assets/auctor-logo.png" alt=""><div data-hf-id="hf-y7yw"><strong data-hf-id="hf-ynr6">Auctor Labs</strong><small data-hf-id="hf-6w2v">Reading practice · Powered by Birbal AI</small></div></div>
+          </div>
+        </div>
+      </section>
+
+      <audio data-hf-id="hf-xn2u" class="audio" id="bg-music" data-start="0" data-duration="20" data-track-index="10" data-volume="0.20" data-fade-in="0.4" data-fade-out="0.8" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"></audio>
+      <audio data-hf-id="hf-1y3j" class="audio" id="click-today" data-start="2.55" data-duration="0.06" data-track-index="11" data-volume="0.58" src="assets/sfx/ui/click2.ogg"></audio>
+      <audio data-hf-id="hf-8dny" class="audio" id="click-workout" data-start="6.15" data-duration="0.06" data-track-index="12" data-volume="0.58" src="assets/sfx/ui/click2.ogg"></audio>
+      <audio data-hf-id="hf-krb5" class="audio" id="click-rc" data-start="8.48" data-duration="0.06" data-track-index="13" data-volume="0.48" src="assets/sfx/ui/click2.ogg"></audio>
+      <div data-hf-id="hf-8837" class="click-ripple" id="ripple"></div>
+      <div data-hf-id="hf-o1tj" class="cursor" id="cursor" aria-hidden="true"><svg data-hf-id="hf-c0c2" viewBox="0 0 48 58" fill="none"><path data-hf-id="hf-wa21" d="M7 4.8c0-2.4 2.8-3.6 4.5-1.8l31 32.2c1.8 1.9.4 5-2.3 4.7l-12-1.7-6.1 14.4c-.8 1.9-3.5 2-4.5.2L7.8 35.1A4 4 0 0 1 7 33.2V4.8Z" fill="#F8FAFC" stroke="#0F172A" stroke-width="3" stroke-linejoin="round" /><circle data-hf-id="hf-dial" cx="10" cy="10" r="4" fill="#818CF8" /></svg></div>
+    </main>
+    <script>
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+      tl.set("#cursor", { x: 0, y: 0, opacity: 0, scale: 1 }, 0);
+      tl.set("#ripple", { scale: 0.35, opacity: 0 }, 0);
+      tl.fromTo("#app-header", { y: -16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.48 }, 0.05);
+
+      tl.fromTo("#today-screen", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.38 }, 0.08);
+      tl.fromTo(".today-eyebrow", { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.36 }, 0.23);
+      tl.fromTo(".today-title", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.43, ease: "power4.out" }, 0.34);
+      tl.fromTo(".today-lead", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.36, ease: "power2.out" }, 0.49);
+      tl.fromTo(".today-section", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38 }, 0.66);
+      tl.fromTo(".today-card", { y: 26, opacity: 0, scale: 0.99 }, { y: 0, opacity: 1, scale: 1, duration: 0.44, stagger: 0.17 }, 0.83);
+      tl.fromTo(".today-note", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32 }, 1.7);
+      tl.to("#start-workout-today", { scale: 1.025, duration: 0.18, ease: "power2.out" }, 1.78);
+      tl.to("#start-workout-today", { scale: 1, duration: 0.2, ease: "power2.out" }, 1.98);
+      tl.fromTo("#cursor", { x: 0, y: 0, opacity: 0 }, { x: 878, y: 936, opacity: 1, duration: 0.47, ease: "power3.inOut" }, 2.15);
+      tl.to("#cursor", { scale: 0.91, duration: 0.09, ease: "power1.out" }, 2.53);
+      tl.to("#cursor", { scale: 1, duration: 0.16, ease: "power2.out" }, 2.62);
+      tl.fromTo("#ripple", { x: 842, y: 897, scale: 0.35, opacity: 0 }, { scale: 1.05, opacity: 0.82, duration: 0.23, ease: "power2.out" }, 2.54);
+      tl.to("#ripple", { opacity: 0, duration: 0.28 }, 2.77);
+      tl.set("#cursor", { opacity: 0 }, 2.9);
+      tl.to("#today-screen", { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" }, 2.94);
+
+      tl.fromTo("#workout-screen", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.38 }, 3.02);
+      tl.fromTo(".workout-focus", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.48 }, 3.16);
+      tl.fromTo(".workout-title", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 3.56);
+      tl.fromTo(".module-card", { y: 22, opacity: 0, scale: 0.99 }, { y: 0, opacity: 1, scale: 1, duration: 0.42, stagger: 0.17 }, 3.82);
+      tl.fromTo(".workout-how", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 4.76);
+      tl.fromTo("#start-workout-ready", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.36 }, 5.0);
+      tl.fromTo("#cursor", { x: 878, y: 936, opacity: 0, scale: 1 }, { x: 533, y: 1540, opacity: 1, duration: 0.5, ease: "power3.inOut", immediateRender: false }, 5.63);
+      tl.to("#start-workout-ready", { scale: 0.985, duration: 0.1, ease: "power1.out" }, 6.14);
+      tl.to("#start-workout-ready", { scale: 1, duration: 0.16, ease: "power2.out" }, 6.24);
+      tl.fromTo("#ripple", { x: 497, y: 1502, scale: 0.35, opacity: 0 }, { scale: 1.05, opacity: 0.8, duration: 0.23, ease: "power2.out", immediateRender: false }, 6.16);
+      tl.to("#ripple", { opacity: 0, duration: 0.25 }, 6.4);
+      tl.set("#cursor", { opacity: 0 }, 6.7);
+      tl.to("#workout-screen", { opacity: 0, y: -8, duration: 0.22, ease: "power2.in" }, 6.94);
+
+      tl.fromTo("#rc-screen", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4 }, 7.02);
+      tl.fromTo(".rc-eyebrow", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32 }, 7.18);
+      tl.fromTo(".rc-title", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38 }, 7.32);
+      tl.fromTo(".rc-tabs", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 7.52);
+      tl.fromTo(".rc-tab", { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.08 }, 7.62);
+      tl.fromTo(".rc-panel", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 7.83);
+      tl.fromTo(".paste-heading", { y: 13, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32 }, 8.03);
+      tl.fromTo(".paste-desc", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32 }, 8.14);
+      tl.fromTo(".paste-box", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.34 }, 8.27);
+      tl.fromTo(".rc-stat", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.27, stagger: 0.09 }, 8.52);
+      tl.fromTo(".disabled-btn", { y: 10, opacity: 0 }, { y: 0, opacity: 0.68, duration: 0.28 }, 8.94);
+      tl.fromTo("#cursor", { x: 533, y: 1436, opacity: 0, scale: 1 }, { x: 293, y: 407, opacity: 1, duration: 0.47, ease: "power3.inOut", immediateRender: false }, 8.02);
+      tl.to("#paste-tab", { scale: 0.95, duration: 0.09, ease: "power1.out" }, 8.47);
+      tl.to("#paste-tab", { scale: 1, duration: 0.18, ease: "power2.out" }, 8.56);
+      tl.fromTo("#ripple", { x: 257, y: 366, scale: 0.35, opacity: 0 }, { scale: 0.95, opacity: 0.76, duration: 0.2, ease: "power2.out", immediateRender: false }, 8.48);
+      tl.to("#ripple", { opacity: 0, duration: 0.24 }, 8.68);
+      tl.set("#cursor", { opacity: 0 }, 8.96);
+      tl.to("#rc-screen", { opacity: 0, y: -8, duration: 0.2, ease: "power2.in" }, 10.24);
+
+      tl.fromTo("#vocab-screen", { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.38 }, 10.52);
+      tl.fromTo(".vocab-label", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32 }, 10.7);
+      tl.fromTo(".vocab-title", { y: 17, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "power4.out" }, 10.84);
+      tl.fromTo(".vocab-description", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 11.04);
+      tl.fromTo(".vocab-emphasis", { x: -12, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3 }, 11.26);
+      tl.fromTo("#revision-cta", { y: 14, opacity: 0, scale: 0.99 }, { y: 0, opacity: 1, scale: 1, duration: 0.42 }, 11.48);
+      tl.to("#revision-cta", { scale: 1.015, backgroundColor: "#22d3ee", duration: 0.25, ease: "power2.out" }, 12.12);
+      tl.to("#revision-cta", { scale: 1, duration: 0.24, ease: "power2.out" }, 12.37);
+      tl.fromTo(".vocab-flow", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.34 }, 12.56);
+      tl.to("#vocab-screen", { opacity: 0, y: -8, duration: 0.2, ease: "power2.in" }, 13.24);
+
+      tl.fromTo("#birbal-screen", { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.38 }, 13.52);
+      tl.fromTo(".birbal-eyebrow", { y: 13, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 13.67);
+      tl.fromTo(".birbal-title", { y: 17, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38 }, 13.82);
+      tl.fromTo(".chat-shell", { y: 18, opacity: 0, scale: 0.99 }, { y: 0, opacity: 1, scale: 1, duration: 0.44 }, 14.02);
+      tl.fromTo(".chat-head", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 14.16);
+      tl.fromTo("#birbal-greeting", { x: 16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.36 }, 14.38);
+      tl.fromTo("#prompt-inference", { x: 14, opacity: 0 }, { x: 0, opacity: 1, duration: 0.34 }, 14.82);
+      tl.fromTo("#prompt-speed", { x: 14, opacity: 0 }, { x: 0, opacity: 1, duration: 0.34 }, 15.48);
+      tl.fromTo(".chat-input", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 15.92);
+      tl.to("#birbal-screen", { opacity: 0, y: -8, duration: 0.2, ease: "power2.in" }, 16.94);
+
+      tl.fromTo("#home-screen", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4 }, 17.22);
+      tl.fromTo(".home-eyebrow", { y: 13, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 17.4);
+      tl.fromTo(".home-title", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38 }, 17.54);
+      tl.fromTo(".metric", { y: 18, opacity: 0, scale: 0.99 }, { y: 0, opacity: 1, scale: 1, duration: 0.37, stagger: 0.13 }, 17.78);
+      tl.fromTo(".finish-line", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 18.42);
+      tl.fromTo(".labs-lockup", { y: 17, opacity: 0 }, { y: 0, opacity: 1, duration: 0.52, ease: "power4.out" }, 18.68);
+      tl.to("#app-header", { opacity: 0.78, duration: 0.3, ease: "sine.inOut" }, 18.82);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

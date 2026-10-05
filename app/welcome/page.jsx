@@ -95,16 +95,20 @@ async function checkUser() {
     return
   }
   const whatsappOptInAt = whatsappOptIn ? new Date().toISOString() : null
-  const expiry = new Date()
-
-expiry.setDate(expiry.getDate() + 3)
-
   // 🔥 check if profile already exists
   const { data: existingProfile } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id,trial_started_at,trial_expires_at")
     .eq("user_id", user.id)
     .maybeSingle()
+
+  // A preexisting trial (including a legacy trial with no recoverable start)
+  // must never be restarted by revisiting the welcome flow. The database
+  // trigger assigns server time only when a trial is first created.
+  const startTrial = !existingProfile || (!existingProfile.trial_expires_at && !existingProfile.trial_started_at)
+  const newTrialFields = startTrial
+    ? { trial_days: 3, trial_expires_at: new Date().toISOString() }
+    : {}
 
   // =========================
   // IF PROFILE EXISTS → UPDATE
@@ -119,8 +123,7 @@ expiry.setDate(expiry.getDate() + 3)
         attempt_year: attemptYear,
         phone: normalizedPhone.phone,
         profile_completed: true,
-        trial_days: 3,
-        trial_expires_at: expiry,
+        ...newTrialFields,
         whatsapp_opt_in: whatsappOptIn,
         whatsapp_opt_in_at: whatsappOptInAt,
       })
@@ -146,7 +149,7 @@ expiry.setDate(expiry.getDate() + 3)
           role: "student",
           profile_completed: true,
           trial_days: 3,
-          trial_expires_at: expiry,
+          trial_expires_at: new Date().toISOString(),
           whatsapp_opt_in: whatsappOptIn,
           whatsapp_opt_in_at: whatsappOptInAt,
         },
@@ -171,7 +174,7 @@ expiry.setDate(expiry.getDate() + 3)
   }
 
   setShowProfileWizard(false)
-  await fetch("/api/send-welcome-email", {
+  fetch("/api/send-welcome-email", {
   method: "POST",
 
   headers: {
@@ -182,7 +185,7 @@ expiry.setDate(expiry.getDate() + 3)
     email: user.email,
     name: name,
   }),
-})
+}).catch((error) => console.warn("Welcome email could not be sent.", error?.message || "Request failed"))
 
  if (next === "/inbox") {
   router.replace("/inbox");

@@ -85,10 +85,26 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
     <section className={s.todaySection} aria-labelledby="today-title">
       <div className={s.todayHero}>
         <div className={s.todayCopy}>
-          <p className={s.eyebrow}>AUCTOR VARC <span aria-hidden="true">/</span> BOOT CAMP</p>
-          <p className={s.todayKicker}>TODAY {day?`· DAY ${displayDay}`:''}</p>
-          <h1 id="today-title">50 days of deliberate<br/>VARC training <span>before CAT 2026.</span></h1>
-          <div className={s.todayState}><strong>{stateTitle}</strong><p>{missionText}</p></div>
+        <p className={s.eyebrow}>50 DAYS VARC BOOT CAMP</p>
+
+<div className={s.heroBadges}>
+  <div className={s.heroCatBadge}>CAT 2026</div>
+ <div className={s.heroCountdown}>
+  <Clock3 aria-hidden="true" />
+  <strong>{catDays ?? '—'}</strong>
+  <span>DAYS LEFT</span>
+</div>
+</div>
+
+<p className={s.todayKicker}>TODAY · DAY {displayDay}</p>
+
+<h1 id="today-title">
+  50 days to sharpen your VARC <span>before CAT 2026.</span>
+</h1>
+          <div className={s.todayState}>
+  <strong>{completed ? 'DAY COMPLETE' : `DAY ${displayDay} · READY`}</strong>
+  <p>3 RC passages + VA practice, timed and reviewed with Birbal.</p>
+</div>
           {day&&entry?.accessible&&<div className={s.workoutGrid} aria-label="Today's workout"><div><FileText/><span>5-question</span><strong>WARM-UP</strong><small>untimed</small></div><div><BookOpen/><span>3 RC passages</span><strong>12 questions</strong><small>21 min</small></div><div><ListChecks/><span>8 VA questions</span><strong>8 min</strong><small>timed practice</small></div><div><BrainCircuit/><span>Birbal review</span><strong>after each block</strong><small>targeted feedback</small></div></div>}
           {day&&entry?.accessible&&<p className={s.minutesToday}>29 timed minutes today.</p>}
           <div className={s.todayActions}>
@@ -100,7 +116,7 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
     </section>
     <aside className={s.topAside} aria-label="CAT countdown and today's board">
       <article className={s.planCard} aria-labelledby="plan-title">
-        <div className={s.planTop}><p id="plan-title">THE 50-DAY PLAN</p><span className={s.catBadge}>CAT 2026 · {catDays===null?'—':catDays>0?`${catDays} DAYS LEFT`:catDays===0?'EXAM DAY':'COMPLETE'}</span></div>
+        <div className={s.planTop}><p id="plan-title">THE 50-DAY PLAN</p></div>
         <div className={s.planMetrics}>
           <div className={s.metricRc}><BookOpen aria-hidden="true"/><strong>150</strong><span>RC passages</span><small>50 × 3</small></div>
           <div className={s.metricQuestions}><ListChecks aria-hidden="true"/><strong>1,250</strong><span>practice questions</span><small>25 × 50</small></div>
@@ -116,6 +132,11 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
           <a href="#bootcamp-calendar">VIEW DAYS <ArrowRight aria-hidden="true"/></a>
         </div>
       </article>
+      <AnalyticsCard
+  data={performance}
+  loading={performanceLoading}
+  error={performanceError}
+/>
     </aside>
     </div>
 
@@ -145,11 +166,35 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
       </div>
     </section>
 
-    <aside className={s.calendarAside} aria-label="Your progress and today's board">
-      <AnalyticsCard data={performance} loading={performanceLoading} error={performanceError} />
-      <BootCampLeaderboard />
-    </aside>
+  <aside className={s.calendarAside} aria-label="Today's board">
+  <BootCampLeaderboard />
+
+  <section className={s.birbalStrip} aria-label="Birbal, your trainer">
+    <div className={s.portrait}>
+      <img src="/Birbal avatar.jpeg" alt="Birbal" />
     </div>
-    <section className={s.birbalStrip} aria-label="Birbal, your trainer"><div className={s.portrait}><img src="/Birbal avatar.jpeg" alt="Birbal"/></div><div className={s.trainerCopy}><p className={s.trainerEyebrow}>BIRBAL · YOUR TRAINER</p><h2>Guidance grounded in your work.</h2><p>{performance?.birbal?.focus||performance?.birbal?.observation||'Birbal will use your saved answers to suggest what to focus on next.'}</p></div><div className={s.trainerAction}><button onClick={onChat} disabled={busy||unavailable||!entry?.accessible}>Talk to Birbal <ArrowRight aria-hidden="true"/></button></div></section>
+
+    <div className={s.trainerCopy}>
+      <p className={s.trainerEyebrow}>BIRBAL · YOUR TRAINER</p>
+      <h2>Guidance grounded in your work.</h2>
+      <p>
+        {performance?.birbal?.focus ||
+          performance?.birbal?.observation ||
+          'Birbal will use your saved answers to suggest what to focus on next.'}
+      </p>
+    </div>
+
+    <div className={s.trainerAction}>
+      <button
+        onClick={onChat}
+        disabled={busy || unavailable || !entry?.accessible}
+      >
+        Talk to Birbal <ArrowRight aria-hidden="true" />
+      </button>
+    </div>
+  </section>
+</aside>
+    </div>
+    
   </section>
 }

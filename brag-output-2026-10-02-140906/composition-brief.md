@@ -1,0 +1,10 @@
+﻿# Hyperframes Composition Brief — Auctor Labs
+
+Create a 20-second premium SaaS product demo at 1080×1920/30 fps from the real Auctor student app. Follow `brag-plan.md` as the timing contract. Source-specific UI copy and real captured screen states are preserved from the prior composition; the redesign is limited to framing, visual hierarchy, and element animation. Do not fabricate RC content, results, word counts, or completed workout preparation.
+
+The canvas uses a deep ink/navy gradient and a large centered Auctor UI surface. Individual text, tabs, cards, buttons, status, and prompt elements animate separately with paused GSAP timelines registered as `window.__timelines.root`. Use only official supported timeline properties (opacity, x/y, scale, rotation, width/height, visibility) and brief `power2.out` / `power3.out` eases. The cursor clicks the real Start Workout button and captured selected RC navigation item. Music remains low with short fades.
+
+Storyboard intervals: Today 0–3s; Daily Workout 3–7s; RC Practice 7–10.5s; WordBank 10.5–13.5s; Birbal 13.5–17.2s; Today close 17.2–20s. Run `hyperframes check`, inspect the preview and correct any unreadable or unclear motion before rendering. Keep every artifact in this new output directory. The supplied reference clips were not located; no claims about their visual contents are made.
+
+## Reference and baseline audit
+Local reference inspected: `C:\Users\NERAJ\OneDrive\Desktop\Auctor creatives\Reference.mp4` (23s, 576×1024, 30 fps, audio). The sampled sequence uses oversized white type, violet emphasis, short readable holds, and clean product windows that expand/overlap between headline beats. The YouTube link resolves to a fintech SaaS demo title, but only page metadata was accessible; no visual claims are based on its playback. `brag(1).mp4` was not present beside the local reference; the previous Auctor render in the project was audited instead. Its recurring full-height shell, modest UI scale, lower-frame emptiness, and fade-led scene changes informed this update.
