@@ -50,7 +50,7 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
   const entry=catalog?.days?.find(d=>d.day===day),completed=session?.status==='completed'
   const action=completed?`View Day ${displayDay} Report`:session?`Continue Day ${displayDay}`:`Start Day ${displayDay}`
   const backlogDays=catalog?.days?.filter(d=>d.accessible&&!d.isToday&&d.status!=='completed').length||0
-  const firstVisit=(catalog?.completedDays||0)===0&&!session
+  const firstVisit=(catalog?.completedDays||0)===0&&!session&&(catalog?.days||[]).every(d=>d.status==='not_started')
   const behind=backlogDays>0
   const periodTitle=period==='UPCOMING'?`Training starts ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose an open day to catch up.':'Your practice library is open.'
   const current=months[month]
@@ -73,9 +73,12 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
       :`Day ${displayDay} is being prepared. You can choose an available day in your calendar.`
     :period==='UPCOMING'?`Your 50-day calendar opens on ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'Your saved training and analytics remain available.':'Choose an open day in your calendar to continue.'
 
+  const bootCampOutcome=day?completed?`Day ${displayDay} complete · report ready`:entry?.accessible?`Day ${displayDay} is live`:`Day ${displayDay} is being prepared`:period==='UPCOMING'?`Starts ${displayDate(BOOTCAMP_START_DATE)}`:period==='CLOSED'?'Training complete · reports remain available':'Your practice library is open'
+
   return <section className={s.arena}>
     {catalog?.calendar?.devPreview&&<div role="status" className={s.datePreview}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
 
+    <div className={s.topGrid}>
     <section className={s.todaySection} aria-labelledby="today-title">
       <div className={s.todayHero}>
         <div className={s.todayCopy}>
@@ -83,15 +86,19 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
           <p className={s.todayKicker}>TODAY {day?`· DAY ${displayDay}`:''}</p>
           <h1 id="today-title">{stateTitle}</h1>
           <p className={s.todayLead}>{missionText}</p>
-          <div className={s.workload} aria-label="Today's workout workload"><span>TODAY’S WORKOUT</span><strong>3 RC passages <i/> 8 VA questions <i/> 29 timed minutes</strong><small>Plus a five-question untimed warm-up</small></div>
+          {day&&entry?.accessible&&<div className={s.workload} aria-label="Today's workout workload"><span>TODAY’S WORKOUT</span><strong>3 RC passages <i/> 8 VA questions <i/> 29 timed minutes</strong><small>Plus a five-question untimed warm-up</small></div>}
           <div className={s.todayActions}>
             {!busy&&!unavailable&&(day?(entry?.accessible?<Link className={s.startCta} href={`/boot-camp/day/${day}${completed?'/report':''}`}>{action}<span aria-hidden="true">→</span></Link>:<button className={s.startCta} disabled>Session being prepared</button>):['BUFFER','LIBRARY'].includes(period)||catalog?.calendar?.devPreview?<a className={s.startCta} href="#training-month">Browse open days <span aria-hidden="true">→</span></a>:null)}
-            {catDays===null?<span className={s.countdownCompact}>CAT 2026 · COUNTDOWN LOADING</span>:catDays>0?<span className={s.countdownCompact}>CAT 2026 · {catDays} DAYS LEFT</span>:catDays===0?<span className={s.countdownCompact}>CAT 2026 · EXAM DAY</span>:<span className={s.countdownCompact}>CAT 2026 · EXAM COMPLETE</span>}
           </div>
         </div>
         {day&&<div className={s.todayNumber} aria-hidden="true"><span>DAY</span><strong>{displayDay}</strong><small>OF 50</small></div>}
       </div>
     </section>
+    <aside className={s.topAside} aria-label="CAT countdown and today's board">
+      <article className={s.catCard} aria-label="CAT 2026 countdown"><p>CAT 2026</p><strong>{catDays===null?'—':catDays>0?`${catDays} days left`:catDays===0?'Exam day':'Exam complete'}</strong><span>{bootCampOutcome}</span></article>
+      <BootCampLeaderboard />
+    </aside>
+    </div>
 
     <section id="bootcamp-calendar" className={s.journeySection} aria-labelledby="training-title">
       <div className={s.sectionHeading}><div><p className={s.sectionLabel}><span>02</span> MY 50-DAY JOURNEY</p><h2 id="training-title">Your calendar, at a glance.</h2><p>Open days are ready when you are. Locked days will open on schedule.</p></div><a className={s.browseLink} href="#bootcamp-calendar">Browse Days <span aria-hidden="true">↓</span></a></div>
@@ -113,8 +120,9 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
       </div>
     </section>
 
-    <section className={s.performanceSection} aria-label="My performance"><AnalyticsCard data={performance} loading={performanceLoading} error={performanceError} /></section>
-    <section className={s.competitionSection} aria-label="Compete"><BootCampLeaderboard /></section>
-    <section className={s.birbalSection} aria-label="Birbal"><div className={s.sectionEyebrow}>05 · BIRBAL</div><div className={s.trainer}><div className={s.portrait}><img src="/Birbal avatar.jpeg" alt="Birbal"/></div><div className={s.trainerCopy}><p className={s.trainerEyebrow}>YOUR TRAINER</p><h2>Guidance grounded in your work.</h2><p>{performance?.birbal?.focus||performance?.birbal?.observation||'Birbal will use your saved answers to suggest a useful next focus.'}</p></div><div className={s.trainerAction}><button onClick={onChat} disabled={busy||unavailable||!entry?.accessible}>Talk to Birbal <span aria-hidden="true">→</span></button><small>{day?`Day ${day}: your current mission.`:'Choose an open day to continue with Birbal.'}</small></div></div></section>
+    <div className={s.lowerGrid}>
+      <section className={s.journeyContext} aria-label="Your journey and Birbal"><p className={s.sectionEyebrow}>YOUR JOURNEY</p><p className={s.journeySummary}>{day?`Day ${displayDay} of your 50-day path${catalog?.completedDays?` · ${catalog.completedDays} completed`:''}`:periodTitle}</p><div className={s.trainer}><div className={s.portrait}><img src="/Birbal avatar.jpeg" alt="Birbal"/></div><div className={s.trainerCopy}><p className={s.trainerEyebrow}>BIRBAL · YOUR TRAINER</p><h2>Guidance grounded in your work.</h2><p>{performance?.birbal?.focus||performance?.birbal?.observation||'Birbal will use your saved answers to suggest a useful next focus.'}</p></div><div className={s.trainerAction}><button onClick={onChat} disabled={busy||unavailable||!entry?.accessible}>Talk to Birbal <span aria-hidden="true">→</span></button></div></div></section>
+      <aside className={s.lowerAside} aria-label="Your performance"><AnalyticsCard data={performance} loading={performanceLoading} error={performanceError} /></aside>
+    </div>
   </section>
 }
