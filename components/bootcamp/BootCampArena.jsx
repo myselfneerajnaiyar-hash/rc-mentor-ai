@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { bootcampRequest } from '@/lib/bootcamp/client'
-import { BOOTCAMP_ACCESS_END, BOOTCAMP_PROGRAM_END, BOOTCAMP_START_DATE, trainingMonths } from '@/lib/bootcamp/calendar.mjs'
+import { BOOTCAMP_START_DATE, trainingMonths } from '@/lib/bootcamp/calendar.mjs'
 import { calendarCellLabel } from '@/lib/bootcamp/calendar-display.mjs'
 import { catDaysRemaining, nextIstMidnight } from '@/lib/bootcamp/countdown.mjs'
 import s from './arena.module.css'
@@ -13,55 +13,52 @@ const displayDate=date=>new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB'
 const monthForDate=date=>months.findIndex(m=>m.key===date.slice(0,7))
 const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
 
-function AnalyticsCard() {
-  const [data,setData]=useState(null)
-  const [loading,setLoading]=useState(true)
-  const [error,setError]=useState(false)
-  useEffect(()=>{
-    let active=true
-    bootcampRequest('/analytics').then(value=>{if(active)setData(value)}).catch(()=>{if(active)setError(true)}).finally(()=>{if(active)setLoading(false)})
-    return ()=>{active=false}
-  },[])
-  const percent=Number.isFinite(data?.curriculumPercent)?Math.max(0,Math.min(100,data.curriculumPercent)):0
+function AnalyticsCard({ data, loading, error }) {
   return <article className={`${s.featureCard} ${s.performance}`}>
-    <div className={s.featureTop}><span className={s.sectionIndex}>02</span><span className={s.featureEyebrow}>YOUR PERFORMANCE</span></div>
-    <h3>A clearer view of your progress.</h3>
-    <p className={s.featureIntro}>See what is improving, what you have covered, and where to focus next.</p>
+    <div className={s.featureTop}><span className={s.sectionIndex}>03</span><span className={s.featureEyebrow}>MY PERFORMANCE</span></div>
+    <h3>Your work, made visible.</h3>
+    <p className={s.featureIntro}>A clear view of completed days, accuracy, and consistency.</p>
     {loading?<p className={s.loading} role="status">Loading your training profile...</p>:error?<p className={s.loading} role="status">Your analytics are temporarily unavailable.</p>:<>
-      <div className={s.progressMeta}><span>CURRICULUM</span><strong>{data.daysCompleted} <small>/ 50 days</small></strong></div>
-      <div className={s.progressTrack} role="progressbar" aria-label="Training days completed" aria-valuemin={0} aria-valuemax={50} aria-valuenow={data.daysCompleted}><span style={{width:`${percent}%`}}/></div>
       <div className={s.metricGrid}>
-        <div><span>QUESTIONS</span><strong>{data.questionsAttempted}</strong><small>attempted</small></div>
+        <div><span>COMPLETED DAYS</span><strong>{data.daysCompleted}<small> / 50</small></strong><small>training days</small></div>
         <div><span>ACCURACY</span><strong>{data.accuracy===null?'—':`${Math.round(data.accuracy)}%`}</strong><small>{data.accuracy===null?'building your baseline':'completed days'}</small></div>
         <div><span>STREAK</span><strong>{data.currentStreak}</strong><small>{data.currentStreak===1?'day':'days'} active</small></div>
       </div>
     </>}
-    <Link className={s.featureCta} href="/boot-camp/analytics">View My Analytics <span aria-hidden="true">↗</span></Link>
+    <Link className={s.featureCta} href="/boot-camp/analytics">Explore My Performance <span aria-hidden="true">↗</span></Link>
   </article>
 }
 
 export default function BootCampArena({ session, catalog, busy, onChat, unavailable = false, initialIstDate }) {
-  const [month,setMonth]=useState(0)
+  const [month,setMonth]=useState(0),[showAllRows,setShowAllRows]=useState(false)
+  const [performance,setPerformance]=useState(null),[performanceLoading,setPerformanceLoading]=useState(true),[performanceError,setPerformanceError]=useState(false)
   const [catDays,setCatDays]=useState(()=>initialIstDate ? catDaysRemaining(new Date(`${initialIstDate}T12:00:00+05:30`)) : null)
   useEffect(()=>{
-    let timer
-    let active=true
-    const update=()=>{
-      if(!active)return
-      const now=new Date()
-      setCatDays(catDaysRemaining(now))
-      timer=setTimeout(update,Math.max(1000,nextIstMidnight(now)-now.getTime()+100))
-    }
+    let timer,active=true
+    const update=()=>{if(!active)return;const now=new Date();setCatDays(catDaysRemaining(now));timer=setTimeout(update,Math.max(1000,nextIstMidnight(now)-now.getTime()+100))}
     update()
     return ()=>{active=false;clearTimeout(timer)}
   },[])
-  const day=catalog?.calendar?.todayDay || null,period=catalog?.calendar?.period
+  useEffect(()=>{
+    let active=true
+    bootcampRequest('/analytics').then(value=>{if(active)setPerformance(value)}).catch(()=>{if(active)setPerformanceError(true)}).finally(()=>{if(active)setPerformanceLoading(false)})
+    return ()=>{active=false}
+  },[])
+  const day=catalog?.calendar?.todayDay||null,period=catalog?.calendar?.period
   useEffect(()=>{if(catalog?.calendar?.today){const index=monthForDate(catalog.calendar.today);setMonth(index<0?monthForDate(BOOTCAMP_START_DATE):index)}},[catalog?.calendar?.today])
   const displayDay=day?String(day).padStart(2,'0'):null
   const entry=catalog?.days?.find(d=>d.day===day),completed=session?.status==='completed'
   const action=completed?`View Day ${displayDay} Report`:session?`Continue Day ${displayDay}`:`Start Day ${displayDay}`
-  const periodTitle=period==='UPCOMING'?`Training starts ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose a day to catch up.':'Your practice library is open.'
+  const backlogDays=catalog?.days?.filter(d=>d.accessible&&!d.isToday&&d.status!=='completed').length||0
+  const firstVisit=(catalog?.completedDays||0)===0&&!session
+  const behind=backlogDays>0
+  const periodTitle=period==='UPCOMING'?`Training starts ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'This Boot Camp has ended.':period==='BUFFER'?'Choose an open day to catch up.':'Your practice library is open.'
   const current=months[month]
+  const todayCell=current?.cells.findIndex(cell=>cell?.iso===catalog?.calendar?.today)??-1
+  const firstVisibleRow=todayCell>=0?Math.floor(todayCell/7):0
+  const rowCount=current?.cells.length/7||0
+  const visibleRowCount=Math.min(2,Math.max(0,rowCount-firstVisibleRow))
+  const hiddenRowCount=Math.max(0,rowCount-visibleRowCount)
   const [testDate,setTestDate]=useState('')
   useEffect(()=>{setTestDate(new URLSearchParams(window.location.search).get('testDate')||sessionStorage.getItem('bootcamp-test-date')||'')},[])
   function changeTestDate(value) {
@@ -69,59 +66,55 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
     sessionStorage.setItem('bootcamp-test-date',value)
     const url=new URL(window.location.href);url.searchParams.set('testDate',value);window.location.assign(url.toString())
   }
+  const stateTitle=busy?'Finding your next step':unavailable?'Training is temporarily unavailable':day?completed?'Today’s workout is complete.':behind?`You’re ${backlogDays} day${backlogDays===1?'':'s'} behind.`:firstVisit?'Your first workout is ready.':'You’re on track.':periodTitle
   const missionText=day
-    ? entry?.accessible
-      ? completed?'Today’s workout is complete. Your report is ready.':session?'Pick up where you left off.':'Your scheduled workout is ready.'
-      : 'Today’s session is being prepared. Browse available days in the meantime.'
-    : period==='UPCOMING'?`Your 50-day calendar opens on ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'Your saved training and analytics remain available.':'Select an open day to continue training.'
+    ?entry?.accessible
+      ?completed?`Day ${displayDay} is saved. Your report is ready whenever you want to review it.`:behind?`CAT won’t wait. Day ${displayDay} is live.`:session?`Day ${displayDay} is saved in progress. Pick up where you left off.`:`Day ${displayDay} is live and ready when you are.`
+      :`Day ${displayDay} is being prepared. You can choose an available day in your calendar.`
+    :period==='UPCOMING'?`Your 50-day calendar opens on ${displayDate(BOOTCAMP_START_DATE)}.`:period==='CLOSED'?'Your saved training and analytics remain available.':'Choose an open day in your calendar to continue.'
 
   return <section className={s.arena}>
-    {catalog?.calendar?.devPreview&&<div role="status" style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap',padding:'12px 16px',marginBottom:20,border:'1px solid #b7ead1',borderRadius:8,background:'#10231c',color:'#d8f5e5'}}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
-    <header className={s.pageIntro}>
-      <div><p className={s.eyebrow}>AUCTOR VARC / BOOT CAMP</p><h1>Train with intent.<br/><span>Track every day.</span></h1><p className={s.intro}>A focused 50-day path to sharper reading and more confident reasoning.</p></div>
-      <div className={s.programNote} aria-label="CAT 2026 countdown">
-        <div className={s.countdownHead}><span>CAT 2026</span><strong>Exam Day: 29 November 2026</strong></div>
-        {catDays===null?<div className={s.countdownNumber} aria-hidden="true">—</div>:catDays>0?<div className={s.countdownNumber}><strong>{catDays}</strong><span>days remaining</span></div>:catDays===0?<div className={s.countdownToday}>CAT 2026 is today</div>:<div className={s.countdownToday}>CAT 2026 has concluded</div>}
-        <p className={s.countdownMessage}>Every day counts. Make today's practice matter.</p>
-        <div className={s.trainingWindow}><span>THE TRAINING WINDOW</span><strong>{displayDate(BOOTCAMP_START_DATE)} — {displayDate(BOOTCAMP_PROGRAM_END)}</strong><small>Practice access through {displayDate(BOOTCAMP_ACCESS_END)}</small></div>
+    {catalog?.calendar?.devPreview&&<div role="status" className={s.datePreview}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
+
+    <section className={s.todaySection} aria-labelledby="today-title">
+      <div className={s.todayHero}>
+        <div className={s.todayCopy}>
+          <p className={s.eyebrow}>AUCTOR VARC <span aria-hidden="true">/</span> BOOT CAMP</p>
+          <p className={s.todayKicker}>TODAY {day?`· DAY ${displayDay}`:''}</p>
+          <h1 id="today-title">{stateTitle}</h1>
+          <p className={s.todayLead}>{missionText}</p>
+          <div className={s.workload} aria-label="Today's workout workload"><span>TODAY’S WORKOUT</span><strong>3 RC passages <i/> 8 VA questions <i/> 29 timed minutes</strong><small>Plus a five-question untimed warm-up</small></div>
+          <div className={s.todayActions}>
+            {!busy&&!unavailable&&(day?(entry?.accessible?<Link className={s.startCta} href={`/boot-camp/day/${day}${completed?'/report':''}`}>{action}<span aria-hidden="true">→</span></Link>:<button className={s.startCta} disabled>Session being prepared</button>):['BUFFER','LIBRARY'].includes(period)||catalog?.calendar?.devPreview?<a className={s.startCta} href="#training-month">Browse open days <span aria-hidden="true">→</span></a>:null)}
+            {catDays===null?<span className={s.countdownCompact}>CAT 2026 · COUNTDOWN LOADING</span>:catDays>0?<span className={s.countdownCompact}>CAT 2026 · {catDays} DAYS LEFT</span>:catDays===0?<span className={s.countdownCompact}>CAT 2026 · EXAM DAY</span>:<span className={s.countdownCompact}>CAT 2026 · EXAM COMPLETE</span>}
+          </div>
+        </div>
+        {day&&<div className={s.todayNumber} aria-hidden="true"><span>DAY</span><strong>{displayDay}</strong><small>OF 50</small></div>}
       </div>
-    </header>
+    </section>
 
-    <div className={s.dashboardGrid}>
-      <section id="bootcamp-calendar" className={s.training} aria-labelledby="training-title">
-        <div className={s.sectionHeading}><div><p className={s.sectionLabel}><span>01</span> CONTINUE TRAINING</p><h2 id="training-title">Your next session starts here.</h2><p>Follow the calendar, continue today, or catch up on an open day.</p></div><a className={s.browseLink} href="#bootcamp-calendar">Browse Days <span aria-hidden="true">↓</span></a></div>
+    <section id="bootcamp-calendar" className={s.journeySection} aria-labelledby="training-title">
+      <div className={s.sectionHeading}><div><p className={s.sectionLabel}><span>02</span> MY 50-DAY JOURNEY</p><h2 id="training-title">Your calendar, at a glance.</h2><p>Open days are ready when you are. Locked days will open on schedule.</p></div><a className={s.browseLink} href="#bootcamp-calendar">Browse Days <span aria-hidden="true">↓</span></a></div>
+      {backlogDays>0&&<p className={s.catchupInline}>{backlogDays} open day{backlogDays===1?'':'s'} available to catch up · Choose any amber day below.</p>}
+      <div className={s.calendar}>
+        <div className={s.calendarTop}><div><span className={s.calendarKicker}>YOUR 50-DAY JOURNEY</span><strong>{day?`Today · Day ${displayDay}`:'50 training days + 10 buffer days'}</strong></div><span className={s.zone}>ALL RELEASES FOLLOW IST</span></div>
+        <div className={s.monthTabs} role="tablist" aria-label="Training month">{months.map((m,i)=><button key={m.key} id={`month-${i}`} role="tab" aria-selected={month===i} aria-controls="training-month" tabIndex={month===i?0:-1} onClick={()=>{setMonth(i);setShowAllRows(false)}} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?months.length-1:(month+(e.key==='ArrowRight'?1:-1)+months.length)%months.length;setMonth(next);setShowAllRows(false);document.getElementById(`month-${next}`)?.focus()}}}>{m.label}</button>)}</div>
+        <div id="training-month" role="tabpanel" aria-labelledby={`month-${month}`} className={s.monthViewport}><table className={s.month}><caption className={s.srOnly}>{current.label}</caption><thead><tr>{weekdays.map(d=><th key={d} scope="col">{d}</th>)}</tr></thead><tbody>{Array.from({length:current.cells.length/7},(_,week)=><tr key={week} hidden={!showAllRows&&(week<firstVisibleRow||week>=firstVisibleRow+2)}>{current.cells.slice(week*7,week*7+7).map((cell,i)=>{
+          if(!cell)return <td key={i} className={s.empty}/>
+          const training=catalog?.days?.find(d=>d.day===cell.day),active=training?.isToday,done=training?.state==='COMPLETED'
+          const stateLabel=calendarCellLabel(training,active)
+          const cellClass=[active?s.active:'',done?s.complete:'',training?.state==='OPEN_BACKLOG'?s.backlog:'',training?.state==='IN_PROGRESS'||training?.state==='ATTEMPTED'?s.attempted:'',training?.state==='LOCKED'?s.locked:'',!cell.day&&!cell.buffer?s.outside:''].filter(Boolean).join(' ')
+          const isCatchup=!!training?.accessible&&!done&&!active&&training.state==='OPEN_BACKLOG'
+          const content=<><time dateTime={cell.iso}>{String(cell.date).padStart(2,'0')}</time>{cell.day?<><strong>DAY {String(cell.day).padStart(2,'0')}</strong>{isCatchup?<span className={s.catchupBadge}>CATCH-UP AVAILABLE · START</span>:<small>{stateLabel}</small>}</>:cell.buffer?<><strong>BUFFER</strong><small>{catalog?.calendar?.today>=cell.iso?'CATCH-UP':'UPCOMING'}</small></>:null}</>
+          return <td key={i} data-training-day={cell.day||undefined} data-buffer={cell.buffer||undefined} className={cellClass}>{training?.accessible?<Link href={`/boot-camp/day/${cell.day}${done?'/report':''}`} aria-label={`Day ${cell.day} - ${isCatchup?'Catch up - start':stateLabel}`} aria-current={active?'date':undefined}>{content}</Link>:<div aria-label={`${cell.iso}, ${cell.day?`Day ${cell.day} - ${stateLabel}`:cell.buffer?'Buffer / catch-up':''}`}>{content}</div>}</td>
+        })}</tr>)}</tbody></table></div>
+        {hiddenRowCount>0&&<div className={s.rowControl}><button type="button" aria-expanded={showAllRows} aria-controls="training-month" onClick={()=>setShowAllRows(value=>!value)}>{showAllRows?'SHOW FEWER DAYS ↑':'SHOW MORE DAYS ↓'}</button></div>}
+        <div className={s.legend} aria-label="Calendar status key"><span><i className={s.doneKey}/>Completed</span><span><i className={s.progressKey}/>In progress</span><span><i className={s.catchupKey}/>Open / catch-up</span><span><i className={s.todayKey}/>Today</span><span><i className={s.lockedKey}/>Locked</span></div>
+      </div>
+    </section>
 
-        <div className={s.mission}>
-          <div className={s.missionCopy}><span className={s.missionTag}>{busy?'CHECKING YOUR CALENDAR':unavailable?'TRAINING UNAVAILABLE':day?`SCHEDULED TODAY / DAY ${displayDay}`:period==='BUFFER'?'CATCH-UP WINDOW':period==='CLOSED'?'PRACTICE LIBRARY':'50-DAY PROGRAM'}</span><h3>{busy?'Preparing your next step':day?completed?'A strong session, completed.':session?'Welcome back to your session.':'Today’s mission is ready.':periodTitle}</h3><p>{missionText}</p></div>
-          {!busy&&!unavailable&&(day?(entry?.accessible?<Link className={s.startCta} href={`/boot-camp/day/${day}${completed?'/report':''}`}>{action}<span aria-hidden="true">→</span></Link>:<button className={s.startCta} disabled>Session being prepared</button>):['BUFFER','LIBRARY'].includes(period)||catalog?.calendar?.devPreview?<a className={s.startCta} href="#training-month">Browse open days <span aria-hidden="true">→</span></a>:null)}
-        </div>
-
-        <div className={s.catchupNotice}>
-          <strong>Missed a day? You can catch up.</strong>
-          <p>Past open days are available until you complete them. Choose any available day below.</p>
-        </div>
-        <div className={s.calendar}>
-          <div className={s.calendarTop}><div><span className={s.calendarKicker}>YOUR 50-DAY JOURNEY</span><strong>{day?`Today · Day ${displayDay}`:'50 training days + 10 buffer days'}</strong></div><span className={s.zone}>ALL RELEASES FOLLOW IST</span></div>
-          <div className={s.monthTabs} role="tablist" aria-label="Training month">{months.map((m,i)=><button key={m.key} id={`month-${i}`} role="tab" aria-selected={month===i} aria-controls="training-month" tabIndex={month===i?0:-1} onClick={()=>setMonth(i)} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?months.length-1:(month+(e.key==='ArrowRight'?1:-1)+months.length)%months.length;setMonth(next);document.getElementById(`month-${next}`)?.focus()}}}>{m.label}</button>)}</div>
-          <div id="training-month" role="tabpanel" aria-labelledby={`month-${month}`} className={s.monthViewport}><table className={s.month}><caption className={s.srOnly}>{current.label}</caption><thead><tr>{weekdays.map(d=><th key={d} scope="col">{d}</th>)}</tr></thead><tbody>{Array.from({length:current.cells.length/7},(_,week)=><tr key={week}>{current.cells.slice(week*7,week*7+7).map((cell,i)=>{
-            if(!cell)return <td key={i} className={s.empty}/>
-            const training=catalog?.days?.find(d=>d.day===cell.day),active=training?.isToday,done=training?.state==='COMPLETED'
-            const stateLabel=calendarCellLabel(training,active)
-            const cellClass=[active?s.active:'',done?s.complete:'',training?.state==='OPEN_BACKLOG'?s.backlog:'',training?.state==='IN_PROGRESS'||training?.state==='ATTEMPTED'?s.attempted:'',training?.state==='LOCKED'?s.locked:'',!cell.day&&!cell.buffer?s.outside:''].filter(Boolean).join(' ')
-            const isCatchup=!!training?.accessible&&!done&&!active&&training.state==='OPEN_BACKLOG'
-            const content=<><time dateTime={cell.iso}>{String(cell.date).padStart(2,'0')}</time>{cell.day?<><strong>DAY {String(cell.day).padStart(2,'0')}</strong>{isCatchup?<span className={s.catchupBadge}>CATCH-UP AVAILABLE · START</span>:<small>{stateLabel}</small>}</>:cell.buffer?<><strong>BUFFER</strong><small>{catalog?.calendar?.today>=cell.iso?'CATCH-UP':'UPCOMING'}</small></>:null}</>
-            return <td key={i} data-training-day={cell.day||undefined} data-buffer={cell.buffer||undefined} className={cellClass}>{training?.accessible?<Link href={`/boot-camp/day/${cell.day}${done?'/report':''}`} aria-label={`Day ${cell.day} - ${isCatchup?'Catch up - start':stateLabel}`} aria-current={active?'date':undefined}>{content}</Link>:<div aria-label={`${cell.iso}, ${cell.day?`Day ${cell.day} - ${stateLabel}`:cell.buffer?'Buffer / catch-up':''}`}>{content}</div>}</td>
-          })}</tr>)}</tbody></table></div>
-          <div className={s.legend} aria-label="Calendar status key"><span><i className={s.doneKey}/>Completed</span><span><i className={s.progressKey}/>In progress</span><span><i className={s.catchupKey}/>Catch-up available = can start</span><span><i className={s.todayKey}/>Today = today's scheduled workout</span><span><i className={s.lockedKey}/>Locked = not available yet</span></div>
-        </div>
-      </section>
-
-      <aside className={s.destinations} aria-label="Your performance and leaderboards">
-        <AnalyticsCard />
-        <BootCampLeaderboard />
-      </aside>
-    </div>
-
-    <section className={s.trainer}><div className={s.portrait}><img src="/Birbal avatar.jpeg" alt="Birbal"/></div><div className={s.trainerCopy}><p className={s.trainerEyebrow}>YOUR TRAINER</p><h2>Birbal is here to help you think clearly.</h2><p>Review your reasoning, ask questions, and build on every session.</p></div><div className={s.trainerAction}><button onClick={onChat} disabled={busy||unavailable||!entry?.accessible}>Talk to Birbal <span aria-hidden="true">→</span></button><small>{day?`Day ${day}: your current mission.`:'Choose an open day to continue with Birbal.'}</small></div></section>
+    <section className={s.performanceSection} aria-label="My performance"><AnalyticsCard data={performance} loading={performanceLoading} error={performanceError} /></section>
+    <section className={s.competitionSection} aria-label="Compete"><BootCampLeaderboard /></section>
+    <section className={s.birbalSection} aria-label="Birbal"><div className={s.sectionEyebrow}>05 · BIRBAL</div><div className={s.trainer}><div className={s.portrait}><img src="/Birbal avatar.jpeg" alt="Birbal"/></div><div className={s.trainerCopy}><p className={s.trainerEyebrow}>YOUR TRAINER</p><h2>Guidance grounded in your work.</h2><p>{performance?.birbal?.focus||performance?.birbal?.observation||'Birbal will use your saved answers to suggest a useful next focus.'}</p></div><div className={s.trainerAction}><button onClick={onChat} disabled={busy||unavailable||!entry?.accessible}>Talk to Birbal <span aria-hidden="true">→</span></button><small>{day?`Day ${day}: your current mission.`:'Choose an open day to continue with Birbal.'}</small></div></div></section>
   </section>
 }
