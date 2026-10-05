@@ -8,7 +8,8 @@ import posthog from "posthog-js"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import { attributionFromParams, buildAttributedPath, mergeAttribution, normalizeAttribution } from "@/lib/attribution.mjs"
-import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
+import { runSingleFlight } from "@/lib/onboarding/profileValidation.mjs"
+import { normalizeWhatsAppPhoneE164 } from "@/lib/whatsapp/phone"
 
 export default function WelcomePage() {
   const { branding, refreshContext } = useTenant()
@@ -111,9 +112,9 @@ async function checkUser() {
 }
 
 async function finishProfile() {
-  const validatedPhone = validateMobileNumber(phone)
-  if (!validatedPhone.ok) {
-    setProfileSaveError(validatedPhone.message)
+  const normalizedPhone = normalizeWhatsAppPhoneE164(phone)
+  if (!normalizedPhone.ok) {
+    setProfileSaveError(normalizedPhone.message)
     return
   }
 
@@ -147,7 +148,7 @@ async function finishProfile() {
             name,
             exam,
             attempt_year: attemptYear,
-            phone,
+            phone: normalizedPhone.phone,
             profile_completed: true,
             ...newTrialFields,
             whatsapp_opt_in: whatsappOptIn,
@@ -164,7 +165,7 @@ async function finishProfile() {
             name,
             exam,
             attempt_year: attemptYear,
-            phone,
+            phone: normalizedPhone.phone,
             role: "student",
             profile_completed: true,
             trial_days: 3,
@@ -352,10 +353,10 @@ async function persistSignupAttribution(user) {
 
     <input
       type="tel"
-      inputMode="numeric"
-      autoComplete="tel-national"
+      inputMode="tel"
+      autoComplete="tel"
       aria-label="Mobile number"
-      placeholder="10-digit mobile number"
+      placeholder="+91 9876543210"
       value={phone}
       onChange={(e) => {
         setPhone(e.target.value)
@@ -377,7 +378,7 @@ async function persistSignupAttribution(user) {
     <button
       className={styles["welcome-btn"]}
       onClick={finishProfile}
-      disabled={savingProfile}
+      disabled={savingProfile || !phone.trim()}
     >
       {savingProfile ? "Saving..." : "Finish →"}
     </button>

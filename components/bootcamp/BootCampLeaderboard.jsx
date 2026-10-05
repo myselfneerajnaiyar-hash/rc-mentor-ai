@@ -18,7 +18,7 @@ export default function BootCampLeaderboard() {
   const dateLabel=data?mode==='daily'?data.window.startDate:`${data.window.startDate} - ${data.window.endDate}`:''
   const hasWorkout=!!data?.current.workouts
   return <article className={`${s.card} ${s.compete}`}>
-    <div className={s.top}><span className={s.index}>03</span><span className={s.kicker}>COMPETE</span><div className={s.toggle} role="tablist" aria-label="Leaderboard period">{['daily','weekly'].map(value=><button key={value} type="button" role="tab" aria-selected={mode===value} onClick={()=>{setMode(value);setExpanded(false)}}>{value==='daily'?'Daily':'Weekly'}</button>)}</div></div>
+    <div className={s.top}><span className={s.index}>04</span><span className={s.kicker}>COMPETE</span><div className={s.toggle} role="tablist" aria-label="Leaderboard period">{['daily','weekly'].map(value=><button key={value} type="button" role="tab" aria-selected={mode===value} onClick={()=>{setMode(value);setExpanded(false)}}>{value==='daily'?'Daily':'Weekly'}</button>)}</div></div>
     <h3>Put today’s work on the board.</h3>
     <p className={s.subhead}>{data?`${mode==='daily'?'Daily board':'Week of'} ${dateLabel} · IST`:`${mode==='daily'?'Daily':'Weekly'} leaderboard · IST`}</p>
     {loading?<p className={s.message} role="status">Checking your position...</p>:error?<p className={s.message} role="alert">{error}</p>:<div className={s.preview}>
