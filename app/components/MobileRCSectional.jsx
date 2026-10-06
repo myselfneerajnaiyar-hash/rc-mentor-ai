@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SubmitModal from "../../cat-arena/components/SubmitModal";
+import { remainingSectionalSeconds } from "../../lib/cat-arena/sectionalTiming";
 
 export default function MobileRCSectional({
   mode = "test",
@@ -12,6 +13,7 @@ export default function MobileRCSectional({
   explanation,
 
   durationSeconds,
+  deadlineAt,
   currentQuestionIndex,
   totalQuestions,
   questionStates,
@@ -24,29 +26,37 @@ export default function MobileRCSectional({
   onSubmit,
   onBackToDiagnosis,
 }) {
-  const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
+  const [secondsLeft, setSecondsLeft] = useState(deadlineAt ? remainingSectionalSeconds(Date.now(), deadlineAt) : durationSeconds);
   const [showSubmit, setShowSubmit] = useState(false);
   const isReview = mode === "review";
   const [submitted, setSubmitted] = useState(false);
+  const onSubmitRef = useRef(onSubmit);
+  onSubmitRef.current = onSubmit;
   
 
   /* ================= TIMER ================= */
  useEffect(() => {
   if (isReview || submitted) return;
 
+  let didExpire = false;
   const timer = setInterval(() => {
     setSecondsLeft(prev => {
-      if (prev <= 1) {
+      const remaining = deadlineAt ? remainingSectionalSeconds(Date.now(), deadlineAt) : prev - 1;
+      if (remaining <= 0) {
         clearInterval(timer);
-        setShowSubmit(true);
+        setSubmitted(true);
+        if (!didExpire) {
+          didExpire = true;
+          onSubmitRef.current?.();
+        }
         return 0;
       }
-      return prev - 1;
+      return remaining;
     });
   }, 1000);
 
   return () => clearInterval(timer);
-}, [isReview, submitted]);
+}, [isReview, submitted, deadlineAt]);
 
   const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const secs = String(secondsLeft % 60).padStart(2, "0");
@@ -105,7 +115,7 @@ borderBottom: "1px solid #1e293b",
     zIndex: 2100,
   }}
 >
-      ← Back to Diagnosis
+      â† Back to Diagnosis
     </button>
   </div>
 )}
@@ -402,7 +412,8 @@ borderTop: "1px solid #1e293b",
   onCancel={() => setShowSubmit(false)}
   onConfirm={() => {
     setShowSubmit(false);
-    onSubmit?.();
+    setSubmitted(true);
+    onSubmitRef.current?.();
   }}
 />
     </div>

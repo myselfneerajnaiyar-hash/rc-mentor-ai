@@ -9,6 +9,7 @@ import TestResultView
 from "../components/TestResultView";
 import TestDiagnosisTabs
 from "../components/test-diagnosis/TestDiagnosisTabs";
+import { CAT_ARENA_SECTIONAL_DURATION_SECONDS } from "../../lib/cat-arena/sectionalTiming";
 
 export default function RCSectionalContainer({
       
@@ -26,6 +27,25 @@ export default function RCSectionalContainer({
 
   const [lastAttempt, setLastAttempt] = useState(null);
   const [loadedTestData, setLoadedTestData] = useState(null);
+  const [sectionalSession, setSectionalSession] = useState(null);
+  const [sessionError, setSessionError] = useState(null);
+
+  async function beginTest() {
+    setSessionError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(`/api/cat-sectionals/${sectionalId}/session`, {
+        method: "POST",
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "The test session could not be started.");
+      setSectionalSession(result.session);
+      setPhase("test");
+    } catch (error) {
+      setSessionError(error.message);
+    }
+  }
   
 
 /* ================= LOAD TEST FROM SUPABASE ================= */
@@ -33,6 +53,12 @@ useEffect(() => {
   if (!sectionalId) return;
 
   async function loadTest() {
+
+    const { data: sectional } = await supabase
+      .from("sectional_test_content")
+      .select("time_minutes")
+      .eq("id", sectionalId)
+      .maybeSingle();
 
     const { data: passages } =
       await supabase
@@ -153,6 +179,7 @@ useEffect(() => {
 };
  setLoadedTestData({
   id: sectionalId,
+  durationSeconds: (sectional?.time_minutes || CAT_ARENA_SECTIONAL_DURATION_SECONDS / 60) * 60,
   passages: [
     ...transformedPassages,
     transformedVA,
@@ -210,18 +237,19 @@ useEffect(() => {
 
   /* ================= INSTRUCTIONS ================= */
   if (phase === "instructions") {
-    return <CATInstructions onStart={() => setPhase("test")} />;
+    return <>{sessionError && <p role="alert">{sessionError}</p>}<CATInstructions onStart={beginTest} /></>;
   }
 
   /* ================= TEST ================= */
   if (phase === "test") {
-    if (!loadedTestData) {
+    if (!loadedTestData || !sectionalSession) {
       return <div style={{ padding: 40 }}>Loading test...</div>;
     }
 
     return (
       <CATArenaTestView
         testData={loadedTestData}
+        sectionalSession={sectionalSession}
         mode="test"
        onSubmit={async (payload) => {
   // 🔍 CHECK SESSION
@@ -401,6 +429,7 @@ let timeOnWrongs = 0;
     .from("mentor_test_attempts")
     .insert({
       user_id: authData.user.id,
+      sectional_session_id: sectionalSession.id,
 
       test_id: sectionalId,
 

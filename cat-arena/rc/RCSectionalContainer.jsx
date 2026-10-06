@@ -5,6 +5,7 @@ import CATInstructions from "../CATInstructions";
 import CATArenaTestView from "../CATArenaTestView";
 import DiagnosisView from "../components/DiagnosisView";
 import { supabase } from "../../lib/supabase";
+import { CAT_ARENA_SECTIONAL_DURATION_SECONDS } from "../../lib/cat-arena/sectionalTiming";
 
 export default function RCSectionalContainer({
   testData,
@@ -19,6 +20,25 @@ export default function RCSectionalContainer({
 
   const [lastAttempt, setLastAttempt] = useState(null);
   const [loadedTestData, setLoadedTestData] = useState(null);
+  const [sectionalSession, setSectionalSession] = useState(null);
+  const [sessionError, setSessionError] = useState(null);
+
+  async function beginTest() {
+    setSessionError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(`/api/cat-sectionals/${sectionalId}/session`, {
+        method: "POST",
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "The test session could not be started.");
+      setSectionalSession(result.session);
+      setPhase("test");
+    } catch (error) {
+      setSessionError(error.message);
+    }
+  }
 
   /* ================= LOAD TEST JSON ================= */
   useEffect(() => {
@@ -29,7 +49,10 @@ export default function RCSectionalContainer({
       const res = await fetch(`/api/cat-sectionals/${sectionalId}`, { headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {} });
       if (!res.ok) return;
       const json = await res.json();
-      setLoadedTestData(json);
+      setLoadedTestData({
+        ...json,
+        durationSeconds: (json.meta?.timeMinutes || json.timeLimitMinutes || 40) * 60,
+      });
     }
 
     loadTest();
@@ -69,18 +92,19 @@ export default function RCSectionalContainer({
 
   /* ================= INSTRUCTIONS ================= */
   if (phase === "instructions") {
-    return <CATInstructions onStart={() => setPhase("test")} />;
+    return <>{sessionError && <p role="alert">{sessionError}</p>}<CATInstructions onStart={beginTest} /></>;
   }
 
   /* ================= TEST ================= */
   if (phase === "test") {
-    if (!loadedTestData) {
+    if (!loadedTestData || !sectionalSession) {
       return <div style={{ padding: 40 }}>Loading test...</div>;
     }
 
     return (
       <CATArenaTestView
         testData={loadedTestData}
+        sectionalSession={sectionalSession}
         mode="test"
        onSubmit={async (payload) => {
   // 🔍 CHECK SESSION
@@ -117,6 +141,7 @@ const { data: testRow, error: testError } = await supabase
   .insert({
     user_id: authData.user.id,
     sectional_id: sectionalId,
+    sectional_session_id: sectionalSession.id,
 
     total_passages: payload.passages.length,
     total_questions: payload.total,
@@ -125,7 +150,7 @@ const { data: testRow, error: testError } = await supabase
     score: score,
     accuracy_percent: accuracy,
     time_taken_s: payload.timeTaken,
-    time_limit_s: 1800,
+    time_limit_s: loadedTestData?.durationSeconds || CAT_ARENA_SECTIONAL_DURATION_SECONDS,
 
     payload: payload,
   })

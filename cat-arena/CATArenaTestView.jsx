@@ -7,6 +7,11 @@ import QuestionPalette from "./components/QuestionPalette";
 import CATTimer from "./components/CATTimer";
 import SubmitModal from "./components/SubmitModal";
 import MobileRCSectional from "../app/components/MobileRCSectional";
+import {
+  CAT_ARENA_SECTIONAL_DURATION_MINUTES,
+  CAT_ARENA_SECTIONAL_DURATION_SECONDS,
+  remainingSectionalSeconds,
+} from "../lib/cat-arena/sectionalTiming";
 /*
 PROPS
 - testData
@@ -17,6 +22,7 @@ PROPS
 
 export default function CATArenaTestView({
   testData,
+  sectionalSession = null,
   mode = "test",
   initialState = null,
   onSubmit,
@@ -176,7 +182,7 @@ const currentQuestion =
     setCurrentQuestionIndex(i => Math.max(i - 1, 0));
   }
 
-async function submitPayload() {
+async function submitPayload(timedOut = false) {
   saveTime();
 
   const total = flatQuestions.length;
@@ -188,7 +194,9 @@ async function submitPayload() {
     }
   });
 
-  const timeTaken = questionTime.reduce((a, b) => a + (b || 0), 0);
+  const timeTaken = timedOut
+    ? testData?.durationSeconds || CAT_ARENA_SECTIONAL_DURATION_SECONDS
+    : questionTime.reduce((a, b) => a + (b || 0), 0);
 
   await onSubmit?.({
     passages,
@@ -218,7 +226,8 @@ if (isMobile) {
       selectedOption={answers[currentQuestionIndex]}
       correctIndex={currentQuestion.correctIndex}
 explanation={currentQuestion.explanation}
-      durationSeconds={30 * 60}
+      durationSeconds={sectionalSession?.expires_at ? remainingSectionalSeconds(Date.now(), sectionalSession.expires_at) : testData?.durationSeconds || CAT_ARENA_SECTIONAL_DURATION_SECONDS}
+      deadlineAt={sectionalSession?.expires_at}
       currentQuestionIndex={currentQuestionIndex}
       totalQuestions={totalQuestions}
       questionStates={questionStates}
@@ -227,7 +236,7 @@ explanation={currentQuestion.explanation}
       onMark={handleMark}
       onClear={handleClear}
       onJump={setCurrentQuestionIndex}
-     onSubmit={() => submitPayload()}
+     onSubmit={() => submitPayload(true)}
 onBackToDiagnosis={onBackToDiagnosis}
     />
   );
@@ -246,7 +255,7 @@ onBackToDiagnosis={onBackToDiagnosis}
 )}
 
       {!isReview && (
-        <CATTimer durationMinutes={30} onTimeUp={submitPayload} />
+        <CATTimer deadlineAt={sectionalSession?.expires_at} durationMinutes={testData?.durationSeconds ? testData.durationSeconds / 60 : CAT_ARENA_SECTIONAL_DURATION_MINUTES} onTimeUp={() => submitPayload(true)} />
       )}
     </div>
 
