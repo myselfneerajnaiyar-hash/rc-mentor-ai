@@ -46,11 +46,23 @@ let checks=0
 const check=(condition,message)=>{assert.ok(condition,message);checks++;console.log('PASS',message)}
 try {
   await page.goto(`${base}/boot-camp`)
-  await page.getByRole('link',{name:/^(Enter|Start) Day 01$/}).click()
-  await page.getByRole('heading',{name:'Day 01 — Your Training Mission',exact:true}).waitFor()
-  check(await page.getByRole('heading',{name:/Your training is ready/}).count()===0,'homepage Start opens the Training Mission without the intermediate screen')
+  const startLink=page.getByRole('link',{name:/^(Enter|Start|Continue) Day \d{2}$/})
+  const startHref=await startLink.getAttribute('href')
+  const startedDay=Number(startHref.match(/\/day\/(\d+)/)?.[1])
+  check(Number.isInteger(startedDay),'homepage Start navigates to an accessible day session route')
+  await page.evaluate(()=>{
+    window.__bootCampIntroRendered=false
+    new MutationObserver(()=>{
+      if(document.body?.innerText.includes('Your training is ready.'))window.__bootCampIntroRendered=true
+    }).observe(document.body,{subtree:true,childList:true,characterData:true})
+  })
+  await startLink.click()
+  const missionHeading=page.getByRole('heading',{name:`Day ${String(startedDay).padStart(2,'0')} — Your Training Mission`,exact:true})
+  await missionHeading.waitFor()
+  check(await missionHeading.isVisible(),'homepage Start shows the Training Mission as the first training screen')
+  check(await page.getByText(/Your training is ready\./i).count()===0&&await page.evaluate(()=>!window.__bootCampIntroRendered),'homepage Start never renders the intermediate intro text')
   check(calls.some(call=>call.op==='enroll')&&calls.some(call=>call.op==='start'),'homepage Start still enrolls and creates the server session')
-  await click('Begin Day 1');await click('Start Warm-up')
+  await click(`Begin Day ${startedDay}`);await click('Start Warm-up')
   const blocks=[{key:'warmup',questions:source.document.content.warmup},...source.document.content.passages.map((passage,i)=>({key:`rc${i+1}`,questions:passage.questions})),{key:'va',questions:source.document.content.verbalAbility}]
   const observedQuestionMs=[],answerUiWaitMs=[]
   for(const [bi,block] of blocks.entries()) {
@@ -92,9 +104,11 @@ try {
   check(errors.length===0,'full completion/report path has no browser exceptions')
 
   await h.close();h=await harness(source);await page.goto(`${base}/boot-camp`)
-  await page.getByRole('link',{name:/^(Enter|Start) Day 01$/}).click()
-  await page.getByRole('heading',{name:'Day 01 — Your Training Mission',exact:true}).waitFor()
-  await click('Begin Day 1');await click('Start Warm-up')
+  const resumeLink=page.getByRole('link',{name:/^(Enter|Start|Continue) Day \d{2}$/})
+  const resumeDay=Number((await resumeLink.getAttribute('href')).match(/\/day\/(\d+)/)?.[1])
+  await resumeLink.click()
+  await page.getByRole('heading',{name:`Day ${String(resumeDay).padStart(2,'0')} — Your Training Mission`,exact:true}).waitFor()
+  await click(`Begin Day ${resumeDay}`);await click('Start Warm-up')
   const first=source.document.content.warmup[0],wrong=first.options.find(option=>option.id!==first.answer)
   failNextAnswer=true;delayNextAnswerMs=300
   const failedChoice=page.getByRole('button',{name:`${wrong.id} ${wrong.text}`,exact:true})

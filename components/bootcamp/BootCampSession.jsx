@@ -29,8 +29,8 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   const accept = useCallback(value => { latest.current = value; setSession(value) },[])
   const resolveAttempt = useCallback(async home => {
     const selectedDay = home.days?.find(day => day.day === dayNumber)
-    if (dayRoute && !preview && !home.attempt && selectedDay?.accessible) {
-      await requestSession('/enroll','POST')
+    if (dayRoute && !home.attempt && selectedDay?.accessible) {
+      if (!preview) await requestSession('/enroll','POST')
       return requestSession(`/days/${dayNumber}/start`,'POST')
     }
     return home.attempt
@@ -108,18 +108,12 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     } catch(e) { if (gen === generation.current) setError(e); return false }
     finally { working.current = false; setBusy(false) }
   }
-  async function start() {
-    if (working.current) return
-    working.current = true; setBusy(true); setError(null)
-    try { await requestSession('/enroll','POST'); accept(await requestSession(`/days/${dayNumber}/start`,'POST')) }
-    catch(e) { setError(e) } finally { working.current = false; setBusy(false) }
-  }
   function mutate(suffix,method='POST',body={}) {
     const current = latest.current
     return run(`/attempts/${current.id}${suffix}`,method,{ ...body,revision:current.revision })
   }
   async function reload() {
-    if (preview) { latest.current=null; accept(null); setError(null); setBusy(true); try { const home=await requestSession(dayRoute ? '?day=' + dayNumber : '');setCatalog(home);accept(home.attempt) } catch(e) { setError(e) } finally { setBusy(false) } }
+    if (preview) { latest.current=null; accept(null); setError(null); setBusy(true); try { const home=await requestSession(dayRoute ? '?day=' + dayNumber : '');setCatalog(home);accept(await resolveAttempt(home)) } catch(e) { setError(e) } finally { setBusy(false) } }
     else if (latest.current) await run(`/attempts/${latest.current.id}`,'GET')
     else { setError(null); setBusy(true); try { const home=await requestSession(dayRoute?`?day=${dayNumber}`:'');setCatalog(home);accept(await resolveAttempt(home)) } catch(e) { setError(e) } finally { setBusy(false) } }
     setRetryKey(k=>k+1)
@@ -130,10 +124,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   const selectedDay=catalog?.days?.find(d=>d.day===dayNumber)
   if (!session && busy) return <BootCampShell preview={preview}>{errorPanel}<p className={s.muted} role="status">{preview ? 'Loading preview…' : 'Preparing your session…'}</p></BootCampShell>
   if (!session && !busy && (error || !selectedDay?.accessible)) return <BootCampShell preview={preview}>{errorPanel}{!error&&<section className={s.hero}><h1 className={s.title}>{selectedDay?.unlocked?'This day is being prepared.':'This day is locked.'}</h1><p className={s.lead}>{selectedDay?.unlocked?'Please check back soon.':`Day ${dayNumber} opens on ${selectedDay?.releaseDate || 'its calendar date'}.`}</p><Link href="/boot-camp">Back to Boot Camp</Link></section>}</BootCampShell>
-  if (!session && !preview) return <BootCampShell>{errorPanel}</BootCampShell>
-  if (!session) return <BootCampShell preview={preview}>{errorPanel}<section className={s.hero}><p className={s.eyebrow}>Boot Camp / Day {String(dayNumber).padStart(2,'0')}</p><h1 className={s.title}>Your training is ready.<br />Let’s sharpen your reading.</h1><p className={s.lead}>Birbal has Day {dayNumber} ready for you. A focused warm-up, three passages, and verbal reasoning—with a personal check-in after every block.</p>
-    <div className={s.facts}><div className={s.fact}><strong>25 questions</strong><span>A carefully planned session</span></div><div className={s.fact}><strong>5 activities</strong><span>One step at a time</span></div><div className={s.fact}><strong>With Birbal</strong><span>Review, reflect, improve</span></div></div>
-    <div className={s.actions}><button className={s.primary} disabled={busy || !!error} onClick={start}>{busy ? 'Preparing your session…' : 'Start today’s session →'}</button></div><p className={s.muted}>{preview ? "This preview stays in this browser session. Your real Boot Camp progress is untouched." : "29 minutes of timed practice, plus your warm-up, reviews and coaching. Come back to your saved place whenever you need."}</p></section></BootCampShell>
+  if (!session) return <BootCampShell preview={preview}>{errorPanel}<p className={s.muted} role="status">{preview ? 'Loading preview…' : 'Preparing your session…'}</p></BootCampShell>
   const reviewWorkspace= ['review','commentary'].includes(session.phase)
   return <BootCampShell preview={preview} session={session} reviewWorkspace={reviewWorkspace || session.phase==='report'}>{errorPanel}{chatPanel}
     {session.phase === 'mission' && <BootCampMission preview={preview} dayNumber={dayNumber} commentary={session.commentary} busy={busy} onContinue={()=>mutate('/advance')} />}
