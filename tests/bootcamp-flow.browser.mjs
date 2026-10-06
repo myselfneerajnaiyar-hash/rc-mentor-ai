@@ -45,8 +45,12 @@ const click=async name=>page.getByRole('button',{name,exact:true}).click()
 let checks=0
 const check=(condition,message)=>{assert.ok(condition,message);checks++;console.log('PASS',message)}
 try {
-  await page.goto(`${base}/boot-camp/day/1`)
-  await click('Start today’s session →');await click('Begin Day 1');await click('Start Warm-up')
+  await page.goto(`${base}/boot-camp`)
+  await page.getByRole('link',{name:/^(Enter|Start) Day 01$/}).click()
+  await page.getByRole('heading',{name:'Day 01 — Your Training Mission',exact:true}).waitFor()
+  check(await page.getByRole('heading',{name:/Your training is ready/}).count()===0,'homepage Start opens the Training Mission without the intermediate screen')
+  check(calls.some(call=>call.op==='enroll')&&calls.some(call=>call.op==='start'),'homepage Start still enrolls and creates the server session')
+  await click('Begin Day 1');await click('Start Warm-up')
   const blocks=[{key:'warmup',questions:source.document.content.warmup},...source.document.content.passages.map((passage,i)=>({key:`rc${i+1}`,questions:passage.questions})),{key:'va',questions:source.document.content.verbalAbility}]
   const observedQuestionMs=[],answerUiWaitMs=[]
   for(const [bi,block] of blocks.entries()) {
@@ -87,8 +91,10 @@ try {
   console.log('Measured local browser/API-handler calls (PGlite, mocked auth):',JSON.stringify({answerCalls:answerCalls.length,answerMeanMs:answerCalls.length?Number((answerCalls.reduce((n,c)=>n+c.durationMs,0)/answerCalls.length).toFixed(2)):null,answerUiWaitMeanMs:Number((answerUiWaitMs.reduce((a,b)=>a+b,0)/answerUiWaitMs.length).toFixed(2)),answerDbOps:answerCalls[0]?.dbOps,finishCalls:finishCalls.length,finishMeanMs:finishCalls.length?Number((finishCalls.reduce((n,c)=>n+c.durationMs,0)/finishCalls.length).toFixed(2)):null,questionReadyMeanMs:Number((observedQuestionMs.reduce((a,b)=>a+b,0)/observedQuestionMs.length).toFixed(2)),questionReadyMaxMs:Math.max(...observedQuestionMs)},null,2))
   check(errors.length===0,'full completion/report path has no browser exceptions')
 
-  await h.close();h=await harness(source);await page.goto(`${base}/boot-camp/day/1`)
-  await click('Start today’s session →');await click('Begin Day 1');await click('Start Warm-up')
+  await h.close();h=await harness(source);await page.goto(`${base}/boot-camp`)
+  await page.getByRole('link',{name:/^(Enter|Start) Day 01$/}).click()
+  await page.getByRole('heading',{name:'Day 01 — Your Training Mission',exact:true}).waitFor()
+  await click('Begin Day 1');await click('Start Warm-up')
   const first=source.document.content.warmup[0],wrong=first.options.find(option=>option.id!==first.answer)
   failNextAnswer=true;delayNextAnswerMs=300
   const failedChoice=page.getByRole('button',{name:`${wrong.id} ${wrong.text}`,exact:true})
