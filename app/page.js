@@ -738,7 +738,7 @@ const navItems = [
 return (
   <>
 <h1 style={{ display: "none" }}>Auctor RC</h1>
-<div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col md:flex-row relative">
+<div className={`min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col md:flex-row relative ${view === "cat" ? "cat-arena-active" : ""}`}>
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
     {/* Desktop Sidebar */}
@@ -837,16 +837,16 @@ ${
   <main 
   ref={mainRef}
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
- <div className="root-content w-full px-4 md:px-8 py-6 md:py-10">
+ <div className={`root-content w-full px-4 md:px-8 ${view === "cat" ? "py-4 md:py-6" : "py-6 md:py-10"} ${view === "cat" ? "cat-arena-content" : ""}`}>
       <div className="w-full">
-       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && <div className="dashboard-header-actions ml-auto"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
+       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && view !== "cat" && <div className="dashboard-header-actions ml-auto"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
        {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
    {/* Desktop Navbar */}
 <div className="desktop-navbar">
  {/* <Navbar view={view} setView={setView} /> */}
- {user && view !== "home" && <div className="mb-5 hidden justify-end gap-2 md:flex"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}
+ {user && view !== "home" && view !== "cat" && <div className="mb-5 hidden justify-end gap-2 md:flex"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}
 </div>
 
   {view === "home" && isMobile !== null && <ProductTourOnboarding/>}
