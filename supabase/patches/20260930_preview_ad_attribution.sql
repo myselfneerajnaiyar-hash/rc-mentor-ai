@@ -1,4 +1,4 @@
--- REVIEW DRAFT ONLY. This migration has NOT been applied.
+-- Reproducible additive profile attribution patch. Its Meta identifier allowlist is also tracked by migration 20261006021648.
 -- Additive first/last-touch storage for the Auctor preview-ad signup flow.
 -- The RPC derives identity from auth.uid(); clients cannot write another profile.
 begin;
@@ -42,7 +42,7 @@ begin
       union all
       select key, value from jsonb_each(p_last_touch)
     ) value_pair
-    where key not in ('utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','fbc','fbp')
+    where key not in ('utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','fbc','fbp','campaign_id','adset_id','ad_id')
        or jsonb_typeof(value) <> 'string'
        or length(value #>> '{}') > 200
        or value #>> '{}' ~ '[[:cntrl:]]'
@@ -51,7 +51,7 @@ begin
            and value #>> '{}' ~ '(^|[^[:alnum:]])[+]?[0-9]([[:space:]().-]*[0-9]){9,}([^[:alnum:]]|$)')
        or (key = 'fbc' and value #>> '{}' !~ '^fb\.\d{1,3}\.\d{8,16}\.[A-Za-z0-9_-]{1,160}$')
        or (key = 'fbp' and value #>> '{}' !~ '^fb\.\d{1,3}\.\d{8,16}\.\d{1,24}$')
-       or (key = 'fbclid' and value #>> '{}' !~ '^[A-Za-z0-9._-]{1,200}$')
+        or (key in ('fbclid','campaign_id','adset_id','ad_id') and value #>> '{}' !~ '^[A-Za-z0-9._-]{1,200}$')
   ) then
     raise exception 'Invalid attribution value';
   end if;

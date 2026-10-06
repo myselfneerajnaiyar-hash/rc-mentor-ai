@@ -18,7 +18,7 @@ export async function POST(req) {
 
     const { data: purchase, error: purchaseError } = await supabaseAdmin
       .from("razorpay_payment_orders")
-      .select("id,user_id,razorpay_order_id,plan,amount_paid_paise")
+      .select("id,user_id,razorpay_order_id,plan,amount_paid_paise,currency")
       .eq("razorpay_order_id", orderId)
       .maybeSingle()
 
@@ -38,7 +38,17 @@ export async function POST(req) {
     if (result.status === "pending") {
       return Response.json({ success: false, pending: true, error: "Payment capture is still being confirmed." }, { status: 202 })
     }
-    return Response.json({ success: true, status: result.status })
+    return Response.json({
+      success: true,
+      status: result.status,
+      purchase: {
+        value: Number(purchase.amount_paid_paise) / 100,
+        currency: purchase.currency,
+        plan: purchase.plan,
+        paymentId: result.paymentId,
+        orderId: result.orderId,
+      },
+    })
   } catch (error) {
     console.error("[payment] CALLBACK_PROCESSING_FAILED", {
       code: error.code || "CALLBACK_FAILED",

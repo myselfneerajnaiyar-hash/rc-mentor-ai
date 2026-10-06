@@ -70,7 +70,9 @@ try {
   check(chatEvidence.at(-1).context.day.status==='not_started','landing chat uses actual not-started context')
   check((await h.service.home(student)).attempt===null,'talking to Birbal does not create an attempt')
   await click('Close Birbal conversation');await page.getByRole('link',{name:'Enter Day 01',exact:true}).click()
-  await click('Start today’s session →');await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
+  await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor()
+  check(await page.getByRole('heading',{name:/Your training is ready/}).count()===0,'day opens directly on its training mission')
+  await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
   await page.screenshot({path:path.join(output,'01-mission.png'),fullPage:true,animations:'disabled'})
   await click('Begin my warm-up');await click('Start Warm-up')
   let live=(await h.service.home(student)).attempt
@@ -229,7 +231,7 @@ try {
   check(h.calls.every(c=>c.name?.startsWith('bootcamp_')||c.table?.startsWith('bootcamp_')),'all persistence calls stay inside Boot Camp')
   await h.close(); h=await harness(source)
   await page.goto(base+'/boot-camp/day/1')
-  await click('Start today’s session →');await click('Begin my warm-up');await click('Start Warm-up')
+  await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor();await click('Begin my warm-up');await click('Start Warm-up')
   const warm=source.document.content.warmup
   const wrong=warm[0].options.find(o=>o.id!==warm[0].answer)
   failNextAnswer=true

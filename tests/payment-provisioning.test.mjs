@@ -7,7 +7,7 @@ import { calculatePlanPricing } from "../lib/payments/pricing.js"
 import crypto from "node:crypto"
 
 const migration = await readFile(new URL("../supabase/migrations/202610040001_razorpay_payment_provisioning.sql", import.meta.url), "utf8")
-const safeAttemptYearMigration = await readFile(new URL("../supabase/migrations/202610040002_safe_razorpay_attempt_year.sql", import.meta.url), "utf8")
+const safeAttemptYearMigration = await readFile(new URL("../supabase/migrations/202610040002_safe_attempt_year_provisioning.sql", import.meta.url), "utf8")
 const callbackSource = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const webhookSource = await readFile(new URL("../app/api/razorpay/webhook/route.js", import.meta.url), "utf8")
 const processorSource = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")

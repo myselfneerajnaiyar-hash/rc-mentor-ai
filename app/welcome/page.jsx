@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
 import posthog from "posthog-js"
+import { captureGoogleLoginFailure, captureSignupConversion, isNewGoogleSignup } from "@/lib/analytics/conversionEvents.mjs"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
-import { attributionFromParams, buildAttributedPath, mergeAttribution, normalizeAttribution } from "@/lib/attribution.mjs"
+import { attributionFromParams, buildAttributedPath, normalizeAttribution, persistBrowserAttribution, clearBrowserAttribution } from "@/lib/attribution.mjs"
 import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
 
 export default function WelcomePage() {
@@ -27,6 +28,7 @@ const [authError, setAuthError] = useState("")
 const [profileSaveError, setProfileSaveError] = useState("")
 const [savingProfile, setSavingProfile] = useState(false)
 const finishProfileRequest = useRef(null)
+const googleFailureReported = useRef(false)
 
   const [profileName, setProfileName] = useState("")
   const [exam, setExam] = useState("CAT")
@@ -41,11 +43,21 @@ const finishProfileRequest = useRef(null)
 }, [])
 
 async function checkUser() {
+  let authStage = true
   try {
     const url = new URL(window.location.href)
     const hashParams = new URLSearchParams(url.hash.replace(/^#/, ""))
     const callbackError = searchParams.get("error_description") || searchParams.get("error") || hashParams.get("error_description") || hashParams.get("error")
     if (callbackError) {
+      if (searchParams.get("oauth") === "google" && !googleFailureReported.current) {
+        googleFailureReported.current = true
+        captureGoogleLoginFailure({
+          posthog,
+          surface: searchParams.get("flow") === "signup" ? "signup" : "login",
+          error: { code: searchParams.get("error_code") || "oauth_callback_failed" },
+          attemptId: `callback:${searchParams.get("flow") || "login"}:${searchParams.get("error_code") || "oauth_error"}`,
+        })
+      }
       setAuthError(`Sign in could not complete: ${callbackError}`)
       return
     }
@@ -69,11 +81,21 @@ async function checkUser() {
 
     const { data: authData, error: userError } = await supabase.auth.getUser()
     if (!authData?.user && !code) {
+      if (searchParams.get("oauth") === "google" && !googleFailureReported.current) {
+        googleFailureReported.current = true
+        captureGoogleLoginFailure({
+          posthog,
+          surface: searchParams.get("flow") === "signup" ? "signup" : "login",
+          error: { code: userError?.code || "oauth_session_missing" },
+          attemptId: "callback:" + (searchParams.get("flow") || "login") + ":session_missing",
+        })
+      }
       router.replace(loginPath)
       return
     }
     if (userError) throw userError
     if (!authData?.user) throw new Error("The confirmation link did not create a session")
+    authStage = false
 
     const user = authData.user
     const emailName = user.email?.split("@")[0] || "Champion"
@@ -95,14 +117,33 @@ async function checkUser() {
       name: profile?.name || formatted,
     })
 
+    if (searchParams.get("oauth") === "google"
+      && searchParams.get("flow") === "signup"
+      && isNewGoogleSignup(user)) {
+      captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq })
+    }
+
     if (profile?.profile_completed && next === "/inbox") {
       await refreshContext()
       router.replace("/inbox")
       return
     }
+    if (profile?.profile_completed && next === "bootcamp") {
+      router.replace("/pricing?returnTo=%2Fboot-camp")
+      return
+    }
 
     if (!profile || !profile.profile_completed) setShowProfileWizard(true)
   } catch (error) {
+    if (authStage && searchParams.get("oauth") === "google" && !googleFailureReported.current) {
+      googleFailureReported.current = true
+      captureGoogleLoginFailure({
+        posthog,
+        surface: searchParams.get("flow") === "signup" ? "signup" : "login",
+        error,
+        attemptId: `callback:${searchParams.get("flow") || "login"}:${error?.code || error?.name || "oauth_error"}`,
+      })
+    }
     console.error("Welcome authentication failed", error)
     setAuthError("We couldn't verify your account. Please retry the confirmation link or log in.")
   } finally {
@@ -205,6 +246,8 @@ async function finishProfile() {
 
       if (next === "/inbox") {
         router.replace("/inbox")
+      } else if (next === "bootcamp") {
+        router.push("/pricing?returnTo=%2Fboot-camp")
       } else if (next === "cat") {
         router.push(free === "1" ? "/?view=cat&free=1" : "/?view=cat")
       } else if (next === "pricing") {
@@ -225,14 +268,19 @@ async function finishProfile() {
 async function persistSignupAttribution(user) {
   const query = new URLSearchParams(window.location.search)
   const metadata = normalizeAttribution(user.user_metadata?.signup_attribution)
-  const attribution = mergeAttribution(query, metadata)
+  const browserAttribution = persistBrowserAttribution(query)
+  const attribution = {
+    firstTouch: Object.keys(metadata.firstTouch).length ? metadata.firstTouch : browserAttribution.firstTouch,
+    lastTouch: Object.keys(browserAttribution.lastTouch).length ? browserAttribution.lastTouch : metadata.lastTouch,
+  }
   if (!Object.keys(attribution.firstTouch).length && !Object.keys(attribution.lastTouch).length) return
   try {
     const { error } = await supabase.rpc("capture_signup_attribution", {
       p_first_touch: attribution.firstTouch,
       p_last_touch: attribution.lastTouch,
     })
-    if (error) console.warn("Signup attribution was not saved. Apply the prepared profile attribution SQL before enabling production persistence.", error.code || error.message)
+    if (error) console.warn("Signup attribution was not saved.", error.code || error.message)
+    else clearBrowserAttribution()
   } catch (error) {
     console.warn("Signup attribution could not reach the profile service.", error?.message || "Request failed")
   }

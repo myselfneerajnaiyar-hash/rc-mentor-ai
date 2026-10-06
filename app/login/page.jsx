@@ -3,7 +3,9 @@
 import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
-import { attributionFromParams, buildAttributedPath, attributionParams } from "@/lib/attribution.mjs"
+import posthog from "posthog-js"
+import { attributionFromParams, buildAttributedPath, attributionParams, readBrowserAttribution } from "@/lib/attribution.mjs"
+import { captureGoogleLoginFailure } from "@/lib/analytics/conversionEvents.mjs"
 import "./login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
 import { useTenant } from "@/components/providers/TenantProvider"
@@ -29,18 +31,26 @@ const free = searchParams.get("free") || "";
   const params = new URLSearchParams()
   if (next) params.set("next", next)
   if (free) params.set("free", free)
-  for (const [key, value] of attributionParams(attributionFromParams(new URLSearchParams(window.location.search)))) params.set(key, value)
+  params.set("oauth", "google")
+  params.set("flow", "login")
+  for (const [key, value] of attributionParams(readBrowserAttribution(new URLSearchParams(window.location.search)))) params.set(key, value)
   const query = params.toString()
 
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-     redirectTo: `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`
-    }
-  })
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+       redirectTo: `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`
+      }
+    })
 
-  if (error) {
-    alert(error.message)
+    if (error) {
+      captureGoogleLoginFailure({ posthog, surface: "login", error, attemptId: `login:${Date.now()}` })
+      alert(error.message)
+    }
+  } catch (error) {
+    captureGoogleLoginFailure({ posthog, surface: "login", error, attemptId: `login:${Date.now()}` })
+    alert(error?.message || "Google sign in could not complete.")
   }
 }
 
@@ -65,7 +75,7 @@ console.log("NEXT =", next);
 console.log("FREE =", free);
 console.log("URL =", window.location.href);
 
-router.replace(buildAttributedPath("/welcome", loginAttribution, { next, free }));
+router.replace(buildAttributedPath("/welcome", readBrowserAttribution(new URLSearchParams(window.location.search)), { next, free }));
   }
 
   return (

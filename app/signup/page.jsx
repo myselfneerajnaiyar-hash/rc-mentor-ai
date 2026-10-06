@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
-import { attributionFromParams, buildAttributedPath, attributionParams } from "@/lib/attribution.mjs"
+import posthog from "posthog-js"
+import { attributionFromParams, buildAttributedPath, attributionParams, readBrowserAttribution } from "@/lib/attribution.mjs"
+import { captureGoogleLoginFailure, captureSignupConversion } from "@/lib/analytics/conversionEvents.mjs"
 import { classifySignupResult } from "@/lib/onboarding/profileValidation.mjs"
 import "../login/login.css"
 import { BarChart3, BookOpen, BrainCircuit, Eye, EyeOff, Sparkles, Trophy, Zap } from "lucide-react"
@@ -50,7 +52,9 @@ const free = searchParams.get("free") || ""
     const params = new URLSearchParams()
     if (next) params.set("next", next)
     if (free) params.set("free", free)
-    for (const [key, value] of attributionParams(attributionFromParams(new URLSearchParams(window.location.search)))) params.set(key, value)
+    params.set("oauth", "google")
+    params.set("flow", "signup")
+    for (const [key, value] of attributionParams(readBrowserAttribution(new URLSearchParams(window.location.search)))) params.set(key, value)
     const query = params.toString()
     const redirectTo = `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`
 
@@ -59,8 +63,12 @@ const free = searchParams.get("free") || ""
       options: { redirectTo }
     })
 
-    if (error) setError(readableAuthError(error, "Google signup"))
+    if (error) {
+      captureGoogleLoginFailure({ posthog, surface: "signup", error, attemptId: `signup:${Date.now()}` })
+      setError(readableAuthError(error, "Google signup"))
+    }
   } catch (error) {
+    captureGoogleLoginFailure({ posthog, surface: "signup", error, attemptId: `signup:${Date.now()}` })
     setError(readableAuthError(error, "Google signup"))
   }
 }
@@ -71,7 +79,7 @@ const free = searchParams.get("free") || ""
     setLoading(true)
     setError("")
     setConfirmationMessage("")
-    const attribution = attributionFromParams(new URLSearchParams(window.location.search))
+    const attribution = readBrowserAttribution(new URLSearchParams(window.location.search))
 
     try {
       const callbackPath = buildAttributedPath("/auth/callback", attribution, { next, free })
@@ -93,6 +101,7 @@ const free = searchParams.get("free") || ""
         setError(readableAuthError(outcome.error, "Signup"))
         return
       }
+      captureSignupConversion({ userId: outcome.user.id, method: "email", createdAt: outcome.user.created_at, posthog, pixel: window.fbq })
       if (outcome.type === "authenticated") {
         router.replace(buildAttributedPath("/welcome", attribution, { next, free }))
         return

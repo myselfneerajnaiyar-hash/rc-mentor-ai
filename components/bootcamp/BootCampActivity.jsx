@@ -4,7 +4,7 @@ import NumberedSentences from './NumberedSentences'
 import BootCampRCActivity from './BootCampRCActivity'
 import s from './bootcamp.module.css'
 
-export default function BootCampActivity({ dayNumber=1, activity, serverNow, busy, onSave, onFinish, onExpire }) {
+export default function BootCampActivity({ dayNumber=1, activity, serverNow, busy, onSave, onFinish, onExpire, preview=false }) {
   const [index, setIndex] = useState(activity.current_question)
   const [remaining, setRemaining] = useState(null)
   const [draft, setDraft] = useState(undefined)
@@ -98,7 +98,7 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
     {q.mode === 'MCQ' ? <div className={s.options} role="group" aria-label="Answer options">{q.options.map(o => <button key={o.id} disabled={disabled} aria-pressed={value === o.id} className={`${s.option} ${value === o.id ? s.selected : ''}`} onClick={() => save(o.id)}><span className={s.letter}>{o.id}</span><span>{o.text}</span></button>)}</div>
       : q.type === 'Para Jumble' ? <div><p className={s.muted}>Tap sentence numbers in your chosen order. Tap Undo to revise.</p><div className={s.order} aria-label="Your sentence order">{Array.isArray(value) && value.length ? value.join(' → ') : 'Your order will appear here'}</div><div className={s.numbers}>{q.sentences.map(sentence => <button key={sentence.number} className={s.number} disabled={disabled || value?.includes(sentence.number)} onClick={() => save([...(value || []),sentence.number])}>{sentence.number}</button>)}<button className={s.secondary} disabled={disabled || !value?.length} onClick={() => save(value.length > 1 ? value.slice(0,-1) : null)}>Undo</button></div></div>
       : <div><p className={s.muted}>{q.type === 'Sentence Placement' ? 'Choose the displayed insertion position. Position 4 means [4] in the paragraph.' : 'Choose the sentence that does not belong.'}</p><div className={s.numbers} role="group" aria-label="Choose position">{Array.from({ length: q.type === 'Sentence Placement' ? 4 : 5 },(_,i) => i + 1).map(n => <button key={n} disabled={disabled} className={s.number} aria-pressed={value === n} onClick={() => save(n)}>{q.type === 'Sentence Placement' ? `[${n}]` : n}</button>)}</div></div>}
-    <div className={s.status} role="status">{busy ? 'Saving your progress…' : saveError ? 'This answer has not saved yet.' : saved.response !== null ? 'Answer saved' : 'You can leave this question unanswered.'}</div>
+    <div className={s.status} role="status">{busy ? preview ? 'Updating this preview…' : 'Saving your progress…' : saveError ? 'This answer has not saved yet.' : saved.response !== null ? preview ? 'Answer saved in this preview' : 'Answer saved' : 'You can leave this question unanswered.'}</div>
     {saveError && <button className={s.primary} disabled={busy} onClick={() => save(draft)}>Retry saving answer</button>}
     <div className={s.questionNav}><button className={s.secondary} disabled={disabled || index === 0 || draft !== undefined} onClick={() => move(index - 1)}>← Previous</button>
       {value !== null && <button className={s.secondary} disabled={disabled} onClick={() => save(null)}>Clear answer</button>}

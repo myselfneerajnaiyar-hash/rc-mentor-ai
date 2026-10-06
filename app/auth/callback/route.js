@@ -20,6 +20,10 @@ for (const key of ["code", "error", "error_code", "error_description"]) {
   const value = requestUrl.searchParams.get(key)
   if (value) destination.searchParams.set(key, value)
 }
+for (const key of ["oauth", "flow"]) {
+  const value = requestUrl.searchParams.get(key)
+  if (value) destination.searchParams.set(key, value)
+}
 for (const [key, value] of attributionParams(attributionFromParams(requestUrl.searchParams))) destination.searchParams.set(key, value)
 return NextResponse.redirect(destination)
   

@@ -19,6 +19,7 @@ const [couponMessage, setCouponMessage] = useState("");
 const router = useRouter()
 const searchParams = useSearchParams()
 const couponFromUrl = searchParams.get("coupon") || ""
+const returnTo = searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
 
 const applyCoupon = useCallback(async (value) => {
   try {
@@ -291,6 +292,7 @@ label="Unlock Test Series"
 user={user}
 referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
+returnTo={returnTo}
 />
 
 </CardContent>
@@ -369,6 +371,7 @@ user={user}
 variant="premium"
 referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
+returnTo={returnTo}
 />
 
 </CardContent>
@@ -432,6 +435,7 @@ label="Start 3 Month Plan"
 user={user}
 referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
+returnTo={returnTo}
 />
 
 </CardContent>
@@ -510,6 +514,7 @@ user={user}
 variant="premium"
 referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
+returnTo={returnTo}
 />
 
   </CardContent>
@@ -571,6 +576,7 @@ couponCode={appliedCoupon}
   user={user}
   referralCode={appliedCoupon ? "" : referralCode}
   couponCode={appliedCoupon}
+  returnTo={returnTo}
 />
 
   </CardContent>

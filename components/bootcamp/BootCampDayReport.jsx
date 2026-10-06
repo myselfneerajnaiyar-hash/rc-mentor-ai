@@ -11,7 +11,7 @@ function GlanceStat({value,label,icon,tone}) {
   return <div className={`${s.glanceStat} ${tone?s[tone]:''}`}><dt><Icon size={tone?14:16} aria-hidden="true"/>{label}</dt><dd>{value}</dd></div>
 }
 function Observations({items,empty}) {return items.length?<ul className={s.observations}>{items.map((item,i)=><li key={i}><strong>{item.observation}</strong><details><summary>Interpretation & confidence</summary><p><small>Interpretation</small>{item.interpretation}</p><p className={s.confidence}><small>Confidence</small>{item.confidence}</p></details></li>)}</ul>:<p>{empty}</p>}
-export default function BootCampDayReport({report:r,commentary,onAsk,dayNumber=1,todayDay=null,todayAvailable=false}) {
+export default function BootCampDayReport({report:r,commentary,onAsk,dayNumber=1,todayDay=null,todayAvailable=false,preview=false}) {
   const [tab,setTab]=useState('debrief'),tabRefs=useRef([])
   const d=r.debrief,LABELS=Object.fromEntries(r.blocks.map(b=>[b.key,b.label]))
   return <section className={s.report} aria-label={`Day ${dayNumber} training report`}>
@@ -26,11 +26,11 @@ export default function BootCampDayReport({report:r,commentary,onAsk,dayNumber=1
 </section><div className={s.insightGrid}>
       <section className={`${s.insightCard} ${s.strengths}`}><h2>Strengths</h2><Observations items={d.good} empty="No correct answers were recorded in this session."/></section>
       <section className={`${s.insightCard} ${s.attention}`}><h2>Needs attention</h2><Observations items={d.attention} empty="No incorrect or unanswered responses need attention from this session."/></section>
-      <section className={`${s.insightCard} ${s.advice}`}><p className={s.eyebrow}>BIRBAL’S ADVICE</p><p>{commentary?.text || `You attempted ${r.answered} of ${r.total} questions. Use the question evidence below to guide your next practice.`}</p><button className={s.ask} onClick={onAsk}>Ask Birbal <span aria-hidden="true">→</span></button></section>
+      <section className={`${s.insightCard} ${s.advice}`}><p className={s.eyebrow}>BIRBAL’S ADVICE</p><p>{commentary?.text || `You attempted ${r.answered} of ${r.total} questions. Use the question evidence below to guide your next practice.`}</p>{!preview && <button className={s.ask} onClick={onAsk}>Ask Birbal <span aria-hidden="true">→</span></button>}</section>
       <section className={`${s.insightCard} ${s.nextFocus}`}><p className={s.eyebrow}>NEXT FOCUS</p><p>{d.focus}</p></section>
       <details className={`${s.details} ${s.lessons}`}><summary>Question-specific lessons ({d.lessons.length})</summary>{d.lessons.length?d.lessons.map((lesson,i)=><p key={i}><small>{LABELS[lesson.block]} · Q{lesson.number}</small>{lesson.text}</p>):<p>No question-specific lessons were generated for this session.</p>}</details>
       <details className={`${s.details} ${s.watch}`}><summary>What Birbal will watch</summary><p>{d.watch}</p></details>
     </div></div>:<div role="tabpanel" id="analytics-panel" aria-labelledby="analytics-tab"><BootCampReportAnalytics report={r} dayNumber={dayNumber}/></div>}
-      <footer className={s.closing}><p className={s.note}>Your Day {dayNumber} report is saved. Choose any open day from the calendar; completed days remain available for review.</p><div className={s.reportActions}>{todayAvailable&&todayDay!==dayNumber&&<Link className={s.reportButton} href={`/boot-camp/day/${todayDay}`}>Go to today’s mission: Day {String(todayDay).padStart(2,'0')} →</Link>}<Link className={s.reportButton} href="/boot-camp/analytics">Overall Analytics</Link><Link className={`${s.reportButton} ${s.secondaryButton}`} href="/boot-camp">Back to Boot Camp</Link></div></footer>
+      <footer className={s.closing}><p className={s.note}>{preview ? 'Preview only: your answers stay in this browser session and do not change student progress.' : `Your Day ${dayNumber} report is saved. Choose any open day from the calendar; completed days remain available for review.`}</p><div className={s.reportActions}>{preview ? <Link className={s.reportButton} href="/login?next=bootcamp">Unlock the full Boot Camp →</Link> : <>{todayAvailable&&todayDay!==dayNumber&&<Link className={s.reportButton} href={`/boot-camp/day/${todayDay}`}>Go to today’s mission: Day {String(todayDay).padStart(2,'0')} →</Link>}<Link className={s.reportButton} href="/boot-camp/analytics">Overall Analytics</Link><Link className={`${s.reportButton} ${s.secondaryButton}`} href="/boot-camp">Back to Boot Camp</Link></>}</div></footer>
   </section>
 }

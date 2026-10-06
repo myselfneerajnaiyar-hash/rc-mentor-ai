@@ -23,16 +23,16 @@ function ProgressStrip({ data, loading, error }) {
   </section>
 }
 
-export default function BootCampMission({ commentary, onContinue, busy, ready, blockLabel, seconds, dayNumber = 1 }) {
+export default function BootCampMission({ commentary, onContinue, busy, ready, blockLabel, seconds, dayNumber = 1, preview = false }) {
   const [progress,setProgress]=useState(null)
   const [progressLoading,setProgressLoading]=useState(true)
   const [progressError,setProgressError]=useState(false)
   useEffect(()=>{
-    if(ready){setProgressLoading(false);return}
+    if(ready || preview){setProgressLoading(false);return}
     let active=true
     bootcampRequest('/analytics').then(data=>{if(active)setProgress(data)}).catch(()=>{if(active)setProgressError(true)}).finally(()=>{if(active)setProgressLoading(false)})
     return ()=>{active=false}
-  },[ready])
+  },[ready,preview])
   const briefing=commentary?.briefing
   const blocks=useMemo(()=>Array.isArray(briefing?.workout)?briefing.workout.map(workoutBlock):[],[briefing?.workout])
   const timedMinutes=blocks.reduce((total,block)=>total+(Number(block.duration.match(/^(\d+(?:\.\d+)?)\s*minutes?$/i)?.[1])||0),0)
@@ -75,7 +75,7 @@ export default function BootCampMission({ commentary, onContinue, busy, ready, b
       </div>
     </section>
 
-    <ProgressStrip data={progress} loading={progressLoading} error={progressError}/>
+    {!preview && <ProgressStrip data={progress} loading={progressLoading} error={progressError}/>}
 
     <section className={s.diagnosisCard} aria-labelledby="diagnosis-title">
         <div className={s.cardKicker}><span>01</span> BIRBAL’S DIAGNOSIS</div>

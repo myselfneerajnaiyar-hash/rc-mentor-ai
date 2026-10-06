@@ -1,28 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { buildAttributedPath, mergeAttribution } from '@/lib/attribution.mjs'
-
-const STORAGE_KEY = 'auctor.signup-attribution.v1'
-
-function cookieValue(name) {
-  const pair = document.cookie.split(';').map(value => value.trim()).find(value => value.startsWith(`${name}=`))
-  if (!pair) return ''
-  try { return decodeURIComponent(pair.slice(name.length + 1)) } catch { return '' }
-}
+import { buildAttributedPath, persistBrowserAttribution } from '@/lib/attribution.mjs'
 
 export default function PreviewAdInteractions({ signupHref }) {
   const [showSticky, setShowSticky] = useState(false)
   const [currentHref, setCurrentHref] = useState(signupHref)
 
   useEffect(() => {
-    let stored = null
-    try { stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null') } catch { /* Ignore unavailable or malformed local storage. */ }
-    const attribution = mergeAttribution(new URLSearchParams(window.location.search), stored, {
-      fbc: cookieValue('_fbc'),
-      fbp: cookieValue('_fbp'),
-    })
-    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(attribution)) } catch { /* Navigation still carries this visit's query values. */ }
+    const attribution = persistBrowserAttribution(new URLSearchParams(window.location.search))
     const href = buildAttributedPath('/signup', attribution)
     setCurrentHref(href)
     document.querySelectorAll('a[data-signup-cta]').forEach(link => link.setAttribute('href', href))

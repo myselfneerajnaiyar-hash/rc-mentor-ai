@@ -7,7 +7,7 @@ import NumberedSentences from './NumberedSentences'
 import BootCampTypeAnalysis from './BootCampTypeAnalysis'
 const outcomes={correct:'Correct',incorrect:'Incorrect',skipped:'Skipped',not_reached:'Not reached',timed_out:'Timed out'}
 const nextLabels={warmup:'Continue to RC 1',va:'Continue to Day Report',rc1:'Continue to RC 2',rc2:'Continue to RC 3',rc3:'Continue to Verbal Ability'}
-export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId, phase='review', commentary, busy, onContinue, onAsk }) {
+export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId, phase='review', commentary, busy, onContinue, onAsk, preview=false }) {
   const [index,setIndex]=useState(0),[detail,setDetail]=useState(null),[evidenceIndex,setEvidenceIndex]=useState(0),[passageOpen,setPassageOpen]=useState(false)
   const dialog=useRef(null)
   const storageKey=`bootcamp-review:${attemptId}:${review.key}`
@@ -53,7 +53,7 @@ export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId
       </aside>
 
     </div>
-    <footer className={s.actions}><button className={s.ask} onClick={()=>onAsk(q.id)}>Ask Birbal <span aria-hidden="true">Q{index+1}</span></button><span className={s.checkpoint}>{phase==='commentary'?'Trainer reflection':'Detailed review'} · Next: {nextLabels[review.key]?.replace('Continue to ','')}</span><button className={s.continue} disabled={busy} onClick={onContinue}>{footerLabel} <span aria-hidden="true">→</span></button></footer>
+    <footer className={s.actions}>{!preview && <button className={s.ask} onClick={()=>onAsk(q.id)}>Ask Birbal <span aria-hidden="true">Q{index+1}</span></button>}<span className={s.checkpoint}>{phase==='commentary'?'Trainer reflection':'Detailed review'} · Next: {nextLabels[review.key]?.replace('Continue to ','')}</span><button className={s.continue} disabled={busy} onClick={onContinue}>{footerLabel} <span aria-hidden="true">→</span></button></footer>
     <dialog ref={dialog} className={s.detailDialog} aria-label={detail==='fullPassage'?'Full passage':detail==='passage'?'Detailed passage analysis':'Detailed question analysis'} onCancel={()=>setDetail(null)}><div className={s.dialogHeader}><span>{review.label} · {detail==='passage'?'Passage analysis':`Question ${index+1}`}</span><button onClick={()=>setDetail(null)}>Back to review</button></div><div className={s.dialogBody}>{detail==='question' && q.mode==='MCQ' && q.context && <p className={s.questionContext}>{q.context}</p>}{detail==='fullPassage' ? <div className={s.fullPassage}>{paragraphs.map((p,i)=><p key={i}>{p}</p>)}</div> : detail==='passage' ? <DetailedRCReview data={dailyRCReview(review)}/> : detail==='question' ? q.mode!=='MCQ' ? <BootCampTypeAnalysis review={review} index={index} onSelect={choose}/> : <QuestionAnalysis key={q.id} question={dailyRCQuestion(q)} attempt={dailyRCResponse(q)} index={index} total={review.questions.length} onPrevious={()=>choose(index-1)} onNext={()=>choose(index+1)} onRevealEvidence={review.passage ? quote=>{setDetail(null);setEvidenceIndex(Math.max(0,evidence.findIndex(e=>e.quote===quote)));setPassageOpen(true)} : undefined}/> : null}</div></dialog>
   </section>
 }

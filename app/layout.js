@@ -4,6 +4,7 @@ import { Suspense } from "react"
 import MobileShell from "@/components/mobile/MobileShell"
 import Script from "next/script"
 import PostHogProvider from "../components/PostHogProvider"
+import AttributionCapture from "@/components/AttributionCapture"
 import TenantProvider from "@/components/providers/TenantProvider"
 import { headers } from "next/headers"
 import { resolveHostname } from "@/lib/tenant/resolveHostname"
@@ -61,12 +62,13 @@ export default function RootLayout({ children }) {
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
 
-    fbq('init', '1724851152297636');
+    fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID || "1724851152297636"}');
     fbq('track', 'PageView');
   `}
 </Script>
 
         <PostHogProvider />
+        <Suspense fallback={null}><AttributionCapture /></Suspense>
         <TenantProvider><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
         <noscript>
   <img
