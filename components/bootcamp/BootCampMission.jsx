@@ -85,7 +85,7 @@ export default function BootCampMission({ commentary, onContinue, busy, ready, b
 
     <section className={s.workoutSection} aria-labelledby="workout-title">
       <div className={s.workoutHeading}><div><p className={s.cardKicker}><span>03</span> THE SESSION</p><h2 id="workout-title">Today’s Workout</h2><p>Five clear steps. Birbal will review your reasoning after every activity.</p></div><div className={s.totalQuestions}><strong>{workoutTotal || '—'}</strong><span>QUESTIONS</span></div></div>
-      <ol className={s.workoutSequence}>{blocks.map((block,index)=><li className={s.workoutStep} key={`${block.label}-${index}`}><span className={s.stepNumber}>{String(index+1).padStart(2,'0')}</span><div className={s.stepInfo}><h3>{block.label}</h3><p>{block.questions} questions</p></div><span className={s.duration}>{block.duration}</span>{index<blocks.length-1&&<span className={s.stepConnector} aria-hidden="true"/>}</li>)}</ol>
+      <ol className={s.workoutSequence}>{blocks.map((block,index)=><li className={s.workoutStep} key={`${block.label}-${index}`}><span className={s.stepConnector} aria-hidden="true"/><span className={s.stepNumber}>{String(index+1).padStart(2,'0')}</span><div className={s.stepInfo}><h3>{block.label}</h3><p>{block.questions} questions</p></div><span className={s.duration}>{block.duration}</span></li>)}</ol>
     </section>
 
     <section className={s.missionCallout} aria-labelledby="today-mission-title">

@@ -31,4 +31,10 @@
 .passage{max-height:none;overflow:visible;overscroll-behavior:auto}
 
 .reflection h3{font-size:12px;font-weight:600;letter-spacing:.03em;color:#e1bc86;margin:0 0 10px}
+.workspace{grid-template-rows:auto auto minmax(0,1fr) auto auto}
+.reviewNavigator{display:flex;gap:8px;overflow-x:auto;padding:7px;border:1px solid #293f4c;border-radius:9px;background:#0c1822;scrollbar-width:thin}
+.reviewNavigator button{flex:1 0 auto;min-height:40px;padding:8px 14px;border:1px solid #334b58;border-radius:6px;background:#101e28;color:#a9bbc4;font-size:11px;font-weight:650;white-space:nowrap}
+.reviewNavigator button:hover{border-color:#527989;color:#e4f4f6}
+.reviewNavigator button.reviewCurrent{border-color:#68d3e6;background:#153743;color:#dffaff;box-shadow:inset 0 0 0 1px #68d3e6}
+.analysisBottom{margin:0 20px 18px;align-self:flex-start}
 @media(max-width:900px){.columns{align-items:stretch}}

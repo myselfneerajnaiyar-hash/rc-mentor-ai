@@ -162,9 +162,22 @@
 .totalQuestions span { font-size:9px }
 .stepInfo h3 { font-size:13px }
 .stepInfo p,.duration { font-size:11px }
+.workoutSequence { position:relative }
+.workoutSequence:before { content:"";position:absolute;z-index:0;top:15px;left:15px;right:calc(20% - 15px);height:2px;background:#385560;pointer-events:none }
+.workoutStep { position:relative;z-index:1;grid-template-columns:minmax(0,1fr);grid-template-rows:31px auto auto;column-gap:0 }
+.stepConnector { display:none }
+.stepNumber { grid-column:1;grid-row:1;position:relative;z-index:2 }
+.stepInfo { grid-column:1;grid-row:2;align-self:start;padding-top:5px }
+.duration { grid-column:1;grid-row:3;margin-top:3px }
 .calloutFooter { font-size:9px }
 .beginPanel p:last-child { font-size:12px }
 @media(max-width:760px) {
+  .workoutSequence { grid-template-columns:1fr }
+  .workoutSequence:before { top:14px;bottom:14px;left:13px;right:auto;width:2px;height:auto }
+  .workoutStep { grid-template-columns:28px minmax(0,1fr) auto;grid-template-rows:auto;align-items:center;column-gap:10px;min-height:54px;padding:0 }
+  .stepNumber { grid-column:1;grid-row:1 }
+  .stepInfo { grid-column:2;grid-row:1;align-self:center;padding-top:0 }
+  .duration { grid-column:3;grid-row:1;align-self:center;margin:0 }
   .progressStat>span { font-size:9px }
   .stepInfo h3 { font-size:12px }
   .stepInfo p,.duration { font-size:10px }

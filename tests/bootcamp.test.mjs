@@ -51,6 +51,23 @@ test('source contract: enriched only, exact composition, stable links, typed pos
   for(const change of [r=>r.document.status='draft',r=>r.document.content.warmup.pop(),r=>r.document.content.passages[0].questions[0].passageId='wrong',r=>r.document.content.verbalAbility[4].answer=3,r=>r.document.content.warmup[1].id=r.document.content.warmup[0].id]) { const changed=structuredClone(row);change(changed);assert.throws(()=>adaptDay(changed)) }
 })
 
+test('standalone Questions section is removed from passage and paragraph enrichment while prose usage remains',()=> {
+  const row=fixture(),passage=row.document.content.passages[0]
+  passage.text='Actual paragraph one.\n\nActual final paragraph.\n\nQuestions\nQ1. First question?\nQ2. Second question?'
+  row.document.enrichment[passage.id].passageFlow=[
+    {paragraph:1,simpleExplanation:'First paragraph.'},
+    {paragraph:2,simpleExplanation:'Final paragraph.'},
+    {paragraph:3,simpleExplanation:'Structural heading must not be analyzed.'}
+  ]
+  const {snapshot}=adaptDay(row),rc=snapshot.blocks[1]
+  const paragraphs=rc.passage.text.split(/\n\s*\n/).filter(Boolean)
+  assert.deepEqual(paragraphs,['Actual paragraph one.','Actual final paragraph.'])
+  assert.deepEqual(rc.passageAnalysis.passageFlow.map(item=>item.paragraph),[1,2])
+  assert.ok(!paragraphs.includes('Questions'))
+  const prose=fixture();prose.document.content.passages[0].text='The questions raised by the study remain unresolved.'
+  assert.equal(adaptDay(prose).snapshot.blocks[1].passage.text,'The questions raised by the study remain unresolved.')
+})
+
 test('all five outcomes: timeout keeps saved answers; unseen and presented remain distinct',()=> {
   const {snapshot}=adaptDay(fixture());let state=initialState(snapshot,1000)
   state.phase='activity'; const b=state.blocks[0]; b.status='active';b.started_at=new Date(1000).toISOString();b.deadline_at=new Date(10000).toISOString()
@@ -205,7 +222,9 @@ test('concurrent saves serialize; repeated start/finish cannot reset time or dou
 
 test('Daily RC review adapter preserves authored meaning, evidence, outcomes and display-only answer conversion',async()=> {
   const { dailyRCReview,dailyRCResponse,reviewObservation }=await import('../lib/bootcamp/review.mjs')
-  const {snapshot}=adaptDay(fixture()), block=snapshot.blocks[1]
+  const source=fixture(),passageId=source.document.content.passages[0].id
+  source.document.enrichment[passageId].vocabulary=[{word:'intellectual illusion',contextualMeaning:'The authored contextual meaning.',whyAuthorUsedIt:'The authored reason.'}]
+  const {snapshot}=adaptDay(source), block=snapshot.blocks[1]
   const review={key:'rc1',passage:block.passage,passageAnalysis:block.passageAnalysis,questions:block.questions.map((q,i)=>({...q,response:i===0?'A':null,outcome:i===0?'incorrect':i===1?'timed_out':'not_reached'}))}
   review.passageAnalysis.passageFlow=[{paragraph:1,simpleExplanation:'Meaning of the paragraph.',whyThisParagraphExists:'Introduces the claim.',catReadingDanger:'Overstating the claim.'}]
   const before=structuredClone(review), mapped=dailyRCReview(review)
@@ -216,7 +235,10 @@ test('Daily RC review adapter preserves authored meaning, evidence, outcomes and
   assert.equal(mapped.questions[0].question_enrichment.sourceAnalysis,review.questions[0].analysis)
   assert.equal(mapped.rcSet.passage_enrichment.passageFlow[0].simpleExplanation,undefined,'explanation must not be labelled as student thinking')
   assert.equal(mapped.rcSet.passage_enrichment.passageFlow[0].actualMeaning,review.passageAnalysis.passageFlow[0].simpleExplanation)
-  assert.ok(mapped.rcSet.passage_enrichment.reviewGaps.some(g=>g.includes('Vocabulary')))
+  assert.equal(mapped.rcSet.passage_enrichment.vocabulary[0].word,'intellectual illusion')
+  const enriched=dailyRCReview(review).rcSet.passage_enrichment.vocabulary[0]
+  assert.equal(enriched.word,'intellectual illusion')
+  assert.equal(enriched.contextualMeaning,'The authored contextual meaning.')
   assert.deepEqual(['correct','incorrect','skipped','not_reached','timed_out'].map(outcome=>dailyRCResponse({outcome}).outcomeLabel),['Correct','Incorrect','Skipped','Not reached','Timed out'])
   assert.match(reviewObservation(review).observation,/chose A/)
   assert.match(reviewObservation(review).confidence,/one response/)
@@ -325,6 +347,8 @@ test('completed report analytics reconcile all outcomes and whole-day trainer co
   assert.equal(report.total,25);assert.equal(report.answered,10);assert.equal(report.accuracy,50)
   for(const outcome of outcomes)assert.equal(report[outcome],5)
   assert.equal(report.elapsed_seconds,600);assert.equal(report.questionTypes.reduce((n,r)=>n+r.total,0),25)
+  assert.ok(new Set([...report.debrief.good,...report.debrief.attention].map(item=>item.interpretation)).size>1)
+  assert.match(report.debrief.good.map(item=>item.interpretation).join(' '),/passage warrants|central idea and scope/)
   assert.equal(report.timing.averageSeconds,13);assert.equal(report.timing.fastest.seconds,1);assert.equal(report.timing.slowest.seconds,25)
   assert.equal(chatContext(record).focus,null);assert.equal(chatContext(record).dayEvidence.flatMap(b=>b.questions).length,25)
   const context=coachContext(record);assert.equal(context.dayEvidence.length,5);assert.equal(context.report.total,25)
