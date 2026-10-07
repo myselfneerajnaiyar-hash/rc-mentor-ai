@@ -84,6 +84,8 @@ async function seedActive(key) {
 }
 async function submit(key) {
   const state=await seedActive(key)
+  const first=state.activity.questions[0]
+  if(first?.mode==='MCQ')await h.service.act(student,state.id,'responses',{key,revision:state.revision,questionId:first.id,presented:true,response:'A'})
   await page.goto(base+'/boot-camp/day/1')
   await click('Finish this block early'); await click('Finish and review')
   return state
@@ -152,6 +154,14 @@ try {
     check(calls.some(c=>c.op==='finish'&&c.id===state.id&&c.key===key&&c.phase==='review'),key+': click handler submits the correct attempt and block')
     check(calls.some(c=>c.op==='review'&&c.id===state.id&&c.key===key&&c.status===200),key+': matching authorized review data loads')
     check((await h.service.home(student)).attempt.phase==='review',key+': review load leaves saved state at review')
+    if(key==='rc1') {
+      await page.getByRole('button',{name:'Question 1: Incorrect',exact:true}).click()
+      check(await page.getByText('Causal Leap',{exact:true}).count()>=1,'question review displays the authored causal-leap trap')
+      check(await page.getByRole('heading',{name:'Why this option was tempting',exact:true}).isVisible(),'question review explains why the selected distractor was tempting')
+      check(await page.getByRole('region',{name:'Question evidence'}).getByText('The passage shows an association, but does not establish that peer review causes more accurate forecasts.',{exact:true}).isVisible(),'question review keeps the authored why-it-fails reasoning')
+      check(await page.getByRole('heading',{name:'What to notice next time',exact:true}).isVisible(),'question review turns the trap into an actionable next-time rule')
+      check(await page.getByText(/stable cognitive weakness|one response is not enough/i).count()===0,'question Birbal review omits repetitive confidence boilerplate')
+    }
     check(await page.getByRole('button',{name:next[key][0],exact:true}).isEnabled(),key+': continuation is ready without coaching')
     if(key==='va') {
       const reviewNav=page.getByRole('navigation',{name:'Completed block reviews'}).first()

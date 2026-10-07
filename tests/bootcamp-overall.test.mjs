@@ -31,6 +31,20 @@ test('empty, unanswered, missing timing, catch-up dates and Day 50 are truthful'
  const second=record(2);second.state.completed_at=r.state.completed_at;second.state.blocks.forEach(b=>{b.finished_at=r.state.completed_at;b.questions.forEach(q=>q.saved_at=r.state.completed_at)});assert.equal(buildOverallAnalytics([record(1),second],[],calendar).bestStreak,1)
  const day50=record(50);day50.state.completed_at='2026-11-23T10:00:00Z';day50.state.blocks.forEach(b=>{b.finished_at=day50.state.completed_at;b.questions.forEach(q=>q.saved_at=day50.state.completed_at)});assert.equal(buildOverallAnalytics([day50],[],getBootCampCalendarState('2026-11-23')).accuracyByDay[0].day,50)
 })
+test('overall profiles expose authored question types separately from selected distractor traps',()=>{
+ const records=[record(1,0),record(2,0),record(3,0)]
+ const result=buildOverallAnalytics(records,[],calendar)
+ assert.ok(result.accuracyByQuestionType.some(p=>p.name==='Author Tone'))
+ assert.ok(result.accuracyByQuestionType.some(p=>p.name==='Para Summary'))
+ assert.ok(result.accuracyBySkill.some(p=>p.name==='Inference'))
+ assert.equal(result.trapProfile.find(p=>p.name==='Causal Leap').count,6)
+ assert.equal(result.trapProfile.find(p=>p.name==='Half Truth / Partial Truth').count,6)
+ assert.equal(result.leadingTrap.name,'Causal Leap')
+ assert.match(result.leadingTrap.description,/cause-and-effect/)
+ const sparse=buildOverallAnalytics([record(1,0)],[],calendar)
+ assert.equal(sparse.leadingTrap,null)
+ assert.ok(sparse.trapProfile.every(p=>p.provisional))
+})
 test('development date is strict; deployed simulation requires an allowlisted Preview account',()=>{
  assert.equal(bootCampClock({NODE_ENV:'development',BOOTCAMP_TEST_DATE:'2026-10-05'}),'2026-10-05')
  assert.throws(()=>bootCampClock({NODE_ENV:'development',BOOTCAMP_TEST_DATE:'2026-02-30'}))

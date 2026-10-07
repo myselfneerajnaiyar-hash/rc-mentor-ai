@@ -104,7 +104,8 @@ test('unanswered, partial and explicitly abandoned records are participation, no
   assert.equal(c.history.participation.partiallyCompleted,1);assert.equal(c.history.participation.abandoned,1)
   assert.equal(c.history.participation.notStarted,1);assert.equal(c.history.participation.completed,1)
   assert.equal(c.history.participation.completionConsistency.started,3)
-  assert.equal(c.history.traps.find(p=>p.name==='Scope Shift').selections,16)
+  assert.equal(c.history.traps.find(p=>p.name==='Causal Leap').selections,1)
+  assert.equal(c.history.traps.find(p=>p.name==='Half Truth / Partial Truth').selections,1)
 })
 test('raw correction changes revision and briefing; fifty-day prompt excludes old source text and remains bounded',()=>{
   const records=Array.from({length:49},(_,i)=>completed(i+1,false));const before=context(records,50)
@@ -158,7 +159,7 @@ test('trap evidence counts selected distractors, and unanswered days do not sati
   const records=Array.from({length:6},(_,i)=>completed(i+1,false))
   for(const record of records)for(const b of record.snapshot.blocks)for(const q of b.questions)if(q.options.length)q.analysis.optionAnalysis.find(o=>o.optionId==='D').trapType='Other authored trap'
   const c=context(records,7)
-  const offered=c.history.traps.find(p=>p.name==='Other authored trap')
+  const offered=c.history.traps.find(p=>p.name==='Other')
   assert.ok(offered.overall.incorrect>0);assert.equal(offered.selections,0);assert.equal(offered.status,'no_current_signal')
   for(const r of records.filter(r=>![1,4].includes(r.day_number)))for(const b of r.state.blocks)for(const q of b.questions){q.outcome='not_reached';q.response=null}
   const sparse=context(records,7)

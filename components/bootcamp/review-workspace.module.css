@@ -37,4 +37,5 @@
 .reviewNavigator button:hover{border-color:#527989;color:#e4f4f6}
 .reviewNavigator button.reviewCurrent{border-color:#68d3e6;background:#153743;color:#dffaff;box-shadow:inset 0 0 0 1px #68d3e6}
 .analysisBottom{margin:0 20px 18px;align-self:flex-start}
+.selectedReasoning{margin-top:16px;padding:16px 18px;border:1px solid #4a5a60;border-left:3px solid #d8b77d;border-radius:7px;background:#18232b}.selectedReasoning .selectedLabel{font-size:10px;letter-spacing:.12em;color:#e4c58e;margin:0 0 12px}.selectedReasoning h3{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#92deed;margin:14px 0 5px}.selectedReasoning p{font-size:13px;line-height:1.65;color:#c7d2d7;margin:0}.selectedReasoning .trap{margin-top:14px}.selectedReasoning .trap ul{list-style:none;margin:0;padding:8px 0 0}.selectedReasoning .trap li{font-size:12px;line-height:1.65;color:#bdcbd1;padding:6px 0;border-top:1px solid #34424a}.selectedReasoning .trap li strong{color:#dce7e8}
 @media(max-width:900px){.columns{align-items:stretch}}

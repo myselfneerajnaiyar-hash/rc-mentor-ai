@@ -9,6 +9,9 @@ import { harness,student,other,fixture } from './helpers/bootcamp-db.mjs'
 const base=process.env.BOOTCAMP_TEST_BASE_URL || 'http://localhost:3111'
 assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname))
 const source=process.env.BOOTCAMP_SOURCE_FILE ? JSON.parse(await readFile(process.env.BOOTCAMP_SOURCE_FILE,'utf8')) : fixture()
+const firstPassageId=source.document.content.passages[0].id
+const vocabulary=source.document.enrichment[firstPassageId].vocabulary ||= []
+vocabulary.push({word:'intellectual illusion',contextualMeaning:'A belief that simplicity is self-evidently superior despite hidden complexity.',whyAuthorUsedIt:'Names the mistaken confidence the passage examines.'})
 const chatEvidence=[]
 let h=await harness(source,async()=>{throw Error('Exercise coaching fallback')},async(context,messages)=>{
   chatEvidence.push({context,messages})
@@ -50,15 +53,17 @@ const page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));pa
 const output=path.join(os.tmpdir(),'auctor-bootcamp-acceptance');await mkdir(output,{recursive:true})
 let checks=0
 const check=(condition,message)=>{assert.ok(condition,message);checks++;console.log('PASS',message)}
-async function click(name) {await page.getByRole('button',{name,exact:true}).click()}
+async function click(name) {await page.getByRole('button',{name,exact:true}).first().click()}
 try {
-  await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Enter Day 01',exact:true}).waitFor()
-  const calendar=page.getByRole('region',{name:'50-day training calendar'})
+  await page.goto(base+'/boot-camp');await page.getByRole('link',{name:/Start Day 01/}).waitFor()
+  const calendar=page.locator('#bootcamp-calendar')
+  await calendar.getByRole('button',{name:/SHOW MORE DAYS/}).click()
   check(await calendar.getByRole('table').count()===1,'only one month is visible')
-  check(await calendar.locator('[data-training-day]').count()===31,'October contains training days 1 through 31')
+  check(await calendar.locator('[data-training-day]').count()===27,'October shows training days 1 through 27 on the fixed Oct 5 start calendar')
   check(await calendar.getByRole('link').count()===1,'only Day 1 is actionable')
   await page.getByRole('tab',{name:'November 2026',exact:true}).click()
-  check(await calendar.locator('[data-training-day]').count()===19,'November completes the exact 50-day program')
+  await calendar.getByRole('button',{name:/SHOW MORE DAYS/}).click()
+  check(await calendar.locator('[data-training-day]').count()===23,'November shows the remaining scheduled training days')
   check(await calendar.getByRole('link').count()===0,'future month has no actionable days')
   await page.getByRole('tab',{name:'October 2026',exact:true}).click()
   await page.screenshot({path:path.join(output,'00-arena-desktop.png'),fullPage:true})
@@ -69,12 +74,12 @@ try {
   await page.getByText('Your training starts with five warm-up questions, followed by three RC passages and verbal ability.',{exact:true}).waitFor()
   check(chatEvidence.at(-1).context.day.status==='not_started','landing chat uses actual not-started context')
   check((await h.service.home(student)).attempt===null,'talking to Birbal does not create an attempt')
-  await click('Close Birbal conversation');await page.getByRole('link',{name:'Enter Day 01',exact:true}).click()
+  await click('Close Birbal conversation');await page.getByRole('link',{name:/Start Day 01/}).click()
   await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor()
   check(await page.getByRole('heading',{name:/Your training is ready/}).count()===0,'day opens directly on its training mission')
-  await page.getByRole('button',{name:'Begin my warm-up',exact:true}).waitFor()
+  await page.getByRole('button',{name:/Begin Day 1/}).waitFor()
   await page.screenshot({path:path.join(output,'01-mission.png'),fullPage:true,animations:'disabled'})
-  await click('Begin my warm-up');await click('Start Warm-up')
+  await page.getByRole('button',{name:/Begin Day 1/}).click();await page.getByRole('button',{name:/Start Warm-up/}).click()
   let live=(await h.service.home(student)).attempt
   await page.reload();await page.getByRole('heading',{name:'Warm-up',exact:true}).waitFor()
   check((await h.service.home(student)).attempt.id===live.id,'refresh resumes the same warm-up attempt');await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'Continue Day 01',exact:true}).click();await page.getByRole('heading',{name:'Warm-up',exact:true}).waitFor();check((await h.service.home(student)).attempt.id===live.id,'calendar continues the existing attempt')
@@ -148,7 +153,7 @@ try {
         check(await detail.getByRole('navigation',{name:'Detailed review sections'}).getByRole('button').count()===5,'all five shared passage review tabs retained')
         await detail.getByRole('button',{name:'Blueprint',exact:true}).click();check(await detail.getByText(review.passageAnalysis.coreTheme,{exact:true}).isVisible(),'authored blueprint retained')
         await detail.getByRole('button',{name:'Paragraphs',exact:true}).click();await detail.getByRole('button',{name:'Paragraph 1',exact:true}).click();if(review.passageAnalysis.passageFlow.length) check(await detail.getByText(review.passageAnalysis.passageFlow[0].simpleExplanation,{exact:true}).isVisible(),'paragraph meaning retained'); else check(await detail.getByText(review.passage.text,{exact:true}).isVisible(),'original paragraph retained when enrichment has no paragraph explanation')
-        await detail.getByRole('button',{name:'Vocabulary',exact:true}).click();check(await detail.getByText('Vocabulary intelligence is not supplied for this passage.',{exact:true}).isVisible(),'vocabulary gap remains explicit');await click('Back to review')
+        await detail.getByRole('button',{name:'Vocabulary',exact:true}).click();check(await detail.getByText('intellectual illusion',{exact:true}).isVisible(),'authored vocabulary appears in the detailed passage review');await click('Back to review')
         check((await page.getByRole('region',{name:'Passage debrief'}).boundingBox()).width>1000,'passage debrief spans the desktop workspace')
         await page.screenshot({path:path.join(output,'02-rc-workspace-desktop.png'),fullPage:true})
         check((await page.getByRole('region',{name:'Passage debrief'}).boundingBox()).height>200,'passage lesson has substantial space')
@@ -165,7 +170,7 @@ try {
       check(await page.getByRole('textbox',{name:'Message Birbal'}).inputValue()==='Why did I get Q3 wrong?','failed chat retains the question for retry')
       await click('Send message');await page.getByText(`Let's discuss RC 1, question 3. Your saved answer was ${review.questions[2].response}.`,{exact:true}).waitFor()
       const supplied=chatEvidence.at(-1).context
-      check(supplied.currentQuestion.number===3 && supplied.currentQuestion.id===review.questions[2].id && supplied.currentQuestion.confidence.includes('one response'),'chat is anchored to the selected Q3 and its interpretation')
+      check(supplied.currentQuestion.number===3 && supplied.currentQuestion.id===review.questions[2].id && supplied.currentQuestion.confidence===undefined,'chat is anchored to the selected Q3 without generic confidence boilerplate')
       check(supplied.focus.key==='rc1' && supplied.focus.questions.length===4 && !!supplied.focus.passageEnrichment,'Ask Birbal supplies the exact completed RC block')
       check(supplied.focus.questions[2].answer===review.questions[2].answer && supplied.focus.questions[2].analysis.evidence.length>0,'chat receives Q3 answer and evidence from protected server review')
       await page.getByRole('textbox',{name:'Message Birbal'}).fill('Which evidence supports that?');await click('Send message')
@@ -179,7 +184,7 @@ try {
     }
     check(await page.getByRole('button',{name:/Hear Birbal/}).count()===0,'no intermediate review CTA');
     await page.getByRole('button',{name:['Continue to RC 1','Continue to RC 2','Continue to RC 3','Continue to Verbal Ability','Continue to Day Report'][bi],exact:true}).waitFor()
-    if(bi===1) {await page.reload();await page.getByRole('button',{name:'Continue to RC 2',exact:true}).waitFor();check((await h.service.home(student)).attempt.phase==='review','refresh resumes cached Birbal commentary');check(await page.getByRole('button',{name:'Question 3: Correct',exact:true}).getAttribute('aria-current')==='true','selected review question survives reflection and refresh');await page.getByText('Confidence',{exact:true}).waitFor();check(await page.getByText('Observation',{exact:true}).isVisible(),'Birbal reloads reviewed response evidence after refresh')}
+    if(bi===1) {await page.reload();await page.getByRole('button',{name:'Continue to RC 2',exact:true}).waitFor();check((await h.service.home(student)).attempt.phase==='review','refresh resumes cached Birbal commentary');check(await page.getByRole('button',{name:'Question 3: Correct',exact:true}).getAttribute('aria-current')==='true','selected review question survives reflection and refresh');await page.getByText('What you chose',{exact:true}).waitFor();check(await page.getByText('Why this answer works',{exact:true}).isVisible(),'Birbal reloads reviewed response evidence without a confidence disclaimer')}
     await click(['Continue to RC 1','Continue to RC 2','Continue to RC 3','Continue to Verbal Ability','Continue to Day Report'][bi])
   }
   await page.getByRole('heading',{name:'DAY 01 COMPLETE',exact:true}).waitFor();
@@ -201,9 +206,11 @@ try {
   check(await resumed.getByRole('region',{name:'Training complete'}).count()===0,'resuming the completed day during celebration does not replay it');
   await resumed.close();
   await page.screenshot({path:path.join(output,'report-celebration.png'),fullPage:true,animations:'disabled'});await click('See my Day 01 report');
-  await page.getByRole('heading',{name:"Here's what today's training revealed.",exact:true}).waitFor()
+  await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor()
   const final=(await h.service.home(student)).attempt
   check(final.report.score===25 && final.report.coverage===100 && final.report.accuracy===100,'complete Day 1 report reconciles all 25 answers')
+  const reflection=page.locator('[class*="insightGrid"] [class*="advice"]')
+  check(await reflection.evaluate(el=>{const children=[...el.children];return children[0]?.textContent.includes('BIRBAL’S BLOCK REFLECTION')&&children[1]?.tagName==='P'&&children[2]?.textContent.includes('Ask Birbal')}),'Ask Birbal appears immediately below Birbal’s block reflection')
   await page.waitForURL('**/boot-camp/day/1/report');
   check(await page.getByRole('link',{name:/Go to today's mission/}).count()===0,'Day 2 stays unavailable');
   await click('Ask Birbal');await page.getByRole('textbox',{name:'Message Birbal'}).fill('Compare RC1 and VA. What should I focus on tomorrow?');await click('Send message');
@@ -223,22 +230,22 @@ try {
   await page.screenshot({path:path.join(output,'04-report-desktop.png'),fullPage:true,animations:'disabled'})
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{window.scrollTo(0,0);document.body.scrollTo(0,0)});await page.screenshot({path:path.join(output,'05-report-mobile.png'),fullPage:true,animations:'disabled'})
   check(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile report has no horizontal overflow')
-  await page.reload();await page.getByRole('heading',{name:"Here's what today's training revealed.",exact:true}).waitFor()
-  check((await h.service.home(student)).attempt.report.score===25,'completed report survives refresh');check(await page.getByRole('region',{name:'Training complete'}).count()===0,'returning to report does not replay celebration');await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'View Day 01 Report',exact:true}).click();await page.getByRole('heading',{name:"Here's what today's training revealed.",exact:true}).waitFor();check((await h.service.home(student)).attempt.report.score===25,'completed calendar returns to the saved report')
+  await page.reload();await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor()
+  check((await h.service.home(student)).attempt.report.score===25,'completed report survives refresh');check(await page.getByRole('region',{name:'Training complete'}).count()===0,'returning to report does not replay celebration');await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'View Day 01 Report',exact:true}).click();await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor();check((await h.service.home(student)).attempt.report.score===25,'completed calendar returns to the saved report')
   check(leaks.length===0,'activity responses contain no protected keys or analysis')
   check(errors.length===0,'no browser JavaScript exceptions')
   await assert.rejects(h.service.get(other,final.id));check(true,'another authenticated student cannot read the attempt')
   check(h.calls.every(c=>c.name?.startsWith('bootcamp_')||c.table?.startsWith('bootcamp_')),'all persistence calls stay inside Boot Camp')
   await h.close(); h=await harness(source)
   await page.goto(base+'/boot-camp/day/1')
-  await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor();await click('Begin my warm-up');await click('Start Warm-up')
+  await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor();await page.getByRole('button',{name:/Begin Day 1/}).click();await page.getByRole('button',{name:/Start Warm-up/}).click()
   const warm=source.document.content.warmup
   const wrong=warm[0].options.find(o=>o.id!==warm[0].answer)
   failNextAnswer=true
   await page.getByRole('button',{name:wrong.id+' '+wrong.text,exact:true}).click()
-  await page.getByRole('button',{name:'Retry saving answer',exact:true}).waitFor()
+  await page.getByRole('button',{name:'Retry sync',exact:true}).waitFor()
   check((await h.service.home(student)).attempt.activity.responses[0].response===null,'failed save is not falsely recorded')
-  await click('Retry saving answer');await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor()
+  await click('Retry sync');await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor()
   check((await h.service.home(student)).attempt.activity.responses[0].response===wrong.id,'retry preserves and saves the chosen answer')
   await click('Next question →')
   const right=warm[1].options.find(o=>o.id===warm[1].answer)
@@ -254,7 +261,7 @@ try {
   let edge=(await h.service.home(student)).attempt
   check(JSON.stringify((await h.service.review(student,edge.id,'warmup')).questions.map(q=>q.outcome))===JSON.stringify(['incorrect','correct','skipped','not_reached','not_reached']),'manual finish distinguishes incorrect, correct, skipped and not reached')
   check(await page.getByLabel('All answer options').getByText(wrong.text,{exact:true}).isVisible(),'incorrect selected option remains visible in shared review');
-  check(await page.getByRole('button',{name:/Hear Birbal/}).count()===0,'no intermediate review CTA');await page.getByText('Observation',{exact:true}).waitFor();check(await page.getByText(`On question 1, you chose ${wrong.id}. This answer was incorrect.`,{exact:true}).isVisible(),'Birbal observation uses actual incorrect response');await click('Continue to RC 1');await click('Start RC 1')
+  check(await page.getByRole('button',{name:/Hear Birbal/}).count()===0,'no intermediate review CTA');await page.getByText('What you chose',{exact:true}).waitFor();check(await page.getByText(`On question 1, you chose ${wrong.id}. This answer was incorrect.`,{exact:true}).isVisible(),'Birbal observation uses actual incorrect response');await click('Continue to RC 1');await click('Start RC 1')
   const rc=source.document.content.passages[0].questions[0], option=rc.options.find(o=>o.id===rc.answer)
   await page.getByRole('button',{name:option.id+' '+option.text,exact:true}).click()
   await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor();await click('Next question →')

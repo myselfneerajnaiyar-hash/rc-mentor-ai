@@ -241,7 +241,10 @@ test('Daily RC review adapter preserves authored meaning, evidence, outcomes and
   assert.equal(enriched.contextualMeaning,'The authored contextual meaning.')
   assert.deepEqual(['correct','incorrect','skipped','not_reached','timed_out'].map(outcome=>dailyRCResponse({outcome}).outcomeLabel),['Correct','Incorrect','Skipped','Not reached','Timed out'])
   assert.match(reviewObservation(review).observation,/chose A/)
-  assert.match(reviewObservation(review).confidence,/one response/)
+  const insight=reviewObservation(review)
+  assert.equal(insight.trap,'Causal Leap')
+  assert.match(insight.tempting,/peer-reviewed manuscripts/)
+  assert.equal(insight.confidence,undefined,'question review does not repeat generic confidence disclaimers')
 })
 
 test('calendar derives exactly 50 training dates and Monday-first placement from start date',async()=>{
@@ -325,7 +328,7 @@ test('selected-question chat uses server evidence and rejects questions outside 
   block.questions[2].response=null;block.questions[2].outcome='timed_out'
   const unanswered=chatContext(record,'rc1',[],q.id)
   assert.match(unanswered.currentQuestion.observation,/timed out/)
-  assert.match(unanswered.currentQuestion.interpretation,/no selected-response evidence/)
+  assert.match(unanswered.currentQuestion.interpretation,/No selected option/)
 })
 
 test('completed report analytics reconcile all outcomes and whole-day trainer context stays server-side',async()=>{
@@ -358,4 +361,31 @@ test('completed report analytics reconcile all outcomes and whole-day trainer co
   for(const b of state.blocks)for(const q of b.questions)q.active_ms=0
   assert.equal(reportDetails(record,state.report).timing.averageSeconds,null)
   state.blocks[4].status='pending';assert.equal(completedEvidence(record).length,4)
+})
+
+test('report ties observed question types to authored distractor traps and concise lessons',async()=>{
+  const {reportDetails}=await import('../lib/bootcamp/report.mjs')
+  const {buildReport}=await import('../lib/bootcamp/session.mjs')
+  const {fallbackCoach}=await import('../lib/bootcamp/coach.mjs')
+  const {snapshot}=adaptDay(fixture()),state=initialState(snapshot)
+  for(const [i,b] of state.blocks.entries()) {
+    b.status='completed'
+    for(const [n,q] of b.questions.entries()){q.response=snapshot.blocks[i].questions[n].answer;q.outcome='correct';q.active_ms=1000}
+    b.result={correct:b.questions.length,total:b.questions.length,answered:b.questions.length,incorrect:0,skipped:0,not_reached:0,timed_out:0,accuracy:100,coverage:100,elapsed_seconds:20}
+  }
+  const rc=state.blocks[1].questions[0],half=state.blocks[1].questions[1]
+  rc.response='A';rc.outcome='incorrect';state.blocks[1].result.incorrect=1;state.blocks[1].result.correct--
+  half.response='A';half.outcome='incorrect';state.blocks[1].result.incorrect++;state.blocks[1].result.correct--
+  state.status='completed';state.phase='report';state.current_block=4;state.report=buildReport(state,snapshot)
+  const record={id:student,day_number:1,state,snapshot},report=reportDetails(record,state.report)
+  const {reviewObservation}=await import('../lib/bootcamp/review.mjs')
+  const halfInsight=reviewObservation({questions:[{...snapshot.blocks[1].questions[1],...state.blocks[1].questions[1]}]})
+  assert.equal(halfInsight.trap,'Half Truth / Partial Truth')
+  assert.match(halfInsight.interpretation,/leaves out the author’s qualification/)
+  assert.match(report.debrief.blockReflection,/1 Causal Leap distractor and 1 Half Truth \/ Partial Truth distractor/)
+  assert.match(report.debrief.focus,/Inference — especially causal leap/)
+  assert.deepEqual(report.debrief.lessons.map(x=>x.trap),['Causal Leap','Half Truth / Partial Truth'])
+  assert.doesNotMatch(JSON.stringify(report.debrief),/stable cognitive weakness|one response is not enough|confidence/i)
+  const commentary=fallbackCoach(record)
+  assert.match(commentary.text,/Causal Leap/);assert.match(commentary.focus,/Inference/)
 })

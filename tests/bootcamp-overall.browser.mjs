@@ -55,7 +55,7 @@ const check=(condition,message)=>{assert.ok(condition,message);checks++;console.
 for(let day=2;day<=10;day++){const row=fixture(day);await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at])}
 
 try {
- today='2026-10-10'
+ today='2026-10-14'
  await page.goto(base+'/boot-camp/analytics');await page.getByText('Your accuracy trajectory',{exact:true}).waitFor()
  check(await page.getByText('Your training profile is taking shape.',{exact:false}).count()>0,'empty profile renders without fabricated accuracy')
  await h.service.enroll(student)
