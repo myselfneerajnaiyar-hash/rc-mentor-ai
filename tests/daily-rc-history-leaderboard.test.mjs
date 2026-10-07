@@ -63,11 +63,12 @@ test("leaderboard set selection isolates categories; completed attempts use the 
   assert.deepEqual(dailySet.map(row => row.id), ["billie"])
   assert.deepEqual(catSet.map(row => row.id), ["cat-today"])
 
-  const [savePage, leaderboardRoute, leaderboardData, weeklyRoute, section, component] = await Promise.all([
+  const [savePage, leaderboardRoute, leaderboardData, weeklyRoute, weeklyData, section, component] = await Promise.all([
     readFile(new URL("../app/daily-challenge/test/page.jsx", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-leaderboard/route.js", import.meta.url), "utf8"),
     readFile(new URL("../lib/dailyRc/leaderboard.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/api/rc-weekly-challenge/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/weeklyRcCompetition.js", import.meta.url), "utf8"),
     readFile(new URL("../components/home-v2/LeaderboardSection.jsx", import.meta.url), "utf8"),
     readFile(new URL("../components/RCLeaderboard.jsx", import.meta.url), "utf8"),
   ])
@@ -81,7 +82,9 @@ test("leaderboard set selection isolates categories; completed attempts use the 
   assert.match(leaderboardData, /\.order\("score", \{ ascending: false \}\)/)
   assert.match(leaderboardData, /\.order\("time_taken", \{ ascending: true \}\)/)
   assert.match(leaderboardData, /\.maybeSingle\(\)/)
-  assert.match(weeklyRoute, /\.eq\("category", "cat_pyq"\)/)
+  assert.match(weeklyRoute, /loadWeeklyRcStandings\(supabase, window\)/)
+  assert.match(weeklyData, /\.eq\("category", "daily_rc_challenge"\)/)
+  assert.match(weeklyData, /\.eq\("is_published", true\)/)
   assert.doesNotMatch(section, /label: "CAT PYQ"/)
   assert.doesNotMatch(section, /<RCLeaderboard category="cat_pyq"\s*\/>/)
   assert.match(section, /isCAT\s*\?\s*"daily-rc-challenge"/)
