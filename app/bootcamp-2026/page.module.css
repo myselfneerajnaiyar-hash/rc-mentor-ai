@@ -1,0 +1,2479 @@
+.page {
+  --navy: #07131d;
+  --navy-2: #0c1b27;
+  --navy-3: #102331;
+
+  --white: #f4f1eb;
+  --cream: #eee6d8;
+  --muted: #9aa6ad;
+  --muted-2: #687780;
+
+  --orange: #f5a447;
+  --orange-dark: #d77a20;
+
+  --line: rgba(238, 230, 216, 0.13);
+
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1320px;
+
+  margin: 0 auto;
+  padding: 0 24px 60px;
+
+  background: var(--navy);
+  color: var(--white);
+
+  overflow: hidden;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.page a {
+  color: inherit;
+}
+
+.page img {
+  display: block;
+  max-width: 100%;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  color: var(--white);
+  text-decoration: none;
+
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.headerCountdown {
+  color: var(--muted);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.headerCountdown strong {
+  color: var(--orange);
+}
+
+.cta {
+  min-height: 54px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  padding: 0 24px;
+
+  background: var(--orange);
+  color: #07131d !important;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  background: #ffb45b;
+}
+
+.headerCta {
+  min-height: 44px;
+
+  background: transparent;
+  color: var(--white) !important;
+
+  border: 1px solid var(--line);
+}
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 48px;
+
+  padding: 0 14px;
+
+  border-left: 3px solid var(--orange);
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  background: rgba(255,255,255,0.025);
+
+  font-size: 11px;
+}
+
+.countdown strong {
+  color: var(--white);
+
+  font-size: 20px;
+  line-height: 1;
+}
+
+.countdown small {
+  margin-left: 5px;
+
+  color: var(--orange);
+
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.countdownDate {
+  padding-left: 12px;
+
+  border-left: 1px solid var(--line);
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.countdownCompact {
+  min-height: 42px;
+
+  border: 0;
+  background: transparent;
+}
+
+.countdownCompact .countdownDate {
+  display: none;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  min-height: 610px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(480px, 1fr);
+
+  align-items: center;
+
+  gap: 58px;
+
+  padding: 72px 0 78px;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 2;
+
+  max-width: 700px;
+}
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 23px;
+
+  color: var(--orange);
+
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+
+  font-size: clamp(58px, 5vw, 74px);
+  line-height: 0.96;
+
+  font-weight: 850;
+  letter-spacing: -0.06em;
+}
+
+.hero h1 em {
+  color: var(--orange);
+
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.92em;
+
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+
+.heroDescription {
+  max-width: 630px;
+
+  margin: 34px 0 32px;
+
+  color: #c3c6c4;
+
+  font-size: 19px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-width: 390px;
+  min-height: 64px;
+  padding: 0 32px;
+  margin-top: 10px;
+  background: #176044;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.heroCta span {
+  font-size: inherit;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.heroCta > span:last-child {
+  font-size: 23px;
+  color: #ffffff;
+}
+
+.heroCta:hover {
+  transform: translateY(-2px);
+  background: #207653;
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 26px;
+  color: var(--white);
+}
+
+.heroMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 13px;
+  color: var(--white);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  border-right: 1px solid rgba(244, 241, 235, 0.18);
+}
+
+.heroMeta span:first-child {
+  padding-left: 0;
+}
+
+.heroMeta span:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.heroMeta svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  color: var(--orange);
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.heroMeta strong {
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.heroMeta em {
+  color: rgba(244, 241, 235, 0.82);
+  font-style: normal;
+  font-size: 12px;
+}
+.heroMeta i {
+  color: var(--orange);
+
+  font-style: normal;
+}
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
+
+.heroVisual {
+  position: relative;
+
+  min-width: 0;
+}
+
+.heroImageFrame {
+  position: relative;
+
+  width: 100%;
+  height: 510px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(238,230,216,0.16);
+
+  background: var(--navy-2);
+}
+
+.heroImageFrame::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,19,29,0.02) 20%,
+      rgba(7,19,29,0.62) 100%
+    );
+
+  pointer-events: none;
+}
+
+.heroImageFrame img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center 42%;
+
+  filter:
+    saturate(0.78)
+    contrast(1.05);
+}
+
+.heroImageCaption {
+  position: absolute;
+  left: 26px;
+  bottom: 25px;
+
+  z-index: 2;
+
+  max-width: 280px;
+
+  padding: 14px 17px;
+
+  background: var(--navy);
+
+  border-left: 3px solid var(--orange);
+}
+
+.heroImageCaption span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--orange);
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.heroImageCaption strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.heroAnnotation {
+  position: absolute;
+  right: -1px;
+  top: 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 12px 15px;
+
+  background: var(--orange);
+  color: var(--navy);
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.heroAnnotation strong {
+  font-size: 11px;
+}
+
+.heroAnnotation strong {
+  font-size: 11px;
+}
+
+/* =========================================================
+   INTRO STRIP
+========================================================= */
+
+.introStrip {
+  min-height: 112px;
+
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+
+  align-items: center;
+
+  gap: 35px;
+
+  padding: 20px 24px;
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.introStrip > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.introStrip > div span {
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.introStrip > div strong {
+  color: var(--orange);
+
+  font-size: 18px;
+}
+
+.introStrip p {
+  margin: 0;
+
+  color: var(--cream);
+
+  font-size: 15px;
+}
+
+.introStrip .countdown {
+  border-left: 0;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.loopSection,
+.productSection,
+.diagnosisSection,
+.journeySection,
+.testimonialsSection {
+  padding-top: 125px;
+}
+
+.sectionHeader {
+  max-width: 820px;
+
+  margin-bottom: 55px;
+}
+
+.sectionHeader h2,
+.diagnosisIntro h2,
+.birbalCopy h2 {
+  margin: 0;
+
+  font-size: clamp(52px, 5vw, 78px);
+  line-height: 0.95;
+
+  font-weight: 800;
+  letter-spacing: -0.065em;
+}
+
+.sectionHeader h2 em,
+.diagnosisIntro h2 em,
+.birbalCopy h2 em {
+  font-family: Georgia, 'Times New Roman', serif;
+
+  font-style: italic;
+  font-weight: 500;
+}
+
+.sectionHeader > p {
+  max-width: 590px;
+
+  margin: 22px 0 0;
+
+  color: var(--muted);
+
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   GUIDED TRAINING STORY
+========================================================= */
+
+.loopHeader {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: end;
+  gap: 80px;
+  margin-bottom: 55px;
+}
+
+.loopHeader h2 {
+  margin: 14px 0 0;
+  font-size: clamp(54px, 5.5vw, 82px);
+  line-height: 0.92;
+  font-weight: 800;
+  letter-spacing: -0.065em;
+}
+
+.loopHeader h2 em {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.loopHeader > p {
+  max-width: 570px;
+  margin: 0 0 5px;
+  color: var(--cream);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   THREE TRAINING PANELS
+========================================================= */
+
+.trainingStory {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.storyCard {
+  min-width: 0;
+  padding: 25px 25px 28px;
+  border-right: 1px solid var(--line);
+}
+
+.storyCard:last-child {
+  border-right: 0;
+}
+
+.storyCardDark {
+  background: var(--navy-2);
+}
+
+.storyCardAdapt {
+  background: rgba(245, 164, 71, 0.035);
+}
+
+.storyTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.storyTop > span:first-child {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.storyTop > span:last-child {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   01 — DAILY MISSION
+========================================================= */
+
+.missionVisual {
+  min-height: 365px;
+  padding: 20px;
+  background: #f1ede5;
+  color: var(--navy);
+}
+
+.missionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(7, 19, 29, 0.12);
+}
+
+.missionHeader div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.missionHeader small {
+  color: var(--orange-dark);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.missionHeader strong {
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+
+.missionTime {
+  padding: 6px 8px;
+  border: 1px solid rgba(7, 19, 29, 0.15);
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.missionRows {
+  display: flex;
+  flex-direction: column;
+}
+
+.missionRow {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 70px;
+  border-bottom: 1px solid rgba(7, 19, 29, 0.1);
+}
+
+.missionRow:last-child {
+  border-bottom: 0;
+}
+
+.rowNumber {
+  color: var(--orange-dark);
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.missionRow div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.missionRow strong {
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+.missionRow small {
+  color: var(--muted-2);
+  font-size: 9px;
+}
+
+.rowCheck {
+  color: #176044;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.rowArrow {
+  color: var(--orange-dark);
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   02 — BIRBAL
+========================================================= */
+
+.birbalVisual {
+  min-height: 365px;
+  padding: 20px;
+  background: #0a1822;
+  border: 1px solid rgba(238, 230, 216, 0.12);
+}
+
+.birbalVisualHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.birbalVisualHeader span {
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.birbalVisualHeader small {
+  color: var(--muted);
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.studentMistake {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.studentMistake small,
+.birbalMessage small {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.studentMistake strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 9px;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-size: 11px;
+}
+
+.studentMistake p {
+  max-width: 310px;
+  margin: 0;
+  color: var(--cream);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.birbalMessage {
+  padding-top: 18px;
+}
+
+.birbalMessage > strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--cream);
+  font-size: 22px;
+  letter-spacing: -0.04em;
+}
+
+.birbalMessage > p {
+  margin: 0;
+  color: #aeb8bd;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.birbalMessage > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.birbalMessage > div span {
+  color: var(--orange);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.birbalMessage > div strong {
+  color: var(--cream);
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   03 — NEXT MOVE
+========================================================= */
+
+.adaptVisual {
+  min-height: 365px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: var(--navy-2);
+  border: 1px solid var(--line);
+}
+
+.adaptTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.adaptTitle small {
+  color: var(--orange);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.adaptTitle strong {
+  max-width: 300px;
+  color: var(--cream);
+  font-size: 21px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.journeyMini {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 30px 0;
+}
+
+.journeyMiniStep {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.journeyMiniStep span {
+  color: var(--orange);
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.journeyMiniStep strong {
+  color: var(--cream);
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.journeyMiniStep small {
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.3;
+}
+
+.journeyMiniLine {
+  flex: 1;
+  height: 1px;
+  margin: 0 10px;
+  background: var(--line);
+}
+
+.adaptBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+}
+
+.adaptBottom span {
+  color: var(--orange);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.adaptBottom strong {
+  color: var(--cream);
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   PANEL CAPTIONS
+========================================================= */
+
+.storyCaption {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 19px;
+}
+
+.storyCaption strong {
+  color: var(--cream);
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+.storyCaption span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+/* =========================================================
+   PRODUCT SHOWCASE
+========================================================= */
+
+.productShowcase {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  background: var(--navy-2);
+}
+
+.productTop {
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 27px;
+
+  border-bottom: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.productTop span:first-child {
+  color: var(--orange);
+}
+
+.productWorkout {
+  padding: 8px 27px;
+}
+
+.workoutRow {
+  min-height: 82px;
+
+  display: grid;
+  grid-template-columns: 65px 1fr 260px 30px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.workoutNumber {
+  color: var(--orange);
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.workoutRow strong {
+  font-size: 18px;
+  letter-spacing: -0.025em;
+}
+
+.workoutDetail {
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.workoutArrow {
+  color: var(--orange);
+
+  font-size: 18px;
+}
+
+.productBottom {
+  min-height: 88px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 20px 27px;
+}
+
+.productBottom span {
+  color: var(--orange);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.productBottom strong {
+  font-size: 14px;
+}
+
+/* =========================================================
+   DIAGNOSIS
+========================================================= */
+
+.diagnosisIntro {
+  margin-bottom: 55px;
+}
+
+.diagnosisGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.answerPanel,
+.birbalDiagnosis {
+  min-height: 370px;
+
+  padding: 35px;
+}
+
+.answerPanel {
+  border-right: 1px solid var(--line);
+}
+
+.panelLabel {
+  margin-bottom: 45px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.answerPanel p {
+  max-width: 520px;
+
+  margin: 0;
+
+  color: var(--cream);
+
+  font-family: Georgia, 'Times New Roman', serif;
+
+  font-size: 25px;
+  line-height: 1.35;
+}
+
+.answerChoice {
+  width: 52px;
+  height: 52px;
+
+  display: grid;
+  place-items: center;
+
+  margin-top: 35px;
+
+  border: 1px solid var(--orange);
+
+  color: var(--orange);
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.birbalDiagnosis {
+  background: var(--cream);
+  color: var(--navy);
+}
+
+.birbalDiagnosis .panelLabel {
+  color: var(--orange-dark);
+}
+
+.birbalDiagnosis h3 {
+  margin: 0 0 18px;
+
+  font-size: 46px;
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  text-transform: uppercase;
+}
+
+.birbalDiagnosis p {
+  max-width: 520px;
+
+  margin: 0;
+
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.nextTime {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-top: 32px;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(7,19,29,0.16);
+}
+
+.nextTime span {
+  color: var(--orange-dark);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.nextTime strong {
+  max-width: 500px;
+
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   JOURNEY
+========================================================= */
+
+.journeyLine {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  padding-top: 35px;
+
+  border-top: 1px solid var(--line);
+}
+
+.journeyItem {
+  position: relative;
+
+  min-height: 140px;
+
+  padding-right: 20px;
+}
+
+.journeyDot {
+  width: 9px;
+  height: 9px;
+
+  margin-bottom: 24px;
+
+  border-radius: 50%;
+
+  background: var(--orange);
+}
+
+.journeyConnector {
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  right: 0;
+
+  height: 1px;
+
+  background: var(--line);
+}
+
+.journeyItem > span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: var(--orange);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.journeyItem strong {
+  display: block;
+
+  max-width: 150px;
+
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+/* =========================================================
+   TESTIMONIALS
+========================================================= */
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.testimonial {
+  min-height: 260px;
+
+  padding: 28px;
+
+  border-right: 1px solid var(--line);
+}
+
+.testimonial:last-child {
+  border-right: 0;
+}
+
+.initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 38px;
+
+  border: 1px solid var(--orange);
+
+  color: var(--orange);
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.testimonial blockquote {
+  max-width: 380px;
+
+  margin: 0;
+
+  color: var(--cream);
+
+  font-family: Georgia, 'Times New Roman', serif;
+
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.testimonialPerson {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 35px;
+}
+
+.testimonialPerson strong {
+  font-size: 12px;
+}
+
+.testimonialPerson span {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   BIRBAL
+========================================================= */
+
+.birbalSection {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+
+  align-items: center;
+
+  gap: 75px;
+
+  margin-top: 125px;
+
+  padding: 55px;
+
+  background: var(--navy-2);
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.birbalImage {
+  min-height: 350px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #102a3a;
+}
+
+.birbalImage img {
+  width: 330px;
+  height: 330px;
+
+  object-fit: contain;
+}
+
+.birbalCopy > p {
+  max-width: 580px;
+
+  margin: 25px 0 35px;
+
+  color: var(--muted);
+
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.birbalPoints {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  border-top: 1px solid var(--line);
+}
+
+.birbalPoints > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+
+  min-height: 105px;
+
+  padding: 18px 14px 0;
+
+  border-right: 1px solid var(--line);
+}
+
+.birbalPoints > div:last-child {
+  border-right: 0;
+}
+
+.birbalPoints span {
+  color: var(--orange);
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.birbalPoints strong {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* =========================================================
+   OFFER
+========================================================= */
+
+.offerSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 90px;
+
+  margin-top: 125px;
+
+  padding: 55px;
+
+  background: var(--cream);
+  color: var(--navy);
+}
+
+.offerEyebrow {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: var(--orange-dark);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.offerCopy h2 {
+  margin: 0;
+
+  font-size: clamp(55px, 5.5vw, 82px);
+  line-height: 0.92;
+
+  letter-spacing: -0.065em;
+}
+
+.offerCopy h2 em {
+  font-family: Georgia, 'Times New Roman', serif;
+
+  font-style: italic;
+  font-weight: 500;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+
+  gap: 12px;
+
+  margin: 28px 0;
+}
+
+.price del {
+  color: rgba(7,19,29,0.45);
+
+  font-size: 13px;
+}
+
+.price strong {
+  color: var(--orange-dark);
+
+  font-size: 58px;
+  line-height: 1;
+
+  letter-spacing: -0.065em;
+}
+
+.offerCta {
+  background: var(--navy);
+  color: var(--cream) !important;
+}
+
+.offerList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 16px;
+}
+
+.offerList div {
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid rgba(7,19,29,0.15);
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   FINAL CTA
+========================================================= */
+
+.finalCta {
+  min-height: 330px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  margin-top: 125px;
+  padding: 50px 0;
+
+  border-top: 3px solid var(--orange);
+  border-bottom: 1px solid var(--line);
+}
+
+.finalCta > div > span {
+  color: var(--orange);
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.finalCta h2 {
+  margin: 17px 0 8px;
+
+  font-size: clamp(55px, 6vw, 88px);
+  line-height: 0.9;
+
+  letter-spacing: -0.065em;
+}
+
+.finalCta p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 16px;
+}
+
+.finalCtaButton {
+  flex-shrink: 0;
+
+  min-height: 58px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  min-height: 100px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 25px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.footerBrand {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.footerBrand small {
+  margin-top: 5px;
+
+  color: var(--muted);
+
+  font-size: 7px;
+  letter-spacing: 0.14em;
+}
+
+.footer > span {
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+.footer > a {
+  justify-self: end;
+
+  color: var(--muted);
+
+  font-size: 9px;
+  text-decoration: none;
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE FIRST
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .page {
+    max-width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1fr);
+    gap: 34px;
+  }
+
+  .hero h1 {
+    font-size: clamp(54px, 6vw, 72px);
+  }
+
+  .heroImageFrame {
+    height: 500px;
+  }
+
+  .heroAnnotation {
+    right: 8px;
+  }
+
+  .loopHeader {
+    gap: 45px;
+  }
+
+  .workoutRow {
+    grid-template-columns: 45px minmax(0, 1fr) 150px 20px;
+  }
+
+  .birbalSection {
+    gap: 45px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .page {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px 90px;
+    overflow-x: hidden;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .header {
+    height: 68px;
+  }
+
+  .headerCountdown {
+    display: none;
+  }
+
+  .headerRight {
+    gap: 0;
+  }
+
+  .headerCta {
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 10px;
+  }
+
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    gap: 42px;
+    padding: 52px 0 64px;
+  }
+
+  .heroCopy {
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .hero h1 {
+    max-width: 700px;
+    font-size: clamp(54px, 9vw, 76px);
+    line-height: 0.94;
+  }
+
+  .heroDescription {
+    max-width: 600px;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .heroCta {
+    width: auto;
+    min-width: 360px;
+    min-height: 62px;
+  }
+
+  .heroMeta {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 5px;
+  }
+
+  .heroMeta::-webkit-scrollbar {
+    display: none;
+  }
+
+  .heroVisual {
+    width: 100%;
+  }
+
+  .heroImageFrame {
+    width: 100%;
+    height: min(540px, 72vw);
+    min-height: 420px;
+  }
+
+  .heroAnnotation {
+    right: 12px;
+    top: 18px;
+  }
+
+
+  /* ---------- INTRO STRIP ---------- */
+
+  .introStrip {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 25px;
+  }
+
+  .introStrip .countdown {
+    display: none;
+  }
+
+
+  /* ---------- GUIDED TRAINING ---------- */
+
+  .loopSection {
+    padding-top: 95px;
+  }
+
+  .loopHeader {
+    display: block;
+    margin-bottom: 38px;
+  }
+
+  .loopHeader h2 {
+    max-width: 700px;
+    font-size: clamp(50px, 9vw, 72px);
+  }
+
+  .loopHeader > p {
+    max-width: 650px;
+    margin-top: 25px;
+    font-size: 17px;
+  }
+
+  .trainingStory {
+    display: flex;
+    width: calc(100% + 20px);
+    margin-right: -20px;
+    overflow-x: auto;
+    gap: 14px;
+    padding: 0 20px 12px 0;
+    border: 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .trainingStory::-webkit-scrollbar {
+    display: none;
+  }
+
+  .storyCard {
+    flex: 0 0 min(82vw, 560px);
+    scroll-snap-align: start;
+    border: 1px solid var(--line);
+  }
+
+  .storyCard:last-child {
+    border-right: 1px solid var(--line);
+  }
+
+  .missionVisual,
+  .birbalVisual,
+  .adaptVisual {
+    min-height: 350px;
+  }
+
+
+  /* ---------- PRODUCT ---------- */
+
+  .productSection {
+    padding-top: 95px;
+  }
+
+  .sectionHeader h2 {
+    font-size: clamp(50px, 9vw, 72px);
+  }
+
+  .productShowcase {
+    overflow: hidden;
+  }
+
+  .productTop {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .productWorkout {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .workoutRow {
+    grid-template-columns: 42px minmax(0, 1fr) 20px;
+    gap: 12px;
+  }
+
+  .workoutDetail {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: -4px;
+  }
+
+  .workoutArrow {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+
+  .productBottom {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+
+  /* ---------- DIAGNOSIS ---------- */
+
+  .diagnosisSection {
+    padding-top: 95px;
+  }
+
+  .diagnosisIntro h2 {
+    font-size: clamp(50px, 9vw, 72px);
+  }
+
+  .diagnosisGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .answerPanel {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .answerPanel,
+  .birbalDiagnosis {
+    min-height: 330px;
+  }
+
+
+  /* ---------- JOURNEY ---------- */
+
+  .journeySection {
+    padding-top: 95px;
+  }
+
+  .journeyLine {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .journeyItem {
+    min-height: 82px;
+    padding-left: 34px;
+  }
+
+  .journeyConnector {
+    top: 9px;
+    left: 5px;
+    right: auto;
+    bottom: -25px;
+    width: 1px;
+    height: auto;
+  }
+
+  .journeyDot {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+
+  /* ---------- TESTIMONIALS ---------- */
+
+  .testimonialsSection {
+    padding-top: 95px;
+  }
+
+  .testimonials {
+    display: flex;
+    overflow-x: auto;
+    gap: 14px;
+    padding-bottom: 10px;
+    margin-right: -20px;
+    padding-right: 20px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .testimonials::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial {
+    flex: 0 0 min(78vw, 420px);
+    border-right: 1px solid var(--line);
+    scroll-snap-align: start;
+  }
+
+
+  /* ---------- BIRBAL ---------- */
+
+  .birbalSection {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 35px;
+  }
+
+  .birbalImage {
+    min-height: 300px;
+  }
+
+  .birbalPoints {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+
+  /* ---------- OFFER ---------- */
+
+  .offerSection {
+    grid-template-columns: 1fr;
+    gap: 42px;
+    padding: 38px;
+  }
+
+  .offerCopy h2 {
+    font-size: clamp(52px, 10vw, 76px);
+  }
+
+  .offerCta {
+    width: 100%;
+  }
+
+
+  /* ---------- FINAL CTA ---------- */
+
+  .finalCta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 38px;
+  }
+
+  .finalCtaButton {
+    width: 100%;
+  }
+
+
+  /* ---------- FOOTER ---------- */
+
+  .footer {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 30px 0;
+  }
+
+  .footer > a {
+    justify-self: start;
+  }
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 560px) {
+
+  .page {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 100px;
+  }
+
+
+  /* ---------- HEADER ---------- */
+
+  .header {
+    height: 64px;
+  }
+
+  .logo {
+    font-size: 19px;
+  }
+
+  .headerCta {
+    min-height: 39px;
+    padding: 0 13px;
+    font-size: 9px;
+  }
+
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    gap: 34px;
+    padding: 42px 0 55px;
+  }
+
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+
+  .hero h1 {
+    max-width: 100%;
+    margin-top: 13px;
+    font-size: clamp(46px, 13.5vw, 64px);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  .heroDescription {
+    max-width: 100%;
+    margin-top: 22px;
+    font-size: 15px;
+    line-height: 1.58;
+  }
+
+  .heroCta {
+    width: 100%;
+    min-width: 0;
+    min-height: 60px;
+    margin-top: 5px;
+    padding: 0 20px;
+    font-size: 16px;
+  }
+
+  .heroMeta {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .heroMeta span {
+    flex: 0 0 auto;
+    padding: 0 12px;
+    font-size: 11px;
+  }
+
+  .heroMeta span:first-child {
+    padding-left: 0;
+  }
+
+  .heroMeta strong {
+    font-size: 12px;
+  }
+
+  .heroMeta em {
+    font-size: 11px;
+  }
+
+  .heroMeta svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .heroVisual {
+    width: 100%;
+  }
+
+  .heroImageFrame {
+    height: 390px;
+    min-height: 0;
+  }
+
+  .heroImageFrame img {
+    object-position: center center;
+  }
+
+  .heroImageCaption {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .heroImageCaption strong {
+    font-size: 16px;
+  }
+
+  .heroAnnotation {
+    top: 12px;
+    right: 10px;
+  }
+
+
+  /* ---------- INTRO ---------- */
+
+  .introStrip {
+    display: block;
+    padding: 20px;
+  }
+
+  .introStrip > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .introStrip p {
+    margin-top: 13px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+
+  /* ---------- ALL SECTIONS ---------- */
+
+  .loopSection,
+  .productSection,
+  .diagnosisSection,
+  .journeySection,
+  .testimonialsSection {
+    padding-top: 78px;
+  }
+
+
+  /* ---------- GUIDED TRAINING ---------- */
+
+  .loopHeader {
+    margin-bottom: 30px;
+  }
+
+  .loopHeader h2 {
+    font-size: clamp(43px, 12.5vw, 58px);
+    line-height: 0.94;
+  }
+
+  .loopHeader > p {
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .trainingStory {
+    width: calc(100% + 16px);
+    margin-right: -16px;
+    gap: 12px;
+    padding-right: 16px;
+  }
+
+  .storyCard {
+    flex-basis: 86vw;
+    padding: 20px 18px 22px;
+  }
+
+  .storyTop {
+    margin-bottom: 20px;
+  }
+
+  .storyTop > span:last-child {
+    font-size: 8px;
+  }
+
+  .missionVisual,
+  .birbalVisual,
+  .adaptVisual {
+    min-height: 330px;
+    padding: 16px;
+  }
+
+  .missionHeader strong {
+    font-size: 16px;
+  }
+
+  .missionRow {
+    min-height: 62px;
+    grid-template-columns: 25px minmax(0, 1fr) auto;
+  }
+
+  .missionRow strong {
+    font-size: 12px;
+  }
+
+  .missionRow small {
+    font-size: 8px;
+  }
+
+  .studentMistake p {
+    font-size: 13px;
+  }
+
+  .birbalMessage > strong {
+    font-size: 20px;
+  }
+
+  .birbalMessage > p {
+    font-size: 10px;
+  }
+
+  .adaptTitle strong {
+    font-size: 19px;
+  }
+
+  .journeyMiniStep strong {
+    font-size: 11px;
+  }
+
+  .storyCaption {
+    padding-top: 15px;
+  }
+
+  .storyCaption strong {
+    font-size: 12px;
+  }
+
+  .storyCaption span {
+    font-size: 10px;
+  }
+
+
+  /* ---------- PRODUCT ---------- */
+
+  .sectionHeader h2,
+  .diagnosisIntro h2 {
+    font-size: clamp(43px, 12.5vw, 58px);
+    line-height: 0.95;
+  }
+
+  .productShowcase {
+    margin-top: 28px;
+  }
+
+  .productTop {
+    padding: 0 16px;
+  }
+
+  .productWorkout {
+    padding: 8px 16px;
+  }
+
+  .workoutRow {
+    grid-template-columns: 30px minmax(0, 1fr) 18px;
+    gap: 9px;
+    padding: 15px 0;
+  }
+
+  .workoutNumber {
+    font-size: 9px;
+  }
+
+  .workoutRow strong {
+    font-size: 13px;
+  }
+
+  .workoutDetail {
+    font-size: 9px;
+  }
+
+  .productBottom {
+    padding: 18px 16px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .productBottom strong {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+
+  /* ---------- DIAGNOSIS ---------- */
+
+  .diagnosisIntro {
+    margin-bottom: 28px;
+  }
+
+  .answerPanel,
+  .birbalDiagnosis {
+    min-height: 300px;
+    padding: 22px;
+  }
+
+  .answerPanel p {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .birbalDiagnosis h3 {
+    font-size: 34px;
+  }
+
+  .birbalDiagnosis p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+
+  /* ---------- JOURNEY ---------- */
+
+  .journeyLine {
+    margin-top: 30px;
+  }
+
+  .journeyItem {
+    min-height: 72px;
+    padding-left: 28px;
+  }
+
+  .journeyItem strong {
+    font-size: 15px;
+  }
+
+
+  /* ---------- TESTIMONIALS ---------- */
+
+  .testimonials {
+    margin-right: -16px;
+    padding-right: 16px;
+    gap: 12px;
+  }
+
+  .testimonial {
+    flex-basis: 82vw;
+    padding: 22px;
+  }
+
+  .testimonial blockquote {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+
+  /* ---------- BIRBAL ---------- */
+
+  .birbalSection {
+    margin-top: 78px;
+    padding: 22px;
+    gap: 28px;
+  }
+
+  .birbalImage {
+    min-height: 250px;
+  }
+
+  .birbalImage img {
+    width: 210px;
+    height: 210px;
+  }
+
+  .birbalCopy h2 {
+    font-size: clamp(43px, 12.5vw, 58px);
+  }
+
+  .birbalCopy p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .birbalPoints {
+    grid-template-columns: 1fr;
+  }
+
+  .birbalPoints > div {
+    min-height: auto;
+    padding: 15px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .birbalPoints > div:last-child {
+    border-bottom: 0;
+  }
+
+
+  /* ---------- OFFER ---------- */
+
+  .offerSection {
+    margin-top: 78px;
+    padding: 26px 20px;
+    gap: 32px;
+  }
+
+  .offerCopy h2 {
+    font-size: clamp(46px, 13vw, 62px);
+    line-height: 0.94;
+  }
+
+  .price strong {
+    font-size: 48px;
+  }
+
+  .offerCta {
+    width: 100%;
+    min-height: 58px;
+  }
+
+  .offerList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+
+  .offerList div {
+    font-size: 10px;
+  }
+
+
+  /* ---------- FINAL CTA ---------- */
+
+  .finalCta {
+    margin-top: 78px;
+    padding: 28px 20px;
+    gap: 24px;
+  }
+
+  .finalCta h2 {
+    font-size: clamp(48px, 14vw, 66px);
+  }
+
+  .finalCta p {
+    font-size: 14px;
+  }
+
+  .finalCtaButton {
+    width: 100%;
+    min-height: 58px;
+  }
+
+
+  /* ---------- FOOTER ---------- */
+
+  .footer {
+    gap: 14px;
+    padding: 25px 0;
+  }
+
+  .footer > span {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+
+}
+.cyanText {
+  color: #38c6d8;
+}

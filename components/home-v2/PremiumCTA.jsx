@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import {
   Crown,
@@ -112,9 +113,10 @@ const handleScroll = () => {
     const Icon = plan.icon;
 
     return (
-      <div
+      <Link
+        href="/pricing"
         key={plan.name}
-        className={`snap-center shrink-0 w-[85%] relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 ${plan.border} ${
+        className={`snap-center shrink-0 w-[85%] relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${plan.border} ${
           plan.featured
             ? "scale-[1.03] shadow-xl shadow-violet-500/20"
             : ""
@@ -147,7 +149,7 @@ const handleScroll = () => {
         <p className="mt-2 text-sm text-slate-500">
           One subscription. Full access.
         </p>
-      </div>
+      </Link>
     );
   })}
 </div>
@@ -172,9 +174,10 @@ const handleScroll = () => {
 
             return (
 
-              <div
+              <Link
+                href="/pricing"
                 key={plan.name}
-                className={`group relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${plan.border} ${
+                className={`group relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${plan.border} ${
                   plan.featured
                     ? "scale-[1.03] shadow-xl shadow-violet-500/20"
                     : ""
@@ -213,7 +216,7 @@ const handleScroll = () => {
                   One subscription. Full access.
                 </p>
 
-              </div>
+              </Link>
 
             );
           })}

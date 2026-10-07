@@ -5,7 +5,7 @@ import { useTenant } from '@/components/providers/TenantProvider';
 import MobileBottomNav from '@/app/components/MobileBottomNav';
 import { destination } from '@/lib/mobile/features.mjs';
 import DailyActivityProvider from './DailyActivityProvider';
-const publicRoutes=['/login','/signup','/welcome','/preview','/preview-ad','/about','/contact','/payment-success','/birbal-test','/shadow-test','/test-diagnosis','/result-preview'];
+const publicRoutes=['/login','/signup','/welcome','/preview','/preview-ad','/bootcamp-2026','/about','/contact','/payment-success','/birbal-test','/shadow-test','/test-diagnosis','/result-preview'];
 export function allowActivityExit(){
  if(window.__auctorExitAllowed)return true;
  if(!document.body.classList.contains('assessment-mode-active'))return true;

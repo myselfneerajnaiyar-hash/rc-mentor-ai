@@ -16,6 +16,7 @@ export default function TenantProvider({ children }) {
   // Public auth pages need to be usable before tenant/session lookups complete.
   // The resolved branding still replaces the default as soon as it is available.
   const isPublicAuthRoute = pathname === "/signup" || pathname === "/login"
+  const isPublicBootCampRoute = pathname === "/bootcamp-2026" || pathname.startsWith("/bootcamp-2026/")
   const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false }, access: "pending" })
 
   const generation=useRef(0),flight=useRef(null);
@@ -56,11 +57,11 @@ export default function TenantProvider({ children }) {
   }, [])
 
   useEffect(() => {
-    if (pathname === "/preview-ad") return
+    if (pathname === "/preview-ad" || isPublicBootCampRoute) return
     refreshContext()
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {setState(current=>current.user?.id&&current.user.id!==session?.user?.id?{...current,loading:true,user:null,profile:null}:current);refreshContext(session);})
     return () => subscription.unsubscribe()
-  }, [refreshContext, pathname])
+  }, [refreshContext, pathname, isPublicBootCampRoute])
 
   useEffect(() => {
     const branding = state.branding || AUCTOR_BRANDING
@@ -71,7 +72,7 @@ export default function TenantProvider({ children }) {
   }, [state.branding])
 
   const value = useMemo(() => ({ ...state, refreshContext: () => refreshContext(undefined, true) }), [state, refreshContext])
-  if (pathname === "/preview-ad") return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>
+  if (pathname === "/preview-ad" || isPublicBootCampRoute) return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>
   if (!isPublicAuthRoute && state.access === "network_error") return <main className="p-6"><Recovery area="entitlement" message={state.error} onRetry={()=>{setState(current=>({...current,loading:true,access:"pending"}));refreshContext();}}/></main>
   if (!isPublicAuthRoute && state.loading) return <TenantLoading />
   if (!isPublicAuthRoute && !state.loading && state.access === "unknown_hostname") return <TenantError title="Unknown institute hostname" message="This learning portal is not configured." />
