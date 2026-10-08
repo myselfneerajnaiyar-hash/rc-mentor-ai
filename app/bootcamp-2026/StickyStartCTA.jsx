@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import s from './page.module.css'
+import BootcampAccessCTA from '@/components/bootcamp/BootcampAccessCTA'
 
 export default function StickyStartCTA({ href, daysLeft }) {
   const [visible, setVisible] = useState(false)
@@ -22,6 +23,6 @@ export default function StickyStartCTA({ href, daysLeft }) {
 
   return <div className={`${s.stickyCta} ${visible ? s.stickyVisible : ''}`} aria-hidden={!visible}>
     <span className={s.stickyLabel}>CAT 2026 · {daysLeft} DAYS LEFT<strong>₹499</strong></span>
-    <a href={href} tabIndex={visible ? 0 : -1}>Start Bootcamp <span aria-hidden="true">→</span></a>
+    <BootcampAccessCTA href={href} tabIndex={visible ? 0 : -1} />
   </div>
 }

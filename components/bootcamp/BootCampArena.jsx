@@ -8,6 +8,7 @@ import { catDaysRemaining, nextIstMidnight } from '@/lib/bootcamp/countdown.mjs'
 import { ArrowRight, BookOpen, BrainCircuit, CalendarDays, Clock3, FileText, Flame, ListChecks, Zap } from 'lucide-react'
 import s from './arena.module.css'
 import BootCampLeaderboard from './BootCampLeaderboard'
+import BootcampOffer from './BootcampOffer'
 
 const months=trainingMonths()
 const displayDate=date=>new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'})
@@ -79,6 +80,7 @@ export default function BootCampArena({ session, catalog, busy, onChat, unavaila
   const bootCampOutcome=day?completed?`Day ${displayDay} complete · report ready`:entry?.accessible?`Day ${displayDay} is live`:`Day ${displayDay} is being prepared`:period==='UPCOMING'?`Starts ${displayDate(BOOTCAMP_START_DATE)}`:period==='CLOSED'?'Training complete · reports remain available':'Your practice library is open'
 
   return <section className={s.arena}>
+    <BootcampOffer />
     {catalog?.calendar?.devPreview&&<div role="status" className={s.datePreview}><strong>Test account date preview</strong><label>Simulated date <input aria-label="Simulated date" type="date" value={testDate||catalog.calendar.today} onChange={event=>changeTestDate(event.target.value)} /></label><span>Only your allowlisted test account sees this date.</span></div>}
 
     <div className={s.topGrid}>

@@ -30,6 +30,19 @@ const [savingProfile, setSavingProfile] = useState(false)
 const finishProfileRequest = useRef(null)
 const googleFailureReported = useRef(false)
 
+async function continueBootcampAcquisition() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session?.access_token) throw new Error("Your session expired. Please log in and finish profile setup again.")
+  const response = await fetch("/api/bootcamp/access/claim", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.access_token}` },
+  })
+  const result = await response.json().catch(() => ({}))
+  const destination = buildAttributedPath("/bootcamp-2026/start", attributionFromParams(searchParams))
+  if (response.ok && result.access?.allowed) router.replace("/boot-camp")
+  else router.replace(destination)
+}
+
   const [profileName, setProfileName] = useState("")
   const [exam, setExam] = useState("CAT")
   const [attemptYear, setAttemptYear] = useState("2026")
@@ -129,7 +142,7 @@ async function checkUser() {
       return
     }
     if (profile?.profile_completed && next === "bootcamp") {
-      router.replace("/pricing?returnTo=%2Fboot-camp")
+      await continueBootcampAcquisition()
       return
     }
 
@@ -247,7 +260,7 @@ async function finishProfile() {
       if (next === "/inbox") {
         router.replace("/inbox")
       } else if (next === "bootcamp") {
-        router.push("/pricing?returnTo=%2Fboot-camp")
+        await continueBootcampAcquisition()
       } else if (next === "cat") {
         router.push(free === "1" ? "/?view=cat&free=1" : "/?view=cat")
       } else if (next === "pricing") {

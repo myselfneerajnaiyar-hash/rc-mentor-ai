@@ -17,6 +17,9 @@ export async function POST(req) {
 
     const body = await req.json()
     const couponInput = typeof body.couponCode === "string" ? body.couponCode : ""
+    if (body.plan === "bootcamp_full_access" && (couponInput.trim() || (typeof body.referralCode === "string" && body.referralCode.trim()))) {
+      return Response.json({ error: "The Bootcamp offer is a fixed price and does not accept subscription discounts." }, { status: 400 })
+    }
     const coupon = await resolveCoupon(couponInput)
     if (couponInput.trim() && !coupon.valid) {
       return Response.json({ error: "Invalid or expired coupon code." }, { status: 400 })

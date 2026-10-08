@@ -62,7 +62,7 @@ test("weekly standings include published Daily RC attempts and return the curren
     { id: "b1", user_id: "student-b", daily_rc_set_id: "tuesday", score: 9, composite_score: 1000, correct_count: 3, incorrect_count: 0, unanswered_count: 1, time_taken: 150, completed_at: "2026-10-06T06:00:00.000Z" },
     { id: "draft-attempt", user_id: "student-c", daily_rc_set_id: "draft", score: 30, composite_score: 9999, correct_count: 10, incorrect_count: 0, unanswered_count: 0, time_taken: 1, completed_at: "2026-10-07T05:00:00.000Z" },
     { id: "cat-attempt", user_id: "student-c", daily_rc_set_id: "old-category", score: 30, composite_score: 9999, correct_count: 10, incorrect_count: 0, unanswered_count: 0, time_taken: 1, completed_at: "2026-10-07T05:00:00.000Z" },
-    { id: "previous-attempt", user_id: "student-c", daily_rc_set_id: "previous-week", score: 30, composite_score: 9999, correct_count: 10, incorrect_count: 0, unanswered_count: 0, time_taken: 1, completed_at: "2026-10-04T18:29:59.999Z" },
+    { id: "previous-attempt", user_id: "student-c", daily_rc_set_id: "previous-week", score: 30, composite_score: 9999, correct_count: 10, incorrect_count: 0, unanswered_count: 0, time_taken: 1, completed_at: "2026-10-05T07:00:00.000Z" },
   ]
   const profiles = [
     { user_id: "student-a", name: "Student A" },
@@ -112,6 +112,8 @@ test("weekly standings include published Daily RC attempts and return the curren
   ])
   assert.ok(queryCalls[1].filters.some(([column, operator, value]) => column === "category" && operator === "eq" && value === "daily_rc_challenge"))
   assert.ok(queryCalls[1].filters.some(([column, operator, value]) => column === "is_published" && operator === "eq" && value === true))
+  assert.ok(queryCalls[1].filters.some(([column, operator, value]) => column === "challenge_date" && operator === "gte" && value === window.weekStart))
+  assert.ok(queryCalls[1].filters.some(([column, operator, value]) => column === "challenge_date" && operator === "lte" && value === window.weekEnd))
   assert.deepEqual(ranked.map(({ userId, weeklyCompositeScore }) => [userId, weeklyCompositeScore]), [
     ["student-a", 1550],
     ["student-b", 1000],
