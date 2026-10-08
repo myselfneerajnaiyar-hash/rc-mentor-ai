@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { calculatePlanPricing } from '../lib/payments/pricing.js'
+import { getOnboardingDestination } from '../lib/onboarding/returnDestination.mjs'
 import { fixture, harness, student } from './helpers/bootcamp-db.mjs'
 
 test('first-free access exposes Day 1 and blocks later days at the service boundary', async () => {
@@ -37,6 +38,40 @@ test('landing signup keeps ad query parameters and existing CTA event locations'
   assert.match(cta, /new URLSearchParams\(window\.location\.search\)/)
   assert.match(cta, /bootcamp-2026\/signup/)
   assert.match(signup, /SignupPage/)
+})
+
+test('Bootcamp profile completion resolves directly to the Bootcamp home and normal signup keeps its default', () => {
+  assert.equal(getOnboardingDestination('bootcamp'), '/boot-camp')
+  assert.equal(getOnboardingDestination(null), '/')
+})
+
+test('Bootcamp intent survives signup and OAuth callback into the profile flow', async () => {
+  const [signup, login, callback, welcome] = await Promise.all([
+    readFile(new URL('../app/signup/page.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../app/login/page.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../app/auth/callback/route.js', import.meta.url), 'utf8'),
+    readFile(new URL('../app/welcome/page.jsx', import.meta.url), 'utf8'),
+  ])
+  assert.match(signup, /params\.set\("next", next\)/)
+  assert.match(signup, /emailRedirectTo:.*callbackPath/)
+  assert.match(login, /params\.set\("next", next\)/)
+  assert.match(callback, /destination\.searchParams\.set\("next", requestUrl\.searchParams\.get\("next"\) \|\| ""\)/)
+  assert.match(welcome, /next === "bootcamp"\) \{\s*await continueBootcampAcquisition\(\)/)
+})
+
+test('onboarding return destination only accepts known destinations', () => {
+  assert.equal(getOnboardingDestination('https://example.com'), '/')
+  assert.equal(getOnboardingDestination('//example.com/path'), '/')
+  assert.equal(getOnboardingDestination('/boot-camp'), '/')
+  assert.equal(getOnboardingDestination('constructor'), '/')
+  assert.equal(getOnboardingDestination('cat', '1'), '/?view=cat&free=1')
+})
+
+test('Bootcamp profile completion claims existing access then replaces directly with the Bootcamp home', async () => {
+  const welcome = await readFile(new URL('../app/welcome/page.jsx', import.meta.url), 'utf8')
+  assert.match(welcome, /fetch\("\/api\/bootcamp\/access\/claim"/)
+  assert.match(welcome, /router\.replace\(getOnboardingDestination\("bootcamp"\)\)/)
+  assert.doesNotMatch(welcome, /buildAttributedPath\("\/bootcamp-2026\/start"/)
 })
 
 test('Bootcamp-only provisioning records a paid access source through the program end', async () => {

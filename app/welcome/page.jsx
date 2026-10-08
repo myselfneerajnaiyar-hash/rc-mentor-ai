@@ -10,6 +10,7 @@ import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import { attributionFromParams, buildAttributedPath, normalizeAttribution, persistBrowserAttribution, clearBrowserAttribution } from "@/lib/attribution.mjs"
 import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
+import { getOnboardingDestination } from "@/lib/onboarding/returnDestination.mjs"
 
 export default function WelcomePage() {
   const { branding, refreshContext } = useTenant()
@@ -33,14 +34,15 @@ const googleFailureReported = useRef(false)
 async function continueBootcampAcquisition() {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session?.access_token) throw new Error("Your session expired. Please log in and finish profile setup again.")
-  const response = await fetch("/api/bootcamp/access/claim", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${session.access_token}` },
-  })
-  const result = await response.json().catch(() => ({}))
-  const destination = buildAttributedPath("/bootcamp-2026/start", attributionFromParams(searchParams))
-  if (response.ok && result.access?.allowed) router.replace("/boot-camp")
-  else router.replace(destination)
+  try {
+    await fetch("/api/bootcamp/access/claim", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+  } catch (error) {
+    console.warn("Unable to complete the Bootcamp access claim before navigation.", error)
+  }
+  router.replace(getOnboardingDestination("bootcamp"))
 }
 
   const [profileName, setProfileName] = useState("")
@@ -257,10 +259,10 @@ async function finishProfile() {
         body: JSON.stringify({ email: user.email, name }),
       }).catch((error) => console.warn("Unable to send welcome email", error))
 
-      if (next === "/inbox") {
-        router.replace("/inbox")
-      } else if (next === "bootcamp") {
+      if (next === "bootcamp") {
         await continueBootcampAcquisition()
+      } else if (next === "/inbox") {
+        router.replace("/inbox")
       } else if (next === "cat") {
         router.push(free === "1" ? "/?view=cat&free=1" : "/?view=cat")
       } else if (next === "pricing") {
@@ -478,19 +480,9 @@ async function persistSignupAttribution(user) {
         <button
           className={styles["welcome-btn"]}
          onClick={() => {
- if (next === "/inbox") {
-  router.replace("/inbox");
-} else if (next === "cat") {
-  if (free === "1") {
-    router.push("/?view=cat&free=1");
-  } else {
-    router.push("/?view=cat");
-  }
-} else if (next === "pricing") {
-  router.push("/pricing");
-} else {
-  router.push("/");
-}
+  const destination = getOnboardingDestination(next, free)
+  if (next === "bootcamp" || next === "/inbox") router.replace(destination)
+  else router.push(destination)
 }}
         >
           Start Your RC Journey →
