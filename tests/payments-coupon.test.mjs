@@ -17,6 +17,7 @@ test("normal purchases retain every existing base price", () => {
     half_yearly: 129900,
     yearly: 199900,
     cat_test_series: 79900,
+    bootcamp_full_access: 49900,
   })
 })
 
@@ -351,8 +352,8 @@ test("legitimate influencer coupon retains validation, pricing, fulfillment and 
   assert.equal(h.rows.influencer_coupon_conversions[0].commission_amount, 38970)
 })
 
-test("AUCTOR20 uses the influencer record on every plan, including CAT test series", async () => {
-  for (const plan of Object.keys(PLAN_PRICES)) {
+test("AUCTOR20 uses the influencer record on every discountable plan, including CAT test series", async () => {
+  for (const plan of Object.keys(PLAN_PRICES).filter(plan => plan !== "bootcamp_full_access")) {
     const h = await checkoutHarness()
     const couponResponse = await h.validate("auctor20")
     assert.equal(couponResponse.status, 200)
@@ -369,6 +370,10 @@ test("AUCTOR20 uses the influencer record on every plan, including CAT test seri
     assert.equal(h.rows.influencer_coupon_conversions[0].coupon_code, "AUCTOR20")
     assert.equal(h.rows.influencer_coupon_conversions[0].commission_amount, Math.round(PLAN_PRICES[plan].basePaise * 0.2))
   }
+})
+
+test("fixed-price Bootcamp orders reject subscription coupon and referral discounts", () => {
+  assert.match(createOrderSource, /body\.plan === "bootcamp_full_access" && \(couponInput\.trim\(\) \|\|/)
 })
 
 test("pricing page supports validated coupon query prefill", async () => {

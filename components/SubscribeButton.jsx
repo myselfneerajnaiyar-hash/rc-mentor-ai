@@ -1,7 +1,6 @@
 "use client"
 
 import { supabase } from "@/lib/supabase"
-import { capturePurchasePixel } from "@/lib/analytics/conversionEvents.mjs"
 
 
 export default function SubscribeButton({
@@ -120,18 +119,14 @@ if (!razorpayLoaded) {
           console.log("VERIFY STATUS", verify.status);
 
           if (result.success) {
-            capturePurchasePixel({
-              paymentId: result.purchase?.paymentId,
-              value: result.purchase?.value,
-              currency: result.purchase?.currency,
-              pixel: window.fbq,
-            })
+            if (!result.purchase?.orderId) {
+              alert("Payment is confirmed, but its summary is still being prepared. Please contact support if it does not appear shortly.")
+              return
+            }
 
-            alert("Payment verified 🎉 Premium unlocked")
-
-            window.location.href = returnTo === "/boot-camp"
-              ? "/payment-success?returnTo=%2Fboot-camp"
-              : "/payment-success"
+            const successParams = new URLSearchParams({ orderId: result.purchase.orderId })
+            if (returnTo === "/boot-camp") successParams.set("returnTo", "/boot-camp")
+            window.location.href = `/payment-success?${successParams.toString()}`
 
           } else {
 

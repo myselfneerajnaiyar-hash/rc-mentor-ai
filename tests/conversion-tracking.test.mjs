@@ -15,6 +15,8 @@ import {
 const paymentProcessor = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
 const verifyRoute = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const checkout = await readFile(new URL("../components/SubscribeButton.jsx", import.meta.url), "utf8")
+const paymentSuccessPage = await readFile(new URL("../app/payment-success/page.js", import.meta.url), "utf8")
+const paymentSuccessRoute = await readFile(new URL("../app/api/payment-success/route.js", import.meta.url), "utf8")
 const signupPage = await readFile(new URL("../app/signup/page.jsx", import.meta.url), "utf8")
 const inAppBrowserTest = await readFile(new URL("../tests/preview-ad.browser.mjs", import.meta.url), "utf8")
 const welcomePage = await readFile(new URL("../app/welcome/page.jsx", import.meta.url), "utf8")
@@ -73,7 +75,7 @@ test("Google signup conversion only recognizes a recent new Google identity; Goo
   assert.equal(captured[0][1].error_code, "oauth_denied")
 })
 
-test("Meta Pixel Purchase fires only after verified callback response and is idempotent per payment", () => {
+test("Meta Pixel Purchase fires on the verified payment summary page and is idempotent per payment", () => {
   const storage = memoryStorage()
   const calls = []
   const pixel = (...args) => calls.push(args)
@@ -85,8 +87,23 @@ test("Meta Pixel Purchase fires only after verified callback response and is ide
   assert.deepEqual(calls[0][2], { value: 1399.3, currency: "INR" })
   assert.equal(calls[0][3].eventID, "purchase:pay_123")
   assert.ok(verifyRoute.includes("success: true") && verifyRoute.includes("purchase: {"))
-  assert.ok(checkout.includes("if (result.success)") && checkout.includes("capturePurchasePixel"))
+  assert.ok(checkout.includes("if (result.success)") && checkout.includes("/payment-success?"))
+  assert.doesNotMatch(checkout, /capturePurchasePixel|fbq\("track",\s*"Purchase"/)
+  assert.ok(paymentSuccessPage.includes("capturePurchasePixel") && paymentSuccessPage.includes("/api/payment-success?orderId="))
+  assert.ok(paymentSuccessRoute.includes('order.status !== "provisioned"') && paymentSuccessRoute.includes('.eq("user_id", identity.user.id)'))
   assert.ok(verifyRoute.includes("processSuccessfulPayment"))
+})
+
+test("browser Purchase payload includes verified product and order identifiers when supplied", () => {
+  const calls = []
+  assert.equal(capturePurchasePixel({
+    paymentId: "pay_details", value: 499, currency: "INR", contentName: "CAT VARC Boot Camp 2026",
+    contentId: "bootcamp_full_access", orderId: "order_details", pixel: (...args) => calls.push(args), storage: memoryStorage(),
+  }), true)
+  assert.deepEqual(calls[0][2], {
+    value: 499, currency: "INR", content_name: "CAT VARC Boot Camp 2026",
+    content_ids: ["bootcamp_full_access"], content_type: "product", order_id: "order_details",
+  })
 })
 
 test("verified purchase sends deduplicatable PostHog and Meta server events with revenue and user attribution", async () => {
@@ -155,8 +172,9 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   assert.equal(eventIdentity.metaEventId, "purchase:pay_123")
   assert.equal(eventIdentity.posthogUuid, posthogRequest.payload.uuid)
   assert.ok(paymentProcessor.includes("sendPurchaseConversionEvents("))
-  assert.ok(paymentProcessor.indexOf('paidPayment.status !== "captured"') < paymentProcessor.indexOf('rpc("provision_razorpay_payment"'))
-  assert.ok(paymentProcessor.indexOf('rpc("provision_razorpay_payment"') < paymentProcessor.indexOf("await runPostProvisionEffects("))
+  const provisionIndex = paymentProcessor.indexOf("await supabaseAdmin.rpc(provisionRpc")
+  assert.ok(paymentProcessor.indexOf('paidPayment.status !== "captured"') < provisionIndex)
+  assert.ok(provisionIndex < paymentProcessor.indexOf("await runPostProvisionEffects("))
 })
 
 test("failed or cancelled payments cannot reach purchase tracking; ROAS query joins first touch to provisioned payments", () => {
