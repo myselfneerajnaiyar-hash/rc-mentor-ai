@@ -10,6 +10,7 @@ from "../components/TestResultView";
 import TestDiagnosisTabs
 from "../components/test-diagnosis/TestDiagnosisTabs";
 import { CAT_ARENA_SECTIONAL_DURATION_SECONDS } from "../../lib/cat-arena/sectionalTiming";
+import { getCATSectionalContentError } from "../../lib/cat-arena/contentLoad.mjs";
 
 export default function RCSectionalContainer({
       
@@ -29,6 +30,7 @@ export default function RCSectionalContainer({
   const [loadedTestData, setLoadedTestData] = useState(null);
   const [sectionalSession, setSectionalSession] = useState(null);
   const [sessionError, setSessionError] = useState(null);
+  const [contentError, setContentError] = useState(null);
 
   async function beginTest() {
     setSessionError(null);
@@ -54,36 +56,44 @@ useEffect(() => {
 
   async function loadTest() {
 
-    const { data: sectional } = await supabase
+    const { data: sectional, error: sectionalError } = await supabase
       .from("sectional_test_content")
       .select("time_minutes")
       .eq("id", sectionalId)
       .maybeSingle();
 
-    const { data: passages } =
+    const { data: passages, error: passagesError } =
       await supabase
         .from("sectional_passage_content")
         .select("*")
         .eq("test_id", sectionalId)
         .order("passage_number");
 
-    const { data: questions } =
+    const { data: questions, error: questionsError } =
       await supabase
         .from("sectional_question_content")
         .select("*")
         .eq("test_id", sectionalId)
         .order("question_number");
 
-        const { data: vaQuestions } =
+        const { data: vaQuestions, error: vaQuestionsError } =
   await supabase
     .from("sectional_va_content")
     .select("*")
     .eq("test_id", sectionalId)
     .order("question_number");
 
-   
-
-    if (!passages?.length) return;
+    const contentLoadError = getCATSectionalContentError({
+      errors: [sectionalError, passagesError, questionsError, vaQuestionsError],
+      passageCount: passages?.length || 0,
+      questionCount: (questions?.length || 0) + (vaQuestions?.length || 0),
+    });
+    if (contentLoadError) {
+      setContentError(contentLoadError);
+      const loadError = sectionalError || passagesError || questionsError || vaQuestionsError;
+      if (loadError) console.error("CAT sectional content failed to load", { sectionalId, message: loadError.message });
+      return;
+    }
 
     const transformedPassages =
       passages.map((passage) => {
@@ -242,6 +252,9 @@ useEffect(() => {
 
   /* ================= TEST ================= */
   if (phase === "test") {
+    if (contentError) {
+      return <div style={{ padding: 40 }}><p role="alert">{contentError}</p><button type="button" onClick={onExit}>Back to tests</button></div>;
+    }
     if (!loadedTestData || !sectionalSession) {
       return <div style={{ padding: 40 }}>Loading test...</div>;
     }
@@ -253,15 +266,10 @@ useEffect(() => {
         mode="test"
        onSubmit={async (payload) => {
   // 🔍 CHECK SESSION
-  const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
-
-
   const { data: authData, error: userError } = await supabase.auth.getUser();
 
  if (!authData?.user) {
+  if (userError) console.error("Could not verify user before saving CAT test attempt", { message: userError.message });
   console.log("⚠️ No authenticated user — skipping DB save");
 
   // STILL MOVE TO DIAGNOSIS
