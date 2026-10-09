@@ -95,7 +95,10 @@ export default function PaymentSuccess() {
         <div className={styles.row}><span>Product</span><strong>{order.product.name}</strong></div>
         <div className={styles.row}><span>Amount paid</span><strong>{formatMoney(order.amountPaid, order.currency)}</strong></div>
         <div className={styles.row}><span>Payment date</span><strong>{formatDate(order.paidAt, true)}</strong></div>
-        <div className={styles.row}><span>Valid until</span><strong>{formatDate(order.validUntil)}</strong></div>
+        {order.entitlements ? <>
+          <div className={styles.row}><span>Full Auctor access until</span><strong>{formatDate(order.entitlements.platformValidUntil)}</strong></div>
+          <div className={styles.row}><span>Boot Camp access until</span><strong>{formatDate(order.entitlements.bootcampValidUntil)}</strong></div>
+        </> : <div className={styles.row}><span>Valid until</span><strong>{formatDate(order.validUntil)}</strong></div>}
         <div className={styles.identifiers}><span>Order ID <b>{order.orderId}</b></span><span>Payment ID <b>{order.paymentId}</b></span></div>
       </div>
 

@@ -16,9 +16,16 @@ export async function POST(req) {
     }
 
     const body = await req.json()
+    if (["quarterly", "bootcamp_full_access"].includes(body.plan)
+      && process.env.BOOTCAMP_PLATFORM_BUNDLE_READY !== "true") {
+      return Response.json({ error: "This combined offer is temporarily unavailable while its access setup is completed." }, { status: 503 })
+    }
     const couponInput = typeof body.couponCode === "string" ? body.couponCode : ""
-    if (body.plan === "bootcamp_full_access" && (couponInput.trim() || (typeof body.referralCode === "string" && body.referralCode.trim()))) {
-      return Response.json({ error: "The Bootcamp offer is a fixed price and does not accept subscription discounts." }, { status: 400 })
+    if (body.plan === "bootcamp_full_access" && (
+      (couponInput.trim() && couponInput.trim().toUpperCase() !== "AUCTOR20")
+      || (typeof body.referralCode === "string" && body.referralCode.trim())
+    )) {
+      return Response.json({ error: "The Bootcamp offer accepts AUCTOR20 only and cannot be combined with a referral discount." }, { status: 400 })
     }
     const coupon = await resolveCoupon(couponInput)
     if (couponInput.trim() && !coupon.valid) {
@@ -46,7 +53,7 @@ export async function POST(req) {
       validReferral,
     })
     const attribution = calculateCouponAttribution({
-      originalPaise: pricing.originalPaise,
+      originalPaise: pricing.basePaise,
       amountPaidPaise: pricing.finalPaise,
       couponCode: pricing.discountCode,
       coupon: pricing.coupon,
@@ -57,6 +64,7 @@ export async function POST(req) {
       .insert({
         user_id: identity.user.id,
         plan: pricing.plan,
+        entitlement_bundle_version: ["quarterly", "bootcamp_full_access"].includes(pricing.plan) ? 1 : null,
         original_amount_paise: pricing.originalPaise,
         discount_amount_paise: pricing.discountPaise,
         amount_paid_paise: pricing.finalPaise,

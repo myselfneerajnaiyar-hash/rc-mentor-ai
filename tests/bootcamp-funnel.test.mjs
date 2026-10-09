@@ -22,9 +22,10 @@ test('Bootcamp checkout is independently server priced at ₹799 with ₹999 ref
   const bootcamp = calculatePlanPricing('bootcamp_full_access')
   assert.equal(bootcamp.originalPaise, BOOTCAMP_ORIGINAL_PRICE_PAISE)
   assert.equal(bootcamp.finalPaise, BOOTCAMP_PAYABLE_PRICE_PAISE)
-  assert.equal(calculatePlanPricing('bootcamp_full_access', { couponCode: 'AZADI50', validReferral: true }).finalPaise, 79900)
+  assert.equal(calculatePlanPricing('bootcamp_full_access', { couponCode: 'AUCTOR20', validReferral: true }).finalPaise, 63920)
   assert.equal(calculatePlanPricing('cat_test_series').finalPaise, 79900)
-  assert.equal(calculatePlanPricing('quarterly').finalPaise, 99900)
+  assert.equal(calculatePlanPricing('quarterly').finalPaise, 79900)
+  assert.equal(calculatePlanPricing('quarterly', { couponCode: 'AUCTOR20' }).finalPaise, 63920)
 })
 
 test('landing signup keeps ad query parameters and existing CTA event locations', async () => {
@@ -43,6 +44,18 @@ test('landing signup keeps ad query parameters and existing CTA event locations'
   assert.match(signup, /SignupPage/)
 })
 
+test('Bootcamp home offer CTA routes through pricing while preserving campaign attribution', async () => {
+  const [offer, checkout] = await Promise.all([
+    readFile(new URL('../components/bootcamp/BootcampOffer.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../components/SubscribeButton.jsx', import.meta.url), 'utf8'),
+  ])
+  assert.match(offer, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp' \}\)/)
+  assert.match(offer, /href=\{pricingHref\}>Unlock all 45 days/)
+  assert.doesNotMatch(offer, /plan="bootcamp_full_access"/)
+  assert.match(checkout, /attributionParams\(readBrowserAttribution\(\)\)/)
+  assert.match(checkout, /\/payment-success\?\$\{successParams\.toString\(\)\}/)
+})
+
 test('the visible landing offer and sticky CTA show the server-priced Bootcamp offer and schedule context', async () => {
   const page = await readFile(new URL('../app/bootcamp-2026/page.jsx', import.meta.url), 'utf8')
   const css = await readFile(new URL('../app/bootcamp-2026/page.module.css', import.meta.url), 'utf8')
@@ -53,12 +66,13 @@ test('the visible landing offer and sticky CTA show the server-priced Bootcamp o
   assert.match(css, /\.sticky del/)
 })
 
-test('ineligible students get a direct server-priced checkout while claim failures stay out of the paid state', async () => {
+test('ineligible students are shown the Bootcamp offer before checkout; claim failures stay out of the paid state', async () => {
   const start = await readFile(new URL('../app/bootcamp-2026/start/AcquisitionStart.jsx', import.meta.url), 'utf8')
   assert.match(start, /if \(access\.canClaimFirstFree\)[\s\S]*setState\('error'\)[\s\S]*return/)
   assert.match(start, /<del>₹999<\/del>/)
   assert.match(start, /<strong>₹799<\/strong>/)
-  assert.match(start, /plan="bootcamp_full_access" user=\{user\} returnTo="\/boot-camp"/)
+  assert.match(start, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp' \}\)/)
+  assert.match(start, /Compare the offer · Continue to pricing/)
   assert.doesNotMatch(start, /href="\/bootcamp-2026">Get Bootcamp/)
 })
 

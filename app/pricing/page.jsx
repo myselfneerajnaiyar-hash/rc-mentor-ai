@@ -19,7 +19,8 @@ const [couponMessage, setCouponMessage] = useState("");
 const router = useRouter()
 const searchParams = useSearchParams()
 const couponFromUrl = searchParams.get("coupon") || ""
-const returnTo = searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
+const isBootcampOfferEntry = searchParams.get("offer") === "bootcamp"
+const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
 
 const applyCoupon = useCallback(async (value) => {
   try {
@@ -58,6 +59,15 @@ useEffect(() => {
 }, [couponFromUrl, applyCoupon])
 
 const [isCatStudent, setIsCatStudent] = useState(false)
+const quarterlyDuePaise = discountApplied
+  ? 63920
+  : appliedCoupon
+    ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
+    : 79900
+const bootcampCoupon = appliedCoupon === "AUCTOR20" ? appliedCoupon : ""
+const bootcampDuePaise = bootcampCoupon
+  ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
+  : 79900
 
 useEffect(() => {
   async function loadUser() {
@@ -194,6 +204,38 @@ setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You save
 <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6 items-stretch max-w-[1400px] mx-auto">
 
 
+
+<Card className={`relative overflow-hidden rounded-3xl border-2 bg-gradient-to-br from-emerald-500/20 via-slate-900 to-indigo-950 ${isBootcampOfferEntry ? "border-emerald-300 ring-4 ring-emerald-400/30 md:col-span-2" : "border-emerald-500/50"}`}>
+  <div className="absolute left-5 top-5 rounded-full bg-emerald-400 px-3 py-1 text-xs font-black tracking-wide text-slate-950">MORE THAN A BOOT CAMP</div>
+  <CardContent className="p-7 pt-16 text-center md:p-10 md:pt-16">
+    <h2 className="mb-3 text-2xl font-black text-white md:text-3xl">45-Day VARC Boot Camp + 3 Months of Full Auctor Access</h2>
+    <p className="mx-auto mb-6 max-w-2xl text-sm leading-6 text-slate-300">Get the 45-Day VARC Boot Camp plus 3 months of full Auctor platform access. Practice RC, build vocabulary, review your performance, and use included Auctor features for three months.</p>
+    <div className="mb-5 flex flex-wrap items-baseline justify-center gap-3">
+      <del className="text-xl text-slate-400">{bootcampCoupon ? "₹799" : "₹999"}</del>
+      <strong className="text-5xl font-black text-white">{formatRupees(bootcampDuePaise / 100)}</strong>
+      <span className="text-sm text-slate-400">INR</span>
+    </div>
+    {bootcampCoupon && <p className="-mt-4 mb-4 text-xs text-slate-400">₹999 reference price · ₹799 offer base</p>}
+    <p className="mb-5 text-sm font-semibold text-emerald-200">Use AUCTOR20 for 20% off the ₹799 base price{bootcampCoupon ? " · applied" : ""}</p>
+    <ul className="mx-auto mb-7 grid max-w-3xl gap-2 text-left text-sm text-slate-200 sm:grid-cols-2">
+      <li>✓ All 45 guided Boot Camp days and review</li>
+      <li>✓ Daily RC workouts and Birbal AI mentor</li>
+      <li>✓ Performance analytics and leaderboards</li>
+      <li>✓ Three months of full Auctor platform access</li>
+    </ul>
+    {bootcampCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
+    <SubscribeButton
+      amount={bootcampDuePaise / 100}
+      plan="bootcamp_full_access"
+      label={`Get Boot Camp + 3 months of Auctor · ${formatRupees(bootcampDuePaise / 100)}`}
+      user={user}
+      couponCode={bootcampCoupon}
+      returnTo={returnTo}
+      variant="premium"
+    />
+    <p className="mt-3 text-xs text-slate-400">Day 1 remains available through the existing first-free access flow. No payment is required to try it.</p>
+  </CardContent>
+</Card>
 
 {/* TEST SERIES */}
 {isCatStudent && (
@@ -389,47 +431,31 @@ returnTo={returnTo}
 3 Month Plan
 </h3>
 
-{discountApplied ? (
+{quarterlyDuePaise < 79900 ? (
   <div className="mb-3">
- <p
-  className="text-2xl font-bold text-red-300"
-  style={{
-    textDecoration: "line-through",
-    textDecorationThickness: "3px",
-    textDecorationColor: "#ef4444",
-  }}
->
-      ₹999
-    </p>
-    <p className="text-5xl font-bold text-white">
-      ₹799
-    </p>
-    <p className="text-green-400 font-semibold">
-      Save ₹200
-    </p>
+    <p className="text-2xl font-bold text-slate-400 line-through">₹799</p>
+    <p className="text-5xl font-bold text-white">{formatRupees(quarterlyDuePaise / 100)}</p>
   </div>
 ) : (
-  <p className="text-5xl font-bold text-white mb-3">
-    ₹999
-  </p>
+  <p className="text-5xl font-bold text-white mb-3">₹799</p>
 )}
 
 <p className="text-indigo-400 mb-6">
-{discountApplied ? "₹266/month" : "₹333/month"}
+3 months · {formatRupees(quarterlyDuePaise / 300)} per month
 </p>
 
 
 <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
 <li>✔️ Daily RC workouts</li>
-<li>✔️ Speed reading gym</li>
 <li>✔️ Birbal AI mentor</li>
-<li>✔️ Performance analytics</li>
-<li>✔️ Unlimited RC practice</li>
+<li>✔️ Performance analytics and leaderboards</li>
+<li>✔️ All 45 Boot Camp days</li>
 </ul>
 
-{appliedCoupon && <CouponBreakdown originalRupees={999} discountPercent={appliedCouponDiscount} />}
+{appliedCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
+{discountApplied && <p className="mb-5 text-sm text-emerald-300">Verified referral price applied</p>}
 <SubscribeButton
-amount={discountApplied ? 799 : 999}
+amount={quarterlyDuePaise / 100}
 plan="quarterly"
 label="Start 3 Month Plan"
 user={user}

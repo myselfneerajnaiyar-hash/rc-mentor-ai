@@ -1,10 +1,10 @@
 "use client"
 
 import { supabase } from "@/lib/supabase"
+import { attributionParams, readBrowserAttribution } from "@/lib/attribution.mjs"
 
 
 export default function SubscribeButton({
-  amount,
   plan,
   label,
   user,
@@ -88,7 +88,11 @@ if (!razorpayLoaded) {
         currency: "INR",
 
         name: "AuctorRC",
-        description: "RC Intelligence Subscription",
+        description: plan === "bootcamp_full_access"
+          ? "45-Day VARC Boot Camp + 3 Months of Full Auctor Access"
+          : plan === "quarterly"
+            ? "3 Months of Full Auctor Access + VARC Boot Camp"
+            : "RC Intelligence Subscription",
 
         order_id: order.id,
 
@@ -125,6 +129,7 @@ if (!razorpayLoaded) {
             }
 
             const successParams = new URLSearchParams({ orderId: result.purchase.orderId })
+            for (const [key, value] of attributionParams(readBrowserAttribution())) successParams.set(key, value)
             if (returnTo === "/boot-camp") successParams.set("returnTo", "/boot-camp")
             window.location.href = `/payment-success?${successParams.toString()}`
 
@@ -147,7 +152,7 @@ if (!razorpayLoaded) {
 
       console.error(err)
 
-      alert("Payment failed to start")
+      alert(err?.message || "Payment failed to start")
     }
   }
 

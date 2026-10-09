@@ -13,7 +13,7 @@ const verifyPaymentSource = await readFile(new URL("../app/api/verify-payment/ro
 test("normal purchases retain every existing base price", () => {
   assert.deepEqual(Object.fromEntries(Object.keys(PLAN_PRICES).map((plan) => [plan, calculatePlanPricing(plan).finalPaise])), {
     monthly: 39900,
-    quarterly: 99900,
+    quarterly: 79900,
     half_yearly: 129900,
     yearly: 199900,
     cat_test_series: 79900,
@@ -39,7 +39,7 @@ test("invalid coupon is rejected and cannot alter normal pricing", () => {
 
 test("existing referral prices remain unchanged", () => {
   assert.equal(calculatePlanPricing("monthly", { validReferral: true }).finalPaise, 31900)
-  assert.equal(calculatePlanPricing("quarterly", { validReferral: true }).finalPaise, 79900)
+  assert.equal(calculatePlanPricing("quarterly", { validReferral: true }).finalPaise, 63920)
   assert.equal(calculatePlanPricing("half_yearly", { validReferral: true }).finalPaise, 103900)
   assert.equal(calculatePlanPricing("yearly", { validReferral: true }).finalPaise, 159900)
   assert.equal(calculatePlanPricing("cat_test_series", { validReferral: true }).finalPaise, 63900)
@@ -120,7 +120,7 @@ async function loadModule(file, dependencies, globals = {}) {
   return exports
 }
 
-async function checkoutHarness() {
+async function checkoutHarness({ bundleReady = true } = {}) {
   const rows = {
     instagram_influencers: [collision, legitimateInfluencer, auctor20Influencer],
     profiles: [{ user_id: "test-user", name: "Student", email: "student@example.test", phone: "", exam: "CAT", attempt_year: 2026, is_premium: false }],
@@ -221,8 +221,10 @@ async function checkoutHarness() {
     "@/lib/email/sendInfluencerConversionEmail": { sendInfluencerConversionEmail: async () => {} },
     "@/lib/whatsapp/events": { cancelUserEvents: async () => {} },
   }
+  const paymentEnv = { RAZORPAY_KEY_SECRET: "test-only-secret" }
+  if (bundleReady !== null) paymentEnv.BOOTCAMP_PLATFORM_BUNDLE_READY = bundleReady ? "true" : "false"
   const globals = {
-    process: { env: { RAZORPAY_KEY_SECRET: "test-only-secret" } },
+    process: { env: paymentEnv },
     fetch: async url => {
       assert.equal(url, "https://rc.auctorlabs.in/api/send-payment-email")
       return Response.json({ success: true })
@@ -234,6 +236,10 @@ async function checkoutHarness() {
   return {
     rows, calls, coupons,
     validate: couponCode => validate.POST({ json: async () => ({ couponCode }) }),
+    async createResponse(input) {
+      const response = await create.POST({ json: async () => input })
+      return response
+    },
     async create(input) {
       const response = await create.POST({ json: async () => input })
       assert.equal(response.status, 200)
@@ -360,7 +366,7 @@ test("legitimate influencer coupon retains validation, pricing, fulfillment and 
   assert.equal(h.rows.influencer_coupon_conversions[0].commission_amount, 38970)
 })
 
-test("AUCTOR20 uses the influencer record on every discountable plan, including CAT test series", async () => {
+test("AUCTOR20 is a fixed 20% coupon and preserves configured influencer attribution", async () => {
   for (const plan of Object.keys(PLAN_PRICES).filter(plan => plan !== "bootcamp_full_access")) {
     const h = await checkoutHarness()
     const couponResponse = await h.validate("auctor20")
@@ -380,8 +386,33 @@ test("AUCTOR20 uses the influencer record on every discountable plan, including 
   }
 })
 
-test("fixed-price Bootcamp orders reject subscription coupon and referral discounts", () => {
-  assert.match(createOrderSource, /body\.plan === "bootcamp_full_access" && \(couponInput\.trim\(\) \|\|/)
+test("AUCTOR20 Bootcamp commission is based on the ₹799 offer base, not its ₹999 reference price", async () => {
+  const h = await checkoutHarness()
+  const order = await h.create({ plan: "bootcamp_full_access", couponCode: "AUCTOR20" })
+  assert.equal(order.amount, 63920)
+  assert.equal(order.notes.influencer_id, "influencer-auctor20")
+  assert.equal(h.rows.razorpay_payment_orders[0].original_amount_paise, 99900)
+  assert.equal(h.rows.razorpay_payment_orders[0].discount_amount_paise, 35980)
+  assert.equal(h.rows.razorpay_payment_orders[0].amount_paid_paise, 63920)
+  assert.equal(h.rows.razorpay_payment_orders[0].influencer_attribution.originalPaise, 79900)
+  assert.equal(h.rows.razorpay_payment_orders[0].influencer_attribution.discountPaise, 15980)
+  assert.equal(h.rows.razorpay_payment_orders[0].influencer_attribution.commissionPaise, 15980)
+})
+
+test("Bootcamp accepts only AUCTOR20 and rejects referral stacking", () => {
+  assert.match(createOrderSource, /couponInput\.trim\(\)\.toUpperCase\(\) !== "AUCTOR20"/)
+  assert.match(createOrderSource, /body\.referralCode\.trim\(\)/)
+})
+
+test("combined-offer orders fail closed until the database entitlement migration is ready", async () => {
+  for (const bundleReady of [false, null]) {
+    for (const plan of ["quarterly", "bootcamp_full_access"]) {
+      const h = await checkoutHarness({ bundleReady })
+      const response = await h.createResponse({ plan })
+      assert.equal(response.status, 503)
+      assert.equal(h.rows.razorpay_payment_orders.length, 0)
+    }
+  }
 })
 
 test("Boot Camp order and verified payment use ₹799; an incorrect capture grants no access", async () => {
@@ -391,6 +422,7 @@ test("Boot Camp order and verified payment use ₹799; an incorrect capture gran
   assert.equal(order.pricing.originalPaise, 99900)
   assert.equal(order.notes.original_price, "99900")
   assert.equal(order.notes.amount_paid, "79900")
+  assert.equal(h.rows.razorpay_payment_orders[0].entitlement_bundle_version, 1)
   const rejected = await h.verify({ amount: 99900 })
   assert.equal(rejected.status, 503)
   assert.equal(h.rows.bootcamp_access.length, 0)
@@ -402,11 +434,29 @@ test("Boot Camp order and verified payment use ₹799; an incorrect capture gran
   assert.deepEqual(h.rows.bootcamp_access.map(row => row.amount_paid_paise), [79900])
 })
 
+test("AUCTOR20 charges ₹639.20 on both ₹799 offers using server-calculated paise", async () => {
+  for (const plan of ["bootcamp_full_access", "quarterly"]) {
+    const h = await checkoutHarness()
+    const order = await h.create({ plan, couponCode: "AUCTOR20", amount: 1 })
+    assert.equal(order.amount, 63920)
+    assert.equal(order.pricing.finalPaise, 63920)
+    assert.equal(order.notes.amount_paid, "63920")
+    assert.equal(h.rows.razorpay_payment_orders[0].entitlement_bundle_version, 1)
+    const response = await h.verify({ amount: 63920 })
+    assert.equal(response.status, 200)
+    assert.equal((await response.json()).purchase.value, 639.2)
+  }
+})
+
 test("pricing page supports validated coupon query prefill", async () => {
   const pricingSource = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
   assert.match(pricingSource, /searchParams\.get\("coupon"\)/)
   assert.match(pricingSource, /applyCoupon\(couponFromUrl\)/)
   assert.match(pricingSource, /couponCode=\{appliedCoupon\}/)
+  assert.match(pricingSource, /45-Day VARC Boot Camp \+ 3 Months of Full Auctor Access/)
+  assert.match(pricingSource, /Use AUCTOR20 for 20% off the ₹799 base price/)
+  assert.match(pricingSource, /md:grid-cols-2/)
+  assert.match(pricingSource, /sm:grid-cols-2/)
 })
 
 test("server-validated referral pricing is also identical at creation and verification", async () => {
