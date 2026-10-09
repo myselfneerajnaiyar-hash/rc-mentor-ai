@@ -7,6 +7,7 @@ import CategoryTabs from '@/components/mobile/CategoryTabs';
 import { BookOpen, Clock, ListChecks, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import CATAnalytics from "../app/components/CATAnalytics";
 import { useTenant } from "@/components/providers/TenantProvider";
+import { hasCATTestSeriesAccess } from "@/lib/tenant/catTestSeriesAccess";
 
 
 
@@ -22,7 +23,7 @@ export default function CATArenaLanding({
 
   const [sectionals, setSectionals] = useState([]);
   const [testStatus, setTestStatus] = useState("loading");
-  const [plan, setPlan] = useState(null);
+  const [subscriptions, setSubscriptions] = useState([]);
 
   useEffect(() => {
 
@@ -33,14 +34,14 @@ export default function CATArenaLanding({
 
     if (!authData?.user) return;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("subscriptions")
-      .select("plan")
+      .select("plan,expires_at")
       .eq("user_id", authData.user.id)
-      .gt("expires_at", new Date().toISOString())
-      .maybeSingle();
+      .in("plan", ["cat_test_series", "half_yearly", "yearly"])
+      .gt("expires_at", new Date().toISOString());
 
-    setPlan(data?.plan || null);
+    setSubscriptions(error ? [] : data || []);
   }
 
   loadPlan();
@@ -88,10 +89,7 @@ setAttemptedMap(map);
   }, []);
 
   
-const hasFullCATAccess =
-  entitlement.isInstituteStudent ||
-  plan === "yearly" ||
-  plan === "half_yearly";
+const hasFullCATAccess = entitlement.isInstituteStudent || hasCATTestSeriesAccess(subscriptions);
 
 
  const tabs=[{value:'pyq',label:'Official CAT PYQs'},{value:'mock',label:'Auctor Mocks'},{value:'analytics',label:'Analytics'}];
