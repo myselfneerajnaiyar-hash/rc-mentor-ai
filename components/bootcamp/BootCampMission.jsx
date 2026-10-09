@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
 import { bootcampRequest } from '@/lib/bootcamp/client'
+import { BOOTCAMP_TRAINING_DAYS } from '@/lib/bootcamp/calendar.mjs'
 import s from './bootcamp.module.css'
 
 function workoutBlock(text,index) {
@@ -12,7 +13,7 @@ function workoutBlock(text,index) {
 
 function ProgressStrip({ data, loading, error }) {
   const metrics=[
-    ['COMPLETED DAYS',data?.daysCompleted,'of 50'],
+    ['COMPLETED DAYS',data?.daysCompleted,`of ${BOOTCAMP_TRAINING_DAYS}`],
     ['QUESTIONS',data?.questionsAttempted,'attempted'],
     ['ACCURACY',data?.accuracy===null?'—':data?`${Math.round(data.accuracy)}%`:null,'completed days'],
     ['CURRENT STREAK',data?.currentStreak,data?.currentStreak===1?'day':'days'],

@@ -31,12 +31,12 @@ export default function BootcampOffer() {
   if (access?.source !== 'first_free') return null
   const daysLeft = Math.max(1, Math.ceil((CAT_EXAM - Date.now()) / 86400000))
   return <aside className={s.bootcampOffer} aria-label="Unlock the full Bootcamp">
-    <div><p className={s.offerEyebrow}>DAY 1 FREE · DAYS 2–50 LOCKED</p>
-      <h2>Unlock the full 50-Day Bootcamp</h2>
+    <div><p className={s.offerEyebrow}>PERSONAL DAY 1 FREE · DAYS 2–45 LOCKED</p>
+      <h2>Unlock the full 45-Day Bootcamp</h2>
       <p>Continue your guided VARC training for CAT 2026. CAT is {daysLeft} days away.</p>
     </div>
-    <div className={s.offerPrice}><del>₹799</del><strong>₹499</strong><small>Current Bootcamp offer</small>
-      {user ? <SubscribeButton amount={499} plan="bootcamp_full_access" label="Unlock all 50 days" user={user} returnTo="/boot-camp" /> : <a href="/login?next=bootcamp">Log in to unlock</a>}
+    <div className={s.offerPrice}><del>₹999</del><strong>₹799</strong><small>Current Bootcamp offer</small>
+      {user ? <SubscribeButton amount={799} plan="bootcamp_full_access" label="Unlock all 45 days" user={user} returnTo="/boot-camp" /> : <a href="/login?next=bootcamp">Log in to unlock</a>}
     </div>
   </aside>
 }

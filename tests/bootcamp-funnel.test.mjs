@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
-import { calculatePlanPricing } from '../lib/payments/pricing.js'
+import { BOOTCAMP_ORIGINAL_PRICE_PAISE, BOOTCAMP_PAYABLE_PRICE_PAISE, calculatePlanPricing } from '../lib/payments/pricing.js'
 import { getOnboardingDestination } from '../lib/onboarding/returnDestination.mjs'
 import { fixture, harness, student } from './helpers/bootcamp-db.mjs'
 
@@ -18,8 +18,11 @@ test('first-free access exposes Day 1 and blocks later days at the service bound
   } finally { await h.close() }
 })
 
-test('Bootcamp checkout is independently server priced at ₹499 and does not change CAT Test Series', () => {
-  assert.equal(calculatePlanPricing('bootcamp_full_access').finalPaise, 49900)
+test('Bootcamp checkout is independently server priced at ₹799 with ₹999 reference price and does not change CAT Test Series', () => {
+  const bootcamp = calculatePlanPricing('bootcamp_full_access')
+  assert.equal(bootcamp.originalPaise, BOOTCAMP_ORIGINAL_PRICE_PAISE)
+  assert.equal(bootcamp.finalPaise, BOOTCAMP_PAYABLE_PRICE_PAISE)
+  assert.equal(calculatePlanPricing('bootcamp_full_access', { couponCode: 'AZADI50', validReferral: true }).finalPaise, 79900)
   assert.equal(calculatePlanPricing('cat_test_series').finalPaise, 79900)
   assert.equal(calculatePlanPricing('quarterly').finalPaise, 99900)
 })

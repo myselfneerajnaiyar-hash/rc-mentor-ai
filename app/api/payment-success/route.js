@@ -7,7 +7,7 @@ const PRODUCTS = {
   half_yearly: { name: "Auctor Half-Yearly", features: ["Daily RC workouts", "Birbal AI mentor", "Performance analytics and leaderboards"] },
   yearly: { name: "Auctor Annual", features: ["Daily RC workouts", "Birbal AI mentor", "Performance analytics and leaderboards"] },
   cat_test_series: { name: "CAT VARC Test Series", features: ["Full CAT VARC Test Series access"] },
-  bootcamp_full_access: { name: "CAT VARC Boot Camp 2026", features: ["All 50 guided Bootcamp days", "Birbal Bootcamp review and progress analytics"] },
+  bootcamp_full_access: { name: "CAT VARC Boot Camp 2026", features: ["All 45 guided Boot Camp days", "Birbal Boot Camp review and progress analytics"] },
 }
 
 export const dynamic = "force-dynamic"

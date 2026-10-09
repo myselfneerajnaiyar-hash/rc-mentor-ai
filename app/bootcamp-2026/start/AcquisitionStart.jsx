@@ -57,7 +57,7 @@ export default function AcquisitionStart() {
     <p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p>
     <h1>Your first free Bootcamp has already been claimed.</h1>
     <p>Bootcamp access is locked until you have another active entitlement.</p>
-    <div className={s.placeholderOffer}><span>Bootcamp offer</span><strong>₹499</strong><small>Practice access through 4 February 2027</small></div>
-    <a className={s.cta} href="/bootcamp-2026">Get Bootcamp — ₹499 <span aria-hidden="true">→</span></a>
+    <div className={s.placeholderOffer}><span>Bootcamp offer</span><del>₹999</del><strong>₹799</strong><small>Practice access through 4 February 2027</small></div>
+    <a className={s.cta} href="/bootcamp-2026">Get Bootcamp — ₹799 <span aria-hidden="true">→</span></a>
   </main>
 }

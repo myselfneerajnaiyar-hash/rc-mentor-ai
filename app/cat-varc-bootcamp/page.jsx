@@ -24,7 +24,7 @@ export default function CatVarcBootCampPage() {
 
     <section className={s.offer}>
       <p className={s.eyebrow}>READY FOR THE FULL PROGRAM?</p>
-      <h2>Take the same evidence-first training through all 50 days.</h2>
+      <h2>Take the same evidence-first training through all 45 days.</h2>
       <p>Create or sign in to your Auctor account, choose a plan, and continue into the full Boot Camp after purchase.</p>
       <Link className={s.primary} href="/login?next=bootcamp">Continue to full Boot Camp</Link>
     </section>

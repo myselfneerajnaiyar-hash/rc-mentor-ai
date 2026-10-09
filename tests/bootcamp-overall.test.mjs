@@ -9,7 +9,7 @@ import { bootCampClock, bootCampPreviewDate, isBootCampPreviewUser } from '../li
 import { leaderboardWindow } from '../lib/bootcamp/leaderboard.mjs'
 export function record(day,correct=10) {
  const snapshot=adaptDay(fixture(day)).snapshot,state=initialState(snapshot)
- state.status='completed';state.phase='report';state.completed_at=`${BOOTCAMP_CALENDAR[day-1].date}T10:00:00Z`
+ state.status='completed';state.phase='report';state.completed_at=`${BOOTCAMP_CALENDAR[day-1]?.date||'2026-11-23'}T10:00:00Z`
  let n=0
  for(const b of state.blocks){b.status='completed';b.started_at=state.completed_at;b.finished_at=state.completed_at;for(const q of b.questions){q.outcome=n++<correct?'correct':'incorrect';q.response='A';q.saved_at=state.completed_at;q.active_ms=2000}}
  return {day_number:day,snapshot,state}

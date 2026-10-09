@@ -91,17 +91,18 @@ test("Meta Pixel Purchase fires on the verified payment summary page and is idem
   assert.doesNotMatch(checkout, /capturePurchasePixel|fbq\("track",\s*"Purchase"/)
   assert.ok(paymentSuccessPage.includes("capturePurchasePixel") && paymentSuccessPage.includes("/api/payment-success?orderId="))
   assert.ok(paymentSuccessRoute.includes('order.status !== "provisioned"') && paymentSuccessRoute.includes('.eq("user_id", identity.user.id)'))
+  assert.match(paymentSuccessRoute, /amountPaid: Number\(order\.amount_paid_paise\) \/ 100/)
   assert.ok(verifyRoute.includes("processSuccessfulPayment"))
 })
 
 test("browser Purchase payload includes verified product and order identifiers when supplied", () => {
   const calls = []
   assert.equal(capturePurchasePixel({
-    paymentId: "pay_details", value: 499, currency: "INR", contentName: "CAT VARC Boot Camp 2026",
+    paymentId: "pay_details", value: 799, currency: "INR", contentName: "CAT VARC Boot Camp 2026",
     contentId: "bootcamp_full_access", orderId: "order_details", pixel: (...args) => calls.push(args), storage: memoryStorage(),
   }), true)
   assert.deepEqual(calls[0][2], {
-    value: 499, currency: "INR", content_name: "CAT VARC Boot Camp 2026",
+    value: 799, currency: "INR", content_name: "CAT VARC Boot Camp 2026",
     content_ids: ["bootcamp_full_access"], content_type: "product", order_id: "order_details",
   })
 })

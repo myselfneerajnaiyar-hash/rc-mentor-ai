@@ -247,12 +247,12 @@ test('Daily RC review adapter preserves authored meaning, evidence, outcomes and
   assert.equal(insight.confidence,undefined,'question review does not repeat generic confidence disclaimers')
 })
 
-test('calendar derives exactly 50 training dates and Monday-first placement from start date',async()=>{
+test('calendar derives exactly 45 training dates and Monday-first placement from start date',async()=>{
   const {trainingMonths}=await import('../lib/bootcamp/calendar.mjs')
   const months=trainingMonths(), days=months.flatMap(m=>m.cells.filter(c=>c?.day))
-  assert.equal(months.length,3);assert.equal(days.length,50)
+  assert.equal(months.length,2);assert.equal(days.length,45)
   assert.equal(months[0].cells.findIndex(c=>c?.day===1),7)
-  assert.equal(days[0].iso,'2026-10-05');assert.equal(days.at(-1).iso,'2026-11-23')
+  assert.equal(days[0].iso,'2026-10-05');assert.equal(days.at(-1).iso,'2026-11-18')
   assert.deepEqual(trainingMonths('2028-02-01'),months,'an enrollment/custom start cannot shift the fixed program')
 })
 

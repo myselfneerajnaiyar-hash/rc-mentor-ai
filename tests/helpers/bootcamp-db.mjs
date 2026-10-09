@@ -7,13 +7,15 @@ export const other = '00000000-0000-4000-8000-000000000002'
 const ident = s => { if (!/^[a-z_][a-z_0-9]*$/.test(s)) throw Error('Invalid test SQL identifier'); return s }
 
 // A real PostgreSQL runtime, not an in-memory imitation of the transaction logic.
-export async function harness(source, generate, converse, options={now:()=>new Date('2026-10-05T06:00:00Z')}) {
+export async function harness(source, generate, converse, options={}) {
+  options={now:()=>new Date('2026-10-05T06:00:00Z'),personalSequence:false,...options}
   const pg = new PGlite(), calls = []
   await pg.exec('create schema auth; create table auth.users(id uuid primary key); create role anon; create role authenticated; create role service_role;')
   await pg.exec(await readFile('supabase/migrations/202609220001_bootcamp_day1.sql','utf8'))
   await pg.exec(await readFile('supabase/migrations/202609230001_bootcamp_trainer_history.sql','utf8'))
   await pg.exec(await readFile('supabase/migrations/202610040002_bootcamp_history_unsequenced.sql','utf8'))
   await pg.exec(await readFile('supabase/migrations/202609230002_bootcamp_fixed_calendar.sql','utf8'))
+  await pg.exec(await readFile('supabase/migrations/202610090001_bootcamp_personal_sequence.sql','utf8'))
   await pg.query('insert into auth.users values ($1),($2)',[student,other])
   await pg.exec('create table bootcamp_days(id text primary key, day_number integer, document jsonb, lock_token text, updated_at text)')
   await pg.exec('create table profiles(user_id uuid primary key,name text)')

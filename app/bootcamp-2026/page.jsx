@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import s from './page.module.css'
 import BootcampAccessCTA from '@/components/bootcamp/BootcampAccessCTA'
+import { BOOTCAMP_CURRICULUM_TOTALS, BOOTCAMP_DAILY_STRUCTURE } from '@/lib/bootcamp/program.mjs'
 
 const CAT_DATE = '2026-11-29T00:00:00+05:30'
 
@@ -227,28 +228,28 @@ export default function Bootcamp2026Page() {
   <div className={s.programStatsGrid}>
     <article className={s.programStat}>
       <span className={s.programStatIcon}>↗</span>
-      <strong>135</strong>
+            <strong>{BOOTCAMP_CURRICULUM_TOTALS.rcPassages}</strong>
       <b>RC passages</b>
-      <small>3 passages every day</small>
+            <small>{BOOTCAMP_DAILY_STRUCTURE.rcPassages} passages every day</small>
     </article>
 
     <article className={s.programStat}>
       <span className={s.programStatIcon}>≡</span>
-      <strong>1,125</strong>
+            <strong>{BOOTCAMP_CURRICULUM_TOTALS.totalQuestions.toLocaleString('en-IN')}</strong>
       <b>Practice questions</b>
-      <small>25 questions every day</small>
+            <small>{BOOTCAMP_DAILY_STRUCTURE.warmup + BOOTCAMP_DAILY_STRUCTURE.rcQuestions + BOOTCAMP_DAILY_STRUCTURE.vaQuestions} questions every day</small>
     </article>
 
     <article className={s.programStat}>
       <span className={s.programStatIcon}>◷</span>
-      <strong>45</strong>
+            <strong>{BOOTCAMP_CURRICULUM_TOTALS.trainingDays}</strong>
       <b>Training days</b>
       <small>One guided routine each day</small>
     </article>
 
     <article className={s.programStat}>
       <span className={s.programStatIcon}>◎</span>
-      <strong>360</strong>
+            <strong>{BOOTCAMP_CURRICULUM_TOTALS.vaQuestions}</strong>
       <b>Verbal Ability questions</b>
       <small>8 questions every day</small>
     </article>
@@ -256,7 +257,7 @@ export default function Bootcamp2026Page() {
 
   <p className={s.programStatsNote}>
     Every day: 5 warm-up questions + 12 RC questions + 8 Verbal Ability questions,
-    followed by Birbal’s review.
+    followed by Birbal’s review. Across the plan, that is {BOOTCAMP_CURRICULUM_TOTALS.rcQuestions} RC questions and {BOOTCAMP_CURRICULUM_TOTALS.warmupQuestions} warm-ups.
   </p>
 </section>
 
@@ -420,6 +421,10 @@ export default function Bootcamp2026Page() {
   {
     q: 'What is the 45-day Boot Camp?',
     a: 'A guided daily VARC routine with warm-up questions, three RC passages, Verbal Ability practice and review with Birbal.'
+  },
+  {
+    q: 'Does my first day depend on when I join?',
+    a: 'No. Every new student starts with personal Day 1 and its Day 1 curriculum. Your next eligible session continues with personal Day 2, then Day 3 through Day 45.'
   },
   {
     q: 'How is Boot Camp different from mock tests?',

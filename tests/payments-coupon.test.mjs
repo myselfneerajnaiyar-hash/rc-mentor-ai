@@ -17,7 +17,7 @@ test("normal purchases retain every existing base price", () => {
     half_yearly: 129900,
     yearly: 199900,
     cat_test_series: 79900,
-    bootcamp_full_access: 49900,
+    bootcamp_full_access: 79900,
   })
 })
 
@@ -125,7 +125,7 @@ async function checkoutHarness() {
     instagram_influencers: [collision, legitimateInfluencer, auctor20Influencer],
     profiles: [{ user_id: "test-user", name: "Student", email: "student@example.test", phone: "", exam: "CAT", attempt_year: 2026, is_premium: false }],
     razorpay_payment_orders: [],
-    subscriptions: [], influencer_coupon_conversions: [],
+    subscriptions: [], bootcamp_access: [], influencer_coupon_conversions: [],
     campus_ambassadors: [{ id: "ambassador", referral_code: "REFERRAL", status: "active", total_referrals: 0, total_commission: 0 }],
   }
   const calls = []
@@ -179,8 +179,16 @@ async function checkoutHarness() {
     if (Number(purchase.amount_paid_paise) !== Number(payment.amount) || payment.status !== "captured") {
       throw new Error("Captured payment does not match registered purchase")
     }
-    const existing = rows.subscriptions.find(row => row.razorpay_payment_id === paymentId)
+    const existing = purchase.plan === "bootcamp_full_access"
+      ? rows.bootcamp_access.find(row => row.razorpay_payment_id === paymentId)
+      : rows.subscriptions.find(row => row.razorpay_payment_id === paymentId)
     if (existing) return { status: "reconciled" }
+    if (purchase.plan === "bootcamp_full_access") {
+      rows.bootcamp_access.push({ user_id: purchase.user_id, source: "purchase", amount_paid_paise: purchase.amount_paid_paise, razorpay_payment_id: paymentId })
+      purchase.razorpay_payment_id = paymentId
+      purchase.status = "provisioned"
+      return { status: "provisioned" }
+    }
     const expiresAt = new Date()
     expiresAt.setMonth(expiresAt.getMonth() + ({ monthly: 1, quarterly: 3, half_yearly: 6, yearly: 12, cat_test_series: 12 }[purchase.plan]))
     const subscription = { user_id: purchase.user_id, plan: purchase.plan, expires_at: expiresAt.toISOString(), razorpay_payment_id: paymentId, referral_code: purchase.referral_code }
@@ -374,6 +382,24 @@ test("AUCTOR20 uses the influencer record on every discountable plan, including 
 
 test("fixed-price Bootcamp orders reject subscription coupon and referral discounts", () => {
   assert.match(createOrderSource, /body\.plan === "bootcamp_full_access" && \(couponInput\.trim\(\) \|\|/)
+})
+
+test("Boot Camp order and verified payment use ₹799; an incorrect capture grants no access", async () => {
+  const h = await checkoutHarness()
+  const order = await h.create({ plan: "bootcamp_full_access", amount: 99900 })
+  assert.equal(order.amount, 79900)
+  assert.equal(order.pricing.originalPaise, 99900)
+  assert.equal(order.notes.original_price, "99900")
+  assert.equal(order.notes.amount_paid, "79900")
+  const rejected = await h.verify({ amount: 99900 })
+  assert.equal(rejected.status, 503)
+  assert.equal(h.rows.bootcamp_access.length, 0)
+  assert.equal(h.rows.razorpay_payment_orders[0].status, "created")
+
+  const verified = await h.verify({ amount: 79900 })
+  assert.equal(verified.status, 200)
+  assert.equal((await verified.json()).purchase.value, 799)
+  assert.deepEqual(h.rows.bootcamp_access.map(row => row.amount_paid_paise), [79900])
 })
 
 test("pricing page supports validated coupon query prefill", async () => {
