@@ -264,16 +264,53 @@ export default function Bootcamp2026Page() {
 </article>
 
 
-        <article className={`${s.panel} ${s.gapPanel}`}>
-          <div className={s.panelEyebrow}>YOUR GAP REPORT <span>SAMPLE</span></div>
-          <h2>Accuracy by question type</h2>
-          {gaps.map(([label, status, width]) => (
-            <div className={s.gapRow} key={label}>
-              <div><span>{label}</span><b>{status}</b></div>
-              <div className={s.gapTrack}><i style={{ width: `${width}%` }} /></div>
-            </div>
-          ))}
-        </article>
+       
+<article className={`${s.panel} ${s.gapPanel}`}>
+  <div className={s.panelEyebrow}>
+    YOUR GAP REPORT <span>SAMPLE</span>
+  </div>
+
+  <h2>Your VARC performance, at a glance</h2>
+
+  <div className={s.gapSummary}>
+    <div className={s.gapSummaryStrength}>
+      <span>STRENGTH</span>
+      <b>Main idea</b>
+      <small>82% accuracy</small>
+    </div>
+
+    <div className={s.gapSummaryFocus}>
+      <span>FOCUS AREA</span>
+      <b>Inference</b>
+      <small>42% accuracy</small>
+    </div>
+
+    <div className={s.gapSummaryTrend}>
+      <span>PROGRESS</span>
+      <b>Track your trend</b>
+      <small>Review accuracy over time</small>
+    </div>
+  </div>
+
+  <h3 className={s.gapSubheading}>Accuracy by question type</h3>
+
+  {gaps.map(([label, status, width]) => (
+    <div className={s.gapRow} key={label}>
+      <div>
+        <span>{label}</span>
+        <b>{status}</b>
+      </div>
+      <div className={s.gapTrack}>
+        <i style={{ width: `${width}%` }} />
+      </div>
+    </div>
+  ))}
+
+  <p className={s.gapNote}>
+    Birbal helps you identify recurring mistakes and focus your next practice.
+  </p>
+</article>
+
 
         <article className={`${s.panel} ${s.founderPanel}`}>
           <img src="/assets/founder.jpeg" alt="Neraj Kumar Naiyar" loading="lazy" />
@@ -335,18 +372,44 @@ export default function Bootcamp2026Page() {
 
         <div className={s.faq}>
           <h2>Quick answers</h2>
-          {[
-            'What exactly is Boot Camp?',
-            'How is it different from a mock series?',
-            'How does Birbal know where I\'m weak?',
-            'Can I do it along with my mocks?',
-            'What do I get for ₹799?',
-          ].map((question) => (
-            <details key={question} onToggle={(e) => { if (e.currentTarget.open) openFaq(question) }}>
-              <summary>{question}<span>+</span></summary>
-              <p>{question === 'What exactly is Boot Camp?' ? 'A guided daily VARC training system where practice, review and your next target stay connected.' : question === 'How is it different from a mock series?' ? 'A mock grades a performance. Boot Camp uses daily practice and review to train the skill behind that performance.' : question === "How does Birbal know where I'm weak?" ? 'It uses your answers and recurring mistake patterns across your training days.' : question === 'Can I do it along with my mocks?' ? 'Yes. Boot Camp is training; mocks remain your testing and benchmarking layer.' : 'You get the complete guided Boot Camp, Birbal review, gap tracking, daily training and access through the stated practice period.'}</p>
-            </details>
-          ))}
+         
+{[
+  {
+    q: 'What is the 45-day Boot Camp?',
+    a: 'A guided daily VARC routine with warm-up questions, three RC passages, Verbal Ability practice and review with Birbal.'
+  },
+  {
+    q: 'How is Boot Camp different from mock tests?',
+    a: 'Mocks measure your performance. Boot Camp connects daily practice and review so you can work on recurring mistakes.'
+  },
+  {
+    q: 'What will I practise each day?',
+    a: 'Five warm-up questions, 12 RC questions and 8 Verbal Ability questions, followed by review with Birbal.'
+  },
+  {
+    q: 'How does Birbal identify my weak areas?',
+    a: 'Birbal uses your answers and mistake patterns to highlight question types that need more practice.'
+  },
+  {
+    q: 'Can I use Boot Camp alongside mock tests?',
+    a: 'Yes. Use mocks to benchmark your performance and Boot Camp to practise, review mistakes and target weak areas.'
+  },
+  {
+    q: 'What does the ₹799 offer include?',
+    a: 'The 45-day guided Boot Camp, daily VARC practice, Birbal review, progress insights and leaderboard features. Day 1 is free to try.'
+  }
+].map(({ q, a }) => (
+  <details
+    key={q}
+    onToggle={(e) => {
+      if (e.currentTarget.open) openFaq(q)
+    }}
+  >
+    <summary>{q}<span>+</span></summary>
+    <p>{a}</p>
+  </details>
+))}
+
         </div>
       </section>
 

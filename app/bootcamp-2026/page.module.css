@@ -212,5 +212,977 @@
   .videoClose {
     top: -10px;
     right: -7px;
+
+  }
+}
+
+/* GLOBAL READABILITY PASS — keep this block last */
+.page {
+  font-size: 16px;
+}
+.header {
+  max-width: 1280px;
+}
+.logo {
+  font-size: 19px;
+}
+.logoMark {
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+}
+.login {
+  font-size: 14px;
+}
+.hero {
+  max-width: 1280px;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding-top: 32px;
+  padding-bottom: 38px;
+}
+.topPills span {
+  font-size: 14px;
+  padding: 9px 13px;
+}
+.tag {
+  font-size: 13px;
+  padding: 9px 12px;
+  margin-bottom: 16px;
+}
+.heroTitle strong {
+  font-size: clamp(104px, 8vw, 132px);
+}
+.heroTitle span {
+  font-size: clamp(38px, 3.2vw, 46px);
+}
+.hero h1 {
+  font-size: clamp(38px, 3vw, 46px);
+  line-height: 1.08;
+  margin: 24px 0 16px;
+}
+.heroCopy > p {
+  max-width: 560px;
+  font-size: 18px;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+.cta {
+  font-size: 17px;
+  min-height: 62px;
+  padding: 0 22px;
+}
+.hero .cta {
+  width: 230px;
+}
+.byline {
+  display: none;
+}
+.whatBox {
+  padding: 24px;
+}
+.panelEyebrow {
+  font-size: 13px;
+}
+.compare {
+  gap: 12px;
+  margin: 14px 0;
+}
+.mockColumn,
+.bootColumn {
+  padding: 16px;
+}
+.mockColumn > b,
+.bootColumn > b {
+  font-size: 12px;
+}
+.mockColumn > div,
+.bootColumn > div {
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.mockColumn i,
+.bootColumn i {
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+  font-size: 11px;
+}
+.mockColumn small {
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 11px;
+}
+.bootColumn > strong {
+  margin-top: 14px;
+  padding: 11px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.whatBox > p {
+  padding: 13px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.threePoints div {
+  padding: 17px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.threePoints span {
+  width: 32px;
+  height: 32px;
+}
+.gridSection {
+  max-width: 1280px;
+  gap: 16px;
+  margin-top: 16px;
+}
+.panel {
+  padding: 22px;
+}
+.curveLabels b {
+  font-size: 13px;
+}
+.curveLabels small {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.dayStrip span {
+  font-size: 13px;
+  padding: 15px 7px;
+}
+.dayMeta {
+  font-size: 12px;
+}
+.dayTotal {
+  font-size: 17px;
+}
+.gapPanel h2,
+.founderPanel h2 {
+  font-size: 22px;
+}
+.gapRow > div:first-child {
+  font-size: 13px;
+}
+.gapRow b {
+  font-size: 12px;
+}
+.founderPanel p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.proofSection,
+.offerFaq,
+.finalCard,
+.footer {
+  max-width: 1280px;
+}
+.videoCard strong {
+  font-size: 15px;
+}
+.videoCard small {
+  font-size: 12px;
+}
+.testimonial p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.person {
+  font-size: 13px;
+}
+.offer ul {
+  font-size: 15px;
+  line-height: 1.9;
+}
+.offer > small {
+  font-size: 12px;
+}
+.price strong {
+  font-size: 44px;
+}
+.price del {
+  font-size: 18px;
+}
+.price span {
+  font-size: 11px;
+}
+.faq h2 {
+  font-size: 28px;
+}
+.faq summary {
+  padding: 15px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.faq details p {
+  padding: 0 15px 15px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.finalCard {
+  grid-template-columns: 140px 1fr 230px;
+  padding: 22px 28px;
+}
+.finalNumber {
+  font-size: 68px;
+}
+.finalCard b {
+  font-size: 17px;
+}
+.finalCard h2 {
+  font-size: 27px;
+  line-height: 1.25;
+}
+.finalCard .cta {
+  width: 230px;
+}
+.footer {
+  font-size: 12px;
+}
+.sticky {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.sticky b,
+.sticky span {
+  font-size: 13px;
+}
+.sticky .cta {
+  width: 220px;
+  min-height: 48px;
+}
+
+@media (max-width: 899px) {
+  .page {
+    padding: 0 14px 100px;
+  }
+  .header {
+    height: 58px;
+  }
+  .logo {
+    font-size: 17px;
+  }
+  .logoMark {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+  .login {
+    font-size: 11px;
+  }
+  .hero {
+    padding: 20px 0 18px;
+  }
+  .topPills span {
+    font-size: 12px;
+    padding: 8px 11px;
+  }
+  .tag {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+  .heroTitle strong {
+    font-size: 88px;
+  }
+  .heroTitle span {
+    font-size: 30px;
+  }
+  .hero h1 {
+    font-size: clamp(29px, 7.4vw, 36px);
+    line-height: 1.08;
+  }
+  .heroCopy > p {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .hero .cta {
+    width: 205px;
+    min-height: 52px;
+    font-size: 15px;
+  }
+  .whatBox {
+    padding: 14px;
+  }
+  .panelEyebrow {
+    font-size: 10px;
+  }
+  .compare {
+    gap: 7px;
+  }
+  .mockColumn,
+  .bootColumn {
+    padding: 10px;
+  }
+  .mockColumn > b,
+  .bootColumn > b {
+    font-size: 9px;
+  }
+  .mockColumn > div,
+  .bootColumn > div {
+    font-size: 11px;
+    line-height: 1.35;
+    gap: 6px;
+    margin-top: 9px;
+  }
+  .mockColumn i,
+  .bootColumn i {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+    font-size: 8px;
+  }
+  .mockColumn small {
+    font-size: 8px;
+    padding: 6px;
+  }
+  .bootColumn > strong {
+    font-size: 9px;
+    padding: 8px;
+  }
+  .whatBox > p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .threePoints div {
+    padding: 12px;
+    font-size: 13px;
+  }
+  .curveLabels b {
+    font-size: 9px;
+  }
+  .curveLabels small {
+    font-size: 8px;
+  }
+  .dayStrip span {
+    font-size: 9px;
+    padding: 11px 3px;
+  }
+  .dayMeta {
+    font-size: 8px;
+  }
+  .dayTotal {
+    font-size: 13px;
+  }
+  .gapPanel h2,
+  .founderPanel h2 {
+    font-size: 17px;
+  }
+  .gapRow > div:first-child {
+    font-size: 10px;
+  }
+  .gapRow b {
+    font-size: 9px;
+  }
+  .founderPanel p {
+    font-size: 11px;
+  }
+  .videoCard strong {
+    font-size: 12px;
+  }
+  .videoCard small {
+    font-size: 10px;
+  }
+  .testimonial p {
+    font-size: 14px;
+  }
+  .person {
+    font-size: 11px;
+  }
+  .offer ul {
+    font-size: 12px;
+  }
+  .offer > small {
+    font-size: 10px;
+  }
+  .price strong {
+    font-size: 36px;
+  }
+  .price del {
+    font-size: 15px;
+  }
+  .faq h2 {
+    font-size: 22px;
+  }
+  .faq summary {
+    font-size: 12px;
+    padding: 12px;
+  }
+  .faq details p {
+    font-size: 11px;
+  }
+  .finalCard h2 {
+    font-size: 18px;
+  }
+  .finalCard b {
+    font-size: 10px;
+  }
+  .footer {
+    font-size: 8px;
+  }
+  .sticky {
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+  .sticky b,
+  .sticky span {
+    font-size: 8px;
+  }
+  .sticky .cta {
+    width: 155px;
+    min-height: 42px;
+    font-size: 12px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .mockColumn > div,
+  .bootColumn > div {
+    font-size: 10px;
+  }
+  .sticky .cta {
+    width: 142px;
+    font-size: 11px;
+     line-height: 1.35;
+  }
+}
+ 
+
+.dayStrip {
+  grid-template-columns: 1.15fr 1fr 0.7fr 1fr;
+  gap: 4px;
+}
+
+.dayStrip span {
+  white-space: normal;
+  line-height: 1.25;
+  border-radius: 5px;
+}
+
+.dayMeta {
+  grid-template-columns: 1.15fr 1fr 0.7fr 1fr;
+  gap: 4px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.dayTotal {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.gapPanel {
+  min-width: 0;
+}
+
+.gapPanel h2 {
+  margin: 14px 0 18px;
+  line-height: 1.25;
+}
+
+.gapRow {
+  margin: 14px 0;
+}
+
+.gapRow > div:first-child {
+  gap: 12px;
+  line-height: 1.4;
+}
+
+.gapTrack {
+  height: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 899px) {
+  .compare {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .mockColumn .mockReset {
+    font-size: 8px;
+    padding: 8px 5px;
+  }
+
+  .threePoints {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .threePoints div {
+    min-height: 66px;
+    margin: 0 0 0;
+    padding: 12px;
+  }
+
+  .threePoints b {
+    font-size: 14px;
+  }
+
+  .threePoints small {
+    font-size: 12px;
+  }
+
+  .dayStrip {
+    grid-template-columns: 1.15fr 1fr 0.7fr 1fr;
+    gap: 3px;
+  }
+
+  .dayStrip span {
+    font-size: 9px;
+    padding: 10px 3px;
+  }
+
+  .dayMeta {
+    font-size: 8px;
+  }
+
+  .gapRow {
+    margin: 12px 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .mockColumn,
+  .bootColumn {
+    padding: 8px;
+  }
+
+  .mockColumn > div,
+  .bootColumn > div {
+    gap: 5px;
+    font-size: 10px;
+  }
+
+  .mockColumn .mockReset {
+    font-size: 7px;
+  }
+}
+
+/* Three-step tiles */
+.threePoints div {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 5px;
+  align-items: center;
+  padding: 18px;
+  min-height: 100px;
+}
+
+.threePoints span {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.threePoints b {
+  grid-column: 2;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.threePoints small {
+  grid-column: 2;
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Four distinct stages */
+.dayStrip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.dayStrip span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 10px 6px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.dayStrip span:nth-child(1) {
+  background: #38e0d0;
+  color: #06202b;
+}
+
+.dayStrip span:nth-child(2) {
+  background: #f5a84b;
+  color: #172333;
+}
+
+.dayStrip span:nth-child(3) {
+  background: #a99bff;
+  color: #201746;
+}
+
+.dayStrip span:nth-child(4) {
+  background: #8fe0a7;
+  color: #123522;
+}
+
+.dayMeta {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.dayTotal {
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 899px) {
+  .threePoints div {
+    min-height: 76px;
+    padding: 13px;
+  }
+
+  .threePoints b {
+    font-size: 15px;
+  }
+
+  .threePoints small {
+    font-size: 12px;
+  }
+
+  .dayStrip {
+    gap: 4px;
+  }
+
+  .dayStrip span {
+    min-height: 54px;
+    padding: 8px 3px;
+    font-size: 10px;
+  }
+
+  .dayMeta {
+    font-size: 9px;
+  }
+}
+
+
+/* REMAINING LANDING PAGE POLISH */
+
+/* Make login easier to read */
+.login {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login b {
+  font-weight: 800;
+}
+
+@media (max-width: 899px) {
+  .login {
+    font-size: 12px;
+  }
+}
+
+/* Gap Report summary cards */
+.gapSummary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0 22px;
+}
+
+.gapSummary > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 13px;
+  background: #132d43;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+
+.gapSummary span {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.gapSummary b {
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.gapSummary small {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.gapSummaryStrength {
+  border-top: 3px solid var(--teal) !important;
+}
+
+.gapSummaryFocus {
+  border-top: 3px solid var(--orange) !important;
+}
+
+.gapSummaryTrend {
+  border-top: 3px solid #a99bff !important;
+}
+
+.gapSubheading {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.gapNote {
+  margin: 16px 0 0;
+  padding: 12px;
+  background: #091a2b;
+  border-left: 3px solid var(--teal);
+  color: #b5c0c7;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Final CTA: align number, heading and button */
+.finalCard {
+  grid-template-columns: 90px minmax(0, 1fr) 230px;
+  gap: 20px;
+  align-items: center;
+}
+
+.finalCard > div:nth-child(2) {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+}
+
+.finalCard h2 {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.finalCard .cta {
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+}
+
+@media (max-width: 899px) {
+  .gapSummary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .gapSummary > div {
+    padding: 12px;
+  }
+
+  .gapSummary b {
+    font-size: 15px;
+  }
+
+  .gapNote {
+    font-size: 12px;
+  }
+
+  .finalCard {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .finalCard > div:nth-child(2) {
+    display: block;
+  }
+
+  .finalCard .cta {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+/* FIX: Final CTA mobile layout overlap */
+
+@media (max-width: 899px) {
+  .finalCard {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    padding: 18px 14px;
+    overflow: hidden;
+  }
+
+  .finalCard .finalNumber {
+    font-size: 54px;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    white-space: nowrap;
+    align-self: start;
+  }
+
+  .finalCard > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .finalCard > div:nth-child(2) > b {
+    display: block;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .finalCard h2 {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .finalCard > .cta {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 4px;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .finalCard {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 9px;
+    padding: 14px 12px;
+  }
+
+  .finalCard .finalNumber {
+    font-size: 46px;
+  }
+
+  .finalCard h2 {
+    font-size: 15px;
+  }
+}
+
+
+/* Sticky CTA — mobile readability */
+
+.stickyCta {
+  min-height: 76px;
+  padding: 12px 20px;
+  gap: 16px;
+  align-items: center;
+}
+
+.stickyLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.stickyLabel > span {
+  color: var(--orange);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+
+.stickyLabel strong {
+  font-size: 17px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.stickyCta a,
+.stickyCta button {
+  min-height: 48px;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 0 18px;
+}
+
+@media (max-width: 899px) {
+  .stickyCta {
+    min-height: 78px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .stickyLabel {
+    flex: 1;
+    font-size: 12px;
+  }
+
+  .stickyLabel > span {
+    font-size: 11px;
+  }
+
+  .stickyLabel strong {
+    font-size: 16px;
+  }
+
+  .stickyCta a,
+  .stickyCta button {
+    flex: 0 0 auto;
+    min-width: 145px;
+    min-height: 48px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stickyCta {
+    padding: 8px;
+    gap: 7px;
+  }
+
+  .stickyLabel > span {
+    font-size: 10px;
+  }
+
+  .stickyLabel strong {
+    font-size: 15px;
+  }
+
+  .stickyCta a,
+  .stickyCta button {
+    min-width: 132px;
+    font-size: 12px;
   }
 }

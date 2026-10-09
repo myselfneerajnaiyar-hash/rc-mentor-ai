@@ -22,7 +22,10 @@ export default function StickyStartCTA({ href, daysLeft }) {
   }, [])
 
   return <div className={`${s.stickyCta} ${visible ? s.stickyVisible : ''}`} aria-hidden={!visible}>
-    <span className={s.stickyLabel}>CAT 2026 · {daysLeft} DAYS LEFT<strong>₹499</strong></span>
+    <span className={s.stickyLabel}>
+  <span>45-DAY BOOT CAMP</span>
+  <strong>₹799</strong>
+</span>
     <BootcampAccessCTA href={href} tabIndex={visible ? 0 : -1} />
   </div>
 }
