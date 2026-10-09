@@ -156,48 +156,69 @@ export default function Bootcamp2026Page() {
           </div>
           <div className={s.tag}>FOR CAT VERBAL ABILITY (VARC)</div>
           <div className={s.heroTitle}>
-            <strong>50</strong>
+            <strong>45</strong>
             <span>DAY<br />BOOT<br />CAMP</span>
           </div>
           <h1>Mocks grade you.<br /><em>Boot Camp trains you.</em></h1>
-          <p>Birbal, your AI mentor, stays with you for 50 days and learns every day at your gaps.</p>
+          <p>Your AI mentor, Birbal, learns from your mistakes and guides your VARC practice for 45 days.</p>
           <CTA location="hero" />
-          <small className={s.byline}>Built by Neeraj Kumar Naiyar. Teaching CAT aspirants for over 15 years.</small>
+         
         </div>
 
         <div className={s.whatBox}>
-          <div className={s.panelEyebrow}>WHAT IS BOOT CAMP?</div>
-          <div className={s.compare}>
-            <div className={s.mockColumn}>
-              <b>A MOCK</b>
-              <div><i>1</i><span>You take the test</span></div>
-              <div className={s.down}>↓</div>
-              <div><i>2</i><span>You get a score and solutions</span></div>
-              <div className={s.down}>↓</div>
-              <div><i>3</i><span>You move on</span></div>
-              <small>Next mock starts from zero</small>
-            </div>
-            <div className={s.bootColumn}>
-              <b>BOOT CAMP</b>
-              <div><i>1</i><span>Practice today's set</span></div>
-              <div className={s.down}>↓</div>
-              <div><i>2</i><span>Birbal reviews each miss</span></div>
-              <div className={s.down}>↓</div>
-              <div><i>3</i><span>Analysis learns from your earlier days</span></div>
-              <div className={s.down}>↓</div>
-              <div><i>4</i><span>Tomorrow targets your gaps</span></div>
-              <strong>Repeats for 50 days. Gets sharper every day.</strong>
-            </div>
-          </div>
-          <p><b>Boot Camp is 50 days of guided Verbal Ability (VARC) training.</b> You show up. Birbal coaches you through it and tracks exactly where you slip.</p>
+        
+<div className={s.panelEyebrow}>WHAT IS BOOT CAMP?</div>
+
+<div className={s.compare}>
+  <div className={s.bootColumn}>
+    <b>BOOT CAMP</b>
+    <div><i>1</i><span>Practise today's set</span></div>
+    <div className={s.down}>↓</div>
+    <div><i>2</i><span>Review every mistake</span></div>
+    <div className={s.down}>↓</div>
+    <div><i>3</i><span>Learn from past mistakes</span></div>
+    <div className={s.down}>↓</div>
+    <div><i>4</i><span>Tomorrow targets your gaps</span></div>
+    <strong>Repeat daily. Improve every day.</strong>
+  </div>
+
+  <div className={s.mockColumn}>
+    <b>A MOCK</b>
+    <div><i>1</i><span>Take the test</span></div>
+    <div className={s.down}>↓</div>
+    <div><i>2</i><span>Score &amp; solutions</span></div>
+    <div className={s.down}>↓</div>
+    <div><i>3</i><span>Move on</span></div>
+    <small className={s.mockReset}>
+      NEXT MOCK STARTS FROM ZERO
+    </small>
+  </div>
+</div>
+
         </div>
       </section>
 
-      <section className={s.threePoints}>
-        <div><span>⚑</span><b>Just show up.</b> Birbal guides you.</div>
-        <div><span>▥</span><b>Learns where you slip,</b> by question type.</div>
-        <div><span>↔</span><b>Stays with you</b> all 50 days.</div>
-      </section>
+      
+
+<section className={s.threePoints}>
+  <div>
+    <span>01</span>
+    <b>Practise</b>
+    <small>Complete today's set</small>
+  </div>
+  <div>
+    <span>02</span>
+    <b>Review</b>
+    <small>Understand every mistake</small>
+  </div>
+  <div>
+    <span>03</span>
+    <b>Improve</b>
+    <small>Train tomorrow's weak spots</small>
+  </div>
+</section>
+
+
 
       <section className={s.gridSection}>
         <article className={`${s.panel} ${s.curvePanel}`}>
@@ -213,16 +234,35 @@ export default function Bootcamp2026Page() {
           <div className={s.curveLabels}>
             <div><b>Day 1</b><small>Birbal starts learning<br />from your answers</small></div>
             <div><b>Day 25</b><small>Your gaps get clear</small></div>
-            <div><b>Day 50</b><small>You know where you lose marks</small></div>
+            <div><b>Day 45</b><small>You know where you lose marks</small></div>
           </div>
         </article>
 
-        <article className={`${s.panel} ${s.dayPanel}`}>
-          <div className={s.panelEyebrow}>ONE DAY IN BOOT CAMP</div>
-          <div className={s.dayStrip}><span>Warm up</span><span>RC · RC · RC</span><span>VA</span><span>Review</span></div>
-          <div className={s.dayMeta}><span>5 questions</span><span>3 RCs, 4 Q each</span><span>8 Q</span><span>Birbal</span></div>
-          <strong className={s.dayTotal}>25 questions. About 30 minutes a day.</strong>
-        </article>
+       
+<article className={`${s.panel} ${s.dayPanel}`}>
+  <div className={s.panelEyebrow}>ONE DAY IN BOOT CAMP</div>
+
+  
+<div className={s.dayStrip}>
+  <span>01 · WARM-UP</span>
+  <span>02 · RC TRAINING</span>
+  <span>03 · VERBAL ABILITY</span>
+  <span>04 · REVIEW</span>
+</div>
+
+
+  <div className={s.dayMeta}>
+    <span>5 questions</span>
+    <span>12 questions</span>
+    <span>8 questions</span>
+    <span>Birbal</span>
+  </div>
+
+  <strong className={s.dayTotal}>
+    25 questions · About 30 minutes a day
+  </strong>
+</article>
+
 
         <article className={`${s.panel} ${s.gapPanel}`}>
           <div className={s.panelEyebrow}>YOUR GAP REPORT <span>SAMPLE</span></div>
@@ -278,10 +318,14 @@ export default function Bootcamp2026Page() {
 
       <section className={s.offerFaq}>
         <article className={s.offer}>
-          <div className={s.panelEyebrow}>THE FULL 50-DAY BOOT CAMP</div>
-          <div className={s.price}><del>₹799</del><strong>₹499</strong><span>Bootcamp offer</span></div>
+          <div className={s.panelEyebrow}>THE FULL 45-DAY BOOT CAMP</div>
+          <div className={s.price}>
+  <del>₹999</del>
+  <strong>₹799</strong>
+  <span>Bootcamp offer</span>
+</div>
           <ul>
-            <li>All 50 days of Verbal Ability practice</li>
+            <li>All 45 days of Verbal Ability practice</li>
             <li>Birbal's review and your gap report</li>
             <li>Daily streak and leaderboard</li>
           </ul>
@@ -296,7 +340,7 @@ export default function Bootcamp2026Page() {
             'How is it different from a mock series?',
             'How does Birbal know where I\'m weak?',
             'Can I do it along with my mocks?',
-            'What do I get for ₹499?',
+            'What do I get for ₹799?',
           ].map((question) => (
             <details key={question} onToggle={(e) => { if (e.currentTarget.open) openFaq(question) }}>
               <summary>{question}<span>+</span></summary>
@@ -307,7 +351,7 @@ export default function Bootcamp2026Page() {
       </section>
 
       <section className={s.finalCard}>
-        <div className={s.finalNumber}>50</div>
+        <div className={s.finalNumber}>45</div>
         <div><b>DAY<br />BOOT CAMP</b><h2>{days} days to CAT. Start training today.</h2></div>
         <CTA location="final" />
       </section>
@@ -315,7 +359,7 @@ export default function Bootcamp2026Page() {
       <footer className={s.footer}><span>Auctor RC · Focused CAT VARC practice</span><a href="/privacy">Privacy</a></footer>
 
       <div className={s.sticky}>
-        <div><b>50-DAY BOOT CAMP</b><span>{days} days to CAT</span></div>
+        <div><b>45-DAY BOOT CAMP</b><span>{days} days to CAT</span></div>
         <CTA location="sticky" />
       </div>
     </main>
