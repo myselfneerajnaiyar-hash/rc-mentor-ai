@@ -218,6 +218,49 @@ export default function Bootcamp2026Page() {
   </div>
 </section>
 
+<section className={s.programStats}>
+  <div className={s.programStatsHeading}>
+    <div className={s.panelEyebrow}>THE 45-DAY PLAN</div>
+    <h2>Focused practice. Measurable progress.</h2>
+  </div>
+
+  <div className={s.programStatsGrid}>
+    <article className={s.programStat}>
+      <span className={s.programStatIcon}>↗</span>
+      <strong>135</strong>
+      <b>RC passages</b>
+      <small>3 passages every day</small>
+    </article>
+
+    <article className={s.programStat}>
+      <span className={s.programStatIcon}>≡</span>
+      <strong>1,125</strong>
+      <b>Practice questions</b>
+      <small>25 questions every day</small>
+    </article>
+
+    <article className={s.programStat}>
+      <span className={s.programStatIcon}>◷</span>
+      <strong>45</strong>
+      <b>Training days</b>
+      <small>One guided routine each day</small>
+    </article>
+
+    <article className={s.programStat}>
+      <span className={s.programStatIcon}>◎</span>
+      <strong>360</strong>
+      <b>Verbal Ability questions</b>
+      <small>8 questions every day</small>
+    </article>
+  </div>
+
+  <p className={s.programStatsNote}>
+    Every day: 5 warm-up questions + 12 RC questions + 8 Verbal Ability questions,
+    followed by Birbal’s review.
+  </p>
+</section>
+
+
 
 
       <section className={s.gridSection}>
