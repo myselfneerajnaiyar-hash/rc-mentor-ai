@@ -65,3 +65,19 @@
 .secondaryButton{border-color:#627985;background:#202c35;color:#e0e8ea!important}
 .secondaryButton:hover{border-color:#a4b5bd;background:#2d3b45}
 @media(max-width:760px){.insightGrid{grid-template-columns:1fr;gap:11px}.lessons,.watch{grid-column:auto}.resultHero>p:last-child{font-size:14px}.reportActions{display:grid;grid-template-columns:1fr}.reportButton{width:100%}}
+.report .main{min-width:0}
+.report .main .insightGrid{grid-template-columns:minmax(0,1fr);gap:12px;padding:0}
+.report .main .lessons,.report .main .watch{grid-column:auto}
+.report .trainer.advice{align-self:start;position:sticky;top:24px}
+.report .trainer.advice header{flex-direction:row;text-align:left;margin-bottom:14px}
+.report .trainer.advice img{width:48px;height:48px;padding:0}
+.report .trainer.advice header strong{font-size:10px;line-height:1.5;color:#a9e0ee;letter-spacing:.09em}
+.report .trainer.advice header span{margin-top:3px;font-size:10px}
+.report .trainer.advice>p{margin:0;color:#d5e0e2;font-size:14px;line-height:1.65}
+.trapSelections{display:grid;gap:9px;margin:14px 0}
+.trapSelections article{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:12px 14px;border:1px solid #2e4654;border-radius:8px;background:#101d27}
+.trapSelections article>div{min-width:0}
+.trapSelections article strong{display:block;color:#e0ebed;font-size:14px}
+.trapSelections article small{margin-top:4px;font-size:10px;color:#91a8b8}
+.trapSelections article>b{flex:none;color:#a9e0ee;font-size:12px}
+@media(max-width:760px){.report .trainer.advice{position:static;order:1;width:100%}}

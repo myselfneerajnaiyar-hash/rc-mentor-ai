@@ -221,7 +221,7 @@ try {
   await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor()
   const final=(await h.service.home(student)).attempt
   check(final.report.score===25 && final.report.coverage===100 && final.report.accuracy===100,'complete Day 1 report reconciles all 25 answers')
-  const reflection=page.locator('[class*="insightGrid"] [class*="advice"]')
+  const reflection=page.locator('[aria-label="Day 1 training report"] [class*="advice"]')
   check(await reflection.evaluate(el=>{const children=[...el.children];return children[0]?.textContent.includes('BIRBAL’S BLOCK REFLECTION')&&children[1]?.tagName==='P'&&children[2]?.textContent.includes('Ask Birbal')}),'Ask Birbal appears immediately below Birbal’s block reflection')
   await page.waitForURL('**/boot-camp/day/1/report');
   check(await page.getByRole('link',{name:/Go to today's mission/}).count()===0,'Day 2 stays unavailable');
@@ -232,8 +232,15 @@ try {
   check(dayChat.focus===null && dayChat.dayEvidence[1].passage.text && dayChat.dayEvidence[4].questions[0].analysis.explanation,'report chat uses full-day evidence, not a VA-only focus');
   check((await h.service.home(student)).attempt.revision===final.revision,'report chat does not mutate progress');await click('Close Birbal conversation')
   check(await page.getByRole('tab',{name:'debrief',exact:true}).getAttribute('aria-selected')==='true','report defaults to Debrief');
+  await page.evaluate(()=>window.scrollTo(0,0))
+  const reportLayout=page.locator('[aria-label="Day 1 training report"] [class*="layout"]')
+  const desktopColumns=await reportLayout.evaluate(el=>{const box=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}};return {layout:box(el),left:box(el.querySelector('[class*="main"]')),strengths:box(el.querySelector('[class*="strengths"]')),advice:box(el.querySelector('[class*="advice"]'))}})
+  check(desktopColumns.advice.x>desktopColumns.strengths.x&&desktopColumns.advice.y<=desktopColumns.strengths.y+2,'Birbal reflection sits beside Strengths in the right column')
+  check(desktopColumns.advice.width<desktopColumns.layout.width&&desktopColumns.advice.height<desktopColumns.left.height,'right reflection stays compact instead of spanning the left content')
   await page.getByRole('tab',{name:'analytics',exact:true}).click();
   for(const label of ['Block accuracy chart','Question type accuracy chart','Block elapsed activity time chart'])check(await page.getByRole('img',{name:label,exact:true}).isVisible(),label+' rendered');
+  const trapPanel=page.getByRole('region',{name:'Selected distractor traps'})
+  check(await trapPanel.isVisible()&&await trapPanel.getByText('No incorrect selected options had a categorized trap in this session.',{exact:true}).isVisible(),'analytics reports the truthful empty state when no incorrect trap was selected')
   check(await page.getByRole('img',{name:'Overall accuracy: 100%',exact:true}).isVisible(),'accuracy visual uses saved result');
   await page.locator('summary').filter({hasText:'Explore the detailed data'}).click();check(await page.getByRole('region',{name:'Detailed block results'}).getByRole('row').count()===6,'five blocks remain available in supporting table');
   await page.screenshot({path:path.join(output,'report-analytics-desktop.png'),fullPage:true});
@@ -241,6 +248,8 @@ try {
   await page.setViewportSize({width:1440,height:1000});await page.getByRole('tab',{name:'debrief',exact:true}).click();
   await page.screenshot({path:path.join(output,'04-report-desktop.png'),fullPage:true,animations:'disabled'})
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{window.scrollTo(0,0);document.body.scrollTo(0,0)});await page.screenshot({path:path.join(output,'05-report-mobile.png'),fullPage:true,animations:'disabled'})
+  const mobileColumns=await reportLayout.evaluate(el=>{const box=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}};return {layout:box(el),left:box(el.querySelector('[class*="main"]')),advice:box(el.querySelector('[class*="advice"]'))}})
+  check(mobileColumns.advice.y>=mobileColumns.left.y+mobileColumns.left.height-1&&mobileColumns.advice.width<=mobileColumns.layout.width,'mobile stacks Birbal below the report content without horizontal overflow')
   check(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile report has no horizontal overflow')
   await page.reload();await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor()
   check((await h.service.home(student)).attempt.report.score===25,'completed report survives refresh');check(await page.getByRole('region',{name:'Training complete'}).count()===0,'returning to report does not replay celebration');await page.goto(base+'/boot-camp');await page.getByRole('link',{name:'View Day 01 Report',exact:true}).click();await page.getByRole('heading',{name:'Day 1 results',exact:true}).waitFor();check((await h.service.home(student)).attempt.report.score===25,'completed calendar returns to the saved report')

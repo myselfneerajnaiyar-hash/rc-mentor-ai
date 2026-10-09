@@ -27,7 +27,7 @@ export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId
   const birbalDetails=[['What you chose',insight.observation],...(insight.tempting?[['Why it looked tempting',insight.tempting]]:[]),...(insight.trap?[['Trap',insight.trap]]:[]),[q.outcome==='incorrect'?'Why it fails':'Why this answer works',insight.interpretation],...(insight.takeForward?[["What to notice next time",insight.takeForward]]:[])]
   return <section className={s.workspace} aria-label={`${review.label} review workspace`}>
     <header className={s.header}><div><p>Day {String(dayNumber).padStart(2,'0')} · {review.label} review</p><h1>Make the reasoning yours.</h1></div><div className={s.score}><strong>{review.result.correct}/{review.result.total} <small>correct</small></strong><div>{Object.keys(outcomes).map(k=><span key={k}>{review.result[k]} {outcomes[k].toLowerCase()}</span>)}</div></div></header>
-    <ReviewNavigator blocks={reviewBlocks} current={review.key} onSelect={onSelectBlock}/>
+    <ReviewNavigator blocks={reviewBlocks} current={review.key} onSelect={onSelectBlock} showHint/>
     <div className={s.columns}>
       {review.passage && <section className={s.debrief} aria-label="Passage debrief">
         <header><div><p className={s.debriefEyebrow}>BIRBAL · THE READING ROOM</p><h2>PASSAGE DEBRIEF</h2></div><button className={s.textButton} onClick={()=>setDetail('fullPassage')}>View full passage</button></header>
@@ -72,7 +72,7 @@ export default function BootCampReviewWorkspace({ dayNumber=1, review, attemptId
   </section>
 }
 
-function ReviewNavigator({ blocks, current, onSelect }) {
+function ReviewNavigator({ blocks, current, onSelect, showHint = false }) {
   if (!blocks?.length) return null
-  return <nav className={s.reviewNavigator} aria-label="Completed block reviews">{blocks.map(block=><button type="button" key={block.key} aria-current={block.key===current?'step':undefined} className={block.key===current?s.reviewCurrent:''} onClick={()=>onSelect?.(block.key)}>{block.key.startsWith('rc')?block.key.toUpperCase():block.label}</button>)}</nav>
+  return <div className={s.reviewNavigation}>{showHint&&<p>Review any completed section to revisit your answers, explanations and mistakes.</p>}<nav className={s.reviewNavigator} aria-label="Completed block reviews">{blocks.map(block=><button type="button" key={block.key} aria-current={block.key===current?'step':undefined} className={block.key===current?s.reviewCurrent:''} onClick={()=>onSelect?.(block.key)}>{block.key.startsWith('rc')?block.key.toUpperCase():block.label}</button>)}</nav></div>
 }

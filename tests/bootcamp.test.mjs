@@ -389,3 +389,51 @@ test('report ties observed question types to authored distractor traps and conci
   const commentary=fallbackCoach(record)
   assert.match(commentary.text,/Causal Leap/);assert.match(commentary.focus,/Inference/)
 })
+
+test('daily report keeps mixed skills in Needs attention and counts only selected authored distractors',async()=>{
+  const {reportDetails}=await import('../lib/bootcamp/report.mjs')
+  const {buildReport,metrics}=await import('../lib/bootcamp/session.mjs')
+  const {snapshot}=adaptDay(fixture()),state=initialState(snapshot)
+  const candidates=[]
+  for(const [i,block] of state.blocks.entries()) {
+    block.status='completed';block.started_at='2026-10-09T04:00:00.000Z';block.finished_at='2026-10-09T04:02:00.000Z'
+    for(const [n,attempt] of block.questions.entries()) {
+      const source=snapshot.blocks[i].questions[n]
+      attempt.response=source.answer;attempt.outcome='correct';attempt.active_ms=1000
+      const wrong=source.options?.find(option=>option.id!==source.answer)
+      if(wrong)candidates.push({source,attempt,wrong})
+    }
+    block.result=metrics(block.questions)
+  }
+  assert.ok(candidates.length>=5)
+  const traps=['Distorted Claim','Scope Shift','Causal Leap']
+  for(let i=0;i<5;i++) {
+    const {source,attempt,wrong}=candidates[i]
+    source.type='Main Idea'
+    if(i===4) {
+      delete source.analysis.optionAnalysis
+      attempt.response=wrong.id;attempt.outcome='incorrect'
+      continue
+    }
+    source.analysis.optionAnalysis ||= []
+    const option=source.analysis.optionAnalysis.find(item=>item.optionId===wrong.id) || {optionId:wrong.id,isCorrect:false,explanation:'Authored wrong-option explanation.'}
+    option.trapType=i<3?traps[i]:'Distorted Claim'
+    source.analysis.optionAnalysis=source.analysis.optionAnalysis.filter(item=>item.optionId!==wrong.id)
+    source.analysis.optionAnalysis.push(option)
+    if(i<3){attempt.response=wrong.id;attempt.outcome='incorrect'}
+  }
+  for(const block of state.blocks)block.result=metrics(block.questions)
+  state.status='completed';state.phase='report';state.current_block=4;state.report=buildReport(state,snapshot)
+  const report=reportDetails({id:student,day_number:1,state,snapshot},state.report)
+  const goodTypes=report.debrief.good.map(item=>item.observation.split(':')[0])
+  const attentionTypes=report.debrief.attention.map(item=>item.observation.split(':')[0])
+  assert.ok(!goodTypes.includes('Main Idea'))
+  assert.ok(attentionTypes.includes('Main Idea'))
+  assert.match(report.debrief.attention.find(item=>item.observation.startsWith('Main Idea:')).observation,/4 incorrect from 5 attempted · 1 also correct/)
+  assert.deepEqual(goodTypes.filter(type=>attentionTypes.includes(type)),[])
+  assert.deepEqual(report.debrief.traps.map(row=>row.name).sort(),traps.slice().sort())
+  assert.deepEqual(report.debrief.traps.map(row=>row.count),[1,1,1])
+  assert.equal(report.debrief.traps.reduce((total,row)=>total+row.count,0),3)
+  assert.equal(report.debrief.unclassifiedTrapSelections,1)
+  assert.equal(report.debrief.traps.some(row=>row.name==='Distorted Claim'&&row.count>1),false,'a correct answer with trap metadata does not count as a selected trap')
+})

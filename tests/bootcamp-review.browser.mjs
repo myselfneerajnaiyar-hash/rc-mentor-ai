@@ -165,13 +165,24 @@ try {
     check(await page.getByRole('button',{name:next[key][0],exact:true}).isEnabled(),key+': continuation is ready without coaching')
     if(key==='va') {
       const reviewNav=page.getByRole('navigation',{name:'Completed block reviews'}).first()
+      check(await page.getByText('Review any completed section to revisit your answers, explanations and mistakes.',{exact:true}).isVisible(),'review navigation is explained as a completed-section review control')
       await page.getByRole('button',{name:/^Question 3:/}).click()
+      const beforeNavigation=(await h.service.home(student)).attempt
+      let rc1SelectedQuestion
       for(const block of ['Warm-up','RC1','RC2','RC3','Verbal Ability']) {
         await reviewNav.getByRole('button',{name:block,exact:true}).click()
         await page.getByRole('heading',{name:'Make the reasoning yours.',exact:true}).waitFor()
         check(await reviewNav.getByRole('button',{name:block,exact:true}).getAttribute('aria-current')==='step',`review navigator highlights ${block}`)
+        if(block==='RC1')rc1SelectedQuestion=await page.locator('[aria-label^="Question "][aria-current="true"]').getAttribute('aria-label')
       }
-      check(await page.getByRole('button',{name:/^Question 3:/}).getAttribute('aria-current')==='true','switching completed reviews preserves each block’s selected question')
+      check(await page.getByRole('button',{name:/^Question 3:/}).getAttribute('aria-current')==='true','the active block retains its selected question while navigating reviews')
+      await reviewNav.getByRole('button',{name:'RC3',exact:true}).click()
+      await reviewNav.getByRole('button',{name:'RC1',exact:true}).click()
+      const afterNavigation=(await h.service.home(student)).attempt
+      check(afterNavigation.revision===beforeNavigation.revision&&afterNavigation.currentBlock==='va'&&afterNavigation.phase==='review','returning from RC3 to RC1 review does not mutate or restart saved progress')
+      check(await page.getByRole('button',{name:'Continue to RC 2',exact:true}).count()===0,'an earlier completed review cannot restart its section')
+      check(await page.getByRole('button',{name:rc1SelectedQuestion,exact:true}).getAttribute('aria-current')==='true','RC1 review restores its previously selected question')
+      await reviewNav.getByRole('button',{name:'Verbal Ability',exact:true}).click()
     }
     const desktopFlow=await page.evaluate(()=>({evidence:getComputedStyle(document.querySelector('[class*="evidenceBody"]')).overflowY,trainer:getComputedStyle(document.querySelector('[class*="trainerBody"]')).overflowY,page:document.scrollingElement.scrollHeight>innerHeight}))
     check(desktopFlow.evidence==='visible'&&desktopFlow.trainer==='visible'&&desktopFlow.page,key+': desktop review scrolls as one document')
