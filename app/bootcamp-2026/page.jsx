@@ -411,6 +411,7 @@ export default function Bootcamp2026Page() {
             <li>Daily streak and leaderboard</li>
           </ul>
           <small>Day 1 is free, so you can see how it works first.</small>
+          <p className={s.offerSchedule}>The 45 training days run from 5 October to 18 November, followed by 10 buffer days through 28 November ahead of CAT on 29 November.</p>
           <CTA location="price" />
         </article>
 
@@ -470,8 +471,8 @@ export default function Bootcamp2026Page() {
       <footer className={s.footer}><span>Auctor RC · Focused CAT VARC practice</span><a href="/privacy">Privacy</a></footer>
 
       <div className={s.sticky}>
-        <div><b>45-DAY BOOT CAMP</b><span>{days} days to CAT</span></div>
-        <CTA location="sticky" />
+        <div><b>45-DAY BOOT CAMP</b><span>{days} days to CAT · <del>₹999</del> <strong>₹799</strong> full access</span></div>
+        <CTA location="sticky">Start Day 1 free</CTA>
       </div>
     </main>
   )

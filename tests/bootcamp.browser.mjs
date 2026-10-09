@@ -63,7 +63,7 @@ try {
   check(await calendar.getByRole('link').count()===1,'only Day 1 is actionable')
   await page.getByRole('tab',{name:'November 2026',exact:true}).click()
   await calendar.getByRole('button',{name:/SHOW MORE DAYS/}).click()
-  check(await calendar.locator('[data-training-day]').count()===23,'November shows the remaining scheduled training days')
+  check(await calendar.locator('[data-training-day]').count()===18,'November shows the remaining scheduled training days in the 45-day calendar')
   check(await calendar.getByRole('link').count()===0,'future month has no actionable days')
   await page.getByRole('tab',{name:'October 2026',exact:true}).click()
   await page.screenshot({path:path.join(output,'00-arena-desktop.png'),fullPage:true})
@@ -78,7 +78,19 @@ try {
   await page.getByRole('heading',{name:/Day 01.*Your Training Mission/}).waitFor()
   check(await page.getByRole('heading',{name:/Your training is ready/}).count()===0,'day opens directly on its training mission')
   await page.getByRole('button',{name:/Begin Day 1/}).waitFor()
+  for(const width of [1440,390]) {
+    await page.setViewportSize({width,height:width===1440?1000:844})
+    const coach=page.getByRole('region',{name:"Birbal's coaching note"})
+    const coachBox=await coach.boundingBox()
+    const portrait=await coach.locator('img').boundingBox()
+    check(coachBox.width<=760&&portrait.width<=44&&portrait.height<=44,`Birbal note stays compact at ${width}px`)
+    check(await page.getByRole('button',{name:/Begin Day 1/}).isVisible(),`Day 1 remains immediately actionable at ${width}px`)
+    check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`mission has no horizontal overflow at ${width}px`)
+  }
+  await page.getByRole('button',{name:"Dismiss Birbal's message"}).click()
+  await page.getByRole('button',{name:'Show Birbal’s message'}).click()
   await page.screenshot({path:path.join(output,'01-mission.png'),fullPage:true,animations:'disabled'})
+  await page.setViewportSize({width:1440,height:1000})
   await page.getByRole('button',{name:/Begin Day 1/}).click();await page.getByRole('button',{name:/Start Warm-up/}).click()
   let live=(await h.service.home(student)).attempt
   await page.reload();await page.getByRole('heading',{name:'Warm-up',exact:true}).waitFor()

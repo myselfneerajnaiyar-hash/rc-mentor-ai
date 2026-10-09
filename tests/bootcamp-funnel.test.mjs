@@ -43,6 +43,38 @@ test('landing signup keeps ad query parameters and existing CTA event locations'
   assert.match(signup, /SignupPage/)
 })
 
+test('the visible landing offer and sticky CTA show the server-priced Bootcamp offer and schedule context', async () => {
+  const page = await readFile(new URL('../app/bootcamp-2026/page.jsx', import.meta.url), 'utf8')
+  const css = await readFile(new URL('../app/bootcamp-2026/page.module.css', import.meta.url), 'utf8')
+  assert.match(page, /<del>₹999<\/del>/)
+  assert.match(page, /<strong>₹799<\/strong>/)
+  assert.match(page, /45 training days run from 5 October to 18 November[\s\S]*10 buffer days through 28 November ahead of CAT on 29 November/)
+  assert.match(page, /<del>₹999<\/del> <strong>₹799<\/strong> full access/)
+  assert.match(css, /\.sticky del/)
+})
+
+test('ineligible students get a direct server-priced checkout while claim failures stay out of the paid state', async () => {
+  const start = await readFile(new URL('../app/bootcamp-2026/start/AcquisitionStart.jsx', import.meta.url), 'utf8')
+  assert.match(start, /if \(access\.canClaimFirstFree\)[\s\S]*setState\('error'\)[\s\S]*return/)
+  assert.match(start, /<del>₹999<\/del>/)
+  assert.match(start, /<strong>₹799<\/strong>/)
+  assert.match(start, /plan="bootcamp_full_access" user=\{user\} returnTo="\/boot-camp"/)
+  assert.doesNotMatch(start, /href="\/bootcamp-2026">Get Bootcamp/)
+})
+
+test('Birbal coaching is compact and dismissible without a default modal on the session entry screen', async () => {
+  const [mission, css] = await Promise.all([
+    readFile(new URL('../components/bootcamp/BootCampMission.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../components/bootcamp/bootcamp.module.css', import.meta.url), 'utf8'),
+  ])
+  assert.match(mission, /aria-label="Birbal's coaching note"/)
+  assert.match(mission, /Dismiss Birbal's message/)
+  assert.match(mission, /Show Birbal’s message/)
+  assert.doesNotMatch(mission, /coachStage|speechCard|<dialog/)
+  assert.match(css, /\.coachBriefing[^\n]*max-width:760px/)
+  assert.match(css, /@media\(max-width:560px\)[\s\S]*?\.coachBriefing/)
+})
+
 test('Bootcamp profile completion resolves directly to the Bootcamp home and normal signup keeps its default', () => {
   assert.equal(getOnboardingDestination('bootcamp'), '/boot-camp')
   assert.equal(getOnboardingDestination(null), '/')

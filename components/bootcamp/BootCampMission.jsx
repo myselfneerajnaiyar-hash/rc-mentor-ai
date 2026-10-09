@@ -28,6 +28,7 @@ export default function BootCampMission({ commentary, onContinue, busy, ready, b
   const [progress,setProgress]=useState(null)
   const [progressLoading,setProgressLoading]=useState(true)
   const [progressError,setProgressError]=useState(false)
+  const [coachVisible,setCoachVisible]=useState(true)
   useEffect(()=>{
     if(ready || preview){setProgressLoading(false);return}
     let active=true
@@ -66,14 +67,19 @@ export default function BootCampMission({ commentary, onContinue, busy, ready, b
       <div className={s.missionHeroCopy}>
         <p className={s.missionEyebrow}><span/> YOUR PERSONAL VARC TRAINING</p>
         <h1 id="mission-title">Day {String(dayNumber).padStart(2,'0')} <span>— Your Training Mission</span></h1>
-        <p className={s.missionGreeting}>{commentary?.text || coachBriefing}</p>
         <p className={s.missionSubline}>One focused session. Five activities. Your reasoning, understood in context.</p>
       </div>
-      <div className={s.coachStage}>
-        <div className={s.coachGlow}/>
-        <img className={s.coachPortrait} src="/Birbal avatar.jpeg" alt="Birbal, your VARC trainer" />
-        <div className={s.speechCard}><span>BIRBAL <i/> YOUR COACH</span><p>{coachBriefing}</p></div>
-      </div>
+    </section>
+
+    <section className={s.coachBriefing} aria-label="Birbal's coaching note">
+      {coachVisible ? <>
+        <img src="/Birbal avatar.jpeg" alt="" />
+        <div><span>BIRBAL · YOUR COACH</span><p>{coachBriefing}</p></div>
+        <button type="button" onClick={()=>setCoachVisible(false)} aria-label="Dismiss Birbal's message">×</button>
+      </> : <button type="button" className={s.showCoach} onClick={()=>setCoachVisible(true)}>
+        <img src="/Birbal avatar.jpeg" alt="" />
+        <span>Show Birbal’s message</span>
+      </button>}
     </section>
 
     {!preview && <ProgressStrip data={progress} loading={progressLoading} error={progressError}/>}

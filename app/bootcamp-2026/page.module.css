@@ -454,6 +454,15 @@
   width: 220px;
   min-height: 48px;
 }
+.sticky strong { color: var(--text);font-size:inherit }
+.sticky del { color:var(--muted);font-size:inherit }
+.offerSchedule { margin:0 0 12px;color:#b5c0c7;font-size:12px;line-height:1.5 }
+.placeholderOffer>div { display:flex;align-items:baseline;gap:12px }
+.placeholderOffer>div del { color:var(--muted);font-size:16px }
+.placeholderOffer>div strong { color:var(--text);font-size:36px }
+.placeholderOffer small { display:block;max-width:480px;margin-top:8px;line-height:1.5 }
+.checkoutButton :global(button) { width:100%;min-height:52px;padding:12px 16px;border:0;border-radius:5px;background:var(--teal);color:#06202b;font:700 15px/1.3 Arial,Helvetica,sans-serif;cursor:pointer }
+.checkoutButton :global(button:hover) { filter:brightness(1.08) }
 
 @media (max-width: 899px) {
   .page {
