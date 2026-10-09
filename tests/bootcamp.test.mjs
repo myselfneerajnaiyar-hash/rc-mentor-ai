@@ -94,7 +94,7 @@ test('question navigation records the next presentation in the required save and
 })
 
 test('expired attempt GET records the visible question before server timeout finalizes it',async()=>{
-  const h=await harness(fixture(),undefined,undefined,{now:()=>new Date('2026-10-05T06:00:00Z')})
+  const h=await harness(fixture(),undefined,undefined,{now:()=>new Date('2026-10-10T06:00:00Z')})
   try {
     await h.service.enroll(student)
     let state=await h.service.start(student),id=state.id
@@ -250,9 +250,9 @@ test('Daily RC review adapter preserves authored meaning, evidence, outcomes and
 test('calendar derives exactly 45 training dates and Monday-first placement from start date',async()=>{
   const {trainingMonths}=await import('../lib/bootcamp/calendar.mjs')
   const months=trainingMonths(), days=months.flatMap(m=>m.cells.filter(c=>c?.day))
-  assert.equal(months.length,2);assert.equal(days.length,45)
-  assert.equal(months[0].cells.findIndex(c=>c?.day===1),7)
-  assert.equal(days[0].iso,'2026-10-05');assert.equal(days.at(-1).iso,'2026-11-18')
+  assert.equal(months.length,3);assert.equal(days.length,45)
+  assert.equal(months[0].cells.findIndex(c=>c?.day===1),12)
+  assert.equal(days[0].iso,'2026-10-10');assert.equal(days.at(-1).iso,'2026-11-23')
   assert.deepEqual(trainingMonths('2028-02-01'),months,'an enrollment/custom start cannot shift the fixed program')
 })
 

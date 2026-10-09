@@ -14,7 +14,7 @@ export function record(day,correct=10) {
  for(const b of state.blocks){b.status='completed';b.started_at=state.completed_at;b.finished_at=state.completed_at;for(const q of b.questions){q.outcome=n++<correct?'correct':'incorrect';q.response='A';q.saved_at=state.completed_at;q.active_ms=2000}}
  return {day_number:day,snapshot,state}
 }
-const calendar=getBootCampCalendarState('2026-10-14')
+const calendar=getBootCampCalendarState('2026-10-19')
 test('ten-day aggregate preserves missing/partial days, weighted counts, samples and privacy',()=>{
  const records=[1,2,3,5,6,8,9,10].map(d=>record(d,d+8));const partial=record(7);partial.state.status='in_progress';partial.state.blocks[4].status='pending';records.push(partial)
  const result=buildOverallAnalytics(records,Array.from({length:10},(_,i)=>fixture(i+1)),calendar)
@@ -60,8 +60,8 @@ test('development date is strict; deployed simulation requires an allowlisted Pr
  const simulated=bootCampPreviewDate('2026-10-10','cofounder@example.com',env)
  assert.equal(simulated,'2026-10-10','date-only simulator input is passed through without timezone conversion')
  assert.equal(getBootCampCalendarState(simulated).today,'2026-10-10')
- assert.equal(getBootCampCalendarState(simulated).todayDay,6)
- assert.deepEqual(leaderboardWindow('daily',simulated).scheduledDays.map(d=>d.day),[6])
+ assert.equal(getBootCampCalendarState(simulated).todayDay,1)
+ assert.deepEqual(leaderboardWindow('daily',simulated).scheduledDays.map(d=>d.day),[1])
 })
 test('analytics endpoint reads only owned Boot Camp data without writes, authentication or keys leaking',async()=>{
  const h=await harness(fixture());try{

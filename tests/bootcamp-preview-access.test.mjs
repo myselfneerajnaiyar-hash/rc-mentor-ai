@@ -20,6 +20,6 @@ test('Production rejects an expired allowlisted tester', () => {
   assert.throws(() => requireBootCampAccess(expired, { email: 'tester@example.com', env: { ...preview, VERCEL_ENV: 'production' }, now }), error => error.status === 402)
 })
 
-test('official Boot Camp start date remains October 5, 2026', () => {
-  assert.equal(BOOTCAMP_CALENDAR[0].date, '2026-10-05')
+test('official Boot Camp start date is October 10, 2026', () => {
+  assert.equal(BOOTCAMP_CALENDAR[0].date, '2026-10-10')
 })

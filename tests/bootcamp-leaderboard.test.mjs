@@ -16,12 +16,13 @@ test('leaderboard windows use IST dates, fixed +05:30 midnight, and Monday throu
   const monday=leaderboardWindow('weekly','2026-10-05T00:00:00+05:30')
   assert.equal(monday.startDate,'2026-10-05');assert.equal(monday.endDate,'2026-10-11')
   assert.equal(monday.startAt,'2026-10-04T18:30:00.000Z');assert.equal(monday.endAt,'2026-10-11T18:30:00.000Z')
-  assert.deepEqual(leaderboardWindow('weekly','2026-10-11T23:59:59+05:30').scheduledDays.map(d=>d.day),[1,2,3,4,5,6,7])
+  assert.deepEqual(leaderboardWindow('weekly','2026-10-11T23:59:59+05:30').scheduledDays.map(d=>d.day),[1,2])
+  assert.deepEqual(leaderboardWindow('weekly','2026-10-12T00:00:00+05:30').scheduledDays.map(d=>d.day),[3,4,5,6,7,8,9])
   assert.equal(leaderboardWindow('weekly','2026-10-12T00:00:00+05:30').startDate,'2026-10-12')
 })
 
 test('strict scheduled-date eligibility, complete-only scoring, tied ranks, weekly sums, and no-eligible state',async()=>{
-  let now='2026-10-05T12:00:00+05:30'
+  let now='2026-10-10T12:00:00+05:30'
   const h=await harness(fixture(),undefined,undefined,{now:()=>new Date(now)})
   try {
     const studentEnrollment='10000000-0000-4000-8000-000000000001',otherEnrollment='10000000-0000-4000-8000-000000000002',lateEnrollment='10000000-0000-4000-8000-000000000003',partialEnrollment='10000000-0000-4000-8000-000000000004'
@@ -38,14 +39,14 @@ test('strict scheduled-date eligibility, complete-only scoring, tied ranks, week
       return id
     }
     // Day 1 finishes at 23:59:59 IST: eligible. Equal score means shared rank.
-    await save(studentEnrollment,1,'2026-10-05T18:29:59Z',12)
-    await save(otherEnrollment,1,'2026-10-05T18:29:59Z',12)
+    await save(studentEnrollment,1,'2026-10-10T18:29:59Z',12)
+    await save(otherEnrollment,1,'2026-10-10T18:29:59Z',12)
     // Started on Day 1 but saved completion is exactly midnight IST: late, excluded.
-    await save(lateEnrollment,1,'2026-10-05T18:30:00Z',20)
+    await save(lateEnrollment,1,'2026-10-10T18:30:00Z',20)
     // Day 2 catch-up completed on Day 3: learning data is retained, leaderboard excludes it.
-    await save(studentEnrollment,2,'2026-10-02T19:00:00Z',25)
+    await save(studentEnrollment,2,'2026-10-12T19:00:00Z',25)
     // Incomplete attempt is excluded even with a scheduled-date completion timestamp.
-    await save(partialEnrollment,1,'2026-10-05T18:00:00Z',25,'in_progress')
+    await save(partialEnrollment,1,'2026-10-10T18:00:00Z',25,'in_progress')
     const daily=await h.service.getBootCampLeaderboard(student,'daily')
     assert.equal(daily.entries.length,2)
     assert.deepEqual(daily.entries.map(row=>row.rank),[1,1])
@@ -56,19 +57,19 @@ test('strict scheduled-date eligibility, complete-only scoring, tied ranks, week
     assert.deepEqual((await h.service.getBootCampLeaderboard(student,'daily')).current,daily.current,'reopening/reloading does not duplicate unique user/day attempts')
 
     // Scheduled Days 5 and 6 both fall inside the MondayÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Sunday week of Oct 5.
-    await save(studentEnrollment,5,'2026-10-09T05:00:00Z',10)
-    await save(studentEnrollment,6,'2026-10-10T05:00:00Z',12)
-    now='2026-10-07T12:00:00+05:30'
+    await save(studentEnrollment,5,'2026-10-14T05:00:00Z',10)
+    await save(studentEnrollment,6,'2026-10-15T05:00:00Z',12)
+    now='2026-10-16T12:00:00+05:30'
     const weekly=await h.service.getBootCampLeaderboard(student,'weekly')
-    assert.equal(weekly.current.score,34);assert.equal(weekly.current.workouts,3)
-    assert.equal(weekly.window.startDate,'2026-10-05');assert.equal(weekly.window.endDate,'2026-10-11')
-    now='2026-10-03T12:00:00+05:30'
+    assert.equal(weekly.current.score,22);assert.equal(weekly.current.workouts,2)
+    assert.equal(weekly.window.startDate,'2026-10-12');assert.equal(weekly.window.endDate,'2026-10-18')
+    now='2026-10-11T12:00:00+05:30'
     const empty=await h.service.getBootCampLeaderboard(other,'daily')
     assert.equal(empty.current.rank,null);assert.equal(empty.current.score,0);assert.equal(empty.current.workouts,0)
 
     const unauth=await h.handle(new Request('http://localhost/api/bootcamp/leaderboard?mode=weekly'),'leaderboard')
     assert.equal(unauth.status,401)
-    now='2026-10-05T12:00:00+05:30'
+    now='2026-10-10T12:00:00+05:30'
     const authed=await h.handle(new Request('http://localhost/api/bootcamp/leaderboard?mode=daily',{headers:{authorization:`Bearer ${other}`}}),'leaderboard')
     assert.equal(authed.status,200)
     const publicData=await authed.json()
@@ -80,10 +81,10 @@ test('strict scheduled-date eligibility, complete-only scoring, tied ranks, week
 })
 
 test('pure rank projection does not expose an email profile value or private attempt identifiers',()=>{
-  const data=buildBootCampLeaderboard({period:'daily',now:'2026-10-05T10:00:00Z',currentUserId:student,
+  const data=buildBootCampLeaderboard({period:'daily',now:'2026-10-10T10:00:00Z',currentUserId:student,
     names:{[student]:'user@example.com',[other]:'Learner 2'},attempts:[
-      {...attempt(student,1,'2026-10-05T10:00:00Z',8),id:'private-id'},
-      attempt(other,1,'2026-10-05T10:00:00Z',8)
+      {...attempt(student,1,'2026-10-10T10:00:00Z',8),id:'private-id'},
+      attempt(other,1,'2026-10-10T10:00:00Z',8)
     ]})
   assert.equal(data.current.name,'Boot Camp learner')
   assert.equal(data.entries[0].rank,1);assert.equal(data.entries[1].rank,1)

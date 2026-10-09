@@ -54,7 +54,9 @@ async function access(db, profile = {}) {
 test('new user can atomically claim the first free Bootcamp; a repeat claim is denied', async () => {
   const db = fakeDb()
   const initial = await access(db)
-  assert.deepEqual(initial, { allowed: false, source: null, expiresAt: null, firstFreeClaimed: false, canClaimFirstFree: true })
+  assert.deepEqual(initial, { allowed: true, source: 'day1_free', expiresAt: null, firstFreeClaimed: false, canClaimFirstFree: true })
+  assert.deepEqual(db.state.touchedTables, ['bootcamp_access', 'subscriptions'])
+  assert.equal(db.state.claim, null, 'automatic Day 1 access does not consume the separate first-free claim')
   assert.equal((await claimFirstFreeBootcamp(db, 'student-1', now)).claimed, true)
   const after = await access(db)
   assert.equal(after.allowed, true)
@@ -75,16 +77,18 @@ for (const plan of ['monthly', 'quarterly', 'half_yearly', 'yearly']) {
   })
 }
 
-test('expired monthly subscription with an expired first-free claim is denied', async () => {
+test('expired monthly subscription and expired free claim still allow the permanent Day 1 experience without rewriting claim history', async () => {
   const result = await access(fakeDb({ subscriptions: [{ plan: 'monthly', expires_at: past }], claim: { source: 'first_free', claimed_at: past, expires_at: past } }))
-  assert.equal(result.allowed, false)
+  assert.equal(result.allowed, true)
+  assert.equal(result.source, 'day1_free')
   assert.equal(result.firstFreeClaimed, true)
   assert.equal(result.canClaimFirstFree, false)
 })
 
-test('expired monthly subscription with an expired claimed entitlement is denied permanently', async () => {
+test('expired monthly subscription with an expired claimed entitlement still has Day 1 only', async () => {
   const result = await access(fakeDb({ subscriptions: [{ plan: 'monthly', expires_at: past }], claim: { source: 'first_free', claimed_at: past, expires_at: past } }))
-  assert.equal(result.allowed, false)
+  assert.equal(result.allowed, true)
+  assert.equal(result.source, 'day1_free')
   assert.equal(result.firstFreeClaimed, true)
   assert.equal(result.canClaimFirstFree, false)
 })
@@ -96,9 +100,10 @@ test('active CAT Test Series entitlement grants Bootcamp access', async () => {
   assert.equal(result.expiresAt, future)
 })
 
-test('an expired subscription leaves an unused first free claim available', async () => {
+test('an expired subscription gets Day 1 while retaining its unused first-free claim eligibility', async () => {
   const result = await access(fakeDb({ subscriptions: [{ plan: 'quarterly', expires_at: past }] }))
-  assert.equal(result.allowed, false)
+  assert.equal(result.allowed, true)
+  assert.equal(result.source, 'day1_free')
   assert.equal(result.canClaimFirstFree, true)
 })
 
@@ -135,7 +140,7 @@ test('claim writes only the separate Bootcamp access record; the regular 3-day t
   assert.equal((await access(db, profile)).source, 'first_free')
 })
 
-test('protected Bootcamp API returns 402 without access and serves the operation with active access', async () => {
+test('protected Bootcamp API permits the free Day 1 path without a subscription', async () => {
   const service = { home: async () => ({ enrolled: true }), start: async (_user, day) => ({ day }) }
   const handler = createHandler(service, async request => {
     const db = request.headers.get('x-active') === 'yes'
@@ -145,12 +150,10 @@ test('protected Bootcamp API returns 402 without access and serves the operation
     if (!result.allowed) throw new BootCampError('Boot Camp access is locked.', 402)
     return { id: 'student-1' }
   })
-  assert.equal((await handler(new Request('https://app.test/api/bootcamp', { method: 'GET' }), 'home')).status, 402)
-  assert.equal((await handler(new Request('https://app.test/api/bootcamp/days/1/start', { method: 'POST' }), 'start', { day: 1 })).status, 402)
-  const allowed = await handler(new Request('https://app.test/api/bootcamp', { headers: { 'x-active': 'yes' } }), 'home')
+  const allowed = await handler(new Request('https://app.test/api/bootcamp', { method: 'GET' }), 'home')
   assert.equal(allowed.status, 200)
   assert.deepEqual(await allowed.json(), { enrolled: true })
-  const allowedDay = await handler(new Request('https://app.test/api/bootcamp/days/1/start', { method: 'POST', headers: { 'x-active': 'yes' } }), 'start', { day: 1 })
+  const allowedDay = await handler(new Request('https://app.test/api/bootcamp/days/1/start', { method: 'POST' }), 'start', { day: 1 })
   assert.equal(allowedDay.status, 200)
   assert.deepEqual(await allowedDay.json(), { day: 1 })
   const dayRoute = await readFile(new URL('../app/api/bootcamp/days/1/start/route.js', import.meta.url), 'utf8')

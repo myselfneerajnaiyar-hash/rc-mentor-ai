@@ -8,7 +8,7 @@ const ident = s => { if (!/^[a-z_][a-z_0-9]*$/.test(s)) throw Error('Invalid tes
 
 // A real PostgreSQL runtime, not an in-memory imitation of the transaction logic.
 export async function harness(source, generate, converse, options={}) {
-  options={now:()=>new Date('2026-10-05T06:00:00Z'),personalSequence:false,...options}
+  options={now:()=>new Date('2026-10-10T06:00:00Z'),personalSequence:false,...options}
   const pg = new PGlite(), calls = []
   await pg.exec('create schema auth; create table auth.users(id uuid primary key); create role anon; create role authenticated; create role service_role;')
   await pg.exec(await readFile('supabase/migrations/202609220001_bootcamp_day1.sql','utf8'))

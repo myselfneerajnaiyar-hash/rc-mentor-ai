@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import s from './page.module.css'
 import BootcampAccessCTA from '@/components/bootcamp/BootcampAccessCTA'
 import { BOOTCAMP_CURRICULUM_TOTALS, BOOTCAMP_DAILY_STRUCTURE } from '@/lib/bootcamp/program.mjs'
+import { BOOTCAMP_CALENDAR, BOOTCAMP_BUFFER_DAYS, BOOTCAMP_PROGRAM_END, bootCampDateLabel } from '@/lib/bootcamp/calendar.mjs'
 
 const CAT_DATE = '2026-11-29T00:00:00+05:30'
 
@@ -411,7 +412,7 @@ export default function Bootcamp2026Page() {
             <li>Daily streak and leaderboard</li>
           </ul>
           <small>Day 1 is free, so you can see how it works first.</small>
-          <p className={s.offerSchedule}>The 45 training days run from 5 October to 18 November, followed by 10 buffer days through 28 November ahead of CAT on 29 November.</p>
+          <p className={s.offerSchedule}>The 45 training days run from {bootCampDateLabel(BOOTCAMP_CALENDAR[0].date)} to {bootCampDateLabel(BOOTCAMP_CALENDAR.at(-1).date)}, followed by {BOOTCAMP_BUFFER_DAYS} buffer days through {bootCampDateLabel(BOOTCAMP_PROGRAM_END)}. CAT is scheduled for {bootCampDateLabel(CAT_DATE.slice(0, 10))}.</p>
           <CTA location="price" />
         </article>
 

@@ -4,8 +4,9 @@ import { BOOTCAMP_ACCESS_END, BOOTCAMP_CALENDAR, BOOTCAMP_PROGRAM_END, BOOTCAMP_
 import { requireBootCampEntitlement } from '../lib/bootcamp/access.mjs'
 import { fixture,harness,student,other } from './helpers/bootcamp-db.mjs'
 import { BOOTCAMP_CURRICULUM_TOTALS } from '../lib/bootcamp/program.mjs'
+import { adaptDay } from '../lib/bootcamp/content.mjs'
 
-for(const [date,today,open] of [['2026-10-05',1,1],['2026-10-09',5,5],['2026-10-29',25,25],['2026-11-18',45,45],['2026-11-19',null,45],['2026-11-28',null,45],['2027-02-04',null,45]])test(`fixed calendar ${date}`,()=>{
+for(const [date,today,open] of [['2026-10-10',1,1],['2026-10-14',5,5],['2026-11-03',25,25],['2026-11-23',45,45],['2026-11-24',null,45],['2026-12-03',null,45],['2027-02-09',null,45]])test(`fixed calendar ${date}`,()=>{
   const states=BOOTCAMP_CALENDAR.map(d=>getBootCampCalendarState(date,d.day))
   assert.equal(states.filter(d=>d.unlocked).length,open)
   assert.deepEqual(states.filter(d=>d.state==='TODAY').map(d=>d.day),today?[today]:[])
@@ -17,56 +18,56 @@ test('45 training days, derived curriculum totals, ten buffer dates, India midni
   assert.equal(BOOTCAMP_TRAINING_DAYS,45)
   assert.deepEqual(BOOTCAMP_CURRICULUM_TOTALS,{trainingDays:45,warmupQuestions:225,rcPassages:135,rcQuestions:540,vaQuestions:360,totalQuestions:1125})
   assert.equal(BOOTCAMP_CALENDAR.length,45)
-  assert.equal(BOOTCAMP_CALENDAR[0].date,'2026-10-05');assert.equal(BOOTCAMP_CALENDAR.at(-1).date,'2026-11-18')
-  assert.equal(BOOTCAMP_PROGRAM_END,'2026-11-28');assert.equal(BOOTCAMP_ACCESS_END,'2027-02-04')
-  assert.deepEqual(BOOTCAMP_CALENDAR.slice(0,3).map(d=>d.date),['2026-10-05','2026-10-06','2026-10-07'])
-  assert.deepEqual(trainingMonths().map(m=>m.label),['October 2026','November 2026'])
+  assert.equal(BOOTCAMP_CALENDAR[0].date,'2026-10-10');assert.equal(BOOTCAMP_CALENDAR.at(-1).date,'2026-11-23')
+  assert.equal(BOOTCAMP_PROGRAM_END,'2026-12-03');assert.equal(BOOTCAMP_ACCESS_END,'2027-02-09')
+  assert.deepEqual(BOOTCAMP_CALENDAR.slice(0,3).map(d=>d.date),['2026-10-10','2026-10-11','2026-10-12'])
+  assert.deepEqual(trainingMonths().map(m=>m.label),['October 2026','November 2026','December 2026'])
   assert.equal(trainingMonths().flatMap(m=>m.cells).filter(c=>c?.buffer).length,BOOTCAMP_BUFFER_DAYS)
-  assert.equal(getBootCampCalendarState('2026-10-04T18:29:59Z',1).state,'LOCKED')
-  assert.equal(getBootCampCalendarState('2026-10-04T18:30:00Z',1).state,'TODAY')
-  assert.equal(getBootCampCalendarState('2026-11-24').period,'BUFFER')
-  assert.equal(getBootCampCalendarState('2026-12-04').period,'LIBRARY')
-  assert.equal(getBootCampCalendarState('2027-02-05',1).unlocked,false)
-  assert.equal(getBootCampCalendarState('2026-10-29').daysToExam,null)
-  assert.equal(getBootCampCalendarState('2026-10-29',null,'not_started','2026-11-14').daysToExam,16)
-  assert.equal(getBootCampCalendarState('2026-10-29',25,'completed').state,'COMPLETED')
-  assert.equal(getBootCampCalendarState('2026-10-29',25,'completed').isToday,true)
-  assert.equal(getBootCampCalendarState('2026-10-29',23,'in_progress').state,'IN_PROGRESS')
-  assert.throws(()=>getBootCampCalendarState('2026-10-29',51))
+  assert.equal(getBootCampCalendarState('2026-10-09T18:29:59Z',1).state,'LOCKED')
+  assert.equal(getBootCampCalendarState('2026-10-09T18:30:00Z',1).state,'TODAY')
+  assert.equal(getBootCampCalendarState('2026-11-29').period,'BUFFER')
+  assert.equal(getBootCampCalendarState('2026-12-09').period,'LIBRARY')
+  assert.equal(getBootCampCalendarState('2027-02-10',1).unlocked,false)
+  assert.equal(getBootCampCalendarState('2026-11-03').daysToExam,null)
+  assert.equal(getBootCampCalendarState('2026-11-03',null,'not_started','2026-11-19').daysToExam,16)
+  assert.equal(getBootCampCalendarState('2026-11-03',25,'completed').state,'COMPLETED')
+  assert.equal(getBootCampCalendarState('2026-11-03',25,'completed').isToday,true)
+  assert.equal(getBootCampCalendarState('2026-11-03',23,'in_progress').state,'IN_PROGRESS')
+  assert.throws(()=>getBootCampCalendarState('2026-11-03',51))
 })
-test('simulated October 10 calendar shows backlog, today, future locks, and each account actual attempts',async()=>{
-  let today='2026-10-10'
+test('simulated October 15 calendar shows backlog, today, future locks, and each account actual attempts',async()=>{
+  let today='2026-10-15'
   const h=await harness(fixture(),undefined,undefined,{now:()=>today})
   try {
     for(const day of Array.from({length:9},(_,i)=>fixture(i+2)))await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[day.id,day.day_number,day.document,day.lock_token,day.updated_at])
     await h.service.enroll(student)
     const home=await h.service.home(student)
     assert.equal(home.calendar.devPreview,false)
-    assert.equal(home.calendar.today,'2026-10-10')
+    assert.equal(home.calendar.today,'2026-10-15')
     assert.equal(home.calendar.todayDay,6)
     assert.equal(home.days.slice(0,6).every(day=>day.accessible),true)
     assert.equal(home.days.slice(6).some(day=>day.accessible),false)
     assert.equal(home.days.slice(0,5).every(day=>day.state==='OPEN_BACKLOG'),true)
     assert.equal(home.days[5].state,'TODAY')
-    assert.equal(home.days[0].releaseDate,'2026-10-05')
+    assert.equal(home.days[0].releaseDate,'2026-10-10')
     assert.equal(home.completedDays,0)
     await h.service.enroll(other)
     const returningAttempt=await h.service.start(other,5)
     const returning=await h.service.home(other)
     assert.equal(returning.days[4].status,'in_progress')
     assert.equal((await h.service.home(other,5)).attempt.id,returningAttempt.id)
-    today='2026-10-11'
+    today='2026-10-16'
     assert.equal((await h.service.home(student)).calendar.todayDay,7)
     assert.equal((await h.service.home(student)).days[6].state,'TODAY')
     assert.equal((await h.service.home(student)).days[7].state,'LOCKED')
     const board=await h.service.getBootCampLeaderboard(student,'daily')
-    assert.equal(board.window.startDate,'2026-10-11')
+    assert.equal(board.window.startDate,'2026-10-16')
     assert.equal(board.current.score,0)
     assert.equal(board.eligibleStudents,0)
   } finally {await h.close()}
 })
 test('new personal journey starts with published Day 1 content on the global Day 5 calendar',async()=>{
-  let today='2026-10-09'
+  let today='2026-10-14'
   const h=await harness(fixture(),undefined,undefined,{now:()=>today,personalSequence:true,freeDayOnly:true})
   try {
     for(const day of [2,3,4,5]) { const row=fixture(day); await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at]) }
@@ -92,8 +93,29 @@ test('new personal journey starts with published Day 1 content on the global Day
     assert.equal((await h.service.home(other)).sequenceMode,'calendar')
   } finally { await h.close() }
 })
+test('free-only access can complete actual Day 1 before the calendar opens, including its report, while Day 2 remains locked',async()=>{
+  const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-09',freeDayOnly:true,personalSequence:true})
+  try {
+    await h.service.enroll(student)
+    const home=await h.service.home(student)
+    assert.equal(home.days[0].accessible,true)
+    assert.equal(home.days[1].accessible,false)
+    let state=await h.service.start(student,1)
+    assert.equal(state.dayNumber,1)
+    assert.equal((await h.pg.query("select snapshot->>'sourceId' as source_id from bootcamp_day_attempts where id=$1",[state.id])).rows[0].source_id,'bootcamp-day-1')
+    const act=async(action,input={})=>state=await h.service.act(student,state.id,action,{revision:state.revision,...input})
+    await act('advance')
+    const source=adaptDay(fixture()).snapshot
+    for(const block of source.blocks) { await act('block_start',{key:block.key});const q=block.questions[0];await act('responses',{key:block.key,questionId:q.id,response:q.answer,presented:true,activeMs:1000});await act('finish',{key:block.key});await act('advance',{reviewed:true}) }
+    assert.equal(state.phase,'report')
+    assert.equal((await h.service.review(student,state.id,'warmup')).questions.length,5)
+    assert.equal((await h.service.home(student,1)).attempt.id,state.id)
+    await assert.rejects(h.service.start(student,2),error=>error.status===402)
+    await assert.rejects(h.service.home(student,2),error=>error.status===402)
+  } finally { await h.close() }
+})
 test('personal sequence advances only after completion and keeps day snapshots stable',async()=>{
-  const h=await harness(fixture(),undefined,undefined,{now:()=>new Date('2026-10-09T06:00:00Z'),personalSequence:true})
+  const h=await harness(fixture(),undefined,undefined,{now:()=>new Date('2026-10-14T06:00:00Z'),personalSequence:true})
   try {
     const day2=fixture(2),day5=fixture(5)
     for(const row of [day2,day5])await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[row.id,row.day_number,row.document,row.lock_token,row.updated_at])
@@ -112,8 +134,8 @@ test('personal sequence advances only after completion and keeps day snapshots s
   } finally { await h.close() }
 })
 
-test('October 9 exposes only valid past content as startable and leaves invalid content preparing',async()=>{
-  const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-09'})
+test('October 14 exposes only valid past content as startable and leaves invalid content preparing',async()=>{
+  const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-14'})
   try {
     for(const day of [2,3,5]) {
       const row=fixture(day)
@@ -142,7 +164,7 @@ test('existing entitlement rules: active trial, purchase, institute, expiry, and
   assert.throws(()=>requireBootCampEntitlement({profile:{},subscription:{expires_at:'2026-12-04'}},new Date('2027-01-01')),e=>e.status===402)
 })
 test('SQL/service: late join, gaps, arbitrary backlog, official result, partial resume and route locks',async()=>{
-  let today='2026-10-29'
+  let today='2026-11-03'
   const h=await harness(fixture(),undefined,undefined,{now:()=>today})
   try {
     for(const day of [2,3,5,23,24,25,26,27,45]){const r=fixture(day);await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[r.id,r.day_number,r.document,r.lock_token,r.updated_at])}
@@ -173,20 +195,20 @@ test('SQL/service: late join, gaps, arbitrary backlog, official result, partial 
     assert.deepEqual(after.data.state,official.data.state)
     assert.equal((await h.pg.query('select count(*)::integer as n from bootcamp_day_attempts where day_number=23')).rows[0].n,1)
     for(const day of [5,2,24])assert.equal((await h.service.start(student,day)).dayNumber,day)
-    today='2026-10-31'
+    today='2026-11-05'
     const returned=await h.service.home(student)
     assert.equal(returned.currentDay,27);assert.equal(returned.days[25].state,'OPEN_BACKLOG')
     assert.equal(returned.days[26].state,'TODAY');assert.equal(returned.days[27].state,'LOCKED')
     assert.equal((await h.service.start(student,27)).dayNumber,27)
-    today='2026-10-28'
+    today='2026-11-02'
     await assert.rejects(h.service.get(student,current.id),e=>e.status===403)
     await assert.rejects(h.service.review(student,current.id,'warmup'),e=>e.status===403)
     await assert.rejects(h.service.coach(student,current.id),e=>e.status===403)
-    today='2026-11-19'
+    today='2026-11-24'
     assert.equal((await h.service.home(student)).currentDay,null)
     assert.equal((await h.service.start(student,45)).dayNumber,45)
-    today='2027-02-04';assert.equal((await h.service.home(student)).days.filter(d=>d.unlocked).length,45)
-    today='2027-02-05';await assert.rejects(h.service.start(student,3),e=>e.status===403)
+    today='2027-02-09';assert.equal((await h.service.home(student)).days.filter(d=>d.unlocked).length,45)
+    today='2027-02-10';await assert.rejects(h.service.start(student,3),e=>e.status===403)
     assert.ok(h.calls.every(c=>!c.table||c.table.startsWith('bootcamp_')))
   } finally {await h.close()}
 })
