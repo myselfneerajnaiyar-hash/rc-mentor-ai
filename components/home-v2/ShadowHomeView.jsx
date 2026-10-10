@@ -1,7 +1,6 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { BOOTCAMP_ENABLED } from "@/lib/mobile/features.mjs"
 import BootCampHomeCard from "@/components/bootcamp/BootCampHomeCard"
 import { startProductTour } from "@/components/ProductTour";
 
@@ -399,17 +398,7 @@ setInsight({
   setView={setView}
 />
 
-<TrialConversionBanner />
-
- {isCAT && (
-  <>
-    <TestSeriesHero setView={setView} instituteAccess={entitlement.isInstituteStudent} />
-
-   
-  </>
-)}
-
-{BOOTCAMP_ENABLED && <BootCampHomeCard userId={user?.id} />}
+{isCAT && <BootCampHomeCard userId={user?.id} />}
 <TodayActivity
   exam={normalizedExam}
   setView={setView}
@@ -420,6 +409,8 @@ setInsight({
   instituteAccess={entitlement.isInstituteStudent}
 />
 {!entitlement.isInstituteStudent && <PremiumCTA />}
+{isCAT && <TestSeriesHero setView={setView} instituteAccess={entitlement.isInstituteStudent} />}
+<TrialConversionBanner />
 
 <LeaderboardSection exam={exam} />
 

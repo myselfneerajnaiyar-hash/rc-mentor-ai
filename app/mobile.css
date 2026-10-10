@@ -47,6 +47,7 @@
  .root-content .desktop-navbar{display:none}.root-content>div{min-width:0}
  .auctor-mobile-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;bottom:0;left:0;right:0;z-index:900;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:#0b1425f5;border-top:1px solid #35465f;backdrop-filter:blur(16px)}
  .auctor-mobile-nav a{min-height:52px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;font-size:11px;color:#a6b5cc;border-radius:12px;text-decoration:none}
+ .auctor-mobile-nav[data-tab-count="5"] a{font-size:clamp(9px,2.8vw,11px)}
  .auctor-mobile-nav a[aria-current=page]{background:#203653;color:#b7d8ff;font-weight:700}
  .mobile-module-switcher{display:flex;align-items:center;gap:8px;margin:0 0 20px;min-width:0}.mobile-module-switcher label{position:absolute;width:1px;height:1px;overflow:hidden}.mobile-module-switcher select{min-width:0;flex:1;min-height:48px;background:#152239;color:#e2e8f0;border:1px solid #3e536f;border-radius:10px;padding:8px;font-size:14px}.mobile-module-switcher button{min-height:48px;font-size:12px;padding:8px;color:#b2d3ff}
  .assessment-exit{display:block;position:relative;margin:12px 16px;min-height:44px;padding:10px 16px;border:1px solid #667b96;color:#d3dfed;border-radius:10px;background:#142136}

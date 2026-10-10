@@ -23,7 +23,7 @@ import TodayHub from "@/components/mobile/TodayHub";
 import PracticeHub from "@/components/mobile/PracticeHub";
 import PremiumLock from "@/components/mobile/PremiumLock";
 import { allowActivityExit } from "@/components/mobile/MobileShell";
-import { BOOTCAMP_ENABLED, GRAMMAR_ENABLED, FEATURES } from "@/lib/mobile/features.mjs";
+import { GRAMMAR_ENABLED, FEATURES } from "@/lib/mobile/features.mjs";
 import LeaderboardSection from "@/components/home-v2/LeaderboardSection";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
@@ -707,6 +707,7 @@ if (authLoading) {
 }
 const navItems = [
   { id: "home", label: "Home", icon: Home },
+  ...(capabilities.isCAT ? [{ id: "bootcamp", label: "Boot Camp", icon: Target }] : []),
   { id: "workout", label: "Daily Workout", icon: Flame },
   { id: "rc", label: "RC", icon: Brain },
    { id: "precision", label: "Precision Training", icon: Target },
@@ -759,11 +760,10 @@ return (
 
 
      <nav className="flex flex-col gap-2 mt-6">
- {BOOTCAMP_ENABLED && <a href="/boot-camp" className="w-full flex items-start gap-3 px-4 py-3 rounded-xl text-emerald-200 border border-emerald-700/40 hover:bg-emerald-900/20"><Target size={20} />Boot Camp</a>}
  {navItems.map((item) => {
   const Icon = item.icon;
 
-  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
+  const freeViews = ["home", "bootcamp", "workout", "hangman", "profile", "cat"]
 
 const locked =
   !freeViews.includes(item.id) &&
@@ -773,7 +773,7 @@ const locked =
   key={item.id}
   onClick={() => {
 
-  const freeViews = ["home", "workout", "hangman", "profile", "cat"]
+  const freeViews = ["home", "bootcamp", "workout", "hangman", "profile", "cat"]
 
   const locked =
     !freeViews.includes(item.id) &&
@@ -781,6 +781,11 @@ const locked =
 
 if (item.id === "premium") {
   router.push("/pricing")
+  return
+}
+
+if (item.id === "bootcamp") {
+  router.push("/boot-camp")
   return
 }
 

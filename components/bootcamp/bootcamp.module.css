@@ -80,6 +80,20 @@
 .inlineCard h2 { font-family:Georgia,serif;font-size:27px;font-weight:400;margin:8px 0 }
 .inlineCard p { font-size:14px;color:#b7cbc9;margin:8px 0 }
 .inlineCard a { display:inline-flex;background:#b7ead1;color:#142a22;padding:13px 18px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none }
+.homeCard { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px;width:100%;min-width:0;overflow:hidden;padding:clamp(22px,3vw,36px);border:1px solid #405b54;border-radius:20px;background:radial-gradient(ellipse at 88% 0%,#235a4d55,transparent 42%),linear-gradient(115deg,#142a30,#101b28 72%);box-shadow:0 20px 55px #0003;color:#edf7f1 }
+.homeCopy { min-width:0 }
+.homeKicker { display:flex;align-items:center;gap:9px;margin:0;color:#a9e8c9;font-size:11px;font-weight:750;letter-spacing:.14em;text-transform:uppercase }
+.homeCard h2 { max-width:760px;margin:13px 0 9px;color:#f4f6f1;font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,3vw,36px);font-weight:400;line-height:1.15;letter-spacing:-.02em }
+.homeDescription { max-width:720px;margin:0;color:#b7c7ca;font-size:14px;line-height:1.7 }
+.homeOffer { display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;margin-top:18px }
+.homeOffer>div { display:flex;align-items:baseline;gap:9px }
+.homeOffer del { color:#92a1a8;font-size:15px }
+.homeOffer strong { color:#c0f2d7;font-size:27px;font-weight:750;letter-spacing:-.03em }
+.homeOffer>span { color:#9eb4b3;font-size:12px }
+.homeCta { display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:50px;max-width:100%;padding:13px 18px;border:1px solid #b7ead1;border-radius:9px;background:#b7ead1;color:#142a22;font-size:13px;font-weight:750;text-decoration:none;white-space:nowrap;transition:background .18s ease,transform .18s ease }
+.homeCta:hover { transform:translateY(-1px);background:#d2f6e4 }
+.homeCta span { font-size:18px;line-height:1 }
+@media(max-width:640px) { .homeCard { grid-template-columns:minmax(0,1fr);gap:18px;padding:21px 18px;border-radius:16px }.homeCard h2 { margin-top:11px;font-size:clamp(24px,7vw,31px) }.homeDescription { font-size:13px }.homeCta { width:100%;white-space:normal } }
 .missionPage { --mission-cyan:#6ee0ed;--mission-muted:#a6b5c2;--mission-line:#2b3e4d;max-width:1120px;margin:0 auto;padding:10px 0 42px;color:#eff3f4 }
 .missionHero { position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);align-items:center;gap:28px;min-height:310px;overflow:hidden;padding:30px 38px;margin-bottom:18px;border:1px solid #29404e;border-radius:18px;background:radial-gradient(ellipse at 82% 45%,#16455699 0,transparent 42%),linear-gradient(112deg,#101b27 0%,#122531 58%,#10202b 100%);box-shadow:0 28px 80px #0003 }
 .missionHero:after { position:absolute;inset:auto 0 0;height:1px;background:linear-gradient(90deg,transparent,#59cddd77,transparent);content:"" }

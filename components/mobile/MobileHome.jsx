@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useTenant } from '@/components/providers/TenantProvider';
+import BootCampHomeCard from '@/components/bootcamp/BootCampHomeCard';
 import { useDailyActivity } from './DailyActivityProvider';
 import { FEATURES, nextActivity } from '@/lib/mobile/features.mjs';
 import { captureLearningEvent } from '@/lib/learningAnalytics';
@@ -15,6 +16,7 @@ export default function MobileHome(){
   const completed=daily.activities.filter(a=>a.completed).length;
   useEffect(()=>captureLearningEvent('mobile_home_view'),[]);
   return <div className="mobile-hub"><header className="mobile-hub-heading"><p className="mobile-eyebrow">Your daily reading practice</p><h1>Welcome{profile?.name?`, ${profile.name.split(' ')[0]}`:''}.</h1><p>A little practice. A stronger reader.</p></header>
+    {capabilities.isCAT&&<BootCampHomeCard userId={profile?.user_id}/>}
     <TrialConversionBanner />
     <section className="mobile-home-daily" data-daily-ready={!daily.loading&&!daily.error} aria-busy={daily.loading}><h2 className="mobile-daily-title">Today's Activities</h2>
     {daily.error?<Recovery message={daily.error} onRetry={daily.refresh} area="daily_progress"/>:<>{(daily.loading?FEATURES.filter(a=>a.group==='Daily'&&(!a.capability||capabilities[a.capability])):next?[next,...daily.activities.filter(a=>a.id!==next.id)]:daily.activities).map((a,i)=><div key={a.id} className={i===0?'':'mobile-daily-secondary'}><DailyPanel activity={a} primary={!daily.loading&&a.id===next?.id} loading={daily.loading}/></div>)}</>}
