@@ -399,6 +399,7 @@ setInsight({
 />
 
 {isCAT && <BootCampHomeCard userId={user?.id} />}
+<TrialConversionBanner />
 <TodayActivity
   exam={normalizedExam}
   setView={setView}
@@ -410,7 +411,6 @@ setInsight({
 />
 {!entitlement.isInstituteStudent && <PremiumCTA />}
 {isCAT && <TestSeriesHero setView={setView} instituteAccess={entitlement.isInstituteStudent} />}
-<TrialConversionBanner />
 
 <LeaderboardSection exam={exam} />
 
