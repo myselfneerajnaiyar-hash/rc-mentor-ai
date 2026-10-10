@@ -13,8 +13,8 @@ const trial = {
 const at = elapsed => new Date(start + elapsed).toISOString()
 
 test("trial day boundaries use elapsed 24-hour periods", () => {
-  assert.equal(getTrialBannerState({ ...trial, now: at(0) }).type, "none")
-  assert.equal(getTrialBannerState({ ...trial, now: at(day - 1) }).type, "none")
+  assert.equal(getTrialBannerState({ ...trial, now: at(0) }).type, "offer")
+  assert.equal(getTrialBannerState({ ...trial, now: at(day - 1) }).type, "offer")
   assert.deepEqual(getTrialBannerState({ ...trial, now: at(day) }), {
     type: "offer", day: 2, startedAt: trial.trialStartedAt, expiresAt: trial.trialExpiresAt,
   })
@@ -32,9 +32,22 @@ test("paid and institute entitlements suppress every promotional state", () => {
   for (const entitlement of [
     { isPremium: true, kind: "subscription" },
     { isPremium: true, kind: "premium" },
+    { hasAccess: true, kind: "subscription" },
     { isInstituteStudent: true, kind: "institute" },
   ]) {
     assert.equal(getTrialBannerState({ ...trial, now: at(2 * day), entitlement }).type, "none")
+  }
+})
+
+test("every user without paid or institute access sees the AUCTOR20 offer regardless of trial metadata", () => {
+  for (const options of [
+    { now: at(0) },
+    { now: at(day), ...trial },
+    { now: at(4 * day), ...trial },
+    { now: at(day), trialStartedAt: "invalid", trialExpiresAt: "invalid" },
+    { now: null },
+  ]) {
+    assert.notEqual(getTrialBannerState(options).type, "none")
   }
 })
 
@@ -45,19 +58,19 @@ test("malformed explicit premium expiry does not grant indefinite entitlement; l
   assert.equal(getEffectiveEntitlement({ profile: { is_premium: true, premium_expires_at: null }, resolvedTenant, now }).kind, "premium")
 })
 
-test("unknown, null, invalid, and future trial starts do not invent Day 2/3", () => {
-  assert.equal(getTrialBannerState({ trialExpiresAt: trial.trialExpiresAt, now: at(day) }).type, "none")
-  assert.equal(getTrialBannerState({ ...trial, trialStartedAt: "invalid", now: at(day) }).type, "none")
-  assert.equal(getTrialBannerState({ ...trial, trialStartedAt: at(day), now: at(0) }).type, "none")
-  assert.equal(getTrialBannerState({ trialStartedAt: null, trialExpiresAt: null, now: at(day) }).type, "none")
-  assert.equal(getTrialBannerState({ ...trial, trialExpiresAt: "invalid", now: at(day) }).type, "none")
+test("unknown, null, invalid, and future trial metadata falls back to the generic unpaid offer", () => {
+  assert.equal(getTrialBannerState({ trialExpiresAt: trial.trialExpiresAt, now: at(day) }).type, "offer")
+  assert.equal(getTrialBannerState({ ...trial, trialStartedAt: "invalid", now: at(day) }).type, "offer")
+  assert.equal(getTrialBannerState({ ...trial, trialStartedAt: at(day), now: at(0) }).type, "offer")
+  assert.equal(getTrialBannerState({ trialStartedAt: null, trialExpiresAt: null, now: at(day) }).type, "offer")
+  assert.equal(getTrialBannerState({ ...trial, trialExpiresAt: "invalid", now: at(day) }).type, "offer")
 })
 
 test("dismissal key changes with banner state so state changes are not hidden", () => {
   const day2 = getTrialBannerState({ ...trial, now: at(day) })
   const day3 = getTrialBannerState({ ...trial, now: at(2 * day) })
   assert.notEqual(trialBannerDismissalKey(day2), trialBannerDismissalKey(day3))
-  assert.equal(trialBannerDismissalKey(getTrialBannerState({ ...trial, now: at(0) })), null)
+  assert.equal(trialBannerDismissalKey(getTrialBannerState({ ...trial, now: at(0) })), "trial-conversion:offer:unknown")
 })
 
 test("welcome flow preserves existing trial dates and database migration avoids legacy backfill", async () => {

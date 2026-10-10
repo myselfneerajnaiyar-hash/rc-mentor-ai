@@ -399,3 +399,185 @@
   height:13px;
 }
 .curriculumTotals{margin:-2px 0 10px;color:#91aab4;font-size:8px;line-height:1.4;text-align:center}
+
+/* Dashboard typography: preserve the layout and palette while making the training UI readable. */
+.sectionLabel,.featureEyebrow,.sectionEyebrow,.planTop p,.calendarKicker,.zone,
+.todayCopy .eyebrow,.todayKicker,.heroCatBadge,.workload>span,.todayNumber span,.todayNumber small {
+  font-size:12px;
+  line-height:1.3;
+}
+.sectionLabel>span,.sectionIndex { width:28px;height:28px;font-size:12px }
+.sectionHeading h2 { font-size:clamp(28px,2.4vw,34px);line-height:1.15 }
+.sectionHeading p,.journeySummary,.catchupInline { font-size:16px;line-height:1.55 }
+.browseLink { min-height:44px;font-size:14px }
+.todayState { flex-wrap:wrap;align-items:flex-start }
+.todayState strong { font-size:14px;line-height:1.4 }
+.todayState p { font-size:16px;line-height:1.55 }
+.heroCountdown span { font-size:12px }
+.heroCountdown strong { font-size:18px }
+.workload strong { font-size:15px;line-height:1.4 }
+.workload small,.countdownCompact { font-size:13px;line-height:1.4 }
+.todayActions .startCta { min-height:48px;font-size:15px }
+.minutesToday { font-size:14px }
+.planTop p,.catBadge { font-size:12px }
+.planMetrics strong { font-size:clamp(26px,2.3vw,32px) }
+.planMetrics span { font-size:13px;line-height:1.3 }
+.planMetrics small { font-size:12px;line-height:1.3 }
+.curriculumTotals { font-size:13px;line-height:1.5 }
+.streakSummary strong { font-size:12px;line-height:1.3 }
+.streakSummary span { font-size:13px;line-height:1.4 }
+.streakNow strong { font-size:30px }
+.streakNow span { font-size:13px }
+.streakTrack i { height:11px }
+.catchupStrip p { font-size:13px;line-height:1.45 }
+.catchupStrip a { min-height:40px;font-size:12px }
+.trainingSteps>p { font-size:12px;line-height:1.4 }
+.trainingSteps article>span { font-size:13px }
+.trainingSteps article strong { font-size:14px }
+.trainingSteps article small { font-size:14px;line-height:1.45 }
+.trainingSteps>div>svg { width:20px;height:20px }
+.calendarTop strong { font-size:15px;line-height:1.4 }
+.calendarKicker,.zone { font-size:12px }
+.monthTabs { flex-wrap:wrap;gap:8px 20px }
+.monthTabs button { min-height:44px;font-size:14px;line-height:1.2 }
+.month th { font-size:12px }
+.month time { font-size:24px }
+.month strong { font-size:12px;line-height:1.2 }
+.month small,.catchupBadge { font-size:12px;line-height:1.3 }
+.rowControl button { min-height:44px;font-size:14px }
+.legend { font-size:12px;line-height:1.4 }
+.performanceSection .featureEyebrow { font-size:12px }
+.performanceSection .featureCard h3,.calendarAside .featureCard h3 { font-size:25px;line-height:1.2 }
+.topAside .performance .featureEyebrow { font-size:12px;line-height:1.3 }
+.topAside .performance h3 { font-size:25px;line-height:1.2 }
+.topAside .performance .metricGrid { grid-template-columns:repeat(3,minmax(0,1fr));gap:0 }
+.topAside .performance .metricGrid>div { min-width:0;padding:0 7px }
+.topAside .performance .metricGrid>div:first-child { padding-left:0 }
+.topAside .performance .metricGrid span { font-size:12px;line-height:1.3;letter-spacing:.03em }
+.topAside .performance .metricGrid strong { font-size:30px;line-height:1.1 }
+.topAside .performance .metricGrid strong small { font-size:14px }
+.topAside .performance .metricGrid>div>small { font-size:12px;line-height:1.35 }
+.topAside .performance .featureCta { min-height:46px;padding:12px;font-size:14px;line-height:1.35 }
+.performanceSection .featureIntro { font-size:16px;line-height:1.55 }
+.performanceSection .loading { font-size:15px;line-height:1.5 }
+.performanceSection .metricGrid span { font-size:12px;line-height:1.3;letter-spacing:.04em }
+.performanceSection .metricGrid strong { font-size:32px;line-height:1.1 }
+.performanceSection .metricGrid strong small { font-size:15px }
+.performanceSection .metricGrid>div>small { font-size:13px;line-height:1.35 }
+.performanceSection .featureCta,.calendarAside .featureCta { min-height:46px;font-size:14px;line-height:1.35 }
+.calendarAside .metricGrid span { font-size:12px;line-height:1.3;letter-spacing:.03em }
+.calendarAside .metricGrid strong { font-size:28px }
+.calendarAside .metricGrid>div>small { font-size:12px;line-height:1.3 }
+.calendarAside .birbalStrip .trainerEyebrow { font-size:12px !important;line-height:1.35 !important }
+.calendarAside .birbalStrip .trainerCopy h2 { font-size:22px !important;line-height:1.2 !important }
+.calendarAside .birbalStrip .trainerCopy p:last-child {
+  display:block;
+  -webkit-line-clamp:unset;
+  overflow:visible;
+  font-size:15px !important;
+  line-height:1.5 !important;
+}
+.calendarAside .birbalStrip .trainerAction button { min-height:44px;font-size:14px !important;line-height:1.3 }
+.datePreview { font-size:14px;line-height:1.5 }
+
+@media(max-width:720px) {
+  .sectionHeading h2 { font-size:27px }
+  .sectionHeading p,.journeySummary,.catchupInline { font-size:15px }
+  .planMetrics strong { font-size:26px }
+  .planMetrics span { font-size:12px }
+  .planMetrics small { font-size:12px }
+  .streakSummary>div:first-child { flex-wrap:wrap }
+  .trainingSteps { padding:16px;gap:12px }
+  .trainingSteps article { grid-template-columns:30px 22px minmax(0,1fr);gap:8px }
+  .trainingSteps article small { font-size:14px }
+  .trainingSteps article strong { font-size:14px }
+  .trainingSteps article>svg { width:27px;height:27px }
+  .trainingSteps article>span { font-size:13px }
+  .calendarTop { flex-wrap:wrap }
+  .calendarTop strong { font-size:14px }
+  .zone { white-space:normal }
+  .monthTabs { gap:4px }
+  .monthTabs button { flex:1 1 28%;min-height:44px;padding-inline:4px;font-size:14px }
+  .calendarAside .featureCard h3 { font-size:23px }
+  .topAside .performance h3 { font-size:23px }
+  .calendarAside .metricGrid { grid-template-columns:repeat(3,minmax(0,1fr)) }
+  .calendarAside .metricGrid>div { padding-inline:5px }
+  .calendarAside .metricGrid strong { font-size:26px }
+}
+
+@media(max-width:600px) {
+  .sectionLabel,.sectionEyebrow,.featureEyebrow { font-size:12px }
+  .sectionHeading h2 { font-size:26px }
+  .sectionHeading p { max-width:none;font-size:15px }
+  .todayState { display:block }
+  .todayState strong { display:block;margin-bottom:5px }
+  .todayState p { font-size:15px }
+  .workoutGrid span,.workoutGrid strong,.workoutGrid small {
+    overflow:visible;
+    font-size:12px;
+    line-height:1.35;
+    text-overflow:clip;
+    white-space:normal;
+  }
+  .workoutGrid>div { grid-template-columns:24px minmax(0,1fr);padding:9px;column-gap:6px }
+  .workoutGrid svg { width:21px;height:21px }
+  .planCard { padding:15px 12px }
+  .planMetrics>div { padding-inline:4px }
+  .planMetrics strong { font-size:26px }
+  .planMetrics span,.planMetrics small { font-size:12px }
+  .streakSummary>div:first-child { align-items:flex-start;flex-direction:column;gap:5px }
+  .streakSummary span { text-align:left }
+  .streakNow strong { font-size:28px }
+  .catchupStrip { grid-template-columns:20px minmax(0,1fr);gap:8px;padding:10px }
+  .catchupStrip p { font-size:13px }
+  .catchupStrip a { grid-column:2;justify-self:start;font-size:12px }
+  .trainingSteps>div { grid-template-columns:minmax(0,1fr);gap:8px }
+  .trainingSteps>div>svg { transform:rotate(90deg);margin-left:8px }
+  .trainingSteps article { grid-template-columns:30px 24px minmax(0,1fr);gap:8px }
+  .trainingSteps article section { min-width:0 }
+  .trainingSteps article small { font-size:14px;line-height:1.4 }
+  .calendar { padding:17px 10px 14px }
+  .monthViewport { overflow-x:hidden }
+  .month { width:100%;min-width:0;table-layout:fixed }
+  .month th { padding:10px 0;font-size:12px;letter-spacing:0 }
+  .month td { height:auto;min-height:86px }
+  .month td>a,.month td>div { min-height:86px;gap:4px;padding:7px 2px;align-items:center;text-align:center }
+  .month time,.month .active time { font-size:20px }
+  .month strong { font-size:12px;line-height:1.2;overflow-wrap:anywhere }
+  .month small,.catchupBadge { font-size:12px;line-height:1.2;overflow-wrap:anywhere }
+  .catchupBadge { align-self:stretch;padding:3px 1px }
+  .rowControl button { font-size:13px }
+  .legend { gap:9px 12px;font-size:12px }
+  .performanceSection .featureCard { padding:20px 16px }
+  .performanceSection .featureCard h3 { font-size:23px }
+  .performanceSection .metricGrid { grid-template-columns:repeat(3,minmax(0,1fr)) }
+  .performanceSection .metricGrid>div { padding-inline:7px }
+  .performanceSection .metricGrid span { font-size:12px;letter-spacing:0 }
+  .performanceSection .metricGrid strong { font-size:27px }
+  .performanceSection .metricGrid strong small { font-size:13px }
+  .performanceSection .metricGrid>div>small { font-size:12px }
+  .performanceSection .featureCta { max-width:none;min-height:48px;padding:12px;font-size:14px }
+  .topAside .performance .metricGrid { grid-template-columns:repeat(3,minmax(0,1fr)) }
+  .topAside .performance .metricGrid>div { padding-inline:5px }
+  .topAside .performance .metricGrid span { font-size:12px }
+  .topAside .performance .metricGrid strong { font-size:27px }
+  .topAside .performance .metricGrid>div>small { font-size:12px }
+  .topAside .performance .featureCta { min-height:48px;font-size:14px }
+  .calendarAside .card h3 { font-size:23px;line-height:1.25 }
+  .calendarAside .birbalStrip .trainerCopy h2 { font-size:21px !important }
+  .calendarAside .birbalStrip .trainerCopy p:last-child { font-size:14px !important }
+  .calendarAside .birbalStrip .trainerAction button { min-height:46px;font-size:14px !important }
+}
+
+@media(max-width:360px) {
+  .month td>a,.month td>div { padding-inline:1px }
+  .month time,.month .active time { font-size:20px }
+  .month strong { font-size:12px }
+  .month small,.catchupBadge { font-size:12px }
+  .planMetrics { grid-template-columns:repeat(2,minmax(0,1fr));row-gap:14px }
+  .planMetrics>div { padding-inline:7px }
+  .planMetrics>div:nth-child(odd) { padding-left:0;border-left:0 }
+  .planMetrics strong { font-size:28px }
+  .performanceSection .metricGrid>div { padding-inline:4px }
+  .performanceSection .metricGrid strong { font-size:24px }
+}
