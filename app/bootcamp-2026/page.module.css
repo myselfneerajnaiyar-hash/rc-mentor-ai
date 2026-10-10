@@ -1213,6 +1213,99 @@
   }
 }
 
+/* The live landing page uses .sticky (not the unused StickyStartCTA styles). */
+@media (max-width: 899px) {
+  .sticky {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .sticky > div {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .sticky > div > b {
+    color: var(--orange);
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .sticky > div > span {
+    min-width: 0;
+    color: #d9e2e8;
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  .sticky > div > span strong {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  .sticky .cta {
+    flex: 0 0 auto;
+    width: 180px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 8px 7px;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .sticky .cta > span:first-child {
+    font-size: 16px;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .sticky .cta > span:last-child {
+    flex: 0 0 auto;
+    font-size: 20px;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 380px) {
+  .sticky {
+    gap: 7px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .sticky .cta {
+    width: 180px;
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+}
+
+@media (max-width: 359px) {
+  .sticky {
+    flex-wrap: wrap;
+  }
+
+  .sticky > div {
+    flex-basis: 100%;
+  }
+
+  .sticky .cta {
+    width: 100%;
+  }
+}
+
 /* 45-day plan statistics */
 .programStats {
   width: 100%;
