@@ -49,6 +49,7 @@ test('Bootcamp home offer CTA routes through pricing while preserving campaign a
     readFile(new URL('../components/bootcamp/BootcampOffer.jsx', import.meta.url), 'utf8'),
     readFile(new URL('../components/SubscribeButton.jsx', import.meta.url), 'utf8'),
   ])
+  assert.match(offer, /\['day1_free', 'first_free'\]\.includes\(access\?\.source\)/)
   assert.match(offer, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp' \}\)/)
   assert.match(offer, /href=\{pricingHref\}>Unlock all 45 days/)
   assert.doesNotMatch(offer, /plan="bootcamp_full_access"/)

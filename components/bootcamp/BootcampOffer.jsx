@@ -28,7 +28,7 @@ export default function BootcampOffer() {
     return () => { active = false }
   }, [])
 
-  if (access?.source !== 'first_free') return null
+  if (!['day1_free', 'first_free'].includes(access?.source)) return null
   const daysLeft = Math.max(1, Math.ceil((CAT_EXAM - Date.now()) / 86400000))
   const pricingHref = buildAttributedPath('/pricing', readBrowserAttribution(), { offer: 'bootcamp' })
   return <aside className={s.bootcampOffer} aria-label="Unlock the full Bootcamp">
