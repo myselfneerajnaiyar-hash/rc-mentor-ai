@@ -11,6 +11,7 @@ import {
   getPurchaseEventIdentity,
   sendPurchaseConversionEvents,
 } from "../lib/analytics/serverConversionEvents.mjs"
+import { dispatchPurchaseConversionEvents } from "../lib/analytics/purchaseConversionDispatch.mjs"
 
 const paymentProcessor = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
 const verifyRoute = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
@@ -22,6 +23,7 @@ const inAppBrowserTest = await readFile(new URL("../tests/preview-ad.browser.mjs
 const welcomePage = await readFile(new URL("../app/welcome/page.jsx", import.meta.url), "utf8")
 const loginPage = await readFile(new URL("../app/login/page.jsx", import.meta.url), "utf8")
 const reportQuery = await readFile(new URL("../supabase/queries/meta_roas_by_first_touch.sql", import.meta.url), "utf8")
+const conversionDispatchMigration = await readFile(new URL("../supabase/migrations/202610110001_purchase_conversion_dispatch.sql", import.meta.url), "utf8")
 
 function memoryStorage() {
   const values = new Map()
@@ -172,10 +174,68 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   const eventIdentity = getPurchaseEventIdentity({ purchase, userId: "user-123" })
   assert.equal(eventIdentity.metaEventId, "purchase:pay_123")
   assert.equal(eventIdentity.posthogUuid, posthogRequest.payload.uuid)
-  assert.ok(paymentProcessor.includes("sendPurchaseConversionEvents("))
+  assert.ok(paymentProcessor.includes("dispatchPurchaseConversionEvents("))
+  assert.match(conversionDispatchMigration, /primary key \(payment_id, provider\)/)
+  assert.match(conversionDispatchMigration, /status in \('pending', 'failed'\)/)
+  assert.match(conversionDispatchMigration, /for update of p skip locked/)
   const provisionIndex = paymentProcessor.indexOf("await supabaseAdmin.rpc(provisionRpc")
   assert.ok(paymentProcessor.indexOf('paidPayment.status !== "captured"') < provisionIndex)
   assert.ok(provisionIndex < paymentProcessor.indexOf("await runPostProvisionEffects("))
+})
+
+function conversionOutboxDb() {
+  const rows = new Map()
+  return {
+    rows,
+    async rpc(name, args) {
+      const key = `${args.p_payment_id}:${args.p_provider}`
+      const row = rows.get(key) || { status: "pending", attempts: 0 }
+      if (name === "claim_purchase_conversion_dispatch") {
+        if (!new Set(["pending", "failed"]).has(row.status)) return { data: false, error: null }
+        rows.set(key, { ...row, status: "processing", token: args.p_claim_token, attempts: row.attempts + 1 })
+        return { data: true, error: null }
+      }
+      if (row.status !== "processing" || row.token !== args.p_claim_token) return { data: false, error: null }
+      if (name === "complete_purchase_conversion_dispatch") rows.set(key, { ...row, status: "sent", token: null })
+      if (name === "fail_purchase_conversion_dispatch") rows.set(key, { ...row, status: "failed", token: null, error: args.p_error })
+      if (name === "mark_purchase_conversion_dispatch_unknown") rows.set(key, { ...row, status: "unknown", token: null, error: args.p_error })
+      return { data: true, error: null }
+    },
+  }
+}
+
+test("purchase conversion dispatch claims once across concurrent repeats and retries only failed delivery", async () => {
+  const purchase = { razorpay_payment_id: "dispatch_pay", razorpay_order_id: "dispatch_order", amount_paid_paise: 79900, currency: "INR", plan: "quarterly" }
+  const db = conversionOutboxDb()
+  const calls = { posthog: 0, meta: 0 }
+  let failPosthogOnce = true
+  const sendEvent = async ({ provider }) => {
+    calls[provider]++
+    await Promise.resolve()
+    if (provider === "posthog" && failPosthogOnce) {
+      failPosthogOnce = false
+      return { sent: false, provider, error: "temporary provider rejection", retryable: true }
+    }
+    return { sent: true, provider }
+  }
+  const options = { purchase, userId: "dispatch_user", paidAt: "2026-10-01T12:00:00Z", db, sendEvent }
+
+  await Promise.all([
+    dispatchPurchaseConversionEvents(options),
+    dispatchPurchaseConversionEvents(options),
+  ])
+  assert.equal(calls.posthog, 1)
+  assert.equal(calls.meta, 1)
+  assert.equal(db.rows.get("dispatch_pay:posthog").status, "failed")
+  assert.equal(db.rows.get("dispatch_pay:meta").status, "sent")
+
+  await dispatchPurchaseConversionEvents(options)
+  await dispatchPurchaseConversionEvents(options)
+  assert.equal(calls.posthog, 2, "explicitly failed PostHog delivery is retried once and then marked sent")
+  assert.equal(calls.meta, 1, "a successful Meta delivery is never sent again")
+  assert.equal(db.rows.get("dispatch_pay:posthog").status, "sent")
+  assert.equal(db.rows.get("dispatch_pay:posthog").attempts, 2)
+  assert.equal(db.rows.get("dispatch_pay:meta").attempts, 1)
 })
 
 test("failed or cancelled payments cannot reach purchase tracking; ROAS query joins first touch to provisioned payments", () => {

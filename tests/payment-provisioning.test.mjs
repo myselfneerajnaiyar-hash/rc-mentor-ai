@@ -11,6 +11,7 @@ const migration = await readFile(new URL("../supabase/migrations/202610040001_ra
 const safeAttemptYearMigration = await readFile(new URL("../supabase/migration_archive/202610040002_safe_attempt_year_provisioning.sql", import.meta.url), "utf8")
 const bootcampPurchaseMigration = await readFile(new URL("../supabase/migrations/202610080001_bootcamp_purchase_offer.sql", import.meta.url), "utf8")
 const bundleMigration = await readFile(new URL("../supabase/migrations/202610090002_bootcamp_platform_bundle.sql", import.meta.url), "utf8")
+const conversionDispatchMigration = await readFile(new URL("../supabase/migrations/202610110001_purchase_conversion_dispatch.sql", import.meta.url), "utf8")
 const callbackSource = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const webhookSource = await readFile(new URL("../app/api/razorpay/webhook/route.js", import.meta.url), "utf8")
 const processorSource = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
@@ -48,6 +49,7 @@ async function database() {
   await db.exec(safeAttemptYearMigration)
   await db.exec(bootcampPurchaseMigration)
   await db.exec(bundleMigration)
+  await db.exec(conversionDispatchMigration)
   return db
 }
 
@@ -475,5 +477,38 @@ test("reconciliation batch claims unpaid created orders for later webhook or pay
   const result = await db.query(`select * from public.claim_razorpay_reconciliation_batch(20)`)
   assert.equal(result.rows.length, 1)
   assert.equal(result.rows[0].razorpay_order_id, "order_7")
+  await db.close()
+})
+
+test("purchase conversion outbox atomically claims concurrent dispatches and retries only failed providers", async () => {
+  const db = await database()
+  await addPurchase(db, { userId: "00000000-0000-0000-0000-000000000040", orderId: "conversion_dispatch" })
+  await provision(db, { orderId: "conversion_dispatch", paymentId: "conversion_dispatch_pay" })
+
+  const claimArgs = (provider, token) => db.query(`select public.claim_purchase_conversion_dispatch(
+    'conversion_dispatch_pay',$1,$2,$3::uuid) as claimed`, [provider, `event:${provider}`, token])
+  const claims = await Promise.all([
+    claimArgs("posthog", "00000000-0000-0000-0000-000000000041"),
+    claimArgs("posthog", "00000000-0000-0000-0000-000000000042"),
+  ])
+  assert.deepEqual(claims.map(result => result.rows[0].claimed).sort(), [false, true])
+  const firstToken = claims[0].rows[0].claimed ? "00000000-0000-0000-0000-000000000041" : "00000000-0000-0000-0000-000000000042"
+  assert.equal((await db.query(`select public.complete_purchase_conversion_dispatch(
+    'conversion_dispatch_pay','posthog',$1::uuid) as completed`, [firstToken])).rows[0].completed, true)
+  assert.equal((await claimArgs("posthog", "00000000-0000-0000-0000-000000000043")).rows[0].claimed, false)
+
+  assert.equal((await claimArgs("meta", "00000000-0000-0000-0000-000000000044")).rows[0].claimed, true)
+  assert.equal((await db.query(`select public.fail_purchase_conversion_dispatch(
+    'conversion_dispatch_pay','meta','00000000-0000-0000-0000-000000000044'::uuid,'provider rejected request') as failed`)).rows[0].failed, true)
+  assert.equal((await claimArgs("meta", "00000000-0000-0000-0000-000000000045")).rows[0].claimed, true)
+  assert.equal((await db.query(`select public.complete_purchase_conversion_dispatch(
+    'conversion_dispatch_pay','meta','00000000-0000-0000-0000-000000000045'::uuid) as completed`)).rows[0].completed, true)
+
+  const status = await db.query(`select provider,status,attempts from public.razorpay_purchase_conversion_dispatches
+    where payment_id='conversion_dispatch_pay' order by provider`)
+  assert.deepEqual(status.rows, [
+    { provider: "meta", status: "sent", attempts: 2 },
+    { provider: "posthog", status: "sent", attempts: 1 },
+  ])
   await db.close()
 })
