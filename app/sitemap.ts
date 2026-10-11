@@ -11,6 +11,10 @@ export default function sitemap() {
       lastModified: new Date(),
     },
     {
+      url: `${baseUrl}/bootcamp-2026`,
+      lastModified: new Date(),
+    },
+    {
       url: `${baseUrl}/pricing`,
       lastModified: new Date(),
     },
