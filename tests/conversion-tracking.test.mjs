@@ -9,9 +9,12 @@ import {
 } from "../lib/analytics/conversionEvents.mjs"
 import {
   getPurchaseEventIdentity,
+  getMetaConfigurationError,
+  sendMetaSignup,
   sendPurchaseConversionEvents,
 } from "../lib/analytics/serverConversionEvents.mjs"
 import { dispatchPurchaseConversionEvents } from "../lib/analytics/purchaseConversionDispatch.mjs"
+import { dispatchSignupConversion } from "../lib/analytics/signupConversionDispatch.mjs"
 
 const paymentProcessor = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
 const verifyRoute = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
@@ -24,6 +27,9 @@ const welcomePage = await readFile(new URL("../app/welcome/page.jsx", import.met
 const loginPage = await readFile(new URL("../app/login/page.jsx", import.meta.url), "utf8")
 const reportQuery = await readFile(new URL("../supabase/queries/meta_roas_by_first_touch.sql", import.meta.url), "utf8")
 const conversionDispatchMigration = await readFile(new URL("../supabase/migrations/202610110001_purchase_conversion_dispatch.sql", import.meta.url), "utf8")
+const signupDispatchMigration = await readFile(new URL("../supabase/migrations/202610110002_signup_conversion_dispatch.sql", import.meta.url), "utf8")
+const signupApi = await readFile(new URL("../app/api/conversions/signup/route.js", import.meta.url), "utf8")
+const layout = await readFile(new URL("../app/layout.js", import.meta.url), "utf8")
 
 function memoryStorage() {
   const values = new Map()
@@ -52,6 +58,10 @@ test("new email signup fires Meta and PostHog once; repeated renders and existin
   assert.ok(signupPage.includes("captureSignupConversion({ userId: outcome.user.id"))
   assert.doesNotMatch(loginPage, /captureSignupConversion/)
   assert.ok(signupPage.includes('outcome.type === "existing_user"'))
+  assert.ok(welcomePage.includes('captureSignupConversion({ userId: user.id, method: "google"'))
+  assert.ok(layout.includes("process.env.NEXT_PUBLIC_META_PIXEL_ID"))
+  assert.doesNotMatch(layout, /1724851152297636/)
+  assert.ok(signupApi.includes("auth.admin.getUserById"))
 })
 
 test("Google signup conversion only recognizes a recent new Google identity; Google failures have their own event", () => {
@@ -136,12 +146,13 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
     NEXT_PUBLIC_POSTHOG_HOST: "https://eu.i.posthog.com",
     META_CONVERSIONS_API_ACCESS_TOKEN: "meta_test_token",
     META_GRAPH_API_VERSION: "v24.0",
-    META_PIXEL_ID: "pixel_123",
+    NEXT_PUBLIC_META_PIXEL_ID: "123456789012345",
+    META_PIXEL_ID: "123456789012345",
     NEXT_PUBLIC_SITE_URL: "https://app.example.test",
   }
   const fetchImpl = async (url, options) => {
     requests.push({ url: String(url), options, payload: JSON.parse(options.body) })
-    return { ok: true, status: 200 }
+    return { ok: true, status: 200, json: async () => ({ events_received: 1 }) }
   }
   const paidAt = "2026-10-01T12:00:00.000Z"
   const firstResult = await sendPurchaseConversionEvents({ purchase, profile, userId: "user-123", paidAt, env, fetchImpl })
@@ -162,14 +173,17 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   assert.equal(requests.filter(request => request.payload.event === "purchase_completed")[0].payload.uuid,
     requests.filter(request => request.payload.event === "purchase_completed")[1].payload.uuid)
 
-  assert.ok(metaRequest.url.startsWith("https://graph.facebook.com/v24.0/pixel_123/events?access_token="))
+  assert.ok(metaRequest.url.startsWith("https://graph.facebook.com/v24.0/123456789012345/events?access_token="))
   assert.equal(metaRequest.payload.data[0].event_name, "Purchase")
   assert.equal(metaRequest.payload.data[0].event_id, "purchase:pay_123")
   assert.equal(metaRequest.payload.data[0].custom_data.value, 1399.3)
+  assert.equal(metaRequest.payload.data[0].event_time, Math.floor(Date.parse(paidAt) / 1000))
+  assert.equal(metaRequest.payload.data[0].event_source_url, "https://app.example.test/payment-success")
   assert.equal(metaRequest.payload.data[0].custom_data.currency, "INR")
   assert.equal(metaRequest.payload.data[0].user_data.fbc, profile.signup_attribution_last_touch.fbc)
   assert.equal(metaRequest.payload.data[0].user_data.fbp, profile.signup_attribution_last_touch.fbp)
   assert.notEqual(metaRequest.payload.data[0].user_data.em[0], profile.email)
+  assert.equal(decodeURIComponent(metaRequest.url).includes("meta_test_token"), true)
 
   const eventIdentity = getPurchaseEventIdentity({ purchase, userId: "user-123" })
   assert.equal(eventIdentity.metaEventId, "purchase:pay_123")
@@ -181,6 +195,81 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   const provisionIndex = paymentProcessor.indexOf("await supabaseAdmin.rpc(provisionRpc")
   assert.ok(paymentProcessor.indexOf('paidPayment.status !== "captured"') < provisionIndex)
   assert.ok(provisionIndex < paymentProcessor.indexOf("await runPostProvisionEffects("))
+})
+
+test("Meta config is actionable and purchase CAPI treats rejected delivery as retryable and ambiguous delivery as unknown", async () => {
+  const missing = getMetaConfigurationError({})
+  assert.deepEqual(missing.missing, ["NEXT_PUBLIC_META_PIXEL_ID (numeric Meta Pixel ID)", "META_CONVERSIONS_API_ACCESS_TOKEN", "META_GRAPH_API_VERSION", "NEXT_PUBLIC_SITE_URL"])
+  assert.equal(getMetaConfigurationError({
+    NEXT_PUBLIC_META_PIXEL_ID: "123", META_PIXEL_ID: "456", META_CONVERSIONS_API_ACCESS_TOKEN: "secret",
+    META_GRAPH_API_VERSION: "v24.0", NEXT_PUBLIC_SITE_URL: "https://app.example.test",
+  }).code, "meta_pixel_id_mismatch")
+
+  const purchase = { razorpay_payment_id: "pay_fail", amount_paid_paise: 79900, currency: "INR", plan: "quarterly" }
+  const env = { NEXT_PUBLIC_META_PIXEL_ID: "123456789012345", META_PIXEL_ID: "123456789012345", META_CONVERSIONS_API_ACCESS_TOKEN: "secret", META_GRAPH_API_VERSION: "v24.0", NEXT_PUBLIC_SITE_URL: "https://app.example.test" }
+  const rejected = await sendPurchaseConversionEvents({
+    purchase, userId: "user", paidAt: "2026-10-01T12:00:00Z", env,
+    fetchImpl: async () => ({ ok: false, status: 429 }),
+  })
+  assert.equal(rejected.find(result => result.provider === "meta").retryable, true)
+  const unknown = await sendPurchaseConversionEvents({
+    purchase, userId: "user", paidAt: "2026-10-01T12:00:00Z", env,
+    fetchImpl: async () => ({ ok: false, status: 500 }),
+  })
+  assert.equal(unknown.find(result => result.provider === "meta").deliveryUnknown, true)
+  assert.equal(JSON.stringify(unknown).includes("secret"), false)
+})
+
+test("signup CAPI uses the browser CompleteRegistration event ID and retries only explicit failures", async () => {
+  const env = { NEXT_PUBLIC_META_PIXEL_ID: "123456789012345", META_PIXEL_ID: "123456789012345", META_CONVERSIONS_API_ACCESS_TOKEN: "secret", META_GRAPH_API_VERSION: "v24.0", NEXT_PUBLIC_SITE_URL: "https://app.example.test" }
+  const authUser = {
+    id: "11111111-1111-4111-8111-111111111111",
+    created_at: "2026-10-11T10:00:00.000Z",
+    email: "student@example.test",
+    user_metadata: { signup_attribution: { firstTouch: { fbc: "fb.1.1720000000000.click_1" }, lastTouch: { fbp: "fb.1.1720000000000.123" } } },
+  }
+  const eventCalls = []
+  const sendEvent = async args => {
+    if (args.validateOnly) return { sent: false }
+    eventCalls.push(args)
+    if (eventCalls.length === 1) return { sent: false, provider: "meta", retryable: true, error: "Meta Conversions API returned HTTP 429" }
+    return sendMetaSignup({ ...args, env, fetchImpl: async (url, options) => {
+      const event = JSON.parse(options.body).data[0]
+      assert.ok(String(url).startsWith("https://graph.facebook.com/v24.0/123456789012345/events?"))
+      assert.equal(event.event_name, "CompleteRegistration")
+      assert.equal(event.event_id, `signup:${authUser.id}`)
+      assert.equal(event.event_time, Math.floor(Date.parse(authUser.created_at) / 1000))
+      assert.equal(event.event_source_url, "https://app.example.test/signup")
+      assert.ok(event.user_data.em[0])
+      assert.equal(event.user_data.fbc, "fb.1.1720000000000.click_1")
+      assert.equal(event.user_data.fbp, "fb.1.1720000000000.123")
+      return { ok: true, status: 200, json: async () => ({ events_received: 1 }) }
+    } })
+  }
+  const rows = new Map()
+  const db = { async rpc(name, args) {
+    const current = rows.get(args.p_user_id) || { status: "pending", attempts: 0 }
+    if (name === "claim_signup_conversion_dispatch") {
+      if (!["pending", "failed"].includes(current.status)) return { data: false, error: null }
+      rows.set(args.p_user_id, { status: "processing", token: args.p_claim_token, attempts: current.attempts + 1 })
+      return { data: true, error: null }
+    }
+    if (current.status !== "processing" || current.token !== args.p_claim_token) return { data: false, error: null }
+    const nextStatus = name === "complete_signup_conversion_dispatch" ? "sent"
+      : name === "fail_signup_conversion_dispatch" ? "failed" : "unknown"
+    rows.set(args.p_user_id, { ...current, status: nextStatus, token: null })
+    return { data: true, error: null }
+  } }
+  const options = { userId: authUser.id, method: "email", authUser, profile: {}, db, env, sendEvent, createClaimToken: (() => { let n = 0; return () => `token-${++n}` })() }
+  assert.equal((await dispatchSignupConversion(options)).retryable, true)
+  assert.equal(rows.get(authUser.id).status, "failed")
+  assert.equal((await dispatchSignupConversion(options)).sent, true)
+  assert.equal(rows.get(authUser.id).status, "sent")
+  assert.equal((await dispatchSignupConversion(options)).skipped, "already_sent_or_in_progress")
+  assert.equal(eventCalls.length, 2)
+  assert.match(signupDispatchMigration, /status in \('pending', 'failed'\)/)
+  assert.match(signupDispatchMigration, /u.created_at >= now\(\) - interval '24 hours'/)
+  assert.ok(signupApi.includes("dispatchSignupConversion"))
 })
 
 function conversionOutboxDb() {

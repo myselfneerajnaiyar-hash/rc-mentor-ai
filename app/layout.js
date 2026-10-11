@@ -33,6 +33,10 @@ export const viewport = {
   initialScale: 1,
 };
 
+const metaPixelId = /^\d+$/.test(String(process.env.NEXT_PUBLIC_META_PIXEL_ID || ""))
+  ? process.env.NEXT_PUBLIC_META_PIXEL_ID
+  : null
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -51,7 +55,7 @@ export default function RootLayout({ children }) {
             gtag('config', 'AW-18259887177');
           `}
         </Script>
-        <Script id="meta-pixel" strategy="afterInteractive">
+        {metaPixelId && <Script id="meta-pixel" strategy="afterInteractive">
   {`
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -62,23 +66,23 @@ export default function RootLayout({ children }) {
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
 
-    fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID || "1724851152297636"}');
+    fbq('init', '${metaPixelId}');
     fbq('track', 'PageView');
   `}
-</Script>
+</Script>}
 
         <PostHogProvider />
         <Suspense fallback={null}><AttributionCapture /></Suspense>
         <TenantProvider><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
-        <noscript>
+        {metaPixelId && <noscript>
   <img
     height="1"
     width="1"
     style={{ display: "none" }}
-    src="https://www.facebook.com/tr?id=1724851152297636&ev=PageView&noscript=1"
+    src={`https://www.facebook.com/tr?id=${encodeURIComponent(metaPixelId)}&ev=PageView&noscript=1`}
     alt=""
   />
-</noscript>
+</noscript>}
       </body>
     </html>
   );
