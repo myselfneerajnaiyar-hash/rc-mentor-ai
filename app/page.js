@@ -730,7 +730,7 @@ const navItems = [
 
   
 
-  ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Premium", icon: Trophy }] : []),
+   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Pricing", icon: Trophy }] : []),
   { id: "profile", label: "Profile", icon: User },
 ];
 

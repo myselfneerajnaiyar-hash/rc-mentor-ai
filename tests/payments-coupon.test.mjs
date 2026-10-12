@@ -448,11 +448,17 @@ test("AUCTOR20 charges ₹639.20 on both ₹799 offers using server-calculated p
   }
 })
 
-test("pricing page supports validated coupon query prefill", async () => {
+test("pricing page prefills coupon without applying it until the user clicks Apply", async () => {
   const pricingSource = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
   assert.match(pricingSource, /searchParams\.get\("coupon"\)/)
-  assert.match(pricingSource, /applyCoupon\(couponFromUrl\)/)
+  assert.match(pricingSource, /useState\("AUCTOR20"\)/)
+  assert.match(pricingSource, /setCouponInput\(couponFromUrl\)/)
+  assert.doesNotMatch(pricingSource, /applyCoupon\(couponFromUrl\)/)
+  assert.match(pricingSource, /onClick=\{\(\) => applyCoupon\(couponInput\)\}/)
   assert.match(pricingSource, /couponCode=\{appliedCoupon\}/)
+  assert.match(pricingSource, /Referral Code \(Optional\)/)
+  assert.match(pricingSource, /\.from\("campus_ambassadors"\)/)
+  assert.doesNotMatch(pricingSource, /max-w-md mt-10 mx-auto mb-12/)
   assert.match(pricingSource, /45-Day VARC Boot Camp \+ 3 Months of Full Auctor Access/)
   assert.match(pricingSource, /Use AUCTOR20 for 20% off the ₹799 base price/)
   assert.match(pricingSource, /md:grid-cols-2/)

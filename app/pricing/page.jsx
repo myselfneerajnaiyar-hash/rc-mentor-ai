@@ -11,7 +11,7 @@ const [user, setUser] = useState(null)
 const [referralCode, setReferralCode] = useState("");
 const [discountApplied, setDiscountApplied] = useState(false);
 const [discountMessage, setDiscountMessage] = useState("");
-const [couponInput, setCouponInput] = useState("");
+const [couponInput, setCouponInput] = useState("AUCTOR20");
 const [appliedCoupon, setAppliedCoupon] = useState("");
 const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
 const [couponMessage, setCouponMessage] = useState("");
@@ -55,8 +55,7 @@ const applyCoupon = useCallback(async (value) => {
 useEffect(() => {
   if (!couponFromUrl) return
   setCouponInput(couponFromUrl)
-  applyCoupon(couponFromUrl)
-}, [couponFromUrl, applyCoupon])
+}, [couponFromUrl])
 
 const [isCatStudent, setIsCatStudent] = useState(false)
 const quarterlyDuePaise = discountApplied
@@ -120,57 +119,6 @@ structured training, AI mentorship, analytics, and unlimited practice.
 
 </section>
 
-<div className="max-w-md mt-10 mx-auto mb-12 rounded-2xl border border-slate-700 bg-slate-900/70 p-6">
-  <input
-    type="text"
-    placeholder="Referral Code (Optional)"
-    value={referralCode}
-    disabled={discountApplied || Boolean(appliedCoupon)}
-    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-    className="w-full rounded-xl bg-slate-800 border border-slate-600 px-4 py-3 text-white"
-  />
-
-  <Button
-  disabled={discountApplied || Boolean(appliedCoupon)}
-    className="w-full mt-3"
-    onClick={async () => {
-      const { data } = await supabase
-        .from("campus_ambassadors")
-        .select("referral_code")
-        .eq("referral_code", referralCode)
-        .eq("status", "active")
-        .maybeSingle();
-
-     if (!data) {
-  setDiscountApplied(false);
-  setDiscountMessage("❌ Invalid referral code");
-  return;
-}
-
-setDiscountApplied(true);
-setAppliedCoupon("");
-setAppliedCouponDiscount(0);
-setCouponInput("");
-setCouponMessage("");
-setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
-    }}
-  >
-    {discountApplied ? "✓ Referral Applied" : "Apply Referral"}
-  </Button>
-  {discountMessage && (
-  <div
-    className={`mt-4 rounded-xl p-4 text-center font-medium ${
-      discountApplied
-        ? "bg-green-500/15 border border-green-500 text-green-300"
-        : "bg-red-500/15 border border-red-500 text-red-300"
-    }`}
-  >
-    {discountMessage}
-  </div>
-)}
-  
-</div>
-
 <div className="max-w-md mx-auto mb-12 rounded-2xl border border-slate-700 bg-slate-900/70 p-6">
   <label className="mb-2 block text-sm font-semibold text-slate-200">Coupon Code</label>
   <div className="flex gap-2">
@@ -192,6 +140,50 @@ setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You save
       {couponMessage}
     </div>
   )}
+  <div className="mt-5 border-t border-slate-700 pt-4">
+    <label className="mb-2 block text-sm font-semibold text-slate-200">Referral Code (Optional)</label>
+    <div className="flex gap-2">
+      <input
+        type="text"
+        placeholder="Referral Code (Optional)"
+        value={referralCode}
+        disabled={discountApplied || Boolean(appliedCoupon)}
+        onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+        className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
+      />
+      <Button
+        disabled={discountApplied || Boolean(appliedCoupon)}
+        onClick={async () => {
+          const { data } = await supabase
+            .from("campus_ambassadors")
+            .select("referral_code")
+            .eq("referral_code", referralCode)
+            .eq("status", "active")
+            .maybeSingle();
+
+          if (!data) {
+            setDiscountApplied(false);
+            setDiscountMessage("❌ Invalid referral code");
+            return;
+          }
+
+          setDiscountApplied(true);
+          setAppliedCoupon("");
+          setAppliedCouponDiscount(0);
+          setCouponInput("");
+          setCouponMessage("");
+          setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
+        }}
+      >
+        {discountApplied ? "✓ Referral Applied" : "Apply Referral"}
+      </Button>
+    </div>
+    {discountMessage && (
+      <div className={`mt-4 rounded-xl border p-4 text-center font-medium ${discountApplied ? "border-green-500 bg-green-500/15 text-green-300" : "border-red-500 bg-red-500/15 text-red-300"}`}>
+        {discountMessage}
+      </div>
+    )}
+  </div>
 </div>
 
 

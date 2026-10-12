@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X } from "lucide-react"
+import { Menu, MessageCircle, X } from "lucide-react"
 
 export default function PreviewNavbar() {
 
@@ -65,34 +65,38 @@ export default function PreviewNavbar() {
 
 </div>
 
-{/* MOBILE MENU ICON */}
-
-<button
-  type="button"
-  onClick={() => setMenuOpen(!menuOpen)}
-  aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-  aria-expanded={menuOpen}
-  className="order-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 md:hidden"
->
-
-  {menuOpen ? (
-    <X size={20} className="text-white" />
-  ) : (
-    <Menu size={20} className="text-white" />
-  )}
-
-</button>
-
-          {/* LOGIN */}
-
-          {!hideLogin && (
-            <button
-              onClick={() => router.push("/login")}
-              className="ml-auto rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-5 sm:py-2.5"
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <a
+              href="https://wa.me/917975369704"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat with us on WhatsApp"
+              className="flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-2.5 text-sm font-medium text-emerald-200 transition hover:bg-emerald-500/20 sm:px-3"
+              title="Chat with us on WhatsApp"
             >
-              Login
+              <MessageCircle size={18} aria-hidden="true" />
+              <span className="hidden sm:inline">Chat with us on WhatsApp</span>
+            </a>
+
+            {!hideLogin && (
+              <button
+                onClick={() => router.push("/login")}
+                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-5 sm:py-2.5"
+              >
+                Login
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 md:hidden"
+            >
+              {menuOpen ? <X size={20} className="text-white" /> : <Menu size={20} className="text-white" />}
             </button>
-          )}
+          </div>
 
         </div>
 

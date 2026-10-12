@@ -5,6 +5,7 @@ export function startProductTour(){window.dispatchEvent(new Event('auctor:replay
 export function tourSteps(isCatStudent,brandName,mobile,capabilities={showDailyRC:isCatStudent,showCATSectionals:isCatStudent}){
  const steps=[{popover:{title:'Welcome to '+brandName,description:'Build your reading habit with daily practice. Let us show you where to begin.'}}];
  const add=(element,title,description)=>steps.push({element,popover:{title,description,side:'bottom',align:'center'}});
+ if(isCatStudent)add('#home-bootcamp-title','CAT VARC Boot Camp','Explore your guided 45-day Boot Camp. Your existing access and purchase options are shown on the card.');
  if(capabilities.showDailyRC)add('#daily-rc','Daily RC Challenge','Practise a fresh CAT passage and review your saved answers.');
  add('#daily-workout','Daily Workout','Train reading, vocabulary and speed together in one guided session.');
  add('#word-hunt','Word Hunt','Build vocabulary with a quick daily puzzle.');
