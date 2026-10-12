@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { attributionParams, readBrowserAttribution } from "@/lib/attribution.mjs"
 
@@ -8,11 +9,15 @@ export default function SubscribeButton({
   plan,
   label,
   user,
-  referralCode = "",
   couponCode = "",
   returnTo = "",
   variant = "primary",
 }) {
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [referralInput, setReferralInput] = useState("")
+  const [appliedReferralCode, setAppliedReferralCode] = useState("")
+  const [referralMessage, setReferralMessage] = useState("")
+  const [validatingReferral, setValidatingReferral] = useState(false)
 
   async function initializeRazorpay() {
 
@@ -41,7 +46,7 @@ export default function SubscribeButton({
   })
 }
 
-  async function startPayment() {
+  async function startPayment(referralCode = "") {
 
     try {
 
@@ -156,11 +161,66 @@ if (!razorpayLoaded) {
     }
   }
 
+  async function applyReferralCode() {
+    const normalizedCode = referralInput.trim().toUpperCase()
+    if (!normalizedCode) {
+      setReferralMessage("Enter a referral code to apply it.")
+      setAppliedReferralCode("")
+      return
+    }
+
+    setValidatingReferral(true)
+    setReferralMessage("")
+    try {
+      const { data, error } = await supabase
+        .from("campus_ambassadors")
+        .select("referral_code")
+        .eq("referral_code", normalizedCode)
+        .eq("status", "active")
+        .maybeSingle()
+
+      if (error || !data) {
+        setAppliedReferralCode("")
+        setReferralMessage("Invalid referral code.")
+        return
+      }
+
+      setAppliedReferralCode(data.referral_code)
+      setReferralInput(data.referral_code)
+      setReferralMessage("Referral code applied. The final price will be confirmed at checkout.")
+    } catch {
+      setAppliedReferralCode("")
+      setReferralMessage("Referral validation is temporarily unavailable. Please try again.")
+    } finally {
+      setValidatingReferral(false)
+    }
+  }
+
+  function openCheckout() {
+    if (!user?.id) {
+      alert("Please login first")
+      return
+    }
+    if (couponCode) {
+      startPayment()
+      return
+    }
+    setCheckoutOpen(true)
+  }
+
+  function continueToPayment() {
+    if (referralInput.trim() && !appliedReferralCode) {
+      setReferralMessage("Apply a valid referral code or clear the field to continue.")
+      return
+    }
+    setCheckoutOpen(false)
+    startPayment(appliedReferralCode)
+  }
+
   return (
     <>
-    
       <button
-        onClick={startPayment}
+        onClick={openCheckout}
         className={`w-full font-semibold py-4 text-lg rounded-xl transition shadow-lg hover:shadow-xl
         ${
          variant === "premium"
@@ -170,6 +230,52 @@ if (!razorpayLoaded) {
       >
         {label}
       </button>
+      {checkoutOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-4" role="presentation" onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setCheckoutOpen(false)
+        }}>
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="checkout-referral-title"
+            className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl"
+          >
+            <h2 id="checkout-referral-title" className="text-xl font-bold">Checkout</h2>
+            <p className="mt-2 text-sm text-slate-300">Add an optional referral code before continuing to secure payment.</p>
+            <label htmlFor="checkout-referral-code" className="mb-2 mt-5 block text-sm font-semibold text-slate-200">Referral Code (Optional)</label>
+            <div className="flex gap-2">
+              <input
+                id="checkout-referral-code"
+                type="text"
+                value={referralInput}
+                onChange={(event) => {
+                  setReferralInput(event.target.value.toUpperCase())
+                  setAppliedReferralCode("")
+                  setReferralMessage("")
+                }}
+                className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
+              />
+              <button
+                type="button"
+                onClick={applyReferralCode}
+                disabled={validatingReferral || !referralInput.trim()}
+                className="rounded-xl border border-slate-600 px-4 py-2 font-semibold disabled:opacity-50"
+              >
+                {validatingReferral ? "Checking…" : appliedReferralCode ? "Applied" : "Apply"}
+              </button>
+            </div>
+            {referralMessage && <p role="status" className="mt-3 text-sm text-slate-300">{referralMessage}</p>}
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row-reverse">
+              <button type="button" onClick={continueToPayment} disabled={validatingReferral} className="min-h-11 flex-1 rounded-xl bg-indigo-600 px-4 py-3 font-semibold text-white hover:bg-indigo-500 disabled:opacity-50">
+                Continue to secure payment
+              </button>
+              <button type="button" onClick={() => setCheckoutOpen(false)} className="min-h-11 rounded-xl border border-slate-600 px-4 py-3 font-semibold text-slate-200">
+                Cancel
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </>
   )
 }

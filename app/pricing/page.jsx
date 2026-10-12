@@ -2,15 +2,14 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import SubscribeButton from "@/components/SubscribeButton"
+import PreviewNavbar from "@/components/PreviewNavbar"
 import { useCallback, useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
 import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Pricing() {
 const [user, setUser] = useState(null)
-const [referralCode, setReferralCode] = useState("");
-const [discountApplied, setDiscountApplied] = useState(false);
-const [discountMessage, setDiscountMessage] = useState("");
+const [discountApplied] = useState(false);
 const [couponInput, setCouponInput] = useState("AUCTOR20");
 const [appliedCoupon, setAppliedCoupon] = useState("");
 const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
@@ -39,9 +38,6 @@ const applyCoupon = useCallback(async (value) => {
     setAppliedCoupon(result.code)
     setAppliedCouponDiscount(result.discountPercent)
     setCouponInput(result.code)
-    setDiscountApplied(false)
-    setReferralCode("")
-    setDiscountMessage("")
     setCouponMessage(`${result.code} applied — ${result.discountPercent}% discount`)
     return true
   } catch {
@@ -58,9 +54,7 @@ useEffect(() => {
 }, [couponFromUrl])
 
 const [isCatStudent, setIsCatStudent] = useState(false)
-const quarterlyDuePaise = discountApplied
-  ? 63920
-  : appliedCoupon
+const quarterlyDuePaise = appliedCoupon
     ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
     : 79900
 const bootcampCoupon = appliedCoupon === "AUCTOR20" ? appliedCoupon : ""
@@ -96,6 +90,7 @@ useEffect(() => {
 return (
 <>
 
+<PreviewNavbar />
 
 <main className="relative min-h-screen bg-[#0b0f2a] text-white overflow-hidden">
 
@@ -140,50 +135,6 @@ structured training, AI mentorship, analytics, and unlimited practice.
       {couponMessage}
     </div>
   )}
-  <div className="mt-5 border-t border-slate-700 pt-4">
-    <label className="mb-2 block text-sm font-semibold text-slate-200">Referral Code (Optional)</label>
-    <div className="flex gap-2">
-      <input
-        type="text"
-        placeholder="Referral Code (Optional)"
-        value={referralCode}
-        disabled={discountApplied || Boolean(appliedCoupon)}
-        onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-        className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
-      />
-      <Button
-        disabled={discountApplied || Boolean(appliedCoupon)}
-        onClick={async () => {
-          const { data } = await supabase
-            .from("campus_ambassadors")
-            .select("referral_code")
-            .eq("referral_code", referralCode)
-            .eq("status", "active")
-            .maybeSingle();
-
-          if (!data) {
-            setDiscountApplied(false);
-            setDiscountMessage("❌ Invalid referral code");
-            return;
-          }
-
-          setDiscountApplied(true);
-          setAppliedCoupon("");
-          setAppliedCouponDiscount(0);
-          setCouponInput("");
-          setCouponMessage("");
-          setDiscountMessage(`🎉 Referral ${referralCode} applied successfully! You saved 20% on all plans.`);
-        }}
-      >
-        {discountApplied ? "✓ Referral Applied" : "Apply Referral"}
-      </Button>
-    </div>
-    {discountMessage && (
-      <div className={`mt-4 rounded-xl border p-4 text-center font-medium ${discountApplied ? "border-green-500 bg-green-500/15 text-green-300" : "border-red-500 bg-red-500/15 text-red-300"}`}>
-        {discountMessage}
-      </div>
-    )}
-  </div>
 </div>
 
 
@@ -324,7 +275,6 @@ amount={discountApplied ? 639 : 799}
 plan="cat_test_series"
 label="Unlock Test Series"
 user={user}
-referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
 returnTo={returnTo}
 />
@@ -403,7 +353,6 @@ plan="half_yearly"
 label="Start 6 Month Plan"
 user={user}
 variant="premium"
-referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
 returnTo={returnTo}
 />
@@ -445,13 +394,11 @@ returnTo={returnTo}
 </ul>
 
 {appliedCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
-{discountApplied && <p className="mb-5 text-sm text-emerald-300">Verified referral price applied</p>}
 <SubscribeButton
 amount={quarterlyDuePaise / 100}
 plan="quarterly"
 label="Start 3 Month Plan"
 user={user}
-referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
 returnTo={returnTo}
 />
@@ -530,7 +477,6 @@ plan="yearly"
 label="Unlock Premium"
 user={user}
 variant="premium"
-referralCode={appliedCoupon ? "" : referralCode}
 couponCode={appliedCoupon}
 returnTo={returnTo}
 />
@@ -592,7 +538,6 @@ returnTo={returnTo}
   plan="monthly"
   label="Start Monthly Plan"
   user={user}
-  referralCode={appliedCoupon ? "" : referralCode}
   couponCode={appliedCoupon}
   returnTo={returnTo}
 />

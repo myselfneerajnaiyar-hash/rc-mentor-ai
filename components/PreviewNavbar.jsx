@@ -34,7 +34,7 @@ export default function PreviewNavbar() {
   className="h-9 w-9 shrink-0 object-contain rounded-xl bg-white/[0.03] p-1 sm:h-11 sm:w-11 sm:p-1.5"
 />
 
-  <div>
+  <div className="hidden min-[400px]:block">
 
     <h1 className="whitespace-nowrap text-lg font-bold tracking-tight text-white sm:text-2xl">
       Auctor RC
@@ -75,7 +75,8 @@ export default function PreviewNavbar() {
               title="Chat with us on WhatsApp"
             >
               <MessageCircle size={18} aria-hidden="true" />
-              <span className="hidden sm:inline">Chat with us on WhatsApp</span>
+              <span className="text-xs sm:hidden">Chat with us</span>
+              <span className="hidden text-sm sm:inline">Chat with us on WhatsApp</span>
             </a>
 
             {!hideLogin && (

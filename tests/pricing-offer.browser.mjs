@@ -20,11 +20,16 @@ try {
         body: JSON.stringify({ valid: true, code: "AUCTOR20", discountPercent: 20 }),
       })
     }
+    if (requestUrl.pathname === "/api/tenant-context") {
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ tenant: { kind: "public", hostname: "localhost" }, branding: {} }) })
+    }
     return requestUrl.origin === new URL(base).origin ? route.continue() : route.abort()
   })
   await page.goto(`${base}/pricing?offer=bootcamp&coupon=AUCTOR20&utm_source=qa&utm_campaign=offer-check`, { waitUntil: "networkidle" })
   const offer = page.getByRole("heading", { name: "45-Day VARC Boot Camp + 3 Months of Full Auctor Access" })
   await offer.waitFor({ state: "visible" })
+  assert.equal(await page.getByLabel("Referral Code (Optional)").count(), 0, "pricing has no referral input")
+  assert.equal(await page.getByText("Apply Referral", { exact: true }).count(), 0, "pricing has no referral action")
   assert.equal(await page.locator('input[placeholder="Enter coupon code"]').inputValue(), "AUCTOR20", "coupon query pre-fills the input")
   assert.equal(couponValidationCalls, 0, "coupon is not validated or applied before user action")
   assert.equal(await page.getByText(/AUCTOR20 applied/).count(), 0)
@@ -42,6 +47,7 @@ try {
   assert.equal(await offer.isVisible(), true)
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, "offer fits a 1440px desktop viewport")
   assert.equal(new URL(page.url()).searchParams.get("utm_campaign"), "offer-check", "campaign parameters remain on the pricing page")
+
   console.log("Pricing offer browser checks passed at 390px and 1440px.")
 } finally {
   await browser.close()

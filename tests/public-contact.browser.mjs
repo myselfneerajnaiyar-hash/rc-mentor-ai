@@ -15,6 +15,7 @@ try {
   await contact.waitFor({ state: "visible" })
   assert.equal(await contact.getAttribute("href"), "https://wa.me/917975369704")
   assert.equal(await contact.getAttribute("target"), "_blank")
+  assert.equal(await page.getByText("Chat with us", { exact: true }).isVisible(), true, "mobile header visibly labels the contact action")
 
   for (const width of [320, 375, 390, 1440]) {
     await page.setViewportSize({ width, height: 740 })
@@ -37,7 +38,16 @@ try {
     })
     assert.ok(fits.left >= 0 && fits.right <= width && fits.headerScrollWidth <= fits.headerWidth, `header fits ${width}px without horizontal overflow: ${JSON.stringify(fits)}`)
   }
-  console.log("Public WhatsApp header browser checks passed at 320px, 375px, 390px and 1440px.")
+
+  await page.goto(`${base}/pricing`, { waitUntil: "domcontentloaded" })
+  const pricingContact = page.getByRole("link", { name: "Chat with us on WhatsApp" })
+  await pricingContact.waitFor({ state: "visible" })
+  assert.equal(await pricingContact.getAttribute("href"), "https://wa.me/917975369704")
+  await page.setViewportSize({ width: 320, height: 740 })
+  assert.equal(await page.getByText("Chat with us", { exact: true }).isVisible(), true, "pricing mobile header visibly labels contact")
+  await page.setViewportSize({ width: 1440, height: 740 })
+  assert.equal(await page.getByText("Chat with us on WhatsApp", { exact: true }).isVisible(), true, "pricing desktop header shows full contact label")
+  console.log("Public WhatsApp header browser checks passed on preview and pricing at mobile and desktop widths.")
 } finally {
   await browser.close()
 }
