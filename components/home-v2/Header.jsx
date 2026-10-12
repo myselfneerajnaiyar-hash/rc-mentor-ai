@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import BirbalCoachCard from "@/components/BirbalCoachCard";
 import ProductTourButton from '@/components/ProductTourButton';
 import InboxHeaderLink from "./InboxHeaderLink";
+import WhatsAppContactLink from "@/components/WhatsAppContactLink";
 
 const statCards = [
   {
@@ -66,6 +67,7 @@ export default function Header({
     </h1>
 
    <div className="flex shrink-0 items-center gap-2">
+   <WhatsAppContactLink compactOnMobile />
    {user && <ProductTourButton/>}
    {user && <InboxHeaderLink count={inboxUnreadCount} />}
    </div>

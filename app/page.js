@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import ShadowHomeView from "@/components/home-v2/ShadowHomeView";
 import InboxHeaderLink from "@/components/home-v2/InboxHeaderLink";
+import WhatsAppContactLink from "@/components/WhatsAppContactLink";
 import MentorView from "../components/MentorView";
 import Navbar from "../components/Navbar";
 const RCView = dynamicImport(() => import("../components/RCView"), { loading: () => <p role="status">Opening your practice…</p> });
@@ -844,7 +845,7 @@ ${
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className={`root-content w-full px-4 md:px-8 ${view === "cat" ? "py-4 md:py-6" : "py-6 md:py-10"} ${view === "cat" ? "cat-arena-content" : ""}`}>
       <div className="w-full">
-       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div>{user && view !== "cat" && <div className="dashboard-header-actions ml-auto"><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></div>}</div>
+       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div><div className="dashboard-header-actions ml-auto flex items-center gap-2"><WhatsAppContactLink compactOnMobile />{user && view !== "cat" && <><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></>}</div></div>
        {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
