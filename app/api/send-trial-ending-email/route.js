@@ -1,4 +1,5 @@
 import { Resend } from "resend"
+import { AUCTOR20_PROMOTION_HTML } from "@/lib/email/promotion"
 
 const resend = new Resend(
   process.env.RESEND_API_KEY
@@ -91,7 +92,7 @@ export async function POST(req) {
           </div>
 
         </div>
-      `,
+      ` + AUCTOR20_PROMOTION_HTML,
     })
 
     return Response.json({
