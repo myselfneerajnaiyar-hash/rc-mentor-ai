@@ -45,7 +45,7 @@ test("new profile completion saves first and does not wait on notifications befo
 
 test("new signup saves its profile before dashboard navigation without waiting on welcome email", () => {
   const finishProfile = welcome.slice(welcome.indexOf("async function finishProfile"), welcome.indexOf("async function persistSignupAttribution"))
-  const insert = finishProfile.indexOf('.from("profiles")\n      .insert(')
+  const insert = finishProfile.search(/\.from\("profiles"\)\s*\.insert\(/)
   const refresh = finishProfile.indexOf("await refreshContext()")
   const email = finishProfile.indexOf('fetch("/api/send-welcome-email"')
   const dashboard = finishProfile.indexOf('router.push("/")')

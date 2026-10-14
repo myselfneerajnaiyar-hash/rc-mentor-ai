@@ -18,7 +18,7 @@ export default function PreviewNavbar() {
 
       {/* NAVBAR */}
 
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#081120]/95 backdrop-blur-xl">
+      <header style={{ top: "var(--auctor-ribbon-nav-offset, 0px)" }} className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#081120]/95 backdrop-blur-xl">
 
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 sm:h-20 sm:px-6">
 

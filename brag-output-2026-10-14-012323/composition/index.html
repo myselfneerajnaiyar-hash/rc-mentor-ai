@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Auctor CAT VARC Bootcamp — Don't Study. Train.</title>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #07111d; color: #f2efe7; }
+    body { font-family: Arial, Helvetica, sans-serif; }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: radial-gradient(ellipse 900px 1100px at 50% 43%, #102131 0%, #091522 54%, #07111d 100%); }
+    .scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; overflow: hidden; }
+    .serif { font-family: Georgia, 'Times New Roman', serif; }
+    .micro { color: #a9b6be; text-transform: uppercase; letter-spacing: .19em; font-size: 19px; font-weight: 700; }
+    .orange { color: #f5a549; }
+    .muted { color: #aebbc4; }
+    .rule { height: 1px; background: #f2efe722; }
+    .mark { width: 58px; height: 58px; border-radius: 15px; background: #02070c; display: grid; place-items: center; overflow: hidden; }
+    .mark img { display: block; width: 58px; height: 58px; object-fit: contain; }
+    .brand { display: flex; align-items: center; gap: 18px; font-size: 25px; font-weight: 700; letter-spacing: .08em; }
+    .sceneHead { position: absolute; top: 72px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; }
+    .caption { position: absolute; left: 82px; right: 82px; bottom: 105px; min-height: 96px; border-left: 3px solid #f5a549; padding: 14px 26px 14px 30px; color: #f2efe7; font-size: 27px; line-height: 1.38; letter-spacing: -.01em; }
+    .caption small { display: block; color: #a9b6be; font-size: 15px; line-height: 1.2; letter-spacing: .17em; text-transform: uppercase; margin-bottom: 9px; }
+    .screenFrame { position: absolute; left: 140px; top: 200px; width: 800px; height: 1422px; border: 1px solid #a9b6be50; border-radius: 36px; padding: 10px; background: #050a10; box-shadow: 0 38px 110px #0009; overflow: hidden; }
+    .screenFrame img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 27px; }
+    .screenShade { position: absolute; inset: 11px; border-radius: 26px; background: linear-gradient(180deg, #07111d22 0%, transparent 24%, transparent 70%, #07111d44 100%); pointer-events: none; }
+    .sectionTag { display: inline-flex; gap: 12px; align-items: center; border: 1px solid #f2efe730; border-radius: 999px; padding: 11px 16px; color: #d6ddd9; background: #07111dcc; font-size: 16px; letter-spacing: .14em; text-transform: uppercase; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #f5a549; }
+    #hook { padding: 0 82px; }
+    #hook .hookKicker { position: absolute; top: 360px; left: 84px; color: #aebbc4; font-size: 20px; letter-spacing: .22em; text-transform: uppercase; }
+    #hook h1 { position: absolute; top: 520px; left: 78px; right: 60px; margin: 0; font-size: 91px; line-height: 1.08; letter-spacing: -.055em; font-weight: 700; }
+    #hook h1 span { display: block; }
+    #hook h1 .line2 { color: #f5a549; font-size: 104px; }
+    #hook .hookIndex { position: absolute; top: 168px; left: 84px; color: #aebbc4; font-size: 15px; letter-spacing: .2em; }
+    #hook .verticalRule { position: absolute; top: 172px; left: 84px; width: 2px; height: 125px; background: #f5a549; }
+    #hook .caption { bottom: 280px; }
+    #pressure .sceneHead .headline { font-size: 31px; letter-spacing: .06em; font-weight: 700; }
+    #pressure .screenFrame { transform-origin: 50% 45%; }
+    #pressure .caption { bottom: 72px; font-size: 24px; }
+    #reveal .revealTitle { position: absolute; top: 105px; left: 80px; right: 80px; text-align: center; font-size: 41px; line-height: 1.14; letter-spacing: -.025em; }
+    #reveal .revealTitle small { display: block; margin-top: 15px; font: 700 18px Arial, sans-serif; color: #f5a549; letter-spacing: .19em; text-transform: uppercase; }
+    #reveal .planShot { position: absolute; top: 390px; left: 45px; width: 990px; height: 275px; object-fit: contain; border-radius: 24px; border: 1px solid #f2efe733; background: #0f1d2a; box-shadow: 0 28px 90px #0008; }
+    #reveal .planSub { position: absolute; top: 710px; left: 100px; right: 100px; text-align: center; font-size: 21px; line-height: 1.4; color: #aebbc4; }
+    #reveal .dayCount { position: absolute; top: 1010px; left: 105px; color: #f5a549; font: 700 220px/.9 Georgia, serif; letter-spacing: -.08em; }
+    #reveal .dayCount small { display: block; margin: 18px 0 0 17px; color: #aebbc4; font: 700 21px Arial, sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+    #reveal .dayNote { position: absolute; top: 1350px; left: 112px; width: 350px; color: #f2efe7; font: 28px/1.3 Georgia, serif; }
+    #reveal .missionFrame { position: absolute; top: 850px; right: 112px; width: 405px; height: 720px; padding: 8px; overflow: hidden; border: 1px solid #f2efe733; border-radius: 25px; background: #050a10; box-shadow: 0 28px 90px #0008; }
+    #reveal .missionFrame img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; }
+    #reveal .caption { bottom: 190px; }
+    #loop .sceneHead { top: 76px; }
+    #loop .screenFrame { top: 320px; left: 200px; width: 680px; height: 1210px; }
+    #loop .stepWord { position: absolute; left: 82px; top: 190px; z-index: 3; font: 700 68px Georgia, serif; color: #f5a549; letter-spacing: -.05em; text-shadow: 0 8px 32px #000; }
+    #loop .caption { bottom: 94px; font-size: 24px; }
+    #review .sceneHead { top: 86px; }
+    #review .reviewPanel { position: absolute; top: 235px; left: 205px; width: 670px; height: 1355px; overflow: hidden; border: 1px solid #f2efe733; border-radius: 28px; background: #0f1d2a; box-shadow: 0 36px 110px #0009; }
+    #review .reviewPanel img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    #review .caption { bottom: 102px; font-size: 25px; }
+    #scale .sceneHead { top: 100px; }
+    #scale .scaleTitle { position: absolute; top: 210px; left: 82px; font: 700 46px Georgia, serif; letter-spacing: -.02em; }
+    #scale .metricGrid { position: absolute; left: 82px; right: 82px; top: 450px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    #scale .metric { min-height: 290px; padding: 32px 30px; border-top: 2px solid #f5a549; background: linear-gradient(145deg,#132436,#0d1926); }
+    #scale .metric strong { display: block; font: 700 70px Georgia,serif; letter-spacing: -.06em; white-space: nowrap; }
+    #scale .metric span { display: block; margin-top: 17px; color: #b8c1c6; font-size: 21px; letter-spacing: .07em; line-height: 1.3; text-transform: uppercase; }
+    #scale .sourceNote { position: absolute; top: 1120px; left: 82px; right: 82px; color: #87969e; font-size: 17px; letter-spacing: .14em; text-transform: uppercase; }
+    #scale .caption { bottom: 115px; }
+    #final { background: radial-gradient(ellipse 900px 750px at 50% 38%,#142a3a 0%,#091522 66%,#07111d 100%); }
+    #final .brandEnd { position: absolute; top: 260px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 22px; }
+    #final .brandEnd .mark, #final .brandEnd .mark img { width: 74px; height: 74px; }
+    #final .brandEnd strong { font-size: 25px; letter-spacing: .18em; }
+    #final .finalLabel { position: absolute; top: 500px; left: 100px; right: 100px; text-align: center; color: #f5a549; font-size: 19px; font-weight: 700; letter-spacing: .25em; }
+    #final h2 { position: absolute; top: 600px; left: 80px; right: 80px; margin: 0; text-align: center; font: 700 72px/1.12 Georgia,serif; letter-spacing: -.045em; }
+    #final h2 span { display: block; }
+    #final .finalSub { position: absolute; top: 830px; left: 145px; right: 145px; text-align: center; color: #bdc7cb; font-size: 25px; line-height: 1.45; }
+    #final .finalCta { position: absolute; top: 1120px; left: 160px; width: 760px; height: 116px; display: flex; align-items: center; justify-content: center; gap: 22px; border-radius: 18px; background: #f5a549; color: #131922; font-size: 28px; font-weight: 800; letter-spacing: .08em; }
+    #final .finalUrl { position: absolute; top: 1280px; left: 100px; right: 100px; text-align: center; color: #dce2df; font-size: 23px; letter-spacing: .07em; }
+    #final .caption { bottom: 132px; font-size: 24px; }
+    .soundMark { position: absolute; bottom: 44px; right: 84px; color: #aebbc4; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <main data-hf-id="hf-bootfilm" id="root" data-composition-id="root" data-start="0" data-duration="40" data-width="1080" data-height="1920" data-fps="30">
+    <section data-hf-id="hf-hook" class="scene" id="hook">
+      <div class="verticalRule"></div><div class="hookIndex">FIELD NOTE / 01</div>
+      <div class="hookKicker">The CAT VARC problem</div>
+      <h1 class="serif"><span class="line1">YOU DON'T NEED</span><span class="line2">ANOTHER VARC<br>LECTURE.</span></h1>
+      <div class="caption"><small>NARRATION CAPTION</small>You don't need another VARC lecture.</div>
+      <div class="soundMark">Auctor Labs</div>
+    </section>
+
+    <section data-hf-id="hf-pressure" class="scene" id="pressure">
+      <header class="sceneHead"><span class="sectionTag"><i class="dot"></i>DAY 01 · LIVE PREVIEW</span><span class="micro">QUESTION / 01</span></header>
+      <div class="screenFrame"><img src="assets/screens/rc-pressure-screen.png" alt="Captured Auctor Bootcamp Day 1 RC passage and question"><div class="screenShade"></div></div>
+      <div class="caption"><small>NARRATION CAPTION</small>You need to know why you get questions wrong… and how to stop repeating the same mistakes.</div>
+    </section>
+
+    <section data-hf-id="hf-reveal" class="scene" id="reveal">
+      <div class="revealTitle serif">Meet Auctor's VARC Bootcamp.<small>45 days · guided training</small></div>
+      <img class="planShot" src="assets/screens/mission-plan-crop.png" alt="Captured five-step Auctor Bootcamp Day 1 workout plan"><p class="planSub">Warm-up · RC 1 · RC 2 · RC 3 · Verbal Ability<br>Birbal reviews your reasoning after every activity.</p>
+      <div class="dayCount">45<small>days</small></div><div class="dayNote">Guided CAT VARC practice.</div>
+      <div class="missionFrame"><img src="assets/screens/preview-mission-mobile.png" alt="Actual Day 1 Bootcamp mission screen from Auctor's public preview"></div>
+      <div class="caption"><small>NARRATION CAPTION</small>Meet Auctor's VARC Bootcamp. Forty-five days of guided training.</div>
+    </section>
+
+    <section data-hf-id="hf-loop" class="scene" id="loop">
+      <header class="sceneHead"><span class="sectionTag"><i class="dot"></i>THE DAILY LOOP</span><span class="micro">READ · REASON · REVIEW</span></header>
+      <div class="screenFrame"><img src="assets/screens/rc-training-screen.png" alt="Actual timed Day 1 reading-comprehension question"><div class="screenShade"></div></div>
+      <div class="stepWord serif" id="stepRead">READ.</div><div class="stepWord serif" id="stepDecide">DECIDE.</div><div class="stepWord serif" id="stepPractice">PRACTISE.</div><div class="stepWord serif" id="stepReview">REVIEW.</div>
+      <div class="caption"><small>NARRATION CAPTION</small>Real RC passages. Verbal Ability practice. Timed missions.</div>
+    </section>
+
+    <section data-hf-id="hf-review" class="scene" id="review">
+      <header class="sceneHead"><span class="sectionTag"><i class="dot"></i>THE REVIEW</span><span class="micro">ANSWER → EVIDENCE → REASONING</span></header>
+      <div class="reviewPanel"><img src="assets/screens/coach-feedback-panel.png" alt="Birbal's actual preview feedback explaining a selected answer and the supporting reasoning"></div>
+      <div class="caption"><small>NARRATION CAPTION</small>And Birbal — helping you understand your mistakes, not just your score.</div>
+    </section>
+
+    <section data-hf-id="hf-scale" class="scene" id="scale">
+      <header class="sceneHead"><span class="sectionTag"><i class="dot"></i>THE 45-DAY PLAN</span><span class="micro">CURRICULUM STRUCTURE</span></header>
+      <h2 class="scaleTitle serif">A little more deliberate, every day.</h2>
+      <div class="metricGrid">
+        <div class="metric"><strong class="count">45</strong><span>Training days</span></div>
+        <div class="metric"><strong class="count">135</strong><span>RC passages</span></div>
+        <div class="metric"><strong class="count">1,125</strong><span>Total questions</span></div>
+        <div class="metric"><strong class="count">360</strong><span>Verbal Ability questions</span></div>
+      </div>
+      <div class="sourceNote">Plan totals · not performance results</div>
+      <div class="caption"><small>NARRATION CAPTION</small>Track your performance. Recognise your patterns. Build better decisions, one attempt at a time.</div>
+    </section>
+
+    <section data-hf-id="hf-final" class="scene" id="final">
+      <div class="brandEnd"><span class="mark"><img src="assets/logo.png" alt=""></span><strong>AUCTOR LABS</strong></div>
+      <div class="finalLabel">CAT · VERBAL ABILITY</div>
+      <h2 class="serif"><span>STOP PREPARING</span><span class="orange">PASSIVELY.</span></h2>
+      <p class="finalSub">Start training for CAT VARC.<br>Join Auctor's VARC Bootcamp today.</p>
+      <div class="finalCta">START YOUR TRAINING <span>→</span></div>
+      <div class="finalUrl">rc.auctorlabs.in/bootcamp-2026</div>
+      <div class="caption"><small>NARRATION CAPTION</small>Stop preparing passively. Start training for CAT VARC. Join Auctor's VARC Bootcamp today.</div>
+    </section>
+
+    <audio data-hf-id="hf-score" id="music" data-start="0" data-duration="40" data-track-index="0" data-volume="1" data-fade-in="0.8" data-fade-out="1.5" src="assets/audio/original-score.wav"></audio>
+  </main>
+  <script>
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+    gsap.set('.scene', { autoAlpha: 0 });
+    gsap.set('#hook', { autoAlpha: 1 });
+    gsap.set('#hook .line2', { y: 26, autoAlpha: 0 });
+    gsap.set('#hook .caption', { y: 14, autoAlpha: 0 });
+    gsap.set('#pressure .screenFrame', { y: 52, scale: .97, autoAlpha: 0 });
+    gsap.set('#pressure .caption', { y: 20, autoAlpha: 0 });
+    gsap.set('#reveal .planShot, #reveal .planSub, #reveal .dayCount, #reveal .dayNote, #reveal .missionFrame, #reveal .caption', { y: 24, autoAlpha: 0 });
+    gsap.set('#loop .screenFrame, #loop .caption', { y: 22, autoAlpha: 0 });
+    gsap.set('#loop .stepWord', { y: 30, autoAlpha: 0 });
+    gsap.set('#review .reviewPanel, #review .caption', { y: 22, autoAlpha: 0 });
+    gsap.set('#scale .metric', { y: 32, autoAlpha: 0 });
+    gsap.set('#scale .caption', { y: 18, autoAlpha: 0 });
+    gsap.set('#final .brandEnd, #final .finalLabel, #final h2, #final .finalSub, #final .finalCta, #final .finalUrl, #final .caption', { y: 20, autoAlpha: 0 });
+
+    tl.to('#hook .line2', { y: 0, autoAlpha: 1, duration: .55 }, .52)
+      .to('#hook .caption', { y: 0, autoAlpha: 1, duration: .4 }, 1.45)
+      .to('#hook', { autoAlpha: 0, duration: .35 }, 3.75)
+      .to('#pressure', { autoAlpha: 1, duration: .25 }, 3.95)
+      .to('#pressure .screenFrame', { y: 0, scale: 1, autoAlpha: 1, duration: .52 }, 4.08)
+      .to('#pressure .caption', { y: 0, autoAlpha: 1, duration: .38 }, 4.72)
+      .to('#pressure .screenFrame', { scale: 1.015, duration: 4.5, ease: 'none' }, 4.65)
+      .to('#pressure', { autoAlpha: 0, duration: .32 }, 10.66)
+      .to('#reveal', { autoAlpha: 1, duration: .25 }, 10.86)
+      .fromTo('#reveal .revealTitle', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .42 }, 11.04)
+      .to('#reveal .planShot', { y: 0, autoAlpha: 1, duration: .48 }, 11.58)
+      .to('#reveal .planSub', { y: 0, autoAlpha: 1, duration: .4 }, 12.06)
+      .to('#reveal .dayCount, #reveal .dayNote', { y: 0, autoAlpha: 1, duration: .42, stagger: .12 }, 12.15)
+      .to('#reveal .missionFrame', { y: 0, autoAlpha: 1, duration: .48 }, 12.28)
+      .to('#reveal .caption', { y: 0, autoAlpha: 1, duration: .4 }, 12.44)
+      .to('#reveal .planShot', { scale: 1.018, duration: 2.5, ease: 'none' }, 12.5)
+      .to('#reveal', { autoAlpha: 0, duration: .32 }, 14.66)
+      .to('#loop', { autoAlpha: 1, duration: .25 }, 14.85)
+      .to('#loop .screenFrame', { y: 0, autoAlpha: 1, duration: .4 }, 15.02)
+      .to('#loop .caption', { y: 0, autoAlpha: 1, duration: .4 }, 15.42)
+      .to('#stepRead', { y: 0, autoAlpha: 1, duration: .28 }, 15.65)
+      .to('#stepRead', { autoAlpha: 0, duration: .2 }, 16.75)
+      .to('#stepDecide', { y: 0, autoAlpha: 1, duration: .28 }, 16.98)
+      .to('#stepDecide', { autoAlpha: 0, duration: .2 }, 18.1)
+      .to('#stepPractice', { y: 0, autoAlpha: 1, duration: .28 }, 18.33)
+      .to('#stepPractice', { autoAlpha: 0, duration: .2 }, 19.35)
+      .to('#stepReview', { y: 0, autoAlpha: 1, duration: .28 }, 19.58)
+      .to('#loop', { autoAlpha: 0, duration: .32 }, 21.15)
+      .to('#review', { autoAlpha: 1, duration: .25 }, 21.34)
+      .to('#review .reviewPanel', { y: 0, autoAlpha: 1, duration: .5 }, 21.48)
+      .to('#review .caption', { y: 0, autoAlpha: 1, duration: .4 }, 22.1)
+      .to('#review', { autoAlpha: 0, duration: .32 }, 26.7)
+      .to('#scale', { autoAlpha: 1, duration: .25 }, 26.88)
+      .fromTo('#scale .scaleTitle', { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .4 }, 27.05)
+      .to('#scale .metric', { y: 0, autoAlpha: 1, duration: .38, stagger: .24 }, 27.45)
+      .to('#scale .caption', { y: 0, autoAlpha: 1, duration: .38 }, 28.05)
+      .to('#scale', { autoAlpha: 0, duration: .32 }, 31.7)
+      .to('#final', { autoAlpha: 1, duration: .3 }, 31.9)
+      .to('#final .brandEnd', { y: 0, autoAlpha: 1, duration: .4 }, 32.12)
+      .to('#final .finalLabel', { y: 0, autoAlpha: 1, duration: .35 }, 32.42)
+      .to('#final h2', { y: 0, autoAlpha: 1, duration: .55 }, 32.72)
+      .to('#final .finalSub', { y: 0, autoAlpha: 1, duration: .4 }, 33.34)
+      .to('#final .caption', { y: 0, autoAlpha: 1, duration: .4 }, 33.78)
+      .to('#final .finalCta', { y: 0, autoAlpha: 1, duration: .45 }, 35.6)
+      .to('#final .finalUrl', { y: 0, autoAlpha: 1, duration: .35 }, 36.15);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines.root = tl;
+    window.renderFrame = time => tl.time(time, true);
+  </script>
+</body>
+</html>

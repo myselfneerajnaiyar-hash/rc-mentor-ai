@@ -127,15 +127,21 @@ async function checkUser() {
 
     if (profile) await persistSignupAttribution(user)
 
-    posthog.identify(user.id, {
-      email: user.email,
-      name: profile?.name || formatted,
-    })
+    const inlinePreviewSignup = searchParams.get("signup_surface") === "preview_ad_inline"
+    if (inlinePreviewSignup) {
+      posthog.identify(user.id)
+    } else {
+      posthog.identify(user.id, {
+        email: user.email,
+        name: profile?.name || formatted,
+      })
+    }
 
     if (searchParams.get("oauth") === "google"
       && searchParams.get("flow") === "signup"
       && isNewGoogleSignup(user)) {
-      captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq })
+      const signupSurface = inlinePreviewSignup ? "preview_ad_inline" : undefined
+      captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq, surface: signupSurface, placement: signupSurface ? "google_oauth_callback" : undefined })
     }
 
     if (profile?.profile_completed && next === "/inbox") {
@@ -412,6 +418,7 @@ async function persistSignupAttribution(user) {
     <p className={styles["welcome-subtitle"]}>
       Get daily RC reminders on WhatsApp 📱
     </p>
+    <p className={styles["welcome-subtitle"]}>Enter your valid 10-digit mobile number to complete your profile.</p>
 
     <input
       type="tel"

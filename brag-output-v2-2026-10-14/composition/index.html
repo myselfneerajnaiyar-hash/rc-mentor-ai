@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Auctor VARC Bootcamp — motion composition v2</title>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1080px; height: 1920px; margin: 0; overflow: hidden; background: #06101d; }
+    body { color: #f5f4f1; font-family: Arial, Helvetica, sans-serif; }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; isolation: isolate; background: transparent; }
+    .base { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 90% 48% at 50% 45%, #101b35 0%, #091320 60%, #050b14 100%); }
+    .grid { position: absolute; inset: 0; z-index: 1; opacity: .18; background-image: linear-gradient(#879fc20c 1px, transparent 1px), linear-gradient(90deg, #879fc20c 1px, transparent 1px); background-size: 76px 76px; mask-image: linear-gradient(transparent, #000 12%, #000 86%, transparent); }
+    .glow { position: absolute; z-index: 1; width: 920px; height: 920px; border-radius: 50%; filter: blur(120px); opacity: .32; pointer-events: none; }
+    #glowA { top: 260px; left: -520px; background: #244de8; }
+    #glowB { top: 900px; right: -600px; background: #f17e31; opacity: .12; }
+    .topLine { position: absolute; z-index: 3; top: 0; left: 0; height: 8px; width: 1080px; background: linear-gradient(90deg,#344fff,#6e78ff 40%,#fa9a42 74%,#f6bd72); transform: scaleX(0); transform-origin: left; }
+    .scene { position: absolute; z-index: 2; inset: 0; overflow: hidden; visibility: hidden; }
+    .eyebrow { position: absolute; top: 86px; left: 78px; display: flex; align-items: center; gap: 15px; color: #aebbd1; font-size: 18px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .eyebrow:before { content: ''; display: block; width: 34px; height: 3px; background: #f79b4e; box-shadow: 0 0 18px #f79b4e99; }
+    .index { position: absolute; top: 87px; right: 80px; color: #71829a; font-size: 15px; font-weight: 700; letter-spacing: .18em; }
+    .serif { font-family: Georgia, 'Times New Roman', serif; }
+    .sans { font-family: Arial, Helvetica, sans-serif; }
+    .orange { color: #ffa34d; }
+    .blue { color: #94a7ff; }
+    .muted { color: #aebbd1; }
+    .tag { display: inline-flex; align-items: center; gap: 10px; padding: 10px 15px; border: 1px solid #94a7ff52; border-radius: 999px; background: #0c1830d9; color: #c7d0f5; font-size: 16px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .tag i { display: block; width: 8px; height: 8px; border-radius: 50%; background: #ff9c48; box-shadow: 0 0 16px #ff9c48; }
+    .micro { color: #71829a; font-size: 14px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .screenFrame { position: absolute; overflow: hidden; border: 1px solid #8494ae55; border-radius: 32px; background: #08111e; box-shadow: 0 38px 110px #000b, 0 0 0 9px #ffffff08, 0 0 54px #556dff30; transform-style: preserve-3d; }
+    .screenFrame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .screenFrame:after { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(120deg,#ffffff12,transparent 24%,transparent 74%,#ff9b3a0c); }
+    .corner { position: absolute; width: 50px; height: 50px; border-color: #ffa34d; border-style: solid; filter: drop-shadow(0 0 10px #ff9d4b88); }
+    .corner.tl { top: 0; left: 0; border-width: 3px 0 0 3px; border-radius: 12px 0 0; }
+    .corner.br { right: 0; bottom: 0; border-width: 0 3px 3px 0; border-radius: 0 0 12px; }
+    .captionBar { position: absolute; left: 78px; bottom: 92px; display: flex; align-items: center; gap: 16px; color: #bdc6d6; font-size: 17px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .captionBar:before { content: ''; width: 36px; height: 2px; background: #ffa34d; }
+    .captionBar b { color: #fff; }
+
+    /* 01 — Hook: large words, with a real question interface anchoring the frame. */
+    #hook .hookTitle { position: absolute; top: 270px; left: 74px; right: 54px; font: 800 100px/1.2 Arial, sans-serif; letter-spacing: -.065em; }
+    #hook .hookTitle span { display: block; overflow: hidden; }
+    #hook .hookTitle .line2 { color: #ffa34d; }
+    #hook .hookAside { position: absolute; top: 748px; left: 84px; width: 420px; color: #b8c3d4; font: 25px/1.38 Georgia, serif; }
+    #hook .hookAside strong { color: #fff; }
+    #hook .hookCard { top: 1160px; left: 90px; width: 900px; height: 535px; border-color: #f9a2538a; }
+    #hook .hookCard img { object-fit: cover; object-position: center; }
+    #hook .answerChip { position: absolute; top: 1080px; right: 95px; padding: 17px 24px; border: 1px solid #fda050; border-radius: 17px; background: #141c2df2; color: #fff; font: 700 25px Arial,sans-serif; box-shadow: 0 12px 46px #0009,0 0 24px #f49a4d55; }
+    #hook .answerChip b { color: #ffa34d; }
+
+    /* 02 — A close, readable RC question; the moving scan is decorative and never edits the source screen. */
+    #question .sceneTitle { position: absolute; top: 178px; left: 80px; right: 80px; font: 700 50px/1.08 Georgia,serif; letter-spacing: -.035em; }
+    #question .sceneTitle em { color: #ffa34d; font-style: normal; }
+    #question .questionFrame { top: 385px; left: 105px; width: 870px; height: 1370px; }
+    #question .questionFrame img { object-fit: cover; object-position: top center; }
+    #question .scan { position: absolute; left: 0; right: 0; top: 45%; height: 3px; background: linear-gradient(90deg,transparent,#ffa34d,#f3c37f,transparent); box-shadow: 0 0 22px #ff9a42; }
+    #question .scan:after { content: ''; position: absolute; left: 10%; right: 10%; top: -28px; height: 58px; background: linear-gradient(180deg,transparent,#ff9a4210,transparent); }
+    #question .callout { position: absolute; right: 44px; top: 890px; transform: rotate(90deg); transform-origin: right top; color: #ffb064; font-size: 15px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+
+    /* 03 — Actual selected/answer review state from the public product preview. */
+    #choice .choiceTitle { position: absolute; top: 165px; left: 78px; right: 78px; font: 700 53px/1.07 Georgia,serif; letter-spacing: -.04em; }
+    #choice .choiceTitle span { color: #ffa34d; }
+    #choice .choiceFrame { top: 390px; left: 104px; width: 872px; height: 1320px; }
+    #choice .choiceFrame img { object-fit: cover; object-position: top center; }
+    #choice .choiceMarker { position: absolute; top: 1110px; left: 70px; width: 110px; height: 110px; display: grid; place-items: center; border: 2px solid #ff9f49; border-radius: 50%; background: #0c1424; color: #ffad60; font: 700 56px Arial,sans-serif; box-shadow: 0 0 0 13px #ff9f4918,0 14px 40px #0008; }
+    #choice .choiceNote { position: absolute; top: 1260px; left: 77px; width: 300px; color: #d9dfeb; font-size: 18px; line-height: 1.35; }
+    #choice .choiceNote strong { display: block; margin-bottom: 8px; color: #ffa34d; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; }
+
+    /* 04 — The real mission screen, revealed against verified curriculum counts. */
+    #plan .planTitle { position: absolute; top: 176px; left: 77px; width: 575px; font: 700 75px/.99 Georgia,serif; letter-spacing: -.055em; }
+    #plan .planTitle b { display: block; color: #ffa34d; font: 800 180px/.86 Arial,sans-serif; letter-spacing: -.09em; }
+    #plan .planSub { position: absolute; top: 548px; left: 86px; width: 420px; color: #c1cad8; font-size: 23px; line-height: 1.38; }
+    #plan .planStats { position: absolute; top: 830px; left: 86px; width: 420px; display: grid; gap: 18px; }
+    #plan .planStat { display: flex; align-items: center; gap: 16px; color: #e2e7ef; font-size: 18px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+    #plan .planStat b { display: grid; place-items: center; width: 48px; height: 48px; flex: 0 0 48px; border: 1px solid #6e7fff88; border-radius: 50%; color: #a8b4ff; font-size: 21px; }
+    #plan .missionFrame { top: 500px; right: 66px; width: 485px; height: 864px; border-radius: 35px; }
+    #plan .missionFrame img { object-fit: cover; object-position: top center; }
+    #plan .planFoot { position: absolute; left: 84px; bottom: 212px; color: #7f91a9; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; }
+
+    /* 05 — Read / Decide / Review sequence over authentic screens. */
+    #loop .loopTitle { position: absolute; top: 160px; left: 78px; right: 78px; font: 700 65px/1.02 Georgia,serif; letter-spacing: -.05em; }
+    #loop .loopTitle span { color: #99a9ff; }
+    #loop .loopFrameA { top: 450px; left: 45px; width: 635px; height: 1128px; transform: rotate(-4deg); }
+    #loop .loopFrameB { top: 605px; right: 45px; width: 635px; height: 1128px; transform: rotate(4deg); border-color: #ffa34d88; }
+    #loop .loopFrameB img { object-position: top; }
+    #loop .verb { position: absolute; top: 938px; left: 105px; padding: 12px 19px; border: 1px solid #ff9c48aa; border-radius: 12px; background: #081321e8; color: #fff; font: 800 48px/.95 Arial,sans-serif; letter-spacing: -.03em; box-shadow: 0 12px 38px #0008; }
+    #loop .verbReview { top: 1060px; left: auto; right: 95px; color: #ffae61; }
+    #loop .loopFoot { position: absolute; bottom: 140px; left: 80px; right: 80px; display: flex; justify-content: space-between; color: #b2bdd0; font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    #loop .loopFoot b { color: #ffa34d; }
+
+    /* 06 — Birbal coaching close-up, taken from the actual review panel. */
+    #birbal .birbalTitle { position: absolute; top: 155px; left: 80px; right: 80px; font: 700 58px/1.05 Georgia,serif; letter-spacing: -.045em; }
+    #birbal .birbalTitle em { color: #ffa34d; font-style: normal; }
+    #birbal .birbalFrame { top: 390px; left: 120px; width: 840px; height: 1165px; }
+    #birbal .birbalFrame img { object-fit: cover; object-position: center top; }
+    #birbal .reasonLine { position: absolute; left: 94px; right: 94px; bottom: 175px; display: flex; align-items: center; gap: 19px; color: #d5dcea; font-size: 19px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    #birbal .reasonLine span { width: 46px; height: 2px; background: #ffa34d; box-shadow: 0 0 15px #ff9e4c; }
+
+    /* 07 — Structure totals, explicitly curriculum counts rather than results. */
+    #structure .structureTitle { position: absolute; top: 170px; left: 80px; right: 80px; font: 700 64px/1.02 Georgia,serif; letter-spacing: -.045em; }
+    #structure .structureTitle span { color: #ffa34d; }
+    #structure .structureCard { position: absolute; top: 480px; left: 78px; right: 78px; padding: 48px 45px 40px; border: 1px solid #8999ff65; border-radius: 28px; background: linear-gradient(145deg,#111d35ed,#091420f5); box-shadow: 0 40px 100px #0008,0 0 45px #4058ff26; }
+    #structure .structureHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 52px; color: #9eacc0; font-size: 15px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    #structure .structureHeader img { width: 160px; height: auto; object-fit: contain; }
+    #structure .big45 { display: flex; align-items: baseline; gap: 17px; margin-bottom: 48px; color: #fff; font: 800 220px/.8 Arial,sans-serif; letter-spacing: -.095em; }
+    #structure .big45 small { color: #ffa34d; font-size: 43px; letter-spacing: .02em; text-transform: uppercase; }
+    #structure .statRow { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    #structure .statTile { min-height: 170px; padding: 26px 25px; border: 1px solid #ffffff1a; border-radius: 18px; background: #ffffff06; }
+    #structure .statTile strong { display: block; color: #9eacff; font: 800 79px/.9 Arial,sans-serif; letter-spacing: -.07em; }
+    #structure .statTile span { display: block; margin-top: 18px; color: #bcc7d8; font-size: 17px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    #structure .structureNote { position: absolute; top: 1438px; left: 80px; right: 80px; color: #7e8da4; font-size: 14px; letter-spacing: .15em; text-align: center; text-transform: uppercase; }
+    #structure .structureCaption { position: absolute; bottom: 154px; left: 80px; right: 80px; color: #e8e8e6; font-size: 28px; font-weight: 700; text-align: center; }
+
+    /* 08 — CTA: compact, direct, and aligned with the real public landing page. */
+    #end .endLogo { position: absolute; top: 310px; left: 390px; width: 300px; height: 300px; object-fit: contain; filter: drop-shadow(0 0 38px #5269ff55); }
+    #end .endEyebrow { position: absolute; top: 715px; left: 80px; right: 80px; color: #aebbd1; font-size: 20px; font-weight: 700; letter-spacing: .24em; text-align: center; text-transform: uppercase; }
+    #end h2 { position: absolute; top: 815px; left: 70px; right: 70px; margin: 0; color: #f5f4f1; font: 700 92px/.97 Georgia,serif; letter-spacing: -.055em; text-align: center; }
+    #end h2 span { color: #ffa34d; }
+    #end .endSub { position: absolute; top: 1090px; left: 160px; right: 160px; color: #bcc7d8; font-size: 24px; line-height: 1.4; text-align: center; }
+    #end .endCta { position: absolute; top: 1270px; left: 200px; width: 680px; min-height: 96px; display: flex; align-items: center; justify-content: center; gap: 20px; border-radius: 18px; background: linear-gradient(100deg,#ff9b48,#ffc16f); color: #10172a; font-size: 23px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; box-shadow: 0 22px 70px #ff9f4933; }
+    #end .endUrl { position: absolute; top: 1437px; left: 120px; right: 120px; color: #d8deea; font-size: 20px; font-weight: 700; letter-spacing: .1em; text-align: center; }
+    #end .endFooter { position: absolute; top: 1665px; left: 80px; right: 80px; display: flex; justify-content: space-between; align-items: center; color: #8291a8; font-size: 15px; letter-spacing: .17em; text-transform: uppercase; }
+    #end .endFooter b { color: #f5f4f1; letter-spacing: .08em; }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main id="root" data-hf-id="hf-bootcamp-v2" data-composition-id="root" data-start="0" data-duration="36" data-width="1080" data-height="1920" data-fps="30">
+    <div class="base"></div><div class="grid"></div><div class="glow" id="glowA" data-layout-allow-overflow></div><div class="glow" id="glowB" data-layout-allow-overflow></div><div class="topLine" id="topLine"></div>
+    <section class="scene" id="hook" data-hf-id="hf-hook">
+      <div class="eyebrow">CAT VARC · THE LAST TWO</div><div class="index">01 / 08</div>
+      <h1 class="hookTitle"><span class="line1">TWO OPTIONS.</span><span class="line2">ONE NEEDS</span><span class="line3">EVIDENCE.</span></h1>
+      <p class="hookAside"><strong>Close is not the same as correct.</strong><br>Train the reasoning behind your choice.</p>
+      <div class="answerChip">CHOICE <b>A or C?</b></div>
+      <div class="screenFrame hookCard"><img src="assets/screens/answer-selection.jpg" alt="Actual Auctor answer-review screen showing selected option A and the correct option C"><i class="corner tl"></i><i class="corner br"></i></div>
+      <div class="captionBar"><b>Read the evidence.</b> Then decide.</div>
+    </section>
+
+    <section class="scene" id="question" data-hf-id="hf-question">
+      <div class="eyebrow">DAY 01 · RC PRACTICE</div><div class="index">02 / 08</div>
+      <h2 class="sceneTitle serif">Read the claim.<br><em>Check the evidence.</em></h2>
+      <div class="screenFrame questionFrame"><img src="assets/screens/rc-question.png" alt="Actual Auctor Bootcamp Day 1 reading comprehension passage and question"><i class="corner tl"></i><i class="corner br"></i><div class="scan" data-layout-allow-overflow></div></div>
+      <div class="callout">A real Day 1 practice screen</div>
+      <div class="captionBar"><b>Passage → question</b> Move with intent.</div>
+    </section>
+
+    <section class="scene" id="choice" data-hf-id="hf-choice">
+      <div class="eyebrow">ANSWER REVIEW</div><div class="index">03 / 08</div>
+      <h2 class="choiceTitle serif">See the choice.<br><span>See why it fails.</span></h2>
+      <div class="screenFrame choiceFrame"><img src="assets/screens/answer-review-crop.jpg" alt="Actual answer review, with the selected option and correct option explained"><i class="corner tl"></i><i class="corner br"></i></div>
+      <div class="choiceMarker">A</div><div class="choiceNote"><strong>Your selected option</strong>Shown as part of the actual review state.</div>
+      <div class="captionBar"><b>Choice.</b> Evidence. Explanation.</div>
+    </section>
+
+    <section class="scene" id="plan" data-hf-id="hf-plan">
+      <div class="eyebrow">A CLEAR DAILY STRUCTURE</div><div class="index">04 / 08</div>
+      <h2 class="planTitle serif">A plan for<br><b>45</b>days.</h2>
+      <p class="planSub">A guided CAT VARC routine with a clear next step each day.</p>
+      <div class="planStats"><div class="planStat"><b>03</b> RC passages every day</div><div class="planStat"><b>25</b> questions every day</div></div>
+      <div class="screenFrame missionFrame"><img src="assets/screens/mission.png" alt="Actual Day 1 mission screen showing the Bootcamp activity sequence"><i class="corner tl"></i><i class="corner br"></i></div>
+      <div class="planFoot">Warm-up · RC 1 · RC 2 · RC 3 · Verbal Ability</div>
+      <div class="captionBar"><b>Day 1 is free to try.</b></div>
+    </section>
+
+    <section class="scene" id="loop" data-hf-id="hf-loop">
+      <div class="eyebrow">THE PRACTICE LOOP</div><div class="index">05 / 08</div>
+      <h2 class="loopTitle serif">Practice the step<br>that changes the <span>answer.</span></h2>
+      <div class="screenFrame loopFrameA"><img src="assets/screens/rc-training.png" alt="Actual timed reading-comprehension question from the Bootcamp preview"></div>
+      <div class="screenFrame loopFrameB"><img src="assets/screens/answer-review-loop.jpg" alt="Actual answer review showing the question, selected answer, correct answer and explanation"></div>
+      <div class="verb verbRead">READ.</div><div class="verb verbReview">REVIEW.</div>
+      <div class="loopFoot"><span>PASSAGE</span><b>→</b><span>DECISION</span><b>→</b><span>REASONING</span></div>
+    </section>
+
+    <section class="scene" id="birbal" data-hf-id="hf-birbal">
+      <div class="eyebrow">MEET YOUR VARC TRAINER</div><div class="index">06 / 08</div>
+      <h2 class="birbalTitle serif">Birbal shows<br><em>why it tempted you.</em></h2>
+      <div class="screenFrame birbalFrame"><img src="assets/screens/birbal-panel.png" alt="Actual Birbal feedback explaining why an answer was tempting and where its inference fails"><i class="corner tl"></i><i class="corner br"></i></div>
+      <div class="reasonLine"><span></span>Why it tempted you · Why it fails</div>
+    </section>
+
+    <section class="scene" id="structure" data-hf-id="hf-structure">
+      <div class="eyebrow">THE 45-DAY CURRICULUM</div><div class="index">07 / 08</div>
+      <h2 class="structureTitle serif">Built around <span>practice.</span><br>Clear by design.</h2>
+      <div class="structureCard"><div class="structureHeader"><img src="assets/logo-structure.png" alt="Auctor Labs"><span>CAT VARC BOOTCAMP</span></div><div class="big45"><span>45</span><small>training days</small></div><div class="statRow"><div class="statTile"><strong>3</strong><span>RC passages / day</span></div><div class="statTile"><strong>25</strong><span>questions / day</span></div></div></div>
+      <p class="structureNote">Curriculum structure · not performance results</p>
+      <p class="structureCaption">A guided routine. Every day.</p>
+    </section>
+
+    <section class="scene" id="end" data-hf-id="hf-end">
+      <div class="eyebrow">Auctor Labs · CAT VARC</div><div class="index">08 / 08</div>
+      <img class="endLogo" src="assets/logo.png" alt="Auctor Labs logo">
+      <p class="endEyebrow">45 days of guided training</p>
+      <h2 class="serif">Make your<br>next session<br><span>count.</span></h2>
+      <p class="endSub">Read. Reason. Review.<br>Try Day 1 free.</p>
+      <div class="endCta">Start with Day 1 <span>→</span></div>
+      <p class="endUrl">rc.auctorlabs.in/bootcamp-2026</p>
+      <div class="endFooter"><b>AUctor LABS</b><span>CAT VARC BOOTCAMP</span></div>
+    </section>
+    <audio id="score" data-hf-id="hf-score" data-start="0" data-duration="36" data-track-index="0" data-volume="1" data-fade-in="0.35" data-fade-out="1.3" src="assets/audio/original-score.wav"></audio>
+  </main>
+  <script>
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+    gsap.set('.scene', { autoAlpha: 0 });
+    gsap.set('#hook', { autoAlpha: 1 });
+    gsap.set('#hook .line1, #hook .line2, #hook .line3', { yPercent: 120, autoAlpha: 0 });
+    gsap.set('#hook .hookAside, #hook .answerChip, #hook .hookCard, #hook .captionBar', { y: 34, autoAlpha: 0 });
+    gsap.set('#question .sceneTitle, #question .questionFrame, #question .captionBar, #question .callout', { y: 42, scale: .97, autoAlpha: 0 });
+    gsap.set('#question .scan', { xPercent: -110 });
+    gsap.set('#choice .choiceTitle, #choice .choiceFrame, #choice .choiceMarker, #choice .choiceNote, #choice .captionBar', { y: 34, autoAlpha: 0 });
+    gsap.set('#plan .planTitle, #plan .planSub, #plan .planStats, #plan .missionFrame, #plan .planFoot, #plan .captionBar', { y: 38, autoAlpha: 0 });
+    gsap.set('#loop .loopTitle, #loop .loopFrameA, #loop .loopFrameB, #loop .loopFoot, #loop .verb', { y: 42, autoAlpha: 0 });
+    gsap.set('#birbal .birbalTitle, #birbal .birbalFrame, #birbal .reasonLine', { y: 38, scale: .98, autoAlpha: 0 });
+    gsap.set('#structure .structureTitle, #structure .structureCard, #structure .structureNote, #structure .structureCaption', { y: 38, scale: .98, autoAlpha: 0 });
+    gsap.set('#end .endLogo, #end .endEyebrow, #end h2, #end .endSub, #end .endCta, #end .endUrl, #end .endFooter', { y: 30, autoAlpha: 0 });
+    gsap.set('#glowA', { x: 0, y: 0 }); gsap.set('#glowB', { x: 0, y: 0 });
+
+    tl.to('#hook .line1', { yPercent: 0, autoAlpha: 1, duration: .42 }, .12)
+      .to('#hook .line2', { yPercent: 0, autoAlpha: 1, duration: .38 }, .42)
+      .to('#hook .line3', { yPercent: 0, autoAlpha: 1, duration: .42 }, .68)
+      .to('#hook .hookAside', { y: 0, autoAlpha: 1, duration: .35 }, .95)
+      .to('#hook .hookCard', { y: 0, autoAlpha: 1, duration: .48 }, 1.08)
+      .to('#hook .answerChip', { y: 0, autoAlpha: 1, duration: .32 }, 1.65)
+      .to('#hook .captionBar', { y: 0, autoAlpha: 1, duration: .28 }, 2.05)
+      .to('#hook .hookCard', { scale: 1.035, duration: 1.3, ease: 'none' }, 1.65)
+      .to('#hook', { autoAlpha: 0, duration: .25 }, 3.25)
+      .to('#question', { autoAlpha: 1, duration: .18 }, 3.35)
+      .to('#question .sceneTitle', { y: 0, scale: 1, autoAlpha: 1, duration: .42 }, 3.42)
+      .to('#question .questionFrame', { y: 0, scale: 1, autoAlpha: 1, duration: .52 }, 3.66)
+      .to('#question .scan', { xPercent: 110, duration: 1.45, repeat: 1, repeatDelay: .35, yoyo: true, ease: 'sine.inOut' }, 4.3)
+      .to('#question .callout', { y: 0, scale: 1, autoAlpha: 1, duration: .25 }, 4.7)
+      .to('#question .captionBar', { y: 0, scale: 1, autoAlpha: 1, duration: .28 }, 5.15)
+      .to('#question .questionFrame', { scale: 1.035, y: -18, duration: 2.2, ease: 'none' }, 5.3)
+      .to('#question', { autoAlpha: 0, duration: .25 }, 8.32)
+      .to('#choice', { autoAlpha: 1, duration: .18 }, 8.42)
+      .to('#choice .choiceTitle', { y: 0, autoAlpha: 1, duration: .4 }, 8.48)
+      .to('#choice .choiceFrame', { y: 0, autoAlpha: 1, duration: .45 }, 8.7)
+      .to('#choice .choiceMarker', { y: 0, autoAlpha: 1, duration: .36, scale: 1.08, transformOrigin: 'center' }, 9.55)
+      .to('#choice .choiceMarker', { scale: 1, duration: .25 }, 9.92)
+      .to('#choice .choiceNote', { y: 0, autoAlpha: 1, duration: .32 }, 10.08)
+      .to('#choice .captionBar', { y: 0, autoAlpha: 1, duration: .28 }, 10.4)
+      .to('#choice .choiceFrame', { scale: 1.025, y: -14, duration: 1.6, ease: 'none' }, 10.65)
+      .to('#choice', { autoAlpha: 0, duration: .25 }, 13.12)
+      .to('#plan', { autoAlpha: 1, duration: .18 }, 13.22)
+      .to('#plan .planTitle', { y: 0, autoAlpha: 1, duration: .42 }, 13.3)
+      .to('#plan .planSub', { y: 0, autoAlpha: 1, duration: .32 }, 13.56)
+      .to('#plan .missionFrame', { y: 0, autoAlpha: 1, duration: .46 }, 13.7)
+      .to('#plan .planStats', { y: 0, autoAlpha: 1, duration: .38 }, 14.2)
+      .to('#plan .planFoot', { y: 0, autoAlpha: 1, duration: .28 }, 14.6)
+      .to('#plan .captionBar', { y: 0, autoAlpha: 1, duration: .28 }, 15.08)
+      .to('#plan .missionFrame', { y: -12, scale: 1.025, duration: 2.4, ease: 'none' }, 15.4)
+      .to('#plan', { autoAlpha: 0, duration: .25 }, 18.12)
+      .to('#loop', { autoAlpha: 1, duration: .18 }, 18.22)
+      .to('#loop .loopTitle', { y: 0, autoAlpha: 1, duration: .38 }, 18.3)
+      .to('#loop .loopFrameA', { y: 0, autoAlpha: 1, duration: .45 }, 18.48)
+      .to('#loop .loopFrameB', { y: 0, autoAlpha: 1, duration: .46 }, 18.75)
+      .to('#loop .verbRead', { y: 0, autoAlpha: 1, duration: .22 }, 19.25)
+      .to('#loop .verbRead', { x: 40, autoAlpha: 0, duration: .22 }, 20.15)
+      .to('#loop .verbReview', { y: 0, autoAlpha: 1, duration: .24 }, 20.42)
+      .to('#loop .loopFoot', { y: 0, autoAlpha: 1, duration: .28 }, 20.8)
+      .to('#loop .loopFrameA', { x: -22, rotation: -2, duration: 2, ease: 'none' }, 21.0)
+      .to('#loop .loopFrameB', { x: 22, rotation: 2, duration: 2, ease: 'none' }, 21.0)
+      .to('#loop', { autoAlpha: 0, duration: .25 }, 23.12)
+      .to('#birbal', { autoAlpha: 1, duration: .18 }, 23.22)
+      .to('#birbal .birbalTitle', { y: 0, scale: 1, autoAlpha: 1, duration: .4 }, 23.3)
+      .to('#birbal .birbalFrame', { y: 0, scale: 1, autoAlpha: 1, duration: .48 }, 23.55)
+      .to('#birbal .reasonLine', { y: 0, autoAlpha: 1, duration: .32 }, 24.35)
+      .to('#birbal .birbalFrame', { scale: 1.035, y: -18, duration: 3.1, ease: 'none' }, 24.5)
+      .to('#birbal', { autoAlpha: 0, duration: .25 }, 29.12)
+      .to('#structure', { autoAlpha: 1, duration: .18 }, 29.22)
+      .to('#structure .structureTitle', { y: 0, scale: 1, autoAlpha: 1, duration: .34 }, 29.28)
+      .to('#structure .structureCard', { y: 0, scale: 1, autoAlpha: 1, duration: .42 }, 29.5)
+      .fromTo('#structure .statTile strong', { scale: .72, autoAlpha: .3 }, { scale: 1, autoAlpha: 1, duration: .42, stagger: .16 }, 30.0)
+      .to('#structure .structureNote', { y: 0, autoAlpha: 1, duration: .22 }, 30.28)
+      .to('#structure .structureCaption', { y: 0, autoAlpha: 1, duration: .24 }, 30.55)
+      .to('#structure', { autoAlpha: 0, duration: .24 }, 32.28)
+      .to('#end', { autoAlpha: 1, duration: .18 }, 32.38)
+      .to('#end .endLogo', { y: 0, autoAlpha: 1, duration: .3, scale: 1.04 }, 32.48)
+      .to('#end .endLogo', { scale: 1, duration: .35 }, 32.78)
+      .to('#end .endEyebrow, #end h2', { y: 0, autoAlpha: 1, duration: .36, stagger: .12 }, 32.75)
+      .to('#end .endSub', { y: 0, autoAlpha: 1, duration: .26 }, 33.1)
+      .to('#end .endCta', { y: 0, autoAlpha: 1, duration: .32 }, 33.28)
+      .to('#end .endUrl, #end .endFooter', { y: 0, autoAlpha: 1, duration: .26, stagger: .08 }, 33.7)
+      .to('#end .endCta', { scale: 1.025, duration: .46, yoyo: true, repeat: 1 }, 34.45);
+
+    tl.to('#glowA', { x: 470, y: 220, duration: 8, ease: 'sine.inOut' }, 0)
+      .to('#glowA', { x: 760, y: 720, duration: 11, ease: 'sine.inOut' }, 8)
+      .to('#glowA', { x: 250, y: 1080, duration: 9, ease: 'sine.inOut' }, 19)
+      .to('#glowA', { x: 540, y: 550, duration: 8, ease: 'sine.inOut' }, 28)
+      .to('#glowB', { x: -220, y: -240, duration: 9, ease: 'sine.inOut' }, 0)
+      .to('#glowB', { x: -620, y: 380, duration: 10, ease: 'sine.inOut' }, 9)
+      .to('#glowB', { x: -120, y: 0, duration: 9, ease: 'sine.inOut' }, 19)
+      .to('#glowB', { x: -440, y: -320, duration: 8, ease: 'sine.inOut' }, 28)
+      .to('#topLine', { scaleX: 1, duration: 36, ease: 'none' }, 0);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines.root = tl;
+    window.renderFrame = time => { tl.time(Math.max(0, Math.min(36, time)), false); };
+    window.renderFrame(0);
+  </script>
+</body>
+</html>

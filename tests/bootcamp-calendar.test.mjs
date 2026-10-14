@@ -134,6 +134,36 @@ test('personal sequence advances only after completion and keeps day snapshots s
   } finally { await h.close() }
 })
 
+test('distinct extracted and enriched RC1 sources stay attached to Day 1 and Day 2 through saved attempts',async()=>{
+  const day1=fixture(1),day2=fixture(2)
+  const day1Rc='Synthetic Day 1 DOCX RC1: a study of how public libraries shape civic participation.'
+  const day2Rc='Synthetic Day 2 DOCX RC1: an account of how coastal maps influence navigation policy.'
+  for(const [row,filename,passage] of [[day1,'synthetic-day-1.docx',day1Rc],[day2,'synthetic-day-2.docx',day2Rc]]) {
+    row.document.source={filename,text:`${filename}\n${passage}`}
+    row.document.content.passages[0].text=passage
+  }
+  assert.notEqual(day1.document.source.filename,day2.document.source.filename)
+  assert.notEqual(day1.document.source.text,day2.document.source.text)
+  assert.ok(day1.document.source.text.includes(day1Rc))
+  assert.ok(day2.document.source.text.includes(day2Rc))
+  assert.equal(adaptDay(day1).snapshot.blocks[1].passage.text,day1Rc)
+  assert.equal(adaptDay(day2).snapshot.blocks[1].passage.text,day2Rc)
+
+  const h=await harness(day1,undefined,undefined,{now:()=>new Date('2026-10-14T06:00:00Z')})
+  try {
+    await h.pg.query('insert into bootcamp_days values($1,$2,$3,$4,$5)',[day2.id,day2.day_number,day2.document,day2.lock_token,day2.updated_at])
+    await h.service.enroll(student)
+    const attempt=await h.service.start(student,2)
+    const saved=(await h.pg.query('select day_number,source_revision,snapshot from bootcamp_day_attempts where id=$1',[attempt.id])).rows[0]
+    assert.equal(saved.day_number,2)
+    assert.equal(saved.source_revision,day2.lock_token)
+    assert.equal(saved.snapshot.sourceId,'bootcamp-day-2')
+    assert.equal(saved.snapshot.dayNumber,2)
+    assert.equal(saved.snapshot.blocks[1].passage.text,day2Rc)
+    assert.deepEqual(saved.snapshot.blocks[1].questions.map(q=>q.id),day2.document.content.passages[0].questions.map(q=>q.id))
+  } finally { await h.close() }
+})
+
 test('October 14 exposes only valid past content as startable and leaves invalid content preparing',async()=>{
   const h=await harness(fixture(),undefined,undefined,{now:()=> '2026-10-14'})
   try {

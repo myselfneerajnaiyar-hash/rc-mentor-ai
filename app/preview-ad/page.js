@@ -1,8 +1,10 @@
 import Image from 'next/image'
-import { buildSignupHref } from '@/lib/attribution.mjs'
-import PreviewAdInteractions from './PreviewAdInteractions'
+import { attributionFromParams } from '@/lib/attribution.mjs'
+import PreviewAdSignupExperience from './PreviewAdSignupExperience'
+import PreviewAdFeatureShowcase from './PreviewAdFeatureShowcase'
 import PreviewAdVideoStories from './PreviewAdVideoStories'
 import './preview-ad.css'
+import './preview-ad-signup.css'
 
 const videoStories = [
   { name: 'Ishaan Chandrakar', title: 'From avoiding RC to enjoying reading', image: '/testimonials/video1.jpeg', video: '/testimonials/video1.mp4' },
@@ -17,7 +19,7 @@ const studentReviews = [
 ]
 
 export default function PreviewAdPage({ searchParams = {} }) {
-  const signupHref = buildSignupHref(searchParams)
+  const signupAttribution = attributionFromParams(searchParams)
 
   return <main className="ad-page">
     <header className="ad-header">
@@ -32,20 +34,24 @@ export default function PreviewAdPage({ searchParams = {} }) {
       <div className="ad-hero-copy">
         <p className="ad-eyebrow"><span /> RC TRAINING TOOL</p>
         <h1 id="ad-title"><span className="ad-heading-line">Want to improve your</span>{' '}<span className="ad-heading-accent">Reading Comprehension</span>{' '}<span className="ad-heading-line">score?</span></h1>
+        <div className="ad-founder-intro">
+          <Image src="/founder.jpeg" alt="" width={58} height={58} priority />
+          <p><strong>Built by Neeraj Sir</strong><span>16+ years teaching CAT</span></p>
+        </div>
         <p className="ad-lead">Auctor RC is built by a CAT teacher to target your exact weak spots, not give you random practice.</p>
         <ul className="ad-benefits" aria-label="What you get with Auctor RC">
           <li><span aria-hidden="true">01</span> Daily CAT-level RC practice</li>
           <li><span aria-hidden="true">02</span> Understand why an option works</li>
           <li><span aria-hidden="true">03</span> Track your practice over time</li>
         </ul>
-        <a id="primary-signup-cta" className="ad-cta" href={signupHref} data-signup-cta>Start your free trial <span aria-hidden="true">→</span></a>
-        <p className="ad-reassurance">No payment card is requested to create your account.</p>
       </div>
-      <figure className="ad-hero-image">
-        <Image src="/auctor-rc-student-hero.png" alt="A student practising a reading comprehension passage on a laptop" width={1536} height={1024} priority quality={65} sizes="(max-width: 760px) 92vw, 48vw" />
-        <figcaption><span>THE DAILY PRACTICE</span><strong>Read. Reason. Review.</strong></figcaption>
-      </figure>
+      <PreviewAdSignupExperience initialAttribution={signupAttribution} />
     </section>
+
+    <figure className="ad-hero-image">
+      <Image src="/auctor-rc-student-hero.png" alt="A student practising a reading comprehension passage on a laptop" width={1536} height={1024} priority quality={65} sizes="(max-width: 760px) 92vw, 72vw" />
+      <figcaption><span>THE DAILY PRACTICE</span><strong>Read. Reason. Review.</strong></figcaption>
+    </figure>
 
     <section className="ad-proof" aria-label="Auctor RC student experience">
       <p>More than solving passages</p><span>Build a daily routine</span><i /><span>Review your reasoning</span><i /><span>See your progress</span>
@@ -89,13 +95,14 @@ export default function PreviewAdPage({ searchParams = {} }) {
       </ol>
     </section>
 
-    <section className="ad-final-cta" aria-labelledby="final-cta-title">
-      <div className="ad-section-label">YOUR NEXT THREE DAYS</div>
-      <h2 id="final-cta-title">Make your next RC session count.</h2>
-      <p className="ad-closing-summary">Daily CAT-level passages, thoughtful answer reviews, and a practice history that stays together. Begin when you’re ready.</p>
+    <section className="ad-feature-section" aria-labelledby="feature-showcase-title">
+      <div className="ad-section-label">EXPLORE THE PRACTICE TOOLKIT</div>
+      <h2 id="feature-showcase-title">Tools for a more focused VARC practice routine.</h2>
+      <p className="ad-feature-intro">Choose focused practice, build a daily habit, and get help understanding the reasoning.</p>
+      <PreviewAdFeatureShowcase />
+      <PreviewAdSignupExperience initialAttribution={signupAttribution} ctaOnly />
     </section>
 
     <footer className="ad-footer"><a href="/preview-ad">Auctor RC</a><span>Focused CAT VARC practice.</span><a href="/privacy-policy">Privacy</a></footer>
-    <PreviewAdInteractions signupHref={signupHref} />
   </main>
 }

@@ -100,14 +100,26 @@ test('available Meta cookies are retained without inferring traffic source from 
   })
 })
 
-test('landing page CTAs use a server-rendered href and testimonial photos are lazy-loaded', async () => {
+test('preview-ad renders the inline signup and keeps testimonial assets lazy-loaded', async () => {
   const source = await readFile(new URL('../app/preview-ad/page.js', import.meta.url), 'utf8')
+  const signup = await readFile(new URL('../app/preview-ad/PreviewAdSignupExperience.jsx', import.meta.url), 'utf8')
   const layout = await readFile(new URL('../app/layout.js', import.meta.url), 'utf8')
-  assert.match(source, /href=\{signupHref\} data-signup-cta/g)
-  assert.equal((source.match(/href=\{signupHref\} data-signup-cta/g) || []).length, 1)
+  assert.match(source, /<PreviewAdSignupExperience initialAttribution=\{signupAttribution\}/)
+  assert.match(signup, /supabase\.auth\.signUp/)
+  assert.match(signup, /type="email"/)
+  assert.match(signup, /autoComplete="email"/)
+  assert.match(signup, /autoComplete="new-password"/)
+  assert.match(signup, /email: normalizedEmail/)
+  assert.match(signup, /router\.replace\(buildAttributedPath\('\/welcome'/)
+  assert.doesNotMatch(signup, /buildAttributedPath\('\/signup'/)
   assert.ok(layout.includes("AttributionCapture"), 'global layout captures attribution on non-preview landing routes')
   assert.match(source, /loading="lazy"/)
-  assert.doesNotMatch(source, /onClick=.*signup/i)
+  assert.match(source, /Built by Neeraj Sir/)
+  assert.match(source, /16\+ years teaching CAT/)
+  assert.match(source, /<PreviewAdFeatureShowcase \/>/)
+  assert.match(source, /PreviewAdSignupExperience initialAttribution=\{signupAttribution\} ctaOnly/)
+  assert.match(signup, /focusPrimarySignup\('feature_showcase'\)/)
+  assert.doesNotMatch(signup, /ad-signup-sheet|signup_sheet_opened|signup_sheet_closed/)
 })
 
 test('prepared profile RPC is atomic, first-touch preserving, user scoped, and rejects unsafe data', async () => {

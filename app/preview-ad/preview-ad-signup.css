@@ -1,0 +1,199 @@
+/* Drop 1 inline signup presentation */
+.ad-page{position:relative;isolation:isolate;overflow:clip;background:radial-gradient(ellipse at 12% 0%,#163451 0,transparent 36%),var(--navy);color:var(--paper);padding:0 32px 48px}
+.ad-page::before{position:absolute;z-index:-1;top:0;right:0;left:0;height:76px;background:#382fb3;content:"";pointer-events:none}
+.ad-header{height:76px;border-bottom-color:#ffffff28}
+.ad-brand,.ad-login{color:#fff}
+.ad-brand small{color:#d8d5ff}
+.ad-login{font-size:13px}
+.ad-login strong{color:#fff}
+.ad-hero{min-height:560px;padding:46px 0 42px;grid-template-columns:minmax(0,1fr) minmax(360px,440px);align-items:start;gap:54px}
+.ad-hero-copy{max-width:680px;padding-top:18px}
+.ad-eyebrow{margin-bottom:20px;color:var(--orange-soft)}
+.ad-eyebrow span{background:#f69b46;box-shadow:none}
+.ad-hero h1{max-width:690px;color:var(--paper);font-family:Georgia,"Times New Roman",serif;font-size:clamp(43px,5.1vw,66px);line-height:1.04;letter-spacing:-.045em}
+.ad-hero h1 .ad-heading-accent{color:var(--orange-soft)}
+.ad-founder-intro{display:flex;align-items:center;gap:13px;margin:24px 0 0}
+.ad-founder-intro img{width:58px;height:58px;flex:none;border:2px solid #fff;border-radius:50%;background:#f69b46;object-fit:cover;object-position:center 20%}
+.ad-founder-intro p{display:grid;gap:2px;margin:0;color:var(--paper);font-size:15px;line-height:1.35}
+.ad-founder-intro strong{font-weight:750}
+.ad-founder-intro span{color:var(--muted);font-size:14px}
+.ad-lead{max-width:560px;margin:24px 0 0;color:#c1ccda;font-size:16px;line-height:1.6}
+.ad-benefits{margin:23px 0 0}
+.ad-benefits li{color:#e0e7ef;font-size:14px}
+.ad-benefits li span{border-color:#ff9b4570;color:var(--orange-soft)}
+.ad-primary-signup-anchor{min-width:0;scroll-margin-top:24px}
+.ad-signup-card{width:100%;padding:25px 27px 21px;border:1px solid #dedbf2;border-radius:22px;background:#fff;box-shadow:0 14px 32px #201a4d16;color:#1d1a4b}
+.ad-signup-card h2{margin:0 0 19px;color:#1d1a4b;font:700 28px/1.15 Georgia,"Times New Roman",serif;letter-spacing:-.025em}
+.ad-signup-form{display:grid;gap:8px}
+.ad-signup-form label{margin-top:2px;color:#46436e;font-size:14px;font-weight:700}
+.ad-signup-form input{width:100%;height:54px;padding:0 15px;border:1.5px solid #aaa6d9;border-radius:13px;background:#fff;color:#1d1a4b;font:400 16px/1.2 Arial,Helvetica,sans-serif;outline:none}
+.ad-signup-form input::placeholder{color:#85839a;opacity:1}
+.ad-signup-form input:focus{border-color:#382fb3;box-shadow:0 0 0 3px #382fb31c}
+.ad-signup-form input[aria-invalid="true"]{border:2px solid #bd2d20}
+.ad-signup-form input:disabled{background:#f5f4fa;color:#65627e}
+.ad-signup-password{position:relative}
+.ad-signup-password input{padding-right:52px}
+.ad-password-toggle{position:absolute;top:2px;right:2px;display:grid;width:48px;height:50px;place-items:center;border:0;border-radius:10px;background:transparent;color:#5c5986;cursor:pointer}
+.ad-password-toggle:focus-visible,.ad-signup-submit:focus-visible,.ad-signup-google:focus-visible,.ad-sticky-cta button:focus-visible{outline:3px solid #382fb3;outline-offset:3px}
+.ad-signup-field-error,.ad-signup-error,.ad-signup-success{margin:0;color:#b42318;font-size:13px;line-height:1.4}
+.ad-signup-error a{color:#3e35b8;font-weight:700}
+.ad-signup-success{color:#287849}
+.ad-signup-submit{display:flex;width:100%;min-height:54px;align-items:center;justify-content:center;margin-top:4px;padding:9px 14px;border:0;border-radius:13px;background:#f69b46;color:#191748;font-size:17px;font-weight:800;cursor:pointer}
+.ad-signup-submit:hover{background:#f7a85d}
+.ad-signup-submit:disabled,.ad-signup-google:disabled,.ad-password-toggle:disabled{cursor:wait;opacity:.68}
+.ad-signup-divider{display:flex;align-items:center;gap:12px;margin:15px 0;color:#625f8e;font-size:14px}
+.ad-signup-divider::before,.ad-signup-divider::after{height:1px;flex:1;background:#dedbf2;content:""}
+.ad-signup-google{display:flex;width:100%;min-height:54px;align-items:center;justify-content:center;gap:12px;padding:9px 12px;border:1.5px solid #aaa6d9;border-radius:13px;background:#fff;color:#1d1a4b;font-size:16px;font-weight:750;cursor:pointer}
+.ad-signup-google img{display:block;flex:none;object-fit:contain}
+.ad-signup-note{margin:14px 0 0;color:#625f8e;font-size:12px;line-height:1.45;text-align:center}
+.ad-inline-login{margin:14px 0 0;color:#55547c;font-size:14px;text-align:center}
+.ad-inline-login a{color:#382fb3;font-weight:700}
+.ad-hero-image{max-width:1160px;margin:0 auto 34px}
+.ad-proof{color:#d1dae3;border-color:var(--line)}
+.ad-proof p{color:var(--muted)}
+.ad-students{color:var(--paper)}
+.ad-students h2,.ad-classroom h2,.ad-process h2,.ad-final-cta h2{color:var(--paper)}
+.ad-students h2 span,.ad-process h2 span{color:#c0ccd8}
+.ad-students-heading>p,.ad-classroom-copy>p,.ad-process-heading>p{color:var(--muted)}
+.ad-review,.ad-process-steps li{border-color:#ffffff18;background:linear-gradient(140deg,#10243a,#0a192b);box-shadow:none}
+.ad-review blockquote{color:#dbe2e9}
+.ad-process-steps p{color:#b8c6d3}
+.ad-review-person{border-color:#ffffff12}
+.ad-classroom{border:1px solid #ffffff12;background:linear-gradient(120deg,#132940,#10243a 60%,#1c2b3a)}
+.ad-classroom h2 span{color:var(--orange-soft)}
+.ad-founder-caption strong{color:var(--paper)}
+.ad-final-cta{border-color:#ffffff1d;background:radial-gradient(ellipse at 50% 0,#1b536074,transparent 70%),#0d2033}
+.ad-final-cta .ad-section-label{color:var(--orange-soft)}
+.ad-closing-summary{color:#bbc8d4}
+.ad-footer{color:#94a4b4}
+.ad-footer>a:first-child{color:#d4dde5}
+.ad-sticky-cta{display:none}
+.ad-feature-section{max-width:1160px;margin:42px auto 0;padding:48px 36px 38px;border:1px solid #ffffff1d;border-radius:20px;background:radial-gradient(ellipse at 50% 0,#1b536074,transparent 70%),linear-gradient(145deg,#0d2033,#0a192b);text-align:center}
+.ad-feature-section>.ad-section-label{color:var(--orange-soft)}
+.ad-feature-section>h2{max-width:760px;margin:13px auto 0;color:var(--paper);font:700 clamp(30px,3.6vw,43px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.04em}
+.ad-feature-intro{max-width:630px;margin:13px auto 27px;color:#bbc8d4;font-size:15px;line-height:1.6}
+.ad-feature-showcase{text-align:left}
+.ad-feature-desktop{display:block}
+.ad-feature-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 auto 17px}
+.ad-feature-tabs button{min-height:42px;padding:9px 13px;border:1px solid #ffffff24;border-radius:999px;background:#ffffff08;color:#d6deea;font-family:inherit;font-size:13px;font-weight:650;line-height:1.2;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+.ad-feature-tabs button[aria-selected=true]{border-color:#f69b46;background:#f69b46;color:#191748}
+.ad-feature-tabs button:focus-visible,.ad-feature-panel:focus-visible,.ad-feature-controls button:focus-visible,.ad-feature-cta:focus-visible{outline:3px solid #f8b36e;outline-offset:3px}
+.ad-feature-panel{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:19px;min-height:176px;padding:28px 31px;border:1px solid #ffffff18;border-radius:15px;background:linear-gradient(125deg,#132940,#0d2033 68%,#17283a)}
+.ad-feature-icon{display:grid;width:54px;height:54px;place-items:center;border:1px solid #f69b4666;border-radius:15px;background:#f69b4614;color:var(--orange-soft)}
+.ad-feature-label{margin:0 0 7px;color:#a9b9c9;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+.ad-feature-panel h3,.ad-feature-card h3{margin:0;color:#fff;font:700 23px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+.ad-feature-description{max-width:620px;margin:9px 0 0;color:#d0d9e3;font-size:15px;line-height:1.6}
+.ad-feature-count{color:#9aaabb;font-size:12px;font-weight:750;letter-spacing:.06em;white-space:nowrap}
+.ad-feature-count i{padding:0 4px;color:var(--orange-soft);font-style:normal}
+.ad-feature-mobile{display:none}
+.ad-feature-cta{display:flex;min-height:52px;align-items:center;justify-content:center;flex-direction:column;gap:3px;margin:24px auto 0;padding:7px 24px;border:0;border-radius:12px;background:#f69b46;color:#191748;cursor:pointer;transition:background .18s,transform .18s}
+.ad-feature-cta:hover{background:#f7a85d;transform:translateY(-1px)}
+.ad-feature-cta strong{font-size:15px;font-weight:800}.ad-feature-cta span{color:#4b466c;font-size:11px}
+
+@media(max-width:1023px){
+  .ad-page{padding-right:22px;padding-left:22px}
+  .ad-page::before{height:76px}
+  .ad-hero{display:flex;min-height:0;flex-direction:column;align-items:center;gap:18px;padding:37px 0 26px}
+  .ad-hero-copy{max-width:720px;width:100%;padding-top:0}
+  .ad-primary-signup-anchor{width:min(520px,100%);margin-top:2px}
+  .ad-signup-card{padding:24px}
+  .ad-hero-image{width:min(100%,920px)}
+  .ad-sticky-cta{position:fixed;z-index:120;right:0;bottom:0;left:0;display:block;padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #ffffff20;background:#071426ef;box-shadow:0 -8px 26px #0005;backdrop-filter:blur(14px);transform:translateY(110%);transition:transform .18s ease}
+  .ad-sticky-cta.is-visible{transform:translateY(0)}
+  .ad-sticky-cta button{display:flex;width:min(100%,720px);min-height:58px;align-items:center;justify-content:center;flex-direction:column;gap:3px;margin:0 auto;border:0;border-radius:14px;background:#f69b46;color:#191748;cursor:pointer}
+  .ad-sticky-cta strong{font-size:17px;font-weight:800}
+  .ad-sticky-cta span{color:#4b466c;font-size:12px}
+  .ad-page{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+  .ad-feature-desktop{display:none}
+  .ad-feature-mobile{display:block}
+  .ad-feature-cta{display:none}
+}
+
+@media(max-width:650px){
+  .ad-page{padding:0 16px calc(112px + env(safe-area-inset-bottom));background:radial-gradient(ellipse at 12% 0%,#163451 0,transparent 36%),var(--navy)}
+  .ad-page::before{height:412px;background:#382fb3}
+  .ad-header{height:96px;margin:0;padding-top:8px;border:0}
+  .ad-brand{gap:9px;font-family:Georgia,"Times New Roman",serif;font-size:22px;letter-spacing:-.025em}
+  .ad-brand img{width:45px;height:45px;padding:4px;border-radius:12px;background:#111}
+  .ad-brand small{display:none}
+  .ad-login{font-size:12px;white-space:nowrap}
+  .ad-hero{align-items:stretch;gap:0;padding:20px 0 22px}
+  .ad-hero-copy{display:contents}
+  .ad-eyebrow{display:none}
+  .ad-hero h1{order:1;margin:0 0 16px;color:#fff;font-size:clamp(36px,10.3vw,49px);line-height:1.04;letter-spacing:-.045em}
+  .ad-hero h1 .ad-heading-accent{color:var(--orange-soft)}
+  .ad-founder-intro{order:2;margin:0 0 18px}
+  .ad-founder-intro img{width:58px;height:58px;border:0;background:#f69b46}
+  .ad-founder-intro p{color:#fff;font-size:15px}
+  .ad-founder-intro span{color:#dad7ff;font-size:14px}
+  .ad-primary-signup-anchor{order:3;margin:0}
+  .ad-signup-card{padding:21px 20px 19px;border-radius:23px}
+  .ad-signup-card h2{margin-bottom:17px;font-size:27px}
+  .ad-signup-form{gap:7px}
+  .ad-signup-form label{font-size:14px}
+  .ad-signup-form input{height:54px;padding:0 14px;font-size:16px}
+  .ad-signup-submit{min-height:56px;margin-top:4px;font-size:17px}
+  .ad-signup-divider{margin:13px 0}
+  .ad-signup-google{min-height:55px;font-size:16px}
+  .ad-signup-note{margin-top:13px;font-size:12px}
+  .ad-inline-login{margin:13px 0 20px;font-size:14px}
+  .ad-lead{order:4;margin:0 0 14px;font-size:14px;line-height:1.5}
+  .ad-benefits{order:5;gap:8px;margin:0 0 20px}
+  .ad-benefits li{font-size:12px}
+  .ad-hero-image{margin:0 auto 22px;padding:6px;border-radius:16px}
+  .ad-hero-image img{max-height:none;border-radius:11px}
+  .ad-proof{gap:8px;padding:16px 4px;font-size:10px}
+  .ad-proof p{font-size:9px}
+  .ad-students{padding:46px 0}
+  .ad-students h2{font-size:32px}
+  .ad-review{min-height:0}
+  .ad-classroom{padding:26px 20px;gap:24px}
+  .ad-classroom-photo img{height:300px}
+  .ad-process{margin-top:24px;padding:28px 20px;gap:20px}
+  .ad-process-steps{gap:9px}
+  .ad-process-steps li{min-height:0;padding:13px 10px}
+  .ad-step-number{margin-bottom:12px}
+  .ad-process-steps strong{font-size:12px}
+  .ad-process-steps p{font-size:11px;line-height:1.45}
+  .ad-feature-section{margin-top:25px;padding:31px 0 24px;border-right:0;border-left:0;border-radius:0}
+  .ad-feature-section>h2{padding:0 2px;font-size:30px}
+  .ad-feature-intro{margin:11px 0 18px;font-size:13px}
+  .ad-feature-swipe-hint{display:flex;justify-content:space-between;margin:0 2px 9px;color:#c5d0dc;font-size:12px;font-weight:650}
+  .ad-feature-swipe-hint span{color:var(--orange-soft);font-size:16px}
+  .ad-feature-track{display:flex;gap:12px;margin:0 -16px;overflow-x:auto;overscroll-behavior-x:contain;padding:2px 16px 12px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#f69b46 #ffffff18;-webkit-overflow-scrolling:touch}
+  .ad-feature-card{position:relative;display:flex;flex:0 0 min(84vw,370px);min-height:230px;flex-direction:column;align-items:flex-start;padding:20px;border:1px solid #ffffff1c;border-radius:15px;background:linear-gradient(145deg,#132940,#0d2033);scroll-snap-align:start;text-align:left}
+  .ad-feature-card .ad-feature-icon{width:46px;height:46px;margin-bottom:17px}
+  .ad-feature-card .ad-feature-label{font-size:10px}
+  .ad-feature-card h3{font-size:20px}
+  .ad-feature-card .ad-feature-description{margin-top:8px;font-size:13px;line-height:1.55}
+  .ad-feature-card .ad-feature-count{margin-top:auto;padding-top:13px}
+  .ad-feature-controls{display:flex;align-items:center;justify-content:space-between;margin:2px 3px 0;color:#d1dbe5;font-size:11px;font-weight:700}
+  .ad-feature-controls>div{display:flex;align-items:center;gap:7px}
+  .ad-feature-controls button{position:relative;display:grid;width:28px;height:28px;place-items:center;padding:0;border:0;background:transparent;cursor:pointer}
+  .ad-feature-controls button::before{width:8px;height:8px;border-radius:8px;background:#c3cfdb;content:"";opacity:.6}
+  .ad-feature-controls button[aria-pressed=true]::before{width:22px;background:var(--orange);opacity:1}
+  .ad-footer{flex-wrap:wrap;gap:12px;font-size:10px}
+}
+
+@media(max-width:360px){
+  .ad-page{padding-right:12px;padding-left:12px}
+  .ad-header{height:82px}
+  .ad-brand{font-size:19px}
+  .ad-brand img{width:40px;height:40px}
+  .ad-login{font-size:11px}
+  .ad-hero h1{font-size:36px}
+  .ad-signup-card{padding-right:16px;padding-left:16px}
+  .ad-signup-card h2{font-size:25px}
+  .ad-signup-google{gap:8px;font-size:14px}
+}
+
+@media(min-width:1024px){
+  .ad-signup-card-hero{position:sticky;top:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ad-sticky-cta{transition:none}
+  .ad-cta{transition:none}
+  .ad-feature-tabs button,.ad-feature-cta{transition:none}
+  .ad-feature-track{scroll-behavior:auto}
+}

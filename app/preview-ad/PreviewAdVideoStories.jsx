@@ -2,11 +2,27 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import posthog from 'posthog-js'
 
 export default function PreviewAdVideoStories({ stories }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [selectedStory, setSelectedStory] = useState(null)
   const carouselRef = useRef(null)
+  const playedStories = useRef(new Set())
+
+  const captureStoryPlay = story => {
+    const storyId = story.video
+    if (playedStories.current.has(storyId)) return
+    playedStories.current.add(storyId)
+    try {
+      posthog.capture('testimonial_video_played', {
+        placement: 'testimonial_video',
+        story_title: story.title,
+        viewport_width: window.innerWidth,
+        in_app_browser: /Instagram|FBAN|FBAV|FB_IAB|FBIOS|FB4A|MessengerForiOS|FBMessenger/i.test(navigator.userAgent || ''),
+      })
+    } catch { /* Analytics must never block video playback. */ }
+  }
 
   useEffect(() => {
     const carousel = carouselRef.current
@@ -57,7 +73,7 @@ export default function PreviewAdVideoStories({ stories }) {
     {selectedStory && <div className="ad-video-modal" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setSelectedStory(null) }}>
       <section className="ad-video-dialog" role="dialog" aria-modal="true" aria-label={`${selectedStory.name} student story`}>
         <button className="ad-video-close" type="button" onClick={() => setSelectedStory(null)} aria-label="Close video">×</button>
-        <video key={selectedStory.video} controls autoPlay playsInline preload="none" poster={selectedStory.image}>
+        <video key={selectedStory.video} controls autoPlay playsInline preload="none" poster={selectedStory.image} onPlay={() => captureStoryPlay(selectedStory)}>
           <source src={selectedStory.video} type="video/mp4" />
           Your browser does not support video playback.
         </video>

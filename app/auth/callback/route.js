@@ -24,6 +24,17 @@ for (const key of ["oauth", "flow"]) {
   const value = requestUrl.searchParams.get(key)
   if (value) destination.searchParams.set(key, value)
 }
+if (requestUrl.searchParams.get("signup_surface") === "preview_ad_inline") {
+  destination.searchParams.set("signup_surface", "preview_ad_inline")
+}
+const previewSignup = requestUrl.searchParams.get("signup_surface") === "preview_ad_inline"
+const oauthError = requestUrl.searchParams.get("error") || requestUrl.searchParams.get("error_code") || requestUrl.searchParams.get("error_description") || ""
+if (previewSignup && oauthError) {
+  const previewDestination = new URL("/preview-ad", isLocal ? requestUrl.origin : `https://${resolved.hostname}`)
+  for (const [key, value] of attributionParams(attributionFromParams(requestUrl.searchParams))) previewDestination.searchParams.set(key, value)
+  if (!/access_denied|cancel/i.test(oauthError)) previewDestination.searchParams.set("signup_error", "google")
+  return NextResponse.redirect(previewDestination)
+}
 for (const [key, value] of attributionParams(attributionFromParams(requestUrl.searchParams))) destination.searchParams.set(key, value)
 return NextResponse.redirect(destination)
   
