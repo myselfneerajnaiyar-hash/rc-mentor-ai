@@ -3,8 +3,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import posthog from 'posthog-js'
 import { bootcampRequest as request } from '@/lib/bootcamp/client'
 import { bootcampPreviewRequest } from '@/lib/bootcamp/preview-client'
+import { createBootCampEventTracker, setBootCampAnalyticsContext } from '@/lib/bootcamp/analytics.mjs'
 import BootCampShell from './BootCampShell'
 import BootCampArena from './BootCampArena'
 import BootCampChat from './BootCampChat'
@@ -19,7 +21,7 @@ import s from './bootcamp.module.css'
 
 export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1, initialIstDate, preview = false }) {
   const router=useRouter()
-  const requestSession = preview ? bootcampPreviewRequest : request
+  const rawRequestSession = preview ? bootcampPreviewRequest : request
   const [celebrating,setCelebrating]=useState(false)
   const [chat,setChat] = useState(null)
   const [catalog,setCatalog] = useState(null)
@@ -28,6 +30,22 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   const [responseSaveStatus,setResponseSaveStatus] = useState('idle')
   const [busy,setBusy] = useState(true), [error,setError] = useState(null), [retryKey,setRetryKey] = useState(0)
   const latest = useRef(null), working = useRef(false), generation = useRef(0)
+  const analyticsContext = useRef({})
+  const userIdPromise = useRef(null)
+  const tracker = useRef(null)
+  if (!tracker.current) tracker.current = createBootCampEventTracker({
+    getUserId: async () => {
+      if (!userIdPromise.current) userIdPromise.current = supabase.auth.getSession().then(({ data }) => data.session?.user?.id || null).catch(error => { userIdPromise.current = null; throw error })
+      return userIdPromise.current
+    },
+    identify: userId => posthog.identify(userId),
+    capture: (event, properties) => posthog.capture(event, properties),
+  })
+  const track = useCallback((event, eventKey, properties = {}) => {
+    if (preview) return Promise.resolve(false)
+    return tracker.current(event, { eventKey, properties: { ...analyticsContext.current, ...properties } })
+  }, [preview])
+  const requestSession = rawRequestSession
   const responseQueue = useRef(new Map()), responseDrain = useRef(null), responseTimer = useRef(null)
   const accept = useCallback(value => { latest.current = value; setSession(value) },[])
   const drainResponses = useCallback(() => {
@@ -39,8 +57,10 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
         const current = latest.current
         if (!current?.id || current.phase !== 'activity') return false
         try {
+          const isFirstAnswer = change.response !== undefined && change.response !== null && !(current.activity?.responses || []).some(row => row.response !== null)
           const value = await requestSession(`/attempts/${current.id}/blocks/${current.currentBlock}/responses`, 'PATCH', { ...change, revision: current.revision })
           accept(value)
+          if (isFirstAnswer) void track('bootcamp_first_answer', `first_answer:${current.id}`, { day_number: current.dayNumber })
           setResponseSaveStatus(responseQueue.current.size ? 'saving' : 'saved')
         } catch (error) {
           const newer = responseQueue.current.get(questionId)
@@ -61,7 +81,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     })().finally(() => { responseDrain.current = null })
     responseDrain.current = operation
     return operation
-  }, [accept, requestSession])
+  }, [accept, requestSession, track])
   const flushResponses = useCallback(async () => {
     clearTimeout(responseTimer.current); responseTimer.current = null
     if (responseDrain.current) await responseDrain.current
@@ -81,15 +101,42 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     const selectedDay = home.days?.find(day => day.day === dayNumber)
     if (dayRoute && !home.attempt && selectedDay?.accessible) {
       if (!preview) await requestSession('/enroll','POST')
-      return requestSession(`/days/${dayNumber}/start`,'POST')
+      const attempt = await requestSession(`/days/${dayNumber}/start`,'POST')
+      void track('bootcamp_day_start', `day_start:${attempt?.id || dayNumber}`, { day_number: dayNumber })
+      return attempt
     }
     return home.attempt
-  },[dayRoute,dayNumber,preview,requestSession])
+  },[dayRoute,dayNumber,preview,requestSession,track])
 
   useEffect(() => {
     let active = true
     requestSession(dayRoute?`?day=${dayNumber}`:'').then(async home => {
       if (!active) return
+      const selectedDay = home.days?.find(day => day.day === (dayRoute ? dayNumber : home.currentDay))
+      analyticsContext.current = {
+        day_number: dayRoute ? dayNumber : home.currentDay,
+        enrollment_state: home.enrolled ? 'enrolled' : 'not_enrolled',
+        access_state: selectedDay?.state || (selectedDay?.accessible ? 'accessible' : 'unavailable'),
+        day_accessible: Boolean(selectedDay?.accessible),
+        sequence_mode: home.sequenceMode || null,
+      }
+      if (dayRoute) void track('bootcamp_day_open', `day_open:${dayNumber}`)
+      const { data } = await supabase.auth.getSession()
+      const userId = data.session?.user?.id
+      if (userId) {
+        analyticsContext.current.user_id = userId
+        setBootCampAnalyticsContext(userId, analyticsContext.current)
+      }
+      if (!dayRoute) {
+        void track('bootcamp_home_view', 'home_view')
+        if (active && userId) {
+          const key = `auctor_bootcamp_seen:${userId}`
+          try {
+            if (window.localStorage.getItem(key)) void track('bootcamp_return', 'return_visit')
+            window.localStorage.setItem(key, '1')
+          } catch { /* Storage can be unavailable; the home view is still tracked. */ }
+        }
+      }
       const attempt = await resolveAttempt(home)
       if (active) { setCatalog(home); accept(attempt) }
     }).catch(e => { if (active) setError(e) }).finally(() => { if (active) setBusy(false) })
@@ -97,7 +144,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
       if (event === 'SIGNED_OUT') { generation.current++; setCelebrating(false); accept(null); setReview(null); setChat(null); setError(Object.assign(new Error('Sign in to continue your session.'),{ status:401 })) }
     }).data.subscription
     return () => { active = false; generation.current++; subscription?.unsubscribe() }
-  },[accept,dayRoute,dayNumber,preview,requestSession,resolveAttempt])
+  },[accept,dayRoute,dayNumber,preview,requestSession,resolveAttempt,track])
 
   useEffect(()=>{
     if(!catalog?.calendar?.today)return
@@ -154,6 +201,9 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     try {
       const value = await requestSession(path,method,body)
       if (gen === generation.current) {
+        if (dayRoute && latest.current?.status !== 'completed' && value.status === 'completed') {
+          void track('bootcamp_day_complete', `day_complete:${value.id || latest.current.id}`, { day_number: value.dayNumber || dayNumber })
+        }
         if (method === 'POST' && body?.reviewed && latest.current?.currentBlock === 'va' && value.phase === 'report') setCelebrating(true)
         accept(value)
       }
