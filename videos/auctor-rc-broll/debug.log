@@ -1,0 +1,28 @@
+[1015/010347.661:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/010348.323:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011153.503:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011154.367:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011232.755:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011233.504:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011328.004:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011328.667:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011406.559:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011407.185:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011425.583:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011426.170:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011546.873:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011547.468:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011605.501:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011606.136:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011712.002:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011718.482:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011728.890:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011730.323:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011732.018:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011733.660:ERROR:ui\gl\direct_composition_support.cc:625] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011739.457:ERROR:gpu\command_buffer\service\shared_image\shared_image_manager.cc:254] SharedImageManager::ProduceSkia: Trying to Produce a Skia representation from a non-existent mailbox.
+[1015/011739.460:ERROR:gpu\command_buffer\service\shared_image\shared_image_manager.cc:254] SharedImageManager::ProduceSkia: Trying to Produce a Skia representation from a non-existent mailbox.
+[1015/011739.463:ERROR:gpu\command_buffer\service\shared_image\shared_image_manager.cc:254] SharedImageManager::ProduceSkia: Trying to Produce a Skia representation from a non-existent mailbox.
+[1015/011739.465:ERROR:gpu\command_buffer\service\shared_image\shared_image_manager.cc:254] SharedImageManager::ProduceSkia: Trying to Produce a Skia representation from a non-existent mailbox.
+[1015/011830.294:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)
+[1015/011831.102:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: Unspecified error (0x80004005)

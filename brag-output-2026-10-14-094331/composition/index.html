@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Auctor VARC Bootcamp — CAT 2026</title>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#050a10}
+    body{font-family:Arial,Helvetica,sans-serif;color:#f5f3ee}
+    #root{position:relative;width:1080px;height:1920px;overflow:hidden;background:#07111d;isolation:isolate}
+    .environment{position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 55% 50%,#14243a 0%,#0a1420 54%,#050a10 100%)}
+    .grain{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+    .rail{position:absolute;top:0;left:0;width:1080px;height:5px;transform-origin:left;background:linear-gradient(90deg,#f5a04f,#ffd094)}
+    .scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+    .orange{color:#f5a04f}.muted{color:#aab6c4}.serif{font-family:Georgia,'Times New Roman',serif}
+    .eyebrow{position:absolute;top:100px;left:84px;color:#aab6c4;font-weight:700;font-size:15px;letter-spacing:.2em;text-transform:uppercase}
+    .eyebrow:before{content:'';display:inline-block;width:28px;height:2px;background:#f5a04f;vertical-align:middle;margin:0 14px 4px 0}
+    .panel{border:1px solid #8ca1b94f;border-radius:22px;background:linear-gradient(150deg,#111e2b,#0b1520);box-shadow:0 30px 90px #0009,0 10px 25px #0006}
+    .micro{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9eacbc}
+    /* Scene 1 — question and four independent answer cards */
+    #s1 .questionCard{position:absolute;top:175px;left:70px;width:940px;padding:27px 31px 28px;transform-origin:50% 45%;opacity:0}
+    #s1 .questionCard:before{content:'';position:absolute;left:0;top:26px;bottom:26px;width:3px;background:#f5a04f}
+    #s1 .qMeta{font-size:13px;font-weight:800;letter-spacing:.16em;color:#aebaca;text-transform:uppercase;margin-bottom:17px}
+    #s1 .passage{font:22px/1.4 Georgia,serif;color:#e1e4e6;margin:0 0 21px}
+    #s1 .prompt{font:700 24px/1.28 Georgia,serif;color:#fff;margin:0;padding-top:18px;border-top:1px solid #91a0b334}
+    #s1 .options{position:absolute;left:90px;right:90px;top:740px;display:grid;gap:14px;perspective:1000px}
+    #s1 .option{position:relative;min-height:137px;padding:20px 72px 20px 78px;display:flex;align-items:center;border:1px solid #8ca1b951;border-radius:16px;background:linear-gradient(110deg,#111e2b,#0b1520);font:20px/1.3 Georgia,serif;color:#e8e9e8;box-shadow:0 15px 35px #0005;opacity:0}
+    #s1 .letter{position:absolute;left:21px;top:24px;width:38px;height:38px;border:1px solid #98a8b8;border-radius:50%;display:grid;place-items:center;color:#dce1e5;font:700 16px Arial}
+    #s1 .choiceMark{position:absolute;right:22px;top:24px;color:#f5a04f;opacity:0;font-size:26px}
+    #s1 .selected{border:2px solid #f5a04f;background:#29231d;box-shadow:0 0 34px #f5a04f30,0 17px 38px #0008}
+    #s1 .freeze{position:absolute;left:0;right:0;top:1390px;text-align:center;opacity:0}
+    #s1 .freeze strong{display:block;font:700 50px/1.05 Georgia,serif;letter-spacing:-.03em}
+    #s1 .freeze span{display:block;margin-top:18px;font-size:25px;font-weight:600;letter-spacing:.02em;color:#d5dbe1}
+    #s1 .cursor{position:absolute;z-index:5;left:830px;top:1080px;width:0;height:0;opacity:0;filter:drop-shadow(0 5px 5px #0008)}
+    #s1 .cursor:before{content:'↖';font-size:67px;color:#fff;text-shadow:0 2px 5px #000}
+    /* Scene 2 — attach the verified diagnosis and let the correct answer replace it */
+    #s2 .wrongCard{position:absolute;top:300px;left:94px;width:660px;min-height:225px;padding:34px 85px 34px 36px;opacity:0;transform-origin:25% 60%;font:25px/1.35 Georgia,serif;color:#f4eeee;border-color:#fa716e7a;background:linear-gradient(115deg,#281d24,#121820)}
+    #s2 .wrongCard .letter,#s2 .rightCard .letter{position:absolute;left:-21px;top:27px;width:48px;height:48px;border:2px solid #ff746f;border-radius:50%;display:grid;place-items:center;color:#ff938e;font:700 20px Arial;background:#171820}
+    #s2 .redX{position:absolute;right:21px;top:20px;font-size:58px;line-height:1;color:#ff6963;opacity:0}
+    #s2 .strike{position:absolute;left:37px;top:111px;width:0;height:6px;border-radius:9px;background:#ff625b;box-shadow:0 0 18px #ff625b;transform:rotate(-5deg);transform-origin:left center}
+    #s2 .connector{position:absolute;left:420px;top:537px;height:0;width:2px;background:linear-gradient(#ff726b,#f5a04f)}
+    #s2 .diagnosis{position:absolute;top:560px;left:245px;padding:18px 23px;border:1px solid #ff77717d;border-radius:12px;background:linear-gradient(100deg,#2b1d23,#171923);color:#ffaaa2;font-size:19px;font-weight:800;letter-spacing:.14em;box-shadow:0 15px 40px #0008;opacity:0}
+    #s2 .diagnosis:before{content:'!';display:inline-grid;place-items:center;width:25px;height:25px;margin-right:12px;border:1px solid #ff817a;border-radius:50%;font-size:16px}
+    #s2 .reason{position:absolute;left:100px;right:100px;top:700px;padding:27px 30px 28px;border-left:3px solid #f5a04f;background:#111d2a;color:#f1eee8;font:25px/1.38 Georgia,serif;opacity:0;clip-path:inset(0 100% 0 0)}
+    #s2 .reason em{font-style:normal;color:#ffd08e}
+    #s2 .correctLabel{position:absolute;left:100px;top:870px;color:#9ae0ba;font-size:14px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;opacity:0}
+    #s2 .rightCard{position:absolute;top:925px;left:125px;right:125px;min-height:204px;padding:33px 88px 32px 43px;border-color:#82d5a37a;background:linear-gradient(110deg,#11281f,#111d24);font:25px/1.35 Georgia,serif;color:#eaf3ed;opacity:0}
+    #s2 .rightCard .letter{border-color:#8ce0ae;color:#a9edc3}
+    #s2 .greenCheck{position:absolute;right:21px;top:21px;font-size:46px;color:#8ce0ae;opacity:0}
+    #s2 .moveAside{position:absolute;top:1180px;left:0;width:100%;text-align:center;color:#afb9c5;font-size:16px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;opacity:0}
+    /* Scene 3 — an actual Birbal response, reconfigured one beat at a time */
+    #s3 .sourceLink{position:absolute;top:205px;left:90px;right:90px;display:flex;align-items:center;gap:18px;color:#c2cbd4;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    #s3 .sourceLink .a{display:grid;place-items:center;width:47px;height:47px;border:2px solid #ff766f;border-radius:50%;color:#ff9992;font-size:21px}
+    #s3 .sourceLink .line{height:2px;flex:1;background:linear-gradient(90deg,#ff746f,#f5a04f,#91a2b5)}
+    #s3 .correctMini{position:absolute;top:300px;left:84px;right:84px;padding:22px 65px 22px 26px;color:#f1f3ef;border:1px solid #85d4a27a;border-radius:16px;background:linear-gradient(110deg,#11281f,#111d24);box-shadow:0 18px 42px #0006;font:20px/1.3 Georgia,serif;opacity:0}
+    #s3 .correctMini .check{position:absolute;right:20px;top:15px;font-size:33px;color:#9ae0ba}
+    #s3 .birbal{position:absolute;top:555px;left:83px;width:230px;height:355px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 25px #0009);opacity:0}
+    #s3 > .panel{position:absolute;top:440px;left:310px;width:685px;height:560px;padding:29px 32px;transform-origin:top left;opacity:0}
+    #s3 .brandRow{display:flex;align-items:center;gap:12px;color:#ffd19c;font-size:13px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    #s3 .brandDot{width:8px;height:8px;border-radius:50%;background:#f5a04f;box-shadow:0 0 14px #f5a04f}
+    #s3 .beat{position:absolute;left:30px;right:30px;top:104px;min-height:500px;opacity:0;transform:translateY(20px)}
+    #s3 .beatTitle{margin:0 0 19px;color:#f5a04f;font-size:16px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    #s3 .quote{padding:24px 24px 28px;border:1px solid #92a4b64a;border-radius:15px;background:#0c1722;color:#e7e8e5;font:23px/1.38 Georgia,serif;box-shadow:0 18px 42px #0005}
+    #s3 .quote .hi{color:#ffd08e;background:linear-gradient(transparent 58%,#f5a04f38 58%)}
+    #s3 .beatRule{height:2px;width:0;margin-top:22px;background:linear-gradient(90deg,#f5a04f,transparent)}
+    #s3 .beatFoot{position:absolute;left:30px;right:30px;bottom:25px;color:#8796a7;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+    #s3 .diagnosisLink{position:absolute;bottom:215px;left:93px;width:195px;padding:13px 12px;border:1px solid #ff77715c;border-radius:10px;background:#211c23;color:#ff9a91;text-align:center;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:0}
+    #s3 .stageText{position:absolute;bottom:118px;left:90px;right:90px;text-align:center;font:22px Georgia,serif;color:#dbe0e3;opacity:0}
+    /* Scene 4 — visible continuity: the diagnosis travels into a new real question */
+    #s4 .memory{position:absolute;top:555px;left:102px;width:340px;padding:22px 20px;border:1px solid #ff7b726f;border-radius:14px;background:linear-gradient(120deg,#281d24,#111a23);box-shadow:0 20px 50px #0008;z-index:3;opacity:0}
+    #s4 .memory small{display:block;margin-bottom:10px;color:#ffaaa2;font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    #s4 .memory strong{display:block;color:#f5eee9;font-size:18px;letter-spacing:.08em}
+    #s4 .memory .memoryDot{position:absolute;right:18px;top:22px;width:10px;height:10px;border-radius:50%;background:#ff746f}
+    #s4 .historyRail{position:absolute;top:180px;left:80px;right:80px;height:110px;border-bottom:1px solid #8796a642;opacity:0}
+    #s4 .historyTitle{position:absolute;top:133px;left:90px;color:#9eacbc;font-size:12px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;opacity:0}
+    #s4 .trainerNode{position:absolute;top:580px;left:452px;width:102px;height:102px;border-radius:50%;display:grid;place-items:center;border:1px solid #f5a04f8f;background:#172231;box-shadow:0 0 36px #f5a04f25;opacity:0}
+    #s4 .trainerNode img{width:65px;height:79px;object-fit:contain}
+    #s4 .newQuestion{position:absolute;top:300px;left:570px;width:420px;min-height:780px;padding:28px 26px;transform-origin:top left;opacity:0}
+    #s4 .newQuestion .meta{color:#f5a04f;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:19px}
+    #s4 .newQuestion .excerpt{font:21px/1.43 Georgia,serif;color:#dfe3e5;margin:0 0 24px;padding-bottom:20px;border-bottom:1px solid #93a3b34c}
+    #s4 .newQuestion .question{font:700 24px/1.3 Georgia,serif;color:#fff;margin:0}
+    #s4 .connectorPath{position:absolute;left:440px;top:615px;width:0;height:2px;transform-origin:left;background:linear-gradient(90deg,#ff7b72,#f5a04f);opacity:0}
+    #s4 .remember{position:absolute;bottom:195px;left:90px;right:90px;text-align:center;font:700 39px/1.1 Georgia,serif;letter-spacing:-.02em;opacity:0}
+    #s4 .dock{position:absolute;top:181px;left:102px;width:120px;height:5px;background:#f5a04f;transform-origin:left;opacity:0}
+    #s4 .historyRail .day{position:absolute;top:49px;width:9px;height:9px;border-radius:50%;background:#8c9aab}
+    #s4 .historyRail .day:nth-child(1){left:10%}#s4 .historyRail .day:nth-child(2){left:31%}#s4 .historyRail .day:nth-child(3){left:52%}#s4 .historyRail .day:nth-child(4){left:73%}#s4 .historyRail .day:nth-child(5){left:94%}
+    /* Scene 5 — activity cards move through the actual daily structure */
+    #s5 .track{position:absolute;left:90px;right:90px;top:715px;height:500px}
+    #s5 .trackLine{position:absolute;left:84px;right:84px;top:83px;height:3px;background:#8292a352}
+    #s5 .trackFill{position:absolute;left:84px;top:83px;width:0;height:3px;background:linear-gradient(90deg,#f5a04f,#ffc781)}
+    #s5 .node{position:absolute;top:0;width:170px;height:220px;opacity:0}
+    #s5 .node:nth-of-type(1){left:0}#s5 .node:nth-of-type(2){left:180px}#s5 .node:nth-of-type(3){left:360px}#s5 .node:nth-of-type(4){left:540px}#s5 .node:nth-of-type(5){left:720px}
+    #s5 .nodeIcon{position:relative;width:168px;height:168px;border:1px solid #9aa8b850;border-radius:24px;background:linear-gradient(145deg,#172638,#0c1722);box-shadow:0 21px 42px #0006;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+    #s5 .node:nth-of-type(1) .nodeIcon,#s5 .node:nth-of-type(2) .nodeIcon,#s5 .node:nth-of-type(3) .nodeIcon{border-color:#f5a04f6a}
+    #s5 .glyph{font:700 47px Georgia,serif;color:#f5a04f}
+    #s5 .node:nth-of-type(4) .glyph{color:#b8c8dd}#s5 .node:nth-of-type(5) .glyph{color:#9de0b7}
+    #s5 .nodeLabel{position:absolute;top:185px;left:0;right:0;text-align:center;color:#e9e8e4;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+    #s5 .nodeSub{position:absolute;top:210px;left:0;right:0;text-align:center;color:#96a5b6;font-size:10px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+    #s5 .check{position:absolute;right:10px;top:9px;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#122a20;border:1px solid #8bd9a9;color:#9ae4b5;font-weight:900;opacity:0}
+    #s5 .dailyTitle{position:absolute;top:200px;left:90px;right:90px;text-align:center;font:700 55px/1.08 Georgia,serif;letter-spacing:-.04em;opacity:0}
+    #s5 .dailyTitle span{color:#f5a04f}
+    #s5 .counts{position:absolute;top:515px;left:140px;right:140px;display:flex;justify-content:space-between;color:#8f9eaf;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:0}
+    #s5 .counts b{color:#f1eee8;font-size:16px;letter-spacing:.04em}
+    #s5 .days{position:absolute;top:1145px;left:140px;right:140px;display:flex;align-items:center;justify-content:space-between;opacity:0}
+    #s5 .day{width:118px;height:66px;display:grid;place-items:center;border:1px solid #8ea0b74c;border-radius:12px;background:#101c29;color:#c0cad3;font-size:14px;font-weight:800;letter-spacing:.09em}
+    #s5 .day.active{border-color:#f5a04f;color:#ffd19b;box-shadow:0 0 23px #f5a04f23}
+    #s5 .dayArrow{color:#f5a04f;font-size:23px}
+    #s5 .dailyCaption{position:absolute;top:1320px;left:90px;right:90px;text-align:center;color:#c5cdd4;font:24px Georgia,serif;opacity:0}
+    /* Scene 6 — training path resolves to the core promise */
+    #s6 .converge{position:absolute;left:120px;right:120px;top:650px;height:3px;background:linear-gradient(90deg,transparent,#f5a04f,transparent);opacity:0}
+    #s6 .promise{position:absolute;left:90px;right:90px;top:680px;text-align:center;font:700 62px/1.12 Georgia,serif;letter-spacing:-.04em;opacity:0}
+    #s6 .promise.second{top:830px;color:#e5e5e1;font-size:54px}
+    #s6 .mission{position:absolute;top:1120px;left:0;right:0;text-align:center;font-size:26px;font-weight:800;letter-spacing:.2em;opacity:0}
+    #s6 .cat{position:absolute;top:1205px;left:0;right:0;text-align:center;color:#f5a04f;font-size:166px;font-weight:800;letter-spacing:-.08em;line-height:.95;opacity:0}
+    /* Scene 7 — restrained existing Auctor end card and CTA */
+    #s7 .logo{position:absolute;top:410px;left:437px;width:206px;height:206px;object-fit:contain;mix-blend-mode:screen;opacity:0}
+    #s7 .wordmark{position:absolute;top:685px;left:90px;right:90px;text-align:center;font-size:37px;font-weight:800;letter-spacing:.2em;opacity:0}
+    #s7 .submark{position:absolute;top:748px;left:90px;right:90px;text-align:center;color:#f5a04f;font-size:19px;font-weight:800;letter-spacing:.25em;opacity:0}
+    #s7 .promiseEnd{position:absolute;top:1010px;left:100px;right:100px;text-align:center;color:#e9e8e3;font:700 36px/1.25 Georgia,serif;opacity:0}
+    #s7 .cta{position:absolute;top:1190px;left:177px;width:726px;padding:25px 20px;text-align:center;border-radius:14px;background:linear-gradient(100deg,#f49b4a,#ffc277);color:#101721;font-size:22px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 14px 38px #f5a04f24;opacity:0}
+    #s7 .url{position:absolute;top:1295px;left:90px;right:90px;text-align:center;color:#c6cfd7;font-size:20px;font-weight:700;letter-spacing:.1em;opacity:0}
+    #s7 .endRule{position:absolute;top:1420px;left:385px;width:310px;height:2px;background:linear-gradient(90deg,transparent,#f5a04f,transparent)}
+    #s7 .endnote{position:absolute;bottom:120px;left:90px;right:90px;text-align:center;color:#7f8d9e;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:0}
+  </style>
+</head>
+<body>
+<main id="root" data-hf-id="auctor-varc-bootcamp-cinematic" data-composition-id="root" data-start="0" data-duration="45" data-width="1080" data-height="1920" data-fps="30">
+  <div class="environment"></div><div class="grain"></div><div class="rail" id="rail"></div>
+  <section class="scene" id="s1">
+    <div class="eyebrow">AUCTOR VARC · A REAL RC REVIEW</div>
+    <article class="questionCard panel">
+      <div class="qMeta">Question 1 · Inference</div>
+      <p class="passage">A university introduced an optional seminar for students who had already completed an introductory course. Although attendance was low, students who attended regularly performed better on the final assessment than those who did not. However, the seminar attracted a disproportionate number of students who had scored highly in the introductory course. The university is considering making the seminar compulsory, arguing that its apparent benefits justify wider participation.</p>
+      <p class="prompt">Which of the following can be most reasonably inferred from the information above?</p>
+    </article>
+    <div class="options">
+      <div class="option" id="oA"><span class="letter">A</span>The seminar’s benefits were concentrated among students who had scored highly in the introductory course.<span class="choiceMark">●</span></div>
+      <div class="option" id="oB"><span class="letter">B</span>Making the seminar compulsory would raise the final-assessment performance of students who previously chose not to attend.<span class="choiceMark">●</span></div>
+      <div class="option" id="oC"><span class="letter">C</span>The better results of regular attenders may partly reflect the stronger preparation of those who chose to attend.<span class="choiceMark">●</span></div>
+      <div class="option" id="oD"><span class="letter">D</span>Regular attenders scored higher mainly because the seminar gave them practice with the final assessment’s format.<span class="choiceMark">●</span></div>
+    </div>
+    <div class="cursor"></div>
+    <div class="freeze"><strong>YOU GOT IT WRONG.</strong><span>BUT DO YOU KNOW WHY?</span></div>
+  </section>
+  <section class="scene" id="s2">
+    <div class="eyebrow">THE MISTAKE IS A CLUE</div>
+    <div class="wrongCard panel" id="wrongCard"><span class="letter">A</span>The seminar’s benefits were concentrated among students who had scored highly in the introductory course.<span class="redX">×</span><i class="strike"></i></div>
+    <div class="connector"></div><div class="diagnosis" id="diagnosis">UNSUPPORTED INFERENCE</div>
+    <div class="reason" id="reason">The passage does not state that the seminar’s benefits were <em>concentrated among high scorers.</em></div>
+    <div class="correctLabel">Supported by the passage</div>
+    <div class="rightCard panel" id="rightCard"><span class="letter">C</span>The better results of regular attenders may partly reflect the stronger preparation of those who chose to attend.<span class="greenCheck">✓</span></div>
+    <div class="moveAside">The rejected answer moves aside → the supported answer takes its place</div>
+  </section>
+  <section class="scene" id="s3">
+    <div class="eyebrow">BIRBAL · REVIEWING THIS ANSWER</div>
+    <div class="sourceLink"><span class="a">A</span><span>your choice</span><i class="line"></i><span class="orange">Birbal</span></div>
+    <div class="correctMini">C · The better results of regular attenders may partly reflect the stronger preparation of those who chose to attend.<span class="check">✓</span></div>
+    <img class="birbal" src="assets/images/birbal.png" alt="Auctor Birbal character">
+    <div class="panel">
+      <div class="brandRow"><i class="brandDot"></i>BIRBAL FEEDBACK</div>
+      <div class="beat" id="beat1"><h3 class="beatTitle">WHY IT FAILED</h3><div class="quote">The passage does not state that the seminar’s benefits were <span class="hi">concentrated among high scorers</span>; it only notes that more high scorers attended.</div><div class="beatRule"></div></div>
+      <div class="beat" id="beat2"><h3 class="beatTitle">THE TRAP</h3><div class="quote">It references the high-scoring students and the seminar’s benefits, which are both mentioned in the passage.<br><br><span class="hi">Trap: Unsupported Inference.</span></div><div class="beatRule"></div></div>
+      <div class="beat" id="beat3"><h3 class="beatTitle">WHAT TO DO NEXT TIME</h3><div class="quote"><span class="hi">Keep the conclusion within what the passage supports;</span> plausibility alone is not evidence.</div><div class="beatRule"></div></div>
+      <div class="beatFoot">AUCTOR VARC BOOTCAMP · ANSWER REVIEW</div>
+    </div>
+    <div class="diagnosisLink">Unsupported<br>inference</div>
+    <div class="stageText">One answer. A clearer next attempt.</div>
+  </section>
+  <section class="scene" id="s4">
+    <div class="eyebrow">A NEW DAILY RC SESSION</div>
+    <div class="historyTitle">PAST REVIEW · CARRIED FORWARD</div>
+    <div class="historyRail"><i class="day"></i><i class="day"></i><i class="day"></i><i class="day"></i><i class="day"></i></div><div class="dock"></div>
+    <div class="memory" id="memory"><small>Previous review</small><strong>UNSUPPORTED INFERENCE</strong><i class="memoryDot"></i></div>
+    <i class="connectorPath"></i>
+    <div class="trainerNode"><img src="assets/images/birbal-memory.png" alt="Birbal connects review history to the next session"></div>
+    <article class="newQuestion panel">
+      <div class="meta">Question 1 of 4 · Main Idea</div>
+      <p class="excerpt">“The question is not whether institutional judgment can be made free of mediation, but whether its mediations can be made visible, revisable, and answerable to those subject to them.”</p>
+      <p class="question">Which option best expresses the passage’s central argument?</p>
+    </article>
+    <div class="remember">Your trainer keeps your past work in view.</div>
+  </section>
+  <section class="scene" id="s5">
+    <div class="eyebrow">THE BOOTCAMP DAILY LOOP</div>
+    <div class="dailyTitle">You show up.<br><span>Your session is ready.</span></div>
+    <div class="counts"><span><b>5</b> warm-up</span><span><b>12</b> RC</span><span><b>8</b> VA</span></div>
+    <div class="track"><i class="trackLine"></i><i class="trackFill"></i>
+      <div class="node"><div class="nodeIcon"><span class="glyph">5</span><span class="micro">Questions</span><i class="check">✓</i></div><div class="nodeLabel">Warm-up</div><div class="nodeSub">Find your focus</div></div>
+      <div class="node"><div class="nodeIcon"><span class="glyph">RC</span><span class="micro">Read · reason</span><i class="check">✓</i></div><div class="nodeLabel">RC Practice</div><div class="nodeSub">12 questions</div></div>
+      <div class="node"><div class="nodeIcon"><span class="glyph">VA</span><span class="micro">Practice</span><i class="check">✓</i></div><div class="nodeLabel">Verbal Ability</div><div class="nodeSub">8 questions</div></div>
+      <div class="node"><div class="nodeIcon"><span class="glyph">↺</span><span class="micro">Reflect</span><i class="check">✓</i></div><div class="nodeLabel">Review</div><div class="nodeSub">See the reasoning</div></div>
+      <div class="node"><div class="nodeIcon"><span class="glyph">→</span><span class="micro">Continue</span><i class="check">✓</i></div><div class="nodeLabel">Next Session</div><div class="nodeSub">One day at a time</div></div>
+    </div>
+    <div class="days"><div class="day active">DAY 01</div><span class="dayArrow">›</span><div class="day">DAY 02</div><span class="dayArrow">›</span><div class="day">DAY 03</div><span class="dayArrow">›</span><div class="day">…</div></div>
+    <div class="dailyCaption">Warm-up · RC · VA · review · next session</div>
+  </section>
+  <section class="scene" id="s6">
+    <i class="converge"></i>
+    <div class="promise">YOU SHOW UP.</div>
+    <div class="promise second">WE TAKE CARE OF THE REST.</div>
+    <div class="mission">ONE MISSION.</div><div class="cat">CAT 2026.</div>
+  </section>
+  <section class="scene" id="s7">
+    <img class="logo" src="assets/images/logo.png" alt="Auctor Labs logo">
+    <div class="wordmark">AUCTOR</div><div class="submark">VARC BOOTCAMP</div>
+    <div class="promiseEnd">ONE GUIDED SESSION.<br>EVERY DAY.</div>
+    <div class="cta">Start your training</div><div class="url">auctorlabs.in</div><i class="endRule"></i>
+    <div class="endnote">CAT 2026 · AUCTOR VARC BOOTCAMP</div>
+  </section>
+  <audio id="score" data-hf-id="hf-score" data-start="0" data-duration="45" data-track-index="0" data-volume="1" src="assets/audio/score-45s.wav"></audio>
+  <audio id="sfx-select" data-hf-id="sfx-select" data-start="3.18" data-duration=".1" data-track-index="1" data-volume=".23" src="assets/sfx/interface/click_001.ogg"></audio>
+  <audio id="sfx-reject" data-hf-id="sfx-reject" data-start="5.35" data-duration=".18" data-track-index="2" data-volume=".28" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+  <audio id="sfx-dock" data-hf-id="sfx-dock" data-start="22.9" data-duration=".6" data-track-index="3" data-volume=".2" src="assets/sfx/casino/card-slide-1.ogg"></audio>
+</main>
+<script>
+  const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+  gsap.set('.scene',{autoAlpha:0});gsap.set('#s1',{autoAlpha:1});
+  gsap.set('#s1 .questionCard',{y:30,rotateX:3});gsap.set('#s1 .option',{y:24,rotateX:-5});
+  gsap.set('#s1 .freeze',{y:18});gsap.set('#s1 .cursor',{x:0,y:0});
+  gsap.set('#s2 .wrongCard',{x:-90,y:25,rotateY:8,scale:.94});gsap.set('#s2 .redX',{scale:.5});gsap.set('#s2 .diagnosis',{scale:.8});gsap.set('#s2 .greenCheck',{scale:.6});gsap.set('#s2 .reason',{clipPath:'inset(0 100% 0 0)'});
+  gsap.set('#s2 .rightCard',{x:100});gsap.set('#s3 .panel',{x:35,y:35,scale:.97});gsap.set('#s3 .birbal',{y:25});
+  gsap.set('#s4 .memory',{x:-120,y:60,rotate:-3});gsap.set('#s4 .newQuestion',{x:80,y:35,rotateY:-5});
+  gsap.set('#s5 .trackFill',{width:0});gsap.set('#s5 .node',{y:25});gsap.set('#s5 .node .check',{scale:.6});gsap.set('#s6 .converge',{scaleX:0});gsap.set('#s7 .logo',{scale:.92});gsap.set('#s7 .endRule',{scaleX:0});
+  tl.to('#s1 .questionCard',{y:0,rotateX:0,autoAlpha:1,duration:.62},.14)
+    .to('#s1 .option',{y:0,rotateX:0,autoAlpha:1,duration:.25,stagger:.31},.78)
+    .to('#s1 .cursor',{x:-555,y:-202,autoAlpha:1,duration:.42,ease:'power2.inOut'},2.95)
+    .to('#s1 #oA',{className:'option selected',x:18,scale:1.015,duration:.2},3.27)
+    .to('#s1 #oA .choiceMark',{autoAlpha:1,scale:1.15,duration:.18},3.29)
+    .to('#s1 .cursor',{autoAlpha:0,duration:.12},3.52)
+    .to('#s1 .freeze',{y:0,autoAlpha:1,duration:.3},3.68)
+    .to('#s1 #oA',{x:35,z:30,scale:1.04,duration:.34},4.55)
+    .to('#s1',{autoAlpha:0,duration:.2},4.82)
+    .to('#s2',{autoAlpha:1,duration:.16},4.86)
+    .to('#s2 .wrongCard',{x:0,y:0,rotateY:0,scale:1,autoAlpha:1,duration:.4},4.9)
+    .to('#s2 .redX',{scale:1,autoAlpha:1,duration:.22},5.3)
+    .to('#s2 .strike',{width:560,duration:.31,ease:'power2.inOut'},5.35)
+    .to('#s2 .connector',{height:42,duration:.25},5.62)
+    .to('#s2 .diagnosis',{scale:1,autoAlpha:1,duration:.28},5.82)
+    .to('#s2 .reason',{clipPath:'inset(0 0% 0 0)',autoAlpha:1,duration:.4},6.35)
+    .to('#s2 .correctLabel',{y:0,autoAlpha:1,duration:.2},7.25)
+    .to('#s2 .wrongCard',{x:-520,rotateY:-8,scale:.9,autoAlpha:0,duration:.35},7.55)
+    .to('#s2 .diagnosis',{x:-380,y:-300,scale:.7,autoAlpha:0,duration:.32},7.58)
+    .to('#s2 .rightCard',{x:0,autoAlpha:1,duration:.44},7.85)
+    .to('#s2 .greenCheck',{scale:1,autoAlpha:1,duration:.25},8.24)
+    .to('#s2 .moveAside',{y:0,autoAlpha:1,duration:.25},9.25)
+    .to('#s2',{autoAlpha:0,duration:.2},10.78)
+    .to('#s3',{autoAlpha:1,duration:.16},10.84)
+    .from('#s3 .sourceLink',{x:-25,autoAlpha:0,duration:.3},10.88)
+    .to('#s3 .correctMini',{y:0,autoAlpha:1,duration:.28},11.12)
+    .to('#s3 .birbal',{y:0,autoAlpha:1,duration:.32},11.48)
+    .to('#s3 .panel',{x:0,y:0,scale:1,autoAlpha:1,duration:.36},11.6)
+    .to('#beat1',{y:0,autoAlpha:1,duration:.28},11.98)
+    .to('#beat1 .beatRule',{width:'95%',duration:.35},12.3)
+    .to('#beat1',{y:-10,autoAlpha:0,duration:.2},13.75)
+    .to('#beat2',{y:0,autoAlpha:1,duration:.28},13.98)
+    .to('#beat2 .beatRule',{width:'95%',duration:.35},14.3)
+    .to('#beat2',{y:-10,autoAlpha:0,duration:.2},15.35)
+    .to('#beat3',{y:0,autoAlpha:1,duration:.28},15.58)
+    .to('#beat3 .beatRule',{width:'95%',duration:.35},15.9)
+    .to('#s3 .diagnosisLink',{x:0,autoAlpha:1,duration:.22},16.2)
+    .to('#s3 .stageText',{y:0,autoAlpha:1,duration:.24},16.65)
+    .to('#s3',{autoAlpha:0,duration:.2},17.78)
+    .to('#s4',{autoAlpha:1,duration:.15},17.85)
+    .to('#s4 .historyTitle',{y:0,autoAlpha:1,duration:.24},17.95)
+    .to('#s4 .historyRail',{autoAlpha:1,duration:.25},18.05)
+    .to('#s4 .memory',{x:0,y:0,rotate:0,autoAlpha:1,duration:.44},18.25)
+    .to('#s4 .connectorPath',{width:115,duration:.33,autoAlpha:1},18.82)
+    .to('#s4 .trainerNode',{scale:1,autoAlpha:1,duration:.28},19.08)
+    .to('#s4 .newQuestion',{x:0,y:0,rotateY:0,autoAlpha:1,duration:.42},19.42)
+    .to('#s4 .connectorPath',{width:180,duration:.27},20.03)
+    .to('#s4 .dock',{scaleX:1,autoAlpha:1,duration:.3},20.42)
+    .to('#s4 .memory',{x:-90,y:-355,scale:.55,rotate:0,duration:.48},20.52)
+    .to('#s4 .remember',{y:0,autoAlpha:1,duration:.28},22.05)
+    .to('#s4',{autoAlpha:0,duration:.18},24.74)
+    .to('#s5',{autoAlpha:1,duration:.16},24.82)
+    .to('#s5 .dailyTitle',{y:0,autoAlpha:1,duration:.38},24.95)
+    .to('#s5 .counts',{y:0,autoAlpha:1,duration:.25},25.45)
+    .to('#s5 .trackFill',{width:752,duration:3.15,ease:'power1.inOut'},25.7)
+    .to('#s5 .node',{y:0,autoAlpha:1,duration:.3,stagger:.48},25.72)
+    .to('#s5 .node .check',{scale:1,autoAlpha:1,duration:.2,stagger:.48},26.08)
+    .to('#s5 .days',{y:0,autoAlpha:1,duration:.28},29.0)
+    .to('#s5 .day:nth-of-type(2)',{borderColor:'#f5a04f',color:'#ffd19b',duration:.3},29.58)
+    .to('#s5 .dailyCaption',{y:0,autoAlpha:1,duration:.28},30.25)
+    .to('#s5',{autoAlpha:0,duration:.2},32.78)
+    .to('#s6',{autoAlpha:1,duration:.16},32.88)
+    .to('#s6 .converge',{scaleX:1,autoAlpha:1,duration:.45},33.08)
+    .to('#s6 .promise',{y:0,autoAlpha:1,duration:.42},33.6)
+    .to('#s6 .promise.second',{y:0,autoAlpha:1,duration:.4},35.02)
+    .to('#s6 .mission',{y:0,autoAlpha:1,duration:.3},36.35)
+    .to('#s6 .cat',{y:0,scale:1,autoAlpha:1,duration:.52},37.0)
+    .to('#s6',{autoAlpha:0,duration:.2},38.78)
+    .to('#s7',{autoAlpha:1,duration:.18},38.9)
+    .to('#s7 .logo',{scale:1,autoAlpha:1,duration:.42},39.05)
+    .to('#s7 .wordmark',{y:0,autoAlpha:1,duration:.3},39.5)
+    .to('#s7 .submark',{y:0,autoAlpha:1,duration:.28},39.82)
+    .to('#s7 .promiseEnd',{y:0,autoAlpha:1,duration:.38},40.55)
+    .to('#s7 .cta',{y:0,autoAlpha:1,duration:.34},41.35)
+    .to('#s7 .url',{y:0,autoAlpha:1,duration:.28},41.78)
+    .to('#s7 .endRule',{scaleX:1,duration:.4},42.15)
+    .to('#s7 .endnote',{y:0,autoAlpha:1,duration:.25},42.55)
+    .to('#rail',{scaleX:1,duration:45,ease:'none'},0)
+    .to('.environment',{backgroundPosition:'8% 8%',duration:12,ease:'sine.inOut'},0)
+    .to('.environment',{backgroundPosition:'94% 90%',duration:12,ease:'sine.inOut'},12)
+    .to('.environment',{backgroundPosition:'6% 70%',duration:11,ease:'sine.inOut'},24)
+    .to('.environment',{backgroundPosition:'70% 20%',duration:10,ease:'sine.inOut'},35);
+  window.__timelines=window.__timelines||{};window.__timelines.root=tl;
+  window.renderFrame=t=>tl.time(Math.max(0,Math.min(45,t)),false);window.renderFrame(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<template>
+  <style>
+    #root { position:relative; width:1080px; height:1920px; overflow:hidden; color:#edf4f7; font-family:Arial,Helvetica,sans-serif; }
+    .ground { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 43%,#172a36 0,#0b121c 62%,#080e15 100%); }
+    .topline { position:absolute; top:112px; left:76px; right:76px; display:flex; justify-content:space-between; align-items:center; color:#8ca0ad; font:600 20px Arial,sans-serif; letter-spacing:.19em; }
+    .topline strong { color:#6ee0ed; font-size:22px; letter-spacing:.12em; }
+    .phone { position:absolute; top:250px; left:52px; width:976px; height:1320px; padding:22px; border:1px solid rgba(197,230,236,.35); border-radius:58px; background:linear-gradient(145deg,#263b48,#091018 34%,#101923); box-shadow:0 40px 120px rgba(0,0,0,.44),inset 0 1px rgba(255,255,255,.15); }
+    .screen { position:relative; width:100%; height:100%; overflow:hidden; border-radius:40px; padding:29px 34px; background:#0d1821; border:1px solid #243541; }
+    .appbar { height:54px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #253642; color:#c9d8df; font-size:20px; }
+    .appbar b { color:#6ee0ed; font-size:19px; letter-spacing:.13em; }
+    .appmark { display:flex; align-items:center; gap:10px; }
+    .appmark img { width:30px; height:30px; object-fit:contain; }
+    .connection { display:flex; align-items:center; gap:12px; margin-top:26px; color:#91a4ae; font-size:17px; letter-spacing:.06em; }
+    .choice { border:1px solid #a54c4c; border-radius:100px; color:#ffaaa4; padding:7px 12px; font-weight:700; }
+    .card { margin-top:18px; padding:24px; border:1px solid #2b404b; border-radius:24px; background:linear-gradient(155deg,#14252f,#101a23); }
+    .cardhead { display:flex; align-items:center; gap:16px; padding-bottom:21px; border-bottom:1px solid #2a3b45; }
+    .avatar { width:66px; height:66px; object-fit:cover; border-radius:50%; border:2px solid #6ee0ed; }
+    .cardhead strong { display:block; color:#edf4f7; font-size:24px; }
+    .cardhead small { display:block; margin-top:6px; color:#8ba0aa; font-size:15px; letter-spacing:.1em; }
+    .rail { display:flex; gap:9px; margin-top:20px; }
+    .rail span { flex:1; padding:11px 10px; border:1px solid #30434e; border-radius:12px; color:#82949d; text-align:center; font-size:14px; line-height:1.25; font-weight:700; letter-spacing:.06em; }
+    .rail .on { color:#9ce6eb; border-color:#58aeb7; background:rgba(110,224,237,.09); }
+    .feedback { margin-top:18px; height:770px; padding:18px 24px 62px; border:1px solid #30434e; border-radius:18px; background:#0e1b24; display:flex; flex-direction:column; }
+    .beat { flex:1; padding:17px 0; border-bottom:1px solid #293b45; }
+    .beat:last-child { border-bottom:0; }
+    .label { color:#6ee0ed; font-size:16px; font-weight:800; letter-spacing:.15em; }
+    .copy { margin-top:12px; color:#dbe5e9; font-size:22px; line-height:1.4; }
+    .copy mark { padding:0 3px; border-radius:5px; color:#eaf7f6; background:rgba(110,224,237,.18); box-shadow:0 0 0 2px rgba(110,224,237,.13); }
+    .support { position:absolute; left:24px; right:24px; bottom:18px; margin:0; padding-top:15px; border-top:1px solid #293b45; color:#8fa2ac; font-size:17px; line-height:1.45; }
+    .linkline { position:absolute; left:34px; right:34px; bottom:25px; display:flex; align-items:center; justify-content:center; gap:12px; color:#8296a0; font-size:16px; letter-spacing:.06em; }
+    .linkline b { color:#ff9c95; }
+    .arrow { color:#6ee0ed; font-size:23px; }
+    .clip {}
+  </style>
+  <div id="root" data-composition-id="03-birbal-feedback" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+    <div id="scene-ground" class="ground clip" data-start="0" data-duration="5" data-track-index="0"></div>
+    <div id="scene-header" class="topline clip" data-start="0" data-duration="5" data-track-index="1"><strong>AUCTOR RC</strong><span>BIRBAL · FEEDBACK</span></div>
+    <div class="phone clip" id="phone3" data-start="0" data-duration="5" data-track-index="2">
+      <div class="screen">
+        <div class="appbar"><b class="appmark"><img src="assets/images/auctor-logo.png" alt=""/>ANSWER REVIEW</b><span>QUESTION 01</span></div>
+        <div id="answer-connection" class="connection clip" data-start=".1" data-duration="4.9"><span class="choice">YOUR ANSWER · A</span><span class="arrow">→</span><span>Birbal explains</span></div>
+        <div class="card">
+          <div class="cardhead"><img id="birbal-avatar" class="avatar clip" data-start=".18" data-duration="4.82" src="assets/images/birbal-avatar.jpeg"/><div><strong>Birbal’s Feedback</strong><small>INFERENCE REVIEW</small></div></div>
+          <div class="rail"><span class="on" id="rail1">WHY IT<br/>FAILED</span><span id="rail2">WHAT YOU<br/>MISSED</span><span id="rail3">WHAT TO DO<br/>NEXT TIME</span></div>
+          <div class="feedback">
+            <div class="beat clip" id="beat1" data-start=".45" data-duration="4.55"><div class="label">WHY IT FAILED</div><div class="copy">The passage <mark>does not state</mark> that the seminar’s benefits were concentrated among high scorers; it only notes that more high scorers attended. It does not rule out benefits for others.</div></div>
+            <div class="beat clip" id="beat2" data-start="1.63" data-duration="3.37"><div class="label">WHAT YOU MISSED</div><div class="copy">The observed performance difference may be partly due to the stronger preparation of those who chose to attend, <mark>not just the seminar itself.</mark></div></div>
+            <div class="beat clip" id="beat3" data-start="2.96" data-duration="2.04"><div class="label">WHAT TO DO NEXT TIME</div><div class="copy"><mark>Keep the conclusion within what the passage supports; plausibility alone is not evidence.</mark></div></div>
+            <div class="support">TRAP&nbsp; · &nbsp;<span style="color:#f2bd72">Unsupported Inference</span></div>
+          </div>
+        </div>
+        <div class="linkline"><b>A · INCORRECT</b><span class="arrow">→</span><span>C · CORRECT</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){ window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused:true });
+    tl.fromTo("#phone3", { opacity:0, y:22, rotationY:-3, scale:.97 }, { opacity:1, y:0, rotationY:0, scale:1, duration:.42, ease:"power3.out" }, 0);
+    tl.fromTo(".topline", { opacity:0, y:-10 }, { opacity:1, y:0, duration:.3 }, .04);
+    tl.fromTo(".connection", { opacity:0, x:-12 }, { opacity:1, x:0, duration:.28 }, .1);
+    tl.fromTo(".avatar", { opacity:0, scale:.75 }, { opacity:1, scale:1, duration:.28, ease:"back.out(1.7)" }, .18);
+    tl.fromTo("#beat1", { opacity:0, y:10 }, { opacity:1, y:0, duration:.32 }, .45);
+    tl.fromTo("#beat2", { opacity:0, y:10 }, { opacity:1, y:0, duration:.32 }, 1.63);
+    tl.to("#rail1", { color:"#82949d", borderColor:"#30434e", backgroundColor:"transparent", duration:.18 }, 1.62);
+    tl.to("#rail2", { color:"#9ce6eb", borderColor:"#58aeb7", backgroundColor:"rgba(110,224,237,.09)", duration:.18 }, 1.62);
+    tl.fromTo("#beat3", { opacity:0, y:10 }, { opacity:1, y:0, duration:.32 }, 2.96);
+    tl.to("#rail2", { color:"#82949d", borderColor:"#30434e", backgroundColor:"transparent", duration:.18 }, 2.95);
+    tl.to("#rail3", { color:"#9ce6eb", borderColor:"#58aeb7", backgroundColor:"rgba(110,224,237,.09)", duration:.18 }, 2.95);
+    tl.to("#beat1", { opacity:.62, duration:.2 }, 1.62);
+    tl.to("#beat2", { opacity:.62, duration:.2 }, 2.95);
+    window.__timelines["03-birbal-feedback"] = tl; })();
+  </script>
+</template>

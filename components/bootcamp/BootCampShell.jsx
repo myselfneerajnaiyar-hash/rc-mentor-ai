@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import s from './bootcamp.module.css'
-export default function BootCampShell({ session, children, reviewWorkspace = false, preview = false }) {
+export default function BootCampShell({ session, children, reviewWorkspace = false, preview = false, showBackToBootCamp = false }) {
   const root = useRef(null)
   useEffect(() => {
     const elements = [document.documentElement, document.body]
@@ -11,7 +11,7 @@ export default function BootCampShell({ session, children, reviewWorkspace = fal
     return () => elements.forEach((element, i) => { element.style.height = previous[i].height; element.style.background = previous[i].background })
   }, [])
   useEffect(() => { if(preview){if(session)root.current?.scrollIntoView({block:'start'})}else{window.scrollTo(0,0);document.body.scrollTo(0,0)} }, [session?.phase,session?.currentBlock,preview])
-  return <main ref={root} className={`${s.root} ${reviewWorkspace ? s.reviewRoot : ''}`}><header className={s.top}><div className={s.brand}><img className={s.avatar} src="/birbal.png" alt="" /><span>Auctor / Boot Camp</span></div><Link href="/">Back to Home</Link></header><div className={s.container}>
+  return <main ref={root} className={`${s.root} ${reviewWorkspace ? s.reviewRoot : ''}`}><header className={s.top}><div className={s.brand}><img className={s.avatar} src="/birbal.png" alt="" /><span>Auctor / Boot Camp</span></div><nav className={s.topLinks} aria-label="Boot Camp navigation">{showBackToBootCamp && <Link href="/boot-camp">Back to Boot Camp</Link>}<Link href="/">Back to Home</Link></nav></header><div className={s.container}>
     {session && <ol className={s.steps} aria-label={`Day ${session.dayNumber} progress`}>{session.progress.map(b => <li key={b.key} aria-current={session.phase !== 'report' && session.currentBlock === b.key ? 'step' : undefined} className={`${s.step} ${session.phase !== 'report' && session.currentBlock === b.key ? s.current : b.completed ? s.complete : ''}`}>{b.completed ? '✓ ' : ''}{b.label}</li>)}</ol>}
     {children}</div></main>
 }

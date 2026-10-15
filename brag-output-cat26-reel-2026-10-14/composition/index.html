@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Auctor CAT 26 VARC Bootcamp</title>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#07111d}
+    body{font-family:Arial,Helvetica,sans-serif;color:#f7f5ef}
+    #root{position:relative;width:1080px;height:1920px;overflow:hidden;isolation:isolate;background:#07111d}
+    .bg{position:absolute;inset:0;background:radial-gradient(ellipse 85% 50% at 65% 53%,#17264a 0%,#0b1625 48%,#050b12 100%)}
+    .wash{position:absolute;inset:-240px;background:radial-gradient(ellipse at 25% 48%,#f07c2824,transparent 42%),radial-gradient(ellipse at 72% 53%,#385bff2b,transparent 45%);filter:blur(45px)}
+    .grain{position:absolute;inset:0;opacity:.14;background-image:radial-gradient(#fff 0.55px,transparent .7px);background-size:9px 9px;mask-image:linear-gradient(transparent,#000 20%,#000 82%,transparent)}
+    .rail{position:absolute;z-index:20;top:0;left:0;width:1080px;height:7px;transform-origin:left;background:linear-gradient(90deg,#435bff,#7586ff 45%,#f29a4b 78%,#ffc277)}
+    .scene{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+    .kicker{position:absolute;top:88px;left:78px;color:#b7c3d3;font-size:18px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+    .kicker:before{content:"";display:inline-block;width:33px;height:3px;margin:0 14px 5px 0;background:#f5a04f}
+    .serif{font-family:Georgia,"Times New Roman",serif}
+    .orange{color:#f4a04f}
+    .muted{color:#b5c0cf}
+    .smallcap{font-weight:800;font-size:17px;letter-spacing:.17em;text-transform:uppercase}
+    .rule{height:2px;background:linear-gradient(90deg,#f4a04f,transparent)}
+    .glass{border:1px solid #92a9c84a;border-radius:26px;background:linear-gradient(140deg,#182536ee,#0e1926ee);box-shadow:0 28px 90px #0009,0 0 45px #374c8320}
+    .safe-copy{position:absolute;left:74px;right:74px;text-align:center}
+
+    /* 0-4.8: calendar fills the canvas, including the lower half */
+    #s1 .clock{position:absolute;left:185px;top:270px;width:710px;height:710px;border:2px solid #f4a04f55;border-radius:50%;box-shadow:0 0 110px #f4a04f20,inset 0 0 100px #385bff16}
+    #s1 .clock:before,#s1 .clock:after{content:"";position:absolute;left:50%;top:50%;transform-origin:left center;background:#f4a04f}
+    #s1 .clock:before{width:225px;height:5px;transform:rotate(-60deg);box-shadow:0 0 22px #f4a04f}
+    #s1 .clock:after{width:285px;height:2px;transform:rotate(15deg);background:#dfe7f2}
+    #s1 .hub{position:absolute;left:50%;top:50%;width:22px;height:22px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 30px #fff}
+    #s1 .tick{position:absolute;left:50%;top:50%;width:16px;height:16px;border:2px solid #f5a04f;border-radius:50%;transform:translate(-50%,-50%)}
+    #s1 .calendar{position:absolute;left:85px;right:85px;top:790px;height:650px;padding:28px 42px;border-radius:36px;background:linear-gradient(145deg,#132335f5,#0b1420f5);border:1px solid #f4a04f77;box-shadow:0 45px 120px #000b,0 0 70px #f4a04f16;transform:rotate(-3deg)}
+    #s1 .rings{position:absolute;left:120px;right:120px;top:-24px;display:flex;justify-content:space-between}
+    #s1 .rings i{width:28px;height:58px;border:5px solid #f4a04f;border-radius:16px;background:#102033}
+    #s1 .month{position:absolute;left:55px;right:55px;top:88px;height:60px;text-align:center;color:#f5a04f;font-size:46px;font-weight:800;letter-spacing:.25em}
+    #s1 .month span{position:absolute;top:0;left:0;right:0;opacity:0}
+    #s1 .month span:first-child{opacity:1}
+    #s1 .date{position:absolute;left:0;right:0;top:178px;height:340px;text-align:center;color:#f7f5ef;font-size:300px;line-height:1;font-weight:800;letter-spacing:-.09em}
+    #s1 .date span{position:absolute;top:0;left:0;right:0;opacity:0}
+    #s1 .date span:first-child{opacity:1}
+    #s1 .cal-foot{position:absolute;left:0;right:0;bottom:55px;text-align:center;color:#aab8ca;font-size:18px;font-weight:800;letter-spacing:.22em}
+    #s1 .headline{position:absolute;top:1415px;left:80px;right:80px;text-align:center;font:800 73px/.98 Arial,sans-serif;letter-spacing:-.05em}
+    #s1 .headline span{display:block;color:#f4a04f;margin-top:12px}
+
+    /* 4.8-9.5: layered mock cards; illustrative label remains on-screen */
+    #s2 .headline{position:absolute;top:150px;left:80px;right:80px;text-align:center;font:800 79px/.98 Arial,sans-serif;letter-spacing:-.055em}
+    #s2 .headline span{display:block;color:#f4a04f}
+    #s2 .illustrative{position:absolute;top:360px;left:260px;right:260px;text-align:center;color:#ffc78f;border:1px solid #f4a04f70;background:#101b29;padding:12px;border-radius:50px;font-size:15px;font-weight:800;letter-spacing:.15em}
+    #s2 .stack{position:absolute;inset:450px 0 210px}
+    #s2 .mock{position:absolute;width:710px;height:420px;padding:40px 46px;border-radius:32px;border:1px solid #8295ad70;background:linear-gradient(135deg,#182638,#101924);box-shadow:0 35px 110px #000b}
+    #s2 .mock .score{position:absolute;top:65px;left:42px;font-size:118px;line-height:1;font-weight:800;letter-spacing:-.09em}
+    #s2 .mock .foot{display:none}
+    #s2 .m1{top:30px;left:160px;transform:rotate(-8deg)}
+    #s2 .m2{top:180px;left:255px;transform:rotate(6deg)}
+    #s2 .m3{top:360px;left:80px;transform:rotate(-4deg)}
+    #s2 .m4{top:540px;left:290px;transform:rotate(7deg)}
+    #s2 .m5{top:720px;left:120px;transform:rotate(-6deg)}
+    #s2 .stop{position:absolute;left:250px;right:250px;bottom:300px;text-align:center;padding:28px;border:2px solid #ff776b;border-radius:18px;background:#251a20;color:#ff8b81;font-size:62px;font-weight:900;letter-spacing:.18em;box-shadow:0 0 65px #ff655333}
+    #s2 .sub{position:absolute;left:70px;right:70px;bottom:205px;text-align:center;color:#e7edf4;font:30px Georgia,serif}
+
+    /* 9.5-16.5: one real question, four large independent options */
+    #s3 .headline{position:absolute;top:160px;left:80px;right:80px;font:800 64px/1.02 Georgia,serif;letter-spacing:-.045em}
+    #s3 .headline span{color:#f4a04f}
+    #s3 .sample{position:absolute;top:354px;right:82px;color:#aab6c6;font-size:14px;letter-spacing:.16em;text-transform:uppercase}
+    #s3 .question{position:absolute;top:402px;left:76px;right:76px;min-height:178px;padding:30px 34px;border-left:5px solid #f4a04f;background:linear-gradient(90deg,#172336,#101925);color:#f0efea;font:34px/1.3 Georgia,serif}
+    #s3 .passagehint{position:absolute;top:595px;left:80px;right:80px;min-height:150px;color:#b8c4d1;font:27px/1.32 Georgia,serif}
+    #s3 .passagehint b{color:#f4a04f;font:800 14px Arial,sans-serif;letter-spacing:.15em}
+    #s3 .options{position:absolute;top:765px;left:74px;right:74px;display:grid;gap:18px}
+    #s3 .option{position:relative;height:190px;padding:28px 80px 24px 94px;border:1px solid #73839b62;border-radius:21px;background:#101b29;color:#e9edf2;font:32px/1.28 Georgia,serif;opacity:0;box-shadow:0 18px 40px #0004}
+    #s3 .option i{position:absolute;left:24px;top:26px;width:48px;height:48px;display:grid;place-items:center;border:1px solid #8292a66e;border-radius:50%;font:800 19px Arial;color:#b8c4d1;font-style:normal}
+    #s3 .option .mark{position:absolute;right:22px;top:18px;font-size:61px;font-weight:700;opacity:0;line-height:1}
+    #s3 .option.wrong{border:2px solid #ff756c;background:linear-gradient(100deg,#2a1d24,#171b25);color:#fff}
+    #s3 .option.wrong .mark{color:#ff756c}
+    #s3 .wrongstrike{position:absolute;left:0;top:50%;width:0;height:7px;background:#ff554e;box-shadow:0 0 24px #ff554e;transform:rotate(-4deg);transform-origin:left center;z-index:2}
+    #s3 .option.right{border:2px solid #8bd6b1;background:linear-gradient(100deg,#142a26,#121d26);color:#fff}
+    #s3 .option.right .mark{color:#8bd6b1}
+    #s3 .bottom-note{position:absolute;left:80px;right:80px;bottom:110px;text-align:center;color:#aebacc;font-size:17px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+
+    /* 16.5-23.5: answer -> diagnosis -> three authentic feedback beats */
+    #s4 .headline{position:absolute;top:130px;left:75px;right:75px;text-align:center;font:800 60px/1 Georgia,serif;letter-spacing:-.04em}
+    #s4 .headline span{color:#f4a04f}
+    #s4 .answerpair{position:absolute;top:315px;left:70px;right:70px;height:210px;display:flex;gap:18px}
+    #s4 .ans{position:relative;flex:1;padding:29px 28px;border-radius:22px;border:1px solid #8292a655;background:#121e2b;font:22px/1.25 Georgia,serif}
+    #s4 .ans strong{display:block;margin-bottom:12px;color:#aebccc;font:800 17px Arial;letter-spacing:.17em}
+    #s4 .ans.bad{border-color:#ff756c;background:#291e25}
+    #s4 .ans.good{border-color:#8bd6b1;background:#142922}
+    #s4 .ans .xmark{position:absolute;right:18px;top:7px;color:#ff756c;font-size:72px;font-weight:800;opacity:0}
+    #s4 .ans .check{position:absolute;right:18px;top:9px;color:#8bd6b1;font-size:64px;font-weight:800;opacity:0}
+    #s4 .diagnosis{position:absolute;top:548px;left:170px;right:170px;padding:24px 18px;text-align:center;border:2px solid #ff756c;border-radius:60px;background:#291e25;color:#ff9b91;font-size:30px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;opacity:0;box-shadow:0 0 50px #ff655322}
+    #s4 .feedback{position:absolute;top:685px;left:75px;right:75px;display:grid;gap:20px}
+    #s4 .beat{min-height:260px;padding:25px 31px;border-radius:20px;border:1px solid #73839b55;background:#101b29;opacity:.36}
+    #s4 .beat b{display:block;color:#aebccd;font-size:21px;letter-spacing:.17em;text-transform:uppercase}
+    #s4 .beat p{margin:14px 0 0;color:#e7edf2;font:31px/1.28 Georgia,serif}
+    #s4 .beat em{font-style:normal;color:#f4a04f}
+    #s4 .beat.active{border-color:#f4a04f;background:linear-gradient(110deg,#1d2a36,#101a26);opacity:1;box-shadow:0 18px 55px #0005}
+    #s4 .feedback-caption{position:absolute;left:80px;right:80px;bottom:90px;text-align:center;color:#aebac9;font-size:16px;letter-spacing:.16em;text-transform:uppercase}
+
+    /* 23.5-28.5: character and explicitly illustrative recurrence */
+    #s5 .headline{position:absolute;top:150px;left:76px;right:76px;text-align:center;font:800 58px/1.03 Georgia,serif}
+    #s5 .headline span{color:#f4a04f}
+    #s5 .birbal{position:absolute;right:25px;top:420px;width:505px;height:1140px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 50px #0009)}
+    #s5 .bubble{position:absolute;top:380px;left:80px;width:510px;padding:23px 28px;border:1px solid #f4a04f78;border-radius:24px;background:#172334;color:#f3d5b8;font:27px/1.2 Georgia,serif;box-shadow:0 18px 55px #0007}
+    #s5 .timeline{position:absolute;left:88px;top:650px;width:505px;height:800px;border-left:3px solid #f4a04f;display:flex;flex-direction:column;justify-content:space-between;padding:5px 0 5px 36px}
+    #s5 .day{position:relative;padding:26px 22px;border:1px solid #7f90a75c;border-radius:18px;background:#111d2b;font-size:23px;font-weight:700;color:#e6edf4}
+    #s5 .day:before{content:"";position:absolute;left:-49px;top:31px;width:20px;height:20px;border:3px solid #f4a04f;border-radius:50%;background:#101a28;box-shadow:0 0 22px #f4a04f77}
+    #s5 .day b{display:block;margin-bottom:9px;color:#f4a04f;font-size:15px;letter-spacing:.18em}
+    #s5 .day.done{border-color:#8bd6b1;color:#b6efd0}
+    #s5 .illustrative{position:absolute;top:1575px;left:120px;right:120px;text-align:center;padding:12px;border:1px solid #f4a04f70;border-radius:40px;background:#101b29;color:#ffc78f;font-size:14px;font-weight:800;letter-spacing:.16em}
+
+    /* 28.5-31.5: mark and product reveal */
+    #s6 .halo{position:absolute;left:140px;top:340px;width:800px;height:800px;border:1px solid #f4a04f44;border-radius:50%;box-shadow:0 0 140px #f4a04f17,inset 0 0 140px #435bff12}
+    #s6 .logo{position:absolute;left:350px;top:440px;width:380px;height:380px;background:url("assets/images/logo.png") center/contain no-repeat;mix-blend-mode:screen}
+    #s6 .present{position:absolute;top:980px;left:80px;right:80px;text-align:center;color:#bdc8d5;font-size:18px;font-weight:800;letter-spacing:.26em}
+    #s6 .title{position:absolute;top:1080px;left:60px;right:60px;text-align:center;font-size:68px;font-weight:900;letter-spacing:.1em;line-height:1.08}
+    #s6 .title span{display:block;color:#f4a04f;font-size:112px;letter-spacing:-.045em}
+    #s6 .line{position:absolute;top:1320px;left:215px;width:650px;height:3px;background:linear-gradient(90deg,transparent,#f4a04f,transparent)}
+    #s6 .tagline{position:absolute;top:1440px;left:80px;right:80px;text-align:center;color:#dfe5ee;font-size:26px;font-weight:800;letter-spacing:.14em}
+
+    /* 31.5-38.5: active daily training path */
+    #s7 .headline{position:absolute;top:126px;left:74px;right:74px;text-align:center;font:800 57px/1.03 Georgia,serif}
+    #s7 .headline span{color:#f4a04f}
+    #s7 .path{position:absolute;left:138px;top:380px;height:1030px;width:4px;background:#6c7aff3a}
+    #s7 .pathfill{position:absolute;left:138px;top:380px;height:0;width:5px;background:linear-gradient(#f4a04f,#9baaff);box-shadow:0 0 18px #f4a04f66}
+    #s7 .step{position:absolute;left:90px;right:65px;height:160px;display:flex;align-items:center;gap:26px;opacity:0}
+    #s7 .step:nth-of-type(5){top:350px} #s7 .step:nth-of-type(6){top:550px} #s7 .step:nth-of-type(7){top:750px} #s7 .step:nth-of-type(8){top:950px} #s7 .step:nth-of-type(9){top:1150px}
+    #s7 .num{z-index:2;flex:0 0 98px;width:98px;height:98px;border:2px solid #f4a04f9c;border-radius:50%;background:#111b2b;color:#ffd09c;display:grid;place-items:center;font-size:22px;font-weight:900}
+    #s7 .stepbox{height:144px;flex:1;padding:22px 28px;border-radius:20px;border:1px solid #7b8eaa60;background:linear-gradient(100deg,#172638,#0d1723);display:flex;align-items:center;justify-content:space-between;box-shadow:0 17px 48px #0006}
+    #s7 .stepbox strong{font-size:27px;letter-spacing:.06em}
+    #s7 .stepbox small{color:#adbac9;font-size:18px;text-align:right;line-height:1.35}
+    #s7 .proofrail{position:absolute;top:1535px;left:110px;width:860px;height:220px;object-fit:cover;object-position:center;border:1px solid #90a6bf80;border-radius:18px;box-shadow:0 25px 65px #0008;opacity:0}
+    #s7 .prooflabel{position:absolute;top:1488px;left:110px;color:#b8c4d2;font-size:14px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:0}
+
+    /* 38.5-45: promise, then safe and minimal end card */
+    #s8 .promise{position:absolute;top:450px;left:70px;right:70px;text-align:center;font:800 76px/1.02 Georgia,serif;letter-spacing:-.04em}
+    #s8 .promise span{display:block;color:#f4a04f;margin-top:20px}
+    #s8 .orbit{position:absolute;left:90px;right:90px;top:300px;height:1030px;border:1px solid #91a4bc2e;border-radius:50%;transform:rotate(-12deg)}
+    #s8 .logo{position:absolute;left:425px;top:1040px;width:230px;height:230px;background:url("assets/images/logo.png") center/contain no-repeat;mix-blend-mode:screen;opacity:0}
+    #s8 .brand{position:absolute;top:1285px;left:75px;right:75px;text-align:center;font-size:20px;font-weight:900;letter-spacing:.22em;opacity:0}
+    #s8 .course{position:absolute;top:1345px;left:75px;right:75px;text-align:center;color:#f4a04f;font-size:37px;font-weight:900;letter-spacing:.11em;opacity:0}
+    #s8 .cta{position:absolute;top:1425px;left:170px;width:740px;padding:25px 20px;text-align:center;border-radius:14px;background:linear-gradient(100deg,#f49b4a,#ffc277);color:#0b1521;font-size:23px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;opacity:0}
+    #s8 .url{position:absolute;top:1520px;left:80px;right:80px;text-align:center;color:#d4dce7;font-size:19px;font-weight:700;letter-spacing:.1em;opacity:0}
+  </style>
+</head>
+<body>
+<main id="root" data-hf-id="hf-auctor-cat26" data-composition-id="root" data-start="0" data-duration="45" data-width="1080" data-height="1920" data-fps="30">
+  <div class="bg"></div><div class="wash"></div><div class="grain"></div><div class="rail" id="rail"></div>
+
+  <section class="scene" id="s1">
+    <div class="kicker">CAT 26 · THE COUNTDOWN</div>
+    <div class="clock" id="clock"><i class="hub"></i><i class="tick"></i></div>
+    <div class="calendar" id="calendar"><div class="rings"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="month" id="month" data-layout-allow-overlap="true"><span data-layout-allow-overlap="true">AUG</span><span data-layout-allow-overlap="true">SEP</span><span data-layout-allow-overlap="true">OCT</span><span data-layout-allow-overlap="true">NOV</span></div><div class="date" id="date" data-layout-allow-overlap="true"><span data-layout-allow-overlap="true">01</span><span data-layout-allow-overlap="true">30</span><span data-layout-allow-overlap="true">31</span><span data-layout-allow-overlap="true">01</span></div><div class="cal-foot">TIME DOES NOT PAUSE</div></div>
+    <div class="headline">CAT 26<span>AROUND THE CORNER.</span></div>
+  </section>
+
+  <section class="scene" id="s2">
+    <div class="kicker">PRACTICE KEEPS COMING</div>
+    <div class="headline">MOCK AFTER<span>MOCK AFTER MOCK.</span></div>
+    <div class="illustrative">ILLUSTRATIVE MOCK SCORES</div>
+    <div class="stack" data-layout-allow-overlap="true">
+      <div class="mock glass m1" data-layout-allow-overlap="true"><div class="score">62</div></div>
+      <div class="mock glass m2" data-layout-allow-overlap="true"><div class="score">71</div></div>
+      <div class="mock glass m3" data-layout-allow-overlap="true"><div class="score">68</div></div>
+      <div class="mock glass m4" data-layout-allow-overlap="true"><div class="score">74</div></div>
+      <div class="mock glass m5" data-layout-allow-overlap="true"><div class="score">69</div></div>
+    </div>
+    <div class="stop">STOP.</div>
+    <div class="sub serif">You keep practising.<br><span class="orange">But who tells you why?</span></div>
+  </section>
+
+  <section class="scene" id="s3">
+    <div class="kicker">ONE REAL QUESTION · INFERENCE</div>
+    <div class="headline">A WRONG ANSWER.<br><span>A REASON.</span></div>
+    <div class="sample">AUCTOR SAMPLE REVIEW · AUTHENTIC QUESTION</div>
+    <div class="question">Which of the following can be most reasonably inferred from the information above?</div>
+    <div class="passagehint"><b>PASSAGE EVIDENCE · EXCERPT</b><br>Although attendance was low, students who attended regularly performed better on the final assessment than those who did not. However, the seminar attracted a disproportionate number of students who had scored highly in the introductory course.</div>
+    <div class="options">
+      <div class="option" id="optA"><i>A</i>The seminar's benefits were concentrated among students who had scored highly in the introductory course.<span class="mark">×</span><span class="wrongstrike"></span></div>
+      <div class="option" id="optB"><i>B</i>Making the seminar compulsory would raise the final-assessment performance of students who previously chose not to attend.<span class="mark">×</span></div>
+      <div class="option" id="optC"><i>C</i>The better results of regular attenders may partly reflect the stronger preparation of those who chose to attend.<span class="mark">✓</span></div>
+      <div class="option" id="optD"><i>D</i>Regular attenders scored higher mainly because the seminar gave them practice with the final assessment's format.<span class="mark">×</span></div>
+    </div>
+    <div class="bottom-note">A is the selected answer · the passage supports C</div>
+  </section>
+
+  <section class="scene" id="s4">
+    <div class="kicker">BIRBAL · ANSWER REVIEW</div>
+    <div class="headline">NOT JUST <span>WRONG.</span><br>WHY WRONG?</div>
+    <div class="answerpair">
+      <div class="ans bad"><strong>YOUR ANSWER · A</strong>Benefits were concentrated among high scorers.<span class="xmark">×</span></div>
+      <div class="ans good"><strong>CORRECT ANSWER · C</strong>Results may reflect stronger preparation.<span class="check">✓</span></div>
+    </div>
+    <div class="diagnosis">UNSUPPORTED INFERENCE</div>
+    <div class="feedback">
+      <div class="beat" id="beat1"><b>WHY IT FAILED</b><p>The passage never says benefits were <em>limited to high scorers.</em></p></div>
+      <div class="beat" id="beat2"><b>WHAT YOU MISSED</b><p>More high scorers attended. <em>Others could still benefit.</em></p></div>
+      <div class="beat" id="beat3"><b>WHAT TO DO NEXT TIME</b><p>Keep the conclusion within the evidence. <em>Plausibility alone is not evidence.</em></p></div>
+    </div>
+    <div class="feedback-caption">Authentic sample question · Birbal review wording</div>
+  </section>
+
+  <section class="scene" id="s5">
+    <div class="kicker">BIRBAL · YOUR VARC TRAINER</div>
+    <div class="headline">YOUR PRACTICE<br><span>HAS A HISTORY.</span></div>
+    <div class="bubble">“I've seen this pattern.<br><b class="orange">Let's learn from it.</b>”</div>
+    <div class="timeline">
+      <div class="day"><b>DAY 01</b>Unsupported inference</div>
+      <div class="day"><b>DAY 04</b>Unsupported inference</div>
+      <div class="day"><b>DAY 09</b>Check what the passage proves</div>
+      <div class="day done"><b>DAY 15</b>Next time: test the evidence ✓</div>
+    </div>
+    <img class="birbal" src="assets/images/birbal.png" alt="Birbal character illustration">
+    <div class="illustrative">ILLUSTRATIVE HISTORY · NOT A STUDENT RECORD</div>
+  </section>
+
+  <section class="scene" id="s6">
+    <div class="halo"></div><div class="logo" role="img" aria-label="Auctor mark"></div>
+    <div class="present">AUCTOR PRESENTS</div>
+    <div class="title"><span>CAT 26</span>VARC BOOTCAMP</div>
+    <div class="line"></div>
+    <div class="tagline">ONE GUIDED SESSION. EVERY DAY.</div>
+  </section>
+
+  <section class="scene" id="s7">
+    <div class="kicker">THE DAILY TRAINING SYSTEM</div>
+    <div class="headline">ONE GUIDED SESSION.<br><span>ONE DAY AT A TIME.</span></div>
+    <div class="path"></div><div class="pathfill" id="pathfill"></div>
+    <div class="step"><div class="num">01</div><div class="stepbox"><strong>WARM-UP</strong><small>5 questions</small></div></div>
+    <div class="step"><div class="num">02</div><div class="stepbox"><strong>RC</strong><small>12 questions<br>3 passages</small></div></div>
+    <div class="step"><div class="num">03</div><div class="stepbox"><strong>VA</strong><small>8 questions</small></div></div>
+    <div class="step"><div class="num">04</div><div class="stepbox"><strong>REVIEW</strong><small>With Birbal</small></div></div>
+    <div class="step"><div class="num">05</div><div class="stepbox"><strong>NEXT MISSION</strong><small>One guided day<br>at a time</small></div></div>
+    <div class="prooflabel">REAL BOOTCAMP ACTIVITY RAIL</div>
+    <img class="proofrail" src="assets/screens/mission-activity-rail.png" alt="Auctor Bootcamp activity rail: Warm-up, RC and Verbal Ability">
+  </section>
+
+  <section class="scene" id="s8">
+    <div class="orbit"></div>
+    <div class="promise">YOU SHOW UP.<span>ONE SESSION.<br>EVERY DAY.</span></div>
+    <div class="logo" role="img" aria-label="Auctor mark"></div>
+    <div class="brand">AUCTOR PRESENTS</div>
+    <div class="course">CAT 26 · VARC BOOTCAMP</div>
+    <div class="cta">START YOUR TRAINING</div>
+    <div class="url">auctorlabs.in</div>
+  </section>
+  <audio id="score" data-hf-id="hf-score" data-start="0" data-duration="45" data-track-index="0" data-volume="0.8" src="assets/audio/score-45s.wav"></audio>
+  <audio id="sfx-cards" data-hf-id="hf-sfx-cards" data-start="5.25" data-duration="0.6" data-track-index="11" data-volume="0.55" src="assets/sfx/casino/card-slide-1.ogg"></audio>
+  <audio id="sfx-select" data-hf-id="hf-sfx-select" data-start="13.45" data-duration="0.01" data-track-index="12" data-volume="0.55" src="assets/sfx/interface/click_003.ogg"></audio>
+  <audio id="sfx-diagnosis" data-hf-id="hf-sfx-diagnosis" data-start="17.38" data-duration="0.18" data-track-index="13" data-volume="0.7" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+  <audio id="sfx-brand" data-hf-id="hf-sfx-brand" data-start="28.72" data-duration="0.6" data-track-index="14" data-volume="0.7" src="assets/sfx/impact/impactBell_heavy_000.ogg"></audio>
+</main>
+<script>
+  const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+  gsap.set('.scene',{autoAlpha:0});
+  gsap.set('#s1',{autoAlpha:1});
+  gsap.set(['#s1 .clock','#s1 .calendar','#s1 .headline'],{autoAlpha:0,y:42});
+  gsap.set('#s1 .clock',{scale:.86});
+  gsap.set('#s1 .calendar',{rotation:-9,scale:.92});
+  gsap.set('#s1 .headline',{y:25});
+  gsap.set('#s2 .mock',{autoAlpha:0,y:150,scale:.8});
+  gsap.set('#s2 .headline,#s2 .illustrative,#s2 .stop,#s2 .sub',{autoAlpha:0,y:25});
+  gsap.set('#s3 .headline,#s3 .sample,#s3 .question,#s3 .passagehint,#s3 .bottom-note',{autoAlpha:0,y:20});
+  gsap.set('#s3 .option',{autoAlpha:0,y:30,scale:.97});
+  gsap.set('#s3 .option .mark',{autoAlpha:0,scale:.4});
+  gsap.set('#s4 .headline,#s4 .answerpair,#s4 .diagnosis,#s4 .feedback-caption',{autoAlpha:0,y:24});
+  gsap.set('#s4 .xmark,#s4 .check',{autoAlpha:0,scale:.4});
+  gsap.set('#s4 .beat',{autoAlpha:0,y:30,scale:.97});
+  gsap.set('#s5 .headline,#s5 .bubble,#s5 .timeline,#s5 .illustrative,#s5 .birbal',{autoAlpha:0,y:30});
+  gsap.set('#s5 .birbal',{x:60,scale:.96});gsap.set('#s5 .day',{autoAlpha:0,x:-18});
+  gsap.set('#s6 .halo,#s6 .logo,#s6 .present,#s6 .title,#s6 .line,#s6 .tagline',{autoAlpha:0});
+  gsap.set('#s6 .halo',{scale:.72});gsap.set('#s6 .logo',{scale:.75});gsap.set('#s6 .title',{y:35});
+  gsap.set('#s7 .headline,#s7 .proofrail,#s7 .prooflabel',{autoAlpha:0,y:22});gsap.set('#s7 .step',{autoAlpha:0,x:-30});
+  gsap.set('#s8 .orbit,#s8 .promise,#s8 .logo,#s8 .brand,#s8 .course,#s8 .cta,#s8 .url',{autoAlpha:0});
+  gsap.set('#s8 .promise',{y:30});gsap.set('#s8 .logo',{scale:.82});gsap.set('#s8 .cta',{y:20});
+
+  // Scene 1, 0-4.8. Clock and months advance, and the calendar turns into the countdown.
+  tl.to('#s1 .clock',{autoAlpha:1,scale:1,duration:.4},.05)
+    .to('#s1 .clock',{rotation:360,duration:4.1,ease:'none'},.15)
+    .to('#s1 .calendar',{autoAlpha:1,y:0,rotation:0,scale:1,duration:.55},.45)
+    .to('#s1 .month span:nth-child(2),#s1 .date span:nth-child(2)',{autoAlpha:1,duration:.08},1.05)
+    .to('#s1 .month span:nth-child(1),#s1 .date span:nth-child(1)',{autoAlpha:0,duration:.08},1.05)
+    .to('#s1 .month span:nth-child(3),#s1 .date span:nth-child(3)',{autoAlpha:1,duration:.08},1.62)
+    .to('#s1 .month span:nth-child(2),#s1 .date span:nth-child(2)',{autoAlpha:0,duration:.08},1.62)
+    .to('#s1 .month span:nth-child(4),#s1 .date span:nth-child(4)',{autoAlpha:1,duration:.08},2.18)
+    .to('#s1 .month span:nth-child(3),#s1 .date span:nth-child(3)',{autoAlpha:0,duration:.08},2.18)
+    .to('#s1 .headline',{autoAlpha:1,y:0,duration:.38},2.55)
+    .to('#s1 .calendar',{rotationX:16,scale:.96,duration:.32},4.05)
+    .to('#s1',{autoAlpha:0,duration:.18},4.62)
+    // Scene 2, 4.8-9.5. Five explicitly illustrative cards accumulate, then freeze.
+    .to('#s2',{autoAlpha:1,duration:.12},4.76)
+    .to('#s2 .headline',{autoAlpha:1,y:0,duration:.32},4.8)
+    .to('#s2 .illustrative',{autoAlpha:1,y:0,duration:.25},5.05)
+    .to('#s2 .m1',{autoAlpha:1,y:0,scale:1,duration:.34},5.28)
+    .to('#s2 .m2',{autoAlpha:1,y:0,scale:1,duration:.34},5.78)
+    .to('#s2 .m3',{autoAlpha:1,y:0,scale:1,duration:.34},6.28)
+    .to('#s2 .m4',{autoAlpha:1,y:0,scale:1,duration:.34},6.78)
+    .to('#s2 .m5',{autoAlpha:1,y:0,scale:1,duration:.34},7.28)
+    .to('#s2 .stack',{scale:1.02,duration:.35,ease:'power1.inOut'},7.75)
+    .to('#s2 .stop',{autoAlpha:1,y:0,scale:1.04,duration:.22},8.05)
+    .to('#s2 .sub',{autoAlpha:1,y:0,duration:.25},8.4)
+    .to('#s2',{autoAlpha:0,duration:.16},9.34)
+    // Scene 3, 9.5-16.5. Real question and options appear independently before A is selected.
+    .to('#s3',{autoAlpha:1,duration:.12},9.48)
+    .to('#s3 .headline',{autoAlpha:1,y:0,duration:.28},9.5)
+    .to('#s3 .sample',{autoAlpha:1,y:0,duration:.2},9.76)
+    .to('#s3 .question',{autoAlpha:1,y:0,duration:.3},9.92)
+    .to('#s3 .passagehint',{autoAlpha:1,y:0,duration:.24},10.2)
+    .to('#optA',{autoAlpha:1,y:0,scale:1,duration:.28},10.48)
+    .to('#optB',{autoAlpha:1,y:0,scale:1,duration:.28},11.23)
+    .to('#optC',{autoAlpha:1,y:0,scale:1,duration:.28},11.98)
+    .to('#optD',{autoAlpha:1,y:0,scale:1,duration:.28},12.73)
+    .to('#optA',{className:'option wrong',duration:.16},14.05)
+    .to('#optA .wrongstrike',{width:'100%',duration:.3,ease:'power2.in'},14.07)
+    .to('#optA .mark',{autoAlpha:1,scale:1.05,duration:.18},14.11)
+    .to('#s3 .bottom-note',{autoAlpha:1,y:0,duration:.24},14.75)
+    .to('#s3',{autoAlpha:0,duration:.18},16.34)
+    // Scene 4, 16.5-23.5. Connect wrong answer, diagnosis, correction and three feedback beats.
+    .to('#s4',{autoAlpha:1,duration:.12},16.48)
+    .to('#s4 .headline',{autoAlpha:1,y:0,duration:.3},16.52)
+    .to('#s4 .answerpair',{autoAlpha:1,y:0,duration:.32},16.82)
+    .to('#s4 .xmark',{autoAlpha:1,scale:1,duration:.18},17.08)
+    .to('#s4 .diagnosis',{autoAlpha:1,y:0,scale:1.04,duration:.3},17.42)
+    .to('#s4 .check',{autoAlpha:1,scale:1,duration:.2},17.8)
+    .to('#beat1',{autoAlpha:1,y:0,scale:1,duration:.28},18.15)
+    .to('#beat1',{className:'beat active',duration:.14},18.15)
+    .to('#beat1',{className:'beat',duration:.14},19.32)
+    .to('#beat2',{autoAlpha:1,y:0,scale:1,duration:.28},19.35)
+    .to('#beat2',{className:'beat active',duration:.14},19.35)
+    .to('#beat2',{className:'beat',duration:.14},20.52)
+    .to('#beat3',{autoAlpha:1,y:0,scale:1,duration:.28},20.55)
+    .to('#beat3',{className:'beat active',duration:.14},20.55)
+    .to('#s4 .feedback-caption',{autoAlpha:1,y:0,duration:.22},21.88)
+    .to('#s4',{autoAlpha:0,duration:.18},23.34)
+    // Scene 5, 23.5-28.5. Birbal and a visibly illustrative history timeline.
+    .to('#s5',{autoAlpha:1,duration:.12},23.48)
+    .to('#s5 .headline',{autoAlpha:1,y:0,duration:.28},23.52)
+    .to('#s5 .birbal',{autoAlpha:1,y:0,x:0,scale:1,duration:.48},23.68)
+    .to('#s5 .bubble',{autoAlpha:1,y:0,duration:.28},23.92)
+    .to('#s5 .timeline',{autoAlpha:1,y:0,duration:.25},24.12)
+    .to('#s5 .day',{autoAlpha:1,x:0,duration:.25,stagger:.34},24.25)
+    .to('#s5 .illustrative',{autoAlpha:1,y:0,duration:.2},25.78)
+    .to('#s5',{autoAlpha:0,duration:.18},28.34)
+    // Scene 6, 28.5-31.5. Mark and bootcamp title resolve out of the timeline.
+    .to('#s6',{autoAlpha:1,duration:.12},28.48)
+    .to('#s6 .halo',{autoAlpha:1,scale:1,duration:.5},28.52)
+    .to('#s6 .logo',{autoAlpha:1,scale:1,duration:.48},28.78)
+    .to('#s6 .present',{autoAlpha:1,duration:.24},29.22)
+    .to('#s6 .title',{autoAlpha:1,y:0,duration:.42},29.48)
+    .to('#s6 .line',{autoAlpha:1,scaleX:1,duration:.35},30.05)
+    .to('#s6 .tagline',{autoAlpha:1,duration:.24},30.38)
+    .to('#s6',{autoAlpha:0,duration:.18},31.34)
+    // Scene 7, 31.5-38.5. Animate real program stages; activity rail is supporting evidence.
+    .to('#s7',{autoAlpha:1,duration:.12},31.48)
+    .to('#s7 .headline',{autoAlpha:1,y:0,duration:.32},31.52)
+    .to('#s7 .pathfill',{height:1030,duration:5.15,ease:'power1.inOut'},31.72)
+    .to('#s7 .step',{autoAlpha:1,x:0,duration:.34,stagger:.68},31.8)
+    .to('#s7 .prooflabel',{autoAlpha:1,y:0,duration:.22},35.5)
+    .to('#s7 .proofrail',{autoAlpha:1,y:0,duration:.32},35.68)
+    .to('#s7',{autoAlpha:0,duration:.18},38.34)
+    // Scene 8, 38.5-45. Promise then a clean CTA held for the final 2.8 seconds.
+    .to('#s8',{autoAlpha:1,duration:.12},38.48)
+    .to('#s8 .orbit',{autoAlpha:1,rotation:0,duration:.45},38.52)
+    .to('#s8 .promise',{autoAlpha:1,y:0,duration:.42},38.75)
+    .to('#s8 .promise',{autoAlpha:0,y:-25,duration:.28},41.55)
+    .to('#s8 .logo',{autoAlpha:1,scale:1,duration:.32},41.82)
+    .to('#s8 .brand',{autoAlpha:1,duration:.2},42.05)
+    .to('#s8 .course',{autoAlpha:1,duration:.24},42.15)
+    .to('#s8 .cta',{autoAlpha:1,y:0,duration:.28},42.22)
+    .to('#s8 .url',{autoAlpha:1,duration:.2},42.5)
+    .to('#rail',{scaleX:1,duration:45,ease:'none'},0)
+    .to('.wash',{x:110,y:-90,duration:11,ease:'sine.inOut'},0)
+    .to('.wash',{x:-80,y:110,duration:11,ease:'sine.inOut'},11)
+    .to('.wash',{x:95,y:90,duration:11,ease:'sine.inOut'},22)
+    .to('.wash',{x:-90,y:-80,duration:12,ease:'sine.inOut'},33);
+  window.__timelines=window.__timelines||{};window.__timelines.root=tl;
+  window.renderFrame=t=>tl.time(Math.max(0,Math.min(45,t)),false);window.renderFrame(0);
+</script>
+</body>
+</html>

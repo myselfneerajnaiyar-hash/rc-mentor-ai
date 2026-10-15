@@ -1,0 +1,9 @@
+{
+  "bgm": { "path": "assets/music/instrumental.mp3", "volume": 0.09, "source": "host" },
+  "voices": [],
+  "sfx": [
+    { "frame": 1, "file": "assets/sfx/interface/select.ogg", "offset_s": 2.54, "duration_s": 0.05, "volume": 0.16, "source": "host" },
+    { "frame": 1, "file": "assets/sfx/interface/incorrect.ogg", "offset_s": 2.73, "duration_s": 0.28, "volume": 0.18, "source": "host" },
+    { "frame": 1, "file": "assets/sfx/interface/reveal.ogg", "offset_s": 4.08, "duration_s": 0.24, "volume": 0.13, "source": "host" }
+  ]
+}

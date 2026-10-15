@@ -1,0 +1,37 @@
+<template>
+  <style>
+    #root { position:relative; width:1080px; height:1920px; overflow:hidden; color:#edf4f7; font-family:Arial,Helvetica,sans-serif; }
+    .ground { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 45%,#172a36 0,#0b121c 64%,#080e15 100%); }
+    .ring { position:absolute; left:50%; top:635px; width:760px; height:760px; margin-left:-380px; border:1px solid rgba(110,224,237,.12); border-radius:50%; }
+    .ring2 { position:absolute; left:50%; top:705px; width:620px; height:620px; margin-left:-310px; border:1px solid rgba(110,224,237,.09); border-radius:50%; }
+    .steps { position:absolute; top:620px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:18px; color:#a9bec7; font-size:19px; font-weight:700; letter-spacing:.14em; }
+    .steps b { color:#6ee0ed; font-size:21px; }
+    .logo { position:absolute; top:810px; left:50%; width:340px; max-height:250px; object-fit:contain; margin-left:-170px; mix-blend-mode:screen; }
+    .brand { position:absolute; top:1070px; left:0; right:0; text-align:center; color:#eff5f7; font-size:36px; font-weight:800; letter-spacing:.16em; }
+    .tagline { position:absolute; top:1140px; left:100px; right:100px; text-align:center; color:#a9bbc3; font-size:27px; line-height:1.4; letter-spacing:.01em; }
+    .accent { position:absolute; top:1215px; left:50%; width:62px; height:3px; margin-left:-31px; border-radius:3px; background:#6ee0ed; }
+    .clip {}
+  </style>
+  <div id="root" data-composition-id="04-lockup" data-start="0" data-duration="1.6" data-width="1080" data-height="1920">
+    <div id="scene-ground" class="ground clip" data-start="0" data-duration="1.6" data-track-index="0"></div>
+    <div id="outer-ring" class="ring clip" data-start="0" data-duration="1.6" data-track-index="1"></div>
+    <div id="inner-ring" class="ring2 clip" data-start="0" data-duration="1.6" data-track-index="2"></div>
+    <div id="brand-steps" class="steps clip" data-start="0" data-duration="1.6" data-track-index="3"><span>DIAGNOSIS</span><b>→</b><span>ANALYTICS</span><b>→</b><span>IMPROVEMENT</span></div>
+    <img id="brand-mark" class="logo clip" data-start=".55" data-duration="1.05" data-track-index="4" src="assets/images/auctor-logo.png" alt="Auctor"/>
+    <div id="brand-name" class="brand clip" data-start=".68" data-duration=".92" data-track-index="5">AUCTOR RC</div>
+    <div id="brand-tagline" class="tagline clip" data-start=".78" data-duration=".82" data-track-index="6">Know your mistakes. Know how to improve.</div>
+    <div id="brand-accent" class="accent clip" data-start=".72" data-duration=".88" data-track-index="7"></div>
+  </div>
+  <script>
+    (function(){ window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused:true });
+    tl.fromTo(".steps span:first-child", { opacity:0, y:12 }, { opacity:1, y:0, duration:.2 }, 0);
+    tl.fromTo(".steps b:first-of-type", { opacity:0 }, { opacity:1, duration:.14 }, .17);
+    tl.fromTo(".steps span:nth-of-type(2)", { opacity:0, y:12 }, { opacity:1, y:0, duration:.2 }, .22);
+    tl.fromTo(".steps b:last-of-type", { opacity:0 }, { opacity:1, duration:.14 }, .36);
+    tl.fromTo(".steps span:last-child", { opacity:0, y:12 }, { opacity:1, y:0, duration:.2 }, .4);
+    tl.fromTo(".logo", { opacity:0, scale:.94 }, { opacity:1, scale:1, duration:.35, ease:"power2.out" }, .55);
+    tl.fromTo(".brand,.tagline,.accent", { opacity:0, y:8 }, { opacity:1, y:0, duration:.28, stagger:.08 }, .72);
+    window.__timelines["04-lockup"] = tl; })();
+  </script>
+</template>

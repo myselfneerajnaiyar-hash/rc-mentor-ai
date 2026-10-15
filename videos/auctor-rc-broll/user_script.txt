@@ -1,0 +1,249 @@
+Create a premium 10–15 second vertical Reel-format product showcase clip for Auctor RC.
+
+PURPOSE:
+This is NOT a standalone advertisement.
+It is reusable B-roll that will be inserted into multiple Instagram/Reels videos whenever the narration talks about Auctor diagnosing mistakes, understanding performance, and giving an improvement plan.
+
+CORE IDEA:
+"Your personal VARC trainer doesn't just tell you whether you are right or wrong — Auctor shows you WHERE you are going wrong and WHAT you should improve."
+
+FORMAT:
+- 1080 × 1920
+- 30 fps
+- 10–15 seconds
+- Premium, cinematic, modern EdTech aesthetic
+- Full vertical composition
+- The visual must use the entire frame.
+- Do NOT leave the bottom half empty.
+- No voiceover.
+- Add a subtle inspirational/modern tech music bed if appropriate, but keep it usable underneath future voiceovers. Music must be low enough that narration can easily be layered later.
+
+IMPORTANT CREATIVE DIRECTION:
+Do NOT make this a sequence of giant screenshots.
+Do NOT simply place a screen recording inside a phone frame and leave it static.
+
+Instead, create the illusion that a student is actively using Auctor on a premium smartphone.
+
+The phone should be the HERO visual.
+
+Use:
+- realistic premium smartphone/device frame
+- slight 3D perspective
+- subtle hand/finger interaction if possible
+- natural phone movement
+- UI transitions inside the phone
+- close-ups / push-ins into important UI elements
+- small floating UI elements outside the phone when useful
+- subtle depth, glow, shadows and motion
+- polished transitions
+
+The overall feeling should be:
+"Someone is actually using Auctor and the platform is actively understanding their performance."
+
+STORY / SEQUENCE:
+
+0–2 sec:
+Start with a premium smartphone entering the frame.
+
+Above/behind the phone, display:
+
+AUCTOR RC
+
+Then immediately introduce the first concept:
+
+DIAGNOSIS
+
+The phone screen shows an authentic Auctor RC question/review interface.
+
+A student has selected an incorrect answer.
+
+Animate:
+WRONG ANSWER → red X
+
+Then zoom into the diagnosis.
+
+A small diagnostic label appears dynamically, for example:
+
+UNSUPPORTED INFERENCE
+
+or another authentic diagnosis/category available in the existing Auctor UI.
+
+The important thing is that the viewer sees:
+Auctor doesn't merely say "Wrong."
+It identifies the TYPE OF MISTAKE.
+
+2–6 sec:
+Transition smoothly inside the phone to:
+
+ANALYTICS
+
+Show the authentic Auctor analytics/performance interface.
+
+Do NOT show the entire dashboard as a static screenshot.
+
+Instead:
+- animate into one meaningful metric
+- highlight a pattern
+- show a graph/metric moving or being selected
+- use a cursor/tap/focus effect
+- briefly show that the system has accumulated the student's performance history
+
+The viewer should understand:
+"Auctor knows my patterns."
+
+6–10 sec:
+Transition to:
+
+IMPROVEMENT
+
+Inside the phone, show authentic Auctor/Birbal feedback or improvement-oriented UI.
+
+The visual should communicate:
+
+PROBLEM → DIAGNOSIS → WHAT TO DO NEXT
+
+If the existing product UI contains feedback such as:
+- what went wrong
+- why the option was wrong
+- how to improve
+- Birbal explanation
+
+use those authentic elements.
+
+Do NOT invent fake product functionality.
+
+Use small animated callouts to draw attention to the important part of the interface.
+
+10–13/15 sec:
+Bring the phone slightly forward / center.
+
+The three concepts appear sequentially around it:
+
+DIAGNOSIS
+↓
+ANALYTICS
+↓
+IMPROVEMENT
+
+Then finish with:
+
+AUCTOR RC
+
+Small supporting line:
+
+Know your mistakes.
+Know how to improve.
+
+Keep the final frame clean because this clip will be embedded inside other Reels.
+
+VISUAL LANGUAGE:
+
+Think premium product film + modern mobile app showcase.
+
+NOT:
+- boring screen recording
+- giant static screenshots
+- generic PowerPoint animation
+- excessive text
+- random floating icons
+- cheap stock graphics
+- cartoonish effects
+- overdone transitions
+
+YES:
+- cinematic phone movement
+- realistic device interaction
+- authentic Auctor UI
+- micro-interactions
+- smooth zooms
+- UI cards sliding naturally
+- tap/focus effects
+- subtle parallax
+- depth
+- premium typography
+- restrained glow
+- fast but readable pacing
+
+AUTHENTIC PRODUCT UI:
+Use the actual Auctor RC screens/assets available in the project wherever possible.
+
+However, DO NOT feel obligated to use an entire screenshot.
+
+Crop individual UI components and animate them creatively.
+
+For example:
+- show the question
+- isolate the selected option
+- animate the red X
+- zoom into the diagnosis
+- transition to one analytics card
+- transition to Birbal feedback
+
+The goal is to make the product feel alive.
+
+PHONE COMPOSITION:
+The phone should occupy a substantial portion of the vertical frame, approximately 60–70% of the visual height at its largest point.
+
+The surrounding space should still be used for:
+- title
+- labels
+- subtle UI callouts
+- depth
+- motion
+
+Do not put everything at the very top.
+
+The entire 1080×1920 canvas should feel intentionally designed.
+
+TEXT HIERARCHY:
+Primary:
+AUCTOR RC
+
+Secondary:
+DIAGNOSIS
+ANALYTICS
+IMPROVEMENT
+
+Minimal supporting text only.
+
+Do not turn this into a text-heavy explainer.
+
+MOTION:
+Every major element should have purposeful movement.
+
+The phone can:
+- enter with a slight upward/forward movement
+- rotate/perspective subtly
+- move between sections
+- receive tap interactions
+- push in toward UI details
+
+UI elements should:
+- reveal progressively
+- highlight
+- transition between states
+- respond to the simulated interaction
+
+Keep animation smooth and premium.
+
+AUDIO:
+No voiceover.
+
+Use an understated modern inspirational instrumental only if it improves the product-film feel.
+
+Keep music relatively quiet and non-distracting because this clip will later sit underneath a human voiceover in other Reels.
+
+DELIVERABLES:
+1. Final 1080×1920 MP4
+2. Editable composition
+3. Poster/frame preview
+4. QA/contact sheet
+
+Before rendering, inspect the existing Auctor UI/assets and choose the strongest authentic screens for:
+- diagnosis
+- analytics
+- improvement/Birbal feedback
+
+Do not invent features that aren't actually present.
+
+The final result should look like a piece of a premium Auctor product film that I can repeatedly insert into different Instagram Reels — not like an advertisement and not like a screen recording.

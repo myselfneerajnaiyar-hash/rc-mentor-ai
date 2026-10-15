@@ -1,0 +1,70 @@
+<template>
+  <style>
+    #root { position:relative; width:1080px; height:1920px; overflow:hidden; color:#edf4f7; font-family:Arial,Helvetica,sans-serif; }
+    .ground { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 38%,#172a36 0,#0b121c 62%,#080e15 100%); }
+    .glow { position:absolute; width:740px; height:740px; left:170px; top:550px; border-radius:50%; background:radial-gradient(circle,rgba(110,224,237,.12),transparent 69%); filter:blur(22px); }
+    .topline { position:absolute; top:112px; left:76px; right:76px; display:flex; justify-content:space-between; align-items:center; color:#8ca0ad; font:600 20px Arial,sans-serif; letter-spacing:.19em; }
+    .topline strong { color:#6ee0ed; font-size:22px; }
+    .phone { position:absolute; top:250px; left:52px; width:976px; height:1320px; padding:22px; border:1px solid rgba(197,230,236,.35); border-radius:58px; background:linear-gradient(145deg,#263b48,#091018 34%,#101923); box-shadow:0 40px 120px rgba(0,0,0,.44),inset 0 1px rgba(255,255,255,.15); }
+    .screen { position:relative; width:100%; height:100%; overflow:hidden; border-radius:40px; padding:29px 34px; background:#0d1821; border:1px solid #243541; }
+    .appbar { height:54px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #253642; color:#c9d8df; font-size:20px; letter-spacing:.04em; }
+    .appbar b { color:#6ee0ed; font-size:19px; letter-spacing:.13em; }
+    .appmark { display:flex; align-items:center; gap:10px; }
+    .appmark img { width:30px; height:30px; object-fit:contain; }
+    .tag { color:#6ee0ed; font-size:17px; letter-spacing:.16em; font-weight:700; }
+    .question { margin-top:27px; color:#f1f5f6; font-size:29px; line-height:1.25; font-weight:700; letter-spacing:-.02em; }
+    .passage { margin-top:15px; padding:16px 18px; border-left:3px solid #6ee0ed; border-radius:0 13px 13px 0; background:#13232d; color:#c3d0d7; font-size:19px; line-height:1.43; }
+    .answers { display:grid; gap:11px; margin-top:22px; }
+    .answer { position:relative; display:flex; align-items:flex-start; gap:15px; min-height:104px; padding:15px 18px; border:1px solid #30434e; border-radius:15px; background:#111f29; color:#e5edf0; font-size:21px; line-height:1.28; }
+    .letter { flex:none; color:#83dbe6; font-size:20px; font-weight:700; }
+    .answer-text { padding-right:37px; }
+    .answer.selected { border-color:#e37a73; background:rgba(133,48,48,.20); }
+    .answer.correct { border-color:#64c996; background:rgba(38,111,77,.20); }
+    .mark { position:absolute; right:15px; top:10px; width:35px; height:35px; border-radius:50%; display:grid; place-items:center; font-size:29px; font-weight:800; }
+    .wrong { color:#ff6f68; }
+    .right { color:#76dfa5; }
+    .diagnosis { position:absolute; left:0; right:0; width:max-content; margin:0 auto; top:875px; display:flex; gap:12px; align-items:center; white-space:nowrap; border:1px solid rgba(255,111,104,.65); border-radius:100px; padding:15px 24px; color:#ff938b; background:rgba(38,19,23,.96); box-shadow:0 8px 35px rgba(0,0,0,.35); font-size:19px; font-weight:800; letter-spacing:.1em; }
+    .diag-dot { width:10px; height:10px; border-radius:50%; background:#ff6f68; box-shadow:0 0 18px rgba(255,111,104,.8); }
+    .clip { }
+  </style>
+  <div id="root" data-composition-id="01-diagnosis" data-start="0" data-duration="5.6" data-width="1080" data-height="1920">
+    <div id="scene-ground" class="ground clip" data-start="0" data-duration="5.6" data-track-index="0"></div>
+    <div id="scene-glow" class="glow clip" data-start="0" data-duration="5.6" data-track-index="1"></div>
+    <div id="scene-header" class="topline clip" data-start="0" data-duration="5.6" data-track-index="2"><strong>AUCTOR RC</strong><span>DIAGNOSIS · INFERENCE</span></div>
+    <div class="phone clip" id="phone" data-start="0" data-duration="5.6" data-track-index="3">
+      <div class="screen">
+        <div class="appbar"><b class="appmark"><img src="assets/images/auctor-logo.png" alt=""/>RC REVIEW</b><span>QUESTION 01&nbsp; / &nbsp;INFERENCE</span></div>
+        <div id="evidence-label" class="tag clip" data-start="0.35" data-duration="5.25" data-track-index="4">READ THE EVIDENCE</div>
+        <div id="question-prompt" class="question clip" data-start="0.48" data-duration="5.12">Which of the following can be most reasonably inferred from the information above?</div>
+        <div id="question-passage" class="passage clip" data-start="0.67" data-duration="4.93">A university introduced an optional seminar for students who had already completed an introductory course. Although attendance was low, students who attended regularly performed better on the final assessment than those who did not. However, the seminar attracted a disproportionate number of students who had scored highly in the introductory course. The university is considering making the seminar compulsory, arguing that its apparent benefits justify wider participation.</div>
+        <div class="answers">
+          <div class="answer clip" id="optA" data-start="1.23" data-duration="4.37"><span class="letter">A</span><span class="answer-text">The seminar’s benefits were concentrated among students who had scored highly in the introductory course.</span><span class="mark wrong clip" id="cross" data-start="2.72" data-duration="2.88">×</span></div>
+          <div class="answer clip" id="optB" data-start="1.52" data-duration="4.08"><span class="letter">B</span><span class="answer-text">Making the seminar compulsory would raise the final assessment performance of students who previously chose not to attend.</span></div>
+          <div class="answer clip" id="optC" data-start="1.81" data-duration="3.79"><span class="letter">C</span><span class="answer-text">The better results of regular attenders may partly reflect the stronger preparation of those who chose to attend.</span><span class="mark right clip" id="tick" data-start="4.07" data-duration="1.53">✓</span></div>
+          <div class="answer clip" id="optD" data-start="2.10" data-duration="3.5"><span class="letter">D</span><span class="answer-text">Regular attenders scored higher mainly because the seminar gave them practice with the final assessment’s format.</span></div>
+        </div>
+        <div class="diagnosis clip" id="diagnosis-chip" data-start="3.18" data-duration="2.42"><span class="diag-dot"></span>UNSUPPORTED INFERENCE</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){ window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused:true });
+    tl.fromTo("#phone", { opacity:0, y:38, rotationY:-4, scale:.96 }, { opacity:1, y:0, rotationY:0, scale:1, duration:.55, ease:"power3.out" }, 0);
+    tl.fromTo(".topline", { opacity:0, y:-14 }, { opacity:1, y:0, duration:.38, ease:"power2.out" }, .06);
+    tl.fromTo(".tag", { opacity:0, y:12 }, { opacity:1, y:0, duration:.3 }, .35);
+    tl.fromTo(".question", { opacity:0, y:14 }, { opacity:1, y:0, duration:.34 }, .48);
+    tl.fromTo(".passage", { opacity:0, y:14 }, { opacity:1, y:0, duration:.4 }, .67);
+    tl.fromTo("#optA", { opacity:0, y:22 }, { opacity:1, y:0, duration:.27 }, 1.23);
+    tl.fromTo("#optB", { opacity:0, y:22 }, { opacity:1, y:0, duration:.27 }, 1.52);
+    tl.fromTo("#optC", { opacity:0, y:22 }, { opacity:1, y:0, duration:.27 }, 1.81);
+    tl.fromTo("#optD", { opacity:0, y:22 }, { opacity:1, y:0, duration:.27 }, 2.10);
+    tl.to("#optA", { scale:1.015, duration:.14, ease:"power1.out" }, 2.54).to("#optA", { scale:1, duration:.12 }, 2.68);
+    tl.to("#optA", { borderColor:"#e37a73", backgroundColor:"rgba(133,48,48,.20)", duration:.16 }, 2.56);
+    tl.fromTo("#cross", { opacity:0, scale:.35, rotation:-22 }, { opacity:1, scale:1, rotation:0, duration:.27, ease:"back.out(2.4)" }, 2.73);
+    tl.fromTo("#diagnosis-chip", { opacity:0, y:15, scale:.92 }, { opacity:1, y:0, scale:1, duration:.38, ease:"back.out(1.7)" }, 3.2);
+    tl.to("#optC", { borderColor:"#64c996", backgroundColor:"rgba(38,111,77,.20)", duration:.22 }, 4.0);
+    tl.fromTo("#tick", { opacity:0, scale:.35, rotation:-18 }, { opacity:1, scale:1, rotation:0, duration:.28, ease:"back.out(2.4)" }, 4.08);
+    window.__timelines["01-diagnosis"] = tl; })();
+  </script>
+</template>

@@ -1,0 +1,913 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 26,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ground\" data-start=\"0\" data-track-index=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"glow\" data-start=\"0\" data-track-index=\"1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"topline\" data-start=\"0\" data-track-index=\"2\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"tag\" data-start=\"0.35\" data-track-index=\"4\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"question\" data-start=\"0.48\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"passage\" data-start=\"0.67\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\01-diagnosis.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ground\" data-start=\"0\" data-track-index=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"topline\" data-start=\"0\" data-track-index=\"1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"eyebrow\" data-start=\"0.1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<h1 data-start=\"0.18\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<p class=\"description\" data-start=\"0.28\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"metric\" data-start=\"1.65\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"metric\" data-start=\"1.82\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"note\" data-start=\"2.03\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\02-analytics.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ground\" data-start=\"0\" data-track-index=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\03-birbal-feedback.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"topline\" data-start=\"0\" data-track-index=\"1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\03-birbal-feedback.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"connection\" data-start=\".1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\03-birbal-feedback.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<img class=\"avatar\" data-start=\".18\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\03-birbal-feedback.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ground\" data-start=\"0\" data-track-index=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ring\" data-start=\"0\" data-track-index=\"1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"ring2\" data-start=\"0\" data-track-index=\"2\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"steps\" data-start=\"0\" data-track-index=\"3\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<img class=\"logo\" data-start=\".55\" data-track-index=\"4\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"brand\" data-start=\".68\" data-track-index=\"5\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"tagline\" data-start=\".78\" data-track-index=\"6\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"accent\" data-start=\".72\" data-track-index=\"7\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\auctor-rc-broll\\compositions\\frames\\04-lockup.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      }
+    ],
+    "filesScanned": 5
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "clip_media_fit",
+        "severity": "warning",
+        "message": "Audio \"el-sfx-0\" is 0.05s but its slot (data-duration) is 0.24s — the slot is shortened to the media length when rendered. Set data-duration to ~0.05s if that isn't intended.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {
+          "data-composition-id": "main",
+          "data-start": "0",
+          "data-duration": "14",
+          "data-width": "1080",
+          "data-height": "1920"
+        },
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1920
+        },
+        "time": 0
+      }
+    ]
+  },
+  "layout": {
+    "ok": false,
+    "errorCount": 6,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 8.556,
+        "selector": "#copy1",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 160,
+          "top": 723.3,
+          "right": 894.86,
+          "bottom": 826.8,
+          "width": 734.86,
+          "height": 103.5
+        },
+        "containerSelector": "div.support",
+        "text": "The passage does not state that the seminar’s benefits were concentrated among high scorers; it only notes that more high scorers attended. It does not rule out benefits for others.",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-start": ".53",
+          "data-duration": "3.97"
+        },
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 160,
+          "y": 723.3,
+          "width": 734.86,
+          "height": 103.5
+        },
+        "firstSeen": 8.556,
+        "lastSeen": 12.375,
+        "occurrences": 34,
+        "heldMs": 3819.000000000001,
+        "times": [
+          8.556,
+          8.625,
+          8.75,
+          8.875,
+          9,
+          9.125,
+          9.25,
+          9.375,
+          9.5,
+          9.625,
+          9.75,
+          9.875,
+          10,
+          10.111,
+          10.125,
+          10.25,
+          10.375,
+          10.5,
+          10.625,
+          10.75,
+          10.875,
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 8.556,
+        "selector": "#copy1 > mark:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 322.5,
+          "top": 723.3,
+          "right": 490.63,
+          "bottom": 753.3,
+          "width": 168.13,
+          "height": 30
+        },
+        "containerSelector": "div.support > span:nth-of-type(1)",
+        "text": "does not state",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 322.5,
+          "y": 723.3,
+          "width": 168.13,
+          "height": 30
+        },
+        "firstSeen": 8.556,
+        "lastSeen": 12.375,
+        "occurrences": 34,
+        "heldMs": 3819.000000000001,
+        "times": [
+          8.556,
+          8.625,
+          8.75,
+          8.875,
+          9,
+          9.125,
+          9.25,
+          9.375,
+          9.5,
+          9.625,
+          9.75,
+          9.875,
+          10,
+          10.111,
+          10.125,
+          10.25,
+          10.375,
+          10.5,
+          10.625,
+          10.75,
+          10.875,
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 10.111,
+        "selector": "#label1",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 160,
+          "top": 672,
+          "right": 309.72,
+          "bottom": 692,
+          "width": 149.72,
+          "height": 20
+        },
+        "containerSelector": "#label2",
+        "text": "WHY IT FAILED",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-start": ".45",
+          "data-duration": "4.05"
+        },
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 160,
+          "y": 672,
+          "width": 149.72,
+          "height": 20
+        },
+        "firstSeen": 9.625,
+        "lastSeen": 12.375,
+        "occurrences": 25,
+        "heldMs": 2750,
+        "times": [
+          9.625,
+          9.75,
+          9.875,
+          10,
+          10.111,
+          10.125,
+          10.25,
+          10.375,
+          10.5,
+          10.625,
+          10.75,
+          10.875,
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 10.111,
+        "selector": "#copy2",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 160,
+          "top": 719,
+          "right": 905.03,
+          "bottom": 785.75,
+          "width": 745.03,
+          "height": 66.75
+        },
+        "containerSelector": "div.support",
+        "text": "The observed performance difference may be partly due to the stronger preparation of those who chose to attend, not just the seminar itself.",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-start": "1.72",
+          "data-duration": "2.78"
+        },
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 160,
+          "y": 719,
+          "width": 745.03,
+          "height": 66.75
+        },
+        "firstSeen": 9.75,
+        "lastSeen": 12.375,
+        "occurrences": 24,
+        "heldMs": 2625,
+        "times": [
+          9.75,
+          9.875,
+          10,
+          10.111,
+          10.125,
+          10.25,
+          10.375,
+          10.5,
+          10.625,
+          10.75,
+          10.875,
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 11.667,
+        "selector": "#label2",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 160,
+          "top": 672,
+          "right": 351,
+          "bottom": 692,
+          "width": 191,
+          "height": 20
+        },
+        "containerSelector": "#label3",
+        "text": "WHAT YOU MISSED",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-start": "1.63",
+          "data-duration": "2.87"
+        },
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 160,
+          "y": 672,
+          "width": 191,
+          "height": 20
+        },
+        "firstSeen": 11,
+        "lastSeen": 12.375,
+        "occurrences": 13,
+        "heldMs": 1375,
+        "times": [
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 11.667,
+        "selector": "#copy3 > mark:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 160,
+          "top": 719,
+          "right": 815.48,
+          "bottom": 785.75,
+          "width": 655.48,
+          "height": 66.75
+        },
+        "containerSelector": "div.support",
+        "text": "Keep the conclusion within what the passage supports; plausibility alone is not evidence.",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/03-birbal-feedback.html",
+        "bbox": {
+          "x": 160,
+          "y": 719,
+          "width": 655.48,
+          "height": 66.75
+        },
+        "firstSeen": 11,
+        "lastSeen": 12.375,
+        "occurrences": 13,
+        "heldMs": 1375,
+        "times": [
+          11,
+          11.125,
+          11.25,
+          11.375,
+          11.5,
+          11.625,
+          11.667,
+          11.75,
+          11.875,
+          12,
+          12.125,
+          12.25,
+          12.375
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 3.889,
+        "selector": "#diagnosis-chip",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 355.89,
+          "top": 1502,
+          "right": 724,
+          "bottom": 1557,
+          "width": 368.11,
+          "height": 55
+        },
+        "containerSelector": "#phone > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 75,
+          "top": 273,
+          "right": 1005,
+          "bottom": 1547,
+          "width": 930,
+          "height": 1274
+        },
+        "overflow": {
+          "bottom": 10
+        },
+        "dataAttributes": {
+          "data-start": "3.18",
+          "data-duration": "1.92"
+        },
+        "sourceFile": "compositions/frames/01-diagnosis.html",
+        "bbox": {
+          "x": 355.89,
+          "y": 1502,
+          "width": 368.11,
+          "height": 55
+        },
+        "firstSeen": 3.889,
+        "lastSeen": 3.889,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          3.889
+        ]
+      }
+    ],
+    "duration": 14,
+    "samples": [
+      0.778,
+      2.333,
+      3.889,
+      5.444,
+      7,
+      8.556,
+      10.111,
+      11.667,
+      13.222
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 7,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      0.778,
+      3.889,
+      7,
+      10.111,
+      13.222
+    ],
+    "checked": 71,
+    "passed": 71
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}
