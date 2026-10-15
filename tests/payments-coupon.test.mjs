@@ -9,6 +9,7 @@ import { calculatePlanPricing, normalizeCouponCode, PLAN_PRICES, validateCouponC
 
 const createOrderSource = await readFile(new URL("../app/api/create-order/route.js", import.meta.url), "utf8")
 const verifyPaymentSource = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
+const provisioningSource = await readFile(new URL("../supabase/migrations/202610040001_razorpay_payment_provisioning.sql", import.meta.url), "utf8")
 
 test("normal purchases retain every existing base price", () => {
   assert.deepEqual(Object.fromEntries(Object.keys(PLAN_PRICES).map((plan) => [plan, calculatePlanPricing(plan).finalPaise])), {
@@ -35,6 +36,20 @@ test("AZADI50 is case-insensitive and applies exactly fifty percent", () => {
 test("invalid coupon is rejected and cannot alter normal pricing", () => {
   assert.equal(validateCouponCode("NOTREAL").valid, false)
   assert.equal(calculatePlanPricing("monthly", { couponCode: "NOTREAL" }).finalPaise, 39900)
+})
+
+test("VARCAUCTOR40 is a fixed 40% coupon for each Premium subscription plan", () => {
+  const expected = { monthly: 23940, quarterly: 47940, half_yearly: 77940, yearly: 119940 }
+  assert.equal(validateCouponCode("varcauctor40").valid, true)
+  assert.equal(validateCouponCode("VARCAUCTOR40").coupon.discountPercent, 40)
+  for (const [plan, finalPaise] of Object.entries(expected)) {
+    const result = calculatePlanPricing(plan, { couponCode: "VARCAUCTOR40" })
+    assert.equal(result.plan, plan)
+    assert.equal(result.originalPaise, PLAN_PRICES[plan].basePaise)
+    assert.equal(result.finalPaise, finalPaise)
+    assert.equal(result.discountPaise, PLAN_PRICES[plan].basePaise * 0.4)
+  }
+  assert.throws(() => calculatePlanPricing("cat_test_series", { couponCode: "VARCAUCTOR40" }), /not valid for the selected plan/)
 })
 
 test("existing referral prices remain unchanged", () => {
@@ -268,6 +283,75 @@ test("database AUCTOR30 collision is ignored by lookup and validation", async ()
     assert.deepEqual(await response.json(), { valid: true, code: "AUCTOR30", discountPercent: 30 })
   }
   assert.equal(h.calls.includes("instagram_influencers"), false)
+})
+
+test("VARCAUCTOR40 checkout keeps each selected Premium plan's access and normal expiry", async () => {
+  const months = { monthly: 1, quarterly: 3, half_yearly: 6, yearly: 12 }
+  for (const [plan, durationMonths] of Object.entries(months)) {
+    const fullPriceHarness = await checkoutHarness()
+    const discountedHarness = await checkoutHarness()
+    const fullPriceOrder = await fullPriceHarness.create({ plan })
+    const discountedOrder = await discountedHarness.create({ plan, couponCode: "VARCAUCTOR40", amount: 1 })
+
+    assert.equal(fullPriceOrder.amount, PLAN_PRICES[plan].basePaise)
+    assert.equal(discountedOrder.amount, Math.round(PLAN_PRICES[plan].basePaise * 0.6))
+    assert.equal(discountedOrder.notes.plan, plan)
+    assert.equal(discountedOrder.notes.original_price, String(PLAN_PRICES[plan].basePaise))
+    assert.equal(discountedOrder.notes.discount_amount, String(PLAN_PRICES[plan].basePaise * 0.4))
+    assert.equal(discountedHarness.rows.razorpay_payment_orders[0].plan, fullPriceHarness.rows.razorpay_payment_orders[0].plan)
+    assert.equal(
+      discountedHarness.rows.razorpay_payment_orders[0].entitlement_bundle_version,
+      fullPriceHarness.rows.razorpay_payment_orders[0].entitlement_bundle_version,
+    )
+
+    const provisionedAt = Date.now()
+    assert.equal((await fullPriceHarness.verify()).status, 200)
+    assert.equal((await discountedHarness.verify()).status, 200)
+    const fullPriceSubscription = fullPriceHarness.rows.subscriptions[0]
+    const discountedSubscription = discountedHarness.rows.subscriptions[0]
+    assert.deepEqual(
+      {
+        plan: discountedSubscription.plan,
+        isPremium: discountedHarness.rows.profiles[0].is_premium,
+        bundleVersion: discountedHarness.rows.razorpay_payment_orders[0].entitlement_bundle_version,
+      },
+      {
+        plan: fullPriceSubscription.plan,
+        isPremium: fullPriceHarness.rows.profiles[0].is_premium,
+        bundleVersion: fullPriceHarness.rows.razorpay_payment_orders[0].entitlement_bundle_version,
+      },
+    )
+
+    const expectedExpiry = new Date(provisionedAt)
+    expectedExpiry.setMonth(expectedExpiry.getMonth() + durationMonths)
+    const actualExpiry = new Date(discountedSubscription.expires_at).getTime()
+    assert.ok(actualExpiry >= expectedExpiry.getTime() - 2_000, `${plan} expiry starts from the selected duration`)
+    assert.ok(actualExpiry <= expectedExpiry.getTime() + 2_000, `${plan} expiry is independent of the discounted amount`)
+  }
+
+  assert.match(provisioningSource, /v_expiry := v_base \+ case v_order\.plan/)
+  assert.match(provisioningSource, /when 'monthly' then interval '1 month'/)
+  assert.match(provisioningSource, /when 'quarterly' then interval '3 months'/)
+  assert.match(provisioningSource, /when 'half_yearly' then interval '6 months'/)
+  assert.match(provisioningSource, /when 'yearly' then interval '1 year'/)
+})
+
+test("VARCAUCTOR40 server validation rejects non-Premium plans and inactive or unknown coupons", async () => {
+  const h = await checkoutHarness()
+  assert.equal((await h.validate("VARCAUCTOR40")).status, 200)
+  const ineligible = await h.createResponse({ plan: "cat_test_series", couponCode: "VARCAUCTOR40" })
+  assert.equal(ineligible.status, 400)
+  assert.equal(h.rows.razorpay_payment_orders.length, 0)
+
+  h.rows.instagram_influencers.push({
+    id: "expired-coupon", coupon_code: "EXPIRED20", status: "expired",
+    student_discount_percent: 20, commission_rate: 10, commission_basis: "original_price",
+  })
+  assert.equal((await h.validate("EXPIRED20")).status, 404)
+  assert.equal((await h.validate("NOTREAL")).status, 404)
+  const invalid = await h.createResponse({ plan: "monthly", couponCode: "NOTREAL", amount: 1 })
+  assert.equal(invalid.status, 400)
+  assert.equal(h.rows.razorpay_payment_orders.length, 0)
 })
 
 test("AUCTOR30 order and verification agree on 90930 and fulfill the six-month purchase", async () => {

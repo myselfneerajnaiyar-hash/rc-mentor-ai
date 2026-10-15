@@ -49,9 +49,9 @@ test("AZADI50 remains a 50 percent coupon", () => {
   assert.equal(coupon.coupon.discountPercent, 50)
 
   const configured = calculatePlanPricing("quarterly", { couponCode: "AZADI50" })
-  assert.equal(configured.originalPaise, 99_900)
-  assert.equal(configured.finalPaise, 49_950)
-  assert.equal(configured.discountPaise, 49_950)
+  assert.equal(configured.originalPaise, 79_900)
+  assert.equal(configured.finalPaise, 39_950)
+  assert.equal(configured.discountPaise, 39_950)
   assert.equal(calculateCouponAttribution({ originalPaise: 100_000, amountPaidPaise: 50_000, couponCode: "AZADI50" }), null)
 })
 
@@ -83,9 +83,9 @@ test("dynamic coupon plan pricing uses the shared coupon calculation", () => {
     couponCode: "BHOOMIGUPTA20",
     coupon: dynamicCoupon,
   })
-  assert.equal(configured.originalPaise, 99_900)
-  assert.equal(configured.finalPaise, 79_920)
-  assert.equal(configured.discountPaise, 19_980)
+  assert.equal(configured.originalPaise, 79_900)
+  assert.equal(configured.finalPaise, 63_920)
+  assert.equal(configured.discountPaise, 15_980)
 })
 
 test("successful conversion persistence and email are idempotent by payment", async () => {

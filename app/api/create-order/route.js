@@ -2,7 +2,7 @@ import Razorpay from "razorpay"
 import { supabaseAdmin } from "@/lib/supabaseAdmin"
 import { getAuthenticatedProfile } from "@/lib/tenant/getCurrentProfile"
 import { resolveCoupon } from "@/lib/payments/influencerCoupons"
-import { calculateCouponAttribution, calculatePlanPricing } from "@/lib/payments/pricing"
+import { calculateCouponAttribution, calculatePlanPricing, isCouponEligibleForPlan } from "@/lib/payments/pricing"
 
 export async function POST(req) {
   let purchaseId = null
@@ -30,6 +30,9 @@ export async function POST(req) {
     const coupon = await resolveCoupon(couponInput)
     if (couponInput.trim() && !coupon.valid) {
       return Response.json({ error: "Invalid or expired coupon code." }, { status: 400 })
+    }
+    if (coupon.valid && !isCouponEligibleForPlan(coupon.coupon, body.plan)) {
+      return Response.json({ error: "This coupon is not valid for the selected plan." }, { status: 400 })
     }
 
     let validReferral = false

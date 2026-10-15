@@ -55,12 +55,13 @@ useEffect(() => {
 
 const [isCatStudent, setIsCatStudent] = useState(false)
 const quarterlyDuePaise = appliedCoupon
-    ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
-    : 79900
+  ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
+  : 79900
 const bootcampCoupon = appliedCoupon === "AUCTOR20" ? appliedCoupon : ""
 const bootcampDuePaise = bootcampCoupon
   ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
   : 79900
+const testSeriesCoupon = appliedCoupon === "VARCAUCTOR40" ? "" : appliedCoupon
 
 useEffect(() => {
   async function loadUser() {
@@ -269,13 +270,13 @@ One-time purchase
 
 </ul>
 
-{appliedCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
+{testSeriesCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
 <SubscribeButton
 amount={discountApplied ? 639 : 799}
 plan="cat_test_series"
 label="Unlock Test Series"
 user={user}
-couponCode={appliedCoupon}
+couponCode={testSeriesCoupon}
 returnTo={returnTo}
 />
 
