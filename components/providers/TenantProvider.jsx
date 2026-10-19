@@ -18,7 +18,7 @@ export default function TenantProvider({ children }) {
   // The resolved branding still replaces the default as soon as it is available.
   const isPublicAuthRoute = pathname === "/signup" || pathname === "/login"
   const bypassTenantContext = isTenantContextBypassedRoute(pathname)
-  const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false }, access: "pending" })
+  const [state, setState] = useState({ loading: true, user: null, profile: null, institute: null, tenant: null, branding: AUCTOR_BRANDING, exam: "Unassigned", capabilities: getExamCapabilities(null), entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false, hasCATSectionalAccess: false }, access: "pending" })
 
   const generation=useRef(0),flight=useRef(null);
   const refreshContext = useCallback(async (providedSession, force = false) => {

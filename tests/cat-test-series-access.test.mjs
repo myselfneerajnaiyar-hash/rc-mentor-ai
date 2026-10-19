@@ -12,8 +12,9 @@ test('active CAT Test Series access works alongside a separate quarterly subscri
   assert.equal(hasCATTestSeriesAccess(subscriptions, now), true)
 })
 
-test('only active CAT Test Series and existing full CAT plans unlock paid tests', () => {
-  assert.equal(hasCATTestSeriesAccess([{ plan: 'quarterly', expires_at: '2027-01-09T00:00:00Z' }], now), false)
+test('all active platform durations and CAT Test Series unlock paid CAT tests', () => {
+  assert.equal(hasCATTestSeriesAccess([{ plan: 'quarterly', expires_at: '2027-01-09T00:00:00Z' }], now), true)
+  assert.equal(hasCATTestSeriesAccess([{ plan: 'monthly', expires_at: '2026-11-09T00:00:00Z' }], now), true)
   assert.equal(hasCATTestSeriesAccess([{ plan: 'cat_test_series', expires_at: '2026-10-08T00:00:00Z' }], now), false)
   assert.equal(hasCATTestSeriesAccess([{ plan: 'half_yearly', expires_at: '2027-01-01T00:00:00Z' }], now), true)
   assert.equal(hasCATTestSeriesAccess([{ plan: 'yearly', expires_at: '2027-10-01T00:00:00Z' }], now), true)

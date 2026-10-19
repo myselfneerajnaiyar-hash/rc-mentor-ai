@@ -65,15 +65,13 @@ export async function POST(req) {
     const membership = authorizeTenantMembership(resolvedTenant, profile)
     if (!membership.allowed) return Response.json({ error: "Institute access denied" }, { status: 403 })
 
-    const { data: subscription } = await supabase
+    const { data: subscriptions } = await supabase
       .from("subscriptions")
       .select("plan,expires_at")
       .eq("user_id", user.id)
       .gt("expires_at", new Date().toISOString())
       .order("expires_at", { ascending: false })
-      .limit(1)
-      .maybeSingle()
-    const entitlement = getEffectiveEntitlement({ profile, resolvedTenant, subscription })
+    const entitlement = getEffectiveEntitlement({ profile, resolvedTenant, subscriptions })
 
     const currentMonth =
       `${new Date().getFullYear()}-${new Date().getMonth()+1}`

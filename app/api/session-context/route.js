@@ -22,22 +22,21 @@ export async function GET(request) {
         branding: resolved.branding,
         exam: "Unassigned",
         capabilities: { exam: "Unassigned", isCAT: false, showDailyRC: false, showCATSectionals: false },
-        entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false },
+        entitlement: { kind: "none", hasAccess: false, isPremium: false, isInstituteStudent: false, hasCATSectionalAccess: false },
       })
     }
     if (identity.error) return NextResponse.json({ error: identity.error }, { status: 403 })
     const authorization = authorizeTenantMembership(resolved, identity.profile)
     if (!authorization.allowed) return NextResponse.json({ error: authorization.reason }, { status: 403 })
 
-    const { data: subscription } = await supabaseAdmin
+    const { data: subscriptions, error: subscriptionError } = await supabaseAdmin
       .from("subscriptions")
       .select("plan,expires_at")
       .eq("user_id", identity.user.id)
       .gt("expires_at", new Date().toISOString())
       .order("expires_at", { ascending: false })
-      .limit(1)
-      .maybeSingle()
-    const entitlement = getEffectiveEntitlement({ profile: identity.profile, resolvedTenant: resolved, subscription })
+    if (subscriptionError) throw subscriptionError
+    const entitlement = getEffectiveEntitlement({ profile: identity.profile, resolvedTenant: resolved, subscriptions })
 
     return NextResponse.json({
       serverTime: new Date().toISOString(),

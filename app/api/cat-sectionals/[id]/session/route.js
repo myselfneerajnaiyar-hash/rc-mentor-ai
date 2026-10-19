@@ -1,34 +1,15 @@
 ﻿import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { requireCapability } from "@/lib/tenant/requireCapability";
-
-const STATIC_SECTIONAL_ID = /^sectional-(?:0[1-9]|10)$/;
+import { requireCATSectionalAccess } from "@/lib/tenant/requireCATSectionalAccess";
 
 export async function POST(request, { params }) {
-  const access = await requireCapability(request, "showCATSectionals");
+  const sectionalId = params.id;
+  const access = await requireCATSectionalAccess(request, sectionalId);
   if (!access.ok) {
     return NextResponse.json(
-      { error: access.status === 401 ? "Authentication required" : "CAT sectionals are not available for your exam" },
+      { error: access.error || (access.status === 401 ? "Authentication required" : "CAT sectionals are not available for your exam") },
       { status: access.status },
     );
-  }
-
-  const sectionalId = params.id;
-  if (!STATIC_SECTIONAL_ID.test(sectionalId)) {
-    const { data: sectional, error: sectionalError } = await supabaseAdmin
-      .from("sectional_test_content")
-      .select("id")
-      .eq("id", sectionalId)
-      .eq("exam", "CAT")
-      .eq("is_published", true)
-      .maybeSingle();
-
-    if (sectionalError) {
-      return NextResponse.json({ error: "Could not load the sectional" }, { status: 500 });
-    }
-    if (!sectional) {
-      return NextResponse.json({ error: "CAT sectional not found" }, { status: 404 });
-    }
   }
 
   const userId = access.identity.user.id;

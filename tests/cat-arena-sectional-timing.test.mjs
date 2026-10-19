@@ -66,7 +66,7 @@ test("both sectional containers start/resume server sessions and attach them to 
 
 test("the server session route resumes only owned, unexpired sessions", async () => {
   const route = await read("app/api/cat-sectionals/[id]/session/route.js");
-  assert.match(route, /requireCapability\(request, "showCATSectionals"\)/);
+  assert.match(route, /requireCATSectionalAccess\(request, sectionalId\)/);
   assert.match(route, /\.eq\("user_id", userId\)/);
   assert.match(route, /\.is\("submitted_at", null\)/);
   assert.match(route, /\.gt\("expires_at", now\)/);

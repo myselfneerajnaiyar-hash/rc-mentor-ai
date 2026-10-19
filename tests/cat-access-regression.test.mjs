@@ -21,9 +21,10 @@ test("two active subscriptions for one user preserve both product entitlements",
   assert.equal(quarterly.expires_at > now.toISOString(), true)
 })
 
-test("CAT Test Series access accepts the active purchased plan and rejects quarterly alone", () => {
+test("CAT Sectional access accepts every active paid duration as well as CAT Test Series", () => {
   assert.equal(hasCATTestSeriesAccess(krishSubscriptions, now), true)
-  assert.equal(hasCATTestSeriesAccess([krishSubscriptions[1]], now), false)
+  assert.equal(hasCATTestSeriesAccess([krishSubscriptions[1]], now), true)
+  assert.equal(hasCATTestSeriesAccess([{ plan: "monthly", expires_at: "2026-10-10T00:00:00Z" }], now), true)
 })
 
 test("quarterly remains general premium while CAT Test Series alone is not general premium", () => {

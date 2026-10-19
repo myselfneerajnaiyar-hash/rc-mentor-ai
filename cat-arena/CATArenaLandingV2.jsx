@@ -9,7 +9,6 @@ import CATAnalytics from "../app/components/CATAnalytics";
 import { useTenant } from "@/components/providers/TenantProvider";
 import {
   getCATTestSeriesAccessStatus,
-  hasCATTestSeriesAccess,
   isCATSectionalLocked,
   isCATSectionalPublished,
 } from "@/lib/tenant/catTestSeriesAccess";
@@ -21,52 +20,13 @@ export default function CATArenaLanding({
   onStartRC,
   isFreeFlow,
 }) {
-  const { entitlement } = useTenant();
+  const { entitlement, loading: tenantLoading, access: tenantAccess, refreshContext } = useTenant();
   const [attemptedMap, setAttemptedMap] = useState({});
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("pyq");
 
   const [sectionals, setSectionals] = useState([]);
   const [testStatus, setTestStatus] = useState("loading");
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [subscriptionStatus, setSubscriptionStatus] = useState("checking");
-  const [subscriptionRetry, setSubscriptionRetry] = useState(0);
-
-  useEffect(() => {
-
-  async function loadPlan() {
-    setSubscriptionStatus("checking");
-    try {
-      const { data: authData, error: authError } = await supabase.auth.getUser();
-      if (authError) throw authError;
-      if (!authData?.user) {
-        setSubscriptions([]);
-        setSubscriptionStatus("ready");
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("subscriptions")
-        .select("plan,expires_at")
-        .eq("user_id", authData.user.id)
-        .in("plan", ["cat_test_series", "half_yearly", "yearly"])
-        .gt("expires_at", new Date().toISOString());
-      if (error) throw error;
-
-      setSubscriptions(data || []);
-      setSubscriptionStatus("ready");
-    } catch (error) {
-      console.error("CAT test access could not be checked", {
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
-      setSubscriptions([]);
-      setSubscriptionStatus("error");
-    }
-  }
-
-  loadPlan();
-
-}, [subscriptionRetry]);
   useEffect(() => {
   async function loadTests() {
     const { data, error } = await supabase
@@ -109,10 +69,10 @@ setAttemptedMap(map);
   }, []);
 
   
-const hasFullCATAccess = entitlement.isInstituteStudent || hasCATTestSeriesAccess(subscriptions);
+const hasFullCATAccess = entitlement.hasCATSectionalAccess === true;
 const accessStatus = getCATTestSeriesAccessStatus({
-  loading: subscriptionStatus === "checking",
-  error: subscriptionStatus === "error",
+  loading: tenantLoading || tenantAccess === "pending",
+  error: !tenantLoading && !["allowed", "guest"].includes(tenantAccess),
 });
 
 
@@ -126,7 +86,7 @@ const accessStatus = getCATTestSeriesAccessStatus({
   <section role="tabpanel" id="arena-category-panel" aria-labelledby={'arena-category-'+activeTab} tabIndex={0}>
    {activeTab==='analytics'?<CATAnalytics/>:<>
     <div className="arena-section-heading"><div><h2>{activeTab==='pyq'?'Official CAT papers':'Auctor mock tests'}</h2><p className="arena-content-support">{activeTab==='pyq'?'Real CAT VARC papers for timed practice.':'Focused VARC mocks designed for CAT practice.'}</p></div><p className="arena-format">40 minutes <span aria-hidden="true">·</span> 24 questions</p></div>
-    {accessStatus==='error'&&<p className="arena-empty" role="alert">CAT test access could not be verified, so paid tests are temporarily unavailable. <button type="button" onClick={()=>setSubscriptionRetry(n=>n+1)}>Retry access check</button></p>}
+    {accessStatus==='error'&&<p className="arena-empty" role="alert">CAT test access could not be verified, so paid tests are temporarily unavailable. <button type="button" onClick={()=>refreshContext?.()}>Retry access check</button></p>}
     {isMobile&&<p className="arena-device-note">Start tests on desktop. You can review existing attempts here.</p>}
     <div className="sectional-grid">{tests.map(s=>{
      const attemptId=attemptedMap[s.id];const attempted=!!attemptId;const locked=isCATSectionalLocked(s,accessStatus==='ready'&&hasFullCATAccess);const checkingAccess=accessStatus==='checking'&&s.is_free!==true;const unavailable=accessStatus==='error'&&s.is_free!==true;
