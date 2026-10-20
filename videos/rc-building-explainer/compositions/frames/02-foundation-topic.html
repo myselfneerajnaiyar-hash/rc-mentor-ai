@@ -1,0 +1,43 @@
+<template>
+<div id="root" data-composition-id="02-foundation-topic" data-width="1080" data-height="1920" data-duration="6.5">
+  <div id="f-02-foundation-topic-ground" class="clip ground" data-start="0" data-duration="6.5" data-track-index="0"></div>
+  <div id="f-02-foundation-topic-grid" class="clip grid" data-start="0" data-duration="6.5" data-track-index="1"></div>
+  <div id="f-02-eyebrow-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="2" style="left:78px;top:142px;width:850px"><div id="f-02-eyebrow" class="text" style="font-size:25px;color:#526171;letter-spacing:.14em;">01 / FOUNDATION</div></div>
+<div id="f-02-head-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="3" style="left:78px;top:220px;width:920px"><div id="f-02-head" class="text" style="font-size:59px;color:#0b121c;font-weight:700;">Find the topic first.</div></div>
+<div id="f-02-quote-panel-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="4" style="left:70px;top:400px;width:940px;height:300px"><div id="f-02-quote-panel" class="panel" style="width:100%;height:100%;"></div></div>
+<div id="f-02-quote-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="5" style="left:110px;top:468px;width:860px"><div id="f-02-quote" class="text" style="font-size:47px;color:#0b121c;font-weight:500;line-height:1.35;">“<span style="background:rgba(110,224,237,.55);border-radius:5px;padding:0 6px">the world of the novel<br>was often the nation</span>”</div></div>
+<div id="f-02-foundation-drawing-clip" class="clip drawing" data-start="0" data-duration="6.5" data-track-index="6" style="left:120px;top:820px;width:840px;height:500px"><svg id="f-02-foundation-drawing" width="100%" height="100%" viewBox="0 0 840 500" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="f-02-base-building" d="M180 390 L180 160 L420 38 L660 160 L660 390 M240 390 L240 185 L420 92 L600 185 L600 390" stroke="#0b121c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path id="f-02-base-floor" d="M110 390 L730 390" stroke="#0b121c" stroke-width="5" stroke-linecap="round"/><rect id="f-02-base-slab" x="110" y="398" width="620" height="72" rx="8" fill="#6ee0ed" stroke="#0b121c" stroke-width="5"/></svg></div>
+<div id="f-02-nation-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="7" style="left:315px;top:1220px;width:450px"><div id="f-02-nation" class="text" style="font-size:72px;color:#0b121c;font-weight:800;text-align:center;">NATION</div></div>
+<div id="f-02-foundation-label-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="8" style="left:200px;top:1345px;width:680px"><div id="f-02-foundation-label" class="text" style="font-size:27px;color:#526171;text-align:center;letter-spacing:.13em;">FOUNDATION  /  TOPIC</div></div>
+<div id="f-02-topic-line-clip" class="clip" data-start="0" data-duration="6.5" data-track-index="9" style="left:85px;top:1460px;width:910px"><div id="f-02-topic-line" class="text" style="font-size:28px;color:#0b121c;font-weight:700;text-align:center;letter-spacing:-.02em;">TOPIC  →  POSTCOLONIAL LITERATURE / NATION</div></div>
+</div>
+<style>
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; background:#e9edf5; color:#0b121c; }
+.clip { position:absolute; box-sizing:border-box; }
+.ground { inset:0; background:linear-gradient(148deg, rgba(110,224,237,.11), transparent 49%), #e9edf5; }
+.grid { inset:0; opacity:.33; background-image:linear-gradient(rgba(11,18,28,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(11,18,28,.055) 1px,transparent 1px); background-size:48px 48px; mask-image:linear-gradient(to bottom,black,transparent 88%); }
+.text { font-family:sans-serif; font-weight:600; letter-spacing:-.035em; line-height:1.12; }
+.eyebrow { font-family:sans-serif; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+.panel { border:2px solid rgba(11,18,28,.16); border-radius:14px; background:rgba(110,224,237,.16); }
+.drawing { position:absolute; overflow:visible; }
+.cyan { color:#6ee0ed; }
+.rule { height:5px; border-radius:3px; background:#6ee0ed; }
+.logo-plate { border-radius:22px; background:#0b121c; display:flex; align-items:center; justify-content:center; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo('#f-02-eyebrow', { autoAlpha: 0, y: 24, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 0);
+tl.fromTo('#f-02-head', { autoAlpha: 0, y: 24, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 0.2);
+tl.fromTo('#f-02-quote-panel', { autoAlpha: 0, y: 18, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 1.25);
+tl.fromTo('#f-02-quote', { autoAlpha: 0, y: 12, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 1.6);
+tl.fromTo('#f-02-foundation-drawing', { autoAlpha: 0, y: 0, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 2.75);
+tl.fromTo('#f-02-nation', { autoAlpha: 0, y: -140, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 3.55);
+tl.fromTo('#f-02-foundation-label', { autoAlpha: 0, y: 18, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 4.35);
+tl.fromTo('#f-02-topic-line', { autoAlpha: 0, y: 18, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 5.02);
+document.querySelectorAll('#f-02-base-building,#f-02-base-floor').forEach((p) => { const n = p.getTotalLength(); gsap.set(p, { strokeDasharray: n, strokeDashoffset: n }); tl.to(p, { strokeDashoffset: 0, duration: 0.72, ease: 'power2.inOut' }, 2.82); });
+
+window.__timelines['02-foundation-topic'] = tl;
+</script>
+</template>

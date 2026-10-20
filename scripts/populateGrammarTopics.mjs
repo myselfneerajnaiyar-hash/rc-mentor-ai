@@ -7,7 +7,7 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.
 const topics = process.argv.slice(2)
 if (!topics.length) throw new Error("Pass one or more topic IDs")
 const difficulties = ["easy", "moderate", "hard"]
-const maxAttemptsPerSet = 1
+const maxAttemptsPerSet = 2
 const totals = { calls: 0, inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, totalTokens: 0, generated: 0, accepted: 0, rejected: 0, replacements: 0, auditorRejections: 0, inconsistencies: 0, retries: 0 }
 const blockedSets = []
 let stoppedAt = null

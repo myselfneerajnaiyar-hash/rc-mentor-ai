@@ -16,7 +16,7 @@ run("scripts/validateGrammarTopicPlans.mjs")
 const validation = validateGrammarTopicBlueprints(GRAMMAR_TOPIC_BLUEPRINTS)
 assert.equal(validation.success, true, validation.errors.join("\n"))
 assert.deepEqual(Object.keys(GRAMMAR_TOPIC_BLUEPRINTS).sort(), Object.keys(GRAMMAR_ONTOLOGY).sort(), "Blueprint and ontology topics differ")
-const expectedProduction = ["active-passive-voice", "articles-determiners", "conditionals", "conjunctions", "modifiers", "nouns", "parallelism", "prepositions", "pronouns", "subject-verb-agreement", "tenses", "verbs-auxiliaries"]
+const expectedProduction = ["active-passive-voice", "articles-determiners", "conditionals", "conjunctions", "modifiers", "nouns", "parallelism", "parts-of-speech", "prepositions", "pronouns", "subject-verb-agreement", "tenses", "verbs-auxiliaries"]
 assert.deepEqual(validation.productionReady.sort(), expectedProduction, "Unexpected productionReady topic set")
 for (const topic of expectedProduction) {
   const hard = GRAMMAR_TOPIC_BLUEPRINTS[topic].difficulties.hard

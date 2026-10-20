@@ -1,0 +1,1825 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": true,
+  "lint": {
+    "ok": false,
+    "errorCount": 87,
+    "warningCount": 23,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"01-reading-as-architecture-ground\" starts with a digit, so the common selector `#01-reading-as-architecture-ground` throws a SyntaxError in querySelector().",
+        "selector": "#01-reading-as-architecture-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"01-reading-as-architecture-grid\" starts with a digit, so the common selector `#01-reading-as-architecture-grid` throws a SyntaxError in querySelector().",
+        "selector": "#01-reading-as-architecture-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-eyebrow\" starts with a digit, and the selector `#01-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-title-a\" starts with a digit, and the selector `#01-title-a` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-title-a",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-architecture\" starts with a digit, and the selector `#01-architecture` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-architecture",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-draw-building\" starts with a digit, and the selector `#01-draw-building` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-draw-building",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-ground-line\" starts with a digit, and the selector `#01-ground-line` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-ground-line",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-title-b\" starts with a digit, and the selector `#01-title-b` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-title-b",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"01-caption\" starts with a digit, and the selector `#01-caption` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#01-caption",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#01-eyebrow\" resolves to element <div id=\"01-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#01-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#01-title-a\" resolves to element <div id=\"01-title-a\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#01-title-a",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#01-architecture\" resolves to element <svg id=\"01-architecture\" class=\"clip drawing\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#01-architecture",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#01-title-b\" resolves to element <div id=\"01-title-b\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#01-title-b",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#01-caption\" resolves to element <div id=\"01-caption\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#01-caption",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 1163 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\01-reading-as-architecture.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"02-foundation-topic-ground\" starts with a digit, so the common selector `#02-foundation-topic-ground` throws a SyntaxError in querySelector().",
+        "selector": "#02-foundation-topic-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"02-foundation-topic-grid\" starts with a digit, so the common selector `#02-foundation-topic-grid` throws a SyntaxError in querySelector().",
+        "selector": "#02-foundation-topic-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-eyebrow\" starts with a digit, and the selector `#02-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-head\" starts with a digit, and the selector `#02-head` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-quote-panel\" starts with a digit, and the selector `#02-quote-panel` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-quote-panel",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-quote\" starts with a digit, and the selector `#02-quote` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-quote",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-foundation-drawing\" starts with a digit, and the selector `#02-foundation-drawing` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-foundation-drawing",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-base-building\" starts with a digit, and the selector `#02-base-building` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-base-building",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-base-floor\" starts with a digit, and the selector `#02-base-floor` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-base-floor",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"02-base-slab\" starts with a digit, so the common selector `#02-base-slab` throws a SyntaxError in querySelector().",
+        "selector": "#02-base-slab",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-nation\" starts with a digit, and the selector `#02-nation` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-nation",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-foundation-label\" starts with a digit, and the selector `#02-foundation-label` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-foundation-label",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"02-topic-line\" starts with a digit, and the selector `#02-topic-line` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#02-topic-line",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-eyebrow\" resolves to element <div id=\"02-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-head\" resolves to element <div id=\"02-head\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-quote-panel\" resolves to element <div id=\"02-quote-panel\" class=\"clip panel\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-quote-panel",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-quote\" resolves to element <div id=\"02-quote\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-quote",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-foundation-drawing\" resolves to element <svg id=\"02-foundation-drawing\" class=\"clip drawing\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-foundation-drawing",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-nation\" resolves to element <div id=\"02-nation\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-nation",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-foundation-label\" resolves to element <div id=\"02-foundation-label\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-foundation-label",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#02-topic-line\" resolves to element <div id=\"02-topic-line\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#02-topic-line",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\02-foundation-topic.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-columns-paragraph-roles-ground\" starts with a digit, so the common selector `#03-columns-paragraph-roles-ground` throws a SyntaxError in querySelector().",
+        "selector": "#03-columns-paragraph-roles-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-columns-paragraph-roles-grid\" starts with a digit, so the common selector `#03-columns-paragraph-roles-grid` throws a SyntaxError in querySelector().",
+        "selector": "#03-columns-paragraph-roles-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-eyebrow\" starts with a digit, and the selector `#03-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-head\" starts with a digit, and the selector `#03-head` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-columns\" starts with a digit, so the common selector `#03-columns` throws a SyntaxError in querySelector().",
+        "selector": "#03-columns",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-ground\" starts with a digit, and the selector `#03-ground` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-col-1\" starts with a digit, and the selector `#03-col-1` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-col-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-col-2\" starts with a digit, and the selector `#03-col-2` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-col-2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-col-3\" starts with a digit, and the selector `#03-col-3` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-col-3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-col-4\" starts with a digit, and the selector `#03-col-4` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-col-4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-col-5\" starts with a digit, and the selector `#03-col-5` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-col-5",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-cap-1\" starts with a digit, so the common selector `#03-cap-1` throws a SyntaxError in querySelector().",
+        "selector": "#03-cap-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-cap-2\" starts with a digit, so the common selector `#03-cap-2` throws a SyntaxError in querySelector().",
+        "selector": "#03-cap-2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-cap-3\" starts with a digit, so the common selector `#03-cap-3` throws a SyntaxError in querySelector().",
+        "selector": "#03-cap-3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-cap-4\" starts with a digit, so the common selector `#03-cap-4` throws a SyntaxError in querySelector().",
+        "selector": "#03-cap-4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-cap-5\" starts with a digit, so the common selector `#03-cap-5` throws a SyntaxError in querySelector().",
+        "selector": "#03-cap-5",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"03-source-cue\" starts with a digit, and the selector `#03-source-cue` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#03-source-cue",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#03-eyebrow\" resolves to element <div id=\"03-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#03-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#03-head\" resolves to element <div id=\"03-head\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#03-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#03-source-cue\" resolves to element <div id=\"03-source-cue\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#03-source-cue",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 1950 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"04-beams-logical-connections-ground\" starts with a digit, so the common selector `#04-beams-logical-connections-ground` throws a SyntaxError in querySelector().",
+        "selector": "#04-beams-logical-connections-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"04-beams-logical-connections-grid\" starts with a digit, so the common selector `#04-beams-logical-connections-grid` throws a SyntaxError in querySelector().",
+        "selector": "#04-beams-logical-connections-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-eyebrow\" starts with a digit, and the selector `#04-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-head\" starts with a digit, and the selector `#04-head` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-structure\" starts with a digit, and the selector `#04-structure` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-structure",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-base\" starts with a digit, and the selector `#04-base` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-base",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-beam-1\" starts with a digit, and the selector `#04-beam-1` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-beam-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-beam-2\" starts with a digit, and the selector `#04-beam-2` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-beam-2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-beam-3\" starts with a digit, and the selector `#04-beam-3` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-beam-3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-beam-4\" starts with a digit, and the selector `#04-beam-4` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-beam-4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"04-beam-5\" starts with a digit, so the common selector `#04-beam-5` throws a SyntaxError in querySelector().",
+        "selector": "#04-beam-5",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-cue-1\" starts with a digit, and the selector `#04-cue-1` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-cue-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-cue-2\" starts with a digit, and the selector `#04-cue-2` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-cue-2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-cue-2b\" starts with a digit, and the selector `#04-cue-2b` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-cue-2b",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-cue-3\" starts with a digit, and the selector `#04-cue-3` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-cue-3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"04-cue-4\" starts with a digit, and the selector `#04-cue-4` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#04-cue-4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-eyebrow\" resolves to element <div id=\"04-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-head\" resolves to element <div id=\"04-head\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-structure\" resolves to element <svg id=\"04-structure\" class=\"clip drawing\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-structure",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-cue-1\" resolves to element <div id=\"04-cue-1\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-cue-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-cue-2\" resolves to element <div id=\"04-cue-2\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-cue-2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-cue-3\" resolves to element <div id=\"04-cue-3\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-cue-3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-cue-4\" resolves to element <div id=\"04-cue-4\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-cue-4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#04-cue-2b\" resolves to element <div id=\"04-cue-2b\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#04-cue-2b",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\04-beams-logical-connections.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"05-roof-main-point-ground\" starts with a digit, so the common selector `#05-roof-main-point-ground` throws a SyntaxError in querySelector().",
+        "selector": "#05-roof-main-point-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"05-roof-main-point-grid\" starts with a digit, so the common selector `#05-roof-main-point-grid` throws a SyntaxError in querySelector().",
+        "selector": "#05-roof-main-point-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-eyebrow\" starts with a digit, and the selector `#05-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-head\" starts with a digit, and the selector `#05-head` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-roof-building\" starts with a digit, and the selector `#05-roof-building` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-roof-building",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-roof\" starts with a digit, and the selector `#05-roof` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-roof",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-roof-accent\" starts with a digit, and the selector `#05-roof-accent` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-roof-accent",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-roof-label-plate\" starts with a digit, and the selector `#05-roof-label-plate` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-roof-label-plate",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-roof-label\" starts with a digit, and the selector `#05-roof-label` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-roof-label",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"05-quote\" starts with a digit, and the selector `#05-quote` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#05-quote",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-eyebrow\" resolves to element <div id=\"05-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-head\" resolves to element <div id=\"05-head\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-head",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-roof-building\" resolves to element <svg id=\"05-roof-building\" class=\"clip drawing\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-roof-building",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-roof-label-plate\" resolves to element <div id=\"05-roof-label-plate\" class=\"clip panel\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-roof-label-plate",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-roof-label\" resolves to element <div id=\"05-roof-label\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-roof-label",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#05-quote\" resolves to element <div id=\"05-quote\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#05-quote",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\05-roof-main-point.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"06-dissect-the-rc-ground\" starts with a digit, so the common selector `#06-dissect-the-rc-ground` throws a SyntaxError in querySelector().",
+        "selector": "#06-dissect-the-rc-ground",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"06-dissect-the-rc-grid\" starts with a digit, so the common selector `#06-dissect-the-rc-grid` throws a SyntaxError in querySelector().",
+        "selector": "#06-dissect-the-rc-grid",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-eyebrow\" starts with a digit, and the selector `#06-eyebrow` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-building-mark\" starts with a digit, and the selector `#06-building-mark` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-building-mark",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-building-lines\" starts with a digit, and the selector `#06-building-lines` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-building-lines",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-building-base\" starts with a digit, and the selector `#06-building-base` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-building-base",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-cta\" starts with a digit, and the selector `#06-cta` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-cta",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "error",
+        "message": "id=\"06-logo-plate\" starts with a digit, and the selector `#06-logo-plate` used in this composition is invalid: querySelector and GSAP throw a SyntaxError, and CSS drops the rule.",
+        "selector": "#06-logo-plate",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#06-eyebrow\" resolves to element <div id=\"06-eyebrow\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#06-eyebrow",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#06-building-mark\" resolves to element <svg id=\"06-building-mark\" class=\"clip drawing\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#06-building-mark",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#06-cta\" resolves to element <div id=\"06-cta\" class=\"clip text\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#06-cta",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "gsap_animates_clip_element",
+        "severity": "error",
+        "message": "GSAP animation sets autoAlpha on a clip element. Selector \"#06-logo-plate\" resolves to element <div id=\"06-logo-plate\" class=\"clip logo-plate\">. The framework manages clip visibility, and autoAlpha writes visibility as well as opacity. Do not animate these properties on clip elements.",
+        "selector": "#06-logo-plate",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Remove the visibility/display/autoAlpha tween, or move the content into a child <div> and target that instead."
+      },
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 2713 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Projects\\rc-mentor-ai\\videos\\rc-building-explainer\\compositions\\frames\\06-dissect-the-rc.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      }
+    ],
+    "filesScanned": 7
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 0,
+    "samples": [],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [],
+    "checked": 0,
+    "passed": 0
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

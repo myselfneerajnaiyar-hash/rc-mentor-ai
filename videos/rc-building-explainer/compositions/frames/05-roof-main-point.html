@@ -1,0 +1,39 @@
+<template>
+<div id="root" data-composition-id="05-roof-main-point" data-width="1080" data-height="1920" data-duration="7.5">
+  <div id="f-05-roof-main-point-ground" class="clip ground" data-start="0" data-duration="7.5" data-track-index="0"></div>
+  <div id="f-05-roof-main-point-grid" class="clip grid" data-start="0" data-duration="7.5" data-track-index="1"></div>
+  <div id="f-05-eyebrow-clip" class="clip" data-start="0" data-duration="7.5" data-track-index="2" style="left:78px;top:138px;width:920px"><div id="f-05-eyebrow" class="text" style="font-size:24px;color:#526171;letter-spacing:.14em;">04 / AUTHOR’S MAIN POINT</div></div>
+<div id="f-05-head-clip" class="clip" data-start="0" data-duration="7.5" data-track-index="3" style="left:78px;top:215px;width:920px"><div id="f-05-head" class="text" style="font-size:61px;color:#0b121c;font-weight:800;line-height:1.1;">The roof is the<br>argument.</div></div>
+<div id="f-05-roof-building-clip" class="clip drawing" data-start="0" data-duration="7.5" data-track-index="4" style="left:95px;top:500px;width:890px;height:760px"><svg id="f-05-roof-building" width="100%" height="100%" viewBox="0 0 890 760" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="f-05-roof" d="M95 300 L445 80 L795 300 M155 300 L155 650 L735 650 L735 300 M235 360 L235 590 M365 360 L365 590 M495 360 L495 590 M625 360 L625 590 M100 650 L790 650" stroke="#0b121c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path id="f-05-roof-accent" d="M112 302 L780 302" stroke="#6ee0ed" stroke-width="8" stroke-linecap="round"/></svg></div>
+<div id="f-05-roof-label-plate-clip" class="clip" data-start="0" data-duration="7.5" data-track-index="5" style="left:100px;top:1230px;width:880px;height:140px"><div id="f-05-roof-label-plate" class="panel" style="width:100%;height:100%;background:rgba(110,224,237,.3);border-color:rgba(11,18,28,.18);"></div></div>
+<div id="f-05-roof-label-clip" class="clip" data-start="0" data-duration="7.5" data-track-index="6" style="left:130px;top:1266px;width:820px"><div id="f-05-roof-label" class="text" style="font-size:59px;color:#0b121c;text-align:center;font-weight:800;">REMAP THE WORLD</div></div>
+<div id="f-05-quote-clip" class="clip" data-start="0" data-duration="7.5" data-track-index="7" style="left:95px;top:1410px;width:890px"><div id="f-05-quote" class="text" style="font-size:74px;color:#0b121c;font-size:27px;line-height:1.4;text-align:center;font-weight:500;">“This has the effect of remapping the world in the reader’s mind, as centred in the interconnected global south.”</div></div>
+</div>
+<style>
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; background:#e9edf5; color:#0b121c; }
+.clip { position:absolute; box-sizing:border-box; }
+.ground { inset:0; background:linear-gradient(148deg, rgba(110,224,237,.11), transparent 49%), #e9edf5; }
+.grid { inset:0; opacity:.33; background-image:linear-gradient(rgba(11,18,28,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(11,18,28,.055) 1px,transparent 1px); background-size:48px 48px; mask-image:linear-gradient(to bottom,black,transparent 88%); }
+.text { font-family:sans-serif; font-weight:600; letter-spacing:-.035em; line-height:1.12; }
+.eyebrow { font-family:sans-serif; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+.panel { border:2px solid rgba(11,18,28,.16); border-radius:14px; background:rgba(110,224,237,.16); }
+.drawing { position:absolute; overflow:visible; }
+.cyan { color:#6ee0ed; }
+.rule { height:5px; border-radius:3px; background:#6ee0ed; }
+.logo-plate { border-radius:22px; background:#0b121c; display:flex; align-items:center; justify-content:center; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo('#f-05-eyebrow', { autoAlpha: 0, y: 24, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 0);
+tl.fromTo('#f-05-head', { autoAlpha: 0, y: 24, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 0.18);
+tl.fromTo('#f-05-roof-building', { autoAlpha: 0, y: 0, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 1.3);
+tl.fromTo('#f-05-roof-label-plate', { autoAlpha: 0, y: -80, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 3.15);
+tl.fromTo('#f-05-roof-label', { autoAlpha: 0, y: 16, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 3.42);
+tl.fromTo('#f-05-quote', { autoAlpha: 0, y: 14, scale: 1 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: 'power3.out' }, 4.65);
+document.querySelectorAll('#f-05-roof,#f-05-roof-accent').forEach((p) => { const n = p.getTotalLength(); gsap.set(p, { strokeDasharray: n, strokeDashoffset: n }); tl.to(p, { strokeDashoffset: 0, duration: 0.72, ease: 'power2.inOut' }, 1.34); });
+
+window.__timelines['05-roof-main-point'] = tl;
+</script>
+</template>

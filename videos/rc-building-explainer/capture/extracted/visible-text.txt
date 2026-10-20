@@ -1,0 +1,241 @@
+Create the complete 35–40 second vertical Instagram Reel for Auctor using the RC passage I provide below.
+CORE IDEA
+The Reel explains one powerful way to read an RC:
+RC is not a collection of sentences. Think of it as a BUILDING.
+The visual metaphor is:
+FOUNDATION → COLUMNS → BEAMS → ROOF
+Meaning:
+FOUNDATION = TOPIC
+COLUMNS = PARAGRAPH ROLES
+BEAMS = LOGICAL CONNECTIONS / DIRECTION CHANGES
+ROOF = AUTHOR'S MAIN POINT
+I will provide the voice-over separately later.
+Do NOT generate or add voice-over.
+The entire video should be understandable visually even without audio.
+________________________________________
+USE THIS EXACT PASSAGE
+Use the following passage as the actual RC content in the animation:
+For early postcolonial literature, the world of the novel was often the nation. Postcolonial novels were usually [concerned with] national questions. Sometimes the whole story of the novel was taken as an allegory of the nation, whether India or Tanzania. This was important for supporting anti-colonial nationalism, but could also be limiting - land-focused and inward-looking. 
+
+My new book “Writing Ocean Worlds” explores another kind of world of the novel: not the village or nation, but the Indian Ocean world. The book describes a set of novels in which the Indian Ocean is at the centre of the story. It focuses on the novelists Amitav Ghosh, Abdulrazak Gurnah, Lindsey Collen and Joseph Conrad [who have] centred the Indian Ocean world in the majority of their novels. . . . Their work reveals a world that is outward-looking - full of movement, border-crossing and south-south interconnection. They are all very different- from colonially inclined (Conrad) to radically anti-capitalist (Collen), but together draw on and shape a wider sense of Indian Ocean space through themes, images, metaphors and language. This has the effect of remapping the world in the reader’s mind, as centred in the interconnected global south. . . . 
+
+The Indian Ocean world is a term used to describe the very long-lasting connections among the coasts of East Africa, the Arab coasts, and South and East Asia. These connections were made possible by the geography of the Indian Ocean. For much of history, travel by sea was much easier than by land, which meant that port cities very far apart were often more easily connected to each other than to much closer inland cities. Historical and archaeological evidence suggests that what we now call globalisation rst appeared in the Indian Ocean. This is the interconnected oceanic world referenced and produced by the novels in my book. . . . For their part Ghosh, Gurnah, Collen and even Conrad reference a different set of histories and geographies than the ones most commonly found in ction in English. Those [commonly found ones] are mostly centred in Europe or the US, assume a background of Christianity and whiteness, and mention places like Paris and New York. The novels in [my] book highlight instead a largely Islamic space, feature characters of colour and centralise the ports of Malindi, Mombasa, Aden, Java and Bombay. . . . It is a densely imagined, richly sensory image of a southern cosmopolitan culture which provides for an enlarged sense of place in the world.
+
+This remapping is particularly powerful for the representation of Africa. In the ction, sailors and travellers are not all European. . . . African, as well as Indian and Arab characters, are traders, nakhodas (dhow ship captains), runaways, villains, missionaries and activists. This does not mean that Indian Ocean Africa is romanticised. Migration is often a matter of force; travel is portrayed as abandonment rather than adventure, freedoms are kept from women and slavery is rife. What it does mean is that the African part of the Indian Ocean world plays an active role in its long, rich history and therefore in that of the wider world. 
+
+
+Do not rewrite the passage.
+Do not simplify the passage.
+Do not invent a different passage.
+However, because this is a Reel, show only the relevant portions at each stage rather than displaying the entire passage continuously.
+________________________________________
+SCENE 1 — HOOK
+0–3 sec
+Start with a clean architectural blueprint/grid.
+A simple building begins to construct itself.
+Then the building morphs into the RC passage.
+Large text:
+RC ≠ JUST A PASSAGE
+Then:
+RC = A BUILDING
+The transition should be visually impressive and immediate.
+No talking head.
+No stock footage.
+No generic classroom imagery.
+________________________________________
+SCENE 2 — FOUNDATION = TOPIC
+3–9 sec
+Show the first paragraph of the actual passage.
+Highlight:
+“the world of the novel was often the nation”
+Then visually extract:
+NATION
+and place it at the bottom of the building.
+A foundation slab physically forms underneath the passage.
+Label:
+FOUNDATION
+Then:
+TOPIC
+Then visually:
+TOPIC → POSTCOLONIAL LITERATURE / NATION
+The key idea:
+The student should understand that before worrying about details, identify what the passage is fundamentally about.
+________________________________________
+SCENE 3 — COLUMNS = PARAGRAPH ROLES
+9–17 sec
+Now show the paragraphs as separate architectural blocks.
+Each paragraph should transform into a vertical column.
+Use the actual passage.
+Assign these functional labels:
+Paragraph 1
+OLD MODEL
+Show:
+NATION-CENTRED POSTCOLONIAL NOVEL
+Then highlight:
+“but could also be limiting”
+Label:
+LIMITATION
+Paragraph 2
+Transform into another column.
+Label:
+AUTHOR'S NEW IDEA
+Highlight:
+“another kind of world of the novel”
+Then:
+INDIAN OCEAN WORLD
+Paragraph 3
+Transform into another column.
+Label:
+BACKGROUND / FOUNDATION
+This paragraph explains what the Indian Ocean world means historically and geographically.
+Paragraph 4
+Transform into another column.
+Label:
+CONTRAST / EVIDENCE
+Visually contrast:
+EUROPE / US
+with
+INDIAN OCEAN WORLD
+Paragraph 5
+Transform into another column.
+Label:
+IMPLICATION
+Highlight:
+“This remapping is particularly powerful for the representation of Africa.”
+IMPORTANT:
+Do not make the labels look like conventional subtitles.
+Make them physically part of the architectural structure.
+The viewer should visually understand:
+Paragraph ≠ information
+Paragraph = FUNCTION
+________________________________________
+SCENE 4 — BEAMS = LOGIC
+17–25 sec
+Now connect the columns using architectural beams.
+This is the most important visual sequence.
+Find and highlight the actual transition words from the passage:
+BUT
+HOWEVER
+INSTEAD
+THIS HAS THE EFFECT
+THIS DOES NOT MEAN
+When each word appears, animate a beam connecting the relevant columns.
+For example:
+P1:
+NATION
+↓
+BUT
+↓
+P2:
+INDIAN OCEAN WORLD
+Make the “BUT” transition visually obvious.
+Then:
+TRADITIONAL EUROPE/US
+↓
+INSTEAD
+↓
+INDIAN OCEAN WORLD
+Then:
+AFRICA HAS AN ACTIVE ROLE
+while also showing:
+THIS DOES NOT MEAN AFRICA IS ROMANTICISED
+The purpose is to visually demonstrate:
+Transition words reveal the movement of the author's argument.
+On screen:
+BEAMS = LOGIC
+________________________________________
+SCENE 5 — ROOF = AUTHOR'S MAIN POINT
+25–32 sec
+Now complete the entire building.
+The roof forms over all the columns.
+The roof should contain:
+AUTHOR'S MAIN POINT
+Then reveal the actual central idea of the passage:
+These novels remap the world by placing an interconnected Global South / Indian Ocean world at the centre rather than treating Europe or the nation as the default centre.
+Keep this sentence visually concise.
+The most important phrase should be:
+REMAP THE WORLD
+Make this the visual payoff.
+________________________________________
+SCENE 6 — FINAL PAYOFF
+32–38 sec
+Zoom out.
+The entire architectural structure is now visible.
+Show:
+🏗️ FOUNDATION
+TOPIC
+🏛️ COLUMNS
+PARAGRAPH ROLES
+🔗 BEAMS
+LOGIC / DIRECTION
+🏠 ROOF
+AUTHOR'S MAIN POINT
+Then compress it into:
+TOPIC → ROLE → LOGIC → MAIN POINT
+Final screen:
+DON'T JUST READ THE RC.
+DISSECT IT.
+Then a subtle Auctor logo.
+________________________________________
+IMPORTANT VISUAL RULES
+This should NOT look like a PowerPoint presentation.
+Do not simply put text on slides.
+The passage must physically transform into the building.
+Examples:
+•	paragraph → column
+•	topic → foundation
+•	transition word → beam
+•	main idea → roof
+•	argument movement → structural connection
+Use smooth morphing and construction animations.
+The building should gradually become more complete as the RC becomes more understood.
+________________________________________
+TEXT ON SCREEN
+Keep text minimal.
+Use only important labels:
+FOUNDATION
+TOPIC
+COLUMNS
+PARAGRAPH ROLE
+BEAMS
+LOGIC
+ROOF
+AUTHOR'S MAIN POINT
+REMAP THE WORLD
+Avoid large paragraphs of explanatory text.
+The voice-over will explain the concept.
+________________________________________
+STYLE
+Premium Auctor aesthetic.
+Think:
+architectural visualization + intelligent EdTech + cinematic motion graphics
+Not:
+•	generic coaching institute
+•	cartoon
+•	childish animation
+•	stock footage
+•	talking-head education
+•	Canva slideshow
+Use subtle depth, shadows, blueprint/grid elements, smooth camera movement and strong typography.
+________________________________________
+TECHNICAL
+1080 × 1920
+9:16
+30 FPS
+35–40 seconds
+MP4 / H.264
+Keep all important text inside Instagram safe margins.
+Create the animation in modular scenes so that I can later:
+•	add voice-over
+•	adjust timing
+•	change text
+•	change colours
+•	replace the logo
+Do not bake voice-over into the animation.
+________________________________________
+MOST IMPORTANT CREATIVE INSTRUCTION
+The viewer should finish the Reel thinking:
+“Ohhh. RC ko mujhe sentences ki tarah nahi, structure ki tarah padhna hai.”
+Do not merely explain the building analogy.
+MAKE THE RC ITSELF BECOME THE BUILDING.
+

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #101715; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #101715; color: #f4f2ea; }
+      #architecture { display: block; width: 100%; height: 100%; }
+      .grain { position: absolute; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: soft-light; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E"); }
+      .copy { position: absolute; z-index: 5; left: 88px; right: 88px; opacity: 0; color: #fff; text-shadow: 0 3px 24px rgba(0,0,0,.5); }
+      .kicker { font: 600 22px/1.2 sans-serif; letter-spacing: .23em; text-transform: uppercase; color: rgba(246,246,238,.86); }
+      .title { margin-top: 15px; font: 500 72px/.98 sans-serif; letter-spacing: -.045em; text-transform: uppercase; }
+      .title span + span { margin-left: .22em; }
+      .sub { display: inline-block; margin-top: 13px; padding: 7px 12px; border-left: 2px solid #b9ddd3; background: rgba(15,24,22,.72); color: #fff; font: 600 23px/1.15 sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+      #opening { top: 310px; }
+      #opening .title { font-size: 92px; }
+      #foundation-copy { top: 280px; }
+      #pillar-copy { top: 250px; }
+      #beam-copy { top: 285px; }
+      #room-copy { top: 260px; }
+      #roof-copy { top: 260px; }
+      .logic-tag { position: absolute; z-index: 6; opacity: 0; padding: 8px 13px; border-left: 2px solid #d8bd8a; background: rgba(20,25,22,.68); color: #fff; font: 600 22px/1 sans-serif; letter-spacing: .18em; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,.45); }
+      #logic-but { top: 720px; left: 145px; }
+      #logic-however { top: 860px; right: 130px; }
+      #logic-therefore { top: 1010px; left: 195px; }
+      #logic-instead { top: 1150px; right: 142px; }
+      #final-sequence { position: absolute; z-index: 5; left: 60px; right: 60px; bottom: 340px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 18px; opacity: 0; font: 600 19px/1.25 sans-serif; letter-spacing: .11em; text-align: center; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+      #final-sequence span { white-space: nowrap; }
+      #final-sequence b { display: block; margin-bottom: 4px; color: #d9c69f; font-weight: 600; }
+      #endline { left: 64px; right: 64px; bottom: 195px; text-align: center; }
+      #endline .main { font: 500 51px/1.05 sans-serif; letter-spacing: -.035em; text-transform: uppercase; }
+      #endline .second { margin-top: 10px; font: 500 58px/1.05 sans-serif; letter-spacing: -.045em; color: #e1eee8; text-transform: uppercase; }
+      #brand-mark { position: absolute; z-index: 6; left: 488px; bottom: 72px; width: 104px; height: 104px; object-fit: contain; opacity: 0; }
+      #end-shade { position: absolute; z-index: 4; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(180deg, transparent 54%, rgba(5,10,9,.28) 67%, rgba(5,10,9,.85) 100%); }
+    </style>
+  </head>
+  <body>
+    <main id="root" class="clip" data-composition-id="main" data-start="0" data-duration="40" data-width="1080" data-height="1920">
+      <canvas id="architecture" aria-label="A contemporary house being built in a continuous architectural timelapse"></canvas>
+      <div class="grain"></div>
+      <section class="copy" id="opening"><div class="kicker">Reading comprehension, re-seen</div><div class="title"><span>RC</span><span>Is a building.</span></div></section>
+      <section class="copy" id="foundation-copy"><div class="kicker">The starting point</div><div class="title">Foundation</div><div class="sub">Topic</div></section>
+      <section class="copy" id="pillar-copy"><div class="kicker">The parts that hold the whole</div><div class="title">Pillars</div><div class="sub">Paragraphs</div></section>
+      <section class="copy" id="beam-copy"><div class="kicker">Ideas move through a frame</div><div class="title">Logic</div><div class="sub">Connections</div></section>
+      <div class="logic-tag" id="logic-but">But</div>
+      <div class="logic-tag" id="logic-however">However</div>
+      <div class="logic-tag" id="logic-therefore">Therefore</div>
+      <div class="logic-tag" id="logic-instead">Instead</div>
+      <section class="copy" id="room-copy"><div class="kicker">What gives the argument support</div><div class="title">Rooms</div><div class="sub">Evidence / examples</div></section>
+      <section class="copy" id="roof-copy"><div class="kicker">The idea that holds everything together</div><div class="title"><span>Author’s</span><span>main point</span></div><div class="sub">Roof</div></section>
+      <div id="end-shade"></div>
+      <div id="final-sequence">
+        <span><b>Foundation</b>Topic</span><span><b>Pillars</b>Paragraphs</span><span><b>Beams</b>Logic</span><span><b>Rooms</b>Evidence</span><span><b>Roof</b>Main idea</span>
+      </div>
+      <section class="copy" id="endline"><div class="main">Don’t just read the RC.</div><div class="second">See its structure.</div></section>
+      <img id="brand-mark" src="assets/images/auctor-logo.png" alt="Auctor" />
+      <audio id="music-bed" src="assets/music/instrumental.mp3" data-start="0" data-duration="40" data-track-index="10" data-volume="0.085"></audio>
+    </main>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = gsap.timeline({ paused: true });
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      let finishArchitectureBuild;
+      window.__hf.buildReady.architecture = new Promise((resolve) => { finishArchitectureBuild = resolve; });
+      window.__hf.resolveArchitecture = () => finishArchitectureBuild();
+    </script>
+    <script type="module" src="src/architecture.js"></script>
+  </body>
+</html>

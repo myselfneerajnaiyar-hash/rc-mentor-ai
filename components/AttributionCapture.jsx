@@ -9,7 +9,7 @@ export default function AttributionCapture() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    persistBrowserAttribution(new URLSearchParams(searchParams.toString()))
+    persistBrowserAttribution(new URLSearchParams(searchParams.toString()), document.referrer)
   }, [pathname, searchParams])
 
   return null

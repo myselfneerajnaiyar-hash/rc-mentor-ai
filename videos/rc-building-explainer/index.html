@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #e9edf5;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="38"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div
+        id="el-01-reading-as-architecture"
+        class="scene"
+        data-composition-id="01-reading-as-architecture"
+        data-composition-src="compositions/frames/01-reading-as-architecture.html"
+        data-start="0"
+        data-duration="3"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-02-foundation-topic"
+        class="scene"
+        data-composition-id="02-foundation-topic"
+        data-composition-src="compositions/frames/02-foundation-topic.html"
+        data-start="3"
+        data-duration="6.5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-03-columns-paragraph-roles"
+        class="scene"
+        data-composition-id="03-columns-paragraph-roles"
+        data-composition-src="compositions/frames/03-columns-paragraph-roles.html"
+        data-start="9"
+        data-duration="8.5"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-04-beams-logical-connections"
+        class="scene"
+        data-composition-id="04-beams-logical-connections"
+        data-composition-src="compositions/frames/04-beams-logical-connections.html"
+        data-start="17"
+        data-duration="8.5"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-05-roof-main-point"
+        class="scene"
+        data-composition-id="05-roof-main-point"
+        data-composition-src="compositions/frames/05-roof-main-point.html"
+        data-start="25"
+        data-duration="7.5"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-06-dissect-the-rc"
+        class="scene"
+        data-composition-id="06-dissect-the-rc"
+        data-composition-src="compositions/frames/06-dissect-the-rc.html"
+        data-start="32"
+        data-duration="6"
+        data-track-index="1"
+      ></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-02-foundation-topic", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 9);
+        tl.fromTo("#el-03-columns-paragraph-roles", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 9);
+        tl.addLabel("hf:transition:02-foundation-topic:03-columns-paragraph-roles:crossfade", 9);
+        tl.to("#el-03-columns-paragraph-roles", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 17);
+        tl.fromTo("#el-04-beams-logical-connections", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 17);
+        tl.addLabel("hf:transition:03-columns-paragraph-roles:04-beams-logical-connections:crossfade", 17);
+        tl.to("#el-04-beams-logical-connections", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 25);
+        tl.fromTo("#el-05-roof-main-point", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 25);
+        tl.addLabel("hf:transition:04-beams-logical-connections:05-roof-main-point:crossfade", 25);
+        tl.to("#el-05-roof-main-point", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 32);
+        tl.fromTo("#el-06-dissect-the-rc", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 32);
+        tl.addLabel("hf:transition:05-roof-main-point:06-dissect-the-rc:crossfade", 32);
+        tl.to({}, { duration: 38 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
+    </script>
+  </body>
+</html>

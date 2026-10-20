@@ -1,0 +1,213 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 7
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 4,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 9.25,
+        "selector": "#f-02-eyebrow",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 78,
+          "top": 142,
+          "right": 343.95,
+          "bottom": 170,
+          "width": 265.95,
+          "height": 28
+        },
+        "containerSelector": "#f-03-eyebrow",
+        "text": "01 / FOUNDATION",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/02-foundation-topic.html",
+        "bbox": {
+          "x": 78,
+          "y": 142,
+          "width": 265.95,
+          "height": 28
+        },
+        "firstSeen": 9.25,
+        "lastSeen": 9.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          9.25
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 17.25,
+        "selector": "#f-03-eyebrow",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 78,
+          "top": 131,
+          "right": 434.14,
+          "bottom": 158,
+          "width": 356.14,
+          "height": 27
+        },
+        "containerSelector": "#f-04-eyebrow",
+        "text": "02 / PARAGRAPH ROLES",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/03-columns-paragraph-roles.html",
+        "bbox": {
+          "x": 78,
+          "y": 131,
+          "width": 356.14,
+          "height": 27
+        },
+        "firstSeen": 17.25,
+        "lastSeen": 17.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          17.25
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 25.25,
+        "selector": "#f-04-eyebrow",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 78,
+          "top": 131,
+          "right": 496.91,
+          "bottom": 158,
+          "width": 418.91,
+          "height": 27
+        },
+        "containerSelector": "#f-05-eyebrow",
+        "text": "03 / LOGICAL CONNECTIONS",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/04-beams-logical-connections.html",
+        "bbox": {
+          "x": 78,
+          "y": 131,
+          "width": 418.91,
+          "height": 27
+        },
+        "firstSeen": 25.25,
+        "lastSeen": 25.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          25.25
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 32.25,
+        "selector": "#f-05-eyebrow",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 78,
+          "top": 137,
+          "right": 477.78,
+          "bottom": 164,
+          "width": 399.78,
+          "height": 27
+        },
+        "containerSelector": "#f-06-eyebrow",
+        "text": "04 / AUTHOR’S MAIN POINT",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/05-roof-main-point.html",
+        "bbox": {
+          "x": 78,
+          "y": 137,
+          "width": 399.78,
+          "height": 27
+        },
+        "firstSeen": 32.25,
+        "lastSeen": 32.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          32.25
+        ]
+      }
+    ],
+    "duration": 38,
+    "samples": [
+      2.111,
+      6.333,
+      10.556,
+      14.778,
+      19,
+      23.222,
+      27.444,
+      31.667,
+      35.889
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 4,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      2.111,
+      10.556,
+      19,
+      27.444,
+      35.889
+    ],
+    "checked": 22,
+    "passed": 22
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}
