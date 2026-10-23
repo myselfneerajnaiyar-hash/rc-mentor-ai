@@ -270,7 +270,7 @@ useEffect(() => {
 useEffect(() => {
   if (window.__auctorCancelledBack) { window.__auctorCancelledBack=false; return; }
   const requested=searchParams.get("view") || "home";
-  const allowed=["home","today","practice","profile","workout","hangman","rc","speed","vocab","precision","cat","mentor","leaderboards","grammar"];
+  const allowed=["home","today","practice","profile","workout","hangman","rc","speed","vocab","precision","cat","mentor","leaderboards",...(GRAMMAR_ENABLED?["grammar"]:[])];
   const next=allowed.includes(requested)?requested:"home";
   const feature=FEATURES.find(f=>f.id===next);
   if(feature?.premium && !hasPremiumAccess){setLockedFeature(feature);setViewState("practice");return;}
