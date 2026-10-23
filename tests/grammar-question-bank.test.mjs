@@ -1,7 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import { selectCompleteActiveTestQuestions, selectMixedPracticeQuestions } from "../lib/grammar/questionBank.mjs"
-import { FEATURES, GRAMMAR_ENABLED } from "../lib/mobile/features.mjs"
+import { FEATURES, GRAMMAR_ENABLED, visibleFeatures } from "../lib/mobile/features.mjs"
 
 const questionsFor = (testId, count = 5) => Array.from({ length: count }, (_, index) => ({ id: `${testId}-q${index + 1}`, test_id: testId }))
 const playable = (question, parent) => question.test_id === parent.id
@@ -41,10 +41,11 @@ test("mixed practice selects multiple topics and formats when available", () => 
   assert.ok(new Set(selected.map(({ question_type }) => question_type)).size > 1)
 })
 
-test("Grammar launches through the existing premium-gated route", () => {
+test("Grammar stays directly routable while hidden from discovery", () => {
   const feature = FEATURES.find(({ id }) => id === "grammar")
 
-  assert.equal(GRAMMAR_ENABLED, true)
+  assert.equal(GRAMMAR_ENABLED, false)
+  assert.ok(!visibleFeatures().some(({ id }) => id === "grammar"))
   assert.equal(feature?.premium, true)
   assert.equal(feature?.href, "/?view=grammar")
 })
