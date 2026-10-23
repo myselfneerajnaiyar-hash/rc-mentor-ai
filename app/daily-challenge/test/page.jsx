@@ -12,6 +12,7 @@ import { dailyRcTodayDate, filterTodaysDailyRc } from "@/lib/dailyRc/today.mjs";
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
+import { captureFirstSessionEvent } from "@/lib/firstSession/analytics";
 
 import {
   Card,
@@ -34,10 +35,12 @@ export default function DailyChallengeTestPage() {
   return <Suspense fallback={<div>Loading Challenge...</div>}><SelectedChallenge /></Suspense>;
 }
 function SelectedChallenge() {
-  const selectedChallengeId = useSearchParams().get("challengeId");
-  return <ChallengeAttempt key={selectedChallengeId || "today"} selectedChallengeId={selectedChallengeId} />;
+  const searchParams = useSearchParams();
+  const selectedChallengeId = searchParams.get("challengeId");
+  const firstSessionMission = searchParams.get("firstSession") === "1";
+  return <ChallengeAttempt key={`${selectedChallengeId || "today"}:${firstSessionMission ? "first-session" : "standard"}`} selectedChallengeId={selectedChallengeId} firstSessionMission={firstSessionMission} />;
 }
-function ChallengeAttempt({ selectedChallengeId }) {
+function ChallengeAttempt({ selectedChallengeId, firstSessionMission = false }) {
     const router = useRouter();
   const [pane,setPane]=useState("passage");
   const paneScroll=useRef({passage:0,questions:0});
@@ -62,6 +65,8 @@ function ChallengeAttempt({ selectedChallengeId }) {
   const savedAttemptRef=useRef(null);
   const startedRef = useRef(false);
   const completedRef = useRef(false);
+  const questionAttemptsSavedRef = useRef(false);
+  const completionAnalyticsSentRef = useRef(false);
   const mountedRef = useRef(false);
   const abandonedRef = useRef(false);
 
@@ -103,6 +108,23 @@ const [score, setScore] =
 
     async function loadChallenge() {
     setLoading(true);setLoadError(null);
+
+if (firstSessionMission) {
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session?.access_token) {
+    router.replace("/login?next=%2Ffirst-session");
+    return;
+  }
+  const journeyResponse = await fetch("/api/first-session", {
+    headers: { Authorization: `Bearer ${sessionData.session.access_token}` },
+    cache: "no-store",
+  });
+  const journeyState = journeyResponse.ok ? await journeyResponse.json().catch(() => null) : null;
+  if (journeyState?.journey?.phase !== "DAILY_RC_MISSION" || journeyState.journey.mission_challenge_date !== dailyRcTodayDate()) {
+    router.replace("/first-session");
+    return;
+  }
+}
 
 const istToday = dailyRcTodayDate();
 
@@ -181,7 +203,7 @@ setTimeLeft(
 
     withTimeout(loadChallenge()).catch(error=>{setLoadError(error.message);setLoading(false);});
 
-  }, [selectedChallengeId,retry]);
+  }, [selectedChallengeId,retry,firstSessionMission,router]);
 
   useEffect(() => {
     if (loading || alreadyAttempted || !challenge?.id || startedRef.current) return;
@@ -469,7 +491,7 @@ const compositeScore =
   const user = await withTimeout(supabase.auth.getUser());
  if(!user.data.user)throw new Error("Please sign in again to save this attempt.");
 
-const { data: attemptRow, error: attemptError } = savedAttemptRef.current ? {data:savedAttemptRef.current,error:null} :
+  const { data: attemptRow, error: attemptError } = savedAttemptRef.current ? {data:savedAttemptRef.current,error:null} :
   await supabase
     .from("daily_rc_attempts")
    .insert({
@@ -602,27 +624,60 @@ const questionRows =
     };
   });
 
-  const { error: questionError } =
-  await supabase
-    .from("daily_rc_question_attempts")
-    .insert(questionRows);
+  if (!questionAttemptsSavedRef.current) {
+    const { error: questionError } = await supabase
+      .from("daily_rc_question_attempts")
+      .insert(questionRows);
+    if(questionError)throw new Error("Your score is saved. Retry to finish saving your responses; your answers are still here.");
+    questionAttemptsSavedRef.current = true;
+  }
 
-if(questionError)throw new Error("Your score is saved. Retry to finish saving your responses; your answers are still here.");
+if (!completionAnalyticsSentRef.current) {
+  captureLearningEvent("daily_rc_completed", {
+    activity_type: "daily_rc",
+    activity_id: challenge.id,
+    challenge_id: challenge.id,
+    challenge_title: challenge.title,
+    score: catScore,
+    accuracy: accuracy,
+    time_used: timeUsed,
+    correct: correct,
+    incorrect: incorrect,
+  });
+  completeLearningActivity("daily_rc", challenge.id);
+  completionAnalyticsSentRef.current = true;
+}
+
+if (firstSessionMission) {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const missionResponse = await fetch("/api/first-session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session?.access_token || ""}` },
+    body: JSON.stringify({ action: "complete_mission" }),
+  });
+  const missionResult = await missionResponse.json().catch(() => ({}));
+  if (!missionResponse.ok) throw new Error(missionResult.error || "Your mission completion could not be recorded. Retry to continue.");
+  captureFirstSessionEvent("daily_rc_mission_completed", missionResult.first_session_attempt_id, {
+    user_id: user.data.user.id,
+    attempt_id: missionResult.attempt_id,
+    first_session_attempt_id: missionResult.first_session_attempt_id,
+    set_id: challenge.id,
+    question_count: questions.length,
+    question_ids: questions.map((question) => question.id),
+    score: catScore,
+    accuracy,
+    time_used: timeUsed,
+    day_number: 1,
+  }, `mission-completed:${missionResult.attempt_id}`);
+  setScore(correct);
+  completedRef.current = true;
+  window.__auctorExitAllowed=true;
+  router.replace("/");
+  return;
+}
+
 setScore(correct);
 completedRef.current = true;
-captureLearningEvent("daily_rc_completed", {
-  activity_type: "daily_rc",
-  activity_id: challenge.id,
-  challenge_id: challenge.id,
-  challenge_title: challenge.title,
-  score: catScore,
-  accuracy: accuracy,
-  time_used: timeUsed,
-  correct: correct,
-  incorrect: incorrect,
-});
-
-completeLearningActivity("daily_rc", challenge.id);
 
 window.__auctorExitAllowed=true;
 router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.id)}`);
@@ -654,7 +709,7 @@ router.push(`/daily-challenge/result?attemptId=${encodeURIComponent(attemptRow.i
  <header className="daily-test-mobile-header">
    <div className="daily-test-header-row">
      <strong>Daily RC <span role="timer" aria-label="Time remaining">{formattedTime}</span></strong>
-     <button onClick={()=>{if(allowActivityExit())router.push('/?view=today');}}>Exit activity</button>
+     {firstSessionMission ? <span className="text-xs font-semibold tracking-wide text-cyan-200">FIRST SESSION · FINAL STEP</span> : <button onClick={()=>{if(allowActivityExit())router.push('/?view=today');}}>Exit activity</button>}
    </div>
    <div className="daily-test-header-row">
      <span>{answeredCount}/{questions.length} answered</span>
@@ -726,22 +781,18 @@ bg-[#0d1726]
     </div>
 
     <h1 className="text-2xl font-black text-white mt-2">
-      {challenge.title}
+      {firstSessionMission ? "Today's Reading Challenge" : challenge.title}
     </h1>
 
     <div className="flex flex-wrap items-center gap-2 mt-4">
-
-      <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-200 text-sm">
-        CAT-Level Simulation
-      </div>
 
       <div className="px-3 py-1 rounded-full bg-orange-500/20 border border-orange-400 text-sm text-white font-bold">
         {questions.length} Questions
       </div>
 
-      <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-200 text-sm">
+      {!firstSessionMission && <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-200 text-sm">
         {challenge.source_year}
-      </div>
+      </div>}
 
      
 

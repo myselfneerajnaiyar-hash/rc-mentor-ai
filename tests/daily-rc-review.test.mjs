@@ -189,7 +189,7 @@ test("submission and all review entry points retain attempt identity", async () 
   assert.match(submission, /attempt_id: attemptRow.id/)
   assert.match(submission, /question_id: q.id/)
   assert.match(submission, /result\?attemptId=\$\{encodeURIComponent\(attemptRow.id\)\}/)
-  assert.match(submission, /key=\{selectedChallengeId \|\| "today"\}/)
+  assert.ok(submission.includes('key={`${selectedChallengeId || "today"}:${firstSessionMission ? "first-session" : "standard"}`}'))
   assert.doesNotMatch(submission, /dailyRCResult/)
 })
 

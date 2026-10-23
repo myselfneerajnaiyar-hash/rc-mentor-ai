@@ -38,17 +38,18 @@ export async function GET(request) {
     completed.forEach((attempt) => { if (!completionByTest.has(attempt.test_id)) completionByTest.set(attempt.test_id, attempt) })
     const buildTopic = (currentTopicId) => {
       const topicTests = tests.filter((test) => test.topic_id === currentTopicId)
+      const availableTests = topicTests.length
       const difficulties = Object.fromEntries(["easy", "moderate", "hard"].map((difficulty) => {
       const sets = topicTests.filter((test) => test.difficulty === difficulty).slice(0, 10).map((test, index) => {
         const attempt = completionByTest.get(test.id)
         return { testId: test.id, setNumber: Number(test.test_number || index + 1), questionCount: 5, completed: Boolean(attempt), bestScore: attempt?.score ?? null, completedAt: attempt?.completed_at || null }
       })
       const completedCount = sets.filter((set) => set.completed).length
-      return [difficulty, { sets, completed: completedCount, total: 10, percentage: completedCount * 10 }]
+      const total = sets.length
+      return [difficulty, { sets, completed: completedCount, total, percentage: total ? Math.round((completedCount / total) * 100) : 0 }]
       }))
       const completedTotal = Object.values(difficulties).reduce((sum, item) => sum + item.completed, 0)
-      const availableTests = topicTests.length
-      return { topicId: currentTopicId, topicName: GRAMMAR_TOPIC_NAMES[currentTopicId] || currentTopicId, difficulties, availableTests, availableQuestions: availableTests * 5, overall: { completed: completedTotal, total: 30, percentage: Math.round((completedTotal / 30) * 100) } }
+      return { topicId: currentTopicId, topicName: GRAMMAR_TOPIC_NAMES[currentTopicId] || currentTopicId, difficulties, availableTests, availableQuestions: availableTests * 5, overall: { completed: completedTotal, total: availableTests, percentage: availableTests ? Math.round((completedTotal / availableTests) * 100) : 0 } }
     }
     if (topicId === "all") return NextResponse.json({ success: true, topics: Object.keys(GRAMMAR_ONTOLOGY).map(buildTopic) })
     return NextResponse.json({ success: true, ...buildTopic(topicId) })

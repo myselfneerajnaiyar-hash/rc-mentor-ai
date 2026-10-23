@@ -11,6 +11,7 @@ import TenantLogo from "@/components/tenant/TenantLogo"
 import { attributionFromParams, buildAttributedPath, normalizeAttribution, persistBrowserAttribution, clearBrowserAttribution } from "@/lib/attribution.mjs"
 import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
 import { getOnboardingDestination } from "@/lib/onboarding/returnDestination.mjs"
+import { captureFirstSessionEvent } from "@/lib/firstSession/analytics"
 
 export default function WelcomePage() {
   const { branding, refreshContext } = useTenant()
@@ -26,6 +27,8 @@ const loginPath = buildAttributedPath("/login", attributionFromParams(searchPara
   
 const [loading, setLoading] = useState(true)
 const [authError, setAuthError] = useState("")
+const [journeyStartError, setJourneyStartError] = useState("")
+const [startingJourney, setStartingJourney] = useState(false)
 const [profileSaveError, setProfileSaveError] = useState("")
 const [savingProfile, setSavingProfile] = useState(false)
 const finishProfileRequest = useRef(null)
@@ -43,6 +46,43 @@ async function continueBootcampAcquisition() {
     console.warn("Unable to complete the Bootcamp access claim before navigation.", error)
   }
   router.replace(getOnboardingDestination("bootcamp"))
+}
+
+async function startJourney() {
+  setJourneyStartError("")
+  if (next === "bootcamp" || next === "/inbox") {
+    const destination = getOnboardingDestination(next, free)
+    if (next === "bootcamp") {
+      setStartingJourney(true)
+      try { await continueBootcampAcquisition() }
+      catch (error) { setJourneyStartError(error.message || "We could not continue. Please retry.") }
+      finally { setStartingJourney(false) }
+    } else {
+      router.replace(destination)
+    }
+    return
+  }
+
+  setStartingJourney(true)
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.access_token) throw new Error("Your session expired. Please sign in again.")
+    const response = await fetch("/api/first-session", {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+      cache: "no-store",
+    })
+    if (!response.ok) throw new Error("We could not verify your first-session progress. Please retry.")
+    const journey = await response.json()
+    if (journey?.required) {
+      router.replace("/first-session")
+      return
+    }
+    router.push(getOnboardingDestination(next, free))
+  } catch (error) {
+    setJourneyStartError(error.message || "We could not continue. Please retry.")
+  } finally {
+    setStartingJourney(false)
+  }
 }
 
   const [profileName, setProfileName] = useState("")
@@ -144,6 +184,21 @@ async function checkUser() {
       captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq, surface: signupSurface, placement: signupSurface ? "google_oauth_callback" : undefined })
     }
 
+    if (profile?.profile_completed) {
+      const { data: sessionData } = await supabase.auth.getSession()
+      if (sessionData.session?.access_token) {
+        const response = await fetch("/api/first-session", {
+          headers: { Authorization: `Bearer ${sessionData.session.access_token}` },
+          cache: "no-store",
+        })
+        const journey = response.ok ? await response.json().catch(() => null) : null
+        if (journey?.required) {
+          router.replace("/first-session")
+          return
+        }
+      }
+    }
+
     if (profile?.profile_completed && next === "/inbox") {
       await refreshContext()
       router.replace("/inbox")
@@ -239,6 +294,7 @@ async function finishProfile() {
 
       await persistSignupAttribution(user)
       await refreshContext()
+      captureFirstSessionEvent("profile_completed", user.id, { user_id: user.id, day_number: 1 }, "profile_completed")
 
       if (whatsappOptIn) {
         void (async () => {
@@ -265,17 +321,7 @@ async function finishProfile() {
         body: JSON.stringify({ email: user.email, name }),
       }).catch((error) => console.warn("Unable to send welcome email", error))
 
-      if (next === "bootcamp") {
-        await continueBootcampAcquisition()
-      } else if (next === "/inbox") {
-        router.replace("/inbox")
-      } else if (next === "cat") {
-        router.push(free === "1" ? "/?view=cat&free=1" : "/?view=cat")
-      } else if (next === "pricing") {
-        router.push("/pricing")
-      } else {
-        router.push("/")
-      }
+      router.replace("/first-session")
     })
   } catch (error) {
     console.error("Profile setup failed", error)
@@ -486,14 +532,12 @@ async function persistSignupAttribution(user) {
 
         <button
           className={styles["welcome-btn"]}
-         onClick={() => {
-  const destination = getOnboardingDestination(next, free)
-  if (next === "bootcamp" || next === "/inbox") router.replace(destination)
-  else router.push(destination)
-}}
+          onClick={startJourney}
+          disabled={startingJourney}
         >
-          Start Your RC Journey →
+          {startingJourney ? "Preparing your next step…" : "Start Your RC Journey →"}
         </button>
+        {journeyStartError && <p className={styles["welcome-error"]} role="alert">{journeyStartError}</p>}
 
         <p className={styles["welcome-footer"]}>
           Not just practice. Precision training.

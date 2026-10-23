@@ -62,6 +62,7 @@ const GrammarLab = dynamicImport(() => import("../components/GrammarLab"), { loa
 import { useTenant } from "@/components/providers/TenantProvider";
 import { useInboxUnreadCount } from "@/lib/inbox/useUnreadCount";
 import { captureLearningEvent } from "@/lib/learningAnalytics";
+import { captureFirstSessionEvent } from "@/lib/firstSession/analytics";
 
 const SHOW_GRAMMAR_LAB = GRAMMAR_ENABLED;
 
@@ -290,6 +291,47 @@ useEffect(() => {
 useEffect(() => {
 
   let mounted = true;
+  const checkedFirstSessionUsers = new Set();
+
+  async function activateUser(session) {
+    if (!session?.user || !mounted) return;
+    const { user: signedInUser } = session;
+    if (!checkedFirstSessionUsers.has(signedInUser.id)) {
+      checkedFirstSessionUsers.add(signedInUser.id);
+      try {
+        const response = await fetch("/api/first-session", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+          cache: "no-store",
+        });
+        if (!response.ok) {
+          router.replace("/first-session");
+          return;
+        }
+        const journey = response.ok ? await response.json().catch(() => null) : null;
+        if (journey?.required) {
+          router.replace("/first-session");
+          return;
+        }
+        if (journey?.journey?.phase === "NORMAL_HOME" && journey.journey.mission_completed_at && journey.journey.mission_daily_attempt_id) {
+          captureFirstSessionEvent("daily_rc_mission_completed", journey.journey.id, {
+            user_id: signedInUser.id,
+            attempt_id: journey.journey.mission_daily_attempt_id,
+            first_session_attempt_id: journey.journey.id,
+            set_id: journey.journey.mission_daily_set_id,
+            mission_challenge_date: journey.journey.mission_challenge_date,
+            day_number: 1,
+          }, `mission-completed:${journey.journey.mission_daily_attempt_id}`);
+        }
+      } catch {
+        // Keep the first-session gate closed when its state cannot be verified.
+        router.replace("/first-session");
+        return;
+      }
+    }
+    if (!mounted) return;
+    setUser(signedInUser);
+    setAuthLoading(false);
+  }
 
   async function loadSession() {
 
@@ -304,8 +346,7 @@ useEffect(() => {
       return;
     }
 
-    setUser(session.user);
-    setAuthLoading(false);
+    await activateUser(session);
   }
 
   loadSession();
@@ -321,8 +362,7 @@ useEffect(() => {
       }
 
       if (session?.user) {
-        setUser(session.user);
-        setAuthLoading(false);
+        void activateUser(session);
       }
     }
   );
@@ -332,7 +372,7 @@ useEffect(() => {
     subscription.unsubscribe();
   };
 
-}, []);
+}, [router]);
 
 
 

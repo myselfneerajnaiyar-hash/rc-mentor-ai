@@ -372,9 +372,9 @@ CONTENT STANDARD:
 - primary_skill, core_rule, trap_type, misconception, and option analysis must all diagnose the same construction actually tested.
 - secondary_skill must be null unless it exactly matches one of the allowed skills.
 - Do not repeat question text, embed an option block in the stem and then repeat it in options, or reuse the same four-option block for another question.
-- These normalized option blocks have already been accepted in this run and must not be reused: ${JSON.stringify(priorOptionBlocks)}
+- These normalized option blocks already exist in the approved topic/difficulty bank or this set and must not be reused: ${JSON.stringify(priorOptionBlocks)}
 - If the natural short verb forms would recreate one of those blocks, change the question format or use contextualized phrase/full-sentence alternatives. Never resubmit the same four forms in a different order or with cosmetically different punctuation.
-${repairConstraints ? `- REPLACEMENT REQUIREMENT: The rejected slot failed because: ${repairConstraints.reason}. The rejected question text was: ${JSON.stringify(repairConstraints.rejectedQuestionText)}. Avoid these colliding stored question texts: ${JSON.stringify(repairConstraints.avoidedQuestionTexts || [])}. Produce a genuinely different normalized four-option block from every listed block. Do not merely change the stem, reorder the options, or alter punctuation. Use a different tested lexical item, scenario, sentence frame, and contextual mechanism within the assigned construction.` : ""}
+${repairConstraints?.reason ? `- REPLACEMENT REQUIREMENT: The rejected slot failed because: ${repairConstraints.reason}. The rejected question text was: ${JSON.stringify(repairConstraints.rejectedQuestionText)}. Avoid these colliding stored question texts: ${JSON.stringify(repairConstraints.avoidedQuestionTexts || [])}. Produce a genuinely different normalized four-option block from every listed block. Do not merely change the stem, reorder the options, or alter punctuation. Use a different tested lexical item, scenario, sentence frame, and contextual mechanism within the assigned construction.` : ""}
 - These convenient context anchors have already been used and must not appear again in this difficulty batch: ${JSON.stringify(priorContextAnchors)}
 - Deliberately rotate realistic domains across policy, technology, finance, publishing, education, business, public administration, culture, and science. Do not default to researchers, scientists, committees, directors, or students. If a prior context anchor is listed above, choose a different domain and role before drafting.
 - Reject an item whose only reasoning is visible singular noun -> singular verb or plural noun -> plural verb. A valid item must require identifying a non-obvious controller, resolving a construction, applying notional meaning, or checking an embedded dependency.
@@ -492,7 +492,8 @@ function efficientLocalReasons(question, topic, difficulty, slot, pool, retained
   reasons.push(...contentGateReasons(question, topic, difficulty, slot), ...preAuditQualityReasons(question, topic, difficulty))
   const hash = dedupHash(topic, difficulty, question.question_text), options = optionSignature(question)
   if (pool.some((item) => item.dedup_hash === hash || similarity(item.question_text, question.question_text) >= 0.82) || retained.some((item) => similarity(item.question.question_text, question.question_text) >= 0.62)) reasons.push("duplicate or near-duplicate question")
-  if (pool.some((item) => storedOptionSignature(item) === options) || retained.some((item) => optionSignature(item.question) === options)) reasons.push("duplicate option block")
+  if (pool.some((item) => storedOptionSignature(item) === options)) reasons.push("duplicate option block in stored bank")
+  if (retained.some((item) => optionSignature(item.question) === options)) reasons.push("duplicate option block within generated set")
   benchmarkTimings.localValidation += performance.now() - startedAt
   return [...new Set(reasons)]
 }
@@ -504,7 +505,7 @@ async function seedEfficientSet(topic, difficulty) {
   const retained = Array(5).fill(null)
   const localRepairAttempts = Array(5).fill(0), auditRepairAttempts = Array(5).fill(0)
   const generated = await withOneConnectionRetry(
-    () => generate(topic, difficulty, 5, 0, [], `${generationRunNonce}-set`, { topic, difficulty, setNumber, slots: [1, 2, 3, 4, 5], callType: "generation" }),
+    () => generate(topic, difficulty, 5, 0, [], `${generationRunNonce}-set`, { topic, difficulty, setNumber, slots: [1, 2, 3, 4, 5], callType: "generation" }, { existingOptionBlocks: (pool || []).map(storedOptionSignature) }),
     () => {},
   )
   benchmarkQuality.initialGenerated += generated.length
@@ -516,7 +517,7 @@ async function seedEfficientSet(topic, difficulty) {
       attempts[slot] += 1
       const attempt = attempts[slot]
       const prior = retained.filter(Boolean).filter((_, index) => index !== slot)
-      const existingOptionBlocks = retained.filter(Boolean).map((item) => optionSignature(item.question))
+      const existingOptionBlocks = [...(pool || []).map(storedOptionSignature), ...retained.filter(Boolean).map((item) => optionSignature(item.question))]
       const rejectedQuestionText = retained[slot]?.question?.question_text
       const avoidedQuestionTexts = (pool || [])
         .filter((item) => similarity(item.question_text, rejectedQuestionText) >= 0.6)

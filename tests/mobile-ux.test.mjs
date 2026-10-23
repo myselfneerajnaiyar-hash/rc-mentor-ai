@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import { BOOTCAMP_ENABLED, GRAMMAR_ENABLED, visibleFeatures, nextActivity, destination } from '../lib/mobile/features.mjs';
 import { fetchWithTimeout, withTimeout } from '../lib/mobile/request.js';
 
-test('discovery respects exam eligibility and disabled products',()=>{
+test('discovery respects exam eligibility and enabled products',()=>{
  const cat=visibleFeatures({showDailyRC:true,showCATSectionals:true}).map(f=>f.id);
  const other=visibleFeatures({showDailyRC:false,showCATSectionals:false}).map(f=>f.id);
- assert.equal(BOOTCAMP_ENABLED,false);assert.equal(GRAMMAR_ENABLED,false);
+ assert.equal(BOOTCAMP_ENABLED,false);assert.equal(GRAMMAR_ENABLED,true);
  assert.ok(cat.includes('daily_rc')&&cat.includes('cat'));
  assert.ok(!other.includes('daily_rc')&&!other.includes('cat'));
  assert.ok(other.includes('workout')&&other.includes('hangman'));
- assert.ok(!cat.includes('bootcamp')&&!cat.includes('grammar'));
+ assert.ok(!cat.includes('bootcamp')&&cat.includes('grammar'));
 });
 test('next action skips unavailable and completed work, then offers review',()=>{
  const activities=[{id:'daily_rc',available:false,completed:false},{id:'workout',available:true,completed:true},{id:'hangman',available:true,completed:false}];

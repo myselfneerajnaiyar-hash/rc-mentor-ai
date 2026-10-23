@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { selectCompleteActiveTestQuestions } from "../lib/grammar/questionBank.mjs"
+import { selectCompleteActiveTestQuestions, selectMixedPracticeQuestions } from "../lib/grammar/questionBank.mjs"
 import { FEATURES, GRAMMAR_ENABLED } from "../lib/mobile/features.mjs"
 
 const questionsFor = (testId, count = 5) => Array.from({ length: count }, (_, index) => ({ id: `${testId}-q${index + 1}`, test_id: testId }))
@@ -23,6 +23,22 @@ test("mixed bank excludes active sets that do not contain exactly five playable 
   const questions = [...questionsFor("complete"), ...questionsFor("partial", 4)]
 
   assert.deepEqual(selectCompleteActiveTestQuestions(tests, questions, playable).map(({ test_id }) => test_id), Array(5).fill("complete"))
+})
+
+test("mixed practice selects multiple topics and formats when available", () => {
+  const questions = [
+    { id: "1", topic_id: "tenses", question_type: "Sentence Correction" },
+    { id: "2", topic_id: "tenses", question_type: "Error Detection" },
+    { id: "3", topic_id: "pronouns", question_type: "Sentence Correction" },
+    { id: "4", topic_id: "articles", question_type: "Fill in the Blank" },
+    { id: "5", topic_id: "prepositions", question_type: "Best Revision" },
+    { id: "6", topic_id: "modifiers", question_type: "Contextual Usage" },
+  ]
+  const selected = selectMixedPracticeQuestions(questions, 5)
+
+  assert.equal(selected.length, 5)
+  assert.ok(new Set(selected.map(({ topic_id }) => topic_id)).size > 1)
+  assert.ok(new Set(selected.map(({ question_type }) => question_type)).size > 1)
 })
 
 test("Grammar launches through the existing premium-gated route", () => {

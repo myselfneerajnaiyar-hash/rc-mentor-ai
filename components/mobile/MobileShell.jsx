@@ -16,9 +16,10 @@ export function allowActivityExit(){
 export default function MobileShell({children}){
  const {user}=useTenant(),path=usePathname(),params=useSearchParams(),router=useRouter();
  const [active,setActive]=useState(false);const previous=useRef('');
- const isStudent=!!user&&!publicRoutes.some(p=>path===p||path.startsWith(p+'/'))&&!path.startsWith('/boot-camp');
+ const isFirstSession=path==='/first-session';
+ const isStudent=!!user&&!isFirstSession&&!publicRoutes.some(p=>path===p||path.startsWith(p+'/'))&&!path.startsWith('/boot-camp');
  const view=path==='/'?params.get('view')||'home':path.startsWith('/daily-challenge')||path.startsWith('/rc-session')||path==='/rc-history'?'today':'practice';
- const showAnnouncementRibbon=(path!=='/'||view!=='home')&&!active;
+ const showAnnouncementRibbon=!isFirstSession&&(path!=='/'||view!=='home')&&!active;
  const navigate=href=>{if(allowActivityExit())router.push(href);};
  useEffect(()=>{
    const sync=()=>setActive(document.body.classList.contains('assessment-mode-active'));
