@@ -91,7 +91,7 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
 
     <div className="ad-signup-divider"><span>or</span></div>
     <button type="button" className="ad-signup-google" onClick={onGoogle} disabled={loading}>
-      <img src="https://developers.google.com/identity/images/g-logo.png" width="22" height="22" alt="" />
+      <img src="/google-g.svg" width="22" height="22" alt="" />
       <span>{loading ? 'Creating your account…' : 'Continue with Google'}</span>
     </button>
     <p className="ad-signup-note">Free trial, no card needed. Next you add your name, exam and mobile number (about 30 seconds).</p>
