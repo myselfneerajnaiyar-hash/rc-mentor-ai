@@ -101,7 +101,7 @@ const free = searchParams.get("free") || ""
         setError(readableAuthError(outcome.error, "Signup"))
         return
       }
-      captureSignupConversion({ userId: outcome.user.id, method: "email", createdAt: outcome.user.created_at, posthog, pixel: window.fbq })
+      captureSignupConversion({ userId: outcome.user.id, method: "email", createdAt: outcome.user.created_at, posthog, pixel: window.fbq, attribution })
       if (outcome.type === "authenticated") {
         router.replace(buildAttributedPath("/welcome", attribution, { next, free }))
         return

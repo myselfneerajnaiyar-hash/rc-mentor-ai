@@ -6,6 +6,7 @@ import {
   attributionFromParams,
   buildSignupHref,
   mergeAttribution,
+  postHogAttributionProperties,
   persistBrowserAttribution,
   readBrowserAttribution,
   ATTRIBUTION_STORAGE_KEY,
@@ -88,6 +89,15 @@ test('global page capture stores UTM, click IDs, Meta cookies, and first touch a
     assert.equal(laterVisit.lastTouch.utm_source, 'direct')
     assert.deepEqual(readBrowserAttribution(new URLSearchParams()).firstTouch, firstVisit.firstTouch)
     assert.ok(values.has(ATTRIBUTION_STORAGE_KEY))
+    assert.deepEqual(postHogAttributionProperties(laterVisit), {
+      utm_source: 'instagram',
+      utm_campaign: 'launch',
+      first_touch_utm_source: 'instagram',
+      first_touch_utm_campaign: 'launch',
+      last_touch_utm_source: 'direct',
+      last_touch_utm_campaign: 'home',
+      landing_referrer: 'instagram.com',
+    })
   } finally {
     if (originalWindow === undefined) delete globalThis.window
     else globalThis.window = originalWindow

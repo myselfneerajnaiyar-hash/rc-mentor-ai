@@ -45,6 +45,22 @@ test('missing, empty or wrong-block review data produces an explicit recoverable
   }
 })
 
+test('stale revisions are identified explicitly by the API without weakening the database guard',async()=> {
+  const h=await harness(fixture())
+  try {
+    await h.service.enroll(student)
+    const state=await h.service.start(student)
+    const response=await h.handle(new Request(`http://localhost/api/bootcamp/attempts/${state.id}/blocks/warmup/responses`,{
+      method:'PATCH',headers:{authorization:`Bearer ${student}`,'content-type':'application/json'},
+      body:JSON.stringify({revision:state.revision-1,key:'warmup',questionId:'bootcamp-day-1-warmup-q1',response:'A'})
+    }),'responses',{id:state.id,key:'warmup'})
+    assert.equal(response.status,409)
+    assert.equal((await response.json()).code,'stale_revision')
+    const sql=await (await import('node:fs/promises')).readFile('supabase/migrations/202609220001_bootcamp_day1.sql','utf8')
+    assert.match(sql,/if d\.revision<>p_revision then raise exception 'stale_revision' using errcode='40001'/)
+  } finally {await h.close()}
+})
+
 test('source contract: enriched only, exact composition, stable links, typed positions and analysis agreement',()=> {
   const row=fixture();const {snapshot}=adaptDay(row)
   assert.deepEqual(snapshot.blocks.map(b=>b.questions.length),[5,4,4,4,8]); assert.equal(snapshot.blocks[4].questions[4].answer,4)

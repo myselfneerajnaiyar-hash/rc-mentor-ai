@@ -5,10 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import styles from "./welcome.module.css"
 import posthog from "posthog-js"
-import { captureGoogleLoginFailure, captureSignupConversion, isNewGoogleSignup } from "@/lib/analytics/conversionEvents.mjs"
+import { captureGoogleLoginFailure, captureSignupConversion, identifyPostHogUser, isNewGoogleSignup } from "@/lib/analytics/conversionEvents.mjs"
 import { useTenant } from "@/components/providers/TenantProvider"
 import TenantLogo from "@/components/tenant/TenantLogo"
-import { attributionFromParams, buildAttributedPath, normalizeAttribution, persistBrowserAttribution, clearBrowserAttribution } from "@/lib/attribution.mjs"
+import { attributionFromParams, buildAttributedPath, normalizeAttribution, persistBrowserAttribution } from "@/lib/attribution.mjs"
 import { runSingleFlight, validateMobileNumber } from "@/lib/onboarding/profileValidation.mjs"
 import { getOnboardingDestination } from "@/lib/onboarding/returnDestination.mjs"
 import { captureFirstSessionEvent } from "@/lib/firstSession/analytics"
@@ -168,14 +168,15 @@ async function checkUser() {
     if (profile) await persistSignupAttribution(user)
 
     const inlinePreviewSignup = searchParams.get("signup_surface") === "preview_ad_inline"
-    if (inlinePreviewSignup) {
-      posthog.identify(user.id)
-    } else {
-      posthog.identify(user.id, {
+    identifyPostHogUser({
+      userId: user.id,
+      posthog,
+      attribution: user.user_metadata?.signup_attribution,
+      userProperties: inlinePreviewSignup ? {} : {
         email: user.email,
         name: profile?.name || formatted,
-      })
-    }
+      },
+    })
 
     if (searchParams.get("oauth") === "google"
       && searchParams.get("flow") === "signup"
@@ -340,17 +341,19 @@ async function persistSignupAttribution(user) {
     firstTouch: Object.keys(metadata.firstTouch).length ? metadata.firstTouch : browserAttribution.firstTouch,
     lastTouch: Object.keys(browserAttribution.lastTouch).length ? browserAttribution.lastTouch : metadata.lastTouch,
   }
-  if (!Object.keys(attribution.firstTouch).length && !Object.keys(attribution.lastTouch).length) return
+  if (!Object.keys(attribution.firstTouch).length && !Object.keys(attribution.lastTouch).length) return attribution
   try {
     const { error } = await supabase.rpc("capture_signup_attribution", {
       p_first_touch: attribution.firstTouch,
       p_last_touch: attribution.lastTouch,
     })
     if (error) console.warn("Signup attribution was not saved.", error.code || error.message)
-    else clearBrowserAttribution()
+    // Keep the browser touch available for post-signup learning events; the
+    // profile RPC remains the durable cross-device record.
   } catch (error) {
     console.warn("Signup attribution could not reach the profile service.", error?.message || "Request failed")
   }
+  return attribution
 }
   if (loading) {
   return null

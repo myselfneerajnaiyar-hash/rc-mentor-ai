@@ -27,7 +27,7 @@ const branding={brandName:'Auctor',logoUrl:'/logo.png',faviconUrl:'/icon-192.png
 const context={user,profile:{user_id:student,name:'Boot Camp Student',exam:'CAT'},tenant:{kind:'b2c'},branding,exam:'CAT',capabilities:{isCAT:true,showDailyRC:true,showCATSectionals:true},entitlement:{hasAccess:true,isPremium:true},access:'allowed'}
 await ctx.addInitScript(({ref,session})=>localStorage.setItem(`sb-${ref}-auth-token`,JSON.stringify(session)),{ref,session})
 const errors=[],leaks=[],calls=[]
-let failNextAnswer=false, failNextChat=false
+let failNextAnswer=false, failNextChat=false, staleResponseCount=0, staleResponseRequests=0
 await ctx.route('**/*',async route=> {
   const req=route.request(),url=new URL(req.url())
   const fulfill=(json,status=200)=>route.fulfill({status,contentType:'application/json',body:JSON.stringify(json)})
@@ -37,6 +37,11 @@ await ctx.route('**/*',async route=> {
     const op=suffix===''?'home':suffix==='/chat'?'chat':suffix==='/enroll'?'enroll':suffix==='/days/1/start'?'start':parts[2]==='blocks'?({start:'block_start',responses:'responses',finish:'finish',review:'review'})[parts[4]]:parts[2]||'get'
     if(op==='chat' && failNextChat){failNextChat=false;return fulfill({error:'Birbal could not reply just now. Please retry your message.'},503)}
     if (op==='responses' && failNextAnswer && Object.hasOwn(JSON.parse(req.postData() || '{}'),'response')) { failNextAnswer=false; return fulfill({error:'Temporary test connection failure. Please retry.'},503) }
+    if (op==='responses' && staleResponseCount > 0 && Object.hasOwn(JSON.parse(req.postData() || '{}'),'response')) {
+      staleResponseCount--; staleResponseRequests++
+      await h.pg.query('update bootcamp_day_attempts set revision=revision+1 where id=$1',[params.id])
+      return fulfill({error:'Progress changed in another request. Reload to continue safely.',code:'stale_revision'},409)
+    }
     const r=await h.handle(new Request(req.url(),{method:req.method(),headers:req.headers(),...(req.postData()?{body:req.postData()}: {})}),op,params)
     const data=await r.json();calls.push({op,status:r.status})
     if(data.activity) {const json=JSON.stringify(data);for(const key of ['"answer":','sourceAnswer','correctPosition','explanation','"snapshot"']) if(json.includes(key)) leaks.push(key)}
@@ -270,6 +275,16 @@ try {
   check((await h.service.home(student)).attempt.activity.responses[0].response===null,'failed save is not falsely recorded')
   await click('Retry sync');await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor()
   check((await h.service.home(student)).attempt.activity.responses[0].response===wrong.id,'retry preserves and saves the chosen answer')
+  staleResponseCount=2; staleResponseRequests=0
+  const alternate=warm[0].options.find(option=>option.id!==wrong.id)
+  await page.getByRole('button',{name:alternate.id+' '+alternate.text,exact:true}).click()
+  await page.getByRole('button',{name:'Retry sync',exact:true}).waitFor()
+  await page.waitForTimeout(2200)
+  check(staleResponseRequests===2,'a repeated stale revision is retried once after a server refresh, then stops')
+  await click('Retry sync');await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor()
+  check((await h.service.home(student)).attempt.activity.responses[0].response===alternate.id,'manual retry saves the pending answer with the refreshed revision')
+  await page.getByRole('button',{name:wrong.id+' '+wrong.text,exact:true}).click()
+  await page.getByRole('status').filter({hasText:'Answer saved'}).waitFor()
   await click('Next question →')
   const right=warm[1].options.find(o=>o.id===warm[1].answer)
   await page.getByRole('button',{name:right.id+' '+right.text,exact:true}).click()

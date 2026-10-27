@@ -5,6 +5,7 @@ import {
   captureGoogleLoginFailure,
   capturePurchasePixel,
   captureSignupConversion,
+  identifyPostHogUser,
   isNewGoogleSignup,
 } from "../lib/analytics/conversionEvents.mjs"
 import {
@@ -62,6 +63,34 @@ test("new email signup fires Meta and PostHog once; repeated renders and existin
   assert.ok(layout.includes("process.env.NEXT_PUBLIC_META_PIXEL_ID"))
   assert.doesNotMatch(layout, /1724851152297636/)
   assert.ok(signupApi.includes("auth.admin.getUserById"))
+})
+
+test("PostHog identity and signup event preserve first and last acquisition touch", () => {
+  const calls = []
+  const attribution = {
+    firstTouch: { utm_source: "instagram", utm_medium: "social", utm_campaign: "cat2026", referrer: "instagram.com" },
+    lastTouch: { utm_source: "google", utm_medium: "cpc", utm_campaign: "retargeting" },
+  }
+  const posthog = {
+    identify: (...args) => calls.push(["identify", ...args]),
+    capture: (...args) => calls.push(["capture", ...args]),
+  }
+  assert.equal(captureSignupConversion({ userId: "user-attributed", method: "email", posthog, storage: memoryStorage(), attribution }), true)
+  const identity = calls.find(([type]) => type === "identify")
+  assert.equal(identity[1], "user-attributed")
+  assert.equal(identity[2].last_touch_utm_source, "google")
+  assert.equal(identity[3].first_touch_utm_source, "instagram")
+  const signup = calls.find(([type, name]) => type === "capture" && name === "user_signed_up")
+  assert.equal(signup[2].utm_source, "instagram")
+  assert.equal(signup[2].utm_campaign, "cat2026")
+  assert.equal(signup[2].last_touch_utm_source, "google")
+  assert.equal(signup[2].signup_attribution.firstTouch.referrer, "instagram.com")
+
+  const loginCalls = []
+  assert.equal(identifyPostHogUser({ userId: "user-attributed", posthog: { identify: (...args) => loginCalls.push(args) }, attribution, userProperties: { name: "Student" } }), true)
+  assert.equal(loginCalls[0][1].name, "Student")
+  assert.equal(loginCalls[0][1].last_touch_utm_campaign, "retargeting")
+  assert.equal(loginCalls[0][2].first_touch_utm_source, "instagram")
 })
 
 test("Google signup conversion only recognizes a recent new Google identity; Google failures have their own event", () => {

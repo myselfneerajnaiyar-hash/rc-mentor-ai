@@ -308,7 +308,9 @@ useEffect(() => {
           return;
         }
         const journey = response.ok ? await response.json().catch(() => null) : null;
-        if (journey?.required) {
+        let firstSessionDeferred = false;
+        try { firstSessionDeferred = window.sessionStorage.getItem(`auctor:first-session:home:${signedInUser.id}`) === "1"; } catch { /* Storage may be unavailable. */ }
+        if (journey?.required && !firstSessionDeferred) {
           router.replace("/first-session");
           return;
         }

@@ -5,20 +5,62 @@ import {
   FIRST_SESSION_DIAGNOSTIC_SET_ID,
   FIRST_SESSION_TIME_LIMIT_SECONDS,
   buildFirstSessionInsight,
+  diagnosticQuestionTypeLabel,
   formatParagraphGroup,
   scoreDiagnostic,
+  studentOptionText,
   summarizeReadingReplay,
 } from "../lib/firstSession/diagnostic.mjs";
-import { passageEvidenceMap, summarizeAuthoredTraps, summarizeQuestionTypes } from "../lib/firstSession/reportPresentation.mjs";
+import { buildBirbalAnalysis, calculateAccuracyPercentage, displayQuestionType, passageEvidenceMap, summarizeAuthoredTraps, summarizeQuestionTypes } from "../lib/firstSession/reportPresentation.mjs";
+import { diagnosticCompletionProperties, diagnosticReportProperties } from "../lib/firstSession/analyticsProperties.mjs";
 
 const questions = [
   { id: "q1", order_no: 1, question_text: "Which option is supported?", options: ["A", "B", "C", "D"], correct_answer: "2", question_enrichment: { questionType: "Inference", primarySkill: "Scope control", evidenceLine: "The passage says so.", eliminationLogic: { optionB: "Supported by the passage." } } },
   { id: "q2", order_no: 2, question_text: "Which is the main point?", options: ["A", "B", "C", "D"], correct_answer: "4", question_enrichment: { questionType: "Main idea" } },
 ];
 
-test("pins one CAT PYQ set and an eight-minute server limit", () => {
-  assert.equal(FIRST_SESSION_DIAGNOSTIC_SET_ID, "5785e51d-1431-445e-8491-f5f6a2492568");
+test("pins the Keyssar Daily RC set and an eight-minute server limit", () => {
+  assert.equal(FIRST_SESSION_DIAGNOSTIC_SET_ID, "43869308-c311-4c07-851d-25383c8ca37d");
   assert.equal(FIRST_SESSION_TIME_LIMIT_SECONDS, 480);
+});
+
+test("diagnostic analytics summarize attempted accuracy and question types without question text", () => {
+  const report = {
+    set_id: "keyssar-v1",
+    score: 2,
+    total_questions: 4,
+    time_taken_seconds: 38,
+    questions: [
+      { question_type: "Inference", selected_option: 1, is_correct: true },
+      { question_type: "Main idea", selected_option: 0, is_correct: false },
+      { question_type: "Inference", selected_option: 2, is_correct: true },
+      { question_type: "Author purpose", selected_option: null, is_correct: false },
+    ],
+  };
+  assert.deepEqual(diagnosticCompletionProperties(report, true), {
+    total_questions: 4,
+    correct_count: 2,
+    attempted_count: 3,
+    unanswered_count: 1,
+    accuracy: 66.67,
+    time_taken_seconds: 38,
+    question_type_performance: [
+      { question_type: "Inference", total: 2, attempted: 2, correct: 2, unanswered: 0 },
+      { question_type: "Main idea", total: 1, attempted: 1, correct: 0, unanswered: 0 },
+      { question_type: "Author purpose", total: 1, attempted: 0, correct: 0, unanswered: 1 },
+    ],
+    submitted_by_timer: true,
+  });
+  assert.deepEqual(diagnosticReportProperties(report), {
+    set_id: "keyssar-v1",
+    diagnostic_version: "keyssar-v1",
+    score: 2,
+    accuracy: 66.67,
+    attempted_count: 3,
+    total_questions: 4,
+    time_taken_seconds: 38,
+  });
+  assert.equal(JSON.stringify(diagnosticCompletionProperties(report)).includes("question_text"), false);
 });
 
 test("question payload sent before submission excludes answer keys and answer enrichment", () => {
@@ -29,9 +71,23 @@ test("question payload sent before submission excludes answer keys and answer en
     question_text: "Which option is supported?",
     options: ["A", "B", "C", "D"],
     question_type: "Inference",
+    authored_question_type: "Inference",
   });
   assert.equal(Object.hasOwn(payload, "correct_answer"), false);
   assert.equal(Object.hasOwn(payload, "question_enrichment"), false);
+});
+
+test("generic MCQ metadata is presented using the authored semantic skill", () => {
+  assert.equal(diagnosticQuestionTypeLabel({ questionType: "MCQ", primarySkill: "Inference calibration" }), "Inference");
+  assert.equal(diagnosticQuestionTypeLabel({ questionType: "MCQ", primarySkill: "Application logic", secondarySkill: "Counterexample reasoning" }), "Strengthen/Weaken");
+  assert.equal(diagnosticQuestionTypeLabel({ questionType: "MCQ", primarySkill: "Author attitude detection", secondarySkill: "Main idea synthesis" }), "Author attitude");
+  assert.equal(diagnosticQuestionTypeLabel({ questionType: "Author purpose", primarySkill: "Inference" }), "Author purpose");
+});
+
+test("accuracy uses attempted questions as its denominator", () => {
+  assert.equal(calculateAccuracyPercentage(2, 3), 66.66);
+  assert.equal(calculateAccuracyPercentage(2, 4), 50);
+  assert.equal(calculateAccuracyPercentage(0, 0), 0);
 });
 
 test("server scoring uses the one-based stored answer key and preserves unanswered questions", () => {
@@ -78,7 +134,7 @@ test("report insight distinguishes a recorded answer change from a possible expl
   });
   assert.match(insight.headline, /You answered 0 of 1 questions correctly/);
   assert.match(insight.evidence, /first choice \(B\) was correct\. Changing it to D made it incorrect/);
-  assert.match(insight.meaning, /does not show a recurring habit/);
+  assert.match(insight.meaning, /one useful moment from your first session/);
   assert.match(insight.next_step, /clear support in the passage/);
 });
 
@@ -88,7 +144,7 @@ test("report does not claim a profile from a perfect four-question baseline", ()
     replay: { paragraphs: [], observed_visible_ms: 0 },
   });
   assert.match(insight.headline, /You answered 4 of 4 questions correctly/);
-  assert.match(insight.meaning, /one passage cannot show whether this result will hold/);
+  assert.match(insight.meaning, /useful starting point/);
 });
 
 test("student insight stays focused on answers even when viewport data is present", () => {
@@ -144,6 +200,8 @@ test("question review exposes only the saved selected-option and authored trap e
       ...questions[0].question_enrichment,
       trapType: "overreach",
       authorTrapMechanism: "The distractor expands a limited claim.",
+      whyOptionWasTempting: "It repeats a familiar phrase from the passage.",
+      nextTimeTakeaway: "Check the option against the complete claim, not one familiar phrase.",
       eliminationLogic: { optionA: "This choice overstates the evidence.", optionB: "This choice is supported by the passage." },
     },
   };
@@ -152,6 +210,20 @@ test("question review exposes only the saved selected-option and authored trap e
   assert.equal(review.why_correct, "This choice is supported by the passage.");
   assert.equal(review.trap_type, "overreach");
   assert.equal(review.trap_explanation, "The distractor expands a limited claim.");
+  assert.equal(review.why_option_tempting, "It repeats a familiar phrase from the passage.");
+  assert.equal(review.next_time_takeaway, "Check the option against the complete claim, not one familiar phrase.");
+  assert.deepEqual(review.option_explanations, [
+    "This choice overstates the evidence.",
+    "This choice is supported by the passage.",
+    null,
+    null,
+  ]);
+});
+
+test("student-facing options preserve the authored wording and casing", () => {
+  assert.equal(studentOptionText("  owing to migrations, the pattern changed."), "  owing to migrations, the pattern changed.");
+  assert.equal(studentOptionText("NASA changed its approach."), "NASA changed its approach.");
+  assert.equal(studentOptionText({ text: "the calls have changed." }), "the calls have changed.");
 });
 
 test("passage map links only saved evidence excerpts that occur in source paragraphs", () => {
@@ -164,4 +236,26 @@ test("passage map links only saved evidence excerpts that occur in source paragr
     ],
   );
   assert.deepEqual(map, [[{ question_number: 1, text: "visible evidence from attention" }], []]);
+});
+
+test("Birbal turns a very fast first session into a cautious pacing insight", () => {
+  const analysis = buildBirbalAnalysis({
+    total_questions: 4,
+    time_taken_seconds: 15,
+    passage_word_count: 338,
+    questions: [
+      { order_no: 1, question_type: "Application", selected_option: 0, is_correct: true },
+      { order_no: 2, question_type: "Inference", selected_option: 1, is_correct: false, trap_type: "overreach", trap_explanation: "The choice extends the claim beyond the passage." },
+      { order_no: 3, question_type: "Inference", selected_option: 2, is_correct: false },
+      { order_no: 4, question_type: "Summary", selected_option: null, is_correct: false },
+    ],
+  });
+  assert.equal(analysis.headline, "Slow down before you solve.");
+  assert.match(analysis.diagnosis, /4-question diagnostic in 15 seconds/);
+  assert.match(analysis.diagnosis, /338-word, 4-question diagnostic in 15 seconds/);
+  assert.match(analysis.diagnosis, /too fast to reliably read and process the passage and questions/);
+  assert.match(analysis.diagnosis, /pacing signal, not a judgment about your ability/);
+  assert.doesNotMatch(analysis.diagnosis, /Q\d|overreach|selected option|correct option|evidence line/i);
+  assert.ok(analysis.diagnosis.match(/[.!?](?:\s|$)/g).length <= 4);
+  assert.equal(displayQuestionType("inference"), "Inference");
 });

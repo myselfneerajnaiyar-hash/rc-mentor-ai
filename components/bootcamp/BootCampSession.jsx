@@ -46,11 +46,12 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     return tracker.current(event, { eventKey, properties: { ...analyticsContext.current, ...properties } })
   }, [preview])
   const requestSession = rawRequestSession
-  const responseQueue = useRef(new Map()), responseDrain = useRef(null), responseTimer = useRef(null)
+  const responseQueue = useRef(new Map()), responseDrain = useRef(null), responseTimer = useRef(null), responseAutoRetries = useRef(0)
   const accept = useCallback(value => { latest.current = value; setSession(value) },[])
   const drainResponses = useCallback(() => {
     if (responseDrain.current) return responseDrain.current
     const operation = (async () => {
+      let staleRetries = 0
       while (responseQueue.current.size) {
         const [questionId, change] = responseQueue.current.entries().next().value
         responseQueue.current.delete(questionId)
@@ -60,20 +61,57 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
           const isFirstAnswer = change.response !== undefined && change.response !== null && !(current.activity?.responses || []).some(row => row.response !== null)
           const value = await requestSession(`/attempts/${current.id}/blocks/${current.currentBlock}/responses`, 'PATCH', { ...change, revision: current.revision })
           accept(value)
+          responseAutoRetries.current = 0
           if (isFirstAnswer) void track('bootcamp_first_answer', `first_answer:${current.id}`, { day_number: current.dayNumber })
           setResponseSaveStatus(responseQueue.current.size ? 'saving' : 'saved')
         } catch (error) {
           const newer = responseQueue.current.get(questionId)
           responseQueue.current.set(questionId, { ...change, ...newer, activeMs: Math.max(change.activeMs || 0, newer?.activeMs || 0) })
           if (error.status === 409) {
+            let refreshed = null
             try {
-              const refreshed = await requestSession(`/attempts/${current.id}`)
+              refreshed = await requestSession(`/attempts/${current.id}`)
               accept(refreshed)
-              if (refreshed.phase === 'activity' && refreshed.currentBlock === current.currentBlock) continue
-            } catch { /* Retry below with the latest local answer retained. */ }
+            } catch { /* Keep the pending answer for an explicit retry after reconciliation succeeds. */ }
+            if (!refreshed) {
+              setResponseSaveStatus('conflict-reload')
+              return false
+            }
+            const sameActivity = refreshed?.phase === 'activity' && refreshed.currentBlock === current.currentBlock
+            if (error.code === 'stale_revision' && sameActivity) {
+              const saved = refreshed.activity?.responses?.find(row => row.questionId === questionId)
+              const responseMatches = change.response === undefined || JSON.stringify(saved?.response) === JSON.stringify(change.response)
+              const timingMatches = (change.activeMs || 0) <= (saved?.active_ms || 0)
+              const presentationMatches = change.presented !== true || Boolean(saved?.presented_at)
+              const nextIndex = change.nextQuestionId ? refreshed.activity?.questions?.findIndex(question => question.id === change.nextQuestionId) : -1
+              const navigationMatches = !change.nextQuestionId || (nextIndex >= 0 && refreshed.activity.current_question >= nextIndex)
+              if (responseMatches && timingMatches && presentationMatches && navigationMatches) {
+                responseQueue.current.delete(questionId)
+                responseAutoRetries.current = 0
+                if (responseQueue.current.size) continue
+                setResponseSaveStatus('saved')
+                return true
+              }
+            }
+            if (error.code === 'stale_revision' && sameActivity && staleRetries === 0) {
+              staleRetries += 1
+              continue
+            }
+            if (!sameActivity) {
+              responseQueue.current.clear()
+              clearTimeout(responseTimer.current); responseTimer.current = null
+              setResponseSaveStatus('conflict-reload')
+            } else {
+              setResponseSaveStatus('conflict-retry')
+            }
+            return false
           }
           setResponseSaveStatus('error')
-          if (!responseTimer.current) responseTimer.current = setTimeout(() => { responseTimer.current = null; void drainResponses() }, 1800)
+          if ((!error.status || error.status >= 500) && responseAutoRetries.current < 3 && !responseTimer.current) {
+            const delay = 800 * (2 ** responseAutoRetries.current)
+            responseAutoRetries.current += 1
+            responseTimer.current = setTimeout(() => { responseTimer.current = null; void drainResponses() }, delay)
+          }
           return false
         }
       }
@@ -82,15 +120,17 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     responseDrain.current = operation
     return operation
   }, [accept, requestSession, track])
-  const flushResponses = useCallback(async () => {
+  const flushResponses = useCallback(async ({ manual = false } = {}) => {
+    if (manual) responseAutoRetries.current = 0
     clearTimeout(responseTimer.current); responseTimer.current = null
-    if (responseDrain.current) await responseDrain.current
+    if (responseDrain.current && !await responseDrain.current) return false
     if (responseQueue.current.size) return drainResponses()
-    return responseSaveStatus !== 'error'
+    return !['error','conflict-retry','conflict-reload'].includes(responseSaveStatus)
   }, [drainResponses, responseSaveStatus])
   const queueResponse = useCallback((change, { flush = false } = {}) => {
     const previous = responseQueue.current.get(change.questionId)
     responseQueue.current.set(change.questionId, { ...previous, ...change, activeMs: Math.max(previous?.activeMs || 0, change.activeMs || 0) })
+    responseAutoRetries.current = 0
     setResponseSaveStatus('saving')
     clearTimeout(responseTimer.current); responseTimer.current = null
     if (flush) void flushResponses()
@@ -216,9 +256,15 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
     return run(`/attempts/${current.id}${suffix}`,method,{ ...body,revision:current.revision })
   }
   async function reload() {
+    const clearingConflict = responseSaveStatus === 'conflict-reload'
+    if (clearingConflict) {
+      responseQueue.current.clear()
+      clearTimeout(responseTimer.current); responseTimer.current = null
+    }
     if (preview) { latest.current=null; accept(null); setError(null); setBusy(true); try { const home=await requestSession(dayRoute ? '?day=' + dayNumber : '');setCatalog(home);accept(await resolveAttempt(home)) } catch(e) { setError(e) } finally { setBusy(false) } }
     else if (latest.current) await run(`/attempts/${latest.current.id}`,'GET')
     else { setError(null); setBusy(true); try { const home=await requestSession(dayRoute?`?day=${dayNumber}`:'');setCatalog(home);accept(await resolveAttempt(home)) } catch(e) { setError(e) } finally { setBusy(false) } }
+    if (clearingConflict) setResponseSaveStatus('saved')
     setRetryKey(k=>k+1)
   }
   async function selectReviewBlock(key) {
@@ -243,7 +289,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
   return <BootCampShell preview={preview} session={session} reviewWorkspace={reviewWorkspace || session.phase==='report'} showBackToBootCamp={dayRoute}>{errorPanel}{chatPanel}
     {session.phase === 'mission' && <BootCampMission preview={preview} dayNumber={dayNumber} commentary={session.commentary} busy={busy} onContinue={()=>mutate('/advance')} />}
     {session.phase === 'ready' && <BootCampMission ready blockLabel={session.blockLabel} seconds={session.seconds} busy={busy} onContinue={()=>mutate(`/blocks/${session.currentBlock}/start`)} />}
-    {session.phase === 'activity' && <BootCampActivity preview={preview} dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} saveStatus={responseSaveStatus} onSave={queueResponse} flushResponses={flushResponses} onFinish={body=>mutate(`/blocks/${session.currentBlock}/finish`,'POST',body)} onExpire={async questionId=>{if(await flushResponses())return run(`/attempts/${session.id}?presentedQuestionId=${encodeURIComponent(questionId)}`,'GET');return false}} />}
+    {session.phase === 'activity' && <BootCampActivity preview={preview} dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} activity={session.activity} serverNow={session.serverNow} busy={busy} saveStatus={responseSaveStatus} onSave={queueResponse} flushResponses={flushResponses} onReload={reload} onFinish={body=>mutate(`/blocks/${session.currentBlock}/finish`,'POST',body)} onExpire={async questionId=>{if(await flushResponses())return run(`/attempts/${session.id}?presentedQuestionId=${encodeURIComponent(questionId)}`,'GET');return false}} />}
     {reviewWorkspace && (review?.key === selectedReviewKey ? <BootCampReviewBoundary key={`${session.id}:${session.currentBlock}:${retryKey}`} attemptId={session.id} block={session.currentBlock} onRetry={reload}><BootCampReviewWorkspace preview={preview} dayNumber={dayNumber} key={`${session.id}:${session.currentBlock}`} attemptId={session.id} review={review} phase={session.phase} commentary={review.commentary || session.commentary} busy={busy} canContinue={review.key === session.currentBlock} reviewBlocks={(session.progress || []).filter(block=>block.completed)} onSelectBlock={selectReviewBlock} onContinue={()=>mutate('/advance','POST',{reviewed:true})} onAsk={questionId=>setChat({open:true,block:review.key,questionId})}/></BootCampReviewBoundary> : !error && <p role="status">Preparing your detailed review...</p>)}
     {session.phase === 'report' && celebrating && !reportRoute && <BootCampCompletion day={dayNumber} onContinue={()=>preview ? setCelebrating(false) : router.replace(`/boot-camp/day/${dayNumber}/report`)}/>}
     {session.phase === 'report' && (!celebrating || reportRoute) && <BootCampDayReport preview={preview} dayNumber={dayNumber} todayDay={catalog?.calendar?.todayDay} todayAvailable={!!catalog?.days?.find(d=>d.isToday)?.accessible} report={session.report} commentary={session.commentary} onAsk={()=>setChat({open:true})} />}

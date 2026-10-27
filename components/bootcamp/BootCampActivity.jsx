@@ -1,20 +1,27 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import NumberedSentences from './NumberedSentences'
 import BootCampRCActivity from './BootCampRCActivity'
 import s from './bootcamp.module.css'
 
-export default function BootCampActivity({ dayNumber=1, activity, serverNow, busy, saveStatus='idle', onSave, flushResponses, onFinish, onExpire, preview=false }) {
+export default function BootCampActivity({ dayNumber=1, activity, serverNow, busy, saveStatus='idle', onSave, flushResponses, onReload, onFinish, onExpire, preview=false }) {
   const [index, setIndex] = useState(activity.current_question)
   const [remaining, setRemaining] = useState(null)
   const [localAnswers, setLocalAnswers] = useState({})
   const [confirmFinish, setConfirmFinish] = useState(false)
-  const visibleMs = useRef(0), clock = useRef(Date.now()), expiredSent = useRef(false)
+  const visibleMs = useRef(0), clock = useRef(Date.now()), expiryPending = useRef(false), expiryInFlight = useRef(false), expiryComplete = useRef(false)
   const questionElement = useRef(null), questionVisible = useRef(false), previousIndex = useRef(0)
   const q = activity.questions[index], saved = activity.responses[index]
   const value = Object.hasOwn(localAnswers,q.id) ? localAnswers[q.id] : saved.response
   const busyRef = useRef(busy); busyRef.current = busy
   const ops = useRef({ onSave, onExpire }); ops.current = { onSave, onExpire }
+  const attemptExpiry = useCallback(() => {
+    if (!expiryPending.current || expiryInFlight.current || expiryComplete.current) return
+    expiryInFlight.current = true
+    Promise.resolve(ops.current.onExpire(q.id)).then(done => {
+      if (done) { expiryComplete.current = true; expiryPending.current = false }
+    }).catch(() => {}).finally(() => { expiryInFlight.current = false })
+  }, [q.id])
   const timing = () => saved.active_ms + visibleMs.current
 
   useEffect(() => {
@@ -23,14 +30,18 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
       if (!activity.deadline_at) return
       const seconds = Math.max(0, Math.ceil((Date.parse(activity.deadline_at) - Date.now() - offset) / 1000))
       setRemaining(seconds)
-      if (!seconds && !busyRef.current && !expiredSent.current) {
-        expiredSent.current = true
-        Promise.resolve(ops.current.onExpire(q.id)).finally(() => { expiredSent.current = false })
+      if (!seconds && !busyRef.current && !expiryPending.current && !expiryComplete.current) {
+        expiryPending.current = true
+        attemptExpiry()
       }
     }
     tick(); const timer = setInterval(tick, 500)
     return () => clearInterval(timer)
-  }, [activity.deadline_at, serverNow, q.id])
+  }, [activity.deadline_at, serverNow, q.id, attemptExpiry])
+
+  useEffect(() => {
+    if (remaining === 0 && !busy && expiryPending.current && saveStatus === 'saved') attemptExpiry()
+  }, [remaining, busy, saveStatus, q.id])
 
   useEffect(() => {
     visibleMs.current = 0; clock.current = Date.now()
@@ -98,8 +109,9 @@ export default function BootCampActivity({ dayNumber=1, activity, serverNow, bus
     {q.mode === 'MCQ' ? <div className={s.options} role="group" aria-label="Answer options">{q.options.map(o => <button key={o.id} disabled={disabled} aria-pressed={value === o.id} className={`${s.option} ${value === o.id ? s.selected : ''}`} onClick={() => save(o.id)}><span className={s.letter}>{o.id}</span><span>{o.text}</span></button>)}</div>
       : q.type === 'Para Jumble' ? <div><p className={s.muted}>Tap sentence numbers in your chosen order. Tap Undo to revise.</p><div className={s.order} aria-label="Your sentence order">{Array.isArray(value) && value.length ? value.join(' → ') : 'Your order will appear here'}</div><div className={s.numbers}>{q.sentences.map(sentence => <button key={sentence.number} className={s.number} disabled={disabled || value?.includes(sentence.number)} onClick={() => save([...(value || []),sentence.number])}>{sentence.number}</button>)}<button className={s.secondary} disabled={disabled || !value?.length} onClick={() => save(value.length > 1 ? value.slice(0,-1) : null)}>Undo</button></div></div>
       : <div><p className={s.muted}>{q.type === 'Sentence Placement' ? 'Choose the displayed insertion position. Position 4 means [4] in the paragraph.' : 'Choose the sentence that does not belong.'}</p><div className={s.numbers} role="group" aria-label="Choose position">{Array.from({ length: q.type === 'Sentence Placement' ? 4 : 5 },(_,i) => i + 1).map(n => <button key={n} disabled={disabled} className={s.number} aria-pressed={value === n} onClick={() => save(n)}>{q.type === 'Sentence Placement' ? `[${n}]` : n}</button>)}</div></div>}
-    <div className={s.status} role="status" aria-live="polite">{saveStatus==='saving' ? preview ? 'Syncing this preview in the background…' : 'Syncing your answer in the background…' : saveStatus==='error' ? 'Connection issue. Retrying in the background.' : value !== null ? preview ? 'Answer saved in this preview' : 'Answer saved' : 'You can leave this question unanswered.'}</div>
-    {saveStatus==='error' && <button className={s.secondary} onClick={()=>flushResponses()}>Retry sync</button>}
+    <div className={s.status} role="status" aria-live="polite">{saveStatus==='saving' ? preview ? 'Syncing this preview in the background…' : 'Syncing your answer in the background…' : saveStatus==='error' ? 'Connection issue. Automatic retries are limited; retry sync when ready.' : saveStatus==='conflict-retry' ? 'Progress changed in another tab. Latest state loaded; retry this answer when ready.' : saveStatus==='conflict-reload' ? 'This attempt changed in another tab. Reload saved progress before continuing.' : value !== null ? preview ? 'Answer saved in this preview' : 'Answer saved' : 'You can leave this question unanswered.'}</div>
+    {['error','conflict-retry'].includes(saveStatus) && <button className={s.secondary} onClick={()=>flushResponses({manual:true})}>Retry sync</button>}
+    {saveStatus==='conflict-reload' && <button className={s.secondary} onClick={onReload}>Reload saved progress</button>}
     <div className={s.questionNav}><button className={s.secondary} disabled={disabled || index === 0} onClick={() => move(index - 1)}>← Previous</button>
       {value !== null && <button className={s.secondary} disabled={disabled} onClick={() => save(null)}>Clear answer</button>}
       {index < activity.questions.length - 1 ? <button className={s.primary} disabled={disabled} onClick={() => move(index + 1)}>Next question →</button> : <button className={s.primary} disabled={disabled} onClick={() => setConfirmFinish(true)}>Finish {activity.label}</button>}

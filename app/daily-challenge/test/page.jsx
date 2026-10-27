@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 import { captureFirstSessionEvent } from "@/lib/firstSession/analytics";
+import { studentOptionText } from "@/lib/firstSession/diagnostic.mjs";
 
 import {
   Card,
@@ -1116,11 +1117,7 @@ bg-[#0d1726]
 </div>
 
                         <div className="flex-1 min-w-0 break-words text-[16px] leading-7 text-white pt-1">
-  {String(
-    typeof option === "string"
-      ? option
-      : option?.text || option?.option || ""
-  )}
+  {studentOptionText(option)}
 </div>
 
                           {selected && (
