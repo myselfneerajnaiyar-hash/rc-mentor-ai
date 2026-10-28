@@ -31,12 +31,12 @@ export default function PremiumFeatures({
 
           <Crown className="h-4 w-4" />
 
-          {instituteAccess ? "Institute Access" : "Premium AI Features"}
+          {instituteAccess ? "Institute Access" : "AI Features"}
 
         </div>
 
         <h2 className="mt-4 text-4xl font-bold text-white">
-          {instituteAccess ? "Your Premium AI Tools" : "Unlock 5 Premium AI Tools"}
+          {instituteAccess ? "Your AI Tools" : "Explore 5 AI Tools"}
         </h2>
 
         <p className="mt-3 max-w-3xl text-lg text-slate-400">

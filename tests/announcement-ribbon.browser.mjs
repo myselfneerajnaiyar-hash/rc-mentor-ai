@@ -59,9 +59,9 @@ const page = await browserContext.newPage()
 page.setDefaultTimeout(15_000)
 const cases = {
   cat_prospect: [["45 days of guided VARC practice. Try Day 1 free →", "/bootcamp-2026"]],
-  non_cat: [["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"], ["Premium is 20% off. Use AUCTOR20 →", "/pricing?coupon=AUCTOR20"]],
+  non_cat: [["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"], ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"]],
   bootcamp_member: [["Continue your VARC Bootcamp →", "/boot-camp"]],
-  neutral: [["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"], ["Premium is 20% off. Use AUCTOR20 →", "/pricing?coupon=AUCTOR20"]],
+  neutral: [["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"], ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"]],
 }
 
 try {
@@ -72,7 +72,7 @@ try {
     const ribbon = page.locator('[data-testid="announcement-ribbon"]')
     const links = ribbon.locator('[data-testid="ribbon-message-group"]').first().getByTestId("ribbon-message")
     assert.deepEqual(await links.evaluateAll(nodes => nodes.map(node => [node.getAttribute("aria-label"), node.getAttribute("href")])), expected)
-    if (audience === "cat_prospect" || audience === "bootcamp_member") assert.equal(await ribbon.getByText("AUCTOR20").count(), 0)
+    if (audience === "cat_prospect" || audience === "bootcamp_member") assert.equal(await ribbon.getByText("AUCTOR30").count(), 0)
   }
 
   activeContext = contextFor("cat_prospect")
@@ -87,7 +87,7 @@ try {
     await page.waitForTimeout(250)
     assert.equal(await page.locator('[data-testid="announcement-ribbon"]').count(), 0, `${route} Home has no ribbon`)
   }
-  for (const route of ["/daily-challenge/test", "/rc-session/test", "/boot-camp/day/1", "/bootcamp-2026/start", "/pricing?coupon=AUCTOR20", "/payment-success", "/about", "/login", "/signup"]) {
+  for (const route of ["/daily-challenge/test", "/rc-session/test", "/boot-camp/day/1", "/bootcamp-2026/start", "/pricing?coupon=AUCTOR30", "/payment-success", "/about", "/login", "/signup"]) {
     await page.goto(`${base}${route}`, { waitUntil: "domcontentloaded" })
     assert.equal(await page.locator('[data-testid="announcement-ribbon"]').count(), 0, `${route} excludes the ribbon`)
   }
@@ -130,7 +130,7 @@ try {
   const reducedMessage = reducedPage.locator('[data-testid="ribbon-reduced-message"]')
   await reducedMessage.waitFor({ state: "visible" })
   await reducedPage.waitForFunction(() => document.querySelector('[data-testid="ribbon-reduced-message"]')?.getAttribute("data-message-index") === "1", null, { timeout: 5_500 })
-  assert.equal(await reducedMessage.getAttribute("href"), "/pricing?coupon=AUCTOR20")
+  assert.equal(await reducedMessage.getAttribute("href"), "/pricing?coupon=AUCTOR30")
   await reduced.close()
 
   const guest = await browser.newPage({ viewport: { width: 360, height: 800 } })

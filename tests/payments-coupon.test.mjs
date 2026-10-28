@@ -483,9 +483,24 @@ test("AUCTOR20 Bootcamp commission is based on the ₹799 offer base, not its �
   assert.equal(h.rows.razorpay_payment_orders[0].influencer_attribution.commissionPaise, 15980)
 })
 
-test("Bootcamp accepts only AUCTOR20 and rejects referral stacking", () => {
-  assert.match(createOrderSource, /couponInput\.trim\(\)\.toUpperCase\(\) !== "AUCTOR20"/)
+test("Bootcamp accepts its campaign coupons and rejects referral stacking", () => {
+  assert.match(createOrderSource, /\["AUCTOR20", "AUCTOR30", "AUCTOR99"\]\.includes\(couponInput\.trim\(\)\.toUpperCase\(\)\)/)
   assert.match(createOrderSource, /body\.referralCode\.trim\(\)/)
+})
+
+test("AUCTOR99 validates and server-prices every supported checkout plan", async () => {
+  const validationHarness = await checkoutHarness()
+  const validation = await validationHarness.validate("auctor99")
+  assert.deepEqual(await validation.json(), { valid: true, code: "AUCTOR99", discountPercent: 99 })
+
+  for (const [plan, configured] of Object.entries(PLAN_PRICES)) {
+    const h = await checkoutHarness()
+    const order = await h.create({ plan, couponCode: "AUCTOR99", amount: 1 })
+    const expectedPaise = Math.round(configured.basePaise / 100)
+    assert.equal(order.amount, expectedPaise, plan)
+    assert.equal(order.pricing.finalPaise, expectedPaise, plan)
+    assert.equal(h.rows.razorpay_payment_orders[0].coupon_code, "AUCTOR99", plan)
+  }
 })
 
 test("combined-offer orders fail closed until the database entitlement migration is ready", async () => {
@@ -534,18 +549,20 @@ test("AUCTOR20 charges ₹639.20 on both ₹799 offers using server-calculated p
 
 test("pricing page prefills coupon without applying it until the user clicks Apply", async () => {
   const pricingSource = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
+  const legacyPricingSource = await readFile(new URL("../app/preview/pricing/page.js", import.meta.url), "utf8")
   assert.match(pricingSource, /searchParams\.get\("coupon"\)/)
-  assert.match(pricingSource, /useState\("AUCTOR20"\)/)
+  assert.match(pricingSource, /useState\("AUCTOR30"\)/)
   assert.match(pricingSource, /setCouponInput\(couponFromUrl\)/)
   assert.doesNotMatch(pricingSource, /applyCoupon\(couponFromUrl\)/)
   assert.match(pricingSource, /onClick=\{\(\) => applyCoupon\(couponInput\)\}/)
   assert.match(pricingSource, /couponCode=\{appliedCoupon\}/)
   assert.doesNotMatch(pricingSource, /Referral Code \(Optional\)|campus_ambassadors|referralCode=/)
-  assert.doesNotMatch(pricingSource, /max-w-md mt-10 mx-auto mb-12/)
-  assert.match(pricingSource, /45-Day VARC Boot Camp \+ 3 Months of Full Auctor Access/)
-  assert.match(pricingSource, /Use AUCTOR20 for 20% off the ₹799 base price/)
-  assert.match(pricingSource, /md:grid-cols-2/)
-  assert.match(pricingSource, /sm:grid-cols-2/)
+  assert.match(pricingSource, /getSubscriptionPrice\(plan\.id, appliedCoupon, appliedCouponDiscount\)/)
+  assert.match(pricingSource, /data-plan=\{plan\.id\}/)
+  assert.match(pricingSource, /plan=\{plan\.id\}/)
+  assert.match(pricingSource, /xl:grid-cols-4/)
+  assert.doesNotMatch(pricingSource, /bootcamp_full_access|cat_test_series/)
+  assert.match(legacyPricingSource, /redirect\("\/pricing"\)/)
 })
 
 test("server-validated referral pricing is also identical at creation and verification", async () => {

@@ -39,7 +39,7 @@ test("paid and institute entitlements suppress every promotional state", () => {
   }
 })
 
-test("every user without paid or institute access sees the AUCTOR20 offer regardless of trial metadata", () => {
+test("every user without paid or institute access sees the AUCTOR30 offer regardless of trial metadata", () => {
   for (const options of [
     { now: at(0) },
     { now: at(day), ...trial },

@@ -1,602 +1,197 @@
 "use client"
-import { Card, CardContent } from "@/components/ui/card"
+
+import { useCallback, useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import SubscribeButton from "@/components/SubscribeButton"
 import PreviewNavbar from "@/components/PreviewNavbar"
-import { useCallback, useEffect, useState } from "react"
-import { supabase } from "../../lib/supabase"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useTenant } from "@/components/providers/TenantProvider"
+import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
+import { supabase } from "@/lib/supabase"
+
+const PLANS = getSubscriptionPlans()
 
 export default function Pricing() {
-const [user, setUser] = useState(null)
-const [discountApplied] = useState(false);
-const [couponInput, setCouponInput] = useState("AUCTOR20");
-const [appliedCoupon, setAppliedCoupon] = useState("");
-const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
-const [couponMessage, setCouponMessage] = useState("");
+  const [user, setUser] = useState(null)
+  const [couponInput, setCouponInput] = useState("AUCTOR30")
+  const [appliedCoupon, setAppliedCoupon] = useState("")
+  const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0)
+  const [couponMessage, setCouponMessage] = useState("")
+  const [couponLoading, setCouponLoading] = useState(false)
 
-const router = useRouter()
-const searchParams = useSearchParams()
-const couponFromUrl = searchParams.get("coupon") || ""
-const isBootcampOfferEntry = searchParams.get("offer") === "bootcamp"
-const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
+  const { capabilities } = useTenant()
+  const isCatStudent = capabilities?.isCAT === true
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const couponFromUrl = searchParams.get("coupon") || ""
+  const isBootcampOfferEntry = searchParams.get("offer") === "bootcamp"
+  const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
 
-const applyCoupon = useCallback(async (value) => {
-  try {
-    const response = await fetch("/api/validate-coupon", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ couponCode: value }),
-    })
-    const result = await response.json()
-    if (!response.ok || !result.valid) {
+  const applyCoupon = useCallback(async (value) => {
+    const code = value.trim()
+    if (!code) {
       setAppliedCoupon("")
       setAppliedCouponDiscount(0)
-      setCouponMessage("Invalid or expired coupon code.")
+      setCouponMessage("Enter a coupon code to apply it.")
       return false
     }
-    setAppliedCoupon(result.code)
-    setAppliedCouponDiscount(result.discountPercent)
-    setCouponInput(result.code)
-    setCouponMessage(`${result.code} applied — ${result.discountPercent}% discount`)
-    return true
-  } catch {
-    setAppliedCoupon("")
-    setAppliedCouponDiscount(0)
-    setCouponMessage("Coupon validation is temporarily unavailable. Please try again.")
-    return false
-  }
-}, [])
 
-useEffect(() => {
-  if (!couponFromUrl) return
-  setCouponInput(couponFromUrl)
-}, [couponFromUrl])
-
-const [isCatStudent, setIsCatStudent] = useState(false)
-const quarterlyDuePaise = appliedCoupon
-  ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
-  : 79900
-const bootcampCoupon = appliedCoupon === "AUCTOR20" ? appliedCoupon : ""
-const bootcampDuePaise = bootcampCoupon
-  ? Math.round(79900 * (100 - appliedCouponDiscount) / 100)
-  : 79900
-const testSeriesCoupon = appliedCoupon === "VARCAUCTOR40" ? "" : appliedCoupon
-
-useEffect(() => {
-  async function loadUser() {
-    const { data } = await supabase.auth.getUser()
-
-    const currentUser = data?.user || null
-    setUser(currentUser)
-
-    if (!currentUser) return
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("exam")
-      .eq("user_id", currentUser.id)
-      .single()
-
-      if (
-      profile?.exam === "CAT" ||
-      profile?.exam === "XAT"
-    ) {
-      setIsCatStudent(true)
+    setCouponLoading(true)
+    try {
+      const response = await fetch("/api/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ couponCode: code }),
+      })
+      const result = await response.json()
+      if (!response.ok || !result.valid) {
+        setAppliedCoupon("")
+        setAppliedCouponDiscount(0)
+        setCouponMessage("Invalid or expired coupon code.")
+        return false
+      }
+      setAppliedCoupon(result.code)
+      setAppliedCouponDiscount(result.discountPercent)
+      setCouponInput(result.code)
+      setCouponMessage(`${result.code} applied — ${result.discountPercent}% off`)
+      return true
+    } catch {
+      setAppliedCoupon("")
+      setAppliedCouponDiscount(0)
+      setCouponMessage("Coupon validation is temporarily unavailable. Please try again.")
+      return false
+    } finally {
+      setCouponLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (couponFromUrl) setCouponInput(couponFromUrl)
+  }, [couponFromUrl])
+
+  useEffect(() => {
+    let cancelled = false
+    supabase.auth.getUser().then(({ data }) => {
+      if (!cancelled) setUser(data?.user || null)
+    }).catch(() => {
+      if (!cancelled) setUser(null)
+    })
+    return () => { cancelled = true }
+  }, [])
 
-  loadUser()
-}, [])
-return (
-<>
-
-<PreviewNavbar />
-
-<main className="relative min-h-screen bg-[#0b0f2a] text-white overflow-hidden">
-
-  <div className="absolute top-[-250px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-blue-500/10 blur-[180px] rounded-full pointer-events-none"></div>
-
-<div className="absolute top-[500px] right-[-100px] w-[500px] h-[500px] bg-orange-500/10 blur-[160px] rounded-full pointer-events-none"></div>
-
-{/* HERO */}
-
-<section className="max-w-6xl mt-20 mx-auto px-6 pt-28 pb-40 text-center">
-
-<h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight mb-8">
-Train Like a
-<span className="text-orange-400"> 99 Percentiler</span>
-</h1>
-
-<p className="text-gray-300 text-xl leading-relaxed max-w-3xl mx-auto">
-Choose your plan and unlock the complete Auctor RC experience —
-structured training, AI mentorship, analytics, and unlimited practice.
-</p>
-
-</section>
-
-<div className="max-w-md mx-auto mb-12 rounded-2xl border border-slate-700 bg-slate-900/70 p-6">
-  <label className="mb-2 block text-sm font-semibold text-slate-200">Coupon Code</label>
-  <div className="flex gap-2">
-    <input
-      type="text"
-      placeholder="Enter coupon code"
-      value={couponInput}
-      onChange={(e) => setCouponInput(e.target.value)}
-      className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white"
-    />
-    <Button
-      onClick={() => applyCoupon(couponInput)}
-    >
-      Apply
-    </Button>
-  </div>
-  {couponMessage && (
-    <div className={`mt-4 rounded-xl border p-4 text-center font-medium ${appliedCoupon ? "border-green-500 bg-green-500/15 text-green-300" : "border-red-500 bg-red-500/15 text-red-300"}`}>
-      {couponMessage}
-    </div>
-  )}
-</div>
-
-
-
-
-{/* PRICING */}
-
-<section className="max-w-6xl mt-20 mx-auto px-6 pb-32">
-
-<div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6 items-stretch max-w-[1400px] mx-auto">
-
-
-
-<Card className={`relative overflow-hidden rounded-3xl border-2 bg-gradient-to-br from-emerald-500/20 via-slate-900 to-indigo-950 ${isBootcampOfferEntry ? "border-emerald-300 ring-4 ring-emerald-400/30 md:col-span-2" : "border-emerald-500/50"}`}>
-  <div className="absolute left-5 top-5 rounded-full bg-emerald-400 px-3 py-1 text-xs font-black tracking-wide text-slate-950">MORE THAN A BOOT CAMP</div>
-  <CardContent className="p-7 pt-16 text-center md:p-10 md:pt-16">
-    <h2 className="mb-3 text-2xl font-black text-white md:text-3xl">45-Day VARC Boot Camp + 3 Months of Full Auctor Access</h2>
-    <p className="mx-auto mb-6 max-w-2xl text-sm leading-6 text-slate-300">Get the 45-Day VARC Boot Camp plus 3 months of full Auctor platform access. Practice RC, build vocabulary, review your performance, and use included Auctor features for three months.</p>
-    <div className="mb-5 flex flex-wrap items-baseline justify-center gap-3">
-      <del className="text-xl text-slate-400">{bootcampCoupon ? "₹799" : "₹999"}</del>
-      <strong className="text-5xl font-black text-white">{formatRupees(bootcampDuePaise / 100)}</strong>
-      <span className="text-sm text-slate-400">INR</span>
-    </div>
-    {bootcampCoupon && <p className="-mt-4 mb-4 text-xs text-slate-400">₹999 reference price · ₹799 offer base</p>}
-    <p className="mb-5 text-sm font-semibold text-emerald-200">Use AUCTOR20 for 20% off the ₹799 base price{bootcampCoupon ? " · applied" : ""}</p>
-    <ul className="mx-auto mb-7 grid max-w-3xl gap-2 text-left text-sm text-slate-200 sm:grid-cols-2">
-      <li>✓ All 45 guided Boot Camp days and review</li>
-      <li>✓ Daily RC workouts and Birbal AI mentor</li>
-      <li>✓ Performance analytics and leaderboards</li>
-      <li>✓ Three months of full Auctor platform access</li>
-    </ul>
-    {bootcampCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
-    <SubscribeButton
-      amount={bootcampDuePaise / 100}
-      plan="bootcamp_full_access"
-      label={`Get Boot Camp + 3 months of Auctor · ${formatRupees(bootcampDuePaise / 100)}`}
-      user={user}
-      couponCode={bootcampCoupon}
-      returnTo={returnTo}
-      variant="premium"
-    />
-    <p className="mt-3 text-xs text-slate-400">Day 1 remains available through the existing first-free access flow. No payment is required to try it.</p>
-  </CardContent>
-</Card>
-
-{/* TEST SERIES */}
-{isCatStudent && (
-<Card className="
-relative
-bg-gradient-to-br
-from-sky-400/30
-via-cyan-500/20
-to-blue-900/70
-border-2 border-cyan-300
-ring-4 ring-cyan-400/40
-shadow-[0_0_60px_rgba(34,211,238,0.45)]
-rounded-3xl
-overflow-hidden
-">
-
-<div className="absolute top-5 left-5 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
-🔥 LAUNCH OFFER
-</div>
-
-<CardContent className="p-10 text-center">
-
-<h3 className="text-2xl font-semibold text-white mb-6">
-CAT VARC Test Series
-</h3>
-
-<div className="mb-6">
-
-  {discountApplied ? (
-    <>
-      <p
-        className="text-2xl font-bold text-red-300"
-        style={{
-          textDecoration: "line-through",
-          textDecorationThickness: "3px",
-          textDecorationColor: "#ef4444",
-        }}
-      >
-        ₹799
-      </p>
-
-      <p className="text-6xl font-bold text-white mt-2">
-        ₹639
-      </p>
-
-      <p className="text-green-400 font-semibold mt-2">
-        Save ₹160
-      </p>
-    </>
-  ) : (
-    <>
-      <p
-        className="text-2xl font-bold text-red-300"
-        style={{
-          textDecoration: "line-through",
-          textDecorationThickness: "3px",
-          textDecorationColor: "#ef4444",
-        }}
-      >
-        ₹1199
-      </p>
-
-      <p className="text-6xl font-bold text-white mt-2">
-        ₹799
-      </p>
-    </>
-  )}
-
-</div>
-
-<p className="text-cyan-400 mb-8">
-One-time purchase
-</p>
-
-<ul className="space-y-4 text-slate-300 text-left max-w-[260px] mx-auto mb-10">
-
-<li>✔️ Official CAT PYQs</li>
-
-<li>✔️ 10 Auctor VARC Mocks</li>
-
-<li>✔️ AI Diagnosis</li>
-
-<li>✔️ Detailed Analysis</li>
-
-<li>✔️ Leaderboards</li>
-
-<li>✔️ Valid till CAT 2026</li>
-
-</ul>
-
-{testSeriesCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
-<SubscribeButton
-amount={discountApplied ? 639 : 799}
-plan="cat_test_series"
-label="Unlock Test Series"
-user={user}
-couponCode={testSeriesCoupon}
-returnTo={returnTo}
-/>
-
-</CardContent>
-
-</Card>
-
-  )}
-
-
-<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 rounded-3xl ring-2 ring-orange-500">
-
-<div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-BEST VALUE
-</div>
-
-<CardContent className="p-10 text-center">
-
-<h3 className="text-2xl font-semibold text-white mb-6">
-Half Yearly Plan
-</h3>
-
-{discountApplied ? (
-  <div className="mb-6">
-  <p
-  className="text-2xl font-bold text-red-300"
-  style={{
-    textDecoration: "line-through",
-    textDecorationThickness: "3px",
-    textDecorationColor: "#ef4444",
-  }}
->
-      ₹1299
-    </p>
-
-    <p className="text-6xl font-bold text-white">
-      ₹1039
-    </p>
-
-   <p className="text-orange-400 font-medium mb-6">
-{discountApplied ? "Only ₹173/month" : "Only ₹216/month"}
-</p>
-
-<p className="text-green-400 font-semibold">
-Save ₹260
-</p>
-  </div>
-) : (
-  <p className="text-6xl font-bold text-white mb-6">
-    ₹1299
-  </p>
-)}
-
-{isCatStudent && (
-<p className="text-green-400 font-semibold mb-6">
-🎁 Includes CAT VARC Test Series
-</p>
-)}
-
-
-
-<ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
-<li>✔️ Everything in Monthly</li>
-<li>✔️ Unlimited RC practice</li>
-<li>✔️ CAT VARC Test Series</li>
-<li>✔️ AI RC Generator</li>
-<li>✔️ Birbal explanations</li>
-<li>✔️ Full analytics dashboard</li>
-</ul>
-
-{appliedCoupon && <CouponBreakdown originalRupees={1299} discountPercent={appliedCouponDiscount} />}
-<SubscribeButton
-amount={discountApplied ? 1039 : 1299}
-plan="half_yearly"
-label="Start 6 Month Plan"
-user={user}
-variant="premium"
-couponCode={appliedCoupon}
-returnTo={returnTo}
-/>
-
-</CardContent>
-
-</Card>
-
-
-
-
-<Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-indigo-500/40 rounded-3xl">
-
-<CardContent className="p-10 text-center">
-
-<h3 className="text-2xl font-semibold text-white mb-6">
-3 Month Plan
-</h3>
-
-{quarterlyDuePaise < 79900 ? (
-  <div className="mb-3">
-    <p className="text-2xl font-bold text-slate-400 line-through">₹799</p>
-    <p className="text-5xl font-bold text-white">{formatRupees(quarterlyDuePaise / 100)}</p>
-  </div>
-) : (
-  <p className="text-5xl font-bold text-white mb-3">₹799</p>
-)}
-
-<p className="text-indigo-400 mb-6">
-3 months · {formatRupees(quarterlyDuePaise / 300)} per month
-</p>
-
-
-<ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
-<li>✔️ Daily RC workouts</li>
-<li>✔️ Birbal AI mentor</li>
-<li>✔️ Performance analytics and leaderboards</li>
-<li>✔️ All 45 Boot Camp days</li>
-</ul>
-
-{appliedCoupon && <CouponBreakdown originalRupees={799} discountPercent={appliedCouponDiscount} />}
-<SubscribeButton
-amount={quarterlyDuePaise / 100}
-plan="quarterly"
-label="Start 3 Month Plan"
-user={user}
-couponCode={appliedCoupon}
-returnTo={returnTo}
-/>
-
-</CardContent>
-</Card>
-
-
-{/* YEARLY */}
-
-<Card className="relative bg-gradient-to-b from-orange-500/10 via-slate-800/95 to-slate-900 border border-orange-400/50 ring-1 ring-white/10 shadow-2xl shadow-orange-500/10 rounded-3xl hover:border-orange-300 hover:-translate-y-1 transition-all duration-300 backdrop-blur-xl">
-
-  <div className="absolute top-5 right-5 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-    ANNUAL SAVER
-  </div>
-
-  <CardContent className="p-10 text-center">
-
-    <h3 className="text-2xl font-semibold text-white mb-6">
-      Elite Yearly
-    </h3>
-
-    {discountApplied ? (
-  <div className="mb-6">
-    <p
-  className="text-2xl font-bold text-red-300"
-  style={{
-    textDecoration: "line-through",
-    textDecorationThickness: "3px",
-    textDecorationColor: "#ef4444",
-  }}
->
-      ₹1999
-    </p>
-    <p className="text-6xl font-bold text-white">
-      ₹1599
-    </p>
-   <p className="text-orange-400 font-medium">
-Only ₹133/month
-</p>
-
-<p className="text-green-400 font-semibold mb-6">
-Save ₹400
-</p>
-  </div>
-) : (
-  <p className="text-6xl font-bold text-white mb-6">
-    ₹1999
-  </p>
-)}
-   {isCatStudent && (
-<p className="text-green-400 font-semibold mb-6">
-🎁 Includes CAT VARC Test Series
-</p>
-)}
-
-   {!discountApplied && (
-<p className="text-orange-400 font-medium mb-8">
-Only ₹166/month
-</p>
-)}
-    <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
-
-      <li>✔️ Everything in Monthly</li>
-      <li>✔️ Unlimited RC practice</li>
-      <li>✔️ AI RC Generator</li>
-      <li>✔️ Birbal reasoning explanations</li>
-      <li>✔️ Full analytics dashboard</li>
-
-    </ul>
-
-   {appliedCoupon && <CouponBreakdown originalRupees={1999} discountPercent={appliedCouponDiscount} />}
-   <SubscribeButton
-amount={discountApplied ? 1599 : 1999}
-plan="yearly"
-label="Unlock Premium"
-user={user}
-variant="premium"
-couponCode={appliedCoupon}
-returnTo={returnTo}
-/>
-
-  </CardContent>
-
-</Card>
-{/* MONTHLY */}
-<Card className="bg-gradient-to-b from-slate-800/90 to-slate-900 border border-slate-700/70 ring-1 ring-white/10 shadow-2xl shadow-blue-500/10 rounded-3xl hover:border-indigo-400/60 hover:-translate-y-1 transition-all duration-300 backdrop-blur-xl">
-
-  <CardContent className="p-10 text-center">
-
-    <h3 className="text-2xl font-semibold text-white mb-6">
-      Pro Monthly
-    </h3>
-
-  {discountApplied ? (
-  <div className="mb-3">
-   <p
-  className="text-2xl font-bold text-red-300"
-  style={{
-    textDecoration: "line-through",
-    textDecorationThickness: "3px",
-    textDecorationColor: "#ef4444",
-  }}
->
-      ₹399
-    </p>
-    <p className="text-6xl font-bold text-white">
-      ₹319
-    </p>
-    <p className="text-green-400 font-semibold">
-      Save ₹80
-    </p>
-  </div>
-) : (
-  <p className="text-6xl font-bold text-white mb-3">
-    ₹399
-  </p>
-)}
-
-    <p className="text-slate-400 mb-8">
-      Flexible plan for short term preparation
-    </p>
-
-    <ul className="space-y-4 text-slate-300 text-left max-w-[240px] mx-auto mb-10">
-
-      <li>✔️ Daily RC workouts</li>
-      <li>✔️ Speed reading gym</li>
-      <li>✔️ Birbal AI mentor</li>
-      <li>✔️ Performance analytics</li>
-      <li>✔️ Unlimited RC practice</li>
-
-    </ul>
-
-   {appliedCoupon && <CouponBreakdown originalRupees={399} discountPercent={appliedCouponDiscount} />}
-   <SubscribeButton
-  amount={discountApplied ? 319 : 399}
-  plan="monthly"
-  label="Start Monthly Plan"
-  user={user}
-  couponCode={appliedCoupon}
-  returnTo={returnTo}
-/>
-
-  </CardContent>
-
-</Card>
-
-</div>
-
-
-
-
-{/* TRUST STRIP */}
-
-<div className="text-center mt-16 text-gray-400 text-sm">
-
-<p className="mb-6">
-Secure payments powered by Razorpay
-</p>
-
-<p>
-   No hidden charges
-</p>
-
-</div>
-
-<div className="flex justify-center mt-10">
-
-  <Button
-    variant="outline"
-    onClick={() => router.push("/")}
-    className="rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white px-8 h-12 transition-all duration-300"
-  >
-    ← Back to Dashboard
-  </Button>
-
-</div>
-
-</section>
-
-</main>
-
-
-
-</>
-)
-}
-
-function CouponBreakdown({ originalRupees, discountPercent }) {
-  const discount = originalRupees * discountPercent / 100
-  const amountDue = originalRupees - discount
   return (
-    <div className="mb-5 space-y-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm">
-      <div className="flex justify-between text-slate-300"><span>Original</span><span>{formatRupees(originalRupees)}</span></div>
-      <div className="flex justify-between text-emerald-300"><span>{discountPercent}% coupon discount</span><span>-{formatRupees(discount)}</span></div>
-      <div className="flex justify-between border-t border-emerald-500/20 pt-2 font-bold text-white"><span>You Pay</span><span>{formatRupees(amountDue)}</span></div>
-    </div>
+    <>
+      <PreviewNavbar />
+      <main className="relative min-h-screen overflow-hidden bg-[#0b0f2a] text-white">
+        <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-250px] h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[180px]" />
+        <div aria-hidden="true" className="pointer-events-none absolute right-[-100px] top-[500px] h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[160px]" />
+
+        <section style={{ marginTop: "clamp(5rem, 8vw, 8rem)" }} className="relative mx-auto max-w-7xl px-4 pb-12 pt-20 text-center sm:px-6 sm:pt-24">
+          <h1 className="mb-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            Train Like a <span className="text-orange-400">99 Percentiler</span>
+          </h1>
+          <p className="mx-auto max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
+            Choose a plan for structured training, AI mentorship, analytics, and unlimited practice.
+          </p>
+        </section>
+
+        <section aria-label="Apply a coupon" className="relative mx-auto mb-10 max-w-md px-4 sm:px-6">
+          <div className="rounded-2xl border border-slate-700 bg-slate-900/80 p-5 sm:p-6">
+            <label htmlFor="pricing-coupon" className="mb-2 block text-left text-sm font-semibold text-slate-200">Coupon Code</label>
+            <div className="flex gap-2">
+              <input
+                id="pricing-coupon"
+                type="text"
+                placeholder="Enter coupon code"
+                value={couponInput}
+                onChange={(event) => setCouponInput(event.target.value)}
+                className="min-w-0 flex-1 rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white outline-none focus:border-cyan-400"
+              />
+              <Button type="button" disabled={couponLoading} onClick={() => applyCoupon(couponInput)}>
+                {couponLoading ? "Checking…" : "Apply"}
+              </Button>
+            </div>
+            {couponMessage && (
+              <p role="status" className={`mt-3 rounded-xl border px-3 py-2 text-sm font-medium ${appliedCoupon ? "border-green-500/50 bg-green-500/10 text-green-300" : "border-red-500/50 bg-red-500/10 text-red-300"}`}>
+                {couponMessage}
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section aria-label="Subscription plans" className="relative mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
+          <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 xl:grid-cols-4 xl:gap-4">
+            {PLANS.map((plan) => {
+              const price = getSubscriptionPrice(plan.id, appliedCoupon, appliedCouponDiscount)
+              const amount = price.finalPaise / 100
+              const originalAmount = price.basePaise / 100
+              const monthlyEquivalent = amount / plan.durationMonths
+              const features = getSubscriptionFeatures(plan, isCatStudent)
+              const isOfferPlan = isBootcampOfferEntry && plan.id === "quarterly"
+
+              return (
+                <article
+                  key={plan.id}
+                  data-plan={plan.id}
+                  className={`relative flex min-w-0 flex-col rounded-3xl border bg-gradient-to-b from-slate-800/95 to-slate-950 p-5 shadow-xl transition sm:p-6 ${plan.featured ? "border-orange-400/70 ring-2 ring-orange-500/30" : isOfferPlan ? "border-emerald-400/70 ring-2 ring-emerald-500/20" : "border-slate-700/80"}`}
+                >
+                  {plan.badge && <span className="absolute right-4 top-4 rounded-full bg-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">{plan.badge}</span>}
+                  {isOfferPlan && <span className="absolute right-4 top-4 rounded-full bg-emerald-400 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-950">Bootcamp offer</span>}
+
+                  <header className="mb-5 min-h-[4.5rem] pr-20">
+                    <h2 className="text-2xl font-bold text-white">{plan.name}</h2>
+                    <p className="mt-1 text-sm leading-5 text-slate-400">{plan.description}</p>
+                  </header>
+
+                  <div className="mb-5 border-b border-slate-700/80 pb-5">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{appliedCoupon ? "You pay" : "Plan price"}</p>
+                    <p className="mt-1 whitespace-nowrap text-4xl font-black tracking-tight text-white sm:text-5xl">{formatRupees(amount)}</p>
+                    <p className="mt-2 text-sm text-slate-400">{formatRupees(monthlyEquivalent)} / month</p>
+                    {appliedCoupon && (
+                      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+                        <del className="text-slate-500">{formatRupees(originalAmount)}</del>
+                        <span className="font-semibold text-emerald-300">{appliedCouponDiscount}% coupon applied</span>
+                      </div>
+                    )}
+                    {!appliedCoupon && <p className="mt-3 text-sm text-slate-400">Billed {plan.durationMonths === 1 ? "monthly" : `every ${plan.durationMonths} months`}</p>}
+                  </div>
+
+                  <ul className="mb-7 flex-1 space-y-3 text-sm leading-5 text-slate-200">
+                    {features.map((feature) => (
+                      <li key={feature} className="flex gap-2"><span aria-hidden="true" className="text-emerald-400">✓</span><span>{feature}</span></li>
+                    ))}
+                  </ul>
+
+                  <SubscribeButton
+                    plan={plan.id}
+                    label={`Choose ${plan.name} · ${formatRupees(amount)}`}
+                    user={user}
+                    couponCode={appliedCoupon}
+                    returnTo={returnTo}
+                    variant="premium"
+                  />
+                </article>
+              )
+            })}
+          </div>
+
+          <div className="mt-12 text-center text-sm text-gray-400">
+            <p className="mb-2">Secure payments powered by Razorpay</p>
+            <p>No hidden charges</p>
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Button
+              variant="outline"
+              onClick={() => router.push("/")}
+              className="h-12 rounded-2xl border border-slate-700 bg-slate-900/60 px-8 text-slate-200 transition-all duration-300 hover:bg-slate-800 hover:text-white"
+            >
+              ← Back to Dashboard
+            </Button>
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
 

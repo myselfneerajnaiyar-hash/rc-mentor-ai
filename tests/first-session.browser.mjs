@@ -350,8 +350,8 @@ try {
   });
   assert.deepEqual(ctaOrder, ["Keep Practising →", "Keep Practising →", "Keep Practising →"], "top, post-replay, and bottom CTAs are the only practice buttons");
   assert.equal(await page.locator(".fs-next-move > .fs-primary").innerText(), "Keep Practising →", "bottom practice CTA follows report analysis");
-  assert.equal(await page.locator(".fs-student-offer a").getAttribute("href"), "/pricing?coupon=AUCTOR20", "offer uses the existing coupon route");
-  assert.match(await page.locator(".fs-student-offer").innerText(), /20% OFF TODAY/);
+  assert.equal(await page.locator(".fs-student-offer a").getAttribute("href"), "/pricing?coupon=AUCTOR30", "offer uses the existing coupon route");
+  assert.match(await page.locator(".fs-student-offer").innerText(), /30% OFF TODAY/);
   assert.equal(await page.locator(".fs-metric-tile").count(), 4, "performance summary uses four compact metric tiles");
   const metricValues = await page.locator(".fs-metric-tile").evaluateAll((tiles) => tiles.map((tile) => [tile.querySelector("b").innerText, tile.querySelector("small").innerText]));
   assert.deepEqual(metricValues, [["1/4", "CORRECT"], ["33.33%", "ACCURACY"], ["0:15", "TIME"], ["3/4", "ATTEMPTED"]], "metric tiles surface the four compact report values using attempted answers as the denominator");

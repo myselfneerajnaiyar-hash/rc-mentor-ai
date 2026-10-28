@@ -39,7 +39,7 @@ test("pricing keeps coupons and checkout opens Razorpay without requesting a ref
   assert.match(checkout, /referralCode = ""/)
   assert.match(orderRoute, /body\.referralCode/)
   assert.match(orderRoute, /if \(!coupon\.valid && typeof body\.referralCode === "string"/)
-  assert.match(pricing, /useState\("AUCTOR20"\)/)
+  assert.match(pricing, /useState\("AUCTOR30"\)/)
   assert.doesNotMatch(pricing, /applyCoupon\(couponFromUrl\)/)
 })
 

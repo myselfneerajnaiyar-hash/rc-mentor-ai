@@ -87,7 +87,7 @@ const handleScroll = () => {
 
             <Crown className="h-4 w-4" />
 
-            Premium Membership
+            Membership Plans
 
           </div>
 
@@ -97,7 +97,7 @@ const handleScroll = () => {
 
           <p className="mt-5 text-lg leading-8 text-slate-400">
             Unlock every AI-powered feature, unlimited practice and detailed
-            performance insights with one Premium subscription.
+            performance insights with one subscription plan.
           </p>
 
         </div>
@@ -233,7 +233,7 @@ const handleScroll = () => {
             </div>
 
             <h3 className="mt-4 text-2xl font-bold text-white">
-              Ready to Unlock Premium?
+              Ready to Choose a Plan?
             </h3>
 
             <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-slate-400">
@@ -246,7 +246,7 @@ const handleScroll = () => {
   onClick={() => router.push("/pricing")}
   className="mt-8 h-14 rounded-2xl bg-violet-600 px-10 text-base font-semibold hover:bg-violet-500"
 >
-              Explore Premium Plans
+              Explore Plans
 
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

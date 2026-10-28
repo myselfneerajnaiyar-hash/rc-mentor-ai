@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useTenant } from "@/components/providers/TenantProvider"
 import { getTrialBannerState, trialBannerDismissalKey } from "@/lib/tenant/trialBanner"
 
-const COUPON = "AUCTOR20"
+const COUPON = "AUCTOR30"
 
 export default function TrialConversionBanner() {
   const { profile, entitlement, serverTime } = useTenant()
@@ -67,22 +67,22 @@ export default function TrialConversionBanner() {
       headline: "Keep your VARC momentum going.",
       body: coupon
         ? `Unlock your complete practice journey. Get ${coupon.discountPercent}% off with ${coupon.code}.`
-        : "Unlock your complete practice journey with Premium.",
-      cta: "Unlock Premium",
+        : "Unlock your complete practice journey with an Auctor plan.",
+      cta: "View Plans",
     },
     ending: {
       headline: "Your free trial ends soon.",
       body: coupon
         ? `Continue your CAT VARC preparation without interruption. Use ${coupon.code} for ${coupon.discountPercent}% off.`
-        : "Continue your CAT VARC preparation without interruption with Premium.",
-      cta: "Continue with Premium",
+        : "Continue your CAT VARC preparation with an Auctor plan.",
+      cta: "View Plans",
     },
     expired: {
       headline: "Your free trial has ended.",
       body: coupon
-        ? `Ready to continue your CAT VARC preparation? Use ${coupon.code} for ${coupon.discountPercent}% off Premium.`
-        : "Ready to continue your CAT VARC preparation? Explore Premium.",
-      cta: "Reactivate Premium",
+        ? `Ready to continue your CAT VARC preparation? Use ${coupon.code} for ${coupon.discountPercent}% off a plan.`
+        : "Ready to continue your CAT VARC preparation? Explore the plans.",
+      cta: "View Plans",
     },
   }
   const message = messages[state.type]
@@ -94,7 +94,7 @@ export default function TrialConversionBanner() {
   }
 
   return (
-    <aside className={`relative rounded-2xl border px-4 py-3 pr-11 sm:px-5 sm:py-4 ${state.type === "expired" ? "border-amber-400/40 bg-amber-400/10" : state.type === "ending" ? "border-orange-400/40 bg-orange-400/10" : "border-indigo-400/35 bg-indigo-400/10"}`} aria-label="Premium subscription offer">
+    <aside className={`relative rounded-2xl border px-4 py-3 pr-11 sm:px-5 sm:py-4 ${state.type === "expired" ? "border-amber-400/40 bg-amber-400/10" : state.type === "ending" ? "border-orange-400/40 bg-orange-400/10" : "border-indigo-400/35 bg-indigo-400/10"}`} aria-label="Subscription plan offer">
       <button type="button" onClick={dismiss} className="absolute right-3 top-3 rounded-md p-1 text-slate-400 hover:bg-white/10 hover:text-white" aria-label="Dismiss offer">×</button>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">

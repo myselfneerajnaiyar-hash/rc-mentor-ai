@@ -22,7 +22,7 @@ export default function PracticeHub(){
   <section className="practice-group" role="tabpanel" id="practice-category-panel" aria-labelledby={'practice-category-'+active} tabIndex={0}>
    <h2>{selected.label}</h2><div className="practice-grid">{features.filter(f=>f.group===selected.group).map(f=><button type="button" className="practice-row" data-activity={f.id} key={f.id} onClick={()=>{if(f.premium&&!entitlement.hasAccess){captureLearningEvent('premium_feature_click',{feature:f.id});setLock(f);}else{captureLearningEvent('practice_feature_start',{feature:f.id});router.push(f.href);}}}>
     <ActivityIcon id={f.id}/><span className="practice-copy"><strong>{f.name}</strong><small>{f.description}</small></span>
-    <span className="practice-access"><span className="practice-badge">{f.premium?entitlement.hasAccess?'Included':'Premium':f.id==='cat'?'Explore':'Free'}</span>{f.time&&<small>{f.time}</small>}<span className="practice-arrow" aria-hidden="true">→</span></span>
+    <span className="practice-access"><span className="practice-badge">{f.premium?entitlement.hasAccess?'Included':'Plans':f.id==='cat'?'Explore':'Free'}</span>{f.time&&<small>{f.time}</small>}<span className="practice-arrow" aria-hidden="true">→</span></span>
    </button>)}</div>
   </section>{lock&&<PremiumLock feature={lock} onClose={()=>setLock(null)}/>}</div>;
 }

@@ -56,8 +56,8 @@ export default function PreviewNavbar() {
     About Us
   </a>
 
-  <a href="/preview/pricing" className="hover:text-orange-400 transition">
-    Pricing
+  <a href="/pricing" className="hover:text-orange-400 transition">
+    Plans
   </a>
 
   <a href="/contact" className="hover:text-orange-400 transition">
@@ -109,10 +109,10 @@ export default function PreviewNavbar() {
       </a>
 
       <a
-        href="/preview/pricing"
+        href="/pricing"
         className="py-4 border-b border-white/5 text-lg"
       >
-        Pricing
+        Plans
       </a>
 
       <a

@@ -803,11 +803,11 @@ if (user?.id) {
   <CardContent className="p-8">
 
     <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-      ✨ PREMIUM MEMBERSHIP
+      ✨ MEMBERSHIP PLANS
     </div>
 
     <h2 className="text-3xl font-bold text-white mt-4">
-      Auctor RC Premium
+      Auctor RC Membership
     </h2>
 
     <p className="text-slate-300 mt-3">
@@ -815,7 +815,7 @@ if (user?.id) {
     </p>
 
     <p className="text-slate-500 text-sm mt-2">
-      Serious aspirants use Premium to accelerate improvement.
+      Serious aspirants use a plan to accelerate improvement.
     </p>
 
     <div className="flex flex-wrap gap-2 mt-5">
@@ -846,7 +846,7 @@ if (user?.id) {
       onClick={() => router.push("/pricing")}
       className="mt-6 bg-amber-500 text-black hover:bg-amber-400 font-semibold rounded-xl"
     >
-      View Premium Plans →
+      View Plans →
     </Button>
 
   </CardContent>
@@ -1285,25 +1285,25 @@ Skill Balance
       <LockedCard
         icon={<Brain />}
         title="Adaptive RC"
-        desc="Premium required"
+        desc="Plan access required"
       />
 
       <LockedCard
         icon={<BookOpen />}
         title="Vocabulary Lab"
-        desc="Premium required"
+        desc="Plan access required"
       />
 
       <LockedCard
         icon={<Timer />}
         title="Speed Gym"
-        desc="Premium required"
+        desc="Plan access required"
       />
 
       <LockedCard
         icon={<GraduationCap />}
         title="CAT Sectionals"
-        desc="Premium required"
+        desc="Plan access required"
       />
 
     </>

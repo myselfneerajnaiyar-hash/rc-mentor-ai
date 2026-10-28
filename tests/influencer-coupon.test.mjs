@@ -5,6 +5,7 @@ import test from "node:test"
 import {
   calculateCouponAttribution,
   calculatePlanPricing,
+  PLAN_PRICES,
   validateCouponCode,
 } from "../lib/payments/pricing.js"
 
@@ -76,6 +77,19 @@ test("AUCTOR30 discounts plan prices by exactly 30 percent", () => {
     amountPaidPaise: monthly.finalPaise,
     couponCode: "AUCTOR30",
   }), null)
+})
+
+test("AUCTOR99 applies a 99 percent discount to every supported plan", () => {
+  const coupon = validateCouponCode("auctor99")
+  assert.equal(coupon.valid, true)
+  assert.equal(coupon.code, "AUCTOR99")
+  assert.equal(coupon.coupon.discountPercent, 99)
+
+  for (const [plan, configured] of Object.entries(PLAN_PRICES)) {
+    const pricing = calculatePlanPricing(plan, { couponCode: "AUCTOR99" })
+    assert.equal(pricing.finalPaise, Math.round(configured.basePaise / 100), plan)
+    assert.equal(pricing.discountCode, "AUCTOR99", plan)
+  }
 })
 
 test("dynamic coupon plan pricing uses the shared coupon calculation", () => {

@@ -13,6 +13,15 @@ import {
 } from "../lib/firstSession/diagnostic.mjs";
 import { buildBirbalAnalysis, calculateAccuracyPercentage, displayQuestionType, passageEvidenceMap, summarizeAuthoredTraps, summarizeQuestionTypes } from "../lib/firstSession/reportPresentation.mjs";
 import { diagnosticCompletionProperties, diagnosticReportProperties } from "../lib/firstSession/analyticsProperties.mjs";
+import { shouldReturnHomeAfterDiagnosticDay } from "../lib/firstSession/journey.mjs";
+
+test("completed first-session reports stop gating on the next India-local day", () => {
+  const journey = { phase: "DIAGNOSIS_VIEWED", diagnostic_completed_at: "2026-10-27T17:00:00.000Z" };
+  assert.equal(shouldReturnHomeAfterDiagnosticDay(journey, new Date("2026-10-27T18:20:00.000Z")), false);
+  assert.equal(shouldReturnHomeAfterDiagnosticDay(journey, new Date("2026-10-27T18:31:00.000Z")), true);
+  assert.equal(shouldReturnHomeAfterDiagnosticDay({ ...journey, phase: "DIAGNOSTIC_IN_PROGRESS" }, new Date("2026-10-28T00:00:00.000Z")), false);
+  assert.equal(shouldReturnHomeAfterDiagnosticDay({ ...journey, diagnostic_completed_at: null }, new Date("2026-10-28T00:00:00.000Z")), false);
+});
 
 const questions = [
   { id: "q1", order_no: 1, question_text: "Which option is supported?", options: ["A", "B", "C", "D"], correct_answer: "2", question_enrichment: { questionType: "Inference", primarySkill: "Scope control", evidenceLine: "The passage says so.", eliminationLogic: { optionB: "Supported by the passage." } } },

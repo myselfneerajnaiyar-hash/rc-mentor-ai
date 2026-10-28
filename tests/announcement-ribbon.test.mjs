@@ -22,12 +22,12 @@ test("CAT prospects receive the 45-day acquisition message and public enrollment
   ])
 })
 
-test("known non-CAT users get regular practice and AUCTOR20, never Bootcamp sales copy", () => {
+test("known non-CAT users get regular practice and AUCTOR30, never Bootcamp sales copy", () => {
   assert.equal(getAnnouncementRibbonAudience({ profile: nonCatProfile, exam: "IPMAT", capabilities: nonCat, bootcampAccess: noAccess, bootcampAccessReady: true }), "non_cat")
   const messages = getAnnouncementRibbonMessages("non_cat")
   assert.deepEqual(messages.map(({ text, href }) => [text, href]), [
     ["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"],
-    ["Premium is 20% off. Use AUCTOR20 →", "/pricing?coupon=AUCTOR20"],
+    ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"],
   ])
   assert.ok(messages.every(message => !/Boot ?Camp|VARC/i.test(message.text)))
   assert.equal(getAnnouncementRibbonAudience({
@@ -61,7 +61,7 @@ test("unknown exam or unverifiable access falls back to neutral daily practice",
   assert.equal(messages[0].href, "/?view=today")
   assert.deepEqual(messages.map(({ text, href }) => [text, href]), [
     ["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"],
-    ["Premium is 20% off. Use AUCTOR20 →", "/pricing?coupon=AUCTOR20"],
+    ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"],
   ])
   assert.ok(messages.every(message => !/Boot ?Camp|VARC|CAT/i.test(message.text)))
 })

@@ -20,7 +20,7 @@ async function loadModule(file, dependencies, globals = {}) {
   return exports
 }
 
-test("successful payment receipt omits AUCTOR20 while retaining actual payment details", async () => {
+test("successful payment receipt omits promotional coupons while retaining actual payment details", async () => {
   let sent
   const { sendPaymentReceipt } = await loadModule("../lib/email/sendPaymentReceipt.js", {
     "@/lib/resend": { resend: { emails: { send: async (...args) => { sent = args; return { data: { id: "receipt-1" } } } } } },
@@ -36,11 +36,11 @@ test("successful payment receipt omits AUCTOR20 while retaining actual payment d
   })
 
   assert.match(sent[0].html, /Amount Paid:<\/strong> ₹239\.40/)
-  assert.match(sent[0].html, /Monthly Premium/)
-  assert.doesNotMatch(sent[0].html, /AUCTOR20|20% OFF Auctor RC/)
+  assert.match(sent[0].html, /Monthly Plan/)
+  assert.doesNotMatch(sent[0].html, /AUCTOR20|AUCTOR30|20% OFF Auctor RC|30% OFF Auctor RC/)
 })
 
-test("legacy payment confirmation route omits AUCTOR20 and retains the supplied amount", async () => {
+test("legacy payment confirmation route omits promotional coupons and retains the supplied amount", async () => {
   let sent
   class Resend {
     constructor() {
@@ -54,17 +54,17 @@ test("legacy payment confirmation route omits AUCTOR20 and retains the supplied 
   await POST({ json: async () => ({ email: "student@example.test", name: "Student", plan: "Monthly Premium", amount: "239.40", expiry: "16 Nov 2026" }) })
 
   assert.match(sent.html, /Amount Paid:<\/strong> ₹239\.40/)
-  assert.doesNotMatch(sent.html, /AUCTOR20|20% OFF Auctor RC/)
+  assert.doesNotMatch(sent.html, /AUCTOR20|AUCTOR30|20% OFF Auctor RC|30% OFF Auctor RC/)
 })
 
 test("shared promotion remains enabled for other automated email flows", async () => {
   let sent
   const { sendEmail } = await loadModule("../lib/email/sendEmail.js", {
     resend: { Resend: class { constructor() { this.emails = { send: async message => { sent = message; return { id: "other-email" } } } } } },
-    "@/lib/email/promotion": { AUCTOR20_PROMOTION_HTML: "<p>Use code: AUCTOR20</p>" },
+    "@/lib/email/promotion": { AUCTOR30_PROMOTION_HTML: "<p>Use code: AUCTOR30</p>" },
   }, { process: { env: { RESEND_API_KEY: "test-only" } } })
 
   await sendEmail({ to: "student@example.test", subject: "Other automated email", html: "Existing content" })
   assert.match(sent.html, /Existing content/)
-  assert.match(sent.html, /AUCTOR20/)
+  assert.match(sent.html, /AUCTOR30/)
 })

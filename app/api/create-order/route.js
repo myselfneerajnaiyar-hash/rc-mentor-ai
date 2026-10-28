@@ -22,10 +22,10 @@ export async function POST(req) {
     }
     const couponInput = typeof body.couponCode === "string" ? body.couponCode : ""
     if (body.plan === "bootcamp_full_access" && (
-      (couponInput.trim() && couponInput.trim().toUpperCase() !== "AUCTOR20")
+      (couponInput.trim() && !["AUCTOR20", "AUCTOR30", "AUCTOR99"].includes(couponInput.trim().toUpperCase()))
       || (typeof body.referralCode === "string" && body.referralCode.trim())
     )) {
-      return Response.json({ error: "The Bootcamp offer accepts AUCTOR20 only and cannot be combined with a referral discount." }, { status: 400 })
+      return Response.json({ error: "The Bootcamp offer accepts AUCTOR20, AUCTOR30, or AUCTOR99 and cannot be combined with a referral discount." }, { status: 400 })
     }
     const coupon = await resolveCoupon(couponInput)
     if (couponInput.trim() && !coupon.valid) {

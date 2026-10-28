@@ -773,7 +773,7 @@ const navItems = [
 
   
 
-   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Pricing", icon: Trophy }] : []),
+   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Plans", icon: Trophy }] : []),
   { id: "profile", label: "Profile", icon: User },
 ];
 
@@ -918,7 +918,7 @@ ${
 
 
 
-{view === "home" && <footer className="home-footer"><a href="/pricing">Pricing</a></footer>}
+{view === "home" && <footer className="home-footer"><a href="/pricing">Plans</a></footer>}
 
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />
