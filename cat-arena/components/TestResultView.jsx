@@ -6,11 +6,13 @@ import {
 import { useRouter } from "next/navigation";
 import { useTenant } from "@/components/providers/TenantProvider";
 import TenantLogo from "@/components/tenant/TenantLogo";
+import CompletionPlansOffer from "@/components/CompletionPlansOffer";
 
 export default function TestResultView({
   attempt,
   onViewDiagnosis,
   onExit,
+  showCompletionOffer = false,
 }) {
     const { branding } = useTenant();
     const router = useRouter();
@@ -642,6 +644,8 @@ analysis.timeStats
 </div>
 
 {/* BUTTONS */}
+
+{showCompletionOffer && <CompletionPlansOffer className="mt-8" />}
 
 <div className="flex flex-wrap gap-4 mt-10">
 

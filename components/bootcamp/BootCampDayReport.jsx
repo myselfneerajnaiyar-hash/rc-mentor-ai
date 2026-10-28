@@ -4,6 +4,7 @@ import { ListChecks, Target, Clock3, Check, X, SkipForward, ListTodo, Timer } fr
 import BootCampReportAnalytics from './BootCampReportAnalytics'
 import Link from 'next/link'
 import s from './report.module.css'
+import CompletionPlansOffer from '@/components/CompletionPlansOffer'
 const percent=value=>value===null?'—':`${Number(value.toFixed(1))}%`
 const duration=seconds=>`${Math.floor(seconds/60)}m ${Math.round(seconds%60)}s`
 function GlanceStat({value,label,icon,tone}) {
@@ -37,6 +38,7 @@ export default function BootCampDayReport({report:r,commentary,onAsk,dayNumber=1
         {!preview && <button className={s.ask} onClick={onAsk}>Ask Birbal <span aria-hidden="true">→</span></button>}
       </aside>
     </div></div>:<div role="tabpanel" id="analytics-panel" aria-labelledby="analytics-tab"><BootCampReportAnalytics report={r} dayNumber={dayNumber}/></div>}
+      {!preview && <CompletionPlansOffer className="mt-6" />}
       <footer className={s.closing}><p className={s.note}>{preview ? 'Preview only: your answers stay in this browser session and do not change student progress.' : `Your Day ${dayNumber} report is saved. Choose any open day from the calendar; completed days remain available for review.`}</p><div className={s.reportActions}>{preview ? <Link className={s.reportButton} href="/login?next=bootcamp">Unlock the full Boot Camp →</Link> : <>{todayAvailable&&todayDay!==dayNumber&&<Link className={s.reportButton} href={`/boot-camp/day/${todayDay}`}>Go to today’s mission: Day {String(todayDay).padStart(2,'0')} →</Link>}<Link className={s.reportButton} href="/boot-camp/analytics">Overall Analytics</Link><Link className={`${s.reportButton} ${s.secondaryButton}`} href="/boot-camp">Back to Boot Camp</Link></>}</div></footer>
   </section>
 }

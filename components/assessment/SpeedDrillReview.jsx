@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { AlertTriangle, Check, ChevronLeft, ChevronRight, Clock3, Gauge, Target } from "lucide-react"
+import CompletionPlansOffer from "@/components/CompletionPlansOffer"
 
 export default function SpeedDrillReview({ result, meta, onRestart }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -93,6 +94,7 @@ export default function SpeedDrillReview({ result, meta, onRestart }) {
           </article>
         </section>
       </div>
+      <CompletionPlansOffer className="mt-5" />
       <style jsx global>{`.speed-review-panel{border:1px solid rgba(51,65,85,.82);border-radius:20px;background:rgba(15,23,42,.62);box-shadow:0 18px 50px rgba(0,0,0,.12);backdrop-filter:blur(16px)}.speed-review-scrollbar{scrollbar-width:thin;scrollbar-color:rgba(71,85,105,.7) transparent}.speed-review-scrollbar::-webkit-scrollbar{width:5px;height:5px}.speed-review-scrollbar::-webkit-scrollbar-thumb{background:rgba(71,85,105,.7);border-radius:999px}@keyframes speedReviewSlide{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:translateX(0)}}@media(prefers-reduced-motion:reduce){[class*="speedReviewSlide"]{animation:none!important}}`}</style>
     </main>
   )

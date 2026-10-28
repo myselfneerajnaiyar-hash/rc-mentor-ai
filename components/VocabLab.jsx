@@ -8,6 +8,7 @@ import { supabase } from "../lib/supabase";
 import TabGroup from "../components/TabGroup";
 import PracticeSwitcher from "./PracticeSwitcher";
 import WordDrawer from "../components/WordDrawer";
+import CompletionPlansOffer from "@/components/CompletionPlansOffer";
 
 export default function VocabLab() {
   const [tab, setTab] = useRouteTab(["bank","drill","learn","profile"],"bank");
@@ -901,6 +902,8 @@ if (isLastQuestion) {
   )}
 
 </div>
+
+<CompletionPlansOffer className="mt-6" />
 
        <button
   onClick={startDrill}

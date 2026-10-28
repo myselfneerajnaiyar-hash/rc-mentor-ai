@@ -8,6 +8,7 @@ import Recovery from "@/components/mobile/Recovery";
 import NextActivity from "@/components/mobile/NextActivity";
 import AssessmentMode from "@/components/assessment/AssessmentMode";
 import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
+import CompletionPlansOffer from "@/components/CompletionPlansOffer";
 
 export default function HangmanView() {
  
@@ -141,6 +142,8 @@ if (attemptMessage) {
         </div>
 
       </div>
+
+      <CompletionPlansOffer className="mt-4" />
 
     </div>
   );
@@ -416,13 +419,16 @@ window.dispatchEvent(new Event("auctor:activity-saved"));
         </button>
 
        {finalScore !== null && (
-  <div ref={scoreRef} className="mt-4 bg-green-900/30 border border-green-600 rounded-xl p-4">
+  <div ref={scoreRef} className="mt-4 space-y-4">
+  <div className="bg-green-900/30 border border-green-600 rounded-xl p-4">
             <h2 className="text-green-400 text-xl font-bold">
               🎯 Your Score: {finalScore}
             </h2>
             <p className="text-slate-400 text-sm mt-1">
               Great job! Try again tomorrow to improve 🔥
             </p>
+          </div>
+          <CompletionPlansOffer />
           </div>
         )}
 

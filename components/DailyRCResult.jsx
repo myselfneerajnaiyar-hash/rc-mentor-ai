@@ -9,6 +9,7 @@ import DailyRCCognitiveDiagnosis from "@/components/DailyRCCognitiveDiagnosis";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { captureLearningEvent } from "@/lib/learningAnalytics";
+import CompletionPlansOffer from "@/components/CompletionPlansOffer";
 
 export default function DailyRCResult({ attemptId, initialSection = null }) {
   return <Suspense fallback={<div>Loading Result...</div>}><AttemptRoute attemptId={attemptId} initialSection={initialSection} /></Suspense>;
@@ -161,6 +162,7 @@ else {
           <ReportSection id="cognitive-diagnosis" title="Cognitive Diagnosis" open={openSection === "cognitive-diagnosis"} onToggle={() => setOpenSection(openSection === "cognitive-diagnosis" ? null : "cognitive-diagnosis")}>
             <DailyRCCognitiveDiagnosis data={data} />
           </ReportSection>
+          <CompletionPlansOffer />
           <ReportSection id="detailed-review" title="Detailed Review" open={openSection === "detailed-review"} onToggle={() => setOpenSection(openSection === "detailed-review" ? null : "detailed-review")}>
             <DailyRCDetailedReview data={data} />
           </ReportSection>

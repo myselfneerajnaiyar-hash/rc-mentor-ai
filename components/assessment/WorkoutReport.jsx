@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { AlertCircle, BarChart3, Check, ChevronDown, Lightbulb, Target, TrendingUp } from "lucide-react"
+import CompletionPlansOffer from "@/components/CompletionPlansOffer"
 
 const TABS = ["Overview", "Performance", "Section Analysis", "Insights", "Solutions"]
 const SECTIONS = [
@@ -45,6 +46,7 @@ export default function WorkoutReport({ workout, result, skillMap, totalScore, t
         {activeTab === "Insights" && <Insights metrics={metrics} />}
         {activeTab === "Solutions" && <Solutions metrics={metrics} onOpenSolutions={onOpenSolutions} />}
       </div>
+      <CompletionPlansOffer className="mt-6" />
       <style jsx global>{`
         .report-panel {
           border: 1px solid rgba(51, 65, 85, 0.82);

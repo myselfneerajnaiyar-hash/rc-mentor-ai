@@ -1114,6 +1114,7 @@ if (phase === "result" && lastAttempt) {
   return (
     <TestResultView
       attempt={lastAttempt}
+      showCompletionOffer
       onViewDiagnosis={() =>
         setPhase("diagnosis")
       }

@@ -84,6 +84,7 @@ console.log("TEST ID FROM DB", data.test_id);
  return (
   <><TestResultView
   attempt={attempt}
+  showCompletionOffer
   onViewDiagnosis={() =>
     setShowDiagnosis(true)
   }
