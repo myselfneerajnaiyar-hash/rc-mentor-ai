@@ -14,6 +14,7 @@ import {
   sendMetaSignup,
   sendPurchaseConversionEvents,
 } from "../lib/analytics/serverConversionEvents.mjs"
+import { attributionFromParams, postHogAttributionProperties, sanitizeAttributionValue } from "../lib/attribution.mjs"
 import { dispatchPurchaseConversionEvents } from "../lib/analytics/purchaseConversionDispatch.mjs"
 import { dispatchSignupConversion } from "../lib/analytics/signupConversionDispatch.mjs"
 
@@ -63,6 +64,33 @@ test("new email signup fires Meta and PostHog once; repeated renders and existin
   assert.ok(layout.includes("process.env.NEXT_PUBLIC_META_PIXEL_ID"))
   assert.doesNotMatch(layout, /1724851152297636/)
   assert.ok(signupApi.includes("auth.admin.getUserById"))
+})
+
+test("Reddit Pixel signup and purchase events use standard names, stable IDs, and per-event deduplication", () => {
+  const storage = memoryStorage()
+  const calls = []
+  const redditPixel = (...args) => calls.push(args)
+  const signup = { userId: "reddit-user", method: "email", redditPixel, storage }
+  assert.equal(captureSignupConversion(signup), true)
+  assert.equal(captureSignupConversion(signup), false)
+  assert.deepEqual(calls[0], ["track", "SignUp", { conversionId: "signup:reddit-user" }])
+
+  const purchase = { paymentId: "reddit-pay", value: 599, currency: "INR", orderId: "order-1", redditPixel, storage }
+  assert.equal(capturePurchasePixel(purchase), true)
+  assert.equal(capturePurchasePixel(purchase), false)
+  assert.deepEqual(calls[1], ["track", "Purchase", { value: 599, currency: "INR", conversionId: "purchase:reddit-pay" }])
+  assert.equal(capturePurchasePixel({ ...purchase, paymentId: "wrong-currency", currency: "USD" }), false)
+  assert.equal(calls.length, 2)
+})
+
+test("Reddit click attribution is sanitized and remains in first/last touch properties", () => {
+  const attribution = attributionFromParams(new URLSearchParams("utm_source=reddit&utm_medium=paid_social&rdt_cid=click_123"))
+  assert.equal(attribution.firstTouch.rdt_cid, "click_123")
+  assert.equal(sanitizeAttributionValue("rdt_cid", "bad click id!"), "")
+  const properties = postHogAttributionProperties(attribution)
+  assert.equal(properties.utm_source, "reddit")
+  assert.equal(properties.first_touch_rdt_cid, "click_123")
+  assert.equal(properties.last_touch_rdt_cid, "click_123")
 })
 
 test("PostHog identity and signup event preserve first and last acquisition touch", () => {

@@ -247,7 +247,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
           }
           return
         }
-        captureSignupConversion({ userId: outcome.user.id, method: 'email', createdAt: outcome.user.created_at, posthog, pixel: window.fbq, surface: 'preview_ad_inline', attribution, placement })
+        captureSignupConversion({ userId: outcome.user.id, method: 'email', createdAt: outcome.user.created_at, posthog, pixel: window.fbq, redditPixel: window.rdt, surface: 'preview_ad_inline', attribution, placement })
         if (outcome.type === 'authenticated') {
           router.replace(buildAttributedPath('/welcome', attribution, { signup_surface: 'preview_ad_inline' }))
           return

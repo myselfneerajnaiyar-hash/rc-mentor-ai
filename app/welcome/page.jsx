@@ -182,7 +182,7 @@ async function checkUser() {
       && searchParams.get("flow") === "signup"
       && isNewGoogleSignup(user)) {
       const signupSurface = inlinePreviewSignup ? "preview_ad_inline" : undefined
-      captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq, surface: signupSurface, placement: signupSurface ? "google_oauth_callback" : undefined })
+      captureSignupConversion({ userId: user.id, method: "google", createdAt: user.created_at, posthog, pixel: window.fbq, redditPixel: window.rdt, surface: signupSurface, placement: signupSurface ? "google_oauth_callback" : undefined })
     }
 
     if (profile?.profile_completed) {
@@ -343,9 +343,16 @@ async function persistSignupAttribution(user) {
   }
   if (!Object.keys(attribution.firstTouch).length && !Object.keys(attribution.lastTouch).length) return attribution
   try {
+    // The current profile RPC allowlist predates Reddit click IDs. Keep the
+    // existing durable UTM/Meta fields flowing while rdt_cid stays in browser
+    // attribution and PostHog identity properties.
+    const profileAttribution = {
+      firstTouch: Object.fromEntries(Object.entries(attribution.firstTouch).filter(([field]) => field !== "rdt_cid")),
+      lastTouch: Object.fromEntries(Object.entries(attribution.lastTouch).filter(([field]) => field !== "rdt_cid")),
+    }
     const { error } = await supabase.rpc("capture_signup_attribution", {
-      p_first_touch: attribution.firstTouch,
-      p_last_touch: attribution.lastTouch,
+      p_first_touch: profileAttribution.firstTouch,
+      p_last_touch: profileAttribution.lastTouch,
     })
     if (error) console.warn("Signup attribution was not saved.", error.code || error.message)
     // Keep the browser touch available for post-signup learning events; the

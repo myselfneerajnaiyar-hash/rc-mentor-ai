@@ -58,7 +58,7 @@ export default function PaymentSuccess() {
     let attempts = 0
     const fireWhenPixelReady = () => {
       if (!active) return
-      if (typeof window.fbq === "function") {
+      if (typeof window.fbq === "function" || typeof window.rdt === "function") {
         capturePurchasePixel({
           paymentId: order.paymentId,
           value: order.amountPaid,
@@ -67,6 +67,7 @@ export default function PaymentSuccess() {
           contentId: order.product.id,
           orderId: order.orderId,
           pixel: window.fbq,
+          redditPixel: window.rdt,
         })
       } else if (++attempts < 25) {
         timer = window.setTimeout(fireWhenPixelReady, 200)

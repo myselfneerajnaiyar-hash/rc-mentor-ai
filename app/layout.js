@@ -36,6 +36,9 @@ export const viewport = {
 const metaPixelId = /^\d+$/.test(String(process.env.NEXT_PUBLIC_META_PIXEL_ID || ""))
   ? process.env.NEXT_PUBLIC_META_PIXEL_ID
   : null
+const redditPixelId = /^[A-Za-z0-9_-]{1,128}$/.test(String(process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID || ""))
+  ? process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID
+  : null
 
 export default function RootLayout({ children }) {
   return (
@@ -70,6 +73,17 @@ export default function RootLayout({ children }) {
     fbq('track', 'PageView');
   `}
 </Script>}
+
+        {redditPixelId && <Script id="reddit-pixel" strategy="afterInteractive">
+          {`
+            (function(w,d,pixelId){
+              if (w.rdt || w.navigator?.globalPrivacyControl === true || w.navigator?.doNotTrack === '1' || w.doNotTrack === '1') return;
+              !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement('script');t.src='https://www.redditstatic.com/ads/pixel.js?pixel_id='+encodeURIComponent(pixelId);t.async=true;var s=d.getElementsByTagName('script')[0];s.parentNode.insertBefore(t,s)}}(w,d);
+              w.rdt('init', pixelId);
+              w.rdt('track', 'PageVisit');
+            })(window, document, ${JSON.stringify(redditPixelId)});
+          `}
+        </Script>}
 
         <PostHogProvider />
         <Suspense fallback={null}><AttributionCapture /></Suspense>
