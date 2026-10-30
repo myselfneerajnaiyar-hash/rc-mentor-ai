@@ -57,7 +57,7 @@ export default function AcquisitionStart() {
   if (state === 'checking') return <main className={s.placeholder}><p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p><h1>Checking your Bootcamp access.</h1></main>
   if (state === 'error') return <main className={s.placeholder}><p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p><h1>We couldn’t verify your access.</h1><p>Please return to the Bootcamp overview and try again.</p><a className={s.cta} href="/bootcamp-2026">Back to the Bootcamp overview</a></main>
 
-  const pricingHref = buildAttributedPath('/pricing', readBrowserAttribution(), { offer: 'bootcamp' })
+  const pricingHref = buildAttributedPath('/pricing', readBrowserAttribution(), { offer: 'bootcamp', source: 'bootcamp_acquisition' })
   return <main className={s.placeholder}>
     <a className={s.brand} href="/bootcamp-2026"><span className={s.placeholderMark}>A</span><span>Auctor <small>CAT VARC · 2026</small></span></a>
     <p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p>

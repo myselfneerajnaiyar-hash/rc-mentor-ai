@@ -6,9 +6,9 @@
   height: 44px;
   align-items: center;
   overflow: hidden;
-  border-bottom: 1px solid #344757;
-  background: #111d29;
-  color: #e0e8ed;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  background: linear-gradient(100deg, #7c2d12 0%, #9a3412 100%);
+  color: #fff;
   font: 500 13px/1.2 Arial, Helvetica, sans-serif;
 }
 
@@ -55,7 +55,7 @@
 
 .messageLink strong,
 .reducedMessage strong {
-  color: #75cfdf;
+  color: #fff;
   font-weight: 800;
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -66,12 +66,12 @@
 .reducedMessage:focus-visible,
 .closeButton:focus-visible {
   border-radius: 2px;
-  outline: 2px solid #75cfdf;
+  outline: 2px solid #fed7aa;
   outline-offset: 2px;
 }
 
 .separator {
-  color: #8497a6;
+  color: #ffedd5;
   font-size: 16px;
   line-height: 1;
 }
@@ -94,7 +94,7 @@
   place-items: center;
   border: 0;
   background: transparent;
-  color: #d2dce3;
+  color: #fff;
   cursor: pointer;
 }
 

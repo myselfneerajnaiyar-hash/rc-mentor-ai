@@ -9,9 +9,9 @@ import s from './bootcamp.module.css'
 export default function BootCampHomeCard({ userId }) {
   const [catalog,setCatalog]=useState(null)
   const [access,setAccess]=useState(null)
-  const [routes,setRoutes]=useState({query:'',purchase:'/pricing?offer=bootcamp'})
+  const [routes,setRoutes]=useState({query:'',purchase:'/pricing?offer=bootcamp&source=bootcamp_home'})
   useEffect(()=>{let active=true;setCatalog(null);setAccess(null);if(userId){Promise.allSettled([bootcampRequest(),bootcampRequest('/access')]).then(([catalogResult,accessResult])=>{if(!active)return;if(catalogResult.status==='fulfilled')setCatalog(catalogResult.value);if(accessResult.status==='fulfilled')setAccess(accessResult.value)})}return()=>{active=false}},[userId])
-  useEffect(()=>{const query=new URLSearchParams(window.location.search);setRoutes({query:query.size?`?${query.toString()}`:'',purchase:buildAttributedPath('/pricing',readBrowserAttribution(),{offer:'bootcamp'})})},[])
+  useEffect(()=>{const query=new URLSearchParams(window.location.search);setRoutes({query:query.size?`?${query.toString()}`:'',purchase:buildAttributedPath('/pricing',readBrowserAttribution(),{offer:'bootcamp',source:'bootcamp_home'})})},[])
   const variant=getBootCampHomeCardVariant(access)
   const included=variant==='included'
   const banner=getBootCampHomeBannerState(access,catalog)

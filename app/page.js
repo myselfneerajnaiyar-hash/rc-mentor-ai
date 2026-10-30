@@ -21,8 +21,8 @@ import ProductTourOnboarding from '@/components/ProductTourOnboarding';
 import MobileHome from "@/components/mobile/MobileHome";
 import TodayHub from "@/components/mobile/TodayHub";
 import PracticeHub from "@/components/mobile/PracticeHub";
-import PremiumLock from "@/components/mobile/PremiumLock";
 import { allowActivityExit } from "@/components/mobile/MobileShell";
+import { TrialStatusChip } from "@/components/TrialPromotions";
 import { GRAMMAR_ENABLED, FEATURES } from "@/lib/mobile/features.mjs";
 import LeaderboardSection from "@/components/home-v2/LeaderboardSection";
 import { useRouter } from "next/navigation";
@@ -141,11 +141,10 @@ export default function Page() {
   const [phase, setPhase] = useState("mentor");
   // mentor | ready | test | result | newRC | profile | detailed | vocab | loading-adaptive
   const [view, setViewState] = useState("home");
-  const [lockedFeature, setLockedFeature] = useState(null);
   function setView(next) {
     if (!allowActivityExit()) return;
     const feature = FEATURES.find(f => f.id === next);
-    if (feature?.premium && !hasPremiumAccess) { captureLearningEvent("premium_feature_click", {feature:next}); setLockedFeature(feature); return; }
+    if (feature?.premium && !hasPremiumAccess) { captureLearningEvent("premium_feature_click", {feature:next}); router.push(`/pricing?source=locked_feature&returnTo=${encodeURIComponent(feature.href || "/")}`); return; }
     router.push(`/?view=${next}`);
   } 
   const dashboardSeenRef = useRef(false);
@@ -273,7 +272,7 @@ useEffect(() => {
   const allowed=["home","today","practice","profile","workout","hangman","rc","speed","vocab","precision","cat","mentor","leaderboards","grammar"];
   const next=allowed.includes(requested)?requested:"home";
   const feature=FEATURES.find(f=>f.id===next);
-  if(feature?.premium && !hasPremiumAccess){setLockedFeature(feature);setViewState("practice");return;}
+  if(feature?.premium && !hasPremiumAccess){setViewState("practice");router.push(`/pricing?source=practice_locked&returnTo=${encodeURIComponent(feature.href || "/")}`);return;}
   setViewState(next);
   document.body.scrollTop=0;document.documentElement.scrollTop=0;mainRef.current?.scrollTo(0,0);
 }, [searchParams, hasPremiumAccess]);
@@ -773,7 +772,7 @@ const navItems = [
 
   
 
-   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "Plans", icon: Trophy }] : []),
+   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "See plans", icon: Trophy }] : []),
   { id: "profile", label: "Profile", icon: User },
 ];
 
@@ -794,6 +793,7 @@ return (
   <p className="text-xs text-slate-500 mt-1">
     {branding.isInstitute ? "Powered by Auctor Labs" : "Powered by Birbal"}
   </p>
+  <TrialStatusChip className="mt-4 self-start" />
   <div className="h-px bg-slate-800 mt-6" />
 </div>
 
@@ -823,7 +823,7 @@ const locked =
     !hasPremiumAccess
 
 if (item.id === "premium") {
-  router.push("/pricing")
+  router.push("/pricing?source=dashboard_nav")
   return
 }
 
@@ -833,7 +833,8 @@ if (item.id === "bootcamp") {
 }
 
 if (locked) {
-  setLockedFeature(FEATURES.find(f=>f.id===item.id) || {id:item.id,name:item.label})
+  const feature = FEATURES.find(f=>f.id===item.id)
+  router.push(`/pricing?source=dashboard_locked_feature&returnTo=${encodeURIComponent(feature?.href || "/")}`)
   return
 }
 
@@ -887,7 +888,7 @@ ${
   className="w-full md:flex-1 overflow-y-auto bg-slate-900/30">
  <div className={`root-content w-full px-4 md:px-8 ${view === "cat" ? "py-4 md:py-6" : "py-6 md:py-10"} ${view === "cat" ? "cat-arena-content" : ""}`}>
       <div className="w-full">
-       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div><div className="dashboard-header-actions ml-auto flex items-center gap-2"><WhatsAppContactLink compactOnMobile />{user && view !== "cat" && <><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></>}</div></div>
+       <div className="dashboard-mobile-header mb-5 flex min-w-0 items-center gap-3 md:hidden"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /><div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding.brandName}</p>{branding.isInstitute && <p className="text-[10px] text-slate-500">Powered by Auctor Labs</p>}</div><TrialStatusChip/><div className="dashboard-header-actions ml-auto flex items-center gap-2"><WhatsAppContactLink compactOnMobile />{user && view !== "cat" && <><ProductTourButton/><InboxHeaderLink count={inboxUnreadCount} /></>}</div></div>
        {(["rc", "vocab", "speed", "precision", "grammar"].includes(view)) && (
   <PracticeSwitcher view={view} setView={setView} />
 )}
@@ -902,7 +903,6 @@ ${
   {view === "today" && <TodayHub />}
   {view === "practice" && <PracticeHub />}
   {view === "leaderboards" && <LeaderboardSection exam={exam}/>}
-  {lockedFeature && <PremiumLock feature={lockedFeature} onClose={()=>setLockedFeature(null)}/>}
   {view === "home" && isMobile === false && (
  <ShadowHomeView
   setView={setView}
@@ -918,7 +918,7 @@ ${
 
 
 
-{view === "home" && <footer className="home-footer"><a href="/pricing">Plans</a></footer>}
+{view === "home" && <footer className="home-footer"><a href="/pricing?source=mobile_footer" data-pricing-source="mobile_footer">Pricing</a></footer>}
 
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />

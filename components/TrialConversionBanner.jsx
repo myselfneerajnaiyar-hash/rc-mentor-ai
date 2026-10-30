@@ -68,25 +68,25 @@ export default function TrialConversionBanner() {
       body: coupon
         ? `Unlock your complete practice journey. Get ${coupon.discountPercent}% off with ${coupon.code}.`
         : "Unlock your complete practice journey with an Auctor plan.",
-      cta: "View Plans",
+      cta: "See plans",
     },
     ending: {
       headline: "Your free trial ends soon.",
       body: coupon
         ? `Continue your CAT VARC preparation without interruption. Use ${coupon.code} for ${coupon.discountPercent}% off.`
         : "Continue your CAT VARC preparation with an Auctor plan.",
-      cta: "View Plans",
+      cta: "See plans",
     },
     expired: {
       headline: "Your free trial has ended.",
       body: coupon
         ? `Ready to continue your CAT VARC preparation? Use ${coupon.code} for ${coupon.discountPercent}% off a plan.`
         : "Ready to continue your CAT VARC preparation? Explore the plans.",
-      cta: "View Plans",
+      cta: "See plans",
     },
   }
   const message = messages[state.type]
-  const pricingHref = coupon ? `/pricing?coupon=${encodeURIComponent(coupon.code)}` : "/pricing"
+  const pricingHref = coupon ? `/pricing?coupon=${encodeURIComponent(coupon.code)}&source=trial_conversion` : "/pricing?source=trial_conversion"
 
   function dismiss() {
     try { window.sessionStorage.setItem(dismissalKey, "1") } catch {}
@@ -101,8 +101,8 @@ export default function TrialConversionBanner() {
           <h2 className="text-sm font-bold text-white sm:text-base">{message.headline}</h2>
           <p className="mt-1 text-xs leading-relaxed text-slate-300 sm:text-sm">{message.body}</p>
         </div>
-        <Link href={pricingHref} className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
-          {message.cta}
+        <Link href={pricingHref} data-pricing-source="trial_conversion" className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300">
+          See plans
         </Link>
       </div>
     </aside>

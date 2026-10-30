@@ -2,6 +2,7 @@
 
 import { supabase } from "@/lib/supabase"
 import { attributionParams, readBrowserAttribution } from "@/lib/attribution.mjs"
+import { captureLearningEvent } from "@/lib/learningAnalytics"
 
 
 export default function SubscribeButton({
@@ -12,6 +13,7 @@ export default function SubscribeButton({
   referralCode = "",
   returnTo = "",
   variant = "primary",
+  source = "pricing_plan",
 }) {
   async function initializeRazorpay() {
 
@@ -145,6 +147,14 @@ if (!razorpayLoaded) {
 
       const rzp = new window.Razorpay(options)
 
+      captureLearningEvent("checkout_started", {
+        plan,
+        source,
+        order_id: order.id,
+        amount: order.amount,
+        currency: order.currency || "INR",
+        coupon_code: couponCode || undefined,
+      })
       rzp.open()
 
     } catch (err) {
@@ -156,6 +166,7 @@ if (!razorpayLoaded) {
   }
 
   function openCheckout() {
+    captureLearningEvent("plan_tapped", { plan, source, coupon_code: couponCode || undefined })
     if (!user?.id) {
       alert("Please login first")
       return

@@ -9,7 +9,6 @@ import { captureLearningEvent } from '@/lib/learningAnalytics';
 import DailyPanel from './DailyPanel';
 import Recovery from './Recovery';
 import ActivityIcon from './ActivityIcon';
-import TrialConversionBanner from '@/components/TrialConversionBanner';
 export default function MobileHome(){
   const {profile,capabilities}=useTenant();
   const daily=useDailyActivity();const next=nextActivity(daily.activities);
@@ -17,7 +16,6 @@ export default function MobileHome(){
   useEffect(()=>captureLearningEvent('mobile_home_view'),[]);
   return <div className="mobile-hub"><header className="mobile-hub-heading"><p className="mobile-eyebrow">Your daily reading practice</p><h1>Welcome{profile?.name?`, ${profile.name.split(' ')[0]}`:''}.</h1><p>A little practice. A stronger reader.</p></header>
     {capabilities.isCAT&&<BootCampHomeCard userId={profile?.user_id}/>}
-    <TrialConversionBanner />
     <section className="mobile-home-daily" data-daily-ready={!daily.loading&&!daily.error} aria-busy={daily.loading}><h2 className="mobile-daily-title">Today's Activities</h2>
     {daily.error?<Recovery message={daily.error} onRetry={daily.refresh} area="daily_progress"/>:<>{(daily.loading?FEATURES.filter(a=>a.group==='Daily'&&(!a.capability||capabilities[a.capability])):next?[next,...daily.activities.filter(a=>a.id!==next.id)]:daily.activities).map((a,i)=><div key={a.id} className={i===0?'':'mobile-daily-secondary'}><DailyPanel activity={a} primary={!daily.loading&&a.id===next?.id} loading={daily.loading}/></div>)}</>}
     {!daily.loading&&!daily.error&&!daily.activities.length&&<Link className="mobile-primary" href="/?view=practice">Find your next practice</Link>}</section>

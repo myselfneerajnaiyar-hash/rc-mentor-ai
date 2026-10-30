@@ -797,7 +797,7 @@ if (user?.id) {
 )}
 
      <Card
-  onClick={() => router.push("/pricing")}
+  onClick={() => router.push("/pricing?source=legacy_home_membership_card")}
   className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-amber-500/20 rounded-3xl shadow-xl">
 
   <CardContent className="p-8">
@@ -843,10 +843,10 @@ if (user?.id) {
     </div>
 
     <Button
-      onClick={() => router.push("/pricing")}
+      onClick={() => router.push("/pricing?source=legacy_home_membership_cta")}
       className="mt-6 bg-amber-500 text-black hover:bg-amber-400 font-semibold rounded-xl"
     >
-      View Plans →
+      See plans →
     </Button>
 
   </CardContent>
@@ -1040,14 +1040,14 @@ if (user?.id) {
     // FREE USER + trial expired
     if (!isPremium && trialExpired) {
 
-      router.push("/pricing")
+      router.push("/pricing?source=legacy_home_trial_expired")
       return
     }
 
     // no credits left
     if (birbalCredits <= 0) {
 
-      router.push("/pricing")
+      router.push("/pricing?source=legacy_home_birbal_credits")
       return
     }
 

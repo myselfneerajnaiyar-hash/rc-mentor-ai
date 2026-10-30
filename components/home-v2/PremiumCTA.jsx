@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import {
@@ -14,11 +13,8 @@ import {
   Trophy,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 
 export default function PremiumCTA() {
-    const router = useRouter();
-
     const scrollRef = useRef(null);
 const [activeIndex, setActiveIndex] = useState(0);
 
@@ -113,10 +109,9 @@ const handleScroll = () => {
     const Icon = plan.icon;
 
     return (
-      <Link
-        href="/pricing"
+      <article
         key={plan.name}
-        className={`snap-center shrink-0 w-[85%] relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${plan.border} ${
+        className={`snap-center shrink-0 w-[85%] relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 ${plan.border} ${
           plan.featured
             ? "scale-[1.03] shadow-xl shadow-violet-500/20"
             : ""
@@ -149,7 +144,7 @@ const handleScroll = () => {
         <p className="mt-2 text-sm text-slate-500">
           One subscription. Full access.
         </p>
-      </Link>
+      </article>
     );
   })}
 </div>
@@ -174,10 +169,9 @@ const handleScroll = () => {
 
             return (
 
-              <Link
-                href="/pricing"
+              <article
                 key={plan.name}
-                className={`group relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${plan.border} ${
+                className={`group relative overflow-hidden rounded-3xl border bg-gradient-to-b from-slate-900 to-slate-800 p-5 ${plan.border} ${
                   plan.featured
                     ? "scale-[1.03] shadow-xl shadow-violet-500/20"
                     : ""
@@ -216,7 +210,7 @@ const handleScroll = () => {
                   One subscription. Full access.
                 </p>
 
-              </Link>
+              </article>
 
             );
           })}
@@ -241,15 +235,9 @@ const handleScroll = () => {
               faster, build consistency and maximize their VARC score.
             </p>
 
-          <Button
-  size="lg"
-  onClick={() => router.push("/pricing")}
-  className="mt-8 h-14 rounded-2xl bg-violet-600 px-10 text-base font-semibold hover:bg-violet-500"
->
-              Explore Plans
-
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/pricing?source=home_plans" data-pricing-source="home_plans" className="mt-8 inline-flex h-14 items-center justify-center rounded-2xl bg-violet-600 px-10 text-base font-semibold text-white transition hover:bg-violet-500">
+              See plans <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
 
             <div className="mt-5 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
 

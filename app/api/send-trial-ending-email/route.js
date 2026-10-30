@@ -64,7 +64,7 @@ export async function POST(req) {
             <div style="margin-top:40px; text-align:center;">
 
               <a
-                href="https://rc.auctorlabs.in/pricing"
+                href="https://rc.auctorlabs.in/pricing?source=trial_ending_email"
                 style="
                   background:#2563eb;
                   color:white;
@@ -75,7 +75,7 @@ export async function POST(req) {
                   display:inline-block;
                 "
               >
-                View Plans →
+                See plans →
               </a>
 
             </div>

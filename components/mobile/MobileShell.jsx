@@ -6,6 +6,7 @@ import MobileBottomNav from '@/app/components/MobileBottomNav';
 import { destination } from '@/lib/mobile/features.mjs';
 import DailyActivityProvider from './DailyActivityProvider';
 import PersonalizedAnnouncementRibbon from '@/components/PersonalizedAnnouncementRibbon';
+import { TrialEndedOffer, TrialOfferRibbon, TrialPromotionProvider } from '@/components/TrialPromotions';
 const publicRoutes=['/login','/signup','/welcome','/preview','/preview-ad','/bootcamp-2026','/about','/contact','/payment-success','/birbal-test','/shadow-test','/test-diagnosis','/result-preview'];
 export function allowActivityExit(){
  if(window.__auctorExitAllowed)return true;
@@ -19,7 +20,10 @@ export default function MobileShell({children}){
  const isFirstSession=path==='/first-session';
  const isStudent=!!user&&!isFirstSession&&!publicRoutes.some(p=>path===p||path.startsWith(p+'/'))&&!path.startsWith('/boot-camp');
  const view=path==='/'?params.get('view')||'home':path.startsWith('/daily-challenge')||path.startsWith('/rc-session')||path==='/rc-history'?'today':'practice';
- const showAnnouncementRibbon=!isFirstSession&&(path!=='/'||view!=='home')&&!active;
+ const trialTabSurface=path==='/'&&['home','practice','today','bootcamp','profile'].includes(view);
+ const showTrialRibbon=isStudent&&trialTabSurface&&!active;
+ const isBootCampSurface=path==='/boot-camp'||path.startsWith('/boot-camp/');
+ const showAnnouncementRibbon=!isFirstSession&&!trialTabSurface&&!isBootCampSurface&&(path!=='/'||view!=='home')&&!active;
  const navigate=href=>{if(allowActivityExit())router.push(href);};
  useEffect(()=>{
    const sync=()=>setActive(document.body.classList.contains('assessment-mode-active'));
@@ -35,5 +39,6 @@ export default function MobileShell({children}){
    if(previous.current!==key){document.body.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0);previous.current=key;window.__auctorExitAllowed=false;}
  },[path,params]);
  useEffect(()=>{document.body.classList.toggle('mobile-student-shell',isStudent);return()=>document.body.classList.remove('mobile-student-shell');},[isStudent]);
- return <DailyActivityProvider>{showAnnouncementRibbon&&<PersonalizedAnnouncementRibbon/>}{isStudent&&active&&path!=='/daily-challenge/test'&&<button className="assessment-exit" onClick={()=>navigate('/?view=today')}>Exit activity</button>}{children}{isStudent&&!active&&view!=='mentor'&&<MobileBottomNav view={destination(view)} onNavigate={navigate}/>}</DailyActivityProvider>;
+ const trialRibbonSource={home:'home_ribbon',practice:'practice_ribbon',today:'today_ribbon',profile:'profile_ribbon',bootcamp:'bootcamp_ribbon'}[view]||'trial_ribbon';
+ return <TrialPromotionProvider><DailyActivityProvider>{showTrialRibbon&&<TrialOfferRibbon source={trialRibbonSource}/ >}{showAnnouncementRibbon&&<PersonalizedAnnouncementRibbon/>}{isStudent&&active&&path!=='/daily-challenge/test'&&<button className="assessment-exit" onClick={()=>navigate('/?view=today')}>Exit activity</button>}{children}<TrialEndedOffer/>{isStudent&&!active&&view!=='mentor'&&<MobileBottomNav view={destination(view)} onNavigate={navigate}/>}</DailyActivityProvider></TrialPromotionProvider>;
 }

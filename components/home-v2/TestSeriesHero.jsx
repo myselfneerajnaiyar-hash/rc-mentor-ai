@@ -268,7 +268,7 @@ export default function TestSeriesHero({setView, instituteAccess = false}) {
          <Button
   onClick={(e) => {
     e.stopPropagation();
-    instituteAccess ? setView("cat") : router.push("/pricing");
+    instituteAccess ? setView("cat") : router.push("/pricing?source=test_series_hero");
   }}
   className="mt-5 w-full rounded-xl bg-white text-cyan-700 hover:bg-slate-100 font-semibold"
 >

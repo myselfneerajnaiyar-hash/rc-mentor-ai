@@ -562,7 +562,7 @@ test("pricing page prefills coupon without applying it until the user clicks App
   assert.match(pricingSource, /plan=\{plan\.id\}/)
   assert.match(pricingSource, /xl:grid-cols-4/)
   assert.doesNotMatch(pricingSource, /bootcamp_full_access|cat_test_series/)
-  assert.match(legacyPricingSource, /redirect\("\/pricing"\)/)
+  assert.match(legacyPricingSource, /redirect\("\/pricing\?source=preview_pricing_redirect"\)/)
 })
 
 test("server-validated referral pricing is also identical at creation and verification", async () => {

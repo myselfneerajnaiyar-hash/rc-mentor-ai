@@ -4,6 +4,7 @@ import Link from "next/link";
 import { supabase } from "../lib/supabase";
 import { useTenant } from "@/components/providers/TenantProvider";
 import TenantLogo from "@/components/tenant/TenantLogo";
+import { ProfilePlanRow } from "@/components/TrialPromotions";
 
 
 export default function ProfileView({ setView }) {
@@ -106,7 +107,14 @@ setSubscription(sub)
   }
 }, [profileTab]);
 
-  if (!profile) return null;
+  if (!profile) return (
+    <div style={page}>
+      <div style={container}>
+        <ProfilePlanRow />
+        <p role="status" style={{ color: "#94a3b8", fontSize: 13 }}>Loading your profile…</p>
+      </div>
+    </div>
+  );
   const isCAT = capabilities.isCAT;
 
   async function handleLogout() {
@@ -117,6 +125,7 @@ setSubscription(sub)
   return (
   <div style={page}>
   <div style={container}>
+      <ProfilePlanRow />
       <button onClick={() => setView("home")} style={backBtn}>
         ← Back to Home
       </button>
@@ -353,22 +362,6 @@ w
     : "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync."}
 </p>
 
-{!subscription && !entitlement.isInstituteStudent && (
-  <button
-    style={{
-      marginTop: 15,
-      padding: "10px 18px",
-      background: "#2563eb",
-      border: "none",
-      borderRadius: 8,
-      color: "#fff",
-      fontWeight: 600,
-      cursor: "pointer",
-    }}
-  >
-    Upgrade Plan
-  </button>
-)}
   </div>
 )}
 

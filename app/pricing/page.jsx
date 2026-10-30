@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import SubscribeButton from "@/components/SubscribeButton"
@@ -8,6 +8,7 @@ import PreviewNavbar from "@/components/PreviewNavbar"
 import { useTenant } from "@/components/providers/TenantProvider"
 import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
 import { supabase } from "@/lib/supabase"
+import { captureLearningEvent } from "@/lib/learningAnalytics"
 
 const PLANS = getSubscriptionPlans()
 
@@ -18,6 +19,7 @@ export default function Pricing() {
   const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0)
   const [couponMessage, setCouponMessage] = useState("")
   const [couponLoading, setCouponLoading] = useState(false)
+  const lastPricingView = useRef(null)
 
   const { capabilities } = useTenant()
   const isCatStudent = capabilities?.isCAT === true
@@ -26,6 +28,14 @@ export default function Pricing() {
   const couponFromUrl = searchParams.get("coupon") || ""
   const isBootcampOfferEntry = searchParams.get("offer") === "bootcamp"
   const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
+
+  useEffect(() => {
+    const source = searchParams.get("source") || (searchParams.get("offer") === "bootcamp" ? "bootcamp_offer" : "direct")
+    const viewKey = `${source}:${couponFromUrl}:${searchParams.get("offer") || ""}:${searchParams.get("returnTo") || ""}`
+    if (lastPricingView.current === viewKey) return
+    lastPricingView.current = viewKey
+    captureLearningEvent("pricing_viewed", { source, pricing_source: source })
+  }, [couponFromUrl, searchParams])
 
   const applyCoupon = useCallback(async (value) => {
     const code = value.trim()
@@ -54,6 +64,7 @@ export default function Pricing() {
       setAppliedCouponDiscount(result.discountPercent)
       setCouponInput(result.code)
       setCouponMessage(`${result.code} applied — ${result.discountPercent}% off`)
+      captureLearningEvent("coupon_applied", { coupon_code: result.code, discount_percent: result.discountPercent })
       return true
     } catch {
       setAppliedCoupon("")
@@ -169,6 +180,7 @@ export default function Pricing() {
                     couponCode={appliedCoupon}
                     returnTo={returnTo}
                     variant="premium"
+                    source="pricing_plan"
                   />
                 </article>
               )
