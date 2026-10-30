@@ -489,14 +489,27 @@ const catScore =
 const compositeScore =
   (catScore * 100) + timeLeft;
 
-  const user = await withTimeout(supabase.auth.getUser());
- if(!user.data.user)throw new Error("Please sign in again to save this attempt.");
+  // Read the persisted session before asking the auth service to validate the
+  // user. A newly created or just-refreshed session can be available locally
+  // while getUser() briefly returns no user; treating that as sign-out loses
+  // an otherwise valid submission.
+  const { data: sessionData, error: sessionError } = await withTimeout(supabase.auth.getSession());
+  if (sessionError) throw sessionError;
+  let authenticatedUser = sessionData?.session?.user || null;
+  if (!authenticatedUser) {
+    const { data: refreshedSession, error: refreshError } = await withTimeout(
+      supabase.auth.refreshSession(sessionData?.session || undefined)
+    );
+    if (refreshError) throw refreshError;
+    authenticatedUser = refreshedSession?.user || refreshedSession?.session?.user || null;
+  }
+  if (!authenticatedUser) throw new Error("Your sign-in session is missing. Please sign in again, then retry to save this attempt.");
 
   const { data: attemptRow, error: attemptError } = savedAttemptRef.current ? {data:savedAttemptRef.current,error:null} :
   await supabase
     .from("daily_rc_attempts")
    .insert({
-  user_id: user.data.user.id,
+  user_id: authenticatedUser.id,
   daily_rc_set_id: challenge.id,
 
   score: catScore,
@@ -534,7 +547,7 @@ const { data: profile } =
     )
     .eq(
       "user_id",
-      user.data.user.id
+      authenticatedUser.id
     )
     .single();
 
@@ -585,7 +598,7 @@ await supabase
   })
   .eq(
     "user_id",
-    user.data.user.id
+    authenticatedUser.id
   );
 }
 
@@ -659,7 +672,7 @@ if (firstSessionMission) {
   const missionResult = await missionResponse.json().catch(() => ({}));
   if (!missionResponse.ok) throw new Error(missionResult.error || "Your mission completion could not be recorded. Retry to continue.");
   captureFirstSessionEvent("daily_rc_mission_completed", missionResult.first_session_attempt_id, {
-    user_id: user.data.user.id,
+    user_id: authenticatedUser.id,
     attempt_id: missionResult.attempt_id,
     first_session_attempt_id: missionResult.first_session_attempt_id,
     set_id: challenge.id,
