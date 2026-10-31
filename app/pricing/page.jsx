@@ -10,7 +10,8 @@ import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } f
 import { supabase } from "@/lib/supabase"
 import { captureLearningEvent } from "@/lib/learningAnalytics"
 
-const PLANS = getSubscriptionPlans()
+const PLAN_ORDER = ["quarterly", "monthly", "half_yearly", "yearly"]
+const PLANS = [...getSubscriptionPlans()].sort((a, b) => PLAN_ORDER.indexOf(a.id) - PLAN_ORDER.indexOf(b.id))
 
 export default function Pricing() {
   const [user, setUser] = useState(null)
@@ -19,6 +20,7 @@ export default function Pricing() {
   const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0)
   const [couponMessage, setCouponMessage] = useState("")
   const [couponLoading, setCouponLoading] = useState(false)
+  const [selectedPlanId, setSelectedPlanId] = useState("quarterly")
   const lastPricingView = useRef(null)
 
   const { capabilities } = useTenant()
@@ -130,7 +132,7 @@ export default function Pricing() {
           </div>
         </section>
 
-        <section aria-label="Subscription plans" className="relative mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
+        <section aria-label="Subscription plans" data-selected-plan={selectedPlanId} className="relative mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
           <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 xl:grid-cols-4 xl:gap-4">
             {PLANS.map((plan) => {
               const price = getSubscriptionPrice(plan.id, appliedCoupon, appliedCouponDiscount)
@@ -139,20 +141,33 @@ export default function Pricing() {
               const monthlyEquivalent = amount / plan.durationMonths
               const features = getSubscriptionFeatures(plan, isCatStudent)
               const isOfferPlan = isBootcampOfferEntry && plan.id === "quarterly"
+              const isSelected = selectedPlanId === plan.id
+              const planName = plan.id === "quarterly" ? "3 Month" : plan.name
 
               return (
                 <article
                   key={plan.id}
                   data-plan={plan.id}
-                  className={`relative flex min-w-0 flex-col rounded-3xl border bg-gradient-to-b from-slate-800/95 to-slate-950 p-5 shadow-xl transition sm:p-6 ${plan.featured ? "border-orange-400/70 ring-2 ring-orange-500/30" : isOfferPlan ? "border-emerald-400/70 ring-2 ring-emerald-500/20" : "border-slate-700/80"}`}
+                  data-selected={isSelected ? "true" : "false"}
+                  className={`relative flex min-w-0 flex-col rounded-3xl border bg-gradient-to-b from-slate-800/95 to-slate-950 p-5 shadow-xl transition sm:p-6 ${isSelected ? "border-orange-300 ring-2 ring-orange-400/70 shadow-orange-950/40" : isOfferPlan ? "border-emerald-400/70 ring-2 ring-emerald-500/20" : "border-slate-700/80"}`}
                 >
                   {plan.badge && <span className="absolute right-4 top-4 rounded-full bg-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">{plan.badge}</span>}
                   {isOfferPlan && <span className="absolute right-4 top-4 rounded-full bg-emerald-400 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-950">Bootcamp offer</span>}
 
                   <header className="mb-5 min-h-[4.5rem] pr-20">
-                    <h2 className="text-2xl font-bold text-white">{plan.name}</h2>
+                    <h2 className="text-2xl font-bold text-white">{planName}</h2>
                     <p className="mt-1 text-sm leading-5 text-slate-400">{plan.description}</p>
                   </header>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    aria-pressed={isSelected}
+                    onClick={() => setSelectedPlanId(plan.id)}
+                    className={`mb-5 h-11 w-full rounded-xl text-sm font-semibold ${isSelected ? "border-orange-300 bg-orange-400/15 text-orange-100 hover:bg-orange-400/20" : "border-slate-600 bg-slate-900/70 text-slate-200 hover:bg-slate-800"}`}
+                  >
+                    {isSelected ? `Selected: ${planName}` : `Select ${planName}`}
+                  </Button>
 
                   <div className="mb-5 border-b border-slate-700/80 pb-5">
                     <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{appliedCoupon ? "You pay" : "Plan price"}</p>
@@ -167,21 +182,26 @@ export default function Pricing() {
                     {!appliedCoupon && <p className="mt-3 text-sm text-slate-400">Billed {plan.durationMonths === 1 ? "monthly" : `every ${plan.durationMonths} months`}</p>}
                   </div>
 
+                  {isSelected && (
+                    <div className="mb-6">
+                      <SubscribeButton
+                        plan={plan.id}
+                        label={`Continue with ${planName} · ${formatRupees(amount)}`}
+                        user={user}
+                        couponCode={appliedCoupon}
+                        returnTo={returnTo}
+                        variant="premium"
+                        source="pricing_plan"
+                      />
+                    </div>
+                  )}
+
                   <ul className="mb-7 flex-1 space-y-3 text-sm leading-5 text-slate-200">
                     {features.map((feature) => (
                       <li key={feature} className="flex gap-2"><span aria-hidden="true" className="text-emerald-400">✓</span><span>{feature}</span></li>
                     ))}
                   </ul>
 
-                  <SubscribeButton
-                    plan={plan.id}
-                    label={`Choose ${plan.name} · ${formatRupees(amount)}`}
-                    user={user}
-                    couponCode={appliedCoupon}
-                    returnTo={returnTo}
-                    variant="premium"
-                    source="pricing_plan"
-                  />
                 </article>
               )
             })}

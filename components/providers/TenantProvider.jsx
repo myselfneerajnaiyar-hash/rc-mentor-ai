@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase"
 import { AUCTOR_BRANDING } from "@/lib/tenant/branding"
 import { getExamCapabilities } from "@/lib/tenant/capabilities"
 import { isTenantContextBypassedRoute } from "@/lib/tenant/routePolicy.mjs"
+import { getContextRefreshFailureState } from "@/lib/tenant/contextRefresh.mjs"
 
 import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request"
 import Recovery from "@/components/mobile/Recovery"
@@ -23,8 +24,9 @@ export default function TenantProvider({ children }) {
   const generation=useRef(0),flight=useRef(null);
   const refreshContext = useCallback(async (providedSession, force = false) => {
       const revision=++generation.current;
+      let session = providedSession
       try {
-      const session = providedSession === undefined
+      session = providedSession === undefined
         ? (await withTimeout(supabase.auth.getSession())).data.session
         : providedSession
       const token=session?.access_token||'guest';
@@ -54,7 +56,10 @@ export default function TenantProvider({ children }) {
       }
       setState({ ...context, loading: false, access: "allowed" })
       return context
-      } catch(error) { if(revision!==generation.current)return;setState(current=>({...current,loading:false,access:"network_error",error:error.message})); }
+      } catch(error) {
+        if(revision!==generation.current)return
+        setState(current=>getContextRefreshFailureState(current,error,session?.user?.id))
+      }
   }, [])
 
   useEffect(() => {

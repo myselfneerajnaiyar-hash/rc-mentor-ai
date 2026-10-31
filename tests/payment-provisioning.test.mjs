@@ -12,6 +12,7 @@ const safeAttemptYearMigration = await readFile(new URL("../supabase/migration_a
 const bootcampPurchaseMigration = await readFile(new URL("../supabase/migrations/202610080001_bootcamp_purchase_offer.sql", import.meta.url), "utf8")
 const bundleMigration = await readFile(new URL("../supabase/migrations/202610090002_bootcamp_platform_bundle.sql", import.meta.url), "utf8")
 const conversionDispatchMigration = await readFile(new URL("../supabase/migrations/202610110001_purchase_conversion_dispatch.sql", import.meta.url), "utf8")
+const conversionRetryMigration = await readFile(new URL("../supabase/migrations/202610310001_retry_ambiguous_posthog_purchase_dispatch.sql", import.meta.url), "utf8")
 const callbackSource = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const webhookSource = await readFile(new URL("../app/api/razorpay/webhook/route.js", import.meta.url), "utf8")
 const processorSource = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
@@ -50,6 +51,7 @@ async function database() {
   await db.exec(bootcampPurchaseMigration)
   await db.exec(bundleMigration)
   await db.exec(conversionDispatchMigration)
+  await db.exec(conversionRetryMigration)
   return db
 }
 
@@ -510,5 +512,39 @@ test("purchase conversion outbox atomically claims concurrent dispatches and ret
     { provider: "meta", status: "sent", attempts: 2 },
     { provider: "posthog", status: "sent", attempts: 1 },
   ])
+  await db.close()
+})
+
+test("ambiguous PostHog purchase delivery retries with a bounded claim; Meta ambiguity remains closed", async () => {
+  const db = await database()
+  await addPurchase(db, { userId: "00000000-0000-0000-0000-000000000041", orderId: "ambiguous_dispatch" })
+  await provision(db, { orderId: "ambiguous_dispatch", paymentId: "ambiguous_dispatch_pay" })
+  const claim = (provider, attempt) => db.query(`select public.claim_purchase_conversion_dispatch(
+    'ambiguous_dispatch_pay',$1,$2,$3::uuid) as claimed`, [provider, `stable:${provider}`, `00000000-0000-0000-0000-00000000004${attempt}`])
+  const markUnknown = (provider, attempt) => db.query(`select public.mark_purchase_conversion_dispatch_unknown(
+    'ambiguous_dispatch_pay',$1,$2::uuid,'transport outcome unknown') as marked`, [provider, `00000000-0000-0000-0000-00000000004${attempt}`])
+
+  assert.equal((await claim("posthog", 2)).rows[0].claimed, true)
+  await markUnknown("posthog", 2)
+  await db.exec(`update public.razorpay_payment_orders
+    set side_effects_completed_at=now(), referral_commission_applied=true,
+        last_reconciled_at=now()-interval '16 minutes'
+    where razorpay_order_id='ambiguous_dispatch';`)
+  const retryBatch = await db.query(`select razorpay_order_id from public.claim_razorpay_reconciliation_batch(20)`)
+  assert.deepEqual(retryBatch.rows, [{ razorpay_order_id: "ambiguous_dispatch" }], "the scheduled reconciler should retry a bounded unknown PostHog delivery")
+  assert.equal((await claim("posthog", 3)).rows[0].claimed, true)
+  await markUnknown("posthog", 3)
+  assert.equal((await claim("posthog", 4)).rows[0].claimed, true)
+  await markUnknown("posthog", 4)
+  assert.equal((await claim("posthog", 5)).rows[0].claimed, false, "unknown PostHog delivery stops after three attempts")
+
+  assert.equal((await claim("meta", 6)).rows[0].claimed, true)
+  await markUnknown("meta", 6)
+  assert.equal((await claim("meta", 7)).rows[0].claimed, false, "unknown Meta delivery is not automatically retried")
+  await db.exec(`update public.razorpay_payment_orders
+    set last_reconciled_at=now()-interval '16 minutes'
+    where razorpay_order_id='ambiguous_dispatch';`)
+  const exhaustedBatch = await db.query(`select razorpay_order_id from public.claim_razorpay_reconciliation_batch(20)`)
+  assert.deepEqual(exhaustedBatch.rows, [], "the reconciler should leave exhausted PostHog and unknown Meta deliveries alone")
   await db.close()
 })

@@ -11,6 +11,7 @@ const results = []
 try {
   for (const exam of ["CAT", "CLAT"]) {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
+    const createOrderRequests = []
     await page.addInitScript(({ key, examValue }) => {
       localStorage.setItem(key, JSON.stringify({
         access_token: "pricing-browser-test-token",
@@ -21,6 +22,10 @@ try {
         user: { id: "pricing-browser-test-user", aud: "authenticated", role: "authenticated", email: "pricing-test@example.com" },
       }))
       window.__pricingTestExam = examValue
+      window.Razorpay = class {
+        constructor(options) { window.__pricingCheckoutOptions = options }
+        open() {}
+      }
     }, { key: `sb-${projectRef}-auth-token`, examValue: exam })
 
     await page.route("**/api/tenant-context", (route) => route.fulfill({ json: {
@@ -45,8 +50,19 @@ try {
     await page.route("**/api/validate-coupon", (route) => route.fulfill({ json: {
       valid: true, code: "AUCTOR30", discountPercent: 30,
     } }))
+    await page.route("**/api/create-order", async (route) => {
+      const request = route.request().postDataJSON()
+      createOrderRequests.push(request)
+      const amounts = { monthly: 27930, quarterly: 55930, half_yearly: 90930, yearly: 139930 }
+      await route.fulfill({ json: { id: "order_pricing_browser_test", amount: amounts[request.plan], currency: "INR" } })
+    })
     await page.goto("http://localhost:3220/pricing", { waitUntil: "domcontentloaded", timeout: 60000 })
     await page.locator("[data-plan]").first().waitFor()
+    assert.equal(await page.locator('[aria-label="Subscription plans"]').getAttribute("data-selected-plan"), "quarterly", `${exam} should default to 3 Month`)
+    assert.deepEqual(await page.locator("[data-plan]").evaluateAll((cards) => cards.map((card) => card.dataset.plan)), ["quarterly", "monthly", "half_yearly", "yearly"])
+    assert.equal(await page.locator('[data-plan="quarterly"]').getAttribute("data-selected"), "true")
+    assert.match(await page.locator('[data-plan="quarterly"]').innerText(), /3 Month/)
+    assert.match(await page.locator('[data-plan="quarterly"] button').last().innerText(), /Continue with 3 Month/)
 
     for (const width of [1440, 1280, 390, 375]) {
       await page.setViewportSize({ width, height: 1000 })
@@ -82,7 +98,23 @@ try {
     await page.getByRole("button", { name: "Apply" }).click()
     await page.locator('[role="status"]').waitFor({ state: "visible", timeout: 5000 })
     const discountedPrice = await page.locator('[data-plan="monthly"]').innerText()
-    assert.match(discountedPrice, /YOU PAY[\s\S]*₹319\.20[\s\S]*₹399/)
+    assert.match(discountedPrice, /YOU PAY[\s\S]*279\.30[\s\S]*399/)
+
+    await page.getByRole("button", { name: "Select Monthly" }).click()
+    assert.equal(await page.locator('[aria-label="Subscription plans"]').getAttribute("data-selected-plan"), "monthly")
+    const monthlyCheckout = page.locator('[data-plan="monthly"] button').last()
+    assert.match(await monthlyCheckout.innerText(), /Continue with Monthly.*279\.30/)
+    await monthlyCheckout.click()
+    await page.waitForFunction(() => window.__pricingCheckoutOptions?.order_id === "order_pricing_browser_test")
+    assert.equal(createOrderRequests[0].plan, "monthly", "checkout should submit the selected internal plan id")
+    assert.equal(createOrderRequests[0].couponCode, "AUCTOR30", "checkout should retain the applied coupon")
+    assert.equal(await page.evaluate(() => window.__pricingCheckoutOptions.amount), 27930, "Razorpay amount should match the selected plan and coupon")
+
+    await page.getByRole("button", { name: "Select 3 Month" }).click()
+    assert.match(await page.locator('[data-plan="quarterly"] button').last().innerText(), /Continue with 3 Month.*559\.30/)
+    await page.reload({ waitUntil: "domcontentloaded" })
+    await page.locator("[data-plan]").first().waitFor()
+    assert.equal(await page.locator('[aria-label="Subscription plans"]').getAttribute("data-selected-plan"), "quarterly", "refresh should restore the intended default")
     await page.close()
   }
 } finally {
