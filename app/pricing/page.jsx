@@ -33,6 +33,13 @@ export default function Pricing() {
   const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
 
   useEffect(() => {
+    const requestedPlan = searchParams.get("plan")
+    if (requestedPlan && PLANS.some((plan) => plan.id === requestedPlan)) {
+      setSelectedPlanId(requestedPlan)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
     const source = searchParams.get("source") || (searchParams.get("offer") === "bootcamp" ? "bootcamp_offer" : "direct")
     const viewKey = `${source}:${couponFromUrl}:${searchParams.get("offer") || ""}:${searchParams.get("returnTo") || ""}`
     if (lastPricingView.current === viewKey) return
