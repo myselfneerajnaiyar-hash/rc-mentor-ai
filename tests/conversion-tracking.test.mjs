@@ -93,6 +93,13 @@ test("Reddit click attribution is sanitized and remains in first/last touch prop
   assert.equal(properties.last_touch_rdt_cid, "click_123")
 })
 
+test("UTM channel names normalize to lowercase while attribution tags remain intact", () => {
+  const attribution = attributionFromParams(new URLSearchParams("utm_source=WhatsApp&utm_medium=Community&utm_campaign=oct_push"))
+  assert.equal(attribution.firstTouch.utm_source, "whatsapp")
+  assert.equal(attribution.firstTouch.utm_medium, "Community")
+  assert.equal(attribution.firstTouch.utm_campaign, "oct_push")
+})
+
 test("PostHog identity and signup event preserve first and last acquisition touch", () => {
   const calls = []
   const attribution = {
@@ -182,6 +189,9 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
     razorpay_payment_id: "pay_123",
     razorpay_order_id: "order_123",
     amount_paid_paise: 139930,
+    original_amount_paise: 199900,
+    discount_amount_paise: 59970,
+    coupon_code: "AUCTOR30",
     currency: "INR",
     plan: "yearly",
   }
@@ -189,6 +199,7 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
     email: "student@example.test",
     phone: "+919876543210",
     signup_attribution_first_touch: {
+      utm_source: "WhatsApp",
       campaign_id: "238901",
       adset_id: "238902",
       ad_id: "238903",
@@ -227,6 +238,11 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   assert.equal(posthogRequest.payload.properties.currency, "INR")
   assert.equal(posthogRequest.payload.properties.payment_id, "pay_123")
   assert.equal(posthogRequest.payload.properties.order_id, "order_123")
+  assert.equal(posthogRequest.payload.properties.coupon_code, "AUCTOR30")
+  assert.equal(posthogRequest.payload.properties.original_amount, 1999)
+  assert.equal(posthogRequest.payload.properties.discount_amount, 599.7)
+  assert.equal(posthogRequest.payload.properties.discount_percent, 30)
+  assert.equal(posthogRequest.payload.properties.acquisition_channel, "whatsapp")
   assert.equal(requests.filter(request => request.payload.event === "purchase_completed")[0].payload.uuid,
     requests.filter(request => request.payload.event === "purchase_completed")[1].payload.uuid)
 
@@ -237,6 +253,8 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   assert.equal(metaRequest.payload.data[0].event_time, Math.floor(Date.parse(paidAt) / 1000))
   assert.equal(metaRequest.payload.data[0].event_source_url, "https://app.example.test/payment-success")
   assert.equal(metaRequest.payload.data[0].custom_data.currency, "INR")
+  assert.equal(metaRequest.payload.data[0].custom_data.coupon_code, "AUCTOR30")
+  assert.equal(metaRequest.payload.data[0].custom_data.acquisition_channel, "whatsapp")
   assert.equal(metaRequest.payload.data[0].user_data.fbc, profile.signup_attribution_last_touch.fbc)
   assert.equal(metaRequest.payload.data[0].user_data.fbp, profile.signup_attribution_last_touch.fbp)
   assert.notEqual(metaRequest.payload.data[0].user_data.em[0], profile.email)

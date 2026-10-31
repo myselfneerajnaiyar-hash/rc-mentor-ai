@@ -22,6 +22,7 @@ export default function Pricing() {
   const [couponLoading, setCouponLoading] = useState(false)
   const [selectedPlanId, setSelectedPlanId] = useState("quarterly")
   const lastPricingView = useRef(null)
+  const lastAutoCoupon = useRef(null)
 
   const { capabilities } = useTenant()
   const isCatStudent = capabilities?.isCAT === true
@@ -79,8 +80,12 @@ export default function Pricing() {
   }, [])
 
   useEffect(() => {
-    if (couponFromUrl) setCouponInput(couponFromUrl)
-  }, [couponFromUrl])
+    const code = couponFromUrl || "AUCTOR30"
+    setCouponInput(code)
+    if (lastAutoCoupon.current === code) return
+    lastAutoCoupon.current = code
+    void applyCoupon(code)
+  }, [applyCoupon, couponFromUrl])
 
   useEffect(() => {
     let cancelled = false

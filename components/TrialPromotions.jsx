@@ -6,6 +6,8 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState } from 
 import { getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
 import { useTenant } from "@/components/providers/TenantProvider"
 import { supabase } from "@/lib/supabase"
+import { captureLearningEvent } from "@/lib/learningAnalytics"
+import { captureFirstSessionEvent } from "@/lib/firstSession/analytics"
 import {
   claimTrialEndedOffer,
   getTrialPromotionState,
@@ -103,7 +105,18 @@ function usePromotionState() {
 }
 
 export function TrialStatusChip({ className = "" }) {
-  const { state } = usePromotionState()
+  const { user, state } = usePromotionState()
+  const trialDay = state.type === "active" ? state.trialDay : null
+
+  useEffect(() => {
+    if (!user?.id || !trialDay) return
+    captureFirstSessionEvent("trial_tracker_seen", `${user.id}:${trialDay}`, {
+      user_id: user.id,
+      trial_day: trialDay,
+      day_number: trialDay,
+    }, `trial_tracker_seen_day_${trialDay}`)
+  }, [trialDay, user?.id])
+
   if (state.type !== "active") return null
 
   return (
@@ -118,14 +131,18 @@ export function TrialStatusChip({ className = "" }) {
   )
 }
 
-export function TrialOfferRibbon({ className = "", source = "trial_ribbon" }) {
+export function TrialOfferRibbon({ className = "", screen = "home" }) {
   const { state } = usePromotionState()
   if (state.type !== "active") return null
 
   return (
     <aside className={`${styles.ribbon} ${className}`.trim()} aria-label="Trial plan offer">
       <span>30% OFF · ENDS IN {state.daysRemaining} {state.daysRemaining === 1 ? "DAY" : "DAYS"}</span>
-      <Link href={`/pricing?coupon=${COUPON}&source=${source}`} data-pricing-source={source}>
+      <Link
+        href={`/pricing?coupon=${COUPON}&source=ribbon`}
+        data-pricing-source="ribbon"
+        onClick={() => captureLearningEvent("pricing_ribbon_clicked", { screen })}
+      >
         See plans <span aria-hidden="true">→</span>
       </Link>
     </aside>

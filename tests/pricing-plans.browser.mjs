@@ -28,6 +28,8 @@ try {
       }
     }, { key: `sb-${projectRef}-auth-token`, examValue: exam })
 
+    await page.route(/https:\/\/.*(posthog|facebook|reddit)/i, (route) => route.abort())
+
     await page.route("**/api/tenant-context", (route) => route.fulfill({ json: {
       tenant: { kind: "b2c", hostname: "localhost" },
       branding: { primaryColor: "#7c3aed", secondaryColor: "#06b6d4", faviconUrl: "/icon-192.png" },
@@ -95,8 +97,8 @@ try {
       if (exam === "CLAT" && width === 1440) await page.screenshot({ path: ".tmp-pricing-noncat-desktop.png", fullPage: true })
       results.push(`${exam} ${width}px: 4 cards, ${width >= 1280 ? "one row" : "stacked"}, no overflow (header ${layout.headerBottom}px, heading ${layout.headingTop}px)`)
     }
-    await page.getByRole("button", { name: "Apply" }).click()
     await page.locator('[role="status"]').waitFor({ state: "visible", timeout: 5000 })
+    assert.match(await page.locator('[role="status"]').innerText(), /AUCTOR30 applied/)
     const discountedPrice = await page.locator('[data-plan="monthly"]').innerText()
     assert.match(discountedPrice, /YOU PAY[\s\S]*279\.30[\s\S]*399/)
 

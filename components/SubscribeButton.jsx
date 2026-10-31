@@ -154,6 +154,11 @@ if (!razorpayLoaded) {
         amount: order.amount,
         currency: order.currency || "INR",
         coupon_code: couponCode || undefined,
+        original_amount: Number(order.pricing?.originalPaise || order.amount) / 100,
+        discount_amount: Number(order.pricing?.discountPaise || 0) / 100,
+        discount_percent: order.pricing?.discountType === "coupon" && order.pricing?.originalPaise
+          ? Math.round(order.pricing.discountPaise / order.pricing.originalPaise * 100)
+          : undefined,
       })
       rzp.open()
 

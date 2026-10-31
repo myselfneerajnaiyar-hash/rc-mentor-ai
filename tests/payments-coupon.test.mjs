@@ -577,13 +577,13 @@ test("AUCTOR20 charges ₹639.20 on both ₹799 offers using server-calculated p
   }
 })
 
-test("pricing page prefills coupon without applying it until the user clicks Apply", async () => {
+test("pricing page applies the linked coupon automatically and still lets users apply another code", async () => {
   const pricingSource = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
   const legacyPricingSource = await readFile(new URL("../app/preview/pricing/page.js", import.meta.url), "utf8")
   assert.match(pricingSource, /searchParams\.get\("coupon"\)/)
   assert.match(pricingSource, /useState\("AUCTOR30"\)/)
-  assert.match(pricingSource, /setCouponInput\(couponFromUrl\)/)
-  assert.doesNotMatch(pricingSource, /applyCoupon\(couponFromUrl\)/)
+  assert.match(pricingSource, /const code = couponFromUrl \|\| "AUCTOR30"/)
+  assert.match(pricingSource, /void applyCoupon\(code\)/)
   assert.match(pricingSource, /onClick=\{\(\) => applyCoupon\(couponInput\)\}/)
   assert.match(pricingSource, /couponCode=\{appliedCoupon\}/)
   assert.doesNotMatch(pricingSource, /Referral Code \(Optional\)|campus_ambassadors|referralCode=/)
