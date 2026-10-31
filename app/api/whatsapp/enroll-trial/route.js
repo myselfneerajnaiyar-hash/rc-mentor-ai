@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin"
 import { createEvents } from "@/lib/whatsapp/events"
 import { buildTrialEnrollment } from "@/lib/whatsapp/events/enrollment"
 import { normalizeWhatsAppPhoneE164 } from "@/lib/whatsapp/phone"
+import { resolveWhatsAppAppUrl } from "@/lib/whatsapp/links"
 
 export async function POST(request) {
   const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "")
@@ -25,7 +26,7 @@ export async function POST(request) {
   if (!normalizedPhone.ok) return NextResponse.json({ error: normalizedPhone.message }, { status: 400 })
 
   try {
-    const events = buildTrialEnrollment({ profile: { ...profile, phone: normalizedPhone.phone }, siteUrl: new URL(request.url).origin })
+    const events = buildTrialEnrollment({ profile: { ...profile, phone: normalizedPhone.phone }, siteUrl: resolveWhatsAppAppUrl(request.url) })
     const created = await createEvents(events)
     return NextResponse.json({ enrolled: created.length })
   } catch (enrollmentError) {

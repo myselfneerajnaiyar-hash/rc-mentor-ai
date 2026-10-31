@@ -36,6 +36,7 @@ function harness({ users = ["missing", "valid"], profiles = { valid: profile }, 
     "node:crypto": { randomUUID: () => "processor-id" },
     "@/lib/whatsapp/events/config": { isWhatsAppAutomationEnabled: () => true, isWhatsAppSenderReady: () => true },
     "@/lib/whatsapp/events/auth": { isAuthorizedCronRequest: () => true },
+    "@/lib/whatsapp/links": { resolveWhatsAppAppUrl: requestUrl => new URL(requestUrl).origin },
     "@/lib/supabaseAdmin": { supabaseAdmin: db },
     "@/lib/whatsapp/events/activity": {
       buildDayOneEvent,

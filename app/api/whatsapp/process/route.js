@@ -6,6 +6,7 @@ import { isAuthorizedCronRequest } from "@/lib/whatsapp/events/auth"
 import { processClaimedEvents } from "@/lib/whatsapp/processor"
 import { supabaseAdmin } from "@/lib/supabaseAdmin"
 import { buildDayOneEvent, getQualifyingActivitySummary } from "@/lib/whatsapp/events/activity"
+import { resolveWhatsAppAppUrl } from "@/lib/whatsapp/links"
 
 export const dynamic = "force-dynamic"
 
@@ -85,7 +86,7 @@ async function reconcileDayOneEvents(request) {
     if (profile.is_premium || !profile.whatsapp_opt_in || !profile.whatsapp_opt_in_at) continue
     const summary = await getQualifyingActivitySummary(supabaseAdmin, row.user_id, trialStart(row.lifecycle_key))
     if (!summary.hasDayOneMetrics) continue
-    const created = await createEvent(buildDayOneEvent({ profile: { ...profile, siteUrl: new URL(request.url).origin }, lifecycleKey: row.lifecycle_key, summary }))
+    const created = await createEvent(buildDayOneEvent({ profile: { ...profile, siteUrl: resolveWhatsAppAppUrl(request.url) }, lifecycleKey: row.lifecycle_key, summary }))
     if (created) enrolled += 1
   }
   return enrolled
