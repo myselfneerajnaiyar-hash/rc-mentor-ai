@@ -5,6 +5,7 @@ import MobileShell from "@/components/mobile/MobileShell"
 import Script from "next/script"
 import PostHogProvider from "../components/PostHogProvider"
 import AttributionCapture from "@/components/AttributionCapture"
+import RedditPageViewTracker from "@/components/RedditPageViewTracker"
 import TenantProvider from "@/components/providers/TenantProvider"
 import { headers } from "next/headers"
 import { resolveHostname } from "@/lib/tenant/resolveHostname"
@@ -74,7 +75,7 @@ export default function RootLayout({ children }) {
   `}
 </Script>}
 
-        {redditPixelId && <Script id="reddit-pixel" strategy="afterInteractive">
+        {redditPixelId && <Script id="reddit-pixel" strategy="beforeInteractive">
           {`
             (function(w,d,pixelId){
               if (w.rdt || w.navigator?.globalPrivacyControl === true || w.navigator?.doNotTrack === '1' || w.doNotTrack === '1') return;
@@ -86,6 +87,7 @@ export default function RootLayout({ children }) {
         </Script>}
 
         <PostHogProvider />
+        <Suspense fallback={null}><RedditPageViewTracker /></Suspense>
         <Suspense fallback={null}><AttributionCapture /></Suspense>
         <TenantProvider><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
         {metaPixelId && <noscript>
