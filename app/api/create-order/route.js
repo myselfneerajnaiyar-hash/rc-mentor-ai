@@ -2,7 +2,7 @@ import Razorpay from "razorpay"
 import { supabaseAdmin } from "@/lib/supabaseAdmin"
 import { getAuthenticatedProfile } from "@/lib/tenant/getCurrentProfile"
 import { resolveCoupon } from "@/lib/payments/influencerCoupons"
-import { calculateCouponAttribution, calculatePlanPricing, isCouponEligibleForPlan } from "@/lib/payments/pricing"
+import { BOOTCAMP_COUPON_CODES, calculateCouponAttribution, calculatePlanPricing, isCouponEligibleForPlan } from "@/lib/payments/pricing"
 
 export async function POST(req) {
   let purchaseId = null
@@ -22,10 +22,10 @@ export async function POST(req) {
     }
     const couponInput = typeof body.couponCode === "string" ? body.couponCode : ""
     if (body.plan === "bootcamp_full_access" && (
-      (couponInput.trim() && !["AUCTOR20", "AUCTOR30", "AUCTOR99"].includes(couponInput.trim().toUpperCase()))
+      (couponInput.trim() && !BOOTCAMP_COUPON_CODES.includes(couponInput.trim().toUpperCase()))
       || (typeof body.referralCode === "string" && body.referralCode.trim())
     )) {
-      return Response.json({ error: "The Bootcamp offer accepts AUCTOR20, AUCTOR30, or AUCTOR99 and cannot be combined with a referral discount." }, { status: 400 })
+      return Response.json({ error: `The Bootcamp offer accepts ${BOOTCAMP_COUPON_CODES.join(", ")} and cannot be combined with a referral discount.` }, { status: 400 })
     }
     const coupon = await resolveCoupon(couponInput)
     if (couponInput.trim() && !coupon.valid) {

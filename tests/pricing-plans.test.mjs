@@ -34,4 +34,8 @@ test("displayed coupon prices use the existing server pricing calculation", () =
   assert.equal(getSubscriptionPrice("quarterly", "AUCTOR20", 20).finalPaise, 63920)
   assert.equal(getSubscriptionPrice("half_yearly", "AUCTOR30", 30).finalPaise, 90930)
   assert.equal(getSubscriptionPrice("yearly", "VARCAUCTOR40", 40).finalPaise, 119940)
+  assert.equal(getSubscriptionPrice("monthly", "VARCAUCTORLABS50", 50).finalPaise, 19950)
+  assert.equal(getSubscriptionPrice("quarterly", "VARCAUCTORLABS50", 50).finalPaise, 39950)
+  assert.equal(getSubscriptionPrice("half_yearly", "VARCAUCTORLABS50", 50).finalPaise, 64950)
+  assert.equal(getSubscriptionPrice("yearly", "VARCAUCTORLABS50", 50).finalPaise, 99950)
 })

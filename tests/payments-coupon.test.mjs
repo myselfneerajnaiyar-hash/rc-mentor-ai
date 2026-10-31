@@ -484,8 +484,38 @@ test("AUCTOR20 Bootcamp commission is based on the â‚¹799 offer base, not its â‚
 })
 
 test("Bootcamp accepts its campaign coupons and rejects referral stacking", () => {
-  assert.match(createOrderSource, /\["AUCTOR20", "AUCTOR30", "AUCTOR99"\]\.includes\(couponInput\.trim\(\)\.toUpperCase\(\)\)/)
+  assert.match(createOrderSource, /BOOTCAMP_COUPON_CODES\.includes\(couponInput\.trim\(\)\.toUpperCase\(\)\)/)
   assert.match(createOrderSource, /body\.referralCode\.trim\(\)/)
+})
+
+test("VARCAUCTORLABS50 validates and prices every supported plan at half its original price", async () => {
+  const validationHarness = await checkoutHarness()
+  const validation = await validationHarness.validate(" varcauctorlabs50 ")
+  assert.deepEqual(await validation.json(), { valid: true, code: "VARCAUCTORLABS50", discountPercent: 50 })
+  assert.equal(Object.hasOwn(pricing.COUPONS.VARCAUCTORLABS50, "eligiblePlans"), false)
+
+  for (const [plan, configured] of Object.entries(PLAN_PRICES)) {
+    const h = await checkoutHarness()
+    const order = await h.create({ plan, couponCode: "VARCAUCTORLABS50", amount: 1 })
+    const originalPaise = configured.originalPaise ?? configured.basePaise
+    const expectedPaise = Math.round(originalPaise / 2)
+    const saved = h.rows.razorpay_payment_orders[0]
+
+    assert.equal(order.amount, expectedPaise, plan)
+    assert.equal(order.pricing.originalPaise, originalPaise, plan)
+    assert.equal(order.pricing.discountPaise, originalPaise - expectedPaise, plan)
+    assert.equal(order.pricing.finalPaise, expectedPaise, plan)
+    assert.equal(order.notes.plan, plan)
+    assert.equal(order.notes.original_price, String(originalPaise), plan)
+    assert.equal(order.notes.discount_amount, String(originalPaise - expectedPaise), plan)
+    assert.equal(order.notes.amount_paid, String(expectedPaise), plan)
+    assert.equal(saved.user_id, "test-user", plan)
+    assert.equal(saved.plan, plan, plan)
+    assert.equal(saved.coupon_code, "VARCAUCTORLABS50", plan)
+    assert.equal(saved.original_amount_paise, originalPaise, plan)
+    assert.equal(saved.discount_amount_paise, originalPaise - expectedPaise, plan)
+    assert.equal(saved.amount_paid_paise, expectedPaise, plan)
+  }
 })
 
 test("AUCTOR99 validates and server-prices every supported checkout plan", async () => {
