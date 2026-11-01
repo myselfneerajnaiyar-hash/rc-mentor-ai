@@ -10,8 +10,11 @@ test('Boot Camp homepage leads with dynamic student state and compact CAT countd
   assert.match(homepage, /behind\?`You’re \$\{backlogDays\} day/)
   assert.match(homepage, /firstVisit\?'Your first workout is ready\.'/)
   assert.match(homepage, /'You’re on track\.'/)
-  assert.match(homepage, /CAT 2026 · \{catDays\} DAYS LEFT/)
-  assert.match(homepage, /3 RC passages <i\/> 8 VA questions <i\/> 29 timed minutes/)
+  assert.match(homepage, /className=\{s\.heroCatBadge\}>CAT 2026<\/div>/)
+  assert.match(homepage, /<strong>\{catDays \?\? [^}]+\}<\/strong>[\s\S]*?<span>DAYS LEFT<\/span>/)
+  assert.match(homepage, /3 RC passages<\/span><strong>12 questions<\/strong><small>21 min<\/small>/)
+  assert.match(homepage, /8 VA questions<\/span><strong>8 min<\/strong>/)
+  assert.match(homepage, /29 timed minutes today\./)
 })
 
 test('Boot Camp calendar keeps month/day behavior and reveals all remaining rows on demand', () => {
@@ -23,8 +26,8 @@ test('Boot Camp calendar keeps month/day behavior and reveals all remaining rows
   assert.match(homepage, /SHOW FEWER DAYS ↑/)
 })
 
-test('homepage sections follow the student decision order', () => {
-  const sections = ['todaySection', 'journeySection', 'performanceSection', 'competitionSection', 'birbalSection']
+test('homepage places today, plan context, journey and training support in rendered order', () => {
+  const sections = ['todaySection', 'topAside', 'trainingSteps', 'journeySection', 'calendarAside', 'birbalStrip']
   let previous = -1
   for (const section of sections) {
     const position = homepage.indexOf(`className={s.${section}}`)

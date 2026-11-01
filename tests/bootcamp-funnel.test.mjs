@@ -50,7 +50,7 @@ test('Bootcamp home offer CTA routes through pricing while preserving campaign a
     readFile(new URL('../components/SubscribeButton.jsx', import.meta.url), 'utf8'),
   ])
   assert.match(offer, /\['day1_free', 'first_free'\]\.includes\(access\?\.source\)/)
-  assert.match(offer, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp' \}\)/)
+  assert.match(offer, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp', source: 'bootcamp_offer' \}\)/)
   assert.match(offer, /href=\{pricingHref\}>Unlock all 45 days/)
   assert.doesNotMatch(offer, /plan="bootcamp_full_access"/)
   assert.match(checkout, /attributionParams\(readBrowserAttribution\(\)\)/)
@@ -74,7 +74,7 @@ test('ineligible students are shown the Bootcamp offer before checkout; claim fa
   assert.match(start, /if \(access\.canClaimFirstFree\)[\s\S]*setState\('error'\)[\s\S]*return/)
   assert.match(start, /<del>₹999<\/del>/)
   assert.match(start, /<strong>₹799<\/strong>/)
-  assert.match(start, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp' \}\)/)
+  assert.match(start, /buildAttributedPath\('\/pricing', readBrowserAttribution\(\), \{ offer: 'bootcamp', source: 'bootcamp_acquisition' \}\)/)
   assert.match(start, /Compare the offer · Continue to pricing/)
   assert.doesNotMatch(start, /href="\/bootcamp-2026">Get Bootcamp/)
 })

@@ -5,11 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"
 import WhatsAppContactLink from "@/components/WhatsAppContactLink"
 
-export default function PreviewNavbar() {
+export default function PreviewNavbar({ homeHref = "/preview", authenticated = false }) {
 
   const router = useRouter();
   const pathname = usePathname();
-  const hideLogin = pathname === "/preview-ad";
+  const hideLogin = pathname === "/preview-ad" || authenticated;
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -25,7 +25,7 @@ export default function PreviewNavbar() {
           {/* LOGO */}
 
           <div
-  onClick={() => router.push("/preview")}
+  onClick={() => router.push(homeHref)}
   className="flex min-w-0 items-center gap-2 cursor-pointer sm:gap-3"
 >
 

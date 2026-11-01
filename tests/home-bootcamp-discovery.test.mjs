@@ -9,23 +9,25 @@ const source = async path => readFile(new URL(path, import.meta.url), 'utf8')
 test('CAT users see the Boot Camp homepage card before the requested desktop sections', async () => {
   const home = await source('../components/home-v2/ShadowHomeView.jsx')
   const bootcamp = home.indexOf('{isCAT && <BootCampHomeCard')
-  const couponBanner = home.indexOf('<TrialConversionBanner />')
   const activities = home.indexOf('<TodayActivity')
   const premium = home.indexOf('<PremiumFeatures')
   const testSeries = home.indexOf('<TestSeriesHero')
-  assert.ok(bootcamp >= 0 && bootcamp < couponBanner && couponBanner < activities && activities < premium && premium < testSeries)
+  assert.ok(bootcamp >= 0 && bootcamp < activities && activities < premium && premium < testSeries)
   assert.match(home, /\{isCAT && <BootCampHomeCard userId=\{user\?\.id\} \/>\}/)
   assert.equal(getExamCapabilities('CAT').isCAT, true)
   assert.equal(getExamCapabilities('XAT').isCAT, false)
 })
 
-test('mobile home places the same CAT-only card before activities and promotional sections', async () => {
-  const mobile = await source('../components/mobile/MobileHome.jsx')
+test('mobile home places the same CAT-only card before activities and keeps the global trial ribbon in its shell', async () => {
+  const [mobile, shell] = await Promise.all([
+    source('../components/mobile/MobileHome.jsx'),
+    source('../components/mobile/MobileShell.jsx'),
+  ])
   const card = mobile.indexOf('{capabilities.isCAT&&<BootCampHomeCard')
-  const banner = mobile.indexOf('<TrialConversionBanner')
   const activities = mobile.indexOf('className="mobile-home-daily"')
-  assert.ok(card >= 0 && card < banner && banner < activities)
+  assert.ok(card >= 0 && card < activities)
   assert.match(mobile, /capabilities\.isCAT&&<BootCampHomeCard/)
+  assert.match(shell, /<TrialOfferRibbon screen=\{view\}\/\s*>/)
 })
 
 test('desktop and mobile navigation add the Boot Camp route only for CAT users', async () => {
@@ -49,7 +51,7 @@ test('home card retains its screenshot structure, server state, pricing, and att
   ]) assert.ok(card.includes(text), `missing banner copy: ${text}`)
   assert.match(card, /getBootCampHomeBannerState\(access,catalog\)/)
   assert.match(card, /banner\.href\}\$\{routes\.query\}/)
-  assert.match(card, /buildAttributedPath\('\/pricing',readBrowserAttribution\(\),\{offer:'bootcamp'\}\)/)
+  assert.match(card, /buildAttributedPath\('\/pricing',readBrowserAttribution\(\),\{offer:'bootcamp',source:'bootcamp_home'\}\)/)
   assert.match(card, /bootcampRequest\(\)/)
   assert.match(card, /bootcampRequest\('\/access'\)/)
 })

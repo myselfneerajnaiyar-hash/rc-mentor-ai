@@ -9,6 +9,7 @@ import { useTenant } from "@/components/providers/TenantProvider"
 import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
 import { supabase } from "@/lib/supabase"
 import { captureLearningEvent } from "@/lib/learningAnalytics"
+import { getPricingLogoDestination } from "@/lib/navigation/pricingLogoDestination.mjs"
 
 const PLAN_ORDER = ["quarterly", "monthly", "half_yearly", "yearly"]
 const PLANS = [...getSubscriptionPlans()].sort((a, b) => PLAN_ORDER.indexOf(a.id) - PLAN_ORDER.indexOf(b.id))
@@ -29,6 +30,8 @@ export default function Pricing() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const couponFromUrl = searchParams.get("coupon") || ""
+  const dashboardOrigin = searchParams.get("source") === "dashboard_nav"
+  const pricingLogoHref = getPricingLogoDestination({ authenticated: Boolean(user), dashboardOrigin })
   const isBootcampOfferEntry = searchParams.get("offer") === "bootcamp"
   const returnTo = isBootcampOfferEntry || searchParams.get("returnTo") === "/boot-camp" ? "/boot-camp" : ""
 
@@ -106,7 +109,7 @@ export default function Pricing() {
 
   return (
     <>
-      <PreviewNavbar />
+      <PreviewNavbar homeHref={pricingLogoHref} authenticated={Boolean(user)} />
       <main className="relative min-h-screen overflow-hidden bg-[#0b0f2a] text-white">
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-250px] h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[180px]" />
         <div aria-hidden="true" className="pointer-events-none absolute right-[-100px] top-[500px] h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[160px]" />

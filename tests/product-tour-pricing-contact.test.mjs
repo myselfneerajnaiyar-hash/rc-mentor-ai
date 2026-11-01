@@ -2,6 +2,7 @@ import test from "node:test"
 import assert from "node:assert/strict"
 import { readFile } from "node:fs/promises"
 import { getExamCapabilities } from "../lib/tenant/capabilities.js"
+import { getSubscriptionPlans } from "../lib/pricing/subscriptionPlans.mjs"
 
 test("CAT 2026 and CAT 2027 product tours start with Boot Camp before existing tour items", async () => {
   const tour = await readFile(new URL("../components/ProductTour.jsx", import.meta.url), "utf8")
@@ -20,7 +21,7 @@ test("CAT 2026 and CAT 2027 product tours start with Boot Camp before existing t
 
 test("sidebar keeps its existing Pricing destination and permission logic", async () => {
   const homepage = await readFile(new URL("../app/page.js", import.meta.url), "utf8")
-  assert.match(homepage, /id: "premium", label: "Pricing", icon: Trophy/)
+  assert.match(homepage, /id: "premium", label: "See plans", icon: Trophy/)
   assert.match(homepage, /!entitlement\?\.isInstituteStudent/)
 })
 
@@ -29,7 +30,9 @@ test("pricing keeps coupons and checkout opens Razorpay without requesting a ref
   const checkout = await readFile(new URL("../components/SubscribeButton.jsx", import.meta.url), "utf8")
   const orderRoute = await readFile(new URL("../app/api/create-order/route.js", import.meta.url), "utf8")
   assert.doesNotMatch(pricing, /Referral Code|Apply Referral|campus_ambassadors|referralCode=/)
-  assert.equal((pricing.match(/<SubscribeButton/g) || []).length, 6, "all six pricing plan CTAs use the shared checkout")
+  assert.equal(getSubscriptionPlans().length, 4, "the pricing page offers the four configured subscription plans")
+  assert.match(pricing, /PLANS\.map\(\(plan\) =>/)
+  assert.equal((pricing.match(/<SubscribeButton/g) || []).length, 1, "the selected plan uses the shared checkout component")
   assert.match(pricing, /Coupon Code/)
   assert.match(pricing, /onClick=\{\(\) => applyCoupon\(couponInput\)\}/)
   assert.doesNotMatch(checkout, /Referral Code|Apply Referral|campus_ambassadors|referralInput|applyReferralCode|modal/i)
@@ -59,5 +62,18 @@ test("public header exposes the specified WhatsApp contact safely", async () => 
   assert.match(homePage, /<WhatsAppContactLink compactOnMobile \/>/)
   assert.match(homeHeader, /<WhatsAppContactLink compactOnMobile \/>/)
   const pricing = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
-  assert.match(pricing, /<PreviewNavbar \/>/)
+  assert.match(pricing, /<PreviewNavbar homeHref=\{pricingLogoHref\} authenticated=\{Boolean\(user\)\} \/>/)
+})
+
+test("pricing logo returns dashboard-origin or authenticated users home and keeps public visitors on preview", async () => {
+  const { getPricingLogoDestination } = await import("../lib/navigation/pricingLogoDestination.mjs")
+  assert.equal(getPricingLogoDestination({ dashboardOrigin: true }), "/")
+  assert.equal(getPricingLogoDestination({ authenticated: true }), "/")
+  assert.equal(getPricingLogoDestination(), "/preview")
+  const navbar = await readFile(new URL("../components/PreviewNavbar.jsx", import.meta.url), "utf8")
+  const pricing = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
+  assert.match(navbar, /homeHref = "\/preview"/)
+  assert.match(navbar, /router\.push\(homeHref\)/)
+  assert.match(navbar, /authenticated/)
+  assert.match(pricing, /searchParams\.get\("source"\) === "dashboard_nav"/)
 })
