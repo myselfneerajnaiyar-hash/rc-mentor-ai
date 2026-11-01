@@ -2,9 +2,10 @@ import assert from "node:assert/strict"
 import { readFile } from "node:fs/promises"
 import test from "node:test"
 import { PGlite } from "@electric-sql/pglite"
-import { classifySignupResult, runSingleFlight, validateMobileNumber } from "../lib/onboarding/profileValidation.mjs"
+import { classifySignupResult, ensureSignupSession, runSingleFlight, validateMobileNumber } from "../lib/onboarding/profileValidation.mjs"
 
 const signup = await readFile(new URL("../app/signup/page.jsx", import.meta.url), "utf8")
+const previewSignup = await readFile(new URL("../app/preview-ad/PreviewAdSignupExperience.jsx", import.meta.url), "utf8")
 const callback = await readFile(new URL("../app/auth/callback/route.js", import.meta.url), "utf8")
 const login = await readFile(new URL("../app/login/page.jsx", import.meta.url), "utf8")
 const welcome = await readFile(new URL("../app/welcome/page.jsx", import.meta.url), "utf8")
@@ -17,6 +18,31 @@ test("signup distinguishes immediate sessions, confirmation, existing users, and
   assert.equal(classifySignupResult({ data: { user: { ...user, identities: [] }, session: null }, error: null }).type, "existing_user")
   assert.equal(classifySignupResult({ data: null, error: { status: 409, message: "Conflict" } }).type, "existing_user")
   assert.equal(classifySignupResult({ data: null, error: { message: "Auth service unavailable" } }).type, "error")
+})
+
+test("inline signup restores the verified session returned by signUp when the immediate session read misses", async () => {
+  const session = { user: { id: "u1" }, access_token: "access", refresh_token: "refresh" }
+  const calls = []
+  const auth = {
+    getSession: async () => { calls.push("getSession"); return { data: { session: null }, error: null } },
+    setSession: async tokens => {
+      calls.push(["setSession", tokens])
+      return { data: { session }, error: null }
+    },
+  }
+  assert.equal(await ensureSignupSession(auth, { user: session.user, session }), session)
+  assert.deepEqual(calls, ["getSession", ["setSession", { access_token: "access", refresh_token: "refresh" }]])
+})
+
+test("signup session restoration refuses a token for a different or unverified user", async () => {
+  let restoreCalls = 0
+  const auth = {
+    getSession: async () => ({ data: { session: null }, error: null }),
+    setSession: async () => { restoreCalls += 1; return { data: { session: null }, error: null } },
+  }
+  assert.equal(await ensureSignupSession(auth, { user: { id: "u1" }, session: { user: { id: "u2" }, access_token: "a", refresh_token: "r" } }), null)
+  assert.equal(await ensureSignupSession(auth, { user: { id: "u1" }, session: { user: { id: "u1" }, access_token: "a" } }), null)
+  assert.equal(restoreCalls, 0)
 })
 
 test("phone input accepts exactly ten digits and rejects blank, country codes, spaces, and non-digits", () => {
@@ -59,6 +85,7 @@ test("signup sends confirmation to the welcome callback and routes authenticated
   assert.match(signup, /emailRedirectTo:/)
   assert.match(signup, /classifySignupResult\(\{ data, error: signupError \}\)/)
   assert.match(signup, /router\.replace\(buildAttributedPath\("\/welcome"/)
+  assert.match(previewSignup, /ensureSignupSession\(supabase\.auth, outcome\)/)
   assert.match(signup, /confirmation link will continue to profile setup/)
   assert.match(signup, /User already exists\. Please <a href=\{loginHref\}>log in<\/a>\./)
   assert.match(signup, /<a href=\{loginHref\}>Login<\/a>/)

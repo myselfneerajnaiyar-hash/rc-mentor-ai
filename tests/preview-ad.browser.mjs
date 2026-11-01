@@ -80,6 +80,19 @@ try {
   await noJsPage.goto(trackingUrl, { waitUntil: 'domcontentloaded' })
   check(await noJsPage.locator('#preview-hero-email').isVisible(), 'inline signup fields are server rendered without navigation')
   check(await noJsPage.locator('#preview-hero-password').isVisible(), 'inline password field is server rendered')
+  check(await noJsPage.locator('#preview-hero-email').isDisabled(), 'signup fields stay inert until client hydration')
+  await noJsPage.route('**/preview-ad', route => route.request().method() === 'POST' ? route.fulfill({ status: 204 }) : route.continue())
+  const preHydrationSubmit = noJsPage.waitForRequest(request => request.method() === 'POST' && new URL(request.url()).pathname === '/preview-ad')
+  await noJsPage.evaluate(() => {
+    const form = document.querySelector('.ad-signup-form')
+    for (const control of form.querySelectorAll('input,button')) control.disabled = false
+    form.querySelector('[name="email"]').value = 'signup-probe@example.test'
+    form.querySelector('[name="password"]').value = 'test-password-never-used'
+    form.requestSubmit()
+  })
+  const nativeSubmit = await preHydrationSubmit
+  check(!new URL(nativeSubmit.url()).searchParams.has('email') && !new URL(nativeSubmit.url()).searchParams.has('password'), 'pre-hydration signup never places credentials in the URL')
+  check(nativeSubmit.method() === 'POST', 'the guarded native submission uses POST')
   check(new URL(noJsPage.url()).searchParams.get('utm_source') === 'instagram' && new URL(noJsPage.url()).searchParams.get('fbclid') === 'click_123', 'ad attribution remains on the inline signup page')
   await noJs.close()
 

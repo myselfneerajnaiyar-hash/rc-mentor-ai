@@ -7,7 +7,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { attributionParams, buildAttributedPath, persistBrowserAttribution, readBrowserAttribution } from '@/lib/attribution.mjs'
 import { captureSignupConversion, captureGoogleLoginFailure } from '@/lib/analytics/conversionEvents.mjs'
-import { classifySignupResult, runSingleFlight } from '@/lib/onboarding/profileValidation.mjs'
+import { classifySignupResult, ensureSignupSession, runSingleFlight } from '@/lib/onboarding/profileValidation.mjs'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -36,11 +36,11 @@ function focusPrimarySignup(placement) {
   capturePreviewEvent('preview_ad_signup_cta_clicked', placement)
 }
 
-function SignupCard({ placement, email, setEmail, password, setPassword, showPassword, setShowPassword, loading, error, confirmationMessage, fieldErrors, loginHref, onSubmit, onGoogle, onStart, clearFieldError }) {
+function SignupCard({ placement, email, setEmail, password, setPassword, showPassword, setShowPassword, loading, interactive, error, confirmationMessage, fieldErrors, loginHref, onSubmit, onGoogle, onStart, clearFieldError }) {
   const prefix = `preview-${placement}`
   return <section className={`ad-signup-card ad-signup-card-${placement}`} data-signup-card={placement} aria-labelledby={`${prefix}-title`}>
     <h2 id={`${prefix}-title`}>Start your free trial</h2>
-    <form className="ad-signup-form" noValidate onSubmit={onSubmit} onFocusCapture={onStart}>
+    <form className="ad-signup-form" method="post" noValidate onSubmit={onSubmit} onFocusCapture={onStart}>
       <label htmlFor={`${prefix}-email`}>Email</label>
       <input
         id={`${prefix}-email`}
@@ -53,7 +53,7 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
         onChange={event => { setEmail(event.target.value); clearFieldError('email') }}
         aria-invalid={Boolean(fieldErrors.email)}
         aria-describedby={fieldErrors.email ? `${prefix}-email-error` : undefined}
-        disabled={loading}
+        disabled={loading || !interactive}
         required
       />
       {fieldErrors.email && <p className="ad-signup-field-error" id={`${prefix}-email-error`} aria-live="polite">{fieldErrors.email}</p>}
@@ -70,10 +70,10 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
           onChange={event => { setPassword(event.target.value); clearFieldError('password') }}
           aria-invalid={Boolean(fieldErrors.password)}
           aria-describedby={fieldErrors.password ? `${prefix}-password-error` : undefined}
-          disabled={loading}
+          disabled={loading || !interactive}
           required
         />
-        <button type="button" className="ad-password-toggle" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Hide password' : 'Show password'} disabled={loading}>
+        <button type="button" className="ad-password-toggle" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Hide password' : 'Show password'} disabled={loading || !interactive}>
           {showPassword ? <EyeOff size={21} aria-hidden="true" /> : <Eye size={21} aria-hidden="true" />}
         </button>
       </div>
@@ -86,13 +86,13 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
         : error && <p className="ad-signup-error" role="alert" aria-live="polite">{error}</p>}
       {confirmationMessage && <p className="ad-signup-success" role="status" aria-live="polite">{confirmationMessage}</p>}
 
-      <button className="ad-signup-submit" type="submit" disabled={loading}>
+      <button className="ad-signup-submit" type="submit" disabled={loading || !interactive}>
         {loading ? 'Creating your account…' : 'Create free account'}
       </button>
     </form>
 
     <div className="ad-signup-divider"><span>or</span></div>
-    <button type="button" className="ad-signup-google" onClick={onGoogle} disabled={loading}>
+    <button type="button" className="ad-signup-google" onClick={onGoogle} disabled={loading || !interactive}>
       <img src="/google-g.svg" width="22" height="22" alt="" />
       <span>{loading ? 'Creating your account…' : 'Continue with Google'}</span>
     </button>
@@ -106,6 +106,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [interactive, setInteractive] = useState(false)
   const [error, setError] = useState('')
   const [confirmationMessage, setConfirmationMessage] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
@@ -120,6 +121,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   const scrollDepths = useRef(new Set())
 
   useEffect(() => {
+    setInteractive(true)
     persistBrowserAttribution(new URLSearchParams(window.location.search))
     if (ctaOnly) return undefined
     const oauthError = new URLSearchParams(window.location.search).get('signup_error')
@@ -252,9 +254,8 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
         }
         captureSignupConversion({ userId: outcome.user.id, method: 'email', createdAt: outcome.user.created_at, posthog, pixel: window.fbq, redditPixel: window.rdt, surface: 'preview_ad_inline', attribution, placement })
         if (outcome.type === 'authenticated') {
-          const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
-          if (sessionError) throw sessionError
-          if (sessionData.session?.user?.id !== outcome.user.id) {
+          const session = await ensureSignupSession(supabase.auth, outcome)
+          if (session?.user?.id !== outcome.user.id) {
             setError('session_unavailable')
             reportFailure(placement, 'email', 'session_unavailable')
             return
@@ -307,7 +308,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
     }
   }, [currentAttribution, loading, reportFailure])
 
-  const formProps = { email, setEmail, password, setPassword, showPassword, setShowPassword, loading, error, confirmationMessage, fieldErrors, loginHref: loginHref(), clearFieldError }
+  const formProps = { email, setEmail, password, setPassword, showPassword, setShowPassword, loading, interactive, error, confirmationMessage, fieldErrors, loginHref: loginHref(), clearFieldError }
   if (ctaOnly) return <button className="ad-feature-cta" type="button" onClick={() => focusPrimarySignup('feature_showcase')}>
     <strong>Start your free 3-day trial</strong><span>No card needed</span>
   </button>
