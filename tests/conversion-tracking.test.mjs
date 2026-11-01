@@ -265,6 +265,8 @@ test("verified purchase sends deduplicatable PostHog and Meta server events with
   const eventIdentity = getPurchaseEventIdentity({ purchase, userId: "user-123" })
   assert.equal(eventIdentity.metaEventId, "purchase:pay_123")
   assert.equal(eventIdentity.posthogUuid, posthogRequest.payload.uuid)
+  assert.equal(getPurchaseEventIdentity({ purchase, userId: "repaired-user-id" }).posthogUuid, eventIdentity.posthogUuid)
+  assert.notEqual(getPurchaseEventIdentity({ purchase: { ...purchase, razorpay_payment_id: "pay_other" } }).posthogUuid, eventIdentity.posthogUuid)
   assert.ok(paymentProcessor.includes("dispatchPurchaseConversionEvents("))
   assert.match(paymentProcessor, /PURCHASE_CONVERSION_NOT_SENT/)
   assert.match(paymentProcessor, /skippedBecauseAlreadyClaimed/)
@@ -322,6 +324,44 @@ test("ambiguous purchase transport errors retain only a safe network code and pa
   assert.equal(JSON.stringify(result).includes("pay_private"), false)
   assert.doesNotMatch(paymentProcessor, /console\.(?:info|warn|error)\([^\n]*[\s\S]{0,180}(?:userId: order\?\.user_id|orderId: order\?\.razorpay_order_id|paymentId,)/)
   assert.doesNotMatch(paymentWebhook, /message:\s*error instanceof Error\s*\?\s*error\.message/)
+})
+
+test("PostHog purchase requests have a bounded timeout and distinguish rejected from ambiguous delivery", async () => {
+  const purchase = { razorpay_payment_id: "pay_status", amount_paid_paise: 79900, currency: "INR", plan: "quarterly" }
+  const args = { purchase, userId: "user-status", paidAt: "2026-10-10T12:00:00Z", env: { NEXT_PUBLIC_POSTHOG_KEY: "ph_test_key" } }
+  let requestSignal
+  const accepted = await sendPurchaseConversionForProvider({
+    ...args,
+    provider: "posthog",
+    fetchImpl: async (_url, options) => { requestSignal = options.signal; return { ok: true, status: 200 } },
+  })
+  assert.equal(accepted.sent, true)
+  assert.ok(requestSignal instanceof AbortSignal)
+
+  const throttled = await sendPurchaseConversionForProvider({
+    ...args,
+    provider: "posthog",
+    fetchImpl: async () => ({ ok: false, status: 429 }),
+  })
+  assert.equal(throttled.retryable, true)
+
+  const rejected = await sendPurchaseConversionForProvider({
+    ...args,
+    provider: "posthog",
+    fetchImpl: async () => ({ ok: false, status: 401 }),
+  })
+  assert.equal(rejected.sent, false)
+  assert.equal(rejected.deliveryUnknown, undefined)
+  assert.equal(rejected.retryable, true)
+
+  const ambiguous = await sendPurchaseConversionForProvider({
+    ...args,
+    provider: "posthog",
+    fetchImpl: async () => ({ ok: false, status: 503 }),
+  })
+  assert.equal(ambiguous.sent, false)
+  assert.equal(ambiguous.deliveryUnknown, true)
+  assert.equal(ambiguous.retryable, false)
 })
 
 test("signup CAPI uses the browser CompleteRegistration event ID and retries only explicit failures", async () => {

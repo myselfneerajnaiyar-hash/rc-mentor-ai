@@ -7,6 +7,7 @@ import Recovery from "./mobile/Recovery";
 import NextActivity from "./mobile/NextActivity";
 import AssessmentMode from "./assessment/AssessmentMode";
 import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
+import { getDailyWorkoutProgress } from "@/lib/dailyWorkout/progress.mjs"
 import WorkoutShell from "./assessment/WorkoutShell"
 import WorkoutReport from "./assessment/WorkoutReport"
 import DetailedSolutions from "./assessment/DetailedSolutions"
@@ -74,6 +75,8 @@ const [rcTimer, setRcTimer] = useState(null)
 
 const [microIndex, setMicroIndex] = useState(0)
 const [microTimer, setMicroTimer] = useState(null)
+const abandonmentProgress = useRef(null)
+abandonmentProgress.current = getDailyWorkoutProgress({ phase, speedStage, speedIndex, vocabIndex, rcIndex, microIndex })
 
 const [saveError,setSaveError]=useState(null);
 const [saveRetry,setSaveRetry]=useState(0);
@@ -110,7 +113,7 @@ useEffect(() => {
   const recordAbandonment = () => {
     if (!initialAnswers && !completedAnalyticsRef.current && !abandonedAnalyticsRef.current) {
       abandonedAnalyticsRef.current = true
-      captureLearningEvent("activity_abandoned", { activity_type: "daily_workout" })
+      captureLearningEvent("activity_abandoned", { activity_type: "daily_workout", ...abandonmentProgress.current })
     }
   }
   window.addEventListener("pagehide", recordAbandonment)

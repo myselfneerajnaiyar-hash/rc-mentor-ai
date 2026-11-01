@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import posthog from 'posthog-js'
 import { Eye, EyeOff } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
@@ -100,6 +101,7 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
 }
 
 export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly = false }) {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -258,7 +260,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
             return
           }
           navigationStarted.current = true
-          window.location.replace(buildAttributedPath('/welcome', attribution, { signup_surface: 'preview_ad_inline' }))
+          router.replace(buildAttributedPath('/welcome', attribution, { signup_surface: 'preview_ad_inline' }))
           return
         }
         setConfirmationMessage('Account created. Check your email to confirm your account. The confirmation link will continue to profile setup.')
@@ -269,7 +271,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
         if (!navigationStarted.current) setLoading(false)
       }
     })
-  }, [currentAttribution, email, loading, password, reportFailure])
+  }, [currentAttribution, email, loading, password, reportFailure, router])
 
   const handleGoogle = useCallback(async placement => {
     if (loading || singleFlight.current || oauthPending.current) return
