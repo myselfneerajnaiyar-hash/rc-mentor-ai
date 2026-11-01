@@ -30,8 +30,7 @@ export async function POST(req) {
     return Response.json({ received: true, status: result.status })
   } catch (error) {
     console.error("[payment] WEBHOOK_PROCESSING_FAILED", {
-      code: error.code || "WEBHOOK_FAILED",
-      message: error instanceof Error ? error.message : "Unknown error",
+      code: /^[A-Z0-9_]{1,64}$/i.test(String(error?.code || "")) ? String(error.code).toUpperCase() : "WEBHOOK_FAILED",
     })
     // A non-2xx response asks Razorpay to retry transient provisioning failures.
     return Response.json({ received: false, error: "Payment processing will be retried." }, { status: 503 })

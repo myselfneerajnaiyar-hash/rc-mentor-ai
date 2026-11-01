@@ -12,6 +12,7 @@ import {
   getPurchaseEventIdentity,
   getMetaConfigurationError,
   sendMetaSignup,
+  sendPurchaseConversionForProvider,
   sendPurchaseConversionEvents,
 } from "../lib/analytics/serverConversionEvents.mjs"
 import { attributionFromParams, postHogAttributionProperties, sanitizeAttributionValue } from "../lib/attribution.mjs"
@@ -19,6 +20,7 @@ import { dispatchPurchaseConversionEvents } from "../lib/analytics/purchaseConve
 import { dispatchSignupConversion } from "../lib/analytics/signupConversionDispatch.mjs"
 
 const paymentProcessor = await readFile(new URL("../lib/payments/processSuccessfulPayment.js", import.meta.url), "utf8")
+const paymentWebhook = await readFile(new URL("../app/api/razorpay/webhook/route.js", import.meta.url), "utf8")
 const verifyRoute = await readFile(new URL("../app/api/verify-payment/route.js", import.meta.url), "utf8")
 const checkout = await readFile(new URL("../components/SubscribeButton.jsx", import.meta.url), "utf8")
 const paymentSuccessPage = await readFile(new URL("../app/payment-success/page.js", import.meta.url), "utf8")
@@ -296,6 +298,30 @@ test("Meta config is actionable and purchase CAPI treats rejected delivery as re
   })
   assert.equal(unknown.find(result => result.provider === "meta").deliveryUnknown, true)
   assert.equal(JSON.stringify(unknown).includes("secret"), false)
+})
+
+test("ambiguous purchase transport errors retain only a safe network code and payment logs omit identifiers", async () => {
+  const secretUrl = "https://secret-token.example.test/private?payment=pay_private"
+  const networkError = Object.assign(new TypeError(`fetch failed for ${secretUrl}`), { cause: { code: "ECONNRESET" } })
+  const result = await sendPurchaseConversionForProvider({
+    provider: "posthog",
+    purchase: { razorpay_payment_id: "pay_private", amount_paid_paise: 100, currency: "INR", plan: "monthly" },
+    userId: "student_private",
+    paidAt: "2026-10-01T12:00:00Z",
+    env: { NEXT_PUBLIC_POSTHOG_KEY: "ph_test_key" },
+    fetchImpl: async () => { throw networkError },
+  })
+  assert.deepEqual(result, {
+    sent: false,
+    provider: "posthog",
+    error: "posthog_transport_econnreset",
+    retryable: false,
+    deliveryUnknown: true,
+  })
+  assert.equal(JSON.stringify(result).includes(secretUrl), false)
+  assert.equal(JSON.stringify(result).includes("pay_private"), false)
+  assert.doesNotMatch(paymentProcessor, /console\.(?:info|warn|error)\([^\n]*[\s\S]{0,180}(?:userId: order\?\.user_id|orderId: order\?\.razorpay_order_id|paymentId,)/)
+  assert.doesNotMatch(paymentWebhook, /message:\s*error instanceof Error\s*\?\s*error\.message/)
 })
 
 test("signup CAPI uses the browser CompleteRegistration event ID and retries only explicit failures", async () => {

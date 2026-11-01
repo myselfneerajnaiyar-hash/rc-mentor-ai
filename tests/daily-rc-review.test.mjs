@@ -220,6 +220,7 @@ test("compact report retains saved stats and expands review content inside the s
   const Detail = ({ data }) => React.createElement("article", { "data-review": data.attempt.id }, data.rcSet.passage)
   const Cognitive = ({ data }) => React.createElement("article", { "data-diagnosis": data.attempt.id }, "Saved diagnosis")
   const report = await compile("../components/DailyRCResult.jsx", { "@/components/mobile/NextActivity": { default: () => null },
+    "@/components/CompletionPlansOffer": { default: () => null },
     "react/jsx-runtime": runtime, react: React, "next/navigation": { useSearchParams: () => new URLSearchParams("attemptId=attempt-A") },
     "@/lib/dailyRc/useReview": { useDailyRcReview: id => { requestedId = id; return { data: review } } },
     "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },

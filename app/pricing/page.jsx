@@ -2,12 +2,16 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import SubscribeButton from "@/components/SubscribeButton"
 import PreviewNavbar from "@/components/PreviewNavbar"
+import StudentDesktopSidebar from "@/components/StudentDesktopSidebar"
+import TenantLogo from "@/components/tenant/TenantLogo"
+import { TrialStatusChip } from "@/components/TrialPromotions"
 import { useTenant } from "@/components/providers/TenantProvider"
+import { FEATURES } from "@/lib/mobile/features.mjs"
 import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
-import { supabase } from "@/lib/supabase"
 import { captureLearningEvent } from "@/lib/learningAnalytics"
 import { getPricingLogoDestination } from "@/lib/navigation/pricingLogoDestination.mjs"
 
@@ -15,7 +19,6 @@ const PLAN_ORDER = ["quarterly", "monthly", "half_yearly", "yearly"]
 const PLANS = [...getSubscriptionPlans()].sort((a, b) => PLAN_ORDER.indexOf(a.id) - PLAN_ORDER.indexOf(b.id))
 
 export default function Pricing() {
-  const [user, setUser] = useState(null)
   const [couponInput, setCouponInput] = useState("AUCTOR30")
   const [appliedCoupon, setAppliedCoupon] = useState("")
   const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0)
@@ -25,7 +28,7 @@ export default function Pricing() {
   const lastPricingView = useRef(null)
   const lastAutoCoupon = useRef(null)
 
-  const { capabilities } = useTenant()
+  const { capabilities, user, branding, entitlement } = useTenant()
   const isCatStudent = capabilities?.isCAT === true
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -97,24 +100,40 @@ export default function Pricing() {
     void applyCoupon(code)
   }, [applyCoupon, couponFromUrl])
 
-  useEffect(() => {
-    let cancelled = false
-    supabase.auth.getUser().then(({ data }) => {
-      if (!cancelled) setUser(data?.user || null)
-    }).catch(() => {
-      if (!cancelled) setUser(null)
-    })
-    return () => { cancelled = true }
-  }, [])
-
   return (
-    <>
-      <PreviewNavbar homeHref={pricingLogoHref} authenticated={Boolean(user)} />
-      <main className="relative min-h-screen overflow-hidden bg-[#0b0f2a] text-white">
+    <div data-pricing-layout={user ? "authenticated" : "public"} className={user ? "flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white md:flex-row" : "min-h-screen"}>
+      {user && (
+        <StudentDesktopSidebar
+          branding={branding}
+          capabilities={capabilities}
+          entitlement={entitlement}
+          activeView="premium"
+          hasPremiumAccess={Boolean(entitlement?.hasAccess)}
+          onNavigate={(item, locked) => {
+            if (item.id === "premium") return
+            if (item.id === "bootcamp") { router.push("/boot-camp"); return }
+            if (locked) {
+              const feature = FEATURES.find((candidate) => candidate.id === item.id)
+              router.push(`/pricing?source=dashboard_locked_feature&returnTo=${encodeURIComponent(feature?.href || "/")}`)
+              return
+            }
+            router.push(`/?view=${encodeURIComponent(item.id)}`)
+          }}
+        />
+      )}
+      <div className="min-w-0 flex-1">
+      {user ? (
+        <div className="dashboard-mobile-header mb-3 flex min-w-0 items-center gap-3 px-4 pt-4 md:hidden">
+          <Link href="/" aria-label="Back to dashboard"><TenantLogo className="h-9 w-9 shrink-0 rounded-lg object-contain" /></Link>
+          <div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{branding?.brandName || "Auctor RC"}</p><p className="text-xs text-slate-400">Pricing</p></div>
+          <TrialStatusChip />
+        </div>
+      ) : <PreviewNavbar homeHref={pricingLogoHref} />}
+      <main className={`relative min-h-screen overflow-hidden text-white ${user ? "bg-slate-900/30" : "bg-[#0b0f2a]"}`}>
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-250px] h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[180px]" />
         <div aria-hidden="true" className="pointer-events-none absolute right-[-100px] top-[500px] h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[160px]" />
 
-        <section style={{ marginTop: "clamp(5rem, 8vw, 8rem)" }} className="relative mx-auto max-w-7xl px-4 pb-12 pt-20 text-center sm:px-6 sm:pt-24">
+        <section style={{ marginTop: user ? 0 : "clamp(5rem, 8vw, 8rem)" }} className={`relative mx-auto max-w-7xl px-4 pb-12 text-center sm:px-6 ${user ? "pt-8" : "pt-20 sm:pt-24"}`}>
           <h1 className="mb-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl">
             Train Like a <span className="text-orange-400">99 Percentiler</span>
           </h1>
@@ -238,7 +257,8 @@ export default function Pricing() {
           </div>
         </section>
       </main>
-    </>
+      </div>
+    </div>
   )
 }
 

@@ -62,7 +62,20 @@ test("public header exposes the specified WhatsApp contact safely", async () => 
   assert.match(homePage, /<WhatsAppContactLink compactOnMobile \/>/)
   assert.match(homeHeader, /<WhatsAppContactLink compactOnMobile \/>/)
   const pricing = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
-  assert.match(pricing, /<PreviewNavbar homeHref=\{pricingLogoHref\} authenticated=\{Boolean\(user\)\} \/>/)
+  assert.match(pricing, /<PreviewNavbar homeHref=\{pricingLogoHref\} \/>/)
+})
+
+test("authenticated pricing owns the student layout while public pricing keeps the marketing navbar", async () => {
+  const pricing = await readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8")
+  const sidebar = await readFile(new URL("../components/StudentDesktopSidebar.jsx", import.meta.url), "utf8")
+  assert.match(pricing, /const \{ capabilities, user, branding, entitlement \} = useTenant\(\)/)
+  assert.match(pricing, /data-pricing-layout=\{user \? "authenticated" : "public"\}/)
+  assert.match(pricing, /<StudentDesktopSidebar[\s\S]*?activeView="premium"/)
+  assert.match(pricing, /\{user \? \([\s\S]*?\) : <PreviewNavbar homeHref=\{pricingLogoHref\} \/>\}/)
+  assert.doesNotMatch(pricing, /supabase\.auth\.getUser\(\)/)
+  assert.match(sidebar, /aria-label="Student navigation"/)
+  assert.match(sidebar, /md:flex/)
+  assert.match(sidebar, /label: "See plans"/)
 })
 
 test("pricing logo returns dashboard-origin or authenticated users home and keeps public visitors on preview", async () => {

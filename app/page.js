@@ -60,6 +60,7 @@ const PrecisionTraining = dynamicImport(() => import("../components/PrecisionTra
 const HangmanView = dynamicImport(() => import("../components/HangmanView"), { loading: () => <p role="status">Opening your practice…</p> });
 const GrammarLab = dynamicImport(() => import("../components/GrammarLab"), { loading: () => <p role="status">Opening your practice…</p> });
 import { useTenant } from "@/components/providers/TenantProvider";
+import StudentDesktopSidebar from "@/components/StudentDesktopSidebar";
 import { useInboxUnreadCount } from "@/lib/inbox/useUnreadCount";
 import { captureLearningEvent } from "@/lib/learningAnalytics";
 import { captureFirstSessionEvent } from "@/lib/firstSession/analytics";
@@ -784,104 +785,33 @@ return (
 <div className={`min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white flex flex-col md:flex-row relative ${view === "cat" ? "cat-arena-active" : ""}`}>
 <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
 
-    {/* Desktop Sidebar */}
-{isMobile === false &&
- !(view === "cat" && catPhase === "test") && (
-  <aside className="flex w-64 shrink-0 bg-slate-900/90 backdrop-blur-md border-r border-slate-800 p-6 flex-col">
-    <div className="mb-8">
-<div className="flex items-center gap-3"><TenantLogo className="h-10 w-10 rounded-xl object-contain" /><h2 className="text-xl font-semibold text-white tracking-tight">{branding.brandName}</h2></div>
-  <p className="text-xs text-slate-500 mt-1">
-    {branding.isInstitute ? "Powered by Auctor Labs" : "Powered by Birbal"}
-  </p>
-  <TrialStatusChip className="mt-4 self-start" />
-  <div className="h-px bg-slate-800 mt-6" />
-</div>
-
-<p className="text-xs uppercase text-slate-500 tracking-wider mb-3 mt-6">
-  Navigation
-</p>
-
-
-     <nav className="flex flex-col gap-2 mt-6">
- {navItems.map((item) => {
-  const Icon = item.icon;
-
-  const freeViews = ["home", "bootcamp", "workout", "hangman", "profile", "cat"]
-
-const locked =
-  !freeViews.includes(item.id) &&
-  !hasPremiumAccess
-  return (
-   <button
-  key={item.id}
-  onClick={() => {
-
-  const freeViews = ["home", "bootcamp", "workout", "hangman", "profile", "cat"]
-
-  const locked =
-    !freeViews.includes(item.id) &&
-    !hasPremiumAccess
-
-if (item.id === "premium") {
-  router.push("/pricing?source=dashboard_nav")
-  return
-}
-
-if (item.id === "bootcamp") {
-  router.push("/boot-camp")
-  return
-}
-
-if (locked) {
-  const feature = FEATURES.find(f=>f.id===item.id)
-  router.push(`/pricing?source=dashboard_locked_feature&returnTo=${encodeURIComponent(feature?.href || "/")}`)
-  return
-}
-
-setView(item.id)
-}}
-  className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl transition-all duration-200
-${
- view === item.id
-  ? item.id === "mentor"
-    ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
-    : "brand-nav-active border"
- : locked
-? "text-slate-500 opacity-70 hover:bg-slate-800/40"
-: "text-slate-400 hover:bg-slate-800/60 hover:text-white"
-}`}
->
-  <Icon size={20} className="shrink-0" />
-
-  
-   <div className="flex items-center gap-2">
-
-  <span className="text-left leading-tight">
-    {item.label}
-  </span>
-
-  {item.unreadCount > 0 && (
-    <span className="ml-auto min-w-5 rounded-full bg-indigo-500 px-1.5 py-0.5 text-center text-[10px] font-bold text-white">
-      {item.unreadCount > 99 ? "99+" : item.unreadCount}
-    </span>
-  )}
-
-  {locked && (
-    <span className="ml-1 text-[10px] opacity-50">
-      🔒
-    </span>
-  )}
-
-</div>
-
-</button>
-  );
-})}
-</nav>
-
-    </aside>
+    {/* Shared desktop navigation also serves authenticated feature routes. */}
+{isMobile === false && !(view === "cat" && catPhase === "test") && (
+  <StudentDesktopSidebar
+    branding={branding}
+    capabilities={capabilities}
+    entitlement={entitlement}
+    navItems={navItems}
+    activeView={view}
+    hasPremiumAccess={hasPremiumAccess}
+    onNavigate={(item, locked) => {
+      if (item.id === "premium") {
+        router.push("/pricing?source=dashboard_nav")
+        return
+      }
+      if (item.id === "bootcamp") {
+        router.push("/boot-camp")
+        return
+      }
+      if (locked) {
+        const feature = FEATURES.find((candidate) => candidate.id === item.id)
+        router.push(`/pricing?source=dashboard_locked_feature&returnTo=${encodeURIComponent(feature?.href || "/")}`)
+        return
+      }
+      setView(item.id)
+    }}
+  />
 )}
-
     {/* Main Content */}
   <main 
   ref={mainRef}

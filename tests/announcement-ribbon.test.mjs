@@ -1,5 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
+import { readFile } from "node:fs/promises"
 import {
   ANNOUNCEMENT_RIBBON_SESSION_KEY,
   getAnnouncementRibbonAudience,
@@ -91,4 +92,16 @@ test("requires a signed-in user, resolved audience and no session dismissal", ()
   assert.equal(shouldShowAnnouncementRibbon({ ...args, dismissed: true }), false)
   assert.equal(shouldShowAnnouncementRibbon({ ...args, searchParams: new URLSearchParams("view=home") }), false)
   assert.equal(ANNOUNCEMENT_RIBBON_SESSION_KEY, "auctor-announcement-ribbon-dismissed")
+})
+
+test("announcement ribbon uses the navy-purple app palette with accessible interaction states", async () => {
+  const styles = await readFile(new URL("../components/personalized-announcement-ribbon.module.css", import.meta.url), "utf8")
+  assert.match(styles, /linear-gradient\(100deg, #0b1024 0%, #1e1b4b 100%\)/)
+  assert.match(styles, /\.messageLink strong,[\s\S]*?color: #a5b4fc/)
+  assert.match(styles, /\.messageLink:hover,[\s\S]*?\.reducedMessage:hover/)
+  assert.match(styles, /\.closeButton:hover[\s\S]*?background: rgba\(129, 140, 248, 0\.18\)/)
+  assert.match(styles, /\.messageLink:focus-visible,[\s\S]*?outline: 2px solid #67e8f9/)
+  assert.match(styles, /\.closeButton[\s\S]*?width: 44px[\s\S]*?height: 44px/)
+  assert.match(styles, /prefers-reduced-motion: reduce/)
+  assert.doesNotMatch(styles, /#7c2d12|#9a3412/)
 })
