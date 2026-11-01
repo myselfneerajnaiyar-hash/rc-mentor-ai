@@ -51,8 +51,8 @@ function isAppOrigin(origin) {
   return actual.port === expected.port && ["localhost", "127.0.0.1"].includes(actual.hostname) && ["localhost", "127.0.0.1"].includes(expected.hostname)
 }
 
-async function makeContext({ seedSession = false } = {}) {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+async function makeContext({ seedSession = false, userAgent } = {}) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, ...(userAgent ? { userAgent } : {}) })
   if (seedSession) {
     const ref = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname.split(".")[0]
     await context.addInitScript(({ ref, session }) => localStorage.setItem(`sb-${ref}-auth-token`, JSON.stringify(session)), { ref, session })
@@ -61,6 +61,8 @@ async function makeContext({ seedSession = false } = {}) {
   const state = {
     signupMode: "confirmation",
     signupRequests: [],
+    oauthRequests: [],
+    signupDelayMs: 0,
     profile: null,
     profileWrites: [],
     failNextProfileWrite: false,
@@ -83,6 +85,7 @@ async function makeContext({ seedSession = false } = {}) {
       } })
       if (url.pathname.endsWith("/auth/v1/signup")) {
         state.signupRequests.push({ url, body: body() })
+        if (state.signupDelayMs) await new Promise(resolve => setTimeout(resolve, state.signupDelayMs))
         if (state.signupMode === "existing") return json(route, { ...user, identities: [] })
         if (state.signupMode === "error") return json(route, { code: "unexpected_failure", message: "Signup service unavailable" }, 503)
         if (state.signupMode === "authenticated") return json(route, { ...user, ...session })
@@ -90,6 +93,7 @@ async function makeContext({ seedSession = false } = {}) {
       }
 
       if (url.pathname.endsWith("/auth/v1/authorize")) {
+        state.oauthRequests.push(url)
         const redirectTo = url.searchParams.get("redirect_to") || `${base}/auth/callback`
         const redirect = new URL(redirectTo)
         redirect.hash = new URLSearchParams({
@@ -170,17 +174,71 @@ try {
   }
 
   {
+    const { context, state } = await makeContext({ userAgent: "Mozilla/5.0 (Linux; Android 14; Pixel 8 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.0.0 Mobile Safari/537.36" })
+    const page = await context.newPage()
+    await page.goto(`${base}/login`, { waitUntil: "networkidle" })
+    const authorization = page.waitForRequest(request => request.url().includes("/auth/v1/authorize"))
+    await page.getByRole("button", { name: "Continue with Google" }).click()
+    await authorization
+    await page.waitForURL(url => new URL(url).pathname === "/welcome", { timeout: 30000 })
+    check(state.oauthRequests.length === 1, "one Android WebView tap initiates one Google OAuth request from Login")
+    check(new URL(state.oauthRequests[0].searchParams.get("redirect_to")).searchParams.get("flow") === "login", "Login keeps its OAuth callback classified as a login")
+    await context.close()
+  }
+
+  {
+    const { context, state } = await makeContext({ userAgent: "Mozilla/5.0 (Linux; Android 14; Pixel 8 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.0.0 Mobile Safari/537.36" })
+    const page = await context.newPage()
+    state.signupMode = "confirmation"
+    await page.goto(`${base}/preview-ad`, { waitUntil: "domcontentloaded" })
+    await page.waitForLoadState("networkidle")
+    await page.locator("#preview-hero-email").fill("confirm-test@example.test")
+    await page.locator("#preview-hero-password").fill("correct-horse-battery")
+    await page.getByRole("button", { name: "Create free account" }).click()
+    await page.getByRole("status").waitFor({ state: "visible" })
+    check(new URL(page.url()).pathname === "/preview-ad", "confirmation-required preview-ad signup stays on the card")
+    check((await page.getByRole("status").textContent()).includes("Check your email to confirm your account"), "preview-ad explains confirmation instead of treating the visitor as signed in")
+    await context.close()
+  }
+
+  {
+    const { context, state } = await makeContext({ userAgent: "Mozilla/5.0 (Linux; Android 14; Pixel 8 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.0.0 Mobile Safari/537.36" })
+    const page = await context.newPage()
+    state.signupMode = "authenticated"
+    state.signupDelayMs = 150
+    await page.goto(`${base}/preview-ad?utm_source=instagram&utm_campaign=android-webview`, { waitUntil: "domcontentloaded" })
+    await page.waitForLoadState("networkidle")
+    const email = page.locator("#preview-hero-email")
+    await email.fill("webview-test@example.test")
+    await page.locator("#preview-hero-password").fill("correct-horse-battery")
+    const submit = page.getByRole("button", { name: "Create free account" })
+    await submit.click()
+    await page.waitForFunction(() => document.querySelector(".ad-signup-submit")?.disabled)
+    await page.locator(".ad-signup-form").evaluate(form => form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })))
+    await page.waitForURL(url => new URL(url).pathname === "/welcome", { timeout: 30000 })
+    await page.locator('input[placeholder="Enter your Name"]').waitFor({ state: "visible" })
+    const authStorageKey = `sb-${new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname.split(".")[0]}-auth-token`
+    const storedSession = await page.evaluate(key => JSON.parse(localStorage.getItem(key) || "null"), authStorageKey)
+    check(state.signupRequests.length === 1, "Android WebView user-agent double tap submits preview-ad signup once")
+    check(storedSession?.user?.id === user.id, "preview-ad signup persists the matching Supabase session before Welcome")
+    check(new URL(page.url()).searchParams.get("utm_source") === "instagram", "Android WebView signup keeps UTM attribution through Welcome")
+    await context.close()
+  }
+
+  {
     const { context, state } = await makeContext()
     const page = await context.newPage()
     state.signupMode = "authenticated"
-    await page.goto(`${base}/signup`, { waitUntil: "networkidle" })
+    await page.goto(`${base}/signup`, { waitUntil: "domcontentloaded" })
+    await page.waitForTimeout(1000)
     await page.locator("#signup-email").fill("new@example.test")
     await page.locator("#signup-password").fill("correct-horse-battery")
     await page.getByRole("button", { name: "Create account" }).click()
     await page.waitForURL(url => new URL(url).pathname === "/welcome")
     check(new URL(page.url()).pathname === "/welcome", "signup with an immediate Supabase session goes directly to Welcome")
 
-    await page.goto(`${base}/signup`, { waitUntil: "networkidle" })
+    await page.goto(`${base}/signup`, { waitUntil: "domcontentloaded" })
+    await page.waitForTimeout(1000)
     await page.getByRole("button", { name: "Continue with Google" }).click()
     await page.waitForURL(url => new URL(url).pathname === "/welcome", { timeout: 30000 })
     await page.locator('input[placeholder="Enter your Name"]').waitFor({ state: "visible" })
@@ -242,7 +300,7 @@ try {
 
     state.delayProfileWriteMs = 0
     await finish.click()
-    await page.waitForURL(url => new URL(url).pathname === "/inbox", { timeout: 30000 })
+    await page.waitForURL(url => new URL(url).pathname === "/first-session", { timeout: 30000 })
     const saved = Array.isArray(state.profileWrites[1].body) ? state.profileWrites[1].body[0] : state.profileWrites[1].body
     check(saved.phone === "9876543210" && state.profile.phone === "+919876543210" && saved.profile_completed === true, "retry saves ten raw digits which the database stores canonically")
     check(saved.whatsapp_opt_in === true && Boolean(saved.whatsapp_opt_in_at), "retry saves the opted-in communication consent and timestamp")
@@ -269,7 +327,7 @@ try {
     await openProfileWizard(page)
     await page.getByRole("textbox", { name: "Mobile number" }).fill("9876543210")
     await page.getByRole("button", { name: /Finish/ }).click()
-    await page.waitForURL(url => new URL(url).pathname === "/", { timeout: 30000 })
+    await page.waitForURL(url => new URL(url).pathname === "/first-session", { timeout: 30000 })
     const update = state.profileWrites[0]
     check(update.method === "PATCH" && !("trial_days" in update.body) && !("trial_expires_at" in update.body), "existing profile completion does not restart an existing trial")
     check(state.profile.trial_started_at === originalStart && state.profile.trial_expires_at === originalExpiry, "existing profile trial dates remain intact")

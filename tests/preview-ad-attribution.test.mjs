@@ -146,7 +146,7 @@ test('preview-ad renders the inline signup and keeps testimonial assets lazy-loa
   assert.match(signup, /autoComplete="email"/)
   assert.match(signup, /autoComplete="new-password"/)
   assert.match(signup, /email: normalizedEmail/)
-  assert.match(signup, /router\.replace\(buildAttributedPath\('\/welcome'/)
+  assert.match(signup, /window\.location\.replace\(buildAttributedPath\('\/welcome'/)
   assert.doesNotMatch(signup, /buildAttributedPath\('\/signup'/)
   assert.ok(layout.includes("AttributionCapture"), 'global layout captures attribution on non-preview landing routes')
   assert.match(landing, /loading="lazy"/)

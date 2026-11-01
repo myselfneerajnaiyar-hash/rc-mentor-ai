@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import posthog from 'posthog-js'
 import { Eye, EyeOff } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
@@ -81,6 +80,8 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
 
       {error === 'existing_user'
         ? <p className="ad-signup-error" role="alert" aria-live="polite">This email already has an account. <a href={loginHref}>Log in instead</a></p>
+        : error === 'session_unavailable'
+          ? <p className="ad-signup-error" role="alert" aria-live="polite">Your account was created, but this browser could not keep the sign-in. <a href={loginHref}>Log in to continue</a>.</p>
         : error && <p className="ad-signup-error" role="alert" aria-live="polite">{error}</p>}
       {confirmationMessage && <p className="ad-signup-success" role="status" aria-live="polite">{confirmationMessage}</p>}
 
@@ -99,7 +100,6 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
 }
 
 export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly = false }) {
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -109,6 +109,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   const [fieldErrors, setFieldErrors] = useState({})
   const [showSticky, setShowSticky] = useState(false)
   const singleFlight = useRef(null)
+  const navigationStarted = useRef(false)
   const oauthPending = useRef(false)
   const primaryCard = useRef(null)
   const observedCards = useRef(new Set())
@@ -249,7 +250,15 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
         }
         captureSignupConversion({ userId: outcome.user.id, method: 'email', createdAt: outcome.user.created_at, posthog, pixel: window.fbq, redditPixel: window.rdt, surface: 'preview_ad_inline', attribution, placement })
         if (outcome.type === 'authenticated') {
-          router.replace(buildAttributedPath('/welcome', attribution, { signup_surface: 'preview_ad_inline' }))
+          const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+          if (sessionError) throw sessionError
+          if (sessionData.session?.user?.id !== outcome.user.id) {
+            setError('session_unavailable')
+            reportFailure(placement, 'email', 'session_unavailable')
+            return
+          }
+          navigationStarted.current = true
+          window.location.replace(buildAttributedPath('/welcome', attribution, { signup_surface: 'preview_ad_inline' }))
           return
         }
         setConfirmationMessage('Account created. Check your email to confirm your account. The confirmation link will continue to profile setup.')
@@ -257,10 +266,10 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
         setError('Something went wrong. Please try again.')
         reportFailure(placement, 'email', 'network_error')
       } finally {
-        setLoading(false)
+        if (!navigationStarted.current) setLoading(false)
       }
     })
-  }, [currentAttribution, email, loading, password, reportFailure, router])
+  }, [currentAttribution, email, loading, password, reportFailure])
 
   const handleGoogle = useCallback(async placement => {
     if (loading || singleFlight.current || oauthPending.current) return

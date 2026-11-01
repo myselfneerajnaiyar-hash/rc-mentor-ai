@@ -21,7 +21,7 @@ test("profile completion stores normalized phone and consent timestamp", () => {
   assert.match(migration, /whatsapp_opt_in_at timestamptz/i)
 })
 
-test("new profile completion saves first and does not wait on notifications before dashboard navigation", () => {
+test("profile completion saves first and does not wait on notifications before first-session onboarding", () => {
   assert.match(provider, /const refreshContext = useCallback/)
   assert.match(provider, /cache:\s*["']no-store["']/)
   assert.match(welcome, /await refreshContext\(\)/)
@@ -30,7 +30,7 @@ test("new profile completion saves first and does not wait on notifications befo
   const profileUpdate = finishProfile.indexOf(".update({")
   const profileSave = Math.max(profileInsert, profileUpdate)
   const contextRefresh = finishProfile.indexOf("await refreshContext()")
-  const dashboardNavigation = finishProfile.indexOf('router.push("/")')
+  const dashboardNavigation = finishProfile.indexOf('router.replace("/first-session")')
   const whatsappTask = finishProfile.indexOf("void (async () => {")
   const welcomeEmailTask = finishProfile.indexOf('void fetch("/api/send-welcome-email"')
   assert.ok(profileSave >= 0 && profileSave < contextRefresh)
@@ -43,12 +43,12 @@ test("new profile completion saves first and does not wait on notifications befo
 })
 
 
-test("new signup saves its profile before dashboard navigation without waiting on welcome email", () => {
+test("new signup saves its profile before first-session onboarding without waiting on welcome email", () => {
   const finishProfile = welcome.slice(welcome.indexOf("async function finishProfile"), welcome.indexOf("async function persistSignupAttribution"))
   const insert = finishProfile.search(/\.from\("profiles"\)\s*\.insert\(/)
   const refresh = finishProfile.indexOf("await refreshContext()")
   const email = finishProfile.indexOf('fetch("/api/send-welcome-email"')
-  const dashboard = finishProfile.indexOf('router.push("/")')
+  const dashboard = finishProfile.indexOf('router.replace("/first-session")')
   assert.ok(insert >= 0, "new account profile is inserted")
   assert.ok(insert < refresh && refresh < email && email < dashboard, "persist and refresh complete before navigation")
   assert.doesNotMatch(finishProfile.slice(email, dashboard), /await\s+fetch\("\/api\/send-welcome-email"/)

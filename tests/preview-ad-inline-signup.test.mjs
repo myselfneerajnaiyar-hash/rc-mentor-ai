@@ -4,7 +4,7 @@ import test from 'node:test'
 import { captureSignupConversion } from '../lib/analytics/conversionEvents.mjs'
 
 const form = await readFile(new URL('../app/preview-ad/PreviewAdSignupExperience.jsx', import.meta.url), 'utf8')
-const page = await readFile(new URL('../app/preview-ad/page.js', import.meta.url), 'utf8')
+const page = await readFile(new URL('../app/preview-ad/PreviewAdLandingPage.jsx', import.meta.url), 'utf8')
 const callback = await readFile(new URL('../app/auth/callback/route.js', import.meta.url), 'utf8')
 const welcome = await readFile(new URL('../app/welcome/page.jsx', import.meta.url), 'utf8')
 const styles = await readFile(new URL('../app/preview-ad/preview-ad-signup.css', import.meta.url), 'utf8')
@@ -17,14 +17,17 @@ test('preview-ad form reuses verified auth classification and routes inline sign
   assert.match(form, /email\.trim\(\)\.toLowerCase\(\)/)
   assert.match(form, /signup_attribution: attribution/)
   assert.match(form, /emailRedirectTo:/)
-  assert.match(form, /router\.replace\(buildAttributedPath\('\/welcome'/)
+  assert.match(form, /supabase\.auth\.getSession\(\)/)
+  assert.match(form, /sessionData\.session\?\.user\?\.id !== outcome\.user\.id/)
+  assert.match(form, /window\.location\.replace\(buildAttributedPath\('\/welcome'/)
   assert.doesNotMatch(form, /buildAttributedPath\('\/signup'/)
   assert.match(form, /signup_surface: 'preview_ad_inline'/)
+  assert.match(welcome, /Your account was created, but this browser did not retain the sign-in/)
   assert.match(callback, /signup_surface.*preview_ad_inline/)
   assert.match(welcome, /surface: signupSurface/)
   assert.match(welcome, /const inlinePreviewSignup = searchParams\.get\("signup_surface"\) === "preview_ad_inline"/)
-  assert.match(welcome, /if \(inlinePreviewSignup\) \{\s*posthog\.identify\(user\.id\)/)
-  assert.match(welcome, /email: user\.email/)
+  assert.match(welcome, /identifyPostHogUser\(\{\s*userId: user\.id/)
+  assert.match(welcome, /userProperties: inlinePreviewSignup \? \{\} : \{/)
   assert.match(form, /buildAttributedPath\('\/welcome', attribution, \{ signup_surface: 'preview_ad_inline' \}\)/)
   assert.match(page, /PreviewAdSignupExperience initialAttribution/)
 })
@@ -101,6 +104,7 @@ test('signup and scroll analytics include context but never receive credentials'
   const requests = []
   globalThis.window = {
     innerWidth: 390,
+    location: { search: '' },
     localStorage: {
       getItem: key => storageValues.get(key) || null,
       setItem: (key, value) => storageValues.set(key, value),

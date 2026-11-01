@@ -136,6 +136,10 @@ async function checkUser() {
 
     const { data: authData, error: userError } = await supabase.auth.getUser()
     if (!authData?.user && !code) {
+      if (searchParams.get("signup_surface") === "preview_ad_inline") {
+        setAuthError("Your account was created, but this browser did not retain the sign-in. If you were asked to confirm your email, use that link first; otherwise log in to continue.")
+        return
+      }
       if (searchParams.get("oauth") === "google" && !googleFailureReported.current) {
         googleFailureReported.current = true
         captureGoogleLoginFailure({
