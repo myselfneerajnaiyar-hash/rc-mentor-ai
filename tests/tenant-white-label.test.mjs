@@ -36,7 +36,7 @@ test("unknown hostnames fail closed", () => {
 test("missing institute branding uses safe Auctor assets and colors", () => {
   const branding = buildInstituteBranding({ id: "abc-id", name: "ABC Institute", hostname: "abc.auctorlabs.in" })
   assert.equal(branding.brandName, "ABC Institute")
-  assert.equal(branding.logoUrl, "/logo.png")
+  assert.equal(branding.logoUrl, null)
   assert.equal(branding.faviconUrl, "/icon-192.png")
   assert.match(branding.primaryColor, /^#[0-9a-f]{6}$/i)
 })

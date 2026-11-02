@@ -9,6 +9,8 @@ import RedditPageViewTracker from "@/components/RedditPageViewTracker"
 import TenantProvider from "@/components/providers/TenantProvider"
 import { headers } from "next/headers"
 import { resolveHostname } from "@/lib/tenant/resolveHostname"
+import { normalizeHostname } from "@/lib/tenant/branding"
+import { ANACADEMY_HOSTNAME, isAnacademyInstituteContext } from "@/lib/tenant/instituteHostRouting.mjs"
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +43,24 @@ const redditPixelId = /^[A-Za-z0-9_-]{1,128}$/.test(String(process.env.NEXT_PUBL
   ? process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID
   : null
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  let initialTenantContext = null
+  try {
+    const requestHeaders = headers()
+    const hostname = normalizeHostname(requestHeaders.get("x-forwarded-host")?.split(",")[0] || requestHeaders.get("host"))
+    if (hostname === ANACADEMY_HOSTNAME) {
+      const resolved = await resolveHostname(hostname)
+      if (isAnacademyInstituteContext(resolved)) {
+        initialTenantContext = {
+          tenant: { kind: resolved.kind, hostname: resolved.hostname },
+          branding: resolved.branding,
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Initial institute branding resolution failed", { hostname: ANACADEMY_HOSTNAME, message: error instanceof Error ? error.message : "Unknown error" })
+  }
+
   return (
     <html lang="en">
       <body>
@@ -89,7 +108,7 @@ export default function RootLayout({ children }) {
         <PostHogProvider />
         <Suspense fallback={null}><RedditPageViewTracker /></Suspense>
         <Suspense fallback={null}><AttributionCapture /></Suspense>
-        <TenantProvider><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
+        <TenantProvider initialTenantContext={initialTenantContext}><Suspense fallback={<div className="mobile-pending">Loading your learning portal…</div>}><MobileShell>{children}</MobileShell></Suspense></TenantProvider>
         {metaPixelId && <noscript>
   <img
     height="1"

@@ -13,7 +13,7 @@ import TenantLogo from "@/components/tenant/TenantLogo"
 import AuthMobileIntro from "@/components/auth/AuthMobileIntro"
 
 export default function LoginPage() {
-  const { branding } = useTenant()
+  const { branding, tenant } = useTenant()
   const router = useRouter()
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "";
@@ -167,11 +167,9 @@ router.replace(buildAttributedPath("/welcome", readBrowserAttribution(new URLSea
 
         </form>
 
-        <p className="auth-footer">
-          Don’t have an account? <a href={signupHref}>
-  Sign up
-</a>
-        </p>
+        {tenant?.kind !== "institute" && <p className="auth-footer">
+          Don’t have an account? <a href={signupHref}>Sign up</a>
+        </p>}
 
       </div>
 
