@@ -31,6 +31,7 @@ const welcomePage = await readFile(new URL("../app/welcome/page.jsx", import.met
 const loginPage = await readFile(new URL("../app/login/page.jsx", import.meta.url), "utf8")
 const reportQuery = await readFile(new URL("../supabase/queries/meta_roas_by_first_touch.sql", import.meta.url), "utf8")
 const conversionDispatchMigration = await readFile(new URL("../supabase/migrations/202610110001_purchase_conversion_dispatch.sql", import.meta.url), "utf8")
+const purchaseRetryMigration = await readFile(new URL("../supabase/migrations/202610310001_retry_ambiguous_posthog_purchase_dispatch.sql", import.meta.url), "utf8")
 const signupDispatchMigration = await readFile(new URL("../supabase/migrations/202610110002_signup_conversion_dispatch.sql", import.meta.url), "utf8")
 const signupApi = await readFile(new URL("../app/api/conversions/signup/route.js", import.meta.url), "utf8")
 const layout = await readFile(new URL("../app/layout.js", import.meta.url), "utf8")
@@ -317,11 +318,17 @@ test("ambiguous purchase transport errors retain only a safe network code and pa
     sent: false,
     provider: "posthog",
     error: "posthog_transport_econnreset",
+    transportCode: "econnreset",
+    errorName: "TYPEERROR",
     retryable: false,
     deliveryUnknown: true,
   })
   assert.equal(JSON.stringify(result).includes(secretUrl), false)
   assert.equal(JSON.stringify(result).includes("pay_private"), false)
+  assert.equal(JSON.stringify(result).includes("ph_test_key"), false)
+  assert.ok(paymentProcessor.includes('delivery_outcome: "unknown"'))
+  assert.ok(paymentProcessor.includes('transport_code: result.transportCode'))
+  assert.ok(paymentProcessor.includes('error_name: result.errorName'))
   assert.doesNotMatch(paymentProcessor, /console\.(?:info|warn|error)\([^\n]*[\s\S]{0,180}(?:userId: order\?\.user_id|orderId: order\?\.razorpay_order_id|paymentId,)/)
   assert.doesNotMatch(paymentWebhook, /message:\s*error instanceof Error\s*\?\s*error\.message/)
 })
@@ -424,7 +431,9 @@ function conversionOutboxDb() {
       const key = `${args.p_payment_id}:${args.p_provider}`
       const row = rows.get(key) || { status: "pending", attempts: 0 }
       if (name === "claim_purchase_conversion_dispatch") {
-        if (!new Set(["pending", "failed"]).has(row.status)) return { data: false, error: null }
+        const claimable = new Set(["pending", "failed"]).has(row.status)
+          || (row.status === "unknown" && args.p_provider === "posthog" && row.attempts < 3)
+        if (!claimable) return { data: false, error: null }
         rows.set(key, { ...row, status: "processing", token: args.p_claim_token, attempts: row.attempts + 1 })
         return { data: true, error: null }
       }
@@ -469,6 +478,41 @@ test("purchase conversion dispatch claims once across concurrent repeats and ret
   assert.equal(db.rows.get("dispatch_pay:posthog").status, "sent")
   assert.equal(db.rows.get("dispatch_pay:posthog").attempts, 2)
   assert.equal(db.rows.get("dispatch_pay:meta").attempts, 1)
+})
+
+test("ambiguous transport outcomes are logged with safe identifiers and stay unknown in the dispatch ledger", async () => {
+  const purchase = { razorpay_payment_id: "dispatch_unknown", amount_paid_paise: 79900, currency: "INR", plan: "quarterly" }
+  const db = conversionOutboxDb()
+  const calls = { posthog: 0, meta: 0 }
+  const sendEvent = async ({ provider }) => {
+    calls[provider]++
+    return {
+      sent: false,
+      provider,
+      error: `${provider}_transport_econnreset`,
+      transportCode: "econnreset",
+      errorName: "TYPEERROR",
+      retryable: false,
+      deliveryUnknown: true,
+    }
+  }
+  const options = { purchase, userId: "safe-fixture-user", paidAt: "2026-10-01T12:00:00Z", db, sendEvent }
+  await dispatchPurchaseConversionEvents(options)
+  assert.equal(db.rows.get("dispatch_unknown:posthog").status, "unknown")
+  assert.equal(db.rows.get("dispatch_unknown:meta").status, "unknown")
+  assert.equal(db.rows.get("dispatch_unknown:posthog").attempts, 1)
+  assert.equal(db.rows.get("dispatch_unknown:meta").attempts, 1)
+
+  await dispatchPurchaseConversionEvents(options)
+  await dispatchPurchaseConversionEvents(options)
+  await dispatchPurchaseConversionEvents(options)
+  assert.equal(calls.posthog, 3, "PostHog unknown outcomes follow the existing three-attempt cap")
+  assert.equal(calls.meta, 1, "unknown Meta outcomes are not replayed automatically")
+  assert.equal(db.rows.get("dispatch_unknown:posthog").status, "unknown", "an ambiguous outcome never becomes confirmed sent/failed")
+  assert.equal(db.rows.get("dispatch_unknown:meta").status, "unknown")
+  assert.match(conversionDispatchMigration, /status in \('pending', 'failed'\)/)
+  assert.match(purchaseRetryMigration, /status = 'unknown' and p_provider = 'posthog' and attempts < 3/)
+  assert.match(purchaseRetryMigration, /d\.provider = 'posthog' and d\.status = 'unknown' and d\.attempts < 3/)
 })
 
 test("failed or cancelled payments cannot reach purchase tracking; ROAS query joins first touch to provisioned payments", () => {

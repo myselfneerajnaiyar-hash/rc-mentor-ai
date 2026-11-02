@@ -55,9 +55,52 @@ test('stale revisions are identified explicitly by the API without weakening the
       body:JSON.stringify({revision:state.revision-1,key:'warmup',questionId:'bootcamp-day-1-warmup-q1',response:'A'})
     }),'responses',{id:state.id,key:'warmup'})
     assert.equal(response.status,409)
-    assert.equal((await response.json()).code,'stale_revision')
+    const body=await response.json()
+    assert.equal(body.code,'stale_revision')
+    assert.deepEqual({operation:body.operation,block:body.block,attempt_state:body.attempt_state,expected_state:body.expected_state,conflict_code:body.conflict_code},{
+      operation:'responses',block:'warmup',attempt_state:{phase:'mission',block_status:'pending',current_block:'warmup'},expected_state:'same_revision_active_block',conflict_code:'stale_revision'
+    })
+    assert.equal(JSON.stringify(body).includes('Bearer'),false)
     const sql=await (await import('node:fs/promises')).readFile('supabase/migrations/202609220001_bootcamp_day1.sql','utf8')
     assert.match(sql,/if d\.revision<>p_revision then raise exception 'stale_revision' using errcode='40001'/)
+  } finally {await h.close()}
+})
+
+test('a replayed PATCH whose exact response already committed is acknowledged without another write',async()=> {
+  const h=await harness(fixture())
+  try {
+    await h.service.enroll(student)
+    let state=await h.service.start(student)
+    state=await h.service.act(student,state.id,'advance',{revision:state.revision})
+    state=await h.service.act(student,state.id,'block_start',{revision:state.revision,key:'warmup'})
+    const question=adaptDay(fixture()).snapshot.blocks[0].questions[0]
+    const payload={revision:state.revision,key:'warmup',questionId:question.id,presented:true,response:question.answer}
+    const rpc=h.db.rpc
+    let reads=0, releaseReads
+    const bothReadSameRevision=new Promise(resolve=>{releaseReads=resolve})
+    h.db.rpc=async(name,args)=>{
+      if(name==='bootcamp_read'&&reads<2) {
+        const result=await rpc(name,args)
+        reads++
+        if(reads===2)releaseReads()
+        await bothReadSameRevision
+        return result
+      }
+      return rpc(name,args)
+    }
+    const [committed,replay]=await Promise.all([
+      h.service.act(student,state.id,'responses',payload),
+      h.service.act(student,state.id,'responses',payload),
+    ])
+    h.db.rpc=rpc
+    assert.equal(replay.revision,committed.revision,'concurrent identical PATCHes resolve to the committed state without another write')
+    assert.equal(replay.activity.responses[0].response,question.answer)
+
+    const otherAnswer=question.mode==='MCQ'
+      ? question.options.find(option=>option.id!==question.answer).id
+      : question.answer===1?2:1
+    await assert.rejects(h.service.act(student,state.id,'responses',{...payload,response:otherAnswer}),error=>error.code==='stale_revision')
+    assert.equal((await h.service.get(student,state.id)).revision,committed.revision,'a conflicting stale write remains rejected')
   } finally {await h.close()}
 })
 
