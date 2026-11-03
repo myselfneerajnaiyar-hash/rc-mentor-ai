@@ -39,6 +39,21 @@ test("paid and institute entitlements suppress every promotional state", () => {
   }
 })
 
+test("home views place the existing trial banner immediately before Boot Camp", async () => {
+  const [desktop, mobile] = await Promise.all([
+    readFile(new URL("../components/home-v2/ShadowHomeView.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../components/mobile/MobileHome.jsx", import.meta.url), "utf8"),
+  ])
+
+  assert.match(desktop, /import TrialConversionBanner from "@\/components\/TrialConversionBanner"/)
+  assert.match(desktop, /<TrialConversionBanner\s*\/>\s*\{isCAT && <BootCampHomeCard/)
+  assert.match(mobile, /import TrialConversionBanner from '\@\/components\/TrialConversionBanner'/)
+  assert.match(mobile, /<TrialConversionBanner\s*\/>\s*\{capabilities\.isCAT&&<BootCampHomeCard/)
+  assert.equal(getTrialBannerState({ ...trial, now: at(3 * day) }).type, "expired")
+  assert.equal(getTrialBannerState({ ...trial, now: at(day) }).type, "offer")
+  assert.equal(getTrialBannerState({ ...trial, now: at(3 * day), entitlement: { isPremium: true } }).type, "none")
+})
+
 test("every user without paid or institute access sees the AUCTOR30 offer regardless of trial metadata", () => {
   for (const options of [
     { now: at(0) },

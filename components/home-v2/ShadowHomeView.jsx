@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import BootCampHomeCard from "@/components/bootcamp/BootCampHomeCard"
+import TrialConversionBanner from "@/components/TrialConversionBanner"
 import { startProductTour } from "@/components/ProductTour";
 
 import { useEffect, useState } from "react"
@@ -397,6 +398,7 @@ setInsight({
   setView={setView}
 />
 
+<TrialConversionBanner />
 {isCAT && <BootCampHomeCard userId={user?.id} />}
 <TodayActivity
   exam={normalizedExam}

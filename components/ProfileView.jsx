@@ -1,15 +1,18 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { supabase } from "../lib/supabase";
 import { useTenant } from "@/components/providers/TenantProvider";
 import TenantLogo from "@/components/tenant/TenantLogo";
 import { ProfilePlanRow } from "@/components/TrialPromotions";
+import profileStyles from "./profile-view.module.css";
 
 
 export default function ProfileView({ setView }) {
   const { branding, capabilities, entitlement } = useTenant();
   const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileLoadError, setProfileLoadError] = useState("");
   const detailRef = useRef(null);
   const [stats, setStats] = useState({
     rcTests: 0,
@@ -29,72 +32,74 @@ const [editData, setEditData] = useState({
 });
 
 
-  useEffect(() => {
-  async function loadProfile() {
+  const loadProfile = useCallback(async () => {
+    setProfileLoading(true);
+    setProfileLoadError("");
+    try {
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      if (authError) throw authError;
+      if (!authData?.user) {
+        setProfileLoadError("Your profile could not be loaded. Retry or sign in again.");
+        return;
+      }
 
-    const { data: authData } = await supabase.auth.getUser();
-    if (!authData?.user) return;
+      const userId = authData.user.id;
+      const { data, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (profileError) throw profileError;
+      if (!data) {
+        setProfileLoadError("We couldn't find your profile. Retry loading it.");
+        return;
+      }
 
-    const userId = authData.user.id;
+      setProfile(data);
 
-    // 1️⃣ Fetch profile info
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("user_id", userId)
-      .maybeSingle();
+      const { data: sub } = await supabase
+        .from("subscriptions")
+        .select("*")
+        .eq("user_id", userId)
+        .gt("expires_at", new Date().toISOString())
+        .order("expires_at", { ascending: false })
+        .maybeSingle();
 
-    setProfile(data);
-
-    // Load active subscription
-
-const { data: sub } = await supabase
-  .from("subscriptions")
-  .select("*")
-  .eq("user_id", userId)
-  .gt("expires_at", new Date().toISOString())
-  .order("expires_at", { ascending: false })
-  .maybeSingle()
-
-setSubscription(sub)
-   setEditData({
-  name: data?.name || "",
-  exam: data?.exam || "",
-  attempt_year: data?.attempt_year || "",
-  phone: data?.phone || "",
-});
-
-    // 2️⃣ 🔥 ADD THIS ENTIRE BLOCK HERE 🔥
-
-    const { data: questions } = await supabase
-      .from("rc_questions")
-      .select("*")
-      .eq("user_id", userId);
-
-    if (questions) {
-      const totalQ = questions.length;
-      const correctQ = questions.filter(q => q.is_correct).length;
-
-      const accuracy =
-        totalQ > 0 ? Math.round((correctQ / totalQ) * 100) : 0;
-
-      const sessions = new Set(
-        questions.map(q => q.session_id)
-      );
-
-      setStats({
-        rcTests: sessions.size,
-        accuracy,
-        vocab: JSON.parse(localStorage.getItem("vocabBank") || "[]").length,
-        sectionals: Object.keys(
-          JSON.parse(localStorage.getItem("catRCResults") || "{}")
-        ).length,
+      setSubscription(sub);
+      setEditData({
+        name: data.name || "",
+        exam: data.exam || "",
+        attempt_year: data.attempt_year || "",
+        phone: data.phone || "",
       });
-    }
-  }
 
-  loadProfile();
-}, []);
+      const { data: questions } = await supabase
+        .from("rc_questions")
+        .select("*")
+        .eq("user_id", userId);
+
+      if (questions) {
+        const totalQ = questions.length;
+        const correctQ = questions.filter(q => q.is_correct).length;
+        const sessions = new Set(questions.map(q => q.session_id));
+
+        setStats({
+          rcTests: sessions.size,
+          accuracy: totalQ > 0 ? Math.round((correctQ / totalQ) * 100) : 0,
+          vocab: JSON.parse(localStorage.getItem("vocabBank") || "[]").length,
+          sectionals: Object.keys(JSON.parse(localStorage.getItem("catRCResults") || "{}")).length,
+        });
+      }
+    } catch {
+      setProfileLoadError("We couldn't load your profile. Check your connection and retry.");
+    } finally {
+      setProfileLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadProfile();
+  }, [loadProfile]);
 
   useEffect(() => {
   if (profileTab !== "overview" && detailRef.current) {
@@ -107,11 +112,24 @@ setSubscription(sub)
   }
 }, [profileTab]);
 
-  if (!profile) return (
-    <div style={page}>
-      <div style={container}>
+  if (!profile && profileLoading) return (
+    <div className={profileStyles.page}>
+      <div className={profileStyles.container}>
         <ProfilePlanRow />
         <p role="status" style={{ color: "#94a3b8", fontSize: 13 }}>Loading your profile…</p>
+      </div>
+    </div>
+  );
+  if (!profile) return (
+    <div className={profileStyles.page}>
+      <div className={profileStyles.container}>
+        <ProfilePlanRow />
+        <section className={profileStyles.section} role="alert">
+          <p>{profileLoadError || "We couldn't load your profile."}</p>
+          <button className={profileStyles.retryButton} onClick={loadProfile} disabled={profileLoading}>
+            {profileLoading ? "Retrying…" : "Retry"}
+          </button>
+        </section>
       </div>
     </div>
   );
@@ -123,30 +141,30 @@ setSubscription(sub)
 }
 
   return (
-  <div style={page}>
-  <div style={container}>
+  <div className={profileStyles.page}>
+  <div className={profileStyles.container}>
       <ProfilePlanRow />
-      <button onClick={() => setView("home")} style={backBtn}>
+      <button onClick={() => setView("home")} className={profileStyles.backButton}>
         ← Back to Home
       </button>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}><TenantLogo className="h-8 w-8 rounded-lg object-contain" /><div><p style={{ margin: 0, color: "#e2e8f0", fontSize: 14, fontWeight: 600 }}>{branding.brandName}</p>{branding.isInstitute && <p style={{ margin: 0, color: "#64748b", fontSize: 10 }}>Powered by Auctor Labs</p>}</div></div>
+      <div className={profileStyles.brand}><TenantLogo className="h-8 w-8 rounded-lg object-contain" /><div><p>{branding.brandName}</p>{branding.isInstitute && <small>Powered by Auctor Labs</small>}</div></div>
 
-      <section className="mobile-profile-links" aria-label="History and progress"><h2>History and progress</h2><Link href="/?view=workout&tab=history">Workout history</Link>{capabilities.showDailyRC&&<Link href="/rc-history">Daily RC history</Link>}{entitlement.hasAccess&&<><Link href="/?view=rc&tab=history">RC practice history</Link><Link href="/?view=vocab&tab=profile">Vocabulary progress</Link><Link href="/?view=speed&tab=profile">Speed progress</Link></>}</section>
-      <Link className="mobile-text-action" href="/?view=home&tour=replay">Replay Product Tour</Link>
+      <section className={profileStyles.historyLinks} aria-label="History and progress"><h2>History and progress</h2><Link href="/?view=workout&tab=history">Workout history</Link>{capabilities.showDailyRC&&<Link href="/rc-history">Daily RC history</Link>}{entitlement.hasAccess&&<><Link href="/?view=rc&tab=history">RC practice history</Link><Link href="/?view=vocab&tab=profile">Vocabulary progress</Link><Link href="/?view=speed&tab=profile">Speed progress</Link></>}</section>
+      <Link className={profileStyles.tourLink} href="/?view=home&tour=replay">Replay Product Tour</Link>
       {/* HERO SECTION */}
-      <div style={hero}>
-        <div style={avatar}>
+      <section className={profileStyles.hero}>
+        <div className={profileStyles.avatar}>
           {profile.name?.charAt(0).toUpperCase()}
         </div>
 
         <div>
-          <h2 style={{ margin: 0 }}>{profile.name}</h2>
-          <p style={subText}>
+          <h2>{profile.name}</h2>
+          <p className={profileStyles.subText}>
             {profile.exam} • {profile.attempt_year}
           </p>
           {branding.isInstitute && <p style={{ color: "var(--brand-secondary)", fontSize: 13, margin: "5px 0" }}>{branding.brandName} student portal</p>}
 
-          <p style={{ color: "#94a3b8", fontSize: 14 }}>
+          <p className={profileStyles.metaText}>
   📱 {profile.phone || "Phone not added"}
 </p>
 
@@ -169,7 +187,7 @@ setSubscription(sub)
     })}
   </p>
 )}
-          <p style={joined}>
+          <p className={profileStyles.joined}>
             Joined{" "}
             {new Date(profile.created_at).toLocaleDateString("en-IN", {
               day: "numeric",
@@ -177,7 +195,7 @@ setSubscription(sub)
               year: "numeric",
             })}
           </p>
-          <button
+      <button
   onClick={() => setShowEdit(true)}
   style={{
     marginTop: 10,
@@ -194,11 +212,11 @@ setSubscription(sub)
 </button>
           
         </div>
-      </div>
+      </section>
       
 
       {/* PERFORMANCE CARDS */}
-      <div style={grid}>
+      <div className={profileStyles.statsGrid}>
   <StatCard label="RC Tests" value={stats.rcTests} />
   <StatCard label="RC Accuracy" value={`${stats.accuracy}%`} />
   <StatCard label="Vocab Words" value={stats.vocab} />
@@ -209,7 +227,7 @@ setSubscription(sub)
 </div>
 
       {/* SKILL BREAKDOWN */}
-      <div style={section}>
+      <div className={profileStyles.section}>
         <h3>Skill Breakdown</h3>
 
         <ProgressBar label="Reading Accuracy" value={stats.accuracy} />
@@ -219,7 +237,7 @@ setSubscription(sub)
         />
       </div>
 
-      <div style={section}>
+      <div className={profileStyles.section}>
   <h3>Overall Snapshot</h3>
 
   <p style={{ color: "#cbd5e1", lineHeight: 1.6 }}>
@@ -239,31 +257,30 @@ setSubscription(sub)
 </div>
 
      {/* GROWTH & ACTIONS */}
-<div style={section}>
-  <h3 style={{ marginBottom: 20 }}>Growth & Next Steps</h3>
+<div className={profileStyles.section}>
+  <h3 className={profileStyles.sectionTitle}>Growth & Next Steps</h3>
 
-  <div style={actionGrid}>
-    <ActionCard
+  <div className={profileStyles.actionGrid}>
+    <ActionCard className={profileStyles.actionCard}
   title="Performance Trends"
   desc="Track accuracy improvement over time"
   onClick={() => setProfileTab("trends")}
 />
 
-<ActionCard
+<ActionCard className={profileStyles.actionCard}
   title="Weakness Diagnosis"
   desc="Identify question-type gaps"
   onClick={() => setProfileTab("diagnosis")}
 />
-w
 {isCAT && (
-  <ActionCard
+  <ActionCard className={profileStyles.actionCard}
     title="Sectional Analytics"
     desc="Deep CAT sectional insights"
     onClick={() => setProfileTab("sectionals")}
   />
 )}
 
-<ActionCard
+<ActionCard className={profileStyles.actionCard}
   title="Subscription & Courses"
   desc="View enrolled programs"
   onClick={() => setProfileTab("subscription")}
@@ -273,7 +290,7 @@ w
 
 <div ref={detailRef}>
 {profileTab === "trends" && (
-  <div style={section}>
+  <div className={profileStyles.section}>
     <h3>Performance Trends</h3>
    <p style={{ marginBottom: 15 }}>
   Your last {stats.rcTests} RC tests show an average accuracy of{" "}
@@ -296,7 +313,7 @@ w
 )}
 
 {profileTab === "diagnosis" && (
-  <div style={section}>
+  <div className={profileStyles.section}>
     <h3>Weakness Diagnosis</h3>
    <p style={{ marginBottom: 10 }}>
   Based on your current accuracy:
@@ -323,7 +340,7 @@ w
 )}
 
 {profileTab === "sectionals" && (
-  <div style={section}>
+  <div className={profileStyles.section}>
     <h3>Sectional Analytics</h3>
     <p>
   You have attempted{" "}
@@ -339,7 +356,7 @@ w
 )}
 
 {profileTab === "subscription" && (
-  <div style={section}>
+  <div className={profileStyles.section}>
     <h3>Subscription</h3>
    <p style={{ marginBottom: 10 }}>
   Current Plan:{" "}
@@ -367,8 +384,8 @@ w
 
 </div>
 {showEdit && (
-  <div style={modalOverlay}>
-    <div style={modalBox}>
+  <div className={profileStyles.modalOverlay}>
+    <div className={profileStyles.modalBox}>
       <h3 style={{ marginBottom: 20 }}>Edit Profile</h3>
 
       <input
@@ -435,18 +452,10 @@ w
     </div>
   </div>
 )}
-<div style={{ textAlign: "center", marginTop: 40 }}>
+<div className={profileStyles.logout}>
   <button
     onClick={handleLogout}
-    style={{
-      padding: "10px 20px",
-      background: "#ef4444",
-      color: "#fff",
-      border: "none",
-      borderRadius: 10,
-      fontWeight: 600,
-      cursor: "pointer",
-    }}
+    className={profileStyles.logoutButton}
   >
     Logout
   </button>
@@ -462,9 +471,9 @@ w
 
 function StatCard({ label, value }) {
   return (
-    <div style={card}>
-      <p style={{ color: "#94a3b8", fontSize: 13 }}>{label}</p>
-    <h2 style={{ margin: "6px 0", fontSize: 34, fontWeight: 700 }}>
+    <div className={profileStyles.statCard}>
+      <p>{label}</p>
+    <h2>
   {value}
 </h2>
     </div>
@@ -482,98 +491,18 @@ function ProgressBar({ label, value }) {
   );
 }
 
-function ActionCard({ title, desc, onClick }) {
+function ActionCard({ title, desc, onClick, className }) {
   return (
-    <div style={actionCard}>
+    <div className={className}>
       <h4 style={{ margin: "0 0 6px 0" }}>{title}</h4>
       <p style={{ fontSize: 13, color: "#94a3b8" }}>{desc}</p>
-      <button style={actionBtn} onClick={onClick}>
+      <button onClick={onClick}>
         Explore →
       </button>
     </div>
   );
 }
 /* ---------- STYLES ---------- */
-
-const page = {
-  minHeight: "100vh",
-  background: "#020617",
-  padding: "40px 20px 140px",
-};
-
-const container = {
-  maxWidth: 1000,
-  margin: "0 auto",
-};
-
-const backBtn = {
-  marginBottom: 24,
-  background: "none",
-  border: "none",
-  color: "#38bdf8",
-  fontWeight: 600,
-  cursor: "pointer",
-  fontSize: 15,
-};
-
-const hero = {
-  display: "flex",
-  gap: 24,
-  alignItems: "center",
-  padding: 32,
-  background: "#0f172a",
-  borderRadius: 22,
-  border: "1px solid #1e293b",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-  marginBottom: 32,
-};
-
-const avatar = {
-  width: 80,
-  height: 80,
-  borderRadius: "50%",
-  background: "#2563eb",
-  color: "#fff",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: 32,
-  fontWeight: 700,
-};
-
-const subText = {
-  color: "#94a3b8",
-  margin: "4px 0",
-};
-
-const joined = {
-  fontSize: 13,
-  color: "#94a3b8",
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-  gap: 20,
-  marginBottom: 40,
-};
-
-const card = {
-  background: "#0f172a",
-  padding: 22,
-  borderRadius: 18,
-  border: "1px solid #e2e8f0",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.06)",
-  textAlign: "center",
-};
-
-const section = {
-  background: "#0f172a",
-  padding: 30,
-  borderRadius: 20,
-  boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
-  marginBottom: 30,
-};
 
 const barOuter = {
   height: 8,
@@ -585,75 +514,6 @@ const barInner = {
   height: "100%",
   background: "#2563eb",
   borderRadius: 6,
-};
-
-const primaryBtn = {
-  padding: "8px 16px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 10,
-  fontWeight: 600,
-  cursor: "pointer",
-};
-
-const secondaryBtn = {
-  padding: "8px 16px",
-  background: "#e2e8f0",
-  color: "#1e293b",
-  border: "none",
-  borderRadius: 10,
-  fontWeight: 600,
-  cursor: "pointer",
-};
-
-const actionGrid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: 20,
-};
-
-const actionCard = {
-  background: "#020617",
-  padding: 22,
-  borderRadius: 16,
-  border: "1px solid #e2e8f0",
-  boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
-  transition: "all 0.2s ease",
-};
-
-const actionBtn = {
-  marginTop: 10,
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  padding: "8px 14px",
-  borderRadius: 10,
-  fontSize: 13,
-  cursor: "pointer",
-};
-
-const modalOverlay = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: "rgba(0,0,0,0.4)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  zIndex: 1000,
-};
-
-const modalBox = {
-  background: "#0f172a",
-  padding: 32,
-  borderRadius: 16,
-  width: 400,
-  border: "1px solid #1e293b",
-  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
-  color: "#e2e8f0",
 };
 
 const input = {
