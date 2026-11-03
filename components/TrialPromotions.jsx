@@ -143,7 +143,7 @@ export function TrialOfferRibbon({ className = "", screen = "home" }) {
         data-pricing-source="ribbon"
         onClick={() => captureLearningEvent("pricing_ribbon_clicked", { screen })}
       >
-        See plans <span aria-hidden="true">→</span>
+        Buy plan · Save 30% <span aria-hidden="true">→</span>
       </Link>
     </aside>
   )
@@ -207,7 +207,7 @@ export function TrialEndedOffer() {
           href={`/pricing?coupon=${COUPON}&source=trial_ended`}
           data-pricing-source="trial_ended"
         >
-          See plans <span aria-hidden="true">→</span>
+          Buy plan · Save 30% <span aria-hidden="true">→</span>
         </Link>
         <button type="button" className={styles.notNow} onClick={() => setDismissed(true)}>Not now</button>
       </section>
@@ -237,7 +237,7 @@ export function ProfilePlanRow() {
         {state.type === "active" && <p>30% off when you pick a plan today.</p>}
       </div>
       <Link href="/pricing?source=profile_plan" data-pricing-source="profile_plan">
-        See plans <span aria-hidden="true">→</span>
+        {state.type === "active" ? "Buy plan · Save 30%" : "View plans"} <span aria-hidden="true">→</span>
       </Link>
     </section>
   )

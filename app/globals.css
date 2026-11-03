@@ -6,6 +6,10 @@
 :root {
   --brand-primary: #4f46e5;
   --brand-secondary: #0ea5e9;
+  --promo-ribbon-background: linear-gradient(105deg, #9a3412 0%, #c2410c 52%, #b45309 100%);
+  --promo-ribbon-border: rgba(253, 186, 116, 0.5);
+  --promo-ribbon-shadow: 0 4px 18px rgba(194, 65, 12, 0.24);
+  --promo-ribbon-focus: #fde68a;
 }
 
 .brand-primary-bg { background-color: var(--brand-primary); }

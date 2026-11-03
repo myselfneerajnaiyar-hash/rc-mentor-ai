@@ -28,7 +28,7 @@ test("known non-CAT users get regular practice and AUCTOR30, never Bootcamp sale
   const messages = getAnnouncementRibbonMessages("non_cat")
   assert.deepEqual(messages.map(({ text, href }) => [text, href]), [
     ["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"],
-    ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"],
+    ["Get 30% Off — Buy Plan →", "/pricing?coupon=AUCTOR30"],
   ])
   assert.ok(messages.every(message => !/Boot ?Camp|VARC/i.test(message.text)))
   assert.equal(getAnnouncementRibbonAudience({
@@ -62,7 +62,7 @@ test("unknown exam or unverifiable access falls back to neutral daily practice",
   assert.equal(messages[0].href, "/?view=today")
   assert.deepEqual(messages.map(({ text, href }) => [text, href]), [
     ["Build your RC, vocabulary & speed. Practise daily with Auctor →", "/?view=today"],
-    ["Plans are 30% off. Use AUCTOR30 →", "/pricing?coupon=AUCTOR30"],
+    ["Get 30% Off — Buy Plan →", "/pricing?coupon=AUCTOR30"],
   ])
   assert.ok(messages.every(message => !/Boot ?Camp|VARC|CAT/i.test(message.text)))
 })
@@ -94,14 +94,19 @@ test("requires a signed-in user, resolved audience and no session dismissal", ()
   assert.equal(ANNOUNCEMENT_RIBBON_SESSION_KEY, "auctor-announcement-ribbon-dismissed")
 })
 
-test("announcement ribbon uses the navy-purple app palette with accessible interaction states", async () => {
+test("announcement ribbon uses the shared warm promotion palette with accessible interaction states", async () => {
   const styles = await readFile(new URL("../components/personalized-announcement-ribbon.module.css", import.meta.url), "utf8")
-  assert.match(styles, /linear-gradient\(100deg, #0b1024 0%, #1e1b4b 100%\)/)
-  assert.match(styles, /\.messageLink strong,[\s\S]*?color: #a5b4fc/)
+  const globalStyles = await readFile(new URL("../app/globals.css", import.meta.url), "utf8")
+  const homeRibbonStyles = await readFile(new URL("../components/trial-promotions.module.css", import.meta.url), "utf8")
+  const announcementMessages = await readFile(new URL("../lib/announcementRibbon.mjs", import.meta.url), "utf8")
+  assert.match(globalStyles, /--promo-ribbon-background:\s*linear-gradient\(105deg, #9a3412 0%, #c2410c 52%, #b45309 100%\)/)
+  assert.match(styles, /background: var\(--promo-ribbon-background\)/)
+  assert.match(homeRibbonStyles, /background: var\(--promo-ribbon-background\)/)
+  assert.match(styles, /\.messageLink strong,[\s\S]*?color: #fff7ed/)
+  assert.match(announcementMessages, /Get 30% Off — Buy Plan/)
   assert.match(styles, /\.messageLink:hover,[\s\S]*?\.reducedMessage:hover/)
-  assert.match(styles, /\.closeButton:hover[\s\S]*?background: rgba\(129, 140, 248, 0\.18\)/)
-  assert.match(styles, /\.messageLink:focus-visible,[\s\S]*?outline: 2px solid #67e8f9/)
+  assert.match(styles, /\.closeButton:hover[\s\S]*?background: rgba\(255, 237, 213, 0\.16\)/)
+  assert.match(styles, /\.messageLink:focus-visible,[\s\S]*?outline: 2px solid var\(--promo-ribbon-focus\)/)
   assert.match(styles, /\.closeButton[\s\S]*?width: 44px[\s\S]*?height: 44px/)
   assert.match(styles, /prefers-reduced-motion: reduce/)
-  assert.doesNotMatch(styles, /#7c2d12|#9a3412/)
 })

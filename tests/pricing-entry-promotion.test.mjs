@@ -67,7 +67,7 @@ test("expired offer is claimable once per India-local day and once per session",
 })
 
 test("pricing entry points and tracking use source-tagged links and confirmed purchases", async () => {
-  const [pricing, subscribe, resultStrip, shell, profile, bootcamp, dispatch, previewNav, firstSession, mobileShell, bootcampRoutes, bootcampErrors, emailRoutes, promotionCss, profileView] = await Promise.all([
+  const [pricing, subscribe, resultStrip, shell, profile, bootcamp, dispatch, previewNav, firstSession, mobileShell, bootcampRoutes, bootcampErrors, emailRoutes, promotionCss, profileView, profileCss] = await Promise.all([
     readFile(new URL("../app/pricing/page.jsx", import.meta.url), "utf8"),
     readFile(new URL("../components/SubscribeButton.jsx", import.meta.url), "utf8"),
     readFile(new URL("../components/CompletionPlansOffer.jsx", import.meta.url), "utf8"),
@@ -93,6 +93,7 @@ test("pricing entry points and tracking use source-tagged links and confirmed pu
     ]),
     readFile(new URL("../components/trial-promotions.module.css", import.meta.url), "utf8"),
     readFile(new URL("../components/ProfileView.jsx", import.meta.url), "utf8"),
+    readFile(new URL("../components/profile-view.module.css", import.meta.url), "utf8"),
   ])
 
   assert.match(pricing, /captureLearningEvent\("pricing_viewed", \{ source, pricing_source: source \}\)/)
@@ -111,6 +112,7 @@ test("pricing entry points and tracking use source-tagged links and confirmed pu
   assert.match(mobileShell, /TrialOfferRibbon screen=\{view\}/)
   assert.match(bootcamp, /TrialOfferRibbon screen="bootcamp"/)
   assert.match(profile, /source=ribbon/)
+  assert.match(profile, /Buy plan · Save 30%/)
   assert.match(profile, /pricing_ribbon_clicked/)
   assert.match(profile, /trial_tracker_seen/)
   assert.match(profile, /trial_day: trialDay/)
@@ -131,4 +133,9 @@ test("pricing entry points and tracking use source-tagged links and confirmed pu
   assert.ok(emailRoutes.some(source => /source=trial_expired_email/.test(source)))
   assert.match(dispatch, /event: "purchase_completed"/)
   assert.doesNotMatch(pricing + subscribe, /captureLearningEvent\("purchase_completed"/)
+  assert.doesNotMatch(profileView, /\n\s*w\s*\n\s*\{isCAT/)
+  assert.match(profileView, /className=\{profileStyles\.statsGrid\}/)
+  assert.match(profileView, /className=\{profileStyles\.actionGrid\}/)
+  assert.match(profileCss, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/)
+  assert.match(profileCss, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/)
 })

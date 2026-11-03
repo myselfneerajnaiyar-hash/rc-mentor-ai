@@ -6,10 +6,11 @@
   height: 44px;
   align-items: center;
   overflow: hidden;
-  border-bottom: 1px solid rgba(129, 140, 248, 0.35);
-  background: linear-gradient(100deg, #0b1024 0%, #1e1b4b 100%);
+  border-bottom: 1px solid var(--promo-ribbon-border);
+  background: var(--promo-ribbon-background);
   color: #f8fafc;
   font: 500 13px/1.2 Arial, Helvetica, sans-serif;
+  box-shadow: var(--promo-ribbon-shadow);
 }
 
 .viewport {
@@ -55,7 +56,7 @@
 
 .messageLink strong,
 .reducedMessage strong {
-  color: #a5b4fc;
+  color: #fff7ed;
   font-weight: 800;
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -66,22 +67,22 @@
 .reducedMessage:focus-visible,
 .closeButton:focus-visible {
   border-radius: 2px;
-  outline: 2px solid #67e8f9;
+  outline: 2px solid var(--promo-ribbon-focus);
   outline-offset: 2px;
 }
 
 .messageLink:hover,
 .reducedMessage:hover {
-  color: #e0e7ff;
+  color: #fff7ed;
 }
 
 .messageLink:hover strong,
 .reducedMessage:hover strong {
-  color: #c7d2fe;
+  color: #ffedd5;
 }
 
 .separator {
-  color: #a5b4fc;
+  color: #ffedd5;
   font-size: 16px;
   line-height: 1;
 }
@@ -109,11 +110,11 @@
 }
 
 .closeButton:hover {
-  background: rgba(129, 140, 248, 0.18);
+  background: rgba(255, 237, 213, 0.16);
 }
 
 .closeButton:active {
-  background: rgba(129, 140, 248, 0.28);
+  background: rgba(255, 237, 213, 0.24);
 }
 
 .closeButton span {
