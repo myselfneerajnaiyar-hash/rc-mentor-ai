@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import usePricingVisibility from "@/components/usePricingVisibility";
 
 const FAQS = [
   {
@@ -81,6 +82,9 @@ const faqStructuredData = {
 };
 
 export default function FaqSection() {
+  const showPricing = usePricingVisibility();
+  const visibleFaqs = showPricing ? FAQS : FAQS.filter(({ question }) => !/cost|free trial/i.test(question));
+  const visibleStructuredData = { ...faqStructuredData, mainEntity: visibleFaqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) };
   return (
     <section
       aria-labelledby="auctor-rc-faq-heading"
@@ -88,7 +92,7 @@ export default function FaqSection() {
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(visibleStructuredData) }}
       />
 
       <div className="mx-auto max-w-5xl">
@@ -105,7 +109,7 @@ export default function FaqSection() {
         </div>
 
         <Accordion type="single" collapsible className="grid gap-4">
-          {FAQS.map(({ question, answer }, index) => (
+          {visibleFaqs.map(({ question, answer }, index) => (
             <AccordionItem
               key={question}
               value={`faq-${index + 1}`}

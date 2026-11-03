@@ -307,6 +307,7 @@ test("Inbox JSX parses and real components render rows, selection, folders and s
     if (name === "lucide-react") return icons
     if (name === "next/navigation") return { useRouter: () => ({ push() {} }) }
     if (name.includes("TenantProvider")) return { useTenant: () => ({ branding: { brandName: "Auctor" } }) }
+    if (name.includes("pricingVisibility")) return { canShowPricingForProfile: () => true }
     if (name.includes("TenantLogo")) return { __esModule: true, default: () => React.createElement("span", null, "Auctor") }
     if (name.includes(".css")) return { __esModule: true, default: new Proxy({}, { get: (_, key) => key }) }
     if (name.includes("/state")) return state

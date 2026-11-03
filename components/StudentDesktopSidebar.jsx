@@ -4,10 +4,11 @@ import { BookOpen, Brain, Flame, GraduationCap, Home, MessageSquare, Puzzle, Spe
 import { TrialStatusChip } from "@/components/TrialPromotions"
 import TenantLogo from "@/components/tenant/TenantLogo"
 import { GRAMMAR_ENABLED } from "@/lib/mobile/features.mjs"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 const FREE_VIEWS = new Set(["home", "bootcamp", "workout", "hangman", "profile", "cat"])
 
-export function getStudentNavigationItems({ capabilities = {}, entitlement = {} } = {}) {
+export function getStudentNavigationItems({ capabilities = {}, entitlement = {}, showPricing = true } = {}) {
   return [
     { id: "home", label: "Home", icon: Home },
     ...(capabilities.isCAT ? [{ id: "bootcamp", label: "Boot Camp", icon: Target }] : []),
@@ -20,7 +21,7 @@ export function getStudentNavigationItems({ capabilities = {}, entitlement = {} 
     { id: "speed", label: "Speed", icon: Timer },
     { id: "hangman", label: "Word Hunt", icon: Puzzle },
     { id: "mentor", label: "Ask Birbal", icon: MessageSquare },
-    ...(!entitlement.isInstituteStudent ? [{ id: "premium", label: "See plans", icon: Trophy }] : []),
+    ...(showPricing && !entitlement.isInstituteStudent ? [{ id: "premium", label: "See plans", icon: Trophy }] : []),
     { id: "profile", label: "Profile", icon: User },
   ]
 }
@@ -34,7 +35,8 @@ export default function StudentDesktopSidebar({
   onNavigate,
   navItems: providedNavItems,
 }) {
-  const navItems = providedNavItems || getStudentNavigationItems({ capabilities, entitlement })
+  const showPricing = usePricingVisibility()
+  const navItems = providedNavItems || getStudentNavigationItems({ capabilities, entitlement, showPricing })
 
   return (
     <aside

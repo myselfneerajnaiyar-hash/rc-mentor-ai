@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import TenantLogo from "@/components/tenant/TenantLogo";
 import { useTenant } from "@/components/providers/TenantProvider";
+import usePricingVisibility from "@/components/usePricingVisibility";
 import { captureFirstSessionEvent } from "@/lib/firstSession/analytics";
 import { diagnosticCompletionProperties, diagnosticReportProperties } from "@/lib/firstSession/analyticsProperties.mjs";
 import { buildFirstSessionInsight, formatParagraphGroup, studentOptionText } from "@/lib/firstSession/diagnostic.mjs";
@@ -78,6 +79,7 @@ function renderEvidenceParagraph(paragraph, evidenceLine) {
 }
 
 export default function FirstSessionPage() {
+  const showPricing = usePricingVisibility();
   const router = useRouter();
   const { branding } = useTenant();
   const [session, setSession] = useState(null);
@@ -722,7 +724,7 @@ export default function FirstSessionPage() {
           </article>
         </section>
 
-        {phase === "DIAGNOSTIC_COMPLETED" || phase === "DIAGNOSIS_VIEWED" || phase === "DAILY_RC_MISSION" ? <section className="fs-mission fs-next-move"><p className="fs-eyebrow">YOUR NEXT MOVE</p><h2>Today&apos;s RC</h2>{session.mission && <div className="fs-mission-meta">Today&apos;s challenge · {session.mission.questions_count || 4} questions · {session.mission.timer_minutes || 8} minutes</div>}<div className="fs-student-offer"><div><span>STUDENT BENEFIT</span><b>30% OFF TODAY</b><small>Use code AUCTOR30 at checkout</small></div><a href="/pricing?coupon=AUCTOR30&source=first_session_offer" data-pricing-source="first_session_offer">See plans →</a></div><button className={`fs-primary${homeNavigationPending ? " is-loading" : ""}`} onClick={goToHome} disabled={homeNavigationPending} aria-busy={homeNavigationPending}><span>{homeNavigationPending ? "Taking you to Home…" : "Keep Practising →"}</span>{homeNavigationPending && <i className="fs-home-spinner" aria-hidden="true" />}</button>{!session.mission && <p className="fs-mission-unavailable">Today&apos;s Daily RC is not published yet. Your diagnostic is saved.</p>}</section> : <div className="fs-next-loading">Preparing your report…</div>}
+{phase === "DIAGNOSTIC_COMPLETED" || phase === "DIAGNOSIS_VIEWED" || phase === "DAILY_RC_MISSION" ? <section className="fs-mission fs-next-move"><p className="fs-eyebrow">YOUR NEXT MOVE</p><h2>Today&apos;s RC</h2>{session.mission && <div className="fs-mission-meta">Today&apos;s challenge · {session.mission.questions_count || 4} questions · {session.mission.timer_minutes || 8} minutes</div>}{showPricing && <div className="fs-student-offer"><div><span>STUDENT BENEFIT</span><b>30% OFF TODAY</b><small>Use code AUCTOR30 at checkout</small></div><a href="/pricing?coupon=AUCTOR30&source=first_session_offer" data-pricing-source="first_session_offer">See plans →</a></div>}<button className={`fs-primary${homeNavigationPending ? " is-loading" : ""}`} onClick={goToHome} disabled={homeNavigationPending} aria-busy={homeNavigationPending}><span>{homeNavigationPending ? "Taking you to Home…" : "Keep Practising →"}</span>{homeNavigationPending && <i className="fs-home-spinner" aria-hidden="true" />}</button>{!session.mission && <p className="fs-mission-unavailable">Today&apos;s Daily RC is not published yet. Your diagnostic is saved.</p>}</section> : <div className="fs-next-loading">Preparing your report…</div>}
         </div>}
 
         {reportTab === "review" && <div id="fs-panel-review" role="tabpanel" aria-labelledby="fs-tab-review" className="fs-review-tab">

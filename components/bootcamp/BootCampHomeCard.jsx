@@ -5,8 +5,10 @@ import { Activity, CalendarCheck, CheckCircle, Target, Trophy } from 'lucide-rea
 import { bootcampRequest } from '@/lib/bootcamp/client'
 import { buildAttributedPath, readBrowserAttribution } from '@/lib/attribution.mjs'
 import { getBootCampHomeBannerState, getBootCampHomeCardVariant } from '@/lib/bootcamp/presentation.mjs'
+import usePricingVisibility from '@/components/usePricingVisibility'
 import s from './bootcamp.module.css'
 export default function BootCampHomeCard({ userId }) {
+  const showPricing=usePricingVisibility()
   const [catalog,setCatalog]=useState(null)
   const [access,setAccess]=useState(null)
   const [routes,setRoutes]=useState({query:'',purchase:'/pricing?offer=bootcamp&source=bootcamp_home'})
@@ -16,6 +18,7 @@ export default function BootCampHomeCard({ userId }) {
   const included=variant==='included'
   const banner=getBootCampHomeBannerState(access,catalog)
   const href=banner.destination==='purchase'?routes.purchase:`${banner.href}${routes.query}`
+  if(!showPricing&&!included)return null
   const liveAt=banner.headline.indexOf('live.')
   const headline=liveAt<0?banner.headline:<>{banner.headline.slice(0,liveAt)}<span className={s.homeLive}>live.</span>{banner.headline.slice(liveAt+5)}</>
   return <section className={s.homeCard} aria-labelledby="home-bootcamp-title" data-testid="bootcamp-home-card" data-variant={variant}>

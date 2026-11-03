@@ -6,10 +6,12 @@ import { supabase } from '@/lib/supabase'
 import { attributionFromParams, buildAttributedPath, readBrowserAttribution } from '@/lib/attribution.mjs'
 import { BOOTCAMP_CALENDAR, BOOTCAMP_BUFFER_DAYS, BOOTCAMP_PROGRAM_END, bootCampDateLabel } from '@/lib/bootcamp/calendar.mjs'
 import s from '../page.module.css'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 const CAT_DATE = '2026-11-29'
 
 export default function AcquisitionStart() {
+  const showPricing = usePricingVisibility()
   const router = useRouter()
   const searchParams = useSearchParams()
   const [state, setState] = useState('checking')
@@ -56,6 +58,8 @@ export default function AcquisitionStart() {
 
   if (state === 'checking') return <main className={s.placeholder}><p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p><h1>Checking your Bootcamp access.</h1></main>
   if (state === 'error') return <main className={s.placeholder}><p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p><h1>We couldn’t verify your access.</h1><p>Please return to the Bootcamp overview and try again.</p><a className={s.cta} href="/bootcamp-2026">Back to the Bootcamp overview</a></main>
+
+  if (!showPricing) return <main className={s.placeholder}><p className={s.sectionLabel}>CAT 2026 · VARC BOOT CAMP</p><h1>Your institute manages your Bootcamp access.</h1><a className={s.cta} href="/boot-camp">Continue to Boot Camp</a></main>
 
   const pricingHref = buildAttributedPath('/pricing', readBrowserAttribution(), { offer: 'bootcamp', source: 'bootcamp_acquisition' })
   return <main className={s.placeholder}>

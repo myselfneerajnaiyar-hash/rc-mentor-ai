@@ -4,8 +4,10 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"
 import WhatsAppContactLink from "@/components/WhatsAppContactLink"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 export default function PreviewNavbar({ homeHref = "/preview", authenticated = false }) {
+  const showPricing = usePricingVisibility()
 
   const router = useRouter();
   const pathname = usePathname();
@@ -56,9 +58,9 @@ export default function PreviewNavbar({ homeHref = "/preview", authenticated = f
     About Us
   </a>
 
-  <a href="/pricing?source=preview_nav" className="hover:text-orange-400 transition" data-pricing-source="preview_nav">
+  {showPricing && <a href="/pricing?source=preview_nav" className="hover:text-orange-400 transition" data-pricing-source="preview_nav">
     See plans
-  </a>
+  </a>}
 
   <a href="/contact" className="hover:text-orange-400 transition">
     Contact
@@ -108,13 +110,13 @@ export default function PreviewNavbar({ homeHref = "/preview", authenticated = f
         About Us
       </a>
 
-      <a
+      {showPricing && <a
         href="/pricing?source=preview_nav"
         data-pricing-source="preview_nav"
         className="py-4 border-b border-white/5 text-lg"
       >
         See plans
-      </a>
+      </a>}
 
       <a
         href="/contact"

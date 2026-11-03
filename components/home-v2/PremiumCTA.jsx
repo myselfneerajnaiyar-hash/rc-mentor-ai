@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
+import usePricingVisibility from "@/components/usePricingVisibility";
 
 import {
   Crown,
@@ -15,6 +16,7 @@ import {
 
 
 export default function PremiumCTA() {
+    const showPricing = usePricingVisibility();
     const scrollRef = useRef(null);
 const [activeIndex, setActiveIndex] = useState(0);
 
@@ -65,6 +67,8 @@ const handleScroll = () => {
       iconColor: "text-amber-300",
     },
   ];
+
+  if (!showPricing) return null;
 
   return (
     <section className="relative overflow-hidden py-14">

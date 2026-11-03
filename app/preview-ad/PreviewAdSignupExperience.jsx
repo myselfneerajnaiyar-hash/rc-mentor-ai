@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { attributionParams, buildAttributedPath, persistBrowserAttribution, readBrowserAttribution } from '@/lib/attribution.mjs'
 import { captureSignupConversion, captureGoogleLoginFailure } from '@/lib/analytics/conversionEvents.mjs'
 import { classifySignupResult, ensureSignupSession, runSingleFlight, validateSignupForm } from '@/lib/onboarding/profileValidation.mjs'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 function inAppBrowser() {
   return /Instagram|FBAN|FBAV|FB_IAB|FBIOS|FB4A|MessengerForiOS|FBMessenger/i.test(navigator.userAgent || '')
@@ -100,6 +101,7 @@ function SignupCard({ placement, email, setEmail, password, setPassword, showPas
 
 export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly = false }) {
   const router = useRouter()
+  const showPricing = usePricingVisibility()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -121,7 +123,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   useEffect(() => {
     setInteractive(true)
     persistBrowserAttribution(new URLSearchParams(window.location.search))
-    if (ctaOnly) return undefined
+    if (!showPricing || ctaOnly) return undefined
     const oauthError = new URLSearchParams(window.location.search).get('signup_error')
     if (oauthError === 'google') {
       setError('Something went wrong. Please try again.')
@@ -176,7 +178,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
       window.removeEventListener('resize', updateSticky)
       document.removeEventListener('click', onLoginClick)
     }
-  }, [ctaOnly])
+  }, [ctaOnly, showPricing])
 
   const currentAttribution = useCallback(() => {
     if (typeof window === 'undefined') return initialAttribution || { firstTouch: {}, lastTouch: {} }
@@ -304,6 +306,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   }, [currentAttribution, loading, reportFailure])
 
   const formProps = { email, setEmail, password, setPassword, showPassword, setShowPassword, loading, interactive, error, confirmationMessage, fieldErrors, loginHref: loginHref(), clearFieldError }
+  if (!showPricing) return null
   if (ctaOnly) return <button className="ad-feature-cta" type="button" onClick={() => focusPrimarySignup('feature_showcase')}>
     <strong>Start your free 3-day trial</strong><span>No card needed</span>
   </button>

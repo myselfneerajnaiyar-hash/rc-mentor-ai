@@ -19,6 +19,7 @@ from "@/lib/birbal/generateCoachPlan";
 import BirbalWelcomeModal
 from "@/components/BirbalWelcomeModal";
 import { useTenant } from "@/components/providers/TenantProvider";
+import usePricingVisibility from "@/components/usePricingVisibility";
 import {
   Brain,
   BookOpen,
@@ -43,6 +44,7 @@ function getGreeting() {
 
 export default function HomeView({ setView, startAdaptiveRC, userName, user, exam, }) {
 const { entitlement } = useTenant()
+const showPricing = usePricingVisibility()
 const normalizedExam = exam?.trim().toUpperCase() || "";
 
 const isCAT = normalizedExam === "CAT";
@@ -796,7 +798,7 @@ if (user?.id) {
 </Card>
 )}
 
-     <Card
+     {showPricing && <Card
   onClick={() => router.push("/pricing?source=legacy_home_membership_card")}
   className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-amber-500/20 rounded-3xl shadow-xl">
 
@@ -851,7 +853,7 @@ if (user?.id) {
 
   </CardContent>
 
-</Card>
+</Card>}
 
 
       {/* ================= DAILY WORKOUT ================= */}
@@ -1038,14 +1040,14 @@ if (user?.id) {
   onClick={() => {
 
     // FREE USER + trial expired
-    if (!isPremium && trialExpired) {
+    if (!isPremium && trialExpired && showPricing) {
 
       router.push("/pricing?source=legacy_home_trial_expired")
       return
     }
 
     // no credits left
-    if (birbalCredits <= 0) {
+    if (birbalCredits <= 0 && showPricing) {
 
       router.push("/pricing?source=legacy_home_birbal_credits")
       return

@@ -18,8 +18,10 @@ import BootCampReviewBoundary from './BootCampReviewBoundary'
 import { validateReview } from '@/lib/bootcamp/review.mjs'
 import BootCampDayReport from './BootCampDayReport'
 import s from './bootcamp.module.css'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 export default function BootCampSession({ dayRoute = false, reportRoute = false, dayNumber = 1, initialIstDate, preview = false }) {
+  const showPricing = usePricingVisibility()
   const router=useRouter()
   const rawRequestSession = preview ? bootcampPreviewRequest : request
   const [celebrating,setCelebrating]=useState(false)
@@ -278,7 +280,7 @@ export default function BootCampSession({ dayRoute = false, reportRoute = false,
       setReview(value)
     } catch (e) { setError(e); setSelectedReviewKey(session.currentBlock) }
   }
-  const errorPanel = error && <div className={s.error} role="alert">{error.message}<div className={s.actions}>{error.status === 401 ? <Link className={s.primary} href="/login">Sign in</Link> : <><button className={s.secondary} disabled={busy} onClick={reload}>{preview ? 'Reload preview' : 'Reload saved progress'}</button>{error.status===402?<Link className={s.primary} href="/pricing?source=bootcamp_session_error">View plans</Link>:<Link href={preview ? '/cat-varc-bootcamp' : '/boot-camp'}>{preview ? 'Back to preview' : 'Back to Boot Camp'}</Link>}</>}</div></div>
+  const errorPanel = error && <div className={s.error} role="alert">{error.status===402&&!showPricing?'Your institute manages access to this Boot Camp.':error.message}<div className={s.actions}>{error.status === 401 ? <Link className={s.primary} href="/login">Sign in</Link> : <><button className={s.secondary} disabled={busy} onClick={reload}>{preview ? 'Reload preview' : 'Reload saved progress'}</button>{error.status===402&&showPricing?<Link className={s.primary} href="/pricing?source=bootcamp_session_error">View plans</Link>:<Link href={preview ? '/cat-varc-bootcamp' : '/boot-camp'}>{preview ? 'Back to preview' : 'Back to Boot Camp'}</Link>}</>}</div></div>
   const chatPanel = !preview && chat && <BootCampChat key={`${session?.id || 'plan'}:${chat.block || 'day'}:${chat.questionId || 'block'}`} attemptId={session?.id} dayNumber={dayRoute?dayNumber:catalog?.currentDay || 1} block={chat.block} questionId={chat.questionId} open={chat.open} onClose={()=>setChat(c=>c ? {...c,open:false} : null)} />
   if (!dayRoute) return <BootCampShell>{errorPanel}<BootCampArena catalog={catalog} session={session} busy={busy} unavailable={!!error} initialIstDate={initialIstDate} onChat={()=>setChat({open:true})} />{chatPanel}</BootCampShell>
   const selectedDay=catalog?.days?.find(d=>d.day===dayNumber)

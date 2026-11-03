@@ -1,11 +1,13 @@
 import Link from "next/link"
 import { useTenant } from "@/components/providers/TenantProvider"
 import { getTrialPromotionState } from "@/lib/tenant/trialPromotions.mjs"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 export default function CompletionPlansOffer({ className = "" }) {
   const { profile, entitlement } = useTenant()
+  const showPricing = usePricingVisibility()
   const trial = getTrialPromotionState({ profile, entitlement })
-  if (trial.type !== "active") return null
+  if (!showPricing || trial.type !== "active") return null
 
   return (
     <aside className={`flex flex-col gap-3 rounded-2xl border border-orange-400/50 bg-gradient-to-r from-orange-950/80 via-slate-900 to-slate-900 p-4 shadow-lg shadow-orange-950/30 sm:flex-row sm:items-center sm:justify-between sm:px-5 ${className}`.trim()} aria-label="Auctor plans offer">

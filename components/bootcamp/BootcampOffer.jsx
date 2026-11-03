@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { buildAttributedPath, readBrowserAttribution } from '@/lib/attribution.mjs'
 import s from './arena.module.css'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 const CAT_EXAM = new Date('2026-11-29T00:00:00+05:30').getTime()
 
 export default function BootcampOffer() {
+  const showPricing=usePricingVisibility()
   const [access, setAccess] = useState(null)
   const [user, setUser] = useState(null)
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function BootcampOffer() {
     return () => { active = false }
   }, [])
 
-  if (!['day1_free', 'first_free'].includes(access?.source)) return null
+  if (!showPricing || !['day1_free', 'first_free'].includes(access?.source)) return null
   const daysLeft = Math.max(1, Math.ceil((CAT_EXAM - Date.now()) / 86400000))
   const pricingHref = buildAttributedPath('/pricing', readBrowserAttribution(), { offer: 'bootcamp', source: 'bootcamp_offer' })
   return <aside className={s.bootcampOffer} aria-label="Unlock the full Bootcamp">

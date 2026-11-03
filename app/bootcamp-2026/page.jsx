@@ -5,6 +5,7 @@ import s from './page.module.css'
 import BootcampAccessCTA from '@/components/bootcamp/BootcampAccessCTA'
 import { BOOTCAMP_CURRICULUM_TOTALS, BOOTCAMP_DAILY_STRUCTURE } from '@/lib/bootcamp/program.mjs'
 import { BOOTCAMP_CALENDAR, BOOTCAMP_BUFFER_DAYS, BOOTCAMP_PROGRAM_END, bootCampDateLabel } from '@/lib/bootcamp/calendar.mjs'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 const CAT_DATE = '2026-11-29T00:00:00+05:30'
 
@@ -124,6 +125,7 @@ function CTA({ location, children = 'Start Day 1 for free', className = '' }) {
   )
 }
 export default function Bootcamp2026Page() {
+  const showPricing = usePricingVisibility()
   const [days, setDays] = useState(daysToCat())
 
   useEffect(() => {
@@ -399,7 +401,7 @@ export default function Bootcamp2026Page() {
       </section>
 
       <section className={s.offerFaq}>
-        <article className={s.offer}>
+        {showPricing && <article className={s.offer}>
           <div className={s.panelEyebrow}>THE FULL 45-DAY BOOT CAMP</div>
           <div className={s.price}>
   <del>₹999</del>
@@ -414,7 +416,7 @@ export default function Bootcamp2026Page() {
           <small>Day 1 is free, so you can see how it works first.</small>
           <p className={s.offerSchedule}>The 45 training days run from {bootCampDateLabel(BOOTCAMP_CALENDAR[0].date)} to {bootCampDateLabel(BOOTCAMP_CALENDAR.at(-1).date)}, followed by {BOOTCAMP_BUFFER_DAYS} buffer days through {bootCampDateLabel(BOOTCAMP_PROGRAM_END)}. CAT is scheduled for {bootCampDateLabel(CAT_DATE.slice(0, 10))}.</p>
           <CTA location="price" />
-        </article>
+        </article>}
 
         <div className={s.faq}>
           <h2>Quick answers</h2>
@@ -448,7 +450,7 @@ export default function Bootcamp2026Page() {
     q: 'What does the ₹799 offer include?',
     a: 'The 45-day guided Boot Camp, daily VARC practice, Birbal review, progress insights and leaderboard features. Day 1 is free to try.'
   }
-].map(({ q, a }) => (
+].filter(({ q }) => showPricing || !q.includes('offer include')).map(({ q, a }) => (
   <details
     key={q}
     onToggle={(e) => {
@@ -471,10 +473,10 @@ export default function Bootcamp2026Page() {
 
       <footer className={s.footer}><span>Auctor RC · Focused CAT VARC practice</span><a href="/privacy">Privacy</a></footer>
 
-      <div className={s.sticky}>
+      {showPricing && <div className={s.sticky}>
         <div><b>45-DAY BOOT CAMP</b><span>{days} days to CAT · <del>₹999</del> <strong>₹799</strong> full access</span></div>
         <CTA location="sticky">Start Day 1 free</CTA>
-      </div>
+      </div>}
     </main>
   )
 }

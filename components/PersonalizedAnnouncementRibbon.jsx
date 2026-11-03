@@ -12,6 +12,7 @@ import {
   shouldShowAnnouncementRibbon,
 } from "@/lib/announcementRibbon.mjs"
 import styles from "./personalized-announcement-ribbon.module.css"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 function isPublicBootcampPath(pathname) {
   return pathname === "/bootcamp-2026" || pathname?.startsWith("/bootcamp-2026/")
@@ -21,6 +22,7 @@ export default function PersonalizedAnnouncementRibbon() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tenant = useTenant()
+  const showPricing = usePricingVisibility()
   const publicBootcamp = isPublicBootcampPath(pathname)
   const [bootcampSession, setBootcampSession] = useState({ ready: false, context: null })
   const [bootcampAccess, setBootcampAccess] = useState({ ready: false, userId: null, access: null })
@@ -84,7 +86,10 @@ export default function PersonalizedAnnouncementRibbon() {
     bootcampAccess: accessReady ? bootcampAccess.access : null,
     bootcampAccessReady: accessReady,
   }), [accessReady, bootcampAccess.access, context?.capabilities, context?.exam, context?.profile])
-  const messages = useMemo(() => getAnnouncementRibbonMessages(audience), [audience])
+  const messages = useMemo(() => {
+    const allMessages = getAnnouncementRibbonMessages(audience)
+    return showPricing ? allMessages : allMessages.filter(message => !message.href?.startsWith("/pricing") && !/\b(?:off|buy plan|offer)\b/i.test(message.text))
+  }, [audience, showPricing])
 
   useEffect(() => {
     const userId = context?.user?.id || null

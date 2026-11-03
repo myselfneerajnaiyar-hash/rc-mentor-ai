@@ -11,10 +11,12 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import usePricingVisibility from "@/components/usePricingVisibility";
 
 export default function TestSeriesHero({setView, instituteAccess = false}) {
 
     const router = useRouter();
+    const showPricing = usePricingVisibility();
   return (
     <section className="py-8">
 
@@ -81,7 +83,7 @@ export default function TestSeriesHero({setView, instituteAccess = false}) {
                 10 AI Mock Tests
               </div>
 
-              <div className="rounded-full bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
+              <div hidden={!showPricing} className="rounded-full bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
                 {instituteAccess ? "Included by your institute" : "₹799 One Time"}
               </div>
 
@@ -251,7 +253,7 @@ export default function TestSeriesHero({setView, instituteAccess = false}) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-600 to-blue-700 p-5">
+        <div hidden={!showPricing} className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-600 to-blue-700 p-5">
 
           <div className="text-sm font-semibold text-cyan-100">
             {instituteAccess ? "Institute Access" : "Launch Price"}

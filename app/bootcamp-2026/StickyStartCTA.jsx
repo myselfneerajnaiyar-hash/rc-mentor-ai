@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import s from './page.module.css'
 import BootcampAccessCTA from '@/components/bootcamp/BootcampAccessCTA'
+import usePricingVisibility from '@/components/usePricingVisibility'
 
 export default function StickyStartCTA({ href, daysLeft }) {
+  const showPricing = usePricingVisibility()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -21,6 +23,7 @@ export default function StickyStartCTA({ href, daysLeft }) {
     return () => { heroObserver.disconnect(); finalObserver.disconnect() }
   }, [])
 
+  if (!showPricing) return null
   return <div className={`${s.stickyCta} ${visible ? s.stickyVisible : ''}`} aria-hidden={!visible}>
     <span className={s.stickyLabel}>
   <span>45-DAY BOOT CAMP</span>

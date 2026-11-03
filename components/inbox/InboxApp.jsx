@@ -14,6 +14,7 @@ import TenantLogo from "@/components/tenant/TenantLogo"
 import styles from "./inbox.module.css"
 import { createInboxRequest } from "@/lib/inbox/request"
 import { internalPath } from "@/lib/inbox/validation"
+import { canShowPricingForProfile } from "@/lib/tenant/pricingVisibility.mjs"
 import { mergeMessages, reconcileMessages, reconcileDetail, requestGate, publishInboxUpdate, inboxUndo } from "@/lib/inbox/state"
 
 const FILTERS = ["ALL", "UNREAD", "STUDY", "PROGRESS", "ACHIEVEMENTS", "REMINDERS", "OFFERS"]
@@ -28,7 +29,10 @@ const api = createInboxRequest(() => supabase.auth.getSession())
 
 export default function InboxApp() {
   const router = useRouter()
-  const { branding } = useTenant()
+  const { branding, profile, loading: tenantLoading } = useTenant()
+  const showPricing = canShowPricingForProfile(profile, { loading: tenantLoading })
+  const suppressInstituteOffers = !showPricing
+  const visibleFilters = showPricing ? FILTERS : FILTERS.filter((item) => item !== "OFFERS")
   const [messages, setMessages] = useState([])
   const [selected, setSelected] = useState(new Set())
   const [active, setActive] = useState(null)
@@ -66,7 +70,8 @@ export default function InboxApp() {
       if (nextCursor) params.set("cursor", nextCursor)
       const result = await api(`/api/inbox?${params}`, { signal: ticket.signal })
       if (!ticket.current() || !mounted.current) return
-      setMessages((current) => append ? mergeMessages(current, result.messages) : result.messages)
+      const visibleMessages = suppressInstituteOffers ? result.messages.filter(message => !["OFFER", "TRIAL"].includes(message.type)) : result.messages
+      setMessages((current) => append ? mergeMessages(current, visibleMessages) : visibleMessages)
       if (Number.isInteger(result.unreadCount)) setUnreadCount(result.unreadCount)
       setHasMore(result.hasMore)
       setCursor(result.nextCursor)
@@ -76,7 +81,7 @@ export default function InboxApp() {
     } finally {
       if (ticket.current() && mounted.current) { setLoading(false); setLoadingMore(false) }
     }
-  }, [filter, folder, search])
+  }, [filter, folder, search, suppressInstituteOffers])
   useEffect(() => { load(); return () => listGate.current.cancel() }, [load])
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; mutationController.current?.abort(); listGate.current.cancel(); detailGate.current.cancel() } }, [])
   useEffect(() => {
@@ -159,7 +164,7 @@ export default function InboxApp() {
         <nav className={styles.folders} aria-label="Message folders">{["INBOX", "ARCHIVE", "TRASH"].map((item) => <button key={item} disabled={busy} aria-current={folder === item ? "page" : undefined} onClick={() => changeView("ALL", item)}>{label(item)}</button>)}<button disabled={busy || loading || searchPending} onClick={() => load()}>Refresh</button></nav>
         <div className={styles.inboxFrame}>
           <div className={styles.filters} role="tablist" aria-label="Inbox filters">
-            {FILTERS.map((item) => <button key={item} role="tab" aria-selected={filter === item} className={filter === item ? styles.activeFilter : ""} disabled={busy} onClick={() => changeView(item)}>{label(item)}{item === "UNREAD" && unreadCount > 0 && <span>{unreadCount > 99 ? "99+" : unreadCount}</span>}</button>)}
+            {visibleFilters.map((item) => <button key={item} role="tab" aria-selected={filter === item} className={filter === item ? styles.activeFilter : ""} disabled={busy} onClick={() => changeView(item)}>{label(item)}{item === "UNREAD" && unreadCount > 0 && <span>{unreadCount > 99 ? "99+" : unreadCount}</span>}</button>)}
           </div>
 
 

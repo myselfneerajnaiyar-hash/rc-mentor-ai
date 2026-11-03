@@ -8,6 +8,7 @@ import { useTenant } from "@/components/providers/TenantProvider"
 import { supabase } from "@/lib/supabase"
 import { captureLearningEvent } from "@/lib/learningAnalytics"
 import { captureFirstSessionEvent } from "@/lib/firstSession/analytics"
+import usePricingVisibility from "@/components/usePricingVisibility"
 import {
   claimTrialEndedOffer,
   getTrialPromotionState,
@@ -106,6 +107,7 @@ function usePromotionState() {
 
 export function TrialStatusChip({ className = "" }) {
   const { user, state } = usePromotionState()
+  const showPricing = usePricingVisibility()
   const trialDay = state.type === "active" ? state.trialDay : null
 
   useEffect(() => {
@@ -117,7 +119,7 @@ export function TrialStatusChip({ className = "" }) {
     }, `trial_tracker_seen_day_${trialDay}`)
   }, [trialDay, user?.id])
 
-  if (state.type !== "active") return null
+  if (!showPricing || state.type !== "active") return null
 
   return (
     <Link
@@ -133,7 +135,8 @@ export function TrialStatusChip({ className = "" }) {
 
 export function TrialOfferRibbon({ className = "", screen = "home" }) {
   const { state } = usePromotionState()
-  if (state.type !== "active") return null
+  const showPricing = usePricingVisibility()
+  if (!showPricing || state.type !== "active") return null
 
   return (
     <aside className={`${styles.ribbon} ${className}`.trim()} aria-label="Trial plan offer">
@@ -167,12 +170,13 @@ function shouldOfferOnPath(pathname) {
 export function TrialEndedOffer() {
   const pathname = usePathname()
   const { user, profile, entitlement, now, state } = usePromotionState()
+  const showPricing = usePricingVisibility()
   const [visibleKey, setVisibleKey] = useState(null)
   const [dismissed, setDismissed] = useState(false)
   const [claimedInMemory, setClaimedInMemory] = useState(false)
 
   useEffect(() => {
-    if (state.type !== "expired" || !user?.id || !shouldOfferOnPath(pathname) || claimedInMemory) return
+    if (!showPricing || state.type !== "expired" || !user?.id || !shouldOfferOnPath(pathname) || claimedInMemory) return
     let dailyStorage
     let sessionStorage
     try {
@@ -185,9 +189,9 @@ export function TrialEndedOffer() {
     setClaimedInMemory(true)
     setDismissed(false)
     setVisibleKey(`${user.id}:${state.expiresAt}`)
-  }, [claimedInMemory, entitlement, now, pathname, profile, state, user?.id])
+  }, [claimedInMemory, entitlement, now, pathname, profile, showPricing, state, user?.id])
 
-  if (!visibleKey || dismissed || state.type !== "expired" || !shouldOfferOnPath(pathname)) return null
+  if (!showPricing || !visibleKey || dismissed || state.type !== "expired" || !shouldOfferOnPath(pathname)) return null
 
   const price = getSubscriptionPrice(OFFERED_PLAN, COUPON, 30)
   return (
@@ -217,6 +221,7 @@ export function TrialEndedOffer() {
 
 export function ProfilePlanRow() {
   const { profile, entitlement, state } = usePromotionState()
+  const showPricing = usePricingVisibility()
   const planStatus = entitlement?.isInstituteStudent
     ? "Institute access"
     : entitlement?.isPremium || ["subscription", "premium", "cat_test_series"].includes(entitlement?.kind)
@@ -228,6 +233,8 @@ export function ProfilePlanRow() {
           : profile?.trial_expires_at
             ? "Free plan"
             : "No active plan"
+
+  if (!showPricing) return null
 
   return (
     <section className={styles.profilePlan} aria-label="My plan">

@@ -32,7 +32,7 @@ test("trial status remains dynamic below the desktop logo and uses its existing 
   ])
 
   assert.match(sidebar, /<TrialStatusChip className="mt-4 self-start"\s*\/>/)
-  assert.match(promotions, /if \(state\.type !== "active"\) return null/)
+  assert.match(promotions, /if \(!showPricing \|\| state\.type !== "active"\) return null/)
   assert.match(promotions, /href="\/pricing\?source=trial_chip"/)
   assert.match(dashboard, /window\.innerWidth < 768/)
   assert.match(dashboard, /isMobile === false[\s\S]*?<StudentDesktopSidebar/)

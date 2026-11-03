@@ -7,9 +7,11 @@ import { useRouteTab } from '@/lib/mobile/useRouteTab';
 import { captureLearningEvent } from '@/lib/learningAnalytics';
 import ActivityIcon from './ActivityIcon';
 import CategoryTabs from './CategoryTabs';
+import usePricingVisibility from '@/components/usePricingVisibility';
 const categories=[{value:'daily',group:'Daily',label:'Daily Practice'},{value:'reading',group:'Reading',label:'Reading'},{value:'verbal',group:'Verbal & speed',label:'Verbal & Speed'},{value:'testing',group:'Testing',label:'Testing'},{value:'tools',group:'Your tools',label:'Your Tools'}];
 export default function PracticeHub(){
  const {capabilities,entitlement}=useTenant();
+ const showPricing=usePricingVisibility();
  const router=useRouter();const features=visibleFeatures(capabilities);
  const tabs=categories.filter(category=>features.some(feature=>feature.group===category.group));
  const [active,setActive]=useRouteTab(tabs.map(tab=>tab.value),'daily');
@@ -19,9 +21,9 @@ export default function PracticeHub(){
   <header className="mobile-hub-heading"><p className="mobile-eyebrow">Find your focus</p><h1>Practice</h1><p>Daily habits, focused skills and deeper challenges.</p></header>
   <CategoryTabs id="practice-category" label="Practice categories" tabs={tabs} active={active} onChange={setActive}/>
   <section className="practice-group" role="tabpanel" id="practice-category-panel" aria-labelledby={'practice-category-'+active} tabIndex={0}>
-   <h2>{selected.label}</h2><div className="practice-grid">{features.filter(f=>f.group===selected.group).map(f=><button type="button" className="practice-row" data-activity={f.id} key={f.id} onClick={()=>{if(f.premium&&!entitlement.hasAccess){captureLearningEvent('premium_feature_click',{feature:f.id});router.push(`/pricing?source=practice_locked&returnTo=${encodeURIComponent(f.href || '/')}`);}else{captureLearningEvent('practice_feature_start',{feature:f.id});router.push(f.href);}}}>
+   <h2>{selected.label}</h2><div className="practice-grid">{features.filter(f=>f.group===selected.group).map(f=><button type="button" className="practice-row" data-activity={f.id} key={f.id} onClick={()=>{if(f.premium&&!entitlement.hasAccess){captureLearningEvent('premium_feature_click',{feature:f.id});if(showPricing)router.push(`/pricing?source=practice_locked&returnTo=${encodeURIComponent(f.href || '/')}`);}else{captureLearningEvent('practice_feature_start',{feature:f.id});router.push(f.href);}}}>
     <ActivityIcon id={f.id}/><span className="practice-copy"><strong>{f.name}</strong><small>{f.description}</small></span>
-    <span className="practice-access"><span className="practice-badge">{f.premium?entitlement.hasAccess?'Included':'Plans':f.id==='cat'?'Explore':'Free'}</span>{f.time&&<small>{f.time}</small>}<span className="practice-arrow" aria-hidden="true">→</span></span>
+    <span className="practice-access"><span className="practice-badge">{f.premium?entitlement.hasAccess?'Included':showPricing?'Plans':'Unavailable':f.id==='cat'?'Explore':'Free'}</span>{f.time&&<small>{f.time}</small>}<span className="practice-arrow" aria-hidden="true">→</span></span>
   </button>)}</div>
   </section></div>;
 }

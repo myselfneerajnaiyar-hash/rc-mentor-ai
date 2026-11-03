@@ -14,11 +14,13 @@ import { FEATURES } from "@/lib/mobile/features.mjs"
 import { getSubscriptionFeatures, getSubscriptionPlans, getSubscriptionPrice } from "@/lib/pricing/subscriptionPlans.mjs"
 import { captureLearningEvent } from "@/lib/learningAnalytics"
 import { getPricingLogoDestination } from "@/lib/navigation/pricingLogoDestination.mjs"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 const PLAN_ORDER = ["quarterly", "monthly", "half_yearly", "yearly"]
 const PLANS = [...getSubscriptionPlans()].sort((a, b) => PLAN_ORDER.indexOf(a.id) - PLAN_ORDER.indexOf(b.id))
 
 export default function Pricing() {
+  const showPricing = usePricingVisibility()
   const [couponInput, setCouponInput] = useState("AUCTOR30")
   const [appliedCoupon, setAppliedCoupon] = useState("")
   const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0)
@@ -46,12 +48,13 @@ export default function Pricing() {
   }, [searchParams])
 
   useEffect(() => {
+    if (!showPricing) return
     const source = searchParams.get("source") || (searchParams.get("offer") === "bootcamp" ? "bootcamp_offer" : "direct")
     const viewKey = `${source}:${couponFromUrl}:${searchParams.get("offer") || ""}:${searchParams.get("returnTo") || ""}`
     if (lastPricingView.current === viewKey) return
     lastPricingView.current = viewKey
     captureLearningEvent("pricing_viewed", { source, pricing_source: source })
-  }, [couponFromUrl, searchParams])
+  }, [couponFromUrl, searchParams, showPricing])
 
   const applyCoupon = useCallback(async (value) => {
     const code = value.trim()
@@ -93,12 +96,15 @@ export default function Pricing() {
   }, [])
 
   useEffect(() => {
+    if (!showPricing) return
     const code = couponFromUrl || "AUCTOR30"
     setCouponInput(code)
     if (lastAutoCoupon.current === code) return
     lastAutoCoupon.current = code
     void applyCoupon(code)
-  }, [applyCoupon, couponFromUrl])
+  }, [applyCoupon, couponFromUrl, showPricing])
+
+  if (!showPricing) return null
 
   return (
     <div data-pricing-layout={user ? "authenticated" : "public"} className={user ? "flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white md:flex-row" : "min-h-screen"}>

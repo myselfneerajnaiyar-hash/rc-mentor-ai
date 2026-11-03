@@ -6,10 +6,12 @@ import { useTenant } from "@/components/providers/TenantProvider";
 import TenantLogo from "@/components/tenant/TenantLogo";
 import { ProfilePlanRow } from "@/components/TrialPromotions";
 import profileStyles from "./profile-view.module.css";
+import usePricingVisibility from "@/components/usePricingVisibility";
 
 
 export default function ProfileView({ setView }) {
   const { branding, capabilities, entitlement } = useTenant();
+  const showPricing = usePricingVisibility();
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileLoadError, setProfileLoadError] = useState("");
@@ -168,7 +170,7 @@ const [editData, setEditData] = useState({
   📱 {profile.phone || "Phone not added"}
 </p>
 
-{subscription && (
+{showPricing && subscription && (
   <p
     style={{
       color: "#22c55e",
@@ -281,7 +283,7 @@ const [editData, setEditData] = useState({
 )}
 
 <ActionCard className={profileStyles.actionCard}
-  title="Subscription & Courses"
+  title={showPricing ? "Subscription & Courses" : "Institute access"}
   desc="View enrolled programs"
   onClick={() => setProfileTab("subscription")}
 />
@@ -357,11 +359,11 @@ const [editData, setEditData] = useState({
 
 {profileTab === "subscription" && (
   <div className={profileStyles.section}>
-    <h3>Subscription</h3>
+    <h3>{showPricing ? "Subscription" : "Institute access"}</h3>
    <p style={{ marginBottom: 10 }}>
   Current Plan:{" "}
   <strong>
-    {entitlement.isInstituteStudent
+    {!showPricing || entitlement.isInstituteStudent
       ? "Institute-sponsored access"
       : subscription
       ? `Pro ${
@@ -376,7 +378,7 @@ const [editData, setEditData] = useState({
 <p style={{ color: "#94a3b8" }}>
   {entitlement.isInstituteStudent
     ? "Your institute provides full access to the features available for your exam."
-    : "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync."}
+    : showPricing ? "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync." : "Your institute access is managed by AN ACADEMY."}
 </p>
 
   </div>

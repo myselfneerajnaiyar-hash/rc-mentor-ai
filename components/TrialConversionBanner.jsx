@@ -4,11 +4,13 @@ import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { useTenant } from "@/components/providers/TenantProvider"
 import { getTrialBannerState, trialBannerDismissalKey } from "@/lib/tenant/trialBanner"
+import usePricingVisibility from "@/components/usePricingVisibility"
 
 const COUPON = "AUCTOR30"
 
 export default function TrialConversionBanner() {
   const { profile, entitlement, serverTime } = useTenant()
+  const showPricing = usePricingVisibility()
   const [coupon, setCoupon] = useState(null)
   const [now, setNow] = useState(null)
   const [dismissal, setDismissal] = useState({ key: null, dismissed: false, ready: false })
@@ -32,17 +34,17 @@ export default function TrialConversionBanner() {
   const dismissalKey = trialBannerDismissalKey(state)
 
   useEffect(() => {
-    if (state.type === "none") {
+    if (!showPricing || state.type === "none") {
       setDismissal({ key: null, dismissed: false, ready: true })
       return
     }
     let dismissed = false
     try { dismissed = window.sessionStorage.getItem(dismissalKey) === "1" } catch {}
     setDismissal({ key: dismissalKey, dismissed, ready: true })
-  }, [dismissalKey, state.type])
+  }, [dismissalKey, showPricing, state.type])
 
   useEffect(() => {
-    if (state.type === "none") {
+    if (!showPricing || state.type === "none") {
       setCoupon(null)
       return
     }
@@ -58,9 +60,9 @@ export default function TrialConversionBanner() {
       })
       .catch(() => { if (!cancelled) setCoupon(null) })
     return () => { cancelled = true }
-  }, [state.type])
+  }, [showPricing, state.type])
 
-  if (state.type === "none" || !dismissal.ready || dismissal.key !== dismissalKey || dismissal.dismissed) return null
+  if (!showPricing || state.type === "none" || !dismissal.ready || dismissal.key !== dismissalKey || dismissal.dismissed) return null
 
   const messages = {
     offer: {

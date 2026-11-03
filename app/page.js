@@ -23,6 +23,7 @@ import TodayHub from "@/components/mobile/TodayHub";
 import PracticeHub from "@/components/mobile/PracticeHub";
 import { allowActivityExit } from "@/components/mobile/MobileShell";
 import { TrialStatusChip } from "@/components/TrialPromotions";
+import usePricingVisibility from "@/components/usePricingVisibility";
 import { GRAMMAR_ENABLED, FEATURES } from "@/lib/mobile/features.mjs";
 import LeaderboardSection from "@/components/home-v2/LeaderboardSection";
 import { useRouter } from "next/navigation";
@@ -102,6 +103,7 @@ async function loadSectionalAttemptMapFromDB() {
     
 export default function Page() {
   const { branding, profile: tenantProfile, capabilities, entitlement } = useTenant();
+  const showPricing = usePricingVisibility();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -145,7 +147,7 @@ export default function Page() {
   function setView(next) {
     if (!allowActivityExit()) return;
     const feature = FEATURES.find(f => f.id === next);
-    if (feature?.premium && !hasPremiumAccess) { captureLearningEvent("premium_feature_click", {feature:next}); router.push(`/pricing?source=locked_feature&returnTo=${encodeURIComponent(feature.href || "/")}`); return; }
+    if (feature?.premium && !hasPremiumAccess) { captureLearningEvent("premium_feature_click", {feature:next}); if (showPricing) router.push(`/pricing?source=locked_feature&returnTo=${encodeURIComponent(feature.href || "/")}`); return; }
     router.push(`/?view=${next}`);
   } 
   const dashboardSeenRef = useRef(false);
@@ -273,10 +275,10 @@ useEffect(() => {
   const allowed=["home","today","practice","profile","workout","hangman","rc","speed","vocab","precision","cat","mentor","leaderboards","grammar"];
   const next=allowed.includes(requested)?requested:"home";
   const feature=FEATURES.find(f=>f.id===next);
-  if(feature?.premium && !hasPremiumAccess){setViewState("practice");router.push(`/pricing?source=practice_locked&returnTo=${encodeURIComponent(feature.href || "/")}`);return;}
+  if(feature?.premium && !hasPremiumAccess){setViewState("practice");if(showPricing)router.push(`/pricing?source=practice_locked&returnTo=${encodeURIComponent(feature.href || "/")}`);return;}
   setViewState(next);
   document.body.scrollTop=0;document.documentElement.scrollTop=0;mainRef.current?.scrollTo(0,0);
-}, [searchParams, hasPremiumAccess]);
+}, [searchParams, hasPremiumAccess, showPricing]);
 
   useEffect(() => {
   async function load() {
@@ -773,7 +775,7 @@ const navItems = [
 
   
 
-   ...(!entitlement?.isInstituteStudent ? [{ id: "premium", label: "See plans", icon: Trophy }] : []),
+   ...(showPricing && !entitlement?.isInstituteStudent ? [{ id: "premium", label: "See plans", icon: Trophy }] : []),
   { id: "profile", label: "Profile", icon: User },
 ];
 
@@ -796,7 +798,7 @@ return (
     hasPremiumAccess={hasPremiumAccess}
     onNavigate={(item, locked) => {
       if (item.id === "premium") {
-        router.push("/pricing?source=dashboard_nav")
+        if (showPricing) router.push("/pricing?source=dashboard_nav")
         return
       }
       if (item.id === "bootcamp") {
@@ -804,6 +806,7 @@ return (
         return
       }
       if (locked) {
+        if (!showPricing) return
         const feature = FEATURES.find((candidate) => candidate.id === item.id)
         router.push(`/pricing?source=dashboard_locked_feature&returnTo=${encodeURIComponent(feature?.href || "/")}`)
         return
@@ -848,7 +851,7 @@ return (
 
 
 
-{view === "home" && <footer className="home-footer"><a href="/pricing?source=mobile_footer" data-pricing-source="mobile_footer">Pricing</a></footer>}
+{view === "home" && showPricing && <footer className="home-footer"><a href="/pricing?source=mobile_footer" data-pricing-source="mobile_footer">Pricing</a></footer>}
 
 {view === "workout" && (
   <DailyWorkoutContainer user={user} />
