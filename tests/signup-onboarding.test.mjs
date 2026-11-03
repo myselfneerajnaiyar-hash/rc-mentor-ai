@@ -2,7 +2,7 @@ import assert from "node:assert/strict"
 import { readFile } from "node:fs/promises"
 import test from "node:test"
 import { PGlite } from "@electric-sql/pglite"
-import { classifySignupResult, ensureSignupSession, runSingleFlight, validateMobileNumber } from "../lib/onboarding/profileValidation.mjs"
+import { classifySignupResult, ensureSignupSession, runSingleFlight, validateMobileNumber, validateSignupForm } from "../lib/onboarding/profileValidation.mjs"
 
 const signup = await readFile(new URL("../app/signup/page.jsx", import.meta.url), "utf8")
 const previewSignup = await readFile(new URL("../app/preview-ad/PreviewAdSignupExperience.jsx", import.meta.url), "utf8")
@@ -10,6 +10,57 @@ const callback = await readFile(new URL("../app/auth/callback/route.js", import.
 const login = await readFile(new URL("../app/login/page.jsx", import.meta.url), "utf8")
 const welcome = await readFile(new URL("../app/welcome/page.jsx", import.meta.url), "utf8")
 const phoneMigration = await readFile(new URL("../supabase/migrations/202610060001_validate_profile_phone_writes.sql", import.meta.url), "utf8")
+
+function signupFormValues(values) {
+  return { elements: { namedItem: name => values[name] === undefined ? null : { value: values[name] } } }
+}
+
+test("signup validation reads current form values when React state is stale after autofill", () => {
+  const result = validateSignupForm(signupFormValues({
+    email: "  New.Student+RC@GMAIL.COM  ",
+    password: "Strong Test Password!",
+  }), { email: "", password: "" })
+
+  assert.deepEqual(result, {
+    email: "new.student+rc@gmail.com",
+    password: "Strong Test Password!",
+    fieldErrors: {},
+  })
+})
+
+test("signup validation preserves normalized values typed into the form", () => {
+  const result = validateSignupForm(signupFormValues({
+    email: "  Student.Name@gmail.com ",
+    password: "Typed password 123!",
+  }), { email: "  Student.Name@gmail.com ", password: "Typed password 123!" })
+
+  assert.deepEqual(result, {
+    email: "student.name@gmail.com",
+    password: "Typed password 123!",
+    fieldErrors: {},
+  })
+})
+
+test("signup validation rejects malformed email without weakening the current rule", () => {
+  const result = validateSignupForm(signupFormValues({
+    email: "student@gmail",
+    password: "Valid non-empty password",
+  }))
+
+  assert.deepEqual(result.fieldErrors, { email: "Enter a valid email address." })
+})
+
+test("signup validation reports both required field errors when inputs are empty", () => {
+  const result = validateSignupForm(signupFormValues({
+    email: "",
+    password: "",
+  }), { email: "stale@gmail.com", password: "stale password" })
+
+  assert.deepEqual(result.fieldErrors, {
+    email: "Enter a valid email address.",
+    password: "Enter a password.",
+  })
+})
 
 test("signup distinguishes immediate sessions, confirmation, existing users, and errors", () => {
   const user = { id: "u1", identities: [{ id: "i1" }] }

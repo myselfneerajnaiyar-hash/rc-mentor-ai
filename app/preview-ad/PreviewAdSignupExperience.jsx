@@ -7,9 +7,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { attributionParams, buildAttributedPath, persistBrowserAttribution, readBrowserAttribution } from '@/lib/attribution.mjs'
 import { captureSignupConversion, captureGoogleLoginFailure } from '@/lib/analytics/conversionEvents.mjs'
-import { classifySignupResult, ensureSignupSession, runSingleFlight } from '@/lib/onboarding/profileValidation.mjs'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { classifySignupResult, ensureSignupSession, runSingleFlight, validateSignupForm } from '@/lib/onboarding/profileValidation.mjs'
 
 function inAppBrowser() {
   return /Instagram|FBAN|FBAV|FB_IAB|FBIOS|FB4A|MessengerForiOS|FBMessenger/i.test(navigator.userAgent || '')
@@ -187,9 +185,8 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   }, [initialAttribution])
   const loginHref = useCallback(() => {
     const params = new URLSearchParams(attributionParams(currentAttribution()))
-    if (email.trim()) params.set('email', email.trim().toLowerCase())
     return `/login?${params.toString()}`
-  }, [currentAttribution, email])
+  }, [currentAttribution])
 
   const startPlacement = useCallback(placement => {
     if (startedPlacements.current.has(placement)) return
@@ -209,10 +206,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
   const handleSignup = useCallback((placement, event) => {
     event.preventDefault()
     if (loading || singleFlight.current) return
-    const normalizedEmail = email.trim().toLowerCase()
-    const nextErrors = {}
-    if (!normalizedEmail || !EMAIL_PATTERN.test(normalizedEmail)) nextErrors.email = 'Enter a valid email address.'
-    if (!password) nextErrors.password = 'Enter a password.'
+    const { email: normalizedEmail, password: submittedPassword, fieldErrors: nextErrors } = validateSignupForm(event.currentTarget, { email, password })
     setFieldErrors(nextErrors)
     setError('')
     setConfirmationMessage('')
@@ -221,6 +215,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
       return
     }
     setEmail(normalizedEmail)
+    setPassword(submittedPassword)
     capturePreviewEvent('signup_submitted', placement, { method: 'email' })
     setLoading(true)
     void runSingleFlight(singleFlight, async () => {
@@ -229,7 +224,7 @@ export default function PreviewAdSignupExperience({ initialAttribution, ctaOnly 
         const callbackPath = buildAttributedPath('/auth/callback', attribution, { signup_surface: 'preview_ad_inline' })
         const { data, error: signupError } = await supabase.auth.signUp({
           email: normalizedEmail,
-          password,
+          password: submittedPassword,
           options: {
             data: { signup_attribution: attribution },
             emailRedirectTo: `${window.location.origin}${callbackPath}`,
