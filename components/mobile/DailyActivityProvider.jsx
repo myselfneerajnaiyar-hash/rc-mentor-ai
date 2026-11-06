@@ -9,24 +9,30 @@ export default function DailyActivityProvider({children}){
  const {user,capabilities,profile}=useTenant();
  const key=user?.id+':'+capabilities.showDailyRC+':'+!!profile;
  const current=useRef(key);current.current=key;
- const flight=useRef(null),saved=useRef(null);
+ const flight=useRef(null),saved=useRef(null),retryAfter=useRef(null);
  const [state,setState]=useState({...empty,key});
  const refresh=useCallback((force=true)=>{
   if(!user?.id||!profile)return Promise.resolve();
   const dateKey=new Date().toISOString().slice(0,10)+':'+new Date(Date.now()+19800000).toISOString().slice(0,10);
-  if(flight.current?.key===key){if(force)flight.current.again=true;return flight.current.promise;}
+  if(flight.current?.key===key)return flight.current.promise;
   if(!force&&saved.current?.key===key&&saved.current.day===dateKey&&Date.now()-saved.current.at<60000)return Promise.resolve();
+  if(!force&&retryAfter.current?.key===key&&Date.now()<retryAfter.current.at)return Promise.resolve();
   setState(s=>s.key===key?{...s,loading:true,error:null}:{...empty,key});
-  const promise=(async()=>{try{
-   const {data:{session}}=await supabase.auth.getSession();
-   if(session?.user?.id!==user.id)throw Error('Your session changed. Please retry.');
-   const response=await fetchWithTimeout('/api/daily-status',{headers:{Authorization:'Bearer '+session.access_token},cache:'no-store'});
-   if(!response.ok)throw Error('Your daily progress could not be loaded. Please retry.');
-   const data=await response.json();
-   if(current.current!==key)return;
-   saved.current={key,day:dateKey,at:Date.now()};setState({...data,key,loading:false,error:null});
-  }catch(error){if(current.current===key)setState({...empty,key,loading:false,error:error.message});}
-  finally{if(flight.current?.promise===promise){const again=flight.current.again;flight.current=null;if(again&&current.current===key)refresh(true);}}})();
+  const promise=(async()=>{let lastError;try{
+   for(let attempt=0;attempt<3;attempt++){
+    try{
+     const {data:{session}}=await supabase.auth.getSession();
+     if(session?.user?.id!==user.id)throw Error('Your session changed. Please retry.');
+     const response=await fetchWithTimeout('/api/daily-status',{headers:{Authorization:'Bearer '+session.access_token},cache:'no-store'});
+     if(!response.ok)throw Error('Your daily progress could not be loaded. Please retry.');
+     const data=await response.json();
+     if(current.current!==key)return;
+     saved.current={key,day:dateKey,at:Date.now()};retryAfter.current=null;setState({...data,key,loading:false,error:null});return;
+    }catch(error){lastError=error;if(attempt<2)await new Promise(resolve=>setTimeout(resolve,attempt===0?500:1500));}
+   }
+   retryAfter.current={key,at:Number.POSITIVE_INFINITY};
+   if(current.current===key)setState({...empty,key,loading:false,error:lastError?.message||'Your daily progress could not be loaded. Please retry.'});
+  }finally{if(flight.current?.promise===promise)flight.current=null;}})();
   flight.current={key,promise};return promise;
  },[key,user?.id,!!profile]);
  useEffect(()=>{saved.current=null;refresh(false);},[refresh]);

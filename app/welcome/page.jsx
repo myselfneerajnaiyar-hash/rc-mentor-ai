@@ -89,6 +89,7 @@ async function startJourney() {
   const [exam, setExam] = useState("CAT")
   const [attemptYear, setAttemptYear] = useState("2026")
   const [phone, setPhone] = useState("")
+  const phoneInput = useRef(null)
   const [whatsappOptIn, setWhatsappOptIn] = useState(false)
 
   const [step, setStep] = useState(1)
@@ -236,6 +237,8 @@ async function finishProfile() {
   const phoneValidation = validateMobileNumber(phone)
   if (!phoneValidation.ok) {
     setProfileSaveError(phoneValidation.message)
+    phoneInput.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+    phoneInput.current?.focus({ preventScroll: true })
     return
   }
 
@@ -481,10 +484,14 @@ async function persistSignupAttribution(user) {
     <p className={styles["welcome-subtitle"]}>Enter your valid 10-digit mobile number to complete your profile.</p>
 
     <input
+      ref={phoneInput}
+      id="welcome-mobile-number"
       type="tel"
       inputMode="numeric"
       autoComplete="tel"
       aria-label="Mobile number"
+      aria-invalid={Boolean(profileSaveError)}
+      aria-describedby={profileSaveError ? "welcome-mobile-number-error" : undefined}
       placeholder="9876543210"
       value={phone}
       onChange={(e) => {
@@ -493,7 +500,7 @@ async function persistSignupAttribution(user) {
       }}
     />
 
-    {profileSaveError && <p className={styles["welcome-error"]} role="alert">{profileSaveError}</p>}
+    {profileSaveError && <p id="welcome-mobile-number-error" className={styles["welcome-error"]} role="alert">{profileSaveError}</p>}
 
     <label className={styles["whatsapp-consent"]}>
       <input
