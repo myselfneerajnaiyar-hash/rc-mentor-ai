@@ -1,6 +1,6 @@
 "use client";
 import { useRouteTab } from "@/lib/mobile/useRouteTab";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { vocabLessons, getTodayWords } from "../app/data/vocabLessons";
 import VocabProfile from "../components/VocabProfile";
 import NextActivity from "@/components/mobile/NextActivity";
@@ -9,6 +9,7 @@ import TabGroup from "../components/TabGroup";
 import PracticeSwitcher from "./PracticeSwitcher";
 import WordDrawer from "../components/WordDrawer";
 import CompletionPlansOffer from "@/components/CompletionPlansOffer";
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 
 export default function VocabLab() {
   const [tab, setTab] = useRouteTab(["bank","drill","learn","profile"],"bank");
@@ -369,9 +370,23 @@ function VocabDrill() {
   const [endTime, setEndTime] = useState(null);
   const [streak, setStreak] = useState(0);
 const [bestStreak, setBestStreak] = useState(0);
+const activityRef = useRef({ active: false, completed: false, startedAt: 0 });
+const activityAnswerCountRef = useRef(0);
+activityAnswerCountRef.current = history.length;
 
   useEffect(() => {
   loadDrillWords();
+}, []);
+
+useEffect(() => () => {
+  const activity = activityRef.current;
+  if (activity.active && !activity.completed) {
+    captureLearningEvent("activity_abandoned", {
+      activity_type: "vocabulary_drill",
+      elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+      answered_count: activityAnswerCountRef.current,
+    });
+  }
 }, []);
 
 async function loadDrillWords() {
@@ -551,6 +566,8 @@ return {
   setStreak(0);
 setBestStreak(0);
   setStartTime(Date.now());
+  activityRef.current = { active: true, completed: false, startedAt: Date.now() };
+  startLearningActivity("vocabulary_drill", undefined, { question_count: Math.min(qs.length, 10) });
   setEndTime(null);
   setStage("run");
 }
@@ -638,6 +655,13 @@ if (isLastQuestion) {
   }
 
   setTimeout(() => {
+    if (!activityRef.current.completed) {
+      activityRef.current.completed = true;
+      completeLearningActivity("vocabulary_drill", undefined, {
+        accuracy_percent: Math.round((finalHistory.filter(h => h.isCorrect).length / totalQuestions) * 100),
+        question_count: totalQuestions,
+      });
+    }
     setStage("result");
   }, 700);
 
@@ -1019,6 +1043,7 @@ if (isLastQuestion) {
 function VocabLearn() {
   const [mode, setMode] = useState("home"); // home | lesson | test | result
 const [activeLesson, setActiveLesson] = useState(null);
+const lessonActivityRef = useRef({ active: false, completed: false, startedAt: 0, lessonId: null });
   const [progress, setProgress] = useState(() => {
   return JSON.parse(localStorage.getItem("vocabProgress") || '{"completed": []}');
 });
@@ -1027,6 +1052,17 @@ const [testIndex, setTestIndex] = useState(0);
 const [testScore, setTestScore] = useState(0);
   const [examFilter, setExamFilter] = useState("ALL"); 
 // ALL | CAT | OMET
+
+useEffect(() => () => {
+  const activity = lessonActivityRef.current;
+  if (activity.active && !activity.completed) {
+    captureLearningEvent("activity_abandoned", {
+      activity_type: "vocabulary_lesson_test",
+      activity_id: activity.lessonId,
+      elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+    });
+  }
+}, []);
  
 
   if (mode === "lesson" && activeLesson) {
@@ -1116,6 +1152,8 @@ const qs = usable.slice(0, 5).map(w => {
     setTestQs(qs);
     setTestIndex(0);
     setTestScore(0);
+    lessonActivityRef.current = { active: true, completed: false, startedAt: Date.now(), lessonId: lesson.id };
+    startLearningActivity("vocabulary_lesson_test", lesson.id, { question_count: qs.length });
     setMode("test");
   }
   if (mode === "test") {
@@ -1137,6 +1175,13 @@ const qs = usable.slice(0, 5).map(w => {
               if (testIndex + 1 < testQs.length) {
                 setTestIndex(i => i + 1);
               } else {
+                if (!lessonActivityRef.current.completed) {
+                  lessonActivityRef.current.completed = true;
+                  completeLearningActivity("vocabulary_lesson_test", activeLesson?.id, {
+                    correct_count: testScore + (o === q.correct ? 1 : 0),
+                    question_count: testQs.length,
+                  });
+                }
                 setMode("result");
               }
             }}

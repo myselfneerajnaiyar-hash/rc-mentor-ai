@@ -7,6 +7,7 @@ import { Send, Brain, Mic, } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { SpeechRecognition } from "@capacitor-community/speech-recognition"
 import { ACTIONS } from "@/lib/birbalActions";
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 
 
 export default function ChatMentor({
@@ -48,7 +49,10 @@ Ask me anything or choose a suggestion below.`
   const [chatError, setChatError] = useState(null)
   const sendingRef = useRef(false)
   const mountedRef = useRef(true)
+  const activityRef = useRef(null)
+  const chatSurface = contextual ? "contextual" : "mentor"
   useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false } }, [])
+  useEffect(() => () => finishChatActivity(), [])
   const [input, setInput] = useState("")
   const lastMessageRef = useRef(null)
   const bottomRef = useRef(null)
@@ -57,6 +61,57 @@ Ask me anything or choose a suggestion below.`
   const [thinking, setThinking] = useState(false)
   const [user, setUser] = useState(null)
   const router = useRouter();
+
+  function startChatActivity() {
+    if (activityRef.current?.active) return activityRef.current
+    const activity = { active: true, startedAt: Date.now(), messageCount: 0, responseCount: 0 }
+    activityRef.current = activity
+    startLearningActivity("birbal_chat", undefined, { chat_surface: chatSurface })
+    return activity
+  }
+
+  function recordMessageSent() {
+    const activity = startChatActivity()
+    activity.messageCount += 1
+    captureLearningEvent("birbal_message_sent", {
+      activity_type: "birbal_chat",
+      chat_surface: chatSurface,
+      message_number: activity.messageCount,
+    })
+  }
+
+  function recordMessageReceived() {
+    const activity = activityRef.current
+    if (!activity?.active) return
+    activity.responseCount += 1
+    captureLearningEvent("birbal_response_received", {
+      activity_type: "birbal_chat",
+      chat_surface: chatSurface,
+      response_number: activity.responseCount,
+    })
+  }
+
+  function finishChatActivity() {
+    const activity = activityRef.current
+    if (!activity?.active) return
+    activity.active = false
+    const properties = {
+      chat_surface: chatSurface,
+      message_count: activity.messageCount,
+      response_count: activity.responseCount,
+      elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+    }
+    if (activity.responseCount > 0) {
+      completeLearningActivity("birbal_chat", undefined, properties)
+    } else {
+      captureLearningEvent("activity_abandoned", { activity_type: "birbal_chat", ...properties })
+    }
+  }
+
+  function closeChat() {
+    finishChatActivity()
+    onClose?.()
+  }
   
   const [listening, setListening] = useState(false)
 const [voiceMode, setVoiceMode] = useState(false)
@@ -103,13 +158,16 @@ useEffect(() => {
  async function sendContextMessage(text) {
   if(!text.trim() || sendingRef.current)return
   if(text.length>4000){setChatError('Please keep your message under 4,000 characters.');return}
+  recordMessageSent()
   followMessages.current=true; sendingRef.current=true;setThinking(true);setChatError(null)
   const updated=[...messages,{role:'user',content:text,time:new Date()}]
   setMessages(updated);setInput('')
   try {
     const data=await transport(updated.slice(-12).map(m=>({role:m.role,content:m.content})))
+    recordMessageReceived()
     if(mountedRef.current)setMessages([...updated,{role:'assistant',content:data.reply,time:new Date()}])
   } catch(error) {
+    captureLearningEvent("birbal_message_failed", { activity_type: "birbal_chat", chat_surface: chatSurface })
     if(mountedRef.current){setMessages(messages);setInput(text);setChatError(error.message || 'Please retry your message.')}
   } finally {sendingRef.current=false;if(mountedRef.current)setThinking(false)}
  }
@@ -118,10 +176,11 @@ useEffect(() => {
  async function sendVoiceMessage(text){
   if(transport)return sendContextMessage(text);
   if(!text.trim()||sendingRef.current)return;
+  recordMessageSent()
   followMessages.current=true; sendingRef.current=true;setThinking(true);setChatError(null);
   const previous=messages;const updated=[...messages,{role:"user",content:text,time:new Date()}];setMessages(updated);setInput("");
-  try{const response=await fetchWithTimeout("/api/birbal",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:updated,userId:user?.id,passage,contextual})});const data=await response.json();if(!response.ok||!data.reply)throw Error(data.error||"Birbal could not reply. Please retry your message.");if(mountedRef.current)await typeMessage(data.reply,updated);}
-  catch(error){if(mountedRef.current){setMessages(previous);setInput(text);setChatError(error.message);}}
+  try{const response=await fetchWithTimeout("/api/birbal",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:updated,userId:user?.id,passage,contextual})});const data=await response.json();if(!response.ok||!data.reply)throw Error(data.error||"Birbal could not reply. Please retry your message.");recordMessageReceived();if(mountedRef.current)await typeMessage(data.reply,updated);}
+  catch(error){captureLearningEvent("birbal_message_failed", { activity_type: "birbal_chat", chat_surface: chatSurface });if(mountedRef.current){setMessages(previous);setInput(text);setChatError(error.message);}}
   finally{sendingRef.current=false;if(mountedRef.current)setThinking(false);}
  }
 
@@ -308,7 +367,7 @@ text-white
 {onClose && (
   <button
     aria-label="Close Birbal conversation"
-    onClick={onClose}
+    onClick={closeChat}
     className="h-11 w-11 rounded-full bg-black/30 flex items-center justify-center shrink-0"
   >
     ✕

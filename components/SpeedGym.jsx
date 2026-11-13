@@ -7,6 +7,7 @@ import NextActivity from "./mobile/NextActivity";
 import { fetchWithTimeout, withTimeout } from "@/lib/mobile/request";
 import AssessmentMode from "./assessment/AssessmentMode";
 import SpeedDrillReview from "./assessment/SpeedDrillReview";
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 
 export default function SpeedGym() {
   const [saveError,setSaveError]=useState(null);
@@ -24,10 +25,22 @@ export default function SpeedGym() {
   const [paragraphReadSeconds, setParagraphReadSeconds] = useState(0);
   const [meta, setMeta] = useState(null);
   const [result, setResult] = useState(null);
+  const activityRef = useRef({ active: false, completed: false, startedAt: 0 });
 
   useEffect(() => {
+    activityRef.current = { active: true, completed: false, startedAt: Date.now() };
+    startLearningActivity("speed_drill");
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      const activity = activityRef.current;
+      if (activity.active && !activity.completed) {
+        captureLearningEvent("activity_abandoned", {
+          activity_type: "speed_drill",
+          elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+        });
+      }
+    };
   }, []);
 
   async function computeTarget() {
@@ -224,6 +237,16 @@ export default function SpeedGym() {
       details,
     };
 
+    if (!activityRef.current.completed) {
+      activityRef.current.completed = true;
+      completeLearningActivity("speed_drill", undefined, {
+        accuracy_percent: accuracy,
+        effective_wpm: effectiveWPM,
+        question_count: paras.length,
+        skipped_count: skipped.length,
+      });
+    }
+
     const history = JSON.parse(localStorage.getItem("speedProfile") || "[]");
     history.push(record);
     localStorage.setItem("speedProfile", JSON.stringify(history));
@@ -249,6 +272,11 @@ export default function SpeedGym() {
     try {const {data}=await withTimeout(supabase.auth.getUser());if(!data.user)throw new Error('Please sign in to save your result.');
     const {error}=await supabase.from('speed_sessions').insert({...savePayload.current,user_id:data.user.id});if(error)throw error;
     }catch(e){setSaveError(e.message || 'Your result could not save.');}finally{setSaving(false);}
+  }
+  function restartDrill() {
+    activityRef.current = { active: true, completed: false, startedAt: Date.now() };
+    startLearningActivity("speed_drill");
+    start();
   }
   const totalAllowed = readSeconds + timeLeft;
   const elapsedRatio = totalAllowed > 0 ? readSeconds / totalAllowed : 0;
@@ -312,7 +340,7 @@ export default function SpeedGym() {
         </div>
       )}
 
-      {phase === "result" && result && <><>{saving&&<p role="status">Saving result…</p>}{saveError&&<Recovery area="speed_save" message={saveError} onRetry={saveResult}/>}</><DetailedReport result={result} meta={meta} onRestart={start} /><NextActivity current="speed"/></>}
+      {phase === "result" && result && <><>{saving&&<p role="status">Saving result…</p>}{saveError&&<Recovery area="speed_save" message={saveError} onRetry={saveResult}/>}</><DetailedReport result={result} meta={meta} onRestart={restartDrill} /><NextActivity current="speed"/></>}
     </div>
   );
 }

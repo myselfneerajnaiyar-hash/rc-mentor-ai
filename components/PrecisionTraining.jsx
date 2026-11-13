@@ -23,6 +23,7 @@ import {
   XCircle,
 } from "lucide-react"
 import { supabase } from "../lib/supabase"
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics"
 
 const ACTIVE_SESSION_KEY = "precisionActiveSession"
 
@@ -97,11 +98,30 @@ export default function PrecisionTraining({ user, userName }) {
   const answersRef = useRef(answers)
   const timesRef = useRef(questionTimes)
   const submittingRef = useRef(false)
+  const activityRef = useRef(null)
+  const completedSessionRef = useRef(null)
 
   const questions = useMemo(() => getQuestions(drill), [drill])
 
   useEffect(() => { answersRef.current = answers }, [answers])
   useEffect(() => { timesRef.current = questionTimes }, [questionTimes])
+
+  useEffect(() => {
+    if (phase !== "running" || !sessionId) return
+    const activeSessionId = sessionId
+    return () => {
+      if (completedSessionRef.current === activeSessionId || submittingRef.current) return
+      const activity = activityRef.current
+      if (activity?.sessionId !== activeSessionId) return
+      captureLearningEvent("activity_abandoned", {
+        activity_type: "precision_training",
+        activity_id: activeSessionId,
+        elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+        answered_count: Object.keys(answersRef.current).length,
+      })
+      activityRef.current = null
+    }
+  }, [phase, sessionId])
 
   useEffect(() => {
     async function loadWeakSkills() {
@@ -199,6 +219,8 @@ export default function PrecisionTraining({ user, userName }) {
         return
       }
       applySession(payload)
+      activityRef.current = { sessionId: id, startedAt: Date.now() }
+      captureLearningEvent("activity_resumed", { activity_type: "precision_training", activity_id: id })
       if (payload.status === "expired") setTimeLeft(0)
     } catch (restoreError) {
       localStorage.removeItem(ACTIVE_SESSION_KEY)
@@ -237,6 +259,12 @@ export default function PrecisionTraining({ user, userName }) {
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.error || "Could not submit Precision session.")
       setResult(payload)
+      completedSessionRef.current = sessionId
+      activityRef.current = null
+      completeLearningActivity("precision_training", sessionId, {
+        question_count: questions.length,
+        timed_out: timedOut,
+      })
       localStorage.removeItem(ACTIVE_SESSION_KEY)
       localStorage.removeItem(`${ACTIVE_SESSION_KEY}:${sessionId}`)
       setPhase("finished")
@@ -278,6 +306,8 @@ export default function PrecisionTraining({ user, userName }) {
       if (payload.limitReached) throw new Error("You reached today's Precision limit.")
       if (!response.ok) throw new Error(payload.error || "Could not create your Precision drill.")
       applySession(payload)
+      activityRef.current = { sessionId: payload.sessionId, startedAt: Date.now() }
+      startLearningActivity("precision_training", payload.sessionId, { question_count: getQuestions(payload.drill).length })
     } catch (startError) {
       setError(startError.message)
     } finally {

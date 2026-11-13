@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import posthog from "posthog-js";
+import { supabase } from "@/lib/supabase";
+import { identifyPostHogUser } from "@/lib/analytics/conversionEvents.mjs";
 
 export default function PostHogProvider() {
   useEffect(() => {
@@ -15,7 +17,16 @@ export default function PostHogProvider() {
       }
     );
 
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        posthog.reset();
+      } else if (session?.user?.id) {
+        identifyPostHogUser({ userId: session.user.id, posthog });
+      }
+    });
+
     console.log("POSTHOG LOADED");
+    return () => subscription.unsubscribe();
   }, []);
 
   return null;

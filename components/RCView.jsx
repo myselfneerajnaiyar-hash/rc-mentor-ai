@@ -1,6 +1,6 @@
 "use client";
 import { useRouteTab } from "@/lib/mobile/useRouteTab";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import MentorView from "./MentorView";
 import Navbar from "./Navbar";
 import RCProfile from "./RCProfile";
@@ -13,6 +13,7 @@ import NextActivity from "./mobile/NextActivity";
 import { RCReport, RCSolutions, RCTestExperience } from "./assessment/RCExperience";
 import { FileText, HelpCircle, Brain, Clock } from "lucide-react";
 import PracticeSwitcher from "./PracticeSwitcher";
+import { captureLearningEvent, completeLearningActivity, startLearningActivity } from "@/lib/learningAnalytics";
 
 export default function RCView({view,setView }) {
   const [rcTab, setRcTab] = useRouteTab(["generate","paste","profile","history"],"generate");
@@ -43,6 +44,26 @@ console.log("User check:", data, error);
   const [birbalChatQ, setBirbalChatQ] = useState(null);
 const [birbalChatMessages, setBirbalChatMessages] = useState([]);
 const [birbalInput, setBirbalInput] = useState("");
+const birbalActivityRef = useRef(null);
+
+useEffect(() => () => finishBirbalActivity(), []);
+
+function finishBirbalActivity() {
+  const activity = birbalActivityRef.current;
+  if (!activity?.active) return;
+  activity.active = false;
+  const properties = {
+    chat_surface: "rc_question",
+    message_count: activity.messageCount,
+    response_count: activity.responseCount,
+    elapsed_seconds: Math.max(0, Math.round((Date.now() - activity.startedAt) / 1000)),
+  };
+  if (activity.responseCount > 0) {
+    completeLearningActivity("birbal_chat", undefined, properties);
+  } else {
+    captureLearningEvent("activity_abandoned", { activity_type: "birbal_chat", ...properties });
+  }
+}
 
   // ---- TEST STATE ----
 
@@ -381,6 +402,9 @@ setBirbalMessage(
   }
 
   function openBirbalChat(qIndex) {
+  finishBirbalActivity();
+  birbalActivityRef.current = { active: true, startedAt: Date.now(), messageCount: 0, responseCount: 0 };
+  startLearningActivity("birbal_chat", undefined, { chat_surface: "rc_question" });
   setBirbalChatQ(qIndex);
 
   setBirbalChatMessages([
@@ -769,6 +793,15 @@ const birbalHints = {
 async function sendBirbalMessage() {
 
   if (!birbalInput.trim()) return;
+  const activity = birbalActivityRef.current;
+  if (activity?.active) {
+    activity.messageCount += 1;
+    captureLearningEvent("birbal_message_sent", {
+      activity_type: "birbal_chat",
+      chat_surface: "rc_question",
+      message_number: activity.messageCount,
+    });
+  }
 
   const q = testQuestions[birbalChatQ];
   console.log("Birbal question:", q);
@@ -799,6 +832,14 @@ async function sendBirbalMessage() {
 })
 });
   const json = await res.json();
+  if (res.ok && json.reply && activity?.active) {
+    activity.responseCount += 1;
+    captureLearningEvent("birbal_response_received", {
+      activity_type: "birbal_chat",
+      chat_surface: "rc_question",
+      response_number: activity.responseCount,
+    });
+  }
 
   setBirbalChatMessages([
     ...newMessages,
@@ -1653,7 +1694,7 @@ overflow-y-auto
       <h4 className="font-semibold">Ask Birbal</h4>
 
       <button
-        onClick={() => setBirbalChatQ(null)}
+        onClick={() => { finishBirbalActivity(); setBirbalChatQ(null); }}
         className="text-slate-400 hover:text-white"
       >
         ✕
