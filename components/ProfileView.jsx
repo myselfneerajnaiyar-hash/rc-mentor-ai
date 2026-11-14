@@ -378,7 +378,7 @@ const [editData, setEditData] = useState({
 <p style={{ color: "#94a3b8" }}>
   {entitlement.isInstituteStudent
     ? "Your institute provides full access to the features available for your exam."
-    : showPricing ? "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync." : "Your institute access is managed by AN ACADEMY."}
+    : showPricing ? "Upgrade to Pro for advanced analytics, AI diagnosis, and full sectional sync." : `Your institute access is managed by ${branding.brandName}.`}
 </p>
 
   </div>
