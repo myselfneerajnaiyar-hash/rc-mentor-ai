@@ -6,8 +6,8 @@
 .ad-brand small{color:#d8d5ff}
 .ad-login{font-size:13px}
 .ad-login strong{color:#fff}
-.ad-hero{min-height:560px;padding:46px 0 42px;grid-template-columns:minmax(0,1fr) minmax(360px,440px);align-items:start;gap:54px}
-.ad-hero-copy{max-width:680px;padding-top:18px}
+.ad-hero{min-height:560px;padding:46px 0 42px;grid-template-columns:minmax(0,1fr) minmax(360px,440px);align-items:center;gap:54px}
+.ad-hero-copy{max-width:680px;padding-top:0}
 .ad-eyebrow{margin-bottom:20px;color:var(--orange-soft)}
 .ad-eyebrow span{background:#f69b46;box-shadow:none}
 .ad-hero h1{max-width:690px;color:var(--paper);font-family:Georgia,"Times New Roman",serif;font-size:clamp(43px,5.1vw,66px);line-height:1.04;letter-spacing:-.045em}
